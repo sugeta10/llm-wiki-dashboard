@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-security - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-security</h1>
+  <div class="meta">concepts/claude-code-security · concepts · updated 2026-05-09</div>
+  <article><h1>Claude Code セキュリティ設定と組織展開</h1>
+<p>メルカリ AI Security Team による <a href="../tools/claude-code.html">claude-code</a> の組織展開戦略。エンジニアと非エンジニアの双方が安全かつ生産性高く利用できる設定を MDM で配布する方法論。</p>
+<h2>Claude Code のリスク</h2>
+<ul>
+<li>ファイルの検索・読み書き・編集</li>
+<li>Web 検索とページ取得</li>
+<li>任意コマンドの実行（rm -rf、curl 等）</li>
+</ul>
+<p>PC 上の大事なファイルや認証情報にアクセスできる → クラウドストレージ活用・認証情報の短期化でも依然リスクあり。</p>
+<h2>セキュリティ向上設定（5点）</h2>
+<p>1. **パーミッションモードのbypass禁止** — 人間による確認を必須化 2. **危険コマンドの確認必須** — bash インライン実行・curl は許可前に確認 3. **危険な行動の禁止** — 環境変数管理ファイルの読み込み禁止、sudo 禁止 4. **Sandbox によるアクセス制限** — ディレクトリ外操作禁止、ネットワーク制限による漏洩防止 5. **セキュリティポリシーをシステムプロンプトに追加** — CLAUDE.md に記述</p>
+<h2>MDM による全社配布</h2>
+<p>MDM（端末管理システム）を使って以下を一斉展開：</p>
+<ul>
+<li>Claude Code の設定ファイル</li>
+<li>システムプロンプト（CLAUDE.md）</li>
+</ul>
+<p>**罠**: MDM 配布設定は最高優先度で扱われるため、カスタマイズしたいエンジニアと、最初から安全な状態が欲しい非エンジニアの両方を単一設定では満たせない。</p>
+<h2>解決策：ユーザータイプ別設定分離</h2>
+<p>| ユーザー | 設定方針 | |---------|---------| | エンジニア | 安全性を確保しつつカスタマイズ可能な設定 | | 非エンジニア | 実現できうる最も安全な設定（カスタマイズなし） |</p>
+<p>MDM に連携した情報から配布設定を分離することで、それぞれが生産性高く安全に利用できる環境を実現。</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../companies/anthropic.html">anthropic</a></li>
+</ul></article>
+</main>
+</body>
+</html>

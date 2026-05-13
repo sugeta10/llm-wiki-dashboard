@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-mcp - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-mcp</h1>
+  <div class="meta">tools/claude-mcp · tools · updated 2026-05-09</div>
+  <article><h1>Claude MCP（Model Context Protocol）</h1>
+<p>**MCP（Model Context Protocol）** は <a href="../companies/anthropic.html">anthropic</a> が策定した、LLMと外部ツール・データソースを接続するためのオープンプロトコル。</p>
+<h2>主な用途</h2>
+<ul>
+<li>Claude に外部データベース・API・ファイルシステムへのアクセスを付与</li>
+<li>Notion・GitHub・Slack などのサービスとの統合</li>
+<li>カスタムツールの呼び出し</li>
+</ul>
+<h2>Notion連携ワークフロー例</h2>
+<p>1. XのブックマークをダウンロードしCSV分析してリスト化 2. Claude MCPでリスト化した情報をNotionのDBへ保存 3. 蓄積した情報を元に簡易ブログ記事を生成</p>
+<p>→ 死蔵したブックマークを活きた情報として再活用できる</p>
+<h2>add-mcp（一括インストールツール）</h2>
+<p>`add-mcp` は Claude Code・Codex などの AI エージェントに MCP サーバーを一括インストールするCLIツール。各エージェントの設定ファイルを自動検出・更新する。</p>
+<pre><code class="language-bash">npx add-mcp &lt;server-name&gt;
+# 例: npx add-mcp @modelcontextprotocol/server-filesystem</code></pre>
+<p>対応エージェント: Claude Code / Codex / Cursor / Windsurf 等</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a>（MCP認可の限界と外部ポリシーレイヤリング）</li>
+</ul></article>
+</main>
+</body>
+</html>

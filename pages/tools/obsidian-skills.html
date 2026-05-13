@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>obsidian-skills - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>obsidian-skills</h1>
+  <div class="meta">tools/obsidian-skills · tools · updated 2026-05-10</div>
+  <article><h1>obsidian-skills</h1>
+<p>**obsidian-skills** は <a href="https://github.com/kepano" rel="noopener">kepano</a>（Obsidian CEO、Steph Ango）が作成した Obsidian 向け **Agent Skills** 公式コレクション。<a href="https://agentskills.io/specification" rel="noopener">Agent Skills 仕様</a> に準拠しており、<a href="../tools/claude-code.html">claude-code</a>・Codex CLI・OpenCode など複数のエージェントで共通して利用できる。</p>
+<h2>スキル一覧</h2>
+<p>| スキル | 概要 | |-------|------| | `obsidian-markdown` | Obsidian Flavored Markdown（wikilinks, embeds, callouts, properties）の作成・編集 | | `obsidian-bases` | Obsidian Bases（`.base`）のビュー・フィルタ・数式・集計の作成・編集 | | `json-canvas` | JSON Canvas（`.canvas`）のノード・エッジ・グループの作成・編集 | | `obsidian-cli` | Obsidian CLI 経由でのvault操作、プラグイン・テーマ開発 | | `defuddle` | Defuddle CLI でWebページからクリーンなMarkdownを抽出してトークンを節約 |</p>
+<h2>インストール方法</h2>
+<h3>Claude Code（Marketplace）</h3>
+<pre><code>/plugin marketplace add kepano/obsidian-skills
+/plugin install obsidian@obsidian-skills</code></pre>
+<h3>npx skills</h3>
+<pre><code class="language-bash">npx skills add git@github.com:kepano/obsidian-skills.git
+# または HTTPS
+npx skills add https://github.com/kepano/obsidian-skills</code></pre>
+<h3>手動（Claude Code）</h3>
+<p>リポジトリの内容を Obsidian vault 直下の `/.claude` フォルダに配置する。</p>
+<h3>OpenCode</h3>
+<pre><code class="language-bash">git clone https://github.com/kepano/obsidian-skills.git ~/.opencode/skills/obsidian-skills</code></pre>
+<p>`~/.opencode/skills/` 以下の `SKILL.md` を自動検出。設定変更不要で再起動後に有効。</p>
+<h2>Agent Skills 仕様</h2>
+<p><a href="https://agentskills.io/specification" rel="noopener">agentskills.io/specification</a> で規定された共通スキル仕様。Claude Code・Codex CLI など複数エージェントが同じスキルファイルを使い回せる設計。スキルは `SKILL.md` として定義し、エージェントが必要時にロードする。</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a>（Claude Code での利用、Marketplace経由のインストール）</li>
+<li><a href="../tools/openai-codex.html">openai-codex</a>（Codex CLI での利用）</li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a>（ObsidianでのLLMナレッジベース管理）</li>
+</ul></article>
+</main>
+</body>
+</html>

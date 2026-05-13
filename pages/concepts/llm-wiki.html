@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>llm-wiki - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>llm-wiki</h1>
+  <div class="meta">concepts/llm-wiki · concepts · updated 2026-05-09</div>
+  <article><h1>LLM Wiki</h1>
+<p><a href="../people/andrej-karpathy.html">andrej-karpathy</a> が提案した、LLM が継続的にメンテナンスする Markdown ベースの知識ベース。ベクトル DB を使わず、Markdown ファイルだけで運用する。</p>
+<h2>核心概念</h2>
+<ul>
+<li>**ソース分離**: `sources/` に生データを不変で保存、`wiki/` に LLM が生成した知識ページを蓄積</li>
+<li>**3操作**: ingest（取り込み）・query（問い合わせ）・lint（メンテナンス）</li>
+<li>**自動成長**: 日報や URL を ingest するたびにプロジェクト・人物・技術ページが厚みを増す</li>
+<li>**Obsidian 互換**: `ページ名` リンク形式でグラフビュー可視化が可能</li>
+</ul>
+<h2>実装パターン（Claude Code × Routines）</h2>
+<p><a href="../tools/claude-code.html">claude-code</a> の Routines 機能で完全自動化が可能：</p>
+<pre><code>外部ツール（Slack / GitHub / Calendar 等）
+  ↓ MCP コネクタ
+Claude Code Routines（定時実行）
+  ↓ 日報生成 → sources/ に保存
+ingest → wiki/pages/ に知識蓄積
+  ↓
+Obsidian でグラフ可視化・検索</code></pre>
+<h2>CLAUDE.md の役割</h2>
+<p>wiki の操作ルール（ingest/query/lint の定義）を記述する設計図。Claude Code はこれを読み込み Wiki メンテナーとして動作する。</p>
+<h2>活用例</h2>
+<ul>
+<li>月曜朝のタスク確認: 「先週の進捗と今週やるべきことを整理して」</li>
+<li>プロジェクト経緯検索: 「タスクフォースXの決定事項を時系列で」</li>
+<li>月次振り返り・1on1準備・スキル棚卸し</li>
+</ul>
+<h2>エンティティページ設計</h2>
+<p>事前設計不要。`CLAUDE.md` に大まかな指針を書けば、Claude が日報の内容を見て必要なページを自律的に作成・更新する。</p>
+<h2>毎日自動成長するObsidian Vault</h2>
+<p>「What you do nothing」モデル: launchd / cron で `claude -p` を定時起動し、sources/ に積み上がったコンテンツを自動 ingest する。人間の介入なしに毎日 wiki/ が厚くなる構成。Obsidian のグラフビューでナレッジネットワークが可視化される。</p>
+<p>スキルの自己改善ループ(<a href="../concepts/self-refining-skills.html">self-refining-skills</a>)を組み合わせると、ingest 品質も自動向上する。</p>
+<h2>Claude × Obsidian 実装事例（国内）</h2>
+<p>日本語圏で Claude Code × Obsidian の組み合わせが急速に普及：</p>
+<ul>
+<li>**「勝手に育つ第2の脳」**: launchd で `claude -p` を定時起動 → sources/ に自動蓄積 → wiki/ が毎日成長（<a href="../tools/claude-code.html">claude-code</a> Routines と同等の効果）</li>
+<li>**「5分で作るAI第二の脳」**: Obsidian vault に CLAUDE.md を置くだけで即座に LLM Wiki として機能する最短構成</li>
+<li>**「腐らせない方法」**: 週1回の lint + 月1回の全体見直しサイクルで知識ベースの鮮度を保つ</li>
+<li>**「完全解説（決定版）」**: `sources/` 不変・`wiki/` LLM管理・`ページ名` リンクグラフの3原則を詳解</li>
+</ul>
+<h2>OpenAI創設メンバー視点のPKM</h2>
+<p>OpenAI創設メンバーが提唱した Obsidian 活用術（41,000人ブックマーク）：</p>
+<ul>
+<li>**第2の脳**の本質は「思考の外部化」ではなく「思考のネットワーク化」</li>
+<li>Atomic Notes（原子的メモ）: 1ノート1トピックで再利用性を最大化</li>
+<li>LLM Wiki との親和性が高い（ページが小さいほど LLM の編集精度が上がる）</li>
+</ul>
+<h2>フォルダ構造の実装（NickSpisak 版）</h2>
+<p>@NickSpisak_ による Karpathy 式 Second Brain の具体的実装（41,000件ブックマーク）：</p>
+<ul>
+<li>**3フォルダ**: `raw/`（生データ投入）・`wiki/`（AI整理済み）・`outputs/`（質問への回答）</li>
+<li>**CLAUDE.md（AGENTS.md）**: LLMへの指示書。「何のナレッジベースか・どう整理するか」を記述</li>
+<li>**編集はAIの仕事**: wiki/ を手動編集しない。AIが読み・問い・更新する</li>
+<li>**月次ヘルスチェック**: 矛盾・未説明のトピック・根拠なし主張を定期検出</li>
+</ul>
+<p>&gt; 「Obsidianは必要ない。フラットなMarkdownフォルダ + スキーマファイルが本質」（Karpathy）</p>
+<p>Obsidianは有効な選択肢だが、47個のプラグインで設定に時間をかけるよりフラットファイルが9割の用途で勝る。</p>
+<h2>PKM × エージェント統合の視点</h2>
+<p>Obsidianをエージェントのコンテキスト置き場として「消費」するだけでは資産にならない。</p>
+<p>**3つの統合**（@pkm_tk111）： 1. **自分のノート** — 自分の言葉で書いたメモ（思考の蓄積） 2. **外部ノート** — 参照情報・コンテキスト 3. **エージェント** — AIの実行力</p>
+<p>自分の言葉でメモを書くことで Obsidian リンクグラフが構築され、エージェントへのコンテキスト渡し精度が上がる。<a href="../tools/claude-harness.html">claude-harness</a> のスキル設計もObsidian蓄積から構築すると質が高まる。</p>
+<h2>RAGとの比較</h2>
+<p>| 項目 | RAG | LLM Knowledge Base | |------|-----|--------------------| | 知識の形式 | クエリごとに断片を検索 | 事前にコンパイルしたMarkdown wiki | | 永続性 | クエリごとに再構成 | wiki が使うたびに成長 | | 規模感 | 大規模文書に強い | ~100記事・~40万語規模が最適 | | 人間の役割 | クエリを書く | キュレーションと方向づけ |</p>
+<p>Karpathy氏: 「高度なRAGに手を伸ばす必要があると思ったが、LLMはindex ファイルとサマリーの自動維持がかなり上手で、関連データもわりと簡単に読んでくれた」— RAGか wiki かは二択ではなく、アドホックな質問にはRAG、全体像把握には wiki という使い分けも有効。</p>
+<h2>国内実践者による実装例（classmethod版）</h2>
+<p>クラスメソッドの森茂氏による実装：</p>
+<ul>
+<li>`workspace/knowledge/` が Raw sources、各ディレクトリの `CLAUDE.md` が Schema、`workspace/wiki/` が Compiled Wiki</li>
+<li>**Memory MCP**（Mem0 + pgvector）をRAG的検索レイヤーとして追加し、wiki と検索の両方を使い分け</li>
+<li>`/kb-compile` カスタムコマンドで `--all`（全体更新）/ `--lint`（矛盾検出）を実行</li>
+<li>`_index.md` に30プロジェクトの全体地図が生成され、新セッション開始時の認知負荷を大幅削減</li>
+</ul>
+<p>&gt; Karpathy: 「hacky なスクリプトの寄せ集めではなく、ここには素晴らしいプロダクトが生まれる余地がある」</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a>（提唱者）</li>
+<li><a href="../tools/claude-code.html">claude-code</a>（実装プラットフォーム）</li>
+<li><a href="../tools/claude-harness.html">claude-harness</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+</ul></article>
+</main>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>obsidian-vault — Knowledge Dashboard</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;
+  --text:#e6edf3;--muted:#7d8590;--accent:#4493f8;--green:#3fb950;
+  --orange:#d29922;--red:#da3633;
+  --c-tools:#58a6ff;--c-concepts:#bc8cff;--c-models:#3fb950;
+  --c-papers:#d29922;--c-people:#f0883e;--c-companies:#ff7b72;--c-other:#8b949e;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.5;min-height:100vh}
+.dashboard{max-width:1080px;margin:0 auto 48px;padding:0 24px}
+.dash-header{background:var(--surface);border:1px solid var(--border);border-radius:12px 12px 0 0;padding:14px 22px;display:flex;align-items:center;gap:12px}
+.dash-logo{font-size:22px}
+.dash-name{font-weight:600;font-size:15px}
+.dash-owner{font-size:11px;color:var(--muted);margin-top:1px}
+.dash-url{margin-left:auto;background:rgba(68,147,248,.1);border:1px solid rgba(68,147,248,.25);border-radius:6px;padding:5px 12px;font-family:monospace;font-size:11px;color:var(--accent)}
+.stats-row{background:var(--surface);border:1px solid var(--border);border-top:none;padding:14px 22px;display:flex;align-items:center;gap:36px;border-bottom:1px solid var(--surface2)}
+.stat{display:flex;align-items:baseline;gap:5px}
+.stat-num{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.stat-label{font-size:12px;color:var(--muted)}
+.stats-updated{margin-left:auto;font-size:11px;color:var(--muted)}
+.dash-body{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:22px}
+.section-header{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.badge{background:var(--accent);color:#fff;font-size:9px;padding:1px 7px;border-radius:10px;text-transform:none;letter-spacing:0;font-weight:600}
+.badge-warn{background:rgba(218,54,51,.7);color:#fff;font-size:9px;padding:1px 7px;border-radius:10px;text-transform:none;letter-spacing:0;font-weight:600}
+.main-grid{display:grid;grid-template-columns:380px 1fr;gap:24px;margin-bottom:22px;align-items:start}
+.activity-list{display:flex;flex-direction:column}
+.activity-item{display:grid;grid-template-columns:50px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--surface2)}
+.activity-item:last-child{border-bottom:none}
+.activity-date{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:3px}
+.activity-page{display:flex;align-items:center;gap:5px;margin-bottom:2px}
+.activity-page-name{font-family:monospace;font-size:11.5px;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge-new{flex-shrink:0;background:rgba(63,185,80,.18);color:var(--green);font-size:8.5px;padding:1px 5px;border-radius:4px;font-weight:700}
+.activity-desc{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.activity-source{display:inline-flex;align-items:center;gap:3px;margin-top:3px;font-size:10px;color:var(--muted);text-decoration:none;opacity:.7;transition:opacity .15s}
+.activity-source:hover{opacity:1;color:var(--accent)}
+.graph-wrap{background:var(--surface2);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative}
+#kgraph{display:block;width:100%;height:356px}
+.graph-legend{position:absolute;bottom:10px;left:12px;display:flex;flex-wrap:wrap;gap:8px;pointer-events:none}
+.leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+.leg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.graph-hint{position:absolute;top:10px;right:12px;font-size:10px;color:var(--muted);pointer-events:none}
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.cat-list{display:flex;flex-direction:column;gap:10px}
+.cat-row{display:flex;align-items:center;gap:8px}
+.cat-name{width:78px;font-size:12px;white-space:nowrap}
+.cat-bar-bg{flex:1;background:var(--surface2);border-radius:3px;height:5px;overflow:hidden}
+.cat-bar{height:100%;border-radius:3px}
+.cat-count{width:22px;text-align:right;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ref-list{display:flex;flex-direction:column;gap:9px}
+.ref-row{display:flex;align-items:center;gap:8px}
+.ref-rank{width:14px;font-size:10px;color:var(--muted);text-align:right}
+.ref-page{font-family:monospace;font-size:11px;color:var(--accent);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ref-bar-bg{width:50px;background:var(--surface2);border-radius:3px;height:4px;overflow:hidden;flex-shrink:0}
+.ref-bar{height:100%;border-radius:3px;background:var(--accent);opacity:.5}
+.ref-count{width:18px;text-align:right;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.orphan-list{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.orphan-row{display:flex;align-items:center;gap:8px;background:rgba(218,54,51,.07);border:1px solid rgba(218,54,51,.18);border-radius:6px;padding:6px 10px}
+.orphan-sym{color:var(--red);font-size:10px}
+.orphan-page{font-family:monospace;font-size:11px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.orphan-hint{font-size:10.5px;color:var(--muted);line-height:1.5}
+.dash-footer{text-align:center;padding:18px;font-size:11px;color:var(--muted);font-family:monospace}
+.tooltip{position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.tooltip.show{opacity:1}
+.tt-name{font-family:monospace;font-weight:600;color:var(--accent);margin-bottom:3px}
+.tt-meta{font-size:11px;color:var(--muted)}
+@media(max-width:760px){.main-grid,.bottom-grid{grid-template-columns:1fr}.stats-row{flex-wrap:wrap;gap:16px}.dash-url{display:none}}
+</style>
+</head>
+<body>
+<div class="dashboard">
+  <div class="dash-header">
+    <span class="dash-logo">&#x1F9E0;</span>
+    <div>
+      <div class="dash-name">obsidian-vault</div>
+      <div class="dash-owner">sugeta10 &middot; AI Knowledge Base</div>
+    </div>
+    <a class="dash-url" href="pages/index.html">Browse wiki pages</a>
+  </div>
+  <div class="stats-row" id="stats-row"></div>
+  <div class="dash-body">
+    <div class="main-grid">
+      <div>
+        <div class="section-header">Recent Activity <span class="badge" id="activity-badge"></span></div>
+        <div class="activity-list" id="activity-list"></div>
+      </div>
+      <div>
+        <div class="section-header">Knowledge Graph</div>
+        <div class="graph-wrap">
+          <canvas id="kgraph"></canvas>
+          <div class="graph-legend" id="graph-legend"></div>
+          <div class="graph-hint">&#x30DB;&#x30D0;&#x30FC;&#x3067;&#x7E4B;&#x304C;&#x308A;&#x3092;&#x78BA;&#x8A8D;</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-grid">
+      <div>
+        <div class="section-header">Categories</div>
+        <div class="cat-list" id="cat-list"></div>
+      </div>
+      <div>
+        <div class="section-header">Most Referenced</div>
+        <div class="ref-list" id="ref-list"></div>
+      </div>
+      <div>
+        <div class="section-header">Orphan Pages <span class="badge-warn" id="orphan-badge"></span></div>
+        <div class="orphan-list" id="orphan-list"></div>
+        <p class="orphan-hint">&#x4ED6;&#x306E;&#x30DA;&#x30FC;&#x30B8;&#x304B;&#x3089;&#x30EA;&#x30F3;&#x30AF;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x305B;&#x3093;&#x3002;</p>
+      </div>
+    </div>
+  </div>
+  <div class="dash-footer">Generated by <code>make dashboard</code> &nbsp;&middot;&nbsp; <code>make publish</code> &#x2192; llm-wiki-dashboard &nbsp;&middot;&nbsp; <span id="gen-date"></span></div>
+</div>
+<div class="tooltip" id="tooltip"><div class="tt-name" id="tt-name"></div><div class="tt-meta" id="tt-meta"></div></div>
+<script>
+const D = {"generated": "2026-05-13", "stats": {"total_pages": 37, "total_links": 147, "orphan_count": 6}, "categories": [{"name": "tools", "count": 15}, {"name": "concepts", "count": 13}, {"name": "models", "count": 3}, {"name": "people", "count": 2}, {"name": "companies", "count": 2}, {"name": "design", "count": 1}, {"name": "business", "count": 1}], "top_referenced": [{"page": "tools/claude-code", "count": 24}, {"page": "concepts/agentic-coding", "count": 22}, {"page": "companies/anthropic", "count": 13}, {"page": "concepts/vibe-coding", "count": 10}, {"page": "concepts/prompt-engineering", "count": 9}], "orphan_pages": ["design/fastview-design", "tools/taskmd-shelf", "business/jigyou-saikouchiku", "concepts/agi-knowledge-moat", "concepts/ai-engineer-roadmap", "companies/fujitsu"], "recent_activity": [{"date": "05-11", "page": "tools/gstack", "summary": "Garry Tan製オープンソースAIソフトウェアファクトリー。Claude Codeを23スキルでバーチャルエンジニアリングチーム化（MIT・無料）", "source_domain": "github.com", "source_url": "https://github.com/garrytan/gstack", "is_new": true}, {"date": "05-11", "page": "people/garry-tan", "summary": "Y Combinator CEO。AI支援で2013年比810倍の生産性を実証。gstack作者", "source_domain": "github.com", "source_url": "https://github.com/garrytan/gstack", "is_new": true}, {"date": "05-10", "page": "tools/obsidian-skills", "summary": "kepano製 Obsidian向けAgent Skills集（Claude Code/Codex CLI/OpenCode対応・agentskills.io仕様準拠・5スキル収録）", "source_domain": "github.com", "source_url": "https://github.com/kepano/obsidian-skills", "is_new": true}, {"date": "05-10", "page": "tools/claude-code-obsidian-sync", "summary": "Claude Code会話履歴をObsidianに自動記録するLaunchAgent+jqスクリプト実装（追記モード・ノイズ除去・git自動コミット）", "source_domain": "zenn.dev", "source_url": "https://zenn.dev/pepabo/articles/ffb79b5279f6ee", "is_new": true}, {"date": "05-10", "page": "concepts/spec-driven-development", "summary": "仕様駆動開発の3種類（Spec-first/Spec-anchored/Spec-as-source）・AIコードレビュー信頼性問題・コンテキストエンジニアリング（新規）", "source_domain": "syu-m-5151.hatenablog.com", "source_url": "https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501", "is_new": true}, {"date": "05-10", "page": "tools/dspy", "summary": "DSPyによるプロンプト最適化（COPRO/GEPA）・Signature/Moduleの概念（新規）", "source_domain": "zenn.dev", "source_url": "https://zenn.dev/cybernetics/articles/39fb763aca746c", "is_new": true}, {"date": "05-10", "page": "concepts/claude-md-rules", "summary": "CLAUDE.md行動ルール12条（Karpathy4ルール+8ルール）ミス率41%→3%（新規）", "source_domain": "x.com", "source_url": "https://x.com/i/web/status/2053116311132155938", "is_new": true}, {"date": "05-10", "page": "tools/claude-code", "summary": "Enhanced Claude Code(ECC) エコシステム: 38エージェント・156スキル・AgentShield・継続学習（更新）", "source_domain": "x.com", "source_url": "https://x.com/i/web/status/2044692412061425748", "is_new": false}, {"date": "05-10", "page": "tools/claude-code", "summary": "Claude Codeエージェント化LP制作事業例: 1人で月47社/$400（更新）", "source_domain": "x.com", "source_url": "https://x.com/i/web/status/2052886469891539012", "is_new": false}, {"date": "05-10", "page": "tools/claude-code", "summary": "上級設定15項目: Effort Level・Permission Mode・Git Worktree等（更新）", "source_domain": "x.com", "source_url": "https://x.com/i/web/status/2053042131111927976", "is_new": false}, {"date": "05-10", "page": "tools/openai-codex", "summary": "X投稿ワークフローへのCodex組み込みとself-refinementループ（更新）", "source_domain": "x.com", "source_url": "https://x.com/i/web/status/2052631588140421550", "is_new": false}, {"date": "05-10", "page": "tools/claude-harness", "summary": "cwc-long-running-agentsのオペレーター制御フック・発展パターン詳細を追記（更新）", "source_domain": "github.com", "source_url": "https://github.com/anthropics/cwc-long-running-agents", "is_new": false}, {"date": "05-10", "page": "companies/fujitsu", "summary": "AI自動化100倍生産性向上・Trustworthy AI・Uvance・Sovereign Platform（新規）", "source_domain": "fujitsu.com", "source_url": "https://www.fujitsu.com/downloads/JP/about/businesspolicy/tech/design/article/document/transformationbydesign-jp.pdf", "is_new": true}, {"date": "05-10", "page": "tools/claude-code", "summary": "インストール方法（curl/brew/winget）・npm非推奨化・プラグインシステム追記（更新）", "source_domain": "github.com", "source_url": "https://github.com/anthropics/claude-code", "is_new": false}, {"date": "05-09", "page": "concepts/ai-agent-governance", "summary": "MCP認可の限界と外部ポリシー（Cedar/Rex）によるエージェント実行制御設計（新規）", "source_domain": "note.com", "source_url": "https://note.com/timakin/n/n4278aa561ff3?sub_rt=share_b", "is_new": true}, {"date": "05-09", "page": "models/gpt-5-5", "summary": "OpenAI 2026年モデル・アウトカムファーストプロンプト設計（新規）", "source_domain": "developers.openai.com", "source_url": "https://developers.openai.com/api/docs/guides/prompt-guidance", "is_new": true}, {"date": "05-09", "page": "concepts/prompt-engineering", "summary": "GPT-5.5向けプロンプト設計パターン（検索バジェット・ABS絞り込み等）追記（更新）", "source_domain": null, "source_url": null, "is_new": false}, {"date": "05-09", "page": "tools/claude-code", "summary": "kajiken0630による14ステップ学習ロードマップ追記（更新）", "source_domain": "note.com", "source_url": "https://note.com/kajiken0630/n/n597f3da0249a", "is_new": false}, {"date": "05-09", "page": "tools/claude-mcp", "summary": "逆リンク追加（更新）", "source_domain": null, "source_url": null, "is_new": false}, {"date": "05-09", "page": "models/claude-opus-4-7", "summary": "SWE-bench 87.6%・画像認識98.5%・tokenizer実質値上げ（新規）", "source_domain": "note.com", "source_url": "https://note.com/kajiken0630/n/n06f6b192ae68", "is_new": true}], "graph": {"nodes": [{"id": "design/fastview-design", "label": "fastview-design", "cat": "design", "degree": 0}, {"id": "tools/dspy", "label": "dspy", "cat": "tools", "degree": 3}, {"id": "tools/openai-codex", "label": "openai-codex", "cat": "tools", "degree": 6}, {"id": "tools/notebooklm-py", "label": "notebooklm-py", "cat": "tools", "degree": 4}, {"id": "tools/claude-code", "label": "claude-code", "cat": "tools", "degree": 39}, {"id": "tools/claude-harness", "label": "claude-harness", "cat": "tools", "degree": 8}, {"id": "tools/gstack", "label": "gstack", "cat": "tools", "degree": 10}, {"id": "tools/claude-managed-agents", "label": "claude-managed-agents", "cat": "tools", "degree": 9}, {"id": "tools/claude-mcp", "label": "claude-mcp", "cat": "tools", "degree": 7}, {"id": "tools/cursor", "label": "cursor", "cat": "tools", "degree": 10}, {"id": "tools/openclaw", "label": "openclaw", "cat": "tools", "degree": 8}, {"id": "tools/claude-code-obsidian-sync", "label": "claude-code-obsidian-sync", "cat": "tools", "degree": 3}, {"id": "tools/xurl", "label": "xurl", "cat": "tools", "degree": 3}, {"id": "tools/obsidian-skills", "label": "obsidian-skills", "cat": "tools", "degree": 5}, {"id": "tools/browser-use", "label": "browser-use", "cat": "tools", "degree": 4}, {"id": "tools/taskmd-shelf", "label": "taskmd-shelf", "cat": "tools", "degree": 2}, {"id": "business/jigyou-saikouchiku", "label": "jigyou-saikouchiku", "cat": "business", "degree": 0}, {"id": "models/gpt-5-5", "label": "gpt-5-5", "cat": "models", "degree": 3}, {"id": "models/claude-mythos", "label": "claude-mythos", "cat": "models", "degree": 4}, {"id": "models/claude-opus-4-7", "label": "claude-opus-4-7", "cat": "models", "degree": 7}, {"id": "people/garry-tan", "label": "garry-tan", "cat": "people", "degree": 6}, {"id": "people/andrej-karpathy", "label": "andrej-karpathy", "cat": "people", "degree": 12}, {"id": "concepts/agi-knowledge-moat", "label": "agi-knowledge-moat", "cat": "concepts", "degree": 1}, {"id": "concepts/vibe-coding", "label": "vibe-coding", "cat": "concepts", "degree": 15}, {"id": "concepts/agentic-coding", "label": "agentic-coding", "cat": "concepts", "degree": 31}, {"id": "concepts/self-refining-skills", "label": "self-refining-skills", "cat": "concepts", "degree": 9}, {"id": "concepts/workload-identity-federation", "label": "workload-identity-federation", "cat": "concepts", "degree": 4}, {"id": "concepts/ai-agent-governance", "label": "ai-agent-governance", "cat": "concepts", "degree": 4}, {"id": "concepts/developer-ai-collaboration", "label": "developer-ai-collaboration", "cat": "concepts", "degree": 6}, {"id": "concepts/spec-driven-development", "label": "spec-driven-development", "cat": "concepts", "degree": 6}, {"id": "concepts/ai-engineer-roadmap", "label": "ai-engineer-roadmap", "cat": "concepts", "degree": 5}, {"id": "concepts/prompt-engineering", "label": "prompt-engineering", "cat": "concepts", "degree": 18}, {"id": "concepts/claude-md-rules", "label": "claude-md-rules", "cat": "concepts", "degree": 6}, {"id": "concepts/llm-wiki", "label": "llm-wiki", "cat": "concepts", "degree": 13}, {"id": "concepts/claude-code-security", "label": "claude-code-security", "cat": "concepts", "degree": 4}, {"id": "companies/anthropic", "label": "anthropic", "cat": "companies", "degree": 17}, {"id": "companies/fujitsu", "label": "fujitsu", "cat": "companies", "degree": 2}], "edges": [["concepts/prompt-engineering", "tools/dspy"], ["concepts/spec-driven-development", "tools/dspy"], ["tools/claude-mcp", "tools/openai-codex"], ["concepts/self-refining-skills", "tools/openai-codex"], ["concepts/agentic-coding", "tools/openai-codex"], ["tools/claude-code", "tools/openai-codex"], ["tools/notebooklm-py", "tools/openclaw"], ["concepts/llm-wiki", "tools/notebooklm-py"], ["tools/claude-code", "tools/notebooklm-py"], ["companies/anthropic", "tools/claude-code"], ["concepts/claude-md-rules", "tools/claude-code"], ["tools/claude-code", "tools/gstack"], ["tools/claude-code", "tools/claude-code-obsidian-sync"], ["tools/claude-code", "tools/xurl"], ["concepts/vibe-coding", "tools/claude-code"], ["tools/claude-code", "tools/cursor"], ["concepts/agentic-coding", "tools/claude-code"], ["concepts/llm-wiki", "tools/claude-code"], ["concepts/claude-code-security", "tools/claude-code"], ["tools/claude-code", "tools/obsidian-skills"], ["tools/claude-code", "tools/claude-managed-agents"], ["concepts/developer-ai-collaboration", "tools/claude-code"], ["tools/claude-code", "tools/claude-harness"], ["concepts/prompt-engineering", "tools/claude-code"], ["companies/anthropic", "tools/claude-harness"], ["concepts/self-refining-skills", "tools/claude-harness"], ["concepts/agentic-coding", "tools/claude-harness"], ["tools/gstack", "tools/openclaw"], ["people/andrej-karpathy", "tools/gstack"], ["concepts/vibe-coding", "tools/gstack"], ["concepts/agentic-coding", "tools/gstack"], ["people/garry-tan", "tools/gstack"], ["companies/anthropic", "tools/claude-managed-agents"], ["concepts/agentic-coding", "tools/claude-managed-agents"], ["companies/anthropic", "tools/claude-mcp"], ["concepts/ai-agent-governance", "tools/claude-mcp"], ["concepts/agentic-coding", "tools/claude-mcp"], ["tools/claude-code", "tools/claude-mcp"], ["tools/browser-use", "tools/cursor"], ["concepts/vibe-coding", "tools/cursor"], ["concepts/agentic-coding", "tools/cursor"], ["models/claude-opus-4-7", "tools/openclaw"], ["tools/claude-code", "tools/openclaw"], ["concepts/agentic-coding", "tools/openclaw"], ["tools/claude-managed-agents", "tools/openclaw"], ["concepts/llm-wiki", "tools/claude-code-obsidian-sync"], ["concepts/agentic-coding", "tools/xurl"], ["tools/obsidian-skills", "tools/openai-codex"], ["concepts/llm-wiki", "tools/obsidian-skills"], ["concepts/agentic-coding", "tools/browser-use"], ["tools/obsidian-skills", "tools/taskmd-shelf"], ["tools/claude-code", "tools/taskmd-shelf"], ["models/gpt-5-5", "tools/openai-codex"], ["concepts/prompt-engineering", "models/gpt-5-5"], ["companies/anthropic", "models/claude-mythos"], ["models/claude-mythos", "models/claude-opus-4-7"], ["concepts/agentic-coding", "models/claude-mythos"], ["companies/anthropic", "models/claude-opus-4-7"], ["models/claude-opus-4-7", "tools/claude-managed-agents"], ["models/claude-opus-4-7", "tools/claude-code"], ["companies/anthropic", "people/garry-tan"], ["people/andrej-karpathy", "people/garry-tan"], ["concepts/vibe-coding", "people/garry-tan"], ["concepts/agentic-coding", "people/garry-tan"], ["concepts/claude-md-rules", "people/andrej-karpathy"], ["companies/anthropic", "people/andrej-karpathy"], ["people/andrej-karpathy", "tools/claude-code"], ["people/andrej-karpathy", "tools/cursor"], ["concepts/vibe-coding", "people/andrej-karpathy"], ["concepts/llm-wiki", "people/andrej-karpathy"], ["concepts/agentic-coding", "concepts/agi-knowledge-moat"], ["concepts/spec-driven-development", "concepts/vibe-coding"], ["concepts/agentic-coding", "concepts/vibe-coding"], ["companies/anthropic", "concepts/agentic-coding"], ["concepts/agentic-coding", "concepts/developer-ai-collaboration"], ["concepts/agentic-coding", "concepts/self-refining-skills"], ["concepts/prompt-engineering", "concepts/self-refining-skills"], ["concepts/llm-wiki", "concepts/self-refining-skills"], ["concepts/self-refining-skills", "tools/claude-code"], ["companies/anthropic", "concepts/workload-identity-federation"], ["concepts/prompt-engineering", "concepts/workload-identity-federation"], ["concepts/workload-identity-federation", "tools/claude-managed-agents"], ["concepts/ai-agent-governance", "concepts/claude-code-security"], ["concepts/agentic-coding", "concepts/ai-agent-governance"], ["concepts/developer-ai-collaboration", "concepts/vibe-coding"], ["concepts/developer-ai-collaboration", "concepts/self-refining-skills"], ["concepts/prompt-engineering", "concepts/spec-driven-development"], ["concepts/agentic-coding", "concepts/spec-driven-development"], ["concepts/spec-driven-development", "tools/claude-code"], ["concepts/ai-engineer-roadmap", "tools/claude-code"], ["concepts/agentic-coding", "concepts/ai-engineer-roadmap"], ["concepts/ai-engineer-roadmap", "concepts/llm-wiki"], ["concepts/ai-engineer-roadmap", "tools/claude-harness"], ["concepts/ai-engineer-roadmap", "concepts/prompt-engineering"], ["companies/anthropic", "concepts/prompt-engineering"], ["concepts/prompt-engineering", "models/claude-opus-4-7"], ["concepts/prompt-engineering", "tools/cursor"], ["concepts/prompt-engineering", "concepts/vibe-coding"], ["concepts/prompt-engineering", "tools/claude-managed-agents"], ["concepts/claude-md-rules", "concepts/prompt-engineering"], ["concepts/agentic-coding", "concepts/claude-md-rules"], ["concepts/llm-wiki", "concepts/vibe-coding"], ["concepts/agentic-coding", "concepts/llm-wiki"], ["concepts/llm-wiki", "tools/claude-harness"], ["companies/anthropic", "concepts/claude-code-security"], ["companies/anthropic", "companies/fujitsu"], ["companies/fujitsu", "concepts/agentic-coding"]]}};
+const COLORS = {tools:'#58a6ff',concepts:'#bc8cff',models:'#3fb950',papers:'#d29922',people:'#f0883e',companies:'#ff7b72',other:'#8b949e'};
+function esc(s){const t=document.createElement('div');t.textContent=String(s);return t.innerHTML;}
+
+// Stats
+document.getElementById('gen-date').textContent = D.generated;
+const sr = document.getElementById('stats-row');
+const maxRef = D.top_referenced[0]?.count || 1;
+sr.innerHTML = [
+  `<div class="stat"><span class="stat-num">${D.stats.total_pages}</span><span class="stat-label">pages</span></div>`,
+  `<div class="stat"><span class="stat-num">${D.categories.length}</span><span class="stat-label">categories</span></div>`,
+  `<div class="stat"><span class="stat-num">${D.stats.total_links}</span><span class="stat-label">links</span></div>`,
+  `<div class="stat"><span class="stat-num" style="color:var(--orange)">${D.stats.orphan_count}</span><span class="stat-label">orphans</span></div>`,
+  `<div class="stats-updated">updated ${D.generated}</div>`,
+].join('');
+
+// Activity — DOM API で構築（insertAdjacentHTML + テンプレートリテラル による XSS を防ぐ）
+document.getElementById('activity-badge').textContent = `直近${D.recent_activity.length}件`;
+const al = document.getElementById('activity-list');
+D.recent_activity.forEach(a => {
+  const item = document.createElement('div');
+  item.className = 'activity-item';
+  const dateD = document.createElement('div');
+  dateD.className = 'activity-date';
+  dateD.textContent = a.date;
+  const bodyD = document.createElement('div');
+  const pageD = document.createElement('div');
+  pageD.className = 'activity-page';
+  const nameS = document.createElement('span');
+  nameS.className = 'activity-page-name';
+  nameS.textContent = a.page;
+  pageD.appendChild(nameS);
+  if (a.is_new) {
+    const b = document.createElement('span');
+    b.className = 'badge-new';
+    b.textContent = 'NEW';
+    pageD.appendChild(b);
+  }
+  const descD = document.createElement('div');
+  descD.className = 'activity-desc';
+  descD.textContent = a.summary;
+  bodyD.appendChild(pageD);
+  bodyD.appendChild(descD);
+  if (a.source_url) {
+    const src = document.createElement('a');
+    src.className = 'activity-source';
+    src.setAttribute('href', a.source_url);
+    src.target = '_blank';
+    src.rel = 'noopener';
+    src.textContent = '↗ ' + a.source_domain;
+    bodyD.appendChild(src);
+  }
+  item.appendChild(dateD);
+  item.appendChild(bodyD);
+  al.appendChild(item);
+});
+
+// Categories
+const maxCat = Math.max(...D.categories.map(c => c.count), 1);
+const cl = document.getElementById('cat-list');
+D.categories.forEach(c => {
+  const pct = Math.round(c.count / maxCat * 100);
+  cl.insertAdjacentHTML('beforeend',
+    `<div class="cat-row">
+      <div class="cat-name" style="color:${COLORS[c.name]||COLORS.other}">${esc(c.name)}</div>
+      <div class="cat-bar-bg"><div class="cat-bar" style="width:${pct}%;background:${COLORS[c.name]||COLORS.other}"></div></div>
+      <div class="cat-count">${c.count}</div>
+    </div>`);
+});
+
+// Top referenced
+const rl = document.getElementById('ref-list');
+D.top_referenced.forEach((r, i) => {
+  const pct = Math.round(r.count / maxRef * 100);
+  rl.insertAdjacentHTML('beforeend',
+    `<div class="ref-row">
+      <div class="ref-rank">${i+1}</div>
+      <div class="ref-page">${esc(r.page)}</div>
+      <div class="ref-bar-bg"><div class="ref-bar" style="width:${pct}%"></div></div>
+      <div class="ref-count">${r.count}</div>
+    </div>`);
+});
+
+// Orphans
+document.getElementById('orphan-badge').textContent = D.orphan_pages.length;
+const ol = document.getElementById('orphan-list');
+D.orphan_pages.forEach(p => {
+  ol.insertAdjacentHTML('beforeend',
+    `<div class="orphan-row"><div class="orphan-sym">&#x25CB;</div><div class="orphan-page">${esc(p)}</div></div>`);
+});
+
+// Graph legend
+const gl = document.getElementById('graph-legend');
+Object.entries(COLORS).forEach(([cat, col]) => {
+  gl.insertAdjacentHTML('beforeend',
+    `<div class="leg"><div class="leg-dot" style="background:${col}"></div>${esc(cat)}</div>`);
+});
+
+// ── Force-directed graph ──
+const canvas = document.getElementById('kgraph');
+const wrap = canvas.parentElement;
+let W = 0, H = 356;
+const ctx = canvas.getContext('2d');
+
+const nodes = D.graph.nodes.map(n => ({...n, x: 0, y: 0, vx:0, vy:0}));
+const edges = D.graph.edges;
+const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
+const adj = Object.fromEntries(nodes.map(n => [n.id, []]));
+edges.forEach(([a,b]) => { if(adj[a]&&adj[b]){ adj[a].push(b); adj[b].push(a); }});
+
+let hoveredId = null, frame = 0, rafId = null, prevHover = null;
+
+function tick() {
+  if (frame >= 300) return;
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i+1; j < nodes.length; j++) {
+      const a=nodes[i],b=nodes[j];
+      let dx=b.x-a.x, dy=b.y-a.y, d=Math.sqrt(dx*dx+dy*dy)||1;
+      const f=1400/(d*d); dx/=d; dy/=d;
+      a.vx-=dx*f; a.vy-=dy*f; b.vx+=dx*f; b.vy+=dy*f;
+    }
+  }
+  edges.forEach(([aid,bid]) => {
+    const a=nodeById[aid],b=nodeById[bid];
+    if(!a||!b) return;
+    let dx=b.x-a.x, dy=b.y-a.y, d=Math.sqrt(dx*dx+dy*dy)||1;
+    const f=(d-95)*0.038; dx/=d; dy/=d;
+    a.vx+=dx*f; a.vy+=dy*f; b.vx-=dx*f; b.vy-=dy*f;
+  });
+  nodes.forEach(n => {
+    n.vx+=(W/2-n.x)*0.004; n.vy+=(H/2-n.y)*0.004;
+    n.vx*=0.87; n.vy*=0.87;
+    n.x=Math.max(60,Math.min(W-60,n.x+n.vx));
+    n.y=Math.max(32,Math.min(H-32,n.y+n.vy));
+  });
+  frame++;
+}
+
+function nodeR(n) { return Math.max(5, Math.min(13, 4 + (n.degree||0)*0.8)); }
+function shortLabel(s) { return s.length > 18 ? s.slice(0,17)+'…' : s; }
+
+function draw() {
+  ctx.clearRect(0,0,W,H);
+  const h=hoveredId, hn=h?new Set(adj[h]||[]):null;
+  edges.forEach(([aid,bid]) => {
+    const a=nodeById[aid],b=nodeById[bid]; if(!a||!b) return;
+    const hi=h&&(aid===h||bid===h), dim=h&&!hi;
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle=hi?COLORS[(aid===h?nodeById[bid]:nodeById[aid])?.cat||'other']:'#30363d';
+    ctx.globalAlpha=dim?.05:hi?.9:.55; ctx.lineWidth=hi?2:1.2; ctx.stroke();
+  });
+  nodes.forEach(n => {
+    const r=nodeR(n), isH=n.id===h, isN=hn&&hn.has(n.id), isDim=h&&!isH&&!isN;
+    ctx.globalAlpha=isDim?.15:1;
+    if(isH){ctx.shadowColor=COLORS[n.cat||'other'];ctx.shadowBlur=12;}else ctx.shadowBlur=0;
+    ctx.beginPath(); ctx.arc(n.x,n.y,r,0,Math.PI*2);
+    ctx.fillStyle=COLORS[n.cat||'other']; ctx.fill();
+    ctx.beginPath(); ctx.arc(n.x,n.y,r,0,Math.PI*2);
+    ctx.strokeStyle=isH?'#fff':'#0d1117'; ctx.lineWidth=isH?2:1.5; ctx.stroke();
+    ctx.shadowBlur=0;
+    ctx.font='10px monospace'; ctx.textAlign='center';
+    ctx.fillStyle=isDim?'#30363d':isH||isN?'#e6edf3':'#7d8590';
+    ctx.globalAlpha=isDim?.15:1;
+    ctx.fillText(shortLabel(n.label),n.x,n.y+r+11);
+  });
+  ctx.globalAlpha=1;
+}
+
+function loop() {
+  tick(); draw();
+  if (frame < 300) rafId = requestAnimationFrame(loop);
+}
+
+// グリッドレイアウト確定後に幅を取得して初期化
+function initGraph() {
+  W = wrap.clientWidth || 600;
+  canvas.width = W; canvas.height = H;
+  nodes.forEach(n => { n.x=W/2+(Math.random()-.5)*200; n.y=H/2+(Math.random()-.5)*200; n.vx=0; n.vy=0; });
+  frame = 0;
+  if (rafId) cancelAnimationFrame(rafId);
+  loop();
+}
+requestAnimationFrame(initGraph);
+
+const tt=document.getElementById('tooltip'),ttn=document.getElementById('tt-name'),ttm=document.getElementById('tt-meta');
+canvas.addEventListener('mousemove', e => {
+  const rect=canvas.getBoundingClientRect();
+  const mx=(e.clientX-rect.left)*(W/rect.width), my=(e.clientY-rect.top)*(H/rect.height);
+  let found=null;
+  nodes.forEach(n => { const r=nodeR(n),dx=mx-n.x,dy=my-n.y; if(dx*dx+dy*dy<(r+4)*(r+4)) found=n; });
+  if(found){
+    hoveredId=found.id; ttn.textContent=found.id; ttm.textContent=`${found.cat||'other'} · ${found.degree||0} links`;
+    tt.style.left=(e.clientX+18)+'px'; tt.style.top=(e.clientY-6)+'px'; tt.classList.add('show'); canvas.style.cursor='pointer';
+  } else { hoveredId=null; tt.classList.remove('show'); canvas.style.cursor='default'; }
+  if (hoveredId !== prevHover) { prevHover = hoveredId; if (frame >= 300) draw(); }
+});
+canvas.addEventListener('mouseleave',()=>{ hoveredId=null; tt.classList.remove('show'); if (frame >= 300) draw(); });
+window.addEventListener('resize',()=>{ W=wrap.clientWidth; canvas.width=W; if (frame >= 300) draw(); });
+</script>
+</body>
+</html>

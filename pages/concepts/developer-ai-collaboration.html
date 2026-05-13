@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>developer-ai-collaboration - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>developer-ai-collaboration</h1>
+  <div class="meta">concepts/developer-ai-collaboration · concepts · updated 2026-05-09</div>
+  <article><h1>開発者×AIエージェントの役割分担哲学</h1>
+<p>韓非子「主道篇」の政治哲学を <a href="../tools/claude-code.html">claude-code</a> 活用に適用した、開発者とAIエージェントの最適な協働パターン。</p>
+<h2>核心概念</h2>
+<p>開発者が担うべきは「過程」ではなく「結果」への責任。</p>
+<p>| 役割 | 担うもの | |------|---------| | Claude Code | コーディング・分析・設計提案・選択肢の生成（過程） | | 開発者 | 何を作るか・何が良いかの評価・採否・失敗への対応（結果） |</p>
+<h2>主道篇から学ぶ原則</h2>
+<h3>1. 開始と終了だけを抑える</h3>
+<p>プロジェクト開始（何を作るかの決断）と最終成果物の受け入れ判断だけは開発者が担う。その中間では Claude Code に任せて待つのが理想。</p>
+<h3>2. 形名参同（けいめいさんどう）</h3>
+<p>事前の Plan で定義した成功基準と、実際の成果物の測定結果を一致させて確認すること。</p>
+<p>「作業完了しました」で受け入れてはならない。テスト結果の実数・ベンチマーク数値・実行ログで確認する。</p>
+<h3>3. 好みと意図を見せない</h3>
+<ul>
+<li>**好みを見せると**: Claude Code はそれに合わせて最適でない成果物を出す</li>
+<li>**意図を見せると**: Claude Code は意図に沿った説明を「自分の意見」として偽装する</li>
+<li>**知恵を見せると**: Claude Code の探索範囲が狭まる</li>
+</ul>
+<p>LLM は RLHF で人間の好みに合う回答をするよう訓練されているため、人間の部下より注意が必要。</p>
+<h3>4. 制約条件は明確に、内心は隠す</h3>
+<p>事実・制約（「本番環境はPython 3.9」「締め切りは今日中」）は明確に伝える。 開発者の欲・意（好み・意図・先入観）は出さない。</p>
+<h2>実践パターン</h2>
+<p>**悪い例（意図を示す）:**</p>
+<ul>
+<li>「この方法でOK？」→ 肯定方向に誘導してしまう</li>
+<li>「これで実装して」→ 選択肢を消す</li>
+</ul>
+<p>**良い例（探索させる）:**</p>
+<ul>
+<li>「異なるアプローチを3通り以上出して、トレードオフを分析せよ」</li>
+<li>「この設計の問題点を可能な限り列挙せよ」</li>
+<li>「成功基準を明確にせよ」「何をもって完了とするか事前に定義せよ」</li>
+</ul>
+<h2>習常（じゅうじょう）：型化された運用状態</h2>
+<ul>
+<li>セッションはタスクごとに独立</li>
+<li>ルーチン作業は Agent Skill で定型化</li>
+<li>タスク難易度に応じてモデル・effort を切り替え</li>
+</ul>
+<p>この状態になると開発者は個別に指示しなくても意思が反映され、実際に手を動かすことが減っていく。</p>
+<h2>自己改善ループとの統合</h2>
+<p>Agent Skill を自己改善させることで処理能力を継続向上。失敗はコンテキストやハーネスの改善契機として活用（<a href="../concepts/self-refining-skills.html">self-refining-skills</a> 参照）。</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
+</ul></article>
+</main>
+</body>
+</html>
