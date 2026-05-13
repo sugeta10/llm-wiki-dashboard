@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -24,11 +25,11 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
 <p>2026年時点での AI エンジニアとして学ぶべきこと・作るべきもの・スキップすべきことの整理。</p>
 <h2>学ぶべきこと</h2>
 <ul>
-<li>**LLM API の活用**: OpenAI / Anthropic / Google の API 設計と特性の違い</li>
-<li>**プロンプトエンジニアリング**: <a href="../concepts/prompt-engineering.html">prompt-engineering</a> の基礎から応用</li>
-<li>**エージェント設計**: ループ制御・ツール呼び出し・エラーリカバリー（<a href="../concepts/agentic-coding.html">agentic-coding</a>）</li>
-<li>**RAG（検索拡張生成）**: ベクトル DB・チャンク設計・リランキング</li>
-<li>**評価（Eval）**: LLM 出力の品質を定量的に測る手法</li>
+<li><strong>LLM API の活用</strong>: OpenAI / Anthropic / Google の API 設計と特性の違い</li>
+<li><strong>プロンプトエンジニアリング</strong>: <a href="../concepts/prompt-engineering.html">prompt-engineering</a> の基礎から応用</li>
+<li><strong>エージェント設計</strong>: ループ制御・ツール呼び出し・エラーリカバリー（<a href="../concepts/agentic-coding.html">agentic-coding</a>）</li>
+<li><strong>RAG（検索拡張生成）</strong>: ベクトル DB・チャンク設計・リランキング</li>
+<li><strong>評価（Eval）</strong>: LLM 出力の品質を定量的に測る手法</li>
 </ul>
 <h2>作るべきもの</h2>
 <ul>
@@ -39,17 +40,15 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
 </ul>
 <h2>スキップしてよいこと</h2>
 <ul>
-<li>**モデル学習・ファインチューニング**: API で十分なケースが大半。コストと時間が見合わない</li>
-<li>**独自ベクトル DB 構築**: 既存サービス（Pinecone・Weaviate 等）で事足りる</li>
-<li>**フルスタック AI フレームワーク**: LangChain 等は学習コスト高。シンプルな API 直呼びの方が制御しやすい</li>
+<li><strong>モデル学習・ファインチューニング</strong>: API で十分なケースが大半。コストと時間が見合わない</li>
+<li><strong>独自ベクトル DB 構築</strong>: 既存サービス（Pinecone・Weaviate 等）で事足りる</li>
+<li><strong>フルスタック AI フレームワーク</strong>: LangChain 等は学習コスト高。シンプルな API 直呼びの方が制御しやすい</li>
 </ul>
 <h2>2026 年の潮流</h2>
-<p>「What to Learn, Build, and Skip in AI Agents (2026)」（@rohit4verse）より：</p>
-<ul>
-<li>エージェントは「賢い自動化」ではなく「自律的な判断主体」として設計する時代</li>
-<li>ハーネス設計（<a href="../tools/claude-harness.html">claude-harness</a>）が差別化要因</li>
-<li>評価（Eval）がボトルネック — 作れるエンジニアが少ない</li>
-</ul>
+<p>「What to Learn, Build, and Skip in AI Agents (2026)」（@rohit4verse）より：
+- エージェントは「賢い自動化」ではなく「自律的な判断主体」として設計する時代
+- ハーネス設計（<a href="../tools/claude-harness.html">claude-harness</a>）が差別化要因
+- 評価（Eval）がボトルネック — 作れるエンジニアが少ない</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>

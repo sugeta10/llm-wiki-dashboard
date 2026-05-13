@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -21,27 +22,32 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
   <h1>workload-identity-federation</h1>
   <div class="meta">concepts/workload-identity-federation · concepts · updated 2026-05-09</div>
   <article><h1>Workload Identity Federation</h1>
-<p>Anthropic Claude APIへの認証をOIDCトークンで行う仕組み。AWS IAM・Google Cloud・GitHub Actions等、既存のIDプロバイダーが発行する短命トークンを使い、長期有効なAPIキー（`sk-ant-...`）を排除する。</p>
+<p>Anthropic Claude APIへの認証をOIDCトークンで行う仕組み。AWS IAM・Google Cloud・GitHub Actions等、既存のIDプロバイダーが発行する短命トークンを使い、長期有効なAPIキー（<code>sk-ant-...</code>）を排除する。</p>
 <h2>仕組み</h2>
-<p>1. ワークロードがIDプロバイダー（AWS STS・GCPメタデータサーバー等）から署名済みJWTを取得 2. `POST /v1/oauth/token` でAnthropicにJWTを提示（RFC 7523 jwt-bearer） 3. AnthropicがJWKS署名検証・クレームマッチング後、**短命の `sk-ant-oat01-...` トークン**を返す 4. SDKがこのトークンをAPIリクエストに使用し、有効期限前に自動更新</p>
+<ol>
+<li>ワークロードがIDプロバイダー（AWS STS・GCPメタデータサーバー等）から署名済みJWTを取得</li>
+<li><code>POST /v1/oauth/token</code> でAnthropicにJWTを提示（RFC 7523 jwt-bearer）</li>
+<li>AnthropicがJWKS署名検証・クレームマッチング後、<strong>短命の <code>sk-ant-oat01-...</code> トークン</strong>を返す</li>
+<li>SDKがこのトークンをAPIリクエストに使用し、有効期限前に自動更新</li>
+</ol>
 <p>APIキーは「静的な資格情報」。サービスアカウントは「必要時にのみ資格情報が発行される主体」。</p>
 <h2>3つの設定リソース（Claude Console）</h2>
-<h3>1. サービスアカウント（`svac_...`）</h3>
+<h3>1. サービスアカウント（<code>svac_...</code>）</h3>
 <ul>
 <li>組織内の非人間アイデンティティ</li>
 <li>メール・パスワード・Consoleログインなし</li>
 <li>ワークスペースに追加することで、そのワークスペースのレート制限・使用帰属を持つトークンが発行される</li>
 </ul>
-<h3>2. フェデレーションイシュアー（`fdis_...`）</h3>
+<h3>2. フェデレーションイシュアー（<code>fdis_...</code>）</h3>
 <ul>
 <li>信頼するOIDCプロバイダーを登録</li>
-<li>`iss`クレームのURL（例: `https://token.actions.githubusercontent.com`）</li>
-<li>JWKSソースは `discovery`（デフォルト）、`explicit_url`、`inline`から選択</li>
+<li><code>iss</code>クレームのURL（例: <code>https://token.actions.githubusercontent.com</code>）</li>
+<li>JWKSソースは <code>discovery</code>（デフォルト）、<code>explicit_url</code>、<code>inline</code>から選択</li>
 </ul>
-<h3>3. フェデレーションルール（`fdrl_...`）</h3>
+<h3>3. フェデレーションルール（<code>fdrl_...</code>）</h3>
 <ul>
 <li>「イシュアーXからのJWTがクレームYを持つ場合、サービスアカウントZとして動作させる」</li>
-<li>マッチ条件: `subject_prefix`・`audience`・exact claim値・CEL式</li>
+<li>マッチ条件: <code>subject_prefix</code>・<code>audience</code>・exact claim値・CEL式</li>
 <li>トークン有効期間: 60〜86400秒（デフォルト3600秒）</li>
 <li>クライアントはリクエスト時にルールIDを指定（暗黙の検索なし）</li>
 </ul>
@@ -56,23 +62,30 @@ client = Anthropic(
         service_account_id=&quot;svac_...&quot;,
         workspace_id=&quot;wrkspc_...&quot;,
     ),
-)</code></pre>
-<p>環境変数 `ANTHROPIC_FEDERATION_RULE_ID`・`ANTHROPIC_ORGANIZATION_ID`・`ANTHROPIC_SERVICE_ACCOUNT_ID`・`ANTHROPIC_WORKSPACE_ID`・`ANTHROPIC_IDENTITY_TOKEN_FILE` でも設定可能（ゼロ引数形式が本番推奨）。</p>
+)
+</code></pre>
+<p>環境変数 <code>ANTHROPIC_FEDERATION_RULE_ID</code>・<code>ANTHROPIC_ORGANIZATION_ID</code>・<code>ANTHROPIC_SERVICE_ACCOUNT_ID</code>・<code>ANTHROPIC_WORKSPACE_ID</code>・<code>ANTHROPIC_IDENTITY_TOKEN_FILE</code> でも設定可能（ゼロ引数形式が本番推奨）。</p>
 <h2>クレデンシャル優先順位</h2>
-<p>1. コンストラクタ引数 2. `ANTHROPIC_API_KEY` / `ANTHROPIC_AUTH_TOKEN` 3. 明示的な `ANTHROPIC_PROFILE` 4. **フェデレーション環境変数** 5. デフォルトのアクティブプロファイル</p>
-<p>⚠️ `ANTHROPIC_API_KEY` がフェデレーションより優先されるため、APIキーからWIFへ移行する際は環境変数を完全に削除すること。</p>
+<ol>
+<li>コンストラクタ引数</li>
+<li><code>ANTHROPIC_API_KEY</code> / <code>ANTHROPIC_AUTH_TOKEN</code></li>
+<li>明示的な <code>ANTHROPIC_PROFILE</code></li>
+<li><strong>フェデレーション環境変数</strong></li>
+<li>デフォルトのアクティブプロファイル</li>
+</ol>
+<p>⚠️ <code>ANTHROPIC_API_KEY</code> がフェデレーションより優先されるため、APIキーからWIFへ移行する際は環境変数を完全に削除すること。</p>
 <h2>対応プラットフォーム</h2>
 <ul>
-<li>**AWS**: STS web identity token / EKS IRSA projected tokens</li>
-<li>**Google Cloud**: メタデータサーバー経由のGoogle署名済みIDトークン</li>
-<li>**Azure**: Managed Identity / AKS上のEntra Workload ID</li>
-<li>**GitHub Actions**: ActionsのOIDCトークン（キーレスCI認証）</li>
-<li>**Kubernetes**: Projected service-account tokens</li>
-<li>**SPIFFE**: SPIRE等のJWT-SVID</li>
-<li>**Okta**: クライアントクレデンシャルフロー</li>
+<li><strong>AWS</strong>: STS web identity token / EKS IRSA projected tokens</li>
+<li><strong>Google Cloud</strong>: メタデータサーバー経由のGoogle署名済みIDトークン</li>
+<li><strong>Azure</strong>: Managed Identity / AKS上のEntra Workload ID</li>
+<li><strong>GitHub Actions</strong>: ActionsのOIDCトークン（キーレスCI認証）</li>
+<li><strong>Kubernetes</strong>: Projected service-account tokens</li>
+<li><strong>SPIFFE</strong>: SPIRE等のJWT-SVID</li>
+<li><strong>Okta</strong>: クライアントクレデンシャルフロー</li>
 </ul>
 <h2>トークンライフタイム</h2>
-<p>発行トークンの有効期間は「ルールの`token_lifetime_seconds`」と「提示したJWTの残存期間×2」の短い方（最低60秒）。SDKはキャッシュし、有効期限の5分前に更新（Kubernetes projected tokenは`ANTHROPIC_IDENTITY_TOKEN_FILE`再読み込みで自動対応）。</p>
+<p>発行トークンの有効期間は「ルールの<code>token_lifetime_seconds</code>」と「提示したJWTの残存期間×2」の短い方（最低60秒）。SDKはキャッシュし、有効期限の5分前に更新（Kubernetes projected tokenは<code>ANTHROPIC_IDENTITY_TOKEN_FILE</code>再読み込みで自動対応）。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../companies/anthropic.html">anthropic</a></li>

@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -35,8 +36,8 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
 <p>成功基準をルーブリック（採点基準）として定義し、別コンテキストの評価エージェントが採点してフィードバックループを形成する。</p>
 <ul>
 <li>エージェントの推論バイアスを排除した独立評価</li>
-<li>標準プロンプトループ比で最大 **+10ポイント** のタスク成功率向上、難問ほど効果大</li>
-<li>docx生成 **+8.4%**、pptx生成 **+10.1%** のファイル生成品質向上（内部ベンチマーク）</li>
+<li>標準プロンプトループ比で最大 <strong>+10ポイント</strong> のタスク成功率向上、難問ほど効果大</li>
+<li>docx生成 <strong>+8.4%</strong>、pptx生成 <strong>+10.1%</strong> のファイル生成品質向上（内部ベンチマーク）</li>
 <li>Wisedocs での実績：レビュー速度 50% 向上</li>
 <li>Webhook 通知との組み合わせで非同期ジョブ型実行が可能</li>
 </ul>
@@ -48,29 +49,77 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
 <li>イベントが永続化されるため、エージェント間での状態共有が可能</li>
 <li>Claude Console で全エージェントの行動をトレース可能</li>
 </ul>
-<p>活用事例：</p>
-<ul>
-<li>**Netflix**: 数百ビルドのログを並列分析し、複数ビルドにまたがるパターンのみを抽出</li>
-<li>**Spiral by Every**: Haiku がオーケストレーターとして受付・フォローアップを担当し、複数ドラフトは Opus サブエージェントが並列生成。Outcomes でブランドボイス評価ルーブリックをメモリから参照しスコアリング</li>
-</ul>
+<p>活用事例：
+- <strong>Netflix</strong>: 数百ビルドのログを並列分析し、複数ビルドにまたがるパターンのみを抽出
+- <strong>Spiral by Every</strong>: Haiku がオーケストレーターとして受付・フォローアップを担当し、複数ドラフトは Opus サブエージェントが並列生成。Outcomes でブランドボイス評価ルーブリックをメモリから参照しスコアリング</p>
 <h3>Webhooks</h3>
 <p>エージェントの完了通知を任意のエンドポイントに送信。非同期ワークフローとの統合が容易。</p>
 <h2>Memory + Dreaming の組み合わせ</h2>
 <ul>
-<li>**Memory**: 各エージェントが実行中に学習した内容をリアルタイムにキャプチャ</li>
-<li>**Dreaming**: セッション間でメモリを精製、エージェント横断で共有知識を統合</li>
+<li><strong>Memory</strong>: 各エージェントが実行中に学習した内容をリアルタイムにキャプチャ</li>
+<li><strong>Dreaming</strong>: セッション間でメモリを精製、エージェント横断で共有知識を統合</li>
 </ul>
 <p>→ 長期稼働・マルチエージェント環境での「組織的学習」を実現する。</p>
 <h2>料金体系</h2>
 <p>「トークン料金 ＋ 稼働時間料金」の2軸。</p>
 <ul>
 <li>トークン料金: 通常の Messages API と同じ（Opus 4.7: 入力$5/出力$25 per 1M）</li>
-<li>稼働時間料金: **$0.08 / session-hour**（待機中は課金なし）</li>
+<li>稼働時間料金: <strong>$0.08 / session-hour</strong>（待機中は課金なし）</li>
 </ul>
-<p>| モデル | 1時間あたりの概算コスト | |-------|----------------------| | Opus 4.7 | 約$0.71 | | Sonnet 4.6 | 約$0.46 | | Haiku 4.5 | さらに安価 |</p>
+<table>
+<thead>
+<tr>
+<th>モデル</th>
+<th>1時間あたりの概算コスト</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Opus 4.7</td>
+<td>約$0.71</td>
+</tr>
+<tr>
+<td>Sonnet 4.6</td>
+<td>約$0.46</td>
+</tr>
+<tr>
+<td>Haiku 4.5</td>
+<td>さらに安価</td>
+</tr>
+</tbody>
+</table>
 <p>ビジネスモデル上の意義: Anthropicが「質問1回ごとに課金するモデル」から「エージェントの稼働時間を売るモデル」へ転換。</p>
 <h2>公開状況（2026-05-09時点）</h2>
-<p>| 機能 | 状態 | |------|------| | Dreaming | Research Preview（アクセス申請制） | | Outcomes | Public Beta | | Multiagent Orchestration | Public Beta | | Memory | Public Beta | | Webhooks | 利用可能 |</p>
+<table>
+<thead>
+<tr>
+<th>機能</th>
+<th>状態</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dreaming</td>
+<td>Research Preview（アクセス申請制）</td>
+</tr>
+<tr>
+<td>Outcomes</td>
+<td>Public Beta</td>
+</tr>
+<tr>
+<td>Multiagent Orchestration</td>
+<td>Public Beta</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>Public Beta</td>
+</tr>
+<tr>
+<td>Webhooks</td>
+<td>利用可能</td>
+</tr>
+</tbody>
+</table>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>

@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -21,30 +22,88 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
   <h1>spec-driven-development</h1>
   <div class="meta">concepts/spec-driven-development · concepts · updated 2026-05-10</div>
   <article><h1>仕様駆動開発（Spec-driven Development）</h1>
-<p>**仕様駆動開発**とは、AIエージェントにコードを書かせる際に、曖昧な指示のまま渡さず、事前に仕様・要件を整理してから渡すアプローチ。<a href="../concepts/vibe-coding.html">vibe-coding</a> の反省から生まれた。</p>
+<p><strong>仕様駆動開発</strong>とは、AIエージェントにコードを書かせる際に、曖昧な指示のまま渡さず、事前に仕様・要件を整理してから渡すアプローチ。<a href="../concepts/vibe-coding.html">vibe-coding</a> の反省から生まれた。</p>
 <h2>Vibe Codingの限界</h2>
 <p><a href="../concepts/vibe-coding.html">vibe-coding</a> スタイルは最初の生産性は高いが、機能を数個追加した段階でコードベース全体が崩壊し始める傾向がある。</p>
-<p>&gt; 「Vibe Codingは『動くもの』は作れるが、『育つもの』は作れない」</p>
-<p>この反省から、**上流で意図を固めてから下流（AIエージェント）に渡す**スタイルが主流になった。</p>
+<blockquote>
+<p>「Vibe Codingは『動くもの』は作れるが、『育つもの』は作れない」</p>
+</blockquote>
+<p>この反省から、<strong>上流で意図を固めてから下流（AIエージェント）に渡す</strong>スタイルが主流になった。</p>
 <h2>仕様の3種類</h2>
-<p>| 種類 | 別名 | 内容 | |------|------|------| | 踏み台としての仕様 | Spec-first | 実装に入る前の準備で、マージと同時に捨てる。Planモードと同義に近い | | 地図としての仕様 | Spec-anchored | 実装と並走して書き直す生きたドキュメント | | 金型としての仕様 | Spec-as-source | 仕様を変えるとコードが変わる。型・テスト・スキーマで実現 |</p>
-<p>**Planモード**はSpec-firstとして振る舞う。真に差別化するにはSpec-anchoredかSpec-as-sourceへ踏み込む必要がある。</p>
+<table>
+<thead>
+<tr>
+<th>種類</th>
+<th>別名</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>踏み台としての仕様</td>
+<td>Spec-first</td>
+<td>実装に入る前の準備で、マージと同時に捨てる。Planモードと同義に近い</td>
+</tr>
+<tr>
+<td>地図としての仕様</td>
+<td>Spec-anchored</td>
+<td>実装と並走して書き直す生きたドキュメント</td>
+</tr>
+<tr>
+<td>金型としての仕様</td>
+<td>Spec-as-source</td>
+<td>仕様を変えるとコードが変わる。型・テスト・スキーマで実現</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Planモード</strong>はSpec-firstとして振る舞う。真に差別化するにはSpec-anchoredかSpec-as-sourceへ踏み込む必要がある。</p>
 <h2>要件・仕様・契約の区別</h2>
-<p>| 用語 | 意味 | 例 | |------|------|-----| | 要件 | 業務として何を達成したいか | 「在庫がある商品だけを検索できる」 | | 仕様 | システムが何をするか | 「検索APIはstock_count &gt; 0のフィルタを適用し最大20件を返す」 | | 契約 | 呼び出し側と提供側の約束 | 「200を返すならbody.itemsが存在し各itemはid/name/priceを持つ」 |</p>
+<table>
+<thead>
+<tr>
+<th>用語</th>
+<th>意味</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>要件</td>
+<td>業務として何を達成したいか</td>
+<td>「在庫がある商品だけを検索できる」</td>
+</tr>
+<tr>
+<td>仕様</td>
+<td>システムが何をするか</td>
+<td>「検索APIはstock_count &gt; 0のフィルタを適用し最大20件を返す」</td>
+</tr>
+<tr>
+<td>契約</td>
+<td>呼び出し側と提供側の約束</td>
+<td>「200を返すならbody.itemsが存在し各itemはid/name/priceを持つ」</td>
+</tr>
+</tbody>
+</table>
 <p>3つを混同すると議論が壊れる。仕様駆動の「仕様」が実際にどれを指すかで書き方・精度・書き手が全く異なる。</p>
 <h2>AIが書いたコードを信じにくい理由</h2>
-<p>人間が書いたコードのレビューでは、**書き手との共有知**（チームの癖・過去の議論・ドメイン常識）が直感的な判断を支える。AIが書いたコードにはその共有知がなく、1行ずつ明示的に「これは合っているか」を判定する必要がある。</p>
-<p>&gt; 人間のPRなら15分で終わるレビューが、AIのPRだと45分かかった（差は3倍）</p>
-<p>対策として有効な4方向: 1. **ドメイン知識の構造化** — エンティティ・関係・状態遷移をAIが参照できる形で置く 2. **責務の分離** — Bounded Contextを明示することでAIへの命令の解像度を上げる 3. **プロセスの再設計** — 実装前に合意を取る（「とりあえず作らせて考える」は試作のみ） 4. **チーム展開** — 指示を個人の暗黙知からチームの共有資産（リポジトリ）へ移す</p>
+<p>人間が書いたコードのレビューでは、<strong>書き手との共有知</strong>（チームの癖・過去の議論・ドメイン常識）が直感的な判断を支える。AIが書いたコードにはその共有知がなく、1行ずつ明示的に「これは合っているか」を判定する必要がある。</p>
+<blockquote>
+<p>人間のPRなら15分で終わるレビューが、AIのPRだと45分かかった（差は3倍）</p>
+</blockquote>
+<p>対策として有効な4方向:
+1. <strong>ドメイン知識の構造化</strong> — エンティティ・関係・状態遷移をAIが参照できる形で置く
+2. <strong>責務の分離</strong> — Bounded Contextを明示することでAIへの命令の解像度を上げる
+3. <strong>プロセスの再設計</strong> — 実装前に合意を取る（「とりあえず作らせて考える」は試作のみ）
+4. <strong>チーム展開</strong> — 指示を個人の暗黙知からチームの共有資産（リポジトリ）へ移す</p>
 <h2>コンテキストエンジニアリング</h2>
 <p>仕様の量を増やすだけでは逆効果になる場合がある。</p>
 <ul>
-<li>**Context Rot** — 長すぎるコンテキストは精度を下げる</li>
-<li>**Lost in the Middle** — 先頭・末尾に比べ中間の情報の認識精度が大幅に下がる</li>
+<li><strong>Context Rot</strong> — 長すぎるコンテキストは精度を下げる</li>
+<li><strong>Lost in the Middle</strong> — 先頭・末尾に比べ中間の情報の認識精度が大幅に下がる</li>
 </ul>
 <p>対策: 仕様書に書くべきは「人間にしか判断できない業務文脈」のみ。残りはテスト・型・CI等の決定論的ゲートに任せる。</p>
 <h2>プロンプトの共有資産化</h2>
-<p>AIへの指示をリポジトリで管理する（`.claude/skills/`・`.cursor/rules/`・`AGENTS.md`等）。「3回繰り返したらリポジトリに引っ越す」というルールが実践的。</p>
+<p>AIへの指示をリポジトリで管理する（<code>.claude/skills/</code>・<code>.cursor/rules/</code>・<code>AGENTS.md</code>等）。「3回繰り返したらリポジトリに引っ越す」というルールが実践的。</p>
 <p>個人のチャット履歴に書いた指示は、その人が辞めた瞬間に消える。</p>
 <h2>関連</h2>
 <ul>

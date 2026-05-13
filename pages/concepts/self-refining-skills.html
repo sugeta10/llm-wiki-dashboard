@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -21,20 +22,25 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
   <h1>self-refining-skills</h1>
   <div class="meta">concepts/self-refining-skills · concepts · updated 2026-05-08</div>
   <article><h1>Self-Refining Skills（自己改善スキルループ）</h1>
-<p>LLM スキル（プロンプトテンプレート）に **自己改善ループ** を組み込む設計パターン。スキル実行のたびに学習記録を蓄積し、次回実行前に参照することで自動的に品質が向上する。</p>
+<p>LLM スキル（プロンプトテンプレート）に <strong>自己改善ループ</strong> を組み込む設計パターン。スキル実行のたびに学習記録を蓄積し、次回実行前に参照することで自動的に品質が向上する。</p>
 <h2>パターン実装</h2>
 <p>スキルの末尾に以下の4行を追加する：</p>
 <pre><code>after every invocation, append a 2-line entry to LESSONS.md
 field 1: input pattern that triggered this skill
 field 2: what worked or what failed and the fix
-before next run, read the last 10</code></pre>
+before next run, read the last 10
+</code></pre>
 <h2>仕組み</h2>
-<p>1. スキル実行後に `LESSONS.md` へ2行追記（入力パターン + 成否と対処） 2. 次回実行前に直近10件の記録を読み込む 3. 蓄積された事例から判断精度が徐々に向上</p>
+<ol>
+<li>スキル実行後に <code>LESSONS.md</code> へ2行追記（入力パターン + 成否と対処）</li>
+<li>次回実行前に直近10件の記録を読み込む</li>
+<li>蓄積された事例から判断精度が徐々に向上</li>
+</ol>
 <h2>効果</h2>
 <ul>
-<li>**ハルシネーション対策**: 過去の失敗パターンを記憶し同じ誤りを繰り返さない</li>
-<li>**文脈適応**: プロジェクト固有の慣習・命名規則を自動学習</li>
-<li>**知識の持続**: モデルのコンテキストウィンドウ外にも学習履歴を保持</li>
+<li><strong>ハルシネーション対策</strong>: 過去の失敗パターンを記憶し同じ誤りを繰り返さない</li>
+<li><strong>文脈適応</strong>: プロジェクト固有の慣習・命名規則を自動学習</li>
+<li><strong>知識の持続</strong>: モデルのコンテキストウィンドウ外にも学習履歴を保持</li>
 </ul>
 <h2>関連</h2>
 <ul>

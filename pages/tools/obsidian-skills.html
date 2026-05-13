@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -21,24 +22,56 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
   <h1>obsidian-skills</h1>
   <div class="meta">tools/obsidian-skills · tools · updated 2026-05-10</div>
   <article><h1>obsidian-skills</h1>
-<p>**obsidian-skills** は <a href="https://github.com/kepano" rel="noopener">kepano</a>（Obsidian CEO、Steph Ango）が作成した Obsidian 向け **Agent Skills** 公式コレクション。<a href="https://agentskills.io/specification" rel="noopener">Agent Skills 仕様</a> に準拠しており、<a href="../tools/claude-code.html">claude-code</a>・Codex CLI・OpenCode など複数のエージェントで共通して利用できる。</p>
+<p><strong>obsidian-skills</strong> は <a href="https://github.com/kepano">kepano</a>（Obsidian CEO、Steph Ango）が作成した Obsidian 向け <strong>Agent Skills</strong> 公式コレクション。<a href="https://agentskills.io/specification">Agent Skills 仕様</a> に準拠しており、<a href="../tools/claude-code.html">claude-code</a>・Codex CLI・OpenCode など複数のエージェントで共通して利用できる。</p>
 <h2>スキル一覧</h2>
-<p>| スキル | 概要 | |-------|------| | `obsidian-markdown` | Obsidian Flavored Markdown（wikilinks, embeds, callouts, properties）の作成・編集 | | `obsidian-bases` | Obsidian Bases（`.base`）のビュー・フィルタ・数式・集計の作成・編集 | | `json-canvas` | JSON Canvas（`.canvas`）のノード・エッジ・グループの作成・編集 | | `obsidian-cli` | Obsidian CLI 経由でのvault操作、プラグイン・テーマ開発 | | `defuddle` | Defuddle CLI でWebページからクリーンなMarkdownを抽出してトークンを節約 |</p>
+<table>
+<thead>
+<tr>
+<th>スキル</th>
+<th>概要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>obsidian-markdown</code></td>
+<td>Obsidian Flavored Markdown（wikilinks, embeds, callouts, properties）の作成・編集</td>
+</tr>
+<tr>
+<td><code>obsidian-bases</code></td>
+<td>Obsidian Bases（<code>.base</code>）のビュー・フィルタ・数式・集計の作成・編集</td>
+</tr>
+<tr>
+<td><code>json-canvas</code></td>
+<td>JSON Canvas（<code>.canvas</code>）のノード・エッジ・グループの作成・編集</td>
+</tr>
+<tr>
+<td><code>obsidian-cli</code></td>
+<td>Obsidian CLI 経由でのvault操作、プラグイン・テーマ開発</td>
+</tr>
+<tr>
+<td><code>defuddle</code></td>
+<td>Defuddle CLI でWebページからクリーンなMarkdownを抽出してトークンを節約</td>
+</tr>
+</tbody>
+</table>
 <h2>インストール方法</h2>
 <h3>Claude Code（Marketplace）</h3>
 <pre><code>/plugin marketplace add kepano/obsidian-skills
-/plugin install obsidian@obsidian-skills</code></pre>
+/plugin install obsidian@obsidian-skills
+</code></pre>
 <h3>npx skills</h3>
 <pre><code class="language-bash">npx skills add git@github.com:kepano/obsidian-skills.git
 # または HTTPS
-npx skills add https://github.com/kepano/obsidian-skills</code></pre>
+npx skills add https://github.com/kepano/obsidian-skills
+</code></pre>
 <h3>手動（Claude Code）</h3>
-<p>リポジトリの内容を Obsidian vault 直下の `/.claude` フォルダに配置する。</p>
+<p>リポジトリの内容を Obsidian vault 直下の <code>/.claude</code> フォルダに配置する。</p>
 <h3>OpenCode</h3>
-<pre><code class="language-bash">git clone https://github.com/kepano/obsidian-skills.git ~/.opencode/skills/obsidian-skills</code></pre>
-<p>`~/.opencode/skills/` 以下の `SKILL.md` を自動検出。設定変更不要で再起動後に有効。</p>
+<pre><code class="language-bash">git clone https://github.com/kepano/obsidian-skills.git ~/.opencode/skills/obsidian-skills
+</code></pre>
+<p><code>~/.opencode/skills/</code> 以下の <code>SKILL.md</code> を自動検出。設定変更不要で再起動後に有効。</p>
 <h2>Agent Skills 仕様</h2>
-<p><a href="https://agentskills.io/specification" rel="noopener">agentskills.io/specification</a> で規定された共通スキル仕様。Claude Code・Codex CLI など複数エージェントが同じスキルファイルを使い回せる設計。スキルは `SKILL.md` として定義し、エージェントが必要時にロードする。</p>
+<p><a href="https://agentskills.io/specification">agentskills.io/specification</a> で規定された共通スキル仕様。Claude Code・Codex CLI など複数エージェントが同じスキルファイルを使い回せる設計。スキルは <code>SKILL.md</code> として定義し、エージェントが必要時にロードする。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a>（Claude Code での利用、Marketplace経由のインストール）</li>

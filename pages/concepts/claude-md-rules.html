@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -21,34 +22,148 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
   <h1>claude-md-rules</h1>
   <div class="meta">concepts/claude-md-rules · concepts · updated 2026-05-10</div>
   <article><h1>CLAUDE.md 行動ルール設計</h1>
-<p>**CLAUDE.md** は <a href="../tools/claude-code.html">claude-code</a> の動作を規定する行動契約ファイル。ウィッシュリストではなく、「この命令でどの失敗モードを閉じるか」を根拠に記述する。</p>
+<p><strong>CLAUDE.md</strong> は <a href="../tools/claude-code.html">claude-code</a> の動作を規定する行動契約ファイル。ウィッシュリストではなく、「この命令でどの失敗モードを閉じるか」を根拠に記述する。</p>
 <h2>Karpathy 発端</h2>
-<p>2026年1月末、<a href="../people/andrej-karpathy.html">andrej-karpathy</a> が Claude のコーディング問題を3点指摘するスレッドを投稿：</p>
-<ul>
-<li>**サイレントな誤った前提**: 聞かずに推測して進む</li>
-<li>**過剰複雑化**: 不要な抽象化・スペキュレーティブ機能の追加</li>
-<li>**直交的破壊**: 触れる必要のないコードまで変更する</li>
-</ul>
+<p>2026年1月末、<a href="../people/andrej-karpathy.html">andrej-karpathy</a> が Claude のコーディング問題を3点指摘するスレッドを投稿：
+- <strong>サイレントな誤った前提</strong>: 聞かずに推測して進む
+- <strong>過剰複雑化</strong>: 不要な抽象化・スペキュレーティブ機能の追加
+- <strong>直交的破壊</strong>: 触れる必要のないコードまで変更する</p>
 <p>Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → 初日 5,828 stars、2週間で 60,000 ブックマーク、2026年最速成長シングルファイルリポジトリ（120,000 stars）。</p>
 <h2>基本4ルール（Karpathy/Chang）</h2>
-<p>| ルール | 内容 | |------|-----| | **Rule 1: Think Before Coding** | 仮定を明示。トレードオフを表面化。推測前に質問。シンプルな代替案を提案する | | **Rule 2: Simplicity First** | 問題を解く最小限のコード。不要な抽象化禁止。シニアエンジニアが複雑と呼ぶなら簡略化 | | **Rule 3: Surgical Changes** | 必要な部分のみ触れる。隣接コード・コメント・フォーマットを「改善」しない | | **Rule 4: Goal-Driven Execution** | 成功基準を定義し達成まで繰り返す。手順指示ではなく成功形を与える |</p>
+<table>
+<thead>
+<tr>
+<th>ルール</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rule 1: Think Before Coding</strong></td>
+<td>仮定を明示。トレードオフを表面化。推測前に質問。シンプルな代替案を提案する</td>
+</tr>
+<tr>
+<td><strong>Rule 2: Simplicity First</strong></td>
+<td>問題を解く最小限のコード。不要な抽象化禁止。シニアエンジニアが複雑と呼ぶなら簡略化</td>
+</tr>
+<tr>
+<td><strong>Rule 3: Surgical Changes</strong></td>
+<td>必要な部分のみ触れる。隣接コード・コメント・フォーマットを「改善」しない</td>
+</tr>
+<tr>
+<td><strong>Rule 4: Goal-Driven Execution</strong></td>
+<td>成功基準を定義し達成まで繰り返す。手順指示ではなく成功形を与える</td>
+</tr>
+</tbody>
+</table>
 <p>→ 未管理セッションの失敗モードの約40%を閉じる効果。</p>
 <h2>追加8ルール（May 2026 対応）</h2>
-<p>30コードベース × 6週間のテストから導出。Karpathy の4ルールが対象としなかった **エージェント運用・マルチステップ問題** に対応。</p>
-<p>| ルール | 閉じる失敗モード | |------|------------| | **Rule 5: 言語タスク以外をモデルに委ねない** | 非確定的な判断（リトライ可否等）にLLMを使うと毎回結果が変わる。決定論的処理はコードで実装する | | **Rule 6: ハードトークン予算** | 無制限ループで50,000トークン消費も発生する。セッション・タスク単位でトークン上限を明示する | | **Rule 7: 競合は平均化せず表面化** | コードベース内に矛盾するパターンが2つある場合、両方を混ぜた不整合コードを生成する。競合検知時は確認を取る | | **Rule 8: 書く前に読む** | 隣接コードを理解せず類似コードを重複作成することがある。新規コード作成前に周辺を必ず読む | | **Rule 9: テストは目的ではない** | 「テスト通過」を目標にすると意味のないテスト（定数を返すだけ等）を書く。動作の正しさを検証する目的で書く | | **Rule 10: 長時間操作にチェックポイント** | 多ステップリファクタで途中失敗が後工程まで伝播する。Nステップごとに進捗を確認・コミットする | | **Rule 11: 慣習はノベルティより優先** | 既存パターンがあるのに独自パターンを導入する。コードベースの既存スタイル・パターンに従う | | **Rule 12: 失敗は可視化して隠さない** | 「正常完了」しながら実は失敗（スキップ・定数返却等）していることがある。エラー・スキップは必ず表面化する |</p>
+<p>30コードベース × 6週間のテストから導出。Karpathy の4ルールが対象としなかった <strong>エージェント運用・マルチステップ問題</strong> に対応。</p>
+<table>
+<thead>
+<tr>
+<th>ルール</th>
+<th>閉じる失敗モード</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rule 5: 言語タスク以外をモデルに委ねない</strong></td>
+<td>非確定的な判断（リトライ可否等）にLLMを使うと毎回結果が変わる。決定論的処理はコードで実装する</td>
+</tr>
+<tr>
+<td><strong>Rule 6: ハードトークン予算</strong></td>
+<td>無制限ループで50,000トークン消費も発生する。セッション・タスク単位でトークン上限を明示する</td>
+</tr>
+<tr>
+<td><strong>Rule 7: 競合は平均化せず表面化</strong></td>
+<td>コードベース内に矛盾するパターンが2つある場合、両方を混ぜた不整合コードを生成する。競合検知時は確認を取る</td>
+</tr>
+<tr>
+<td><strong>Rule 8: 書く前に読む</strong></td>
+<td>隣接コードを理解せず類似コードを重複作成することがある。新規コード作成前に周辺を必ず読む</td>
+</tr>
+<tr>
+<td><strong>Rule 9: テストは目的ではない</strong></td>
+<td>「テスト通過」を目標にすると意味のないテスト（定数を返すだけ等）を書く。動作の正しさを検証する目的で書く</td>
+</tr>
+<tr>
+<td><strong>Rule 10: 長時間操作にチェックポイント</strong></td>
+<td>多ステップリファクタで途中失敗が後工程まで伝播する。Nステップごとに進捗を確認・コミットする</td>
+</tr>
+<tr>
+<td><strong>Rule 11: 慣習はノベルティより優先</strong></td>
+<td>既存パターンがあるのに独自パターンを導入する。コードベースの既存スタイル・パターンに従う</td>
+</tr>
+<tr>
+<td><strong>Rule 12: 失敗は可視化して隠さない</strong></td>
+<td>「正常完了」しながら実は失敗（スキップ・定数返却等）していることがある。エラー・スキップは必ず表面化する</td>
+</tr>
+</tbody>
+</table>
 <h2>測定効果</h2>
-<p>| 設定 | ミス率 | CLAUDE.md コンプライアンス | |-----|-------|----------------------| | ルールなし | 41% | — | | 基本4ルール | 11% | 78% | | 12ルール | 3% | 76% |</p>
+<table>
+<thead>
+<tr>
+<th>設定</th>
+<th>ミス率</th>
+<th>CLAUDE.md コンプライアンス</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ルールなし</td>
+<td>41%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>基本4ルール</td>
+<td>11%</td>
+<td>78%</td>
+</tr>
+<tr>
+<td>12ルール</td>
+<td>3%</td>
+<td>76%</td>
+</tr>
+</tbody>
+</table>
 <p>コンプライアンスをほぼ維持しながらミス率を追加削減 → 8ルールは4ルールと競合しない。</p>
 <h2>制約・注意事項</h2>
 <ul>
-<li>**200行上限**: CLAUDE.md が200行を超えると重要ルールが埋もれコンプライアンスが急落</li>
-<li>**14ルール上限**: 18ルールでテストするとコンプライアンスが76% → 52%に低下</li>
-<li>**ルール &gt; 例**: 例はコンテキストを重く消費し過学習を招く。抽象的な命令形ルールの方が効果的</li>
-<li>**「シニアに」は無意味**: Claude はすでに自己をシニアと評価している。命令形の具体的ルールが有効</li>
-<li>**capability-agnostic**: ツール依存のルール（「eslintを使え」等）はツール非存在時に無言で失敗する。「コードベースの強制スタイルに従え」のように記述する</li>
+<li><strong>200行上限</strong>: CLAUDE.md が200行を超えると重要ルールが埋もれコンプライアンスが急落</li>
+<li><strong>14ルール上限</strong>: 18ルールでテストするとコンプライアンスが76% → 52%に低下</li>
+<li><strong>ルール &gt; 例</strong>: 例はコンテキストを重く消費し過学習を招く。抽象的な命令形ルールの方が効果的</li>
+<li><strong>「シニアに」は無意味</strong>: Claude はすでに自己をシニアと評価している。命令形の具体的ルールが有効</li>
+<li><strong>capability-agnostic</strong>: ツール依存のルール（「eslintを使え」等）はツール非存在時に無言で失敗する。「コードベースの強制スタイルに従え」のように記述する</li>
 </ul>
 <h2>Karpathy 4ルールの限界（May 2026 時点）</h2>
-<p>| 課題 | 内容 | |-----|-----| | 長期エージェントタスク | ルールがコード生成の瞬間を対象としており、マルチステップパイプラインを対象外とする | | マルチコードベース一貫性 | 「既存スタイルに合わせる」はスタイルが一つであることを前提とする | | テスト品質 | 「テスト通過」を成功基準にするため、意味のないテストを書いても合格する | | Production vs Prototype | 「シンプリシティファースト」がプロトタイプで必要な探索的コードも制限する |</p>
+<table>
+<thead>
+<tr>
+<th>課題</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>長期エージェントタスク</td>
+<td>ルールがコード生成の瞬間を対象としており、マルチステップパイプラインを対象外とする</td>
+</tr>
+<tr>
+<td>マルチコードベース一貫性</td>
+<td>「既存スタイルに合わせる」はスタイルが一つであることを前提とする</td>
+</tr>
+<tr>
+<td>テスト品質</td>
+<td>「テスト通過」を成功基準にするため、意味のないテストを書いても合格する</td>
+</tr>
+<tr>
+<td>Production vs Prototype</td>
+<td>「シンプリシティファースト」がプロトタイプで必要な探索的コードも制限する</td>
+</tr>
+</tbody>
+</table>
 <h2>関連</h2>
 <ul>
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>

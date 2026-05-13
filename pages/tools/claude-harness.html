@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -30,20 +31,72 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
 <li>v4.0.0 時点でループ品質の大幅改善</li>
 </ul>
 <h2>Anthropic 公式: cwc-long-running-agents</h2>
-<p>Anthropic が公開した長時間実行エージェント向けのハーネス設計パターン（GitHub: `anthropics/cwc-long-running-agents`）。</p>
-<p>3つのコアプリミティブ： 1. **Default-FAIL contract** — `test-results.json` の全criterionは `false` 始まり。`track-read.sh` + `verify-gate.sh` フックがReadツールで証拠ファイルを開くまで書き込みをブロック 2. **Fresh-context evaluator** — `agents/evaluator.md` をWrite/Editなしで起動し、ビルドを見ていない新コンテキストで diff + スクリーンショットをレビュー。PASS/NEEDS_WORK を返す 3. **Agent-maintained handoff** — `PROGRESS.md` に進捗を記録し `commit-on-stop.sh` がセッション終了時にコミット。次セッションはgit logと PROGRESS.md から再開</p>
+<p>Anthropic が公開した長時間実行エージェント向けのハーネス設計パターン（GitHub: <code>anthropics/cwc-long-running-agents</code>）。</p>
+<p>3つのコアプリミティブ：
+1. <strong>Default-FAIL contract</strong> — <code>test-results.json</code> の全criterionは <code>false</code> 始まり。<code>track-read.sh</code> + <code>verify-gate.sh</code> フックがReadツールで証拠ファイルを開くまで書き込みをブロック
+2. <strong>Fresh-context evaluator</strong> — <code>agents/evaluator.md</code> をWrite/Editなしで起動し、ビルドを見ていない新コンテキストで diff + スクリーンショットをレビュー。PASS/NEEDS_WORK を返す
+3. <strong>Agent-maintained handoff</strong> — <code>PROGRESS.md</code> に進捗を記録し <code>commit-on-stop.sh</code> がセッション終了時にコミット。次セッションはgit logと PROGRESS.md から再開</p>
 <h3>オペレーター制御フック</h3>
-<p>| フック | 役割 | |--------|------| | `kill-switch.sh` | プロジェクトルートに `AGENT_STOP` ファイルがある間、全ツール呼び出しを停止 | | `steer.sh` | `STEER.md` の内容をエージェントに一度だけ渡してクリア（再起動不要の方向転換） |</p>
+<table>
+<thead>
+<tr>
+<th>フック</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kill-switch.sh</code></td>
+<td>プロジェクトルートに <code>AGENT_STOP</code> ファイルがある間、全ツール呼び出しを停止</td>
+</tr>
+<tr>
+<td><code>steer.sh</code></td>
+<td><code>STEER.md</code> の内容をエージェントに一度だけ渡してクリア（再起動不要の方向転換）</td>
+</tr>
+</tbody>
+</table>
 <h3>ループの観察（ターミナル）</h3>
-<pre><code class="language-bash">watch -n 2 &#x27;tail -20 PROGRESS.md&#x27;          # エージェント自身のメモ
-watch -n 5 &#x27;git log --oneline -8&#x27;           # コミット履歴
-watch -n 5 &#x27;find screenshots -name &quot;*.png&quot;&#x27; # キャプチャ
-watch -n 2 &#x27;wc -l &lt; .claude/.evidence-reads&#x27;# 証拠読み込みカウント</code></pre>
+<pre><code class="language-bash">watch -n 2 'tail -20 PROGRESS.md'          # エージェント自身のメモ
+watch -n 5 'git log --oneline -8'           # コミット履歴
+watch -n 5 'find screenshots -name &quot;*.png&quot;' # キャプチャ
+watch -n 2 'wc -l &amp;lt; .claude/.evidence-reads'# 証拠読み込みカウント
+</code></pre>
 <h3>発展パターン</h3>
-<p>| パターン | 概要 | |----------|------| | Unattended loop | セッション上限を設け、外部スクリプトが次セッションを起動（ralph-loop プラグイン） | | Planner agent | 1行の要求を `BUILD_PLAN.md` に展開してからループ実行 | | Sprint contracts | ビルダーと evaluator が feature ごとの「完了条件」をファイルに合意 | | Grading rubrics | 機能・デザイン・クラフトに few-shot 採点基準を渡して二値判定を脱する | | Browser-verified evaluator | evaluator が Playwright MCP でアプリを直接開いてスクリーンショットに依存しない |</p>
-<p>&gt; 各モデルリリース後は harness の各ピースをコメントアウトして「まだ必要か」を再評価する（Re-simplify on model upgrades）</p>
+<table>
+<thead>
+<tr>
+<th>パターン</th>
+<th>概要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unattended loop</td>
+<td>セッション上限を設け、外部スクリプトが次セッションを起動（ralph-loop プラグイン）</td>
+</tr>
+<tr>
+<td>Planner agent</td>
+<td>1行の要求を <code>BUILD_PLAN.md</code> に展開してからループ実行</td>
+</tr>
+<tr>
+<td>Sprint contracts</td>
+<td>ビルダーと evaluator が feature ごとの「完了条件」をファイルに合意</td>
+</tr>
+<tr>
+<td>Grading rubrics</td>
+<td>機能・デザイン・クラフトに few-shot 採点基準を渡して二値判定を脱する</td>
+</tr>
+<tr>
+<td>Browser-verified evaluator</td>
+<td>evaluator が Playwright MCP でアプリを直接開いてスクリーンショットに依存しない</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>各モデルリリース後は harness の各ピースをコメントアウトして「まだ必要か」を再評価する（Re-simplify on model upgrades）</p>
+</blockquote>
 <h2><a href="../tools/claude-code.html">claude-code</a> との関係</h2>
-<p>Claude Code の5層アーキテクチャにおける **Harness layer**（第4層）に相当。プロンプトレベルの工夫ではなく、ループ制御の構造的な設計。</p>
+<p>Claude Code の5層アーキテクチャにおける <strong>Harness layer</strong>（第4層）に相当。プロンプトレベルの工夫ではなく、ループ制御の構造的な設計。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>

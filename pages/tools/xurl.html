@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -28,30 +29,34 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
 <h3>Agent-friendly shortcuts</h3>
 <pre><code class="language-bash">xurl post &quot;こんにちは！&quot;
 xurl media upload 画像.jpg
-xurl reply 1234567890 &quot;返信だよ&quot;</code></pre>
+xurl reply 1234567890 &quot;返信だよ&quot;
+</code></pre>
 <p>長いJSONを書かずに済む。エージェントがツールコールで自然に呼びやすい設計になっている。</p>
 <h3>App・User 管理の大幅改善</h3>
 <ul>
 <li>複数アプリ／ユーザーの登録・切り替えが容易</li>
-<li>`--app myapp --username @user` フラグで即指定</li>
+<li><code>--app myapp --username @user</code> フラグで即指定</li>
 <li>一度認証したらトークンを意識不要（persistent storage）</li>
 </ul>
 <h3>agentskills.io 統合・OpenClaw マージ</h3>
-<p>xurl 自体が **SKILL protocol** 対応スキルとして <a href="https://agentskills.io" rel="noopener">agentskills.io</a> に登録。**OpenClaw**（エージェントフレームワーク）に正式マージ。LLMがトークンや認証を意識せずXを操れる。</p>
+<p>xurl 自体が <strong>SKILL protocol</strong> 対応スキルとして <a href="https://agentskills.io">agentskills.io</a> に登録。<strong>OpenClaw</strong>（エージェントフレームワーク）に正式マージ。LLMがトークンや認証を意識せずXを操れる。</p>
 <h2>インストール（Mac）</h2>
-<pre><code class="language-bash">brew install --cask xdevplatform/tap/xurl</code></pre>
+<pre><code class="language-bash">brew install --cask xdevplatform/tap/xurl
+</code></pre>
 <p>認証セットアップ（X Developer Portalでアプリ作成後）：</p>
 <pre><code class="language-bash">xurl auth apps add my-app --client-id CLIENT_ID --client-secret CLIENT_SECRET
 xurl auth default my-app
-xurl auth oauth2</code></pre>
+xurl auth oauth2
+</code></pre>
 <h2><a href="../tools/claude-code.html">claude-code</a> との連携</h2>
 <pre><code class="language-bash"># 検索結果をJSONで取得して分析パイプラインに流す
 xurl search &quot;AI agent&quot; -n 100 &gt; results.json
 
 # スレッド投稿の自動化
-ID=$(xurl post &quot;1/3: スレッドの最初&quot; | jq -r &#x27;.data.id&#x27;)
-ID2=$(xurl reply $ID &quot;2/3: 続き&quot; | jq -r &#x27;.data.id&#x27;)
-xurl reply $ID2 &quot;3/3: 最後&quot;</code></pre>
+ID=$(xurl post &quot;1/3: スレッドの最初&quot; | jq -r '.data.id')
+ID2=$(xurl reply $ID &quot;2/3: 続き&quot; | jq -r '.data.id')
+xurl reply $ID2 &quot;3/3: 最後&quot;
+</code></pre>
 <p>Claude Code + xurl で「記事を書いて → Xへポスト」がターミナル完結。定期的なアカウント分析や自動投稿パイプラインを構築可能。</p>
 <h2>関連</h2>
 <ul>

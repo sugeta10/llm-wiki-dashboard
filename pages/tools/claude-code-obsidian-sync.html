@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -31,37 +32,38 @@ watch-and-save.sh (LaunchAgent常駐)
     ↓ (変更検知 → 抽出・整形)
 ~/obsidian/claude/YYYY年M月D日.md
     ↓ (自動 git commit)
-GitHub同期</code></pre>
+GitHub同期
+</code></pre>
 <h2>実装のポイント</h2>
 <h3>セッションファイルの場所</h3>
-<p>Claude Code は会話履歴を `~/.claude/projects/{project-hash}/{session-id}.jsonl` に JSONL 形式で保存する。このファイルをパースして会話を抽出する。</p>
+<p>Claude Code は会話履歴を <code>~/.claude/projects/{project-hash}/{session-id}.jsonl</code> に JSONL 形式で保存する。このファイルをパースして会話を抽出する。</p>
 <h3>追記モード</h3>
-<p>上書きではなく追記モードを採用。`LAST_LINE_FILE` に最後に同期した行番号を保存し、新しい行だけを処理して既存の Obsidian ファイルに追記する。</p>
+<p>上書きではなく追記モードを採用。<code>LAST_LINE_FILE</code> に最後に同期した行番号を保存し、新しい行だけを処理して既存の Obsidian ファイルに追記する。</p>
 <ul>
 <li>他プロセスとの競合を防止</li>
 <li>クラッシュしても記録が失われない</li>
 <li>5秒ごとに新しい会話だけを追記</li>
 </ul>
 <h3>ノイズ除去</h3>
-<p>`jq` を使って以下を除外：</p>
-<ul>
-<li>`&lt;system-reminder&gt;` 等のシステムメッセージ</li>
-<li>`&lt;local-command-...&gt;` のローカルコマンド出力</li>
-<li>`subagents/` 配下のサブエージェントセッション</li>
-</ul>
+<p><code>jq</code> を使って以下を除外：
+- <code>&amp;lt;system-reminder&gt;</code> 等のシステムメッセージ
+- <code>&amp;lt;local-command-...&gt;</code> のローカルコマンド出力
+- <code>subagents/</code> 配下のサブエージェントセッション</p>
 <h3>日付ベースのフィルタリング</h3>
 <p>各エントリのタイムスタンプを確認して当日の会話だけを抽出。日をまたいだセッションにも対応。</p>
 <h2>LaunchAgent 常駐化</h2>
-<pre><code class="language-xml">&lt;!-- ~/Library/LaunchAgents/com.claude.obsidian-sync.plist --&gt;
-&lt;key&gt;KeepAlive&lt;/key&gt;&lt;true/&gt;
-&lt;key&gt;RunAtLoad&lt;/key&gt;&lt;true/&gt;</code></pre>
-<p>`launchctl load` で登録することで macOS 再起動後も自動起動。</p>
+<pre><code class="language-xml">&amp;lt;!-- ~/Library/LaunchAgents/com.claude.obsidian-sync.plist --&gt;
+&amp;lt;key&gt;KeepAlive&amp;lt;/key&gt;&amp;lt;true/&gt;
+&amp;lt;key&gt;RunAtLoad&amp;lt;/key&gt;&amp;lt;true/&gt;
+</code></pre>
+<p><code>launchctl load</code> で登録することで macOS 再起動後も自動起動。</p>
 <h2>出力例</h2>
 <pre><code class="language-markdown"># 2026年1月9日 Claudeとの会話
 
 **ユーザー**: uvを入れて
 **Claude**: uvをインストールします。
-**Claude**: uv 0.9.22 がインストールされました。</code></pre>
+**Claude**: uv 0.9.22 がインストールされました。
+</code></pre>
 <h2>今後の展望</h2>
 <ul>
 <li>トピックごとの自動分類</li>

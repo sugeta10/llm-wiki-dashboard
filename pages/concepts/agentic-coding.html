@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -38,11 +39,17 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
 <p>Agentic Coding の普及は技術選定の基準を変えつつある。AIエージェントが扱いやすい技術（ドキュメントが豊富・コード例が多い）が優位になる傾向がある。</p>
 <h2>長時間実行エージェントのハーネス設計</h2>
 <p>Anthropic 公式リポジトリ「cwc-long-running-agents」が提示する3つのプリミティブ：</p>
-<p>1. **Default-FAIL contract**: エージェントは「成功を証明できなければ失敗」として動作する。曖昧な完了を防ぐ 2. **Fresh-context evaluator**: 各ループ反復ごとに新しいコンテキストで評価する。前の試行バイアスを排除 3. **Agent-maintained handoff**: エージェント自身が次のエージェントへの引き継ぎ情報を生成する</p>
+<ol>
+<li><strong>Default-FAIL contract</strong>: エージェントは「成功を証明できなければ失敗」として動作する。曖昧な完了を防ぐ</li>
+<li><strong>Fresh-context evaluator</strong>: 各ループ反復ごとに新しいコンテキストで評価する。前の試行バイアスを排除</li>
+<li><strong>Agent-maintained handoff</strong>: エージェント自身が次のエージェントへの引き継ぎ情報を生成する</li>
+</ol>
 <p>関連実装: <a href="../tools/claude-harness.html">claude-harness</a></p>
 <h2>自己改善ループ（Codex 活用例）</h2>
 <p>「Codex に自律的な自己改善ループをさせる」プロンプトパターン：</p>
-<p>&gt; 「その出力に100%の自信がありますか？もしそうでなければ、全ての抜け漏れ（要改善点）をチェックして、新しい出力に100%の自信を持てるようになるまで改善のループを続けてください」</p>
+<blockquote>
+<p>「その出力に100%の自信がありますか？もしそうでなければ、全ての抜け漏れ（要改善点）をチェックして、新しい出力に100%の自信を持てるようになるまで改善のループを続けてください」</p>
+</blockquote>
 <p>このパターンは <a href="../concepts/self-refining-skills.html">self-refining-skills</a> のスキルレベルの実装と組み合わせることで特に効果的。</p>
 <h2>関連</h2>
 <ul>

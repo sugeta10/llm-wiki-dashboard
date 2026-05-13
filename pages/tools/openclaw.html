@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -23,13 +24,42 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
   <article><h1>OpenClaw</h1>
 <p>オープンソースのAIエージェント基盤。非同期タスク管理・モデル非依存・スキルズ（作業テンプレート）・定期実行を組み合わせた「24時間稼働するAI組織」を構築できる。GitHubスター21万超、フォーク4万、コントリビューター700人以上。</p>
 <h2>5層アーキテクチャ</h2>
-<p>| 層 | 役割 | |----|------| | **第1層: 体験層** | Discord・LINE・Slack・WhatsApp等の会話インターフェース | | **第2層: ゲートウェイ層** | OpenClawの非同期タスク交通整理（⭐革命的） | | **第3層: オーケストレーション層** | クーロン（定期実行）・スキルズ | | **第4層: エージェント層** | Claude Code・Codex・Gemini等 | | **第5層: ツール層** | MCP・CDP（ブラウザ直接操作） |</p>
+<table>
+<thead>
+<tr>
+<th>層</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>第1層: 体験層</strong></td>
+<td>Discord・LINE・Slack・WhatsApp等の会話インターフェース</td>
+</tr>
+<tr>
+<td><strong>第2層: ゲートウェイ層</strong></td>
+<td>OpenClawの非同期タスク交通整理（⭐革命的）</td>
+</tr>
+<tr>
+<td><strong>第3層: オーケストレーション層</strong></td>
+<td>クーロン（定期実行）・スキルズ</td>
+</tr>
+<tr>
+<td><strong>第4層: エージェント層</strong></td>
+<td>Claude Code・Codex・Gemini等</td>
+</tr>
+<tr>
+<td><strong>第5層: ツール層</strong></td>
+<td>MCP・CDP（ブラウザ直接操作）</td>
+</tr>
+</tbody>
+</table>
 <h2>主要コンポーネント</h2>
 <h3>スキルズ（Skills）</h3>
 <ul>
 <li>膨大な作業手順をMarkdownファイル化した再利用可能テンプレート</li>
 <li>「うまくいった作業を手順まとめてスキル化して」で自動保存</li>
-<li>ClawHubからの外部スキルは悪意あるスキルが混在する事例があるため**自作推奨**</li>
+<li>ClawHubからの外部スキルは悪意あるスキルが混在する事例があるため<strong>自作推奨</strong></li>
 </ul>
 <h3>クーロン（Cron）</h3>
 <ul>
@@ -42,31 +72,49 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
 <li>人間の介入なしで24時間稼働し続ける</li>
 </ul>
 <h2>CDP vs MCP：ブラウザ操作の違い</h2>
-<p>| 方式 | 仕組み | 精度 | |------|-------|------| | **MCP経由**（Claude Code等） | Chrome MCPツール経由、抽象化レイヤーあり | ムラあり | | **CDP経由**（OpenClaw） | Chrome DevTools Protocolで直接操作 | 高精度 |</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>仕組み</th>
+<th>精度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MCP経由</strong>（Claude Code等）</td>
+<td>Chrome MCPツール経由、抽象化レイヤーあり</td>
+<td>ムラあり</td>
+</tr>
+<tr>
+<td><strong>CDP経由</strong>（OpenClaw）</td>
+<td>Chrome DevTools Protocolで直接操作</td>
+<td>高精度</td>
+</tr>
+</tbody>
+</table>
 <p>CDPを直接操作するためTikTokのカバー画像位置選択等の細かいUI操作も可能。</p>
 <h2>特徴</h2>
 <ul>
-<li>**モデル非依存**: Claude Code・Codex・Geminiを切り替え可能。<a href="../models/claude-opus-4-7.html">claude-opus-4-7</a>等の最新モデルへいつでも移行できる</li>
-<li>**記憶の永続化**: 短期・長期記憶をMarkdownで保持。ハイブリッド検索で効率的に引き出す</li>
-<li>**設計の再利用性**: 「ツールは入れ替わるけど設計は残る」— スキルズとして蓄積された設計資産はモデルが変わっても活用可能</li>
+<li><strong>モデル非依存</strong>: Claude Code・Codex・Geminiを切り替え可能。<a href="../models/claude-opus-4-7.html">claude-opus-4-7</a>等の最新モデルへいつでも移行できる</li>
+<li><strong>記憶の永続化</strong>: 短期・長期記憶をMarkdownで保持。ハイブリッド検索で効率的に引き出す</li>
+<li><strong>設計の再利用性</strong>: 「ツールは入れ替わるけど設計は残る」— スキルズとして蓄積された設計資産はモデルが変わっても活用可能</li>
 </ul>
 <h2>活用例（マーケティング自動化）</h2>
-<p>Discordチャンネルに1行送信するだけで：</p>
-<ul>
-<li>Remotion + Gemini TTS + OpenAI Whisperで動画生成（1本あたり約1円以下）</li>
-<li>YouTube / TikTok / Instagramへ自動アップロード</li>
-<li>Qiita記事の下書き自動生成・定期投稿</li>
-</ul>
+<p>Discordチャンネルに1行送信するだけで：
+- Remotion + Gemini TTS + OpenAI Whisperで動画生成（1本あたり約1円以下）
+- YouTube / TikTok / Instagramへ自動アップロード
+- Qiita記事の下書き自動生成・定期投稿</p>
 <h2>セキュリティ対策</h2>
 <ul>
-<li>メインPCではなく**サブPC or VPS**で運用（Xサーバーが月額約1,000円のイメージ提供）</li>
+<li>メインPCではなく<strong>サブPC or VPS</strong>で運用（Xサーバーが月額約1,000円のイメージ提供）</li>
 <li>プロンプトインジェクション対策プロンプトを設定</li>
 <li>Chrome Remote Desktopで安全に遠隔操作</li>
 <li>外部スキル（ClawHub）は使わず自作推奨</li>
 </ul>
 <h2>コスト</h2>
 <ul>
-<li>OpenClaw自体はオープンソースで**無料**</li>
+<li>OpenClaw自体はオープンソースで<strong>無料</strong></li>
 <li>モデル利用にはサブスク必要: Claude Max約3万円/月、またはOpenAI Codex等</li>
 </ul>
 <h2>関連</h2>

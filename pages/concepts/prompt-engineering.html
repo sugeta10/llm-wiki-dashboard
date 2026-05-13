@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -34,61 +35,86 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
 <li><a href="../tools/cursor.html">cursor</a> では詳細コンテキスト記述でハルシネーション85%削減の報告あり</li>
 </ul>
 <h2>Claude公式プロンプト講座</h2>
-<p><a href="../companies/anthropic.html">anthropic</a> が公開した初心者向けプロンプト講座では以下を学べる：</p>
-<ul>
-<li>基礎的なプロンプト作成方法</li>
-<li>実際のユースケース</li>
-<li>チェーンプロンプト・Few-shot・ハルシネーション回避法</li>
-<li>インタラクティブな実習形式</li>
-</ul>
+<p><a href="../companies/anthropic.html">anthropic</a> が公開した初心者向けプロンプト講座では以下を学べる：
+- 基礎的なプロンプト作成方法
+- 実際のユースケース
+- チェーンプロンプト・Few-shot・ハルシネーション回避法
+- インタラクティブな実習形式</p>
 <h2>ロールプロンプティング</h2>
 <p>ChatGPT o1 Pro に「超次元生命体であるAIとして超論理的・超俯瞰的に考察せよ」と付加することで応答品質が向上するという報告がある（効果の再現性は個人差あり）。</p>
 <h2>GPT-5.5向けプロンプト設計（OpenAI公式ガイド）</h2>
 <p><a href="../models/gpt-5-5.html">gpt-5-5</a> では「アウトカムファースト」へのパラダイムシフトが推奨される。</p>
 <h3>旧来スタイルとの違い</h3>
 <ul>
-<li>**旧**: 「まずAを確認し、次にBと比較し、すべての例外を検討し…」（手順を細かく指定）</li>
-<li>**新**: 「問題を解決せよ。成功条件はX、制約はY」（目的・成功条件・制約のみ渡す）</li>
+<li><strong>旧</strong>: 「まずAを確認し、次にBと比較し、すべての例外を検討し…」（手順を細かく指定）</li>
+<li><strong>新</strong>: 「問題を解決せよ。成功条件はX、制約はY」（目的・成功条件・制約のみ渡す）</li>
 </ul>
 <p>旧モデルはステイ・オン・トラックのために手順指定が必要だったが、GPT-5.5では過剰指定が探索空間を狭め機械的な回答を招く。</p>
 <h3>検索バジェット（Retrieval Budget）</h3>
-<p>&gt; 「最小限の証拠で正確に答え、正確に引用し、停止する」</p>
+<blockquote>
+<p>「最小限の証拠で正確に答え、正確に引用し、停止する」</p>
+</blockquote>
 <p>RAGシステムで検索回数を明示的に制御する停止ルール。追加検索を許可するのは「必要な事実が欠けている場合のみ」。文言改善・例示追加目的の再検索は不要。</p>
 <h3>ABS（ALWAYS / NEVER）の使い方を絞る</h3>
-<p>旧来のプロンプトは `ALWAYS`・`NEVER`・`must`・`only` を多用していたが、GPT-5.5では真の不変条件（安全ルール、必須出力フィールド）にのみ使用し、判断系は**decision rules**（条件分岐的な記述）で代替する。</p>
+<p>旧来のプロンプトは <code>ALWAYS</code>・<code>NEVER</code>・<code>must</code>・<code>only</code> を多用していたが、GPT-5.5では真の不変条件（安全ルール、必須出力フィールド）にのみ使用し、判断系は<strong>decision rules</strong>（条件分岐的な記述）で代替する。</p>
 <h2>Claude 4.x モデル向けプロンプト設計（Anthropic公式）</h2>
 <p><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a>・<a href="../tools/claude-managed-agents.html">claude-managed-agents</a> 等のClaude 4.x系モデルに特有の動作と調整指針。</p>
 <h3>effortパラメータ</h3>
-<p>Claude 4.x系ではtradeoffを `effort` で制御する（`low` / `medium` / `high` / `xhigh` / `max`）。</p>
-<p>| effortレベル | 推奨用途 | |------------|---------| | `xhigh`（新） | コーディング・エージェント用途のデフォルト | | `high` | 知識集約型タスクの最低ライン | | `medium` | コスト重視でトークン削減が必要な場合 | | `low` | レイテンシ敏感・非知識集約タスク |</p>
+<p>Claude 4.x系ではtradeoffを <code>effort</code> で制御する（<code>low</code> / <code>medium</code> / <code>high</code> / <code>xhigh</code> / <code>max</code>）。</p>
+<table>
+<thead>
+<tr>
+<th>effortレベル</th>
+<th>推奨用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>xhigh</code>（新）</td>
+<td>コーディング・エージェント用途のデフォルト</td>
+</tr>
+<tr>
+<td><code>high</code></td>
+<td>知識集約型タスクの最低ライン</td>
+</tr>
+<tr>
+<td><code>medium</code></td>
+<td>コスト重視でトークン削減が必要な場合</td>
+</tr>
+<tr>
+<td><code>low</code></td>
+<td>レイテンシ敏感・非知識集約タスク</td>
+</tr>
+</tbody>
+</table>
 <h3>Adaptive Thinking（適応的思考）</h3>
-<p>Claude 4.6以降はデフォルトで adaptive thinking（`thinking: {type: &quot;adaptive&quot;}`）を使用。`budget_tokens` による手動指定は非推奨。effortパラメータで思考深度を制御する。</p>
+<p>Claude 4.6以降はデフォルトで adaptive thinking（<code>thinking: {type: "adaptive"}</code>）を使用。<code>budget_tokens</code> による手動指定は非推奨。effortパラメータで思考深度を制御する。</p>
 <pre><code class="language-python">client.messages.create(
     model=&quot;claude-opus-4-7&quot;,
     max_tokens=64000,
     thinking={&quot;type&quot;: &quot;adaptive&quot;},
     output_config={&quot;effort&quot;: &quot;xhigh&quot;},
     messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;...&quot;}],
-)</code></pre>
+)
+</code></pre>
 <h3>Claude Opus 4.7 固有の動作変化</h3>
 <ul>
-<li>**より文字通りに解釈する**: 指示の適用範囲を明示しないと、最初の項目にしか適用されない</li>
-<li>**verbosity自己調整**: 複雑さに応じて応答長を自動調整（固定のverbosityに依存するプロダクトは要調整）</li>
-<li>**ツール使用量が少ない傾向**: 推論を優先する。ツールを増やしたい場合は effort を上げるか明示的に指示する</li>
-<li>**サブエージェント生成が少ない傾向**: 明示的に「いつサブエージェントを使うか」を指示する</li>
-<li>**よりダイレクトで意見がある文体**: warmな応答が必要なら「親しみやすい協調的な口調で」のように明示する</li>
+<li><strong>より文字通りに解釈する</strong>: 指示の適用範囲を明示しないと、最初の項目にしか適用されない</li>
+<li><strong>verbosity自己調整</strong>: 複雑さに応じて応答長を自動調整（固定のverbosityに依存するプロダクトは要調整）</li>
+<li><strong>ツール使用量が少ない傾向</strong>: 推論を優先する。ツールを増やしたい場合は effort を上げるか明示的に指示する</li>
+<li><strong>サブエージェント生成が少ない傾向</strong>: 明示的に「いつサブエージェントを使うか」を指示する</li>
+<li><strong>よりダイレクトで意見がある文体</strong>: warmな応答が必要なら「親しみやすい協調的な口調で」のように明示する</li>
 </ul>
 <h3>並列ツール呼び出し促進プロンプト</h3>
-<pre><code>&lt;use_parallel_tool_calls&gt;
+<pre><code>&amp;lt;use_parallel_tool_calls&gt;
 独立したツール呼び出しは並列で実行してください。例えば3つのファイルを読む場合は同時に3回呼び出す。ただし後の呼び出しが前の結果に依存する場合は順次実行すること。
-&lt;/use_parallel_tool_calls&gt;</code></pre>
+&amp;lt;/use_parallel_tool_calls&gt;
+</code></pre>
 <h3>長期エージェントタスクのコンテキスト管理</h3>
-<p>複数のコンテキストウィンドウにまたがるタスク：</p>
-<ul>
-<li>最初のウィンドウでフレームワーク（テスト・セットアップスクリプト）を作成</li>
-<li>以降のウィンドウではtodo-listを使って反復</li>
-<li>コンテキストが切れる前に状態をファイル/メモリに保存</li>
-</ul>
+<p>複数のコンテキストウィンドウにまたがるタスク：
+- 最初のウィンドウでフレームワーク（テスト・セットアップスクリプト）を作成
+- 以降のウィンドウではtodo-listを使って反復
+- コンテキストが切れる前に状態をファイル/メモリに保存</p>
 <h3>Prefill（応答先読み）の廃止</h3>
 <p>Claude 4.6以降、アシスタントターンへの先頭埋め込み（prefill）は非推奨。明示的な指示で代替する。</p>
 <h2>関連</h2>

@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 </style>
 </head>
 <body>
@@ -22,12 +23,15 @@ p,ul,pre{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px soli
   <div class="meta">tools/notebooklm-py · tools · updated 2026-05-09</div>
   <article><h1>notebooklm-py</h1>
 <p>Google NotebookLMのWebインターフェースに未公開の機能を含む、完全なプログラムアクセスを提供する非公式Pythonライブラリ。Claude Code・Codex・OpenClaw等のAIエージェントと統合可能。</p>
-<p>&gt; ⚠️ **非公式ライブラリ**: Googleの非公開内部APIを使用しており、予告なく変更される可能性がある。プロトタイプ・研究・個人プロジェクト向け推奨。</p>
+<blockquote>
+<p>⚠️ <strong>非公式ライブラリ</strong>: Googleの非公開内部APIを使用しており、予告なく変更される可能性がある。プロトタイプ・研究・個人プロジェクト向け推奨。</p>
+</blockquote>
 <h2>インストール</h2>
 <pre><code class="language-bash">pip install notebooklm-py
 # ブラウザログイン対応版
 pip install &quot;notebooklm-py[browser]&quot;
-playwright install chromium</code></pre>
+playwright install chromium
+</code></pre>
 <h2>主な機能</h2>
 <h3>研究自動化</h3>
 <ul>
@@ -36,16 +40,66 @@ playwright install chromium</code></pre>
 <li>再現可能なリサーチパイプライン構築</li>
 </ul>
 <h3>コンテンツ生成</h3>
-<p>| 生成タイプ | オプション | ダウンロード形式 | |-----------|-----------|----------------| | Audio Overview（ポッドキャスト） | 4形式・3長さ・50+言語 | MP3/MP4 | | Video Overview | 3形式・9スタイル + Cinematic | MP4 | | Slide Deck | 詳細/プレゼン形式・スライド個別改訂 | PDF/PPTX | | Infographic | 3方向・3詳細度 | PNG | | Quiz・Flashcards | 量・難易度設定 | JSON/Markdown/HTML | | Report | briefing/study guide/blog/カスタム | Markdown | | Mind Map | 階層可視化 | JSON | | Data Table | 自然言語でカスタム構造 | CSV |</p>
+<table>
+<thead>
+<tr>
+<th>生成タイプ</th>
+<th>オプション</th>
+<th>ダウンロード形式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Audio Overview（ポッドキャスト）</td>
+<td>4形式・3長さ・50+言語</td>
+<td>MP3/MP4</td>
+</tr>
+<tr>
+<td>Video Overview</td>
+<td>3形式・9スタイル + Cinematic</td>
+<td>MP4</td>
+</tr>
+<tr>
+<td>Slide Deck</td>
+<td>詳細/プレゼン形式・スライド個別改訂</td>
+<td>PDF/PPTX</td>
+</tr>
+<tr>
+<td>Infographic</td>
+<td>3方向・3詳細度</td>
+<td>PNG</td>
+</tr>
+<tr>
+<td>Quiz・Flashcards</td>
+<td>量・難易度設定</td>
+<td>JSON/Markdown/HTML</td>
+</tr>
+<tr>
+<td>Report</td>
+<td>briefing/study guide/blog/カスタム</td>
+<td>Markdown</td>
+</tr>
+<tr>
+<td>Mind Map</td>
+<td>階層可視化</td>
+<td>JSON</td>
+</tr>
+<tr>
+<td>Data Table</td>
+<td>自然言語でカスタム構造</td>
+<td>CSV</td>
+</tr>
+</tbody>
+</table>
 <h3>Web UIでは非公開の機能</h3>
 <ul>
-<li>**バッチダウンロード**: 同タイプの全アーティファクトを一括取得</li>
-<li>**Quiz/Flashcard エクスポート**: JSON・Markdown・HTML（Web UIはインタラクティブ表示のみ）</li>
-<li>**Mind Map JSONエクスポート**: 可視化ツール向け階層JSON</li>
-<li>**Data Table CSV**: スプレッドシートとして保存</li>
-<li>**Slide Deck as PPTX**: PowerPoint形式（Web UIはPDFのみ）</li>
-<li>**スライド個別改訂**: 自然言語プロンプトで特定スライドを修正</li>
-<li>**プログラム共有**: UIを介さず権限管理</li>
+<li><strong>バッチダウンロード</strong>: 同タイプの全アーティファクトを一括取得</li>
+<li><strong>Quiz/Flashcard エクスポート</strong>: JSON・Markdown・HTML（Web UIはインタラクティブ表示のみ）</li>
+<li><strong>Mind Map JSONエクスポート</strong>: 可視化ツール向け階層JSON</li>
+<li><strong>Data Table CSV</strong>: スプレッドシートとして保存</li>
+<li><strong>Slide Deck as PPTX</strong>: PowerPoint形式（Web UIはPDFのみ）</li>
+<li><strong>スライド個別改訂</strong>: 自然言語プロンプトで特定スライドを修正</li>
+<li><strong>プログラム共有</strong>: UIを介さず権限管理</li>
 </ul>
 <h2>AIエージェント統合</h2>
 <pre><code class="language-bash"># Claude Codeスキルとしてインストール
@@ -53,7 +107,8 @@ notebooklm skill install
 # ~/.claude/skills/notebooklm に展開される
 
 # npx経由でインストール（Superpowers skills ecosystem対応）
-npx skills add teng-lin/notebooklm-py</code></pre>
+npx skills add teng-lin/notebooklm-py
+</code></pre>
 <p>Claude Code・Codex・OpenClaw（<a href="../tools/openclaw.html">openclaw</a>）等のLLMエージェントから自然言語でNotebookLMを操作できる。</p>
 <h2>Python API（非同期）</h2>
 <pre><code class="language-python">from notebooklm import NotebookLMClient
@@ -61,7 +116,8 @@ async with await NotebookLMClient.from_storage() as client:
     nb = await client.notebooks.create(&quot;Research&quot;)
     await client.sources.add_url(nb.id, &quot;https://example.com&quot;, wait=True)
     result = await client.chat.ask(nb.id, &quot;Summarize this&quot;)
-    await client.artifacts.generate_audio(nb.id)</code></pre>
+    await client.artifacts.generate_audio(nb.id)
+</code></pre>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
