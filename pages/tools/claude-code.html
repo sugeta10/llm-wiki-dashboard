@@ -57,7 +57,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <h2>プラグインシステム</h2>
-<p>Claude Code はプラグインによる機能拡張をサポートしている。公式リポジトリの <code>plugins/</code> ディレクトリにカスタムコマンドやエージェントを追加することで機能を拡張できる。詳細は <a href="https://github.com/anthropics/claude-code/blob/main/plugins/README.md">plugins/README.md</a> を参照。</p>
+<p>Claude Code はプラグインによる機能拡張をサポートしている。公式マーケットプレイス <code>claude-plugins-official</code> に <strong>123個のプラグイン</strong>（MCP・Skill・Agent・Hook・LSP）が掲載されている。詳細は <a href="../tools/claude-code-plugins.html">claude-code-plugins</a> を参照。</p>
 <h2>主な特徴</h2>
 <ul>
 <li><strong>Skills / MCP / Agent</strong> などの核心概念を持つ拡張可能な設計</li>
@@ -182,7 +182,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>情報収集での活用（Claude Codeで情報収集する4つのこと）</h2>
 <ol>
 <li>URLやPDFをClaude Codeに直接渡す</li>
-<li>WebFetch でページ取得 → 要約</li>
+<li>WebFetch でページ取得 → 要約（内部実装詳細は <a href="../concepts/claude-code-webfetch.html">claude-code-webfetch</a> 参照）</li>
 <li>取得内容を構造化してMarkdownに保存</li>
 <li>wiki/ナレッジベースへ自動 ingest（<a href="../concepts/llm-wiki.html">llm-wiki</a> 参照）</li>
 </ol>
@@ -515,6 +515,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a>（会話履歴をObsidianに自動記録する仕組み）</li>
 <li><a href="../tools/gstack.html">gstack</a>（Garry Tan によるClaude Code拡張スキル集・バーチャルエンジニアリングチーム化）</li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a>（/goal コマンド：自律ワークフロー）</li>
+<li><a href="../tools/claude-code-plugins.html">claude-code-plugins</a>（公式プラグイン123個の解説）</li>
+<li><a href="../concepts/claude-code-webfetch.html">claude-code-webfetch</a>（WebFetch の内部実装・Haiku 要約の仕組み）</li>
 </ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2038454336355999749" rel="noopener">https://x.com/i/web/status/2038454336355999749</a></li>
 <li><a href="https://x.com/i/web/status/2045125700328518120" rel="noopener">https://x.com/i/web/status/2045125700328518120</a></li>
 <li><a href="https://x.com/i/web/status/2050817671961428090" rel="noopener">https://x.com/i/web/status/2050817671961428090</a></li>
