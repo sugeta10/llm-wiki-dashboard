@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12-factor-agents - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>12-factor-agents</h1>
+  <div class="meta">concepts/12-factor-agents · concepts · updated 2026-05-16</div>
+  <article><h1>12-Factor Agents</h1>
+<p>HumanLayerのDex Horthy（@dexhorthy）が提唱する、<strong>信頼性の高いLLMアプリケーション</strong>を構築するための12の設計原則。<a href="https://12factor.net/">12 Factor Apps</a>の思想をAIエージェント開発に応用。AI Engineer World's Fairでのトーク（2025）が起点。</p>
+<h2>背景・モチベーション</h2>
+<p>プロダクション対応AIエージェント構築の典型的な失敗パターン：</p>
+<ol>
+<li>エージェントを作ろうと決める</li>
+<li>フレームワークを使って素早く開発開始</li>
+<li>品質70〜80%に到達</li>
+<li><strong>80%では顧客向け機能として不十分</strong>と気づく</li>
+<li>フレームワークを逆エンジニアリングする必要が生じる</li>
+<li>最初からやり直す</li>
+</ol>
+<blockquote>
+<p><strong>「プロダクション対応の良いAIソフトウェアを顧客の手に届ける最速の方法は、エージェント構築のモジュール式概念を既存プロダクトに取り込むこと」</strong></p>
+</blockquote>
+<h2>重要な洞察：エージェントは「mostly just software」</h2>
+<ul>
+<li>実際に市場で動いている「AIエージェント」は実態としてほぼ決定論的コード</li>
+<li>LLMステップは適切な箇所に<strong>少量だけ</strong>組み込まれている</li>
+<li>「プロンプト＋ツール袋でゴールまでループ」パターンはプロダクションでは機能しない</li>
+<li>優れたエージェントはソフトウェアエンジニアリングが主体</li>
+</ul>
+<h2>エージェントの基本ループ</h2>
+<pre><code class="language-python">context = [initial_event]
+while True:
+    next_step = llm.determine_next_step(context)
+    context.append(next_step)
+    if next_step.intent == &quot;done&quot;:
+        return next_step.final_answer
+    result = execute_step(next_step)
+    context.append(result)
+</code></pre>
+<p>この単純なループに12のファクターを適用して信頼性を高める。</p>
+<h2>12のファクター</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>ファクター</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Natural Language to Tool Calls</td>
+<td>自然言語入力を構造化されたツール呼び出しに変換</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Own your prompts</td>
+<td>プロンプトをフレームワークに隠蔽させず自分で管理</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Own your context window</td>
+<td>コンテキストウィンドウの内容を自分でコントロール（<strong>Context Engineering</strong>）</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Tools are just structured outputs</td>
+<td>ツールは構造化出力に過ぎない（特別扱い不要）</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Unify execution state and business state</td>
+<td>実行状態とビジネス状態を分離しない</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Launch/Pause/Resume with simple APIs</td>
+<td>シンプルなAPIで起動・一時停止・再開を実現</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Contact humans with tool calls</td>
+<td>人間への確認もツール呼び出しとして実装</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Own your control flow</td>
+<td>制御フローをフレームワークに委ねず自分で持つ</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Compact Errors into Context Window</td>
+<td>エラーをコンテキストにコンパクトに収めて継続</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Small, Focused Agents</td>
+<td>小さく焦点の絞られた単機能エージェント</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Trigger from anywhere</td>
+<td>Webhook・Cron・UI等どこからでもトリガー可能に</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Make your agent a stateless reducer</td>
+<td>エージェントをステートレスReducerとして実装（スケール容易）</td>
+</tr>
+</tbody>
+</table>
+<h2>Factor 3（Context Engineering）が特に重要</h2>
+<p>Context Engineeringはプロンプトエンジニアリングの上位概念。コンテキストウィンドウに<strong>何を入れるか・何を入れないか</strong>をエンジニアが直接制御することで、LLMの判断精度が劇的に変わる。フレームワークに任せると不要情報が混入し品質が低下する。</p>
+<h2>Factor 10：フレームワークを使うべきか</h2>
+<ul>
+<li>ほとんどのプロダクション対応エージェントは<strong>フレームワーク不使用</strong>でゼロから書かれている</li>
+<li>フレームワーク（LangChain・LangGraph・CrewAI等）は開発初期の加速には有用</li>
+<li>しかし80%品質の壁を超えるためにはフレームワークを逆エンジニアリングすることになる</li>
+<li>最初からモジュール式に書く方が長期的に高品質・保守しやすい</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIが自律的にコードを書く開発スタイル（本稿の背景）</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — マルチエージェント協調の設計パターン</li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様駆動開発：AIの信頼性への別アプローチ</li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — Factor 2・3の基盤となるプロンプト設計技術</li>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://github.com/humanlayer/12-factor-agents" rel="noopener">https://github.com/humanlayer/12-factor-agents</a></li></ul></section></article>
+</main>
+</body>
+</html>

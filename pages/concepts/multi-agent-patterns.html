@@ -60,6 +60,66 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - <strong>Copy Agent</strong>: マーケティング資料・LPコピー作成
 - <strong>Review Agent</strong>: 一貫性・品質チェック</p>
 <p>Harvey（法律AI）がこのパターンを採用：リサーチ・判例分析・文書作成・コンプライアンス確認を専門エージェントが分担し、完全な法律パッケージを生成。</p>
+<h2>Anthropicの5パターン（Claude Code公式）</h2>
+<p>Anthropicが公開した<a href="https://claude.com/blog/multi-agent-coordination-patterns">マルチエージェント協調パターン</a>。「まず <strong>Orchestrator-subagent</strong> から始め、困った課題が出たら別のパターンへ進む」という進め方を推奨している。</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>パターン</th>
+<th>強み</th>
+<th>弱み</th>
+<th>推奨環境</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Generator-Verifier</strong></td>
+<td>品質が重要で検証基準を明示できる</td>
+<td>基準が曖昧だとVerifierが機能しない</td>
+<td>Local</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Orchestrator-subagent</strong></td>
+<td>短く明確なサブタスクに分解できる（★推奨スタート）</td>
+<td>親がボトルネックになりやすい</td>
+<td>Local</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Agent Teams</strong></td>
+<td>長く・並列・独立して走れる仕事がある</td>
+<td>Worker間の衝突・完了検知が難しい</td>
+<td>Cloud</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Message Bus</strong></td>
+<td>イベント駆動で処理が分岐しエージェントが増える</td>
+<td>デバッグとイベント追跡が難しい</td>
+<td>Cloud</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Shared State</strong></td>
+<td>互いの発見を参照しながら探索を深める共同調査</td>
+<td>終了条件がないと無限ループ</td>
+<td>Cloud</td>
+</tr>
+</tbody>
+</table>
+<h3>Generator-Verifier</h3>
+<p>一方が案を出し（Generator）、もう一方が審査する（Verifier）。NGなら差し戻してループ。「テストが全件通るか」「SQLインジェクションのリスクがないか」のような<strong>明示的な検証基準</strong>が必須。差し戻し上限とフォールバックも設計する。</p>
+<h3>Orchestrator-subagent</h3>
+<p>Claude Code自体がこのパターンの実装例。Orchestratorがタスクを分解してサブエージェントに並列配布し、最後に結果を統合。Pipline・Fan-Outパターンの実装に相当。</p>
+<h3>Agent Teams</h3>
+<p>Workerエージェントが担当領域の文脈を長期保持しながら走るパターン。Orchestrator-subagentとの違いは<strong>Workerが生き続けること</strong>。ローカルでは耐障害性・競合管理の限界がありCloud（ECS Fargate + SQS FIFO）推奨。</p>
+<h3>Message Bus</h3>
+<p>EventBridgeなどをハブに各エージェントがpublish/subscribeで連携するイベント駆動型。疎結合でエージェント追加が容易だが、デバッグのために<strong>全イベントのログ記録が実質必須</strong>。</p>
+<h3>Shared State</h3>
+<p>中央司令塔なしに全エージェントが共通ストレージを読み書きして協調。終了条件（「最後の更新から30分経過」「調査エントリ100件超」など）を<strong>最初から明示的に設計</strong>しないと無限ループになる。</p>
 <h2>実装ステップ</h2>
 <h3>Step 1: チームを設計する</h3>
 <p>実装前に以下を定義する:
@@ -119,7 +179,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a>（Dreaming・Outcomes・Multiagent OrchestrationのAPI）</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055215784092401966" rel="noopener">https://x.com/i/web/status/2055215784092401966</a></li></ul></section></article>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055215784092401966" rel="noopener">https://x.com/i/web/status/2055215784092401966</a></li>
+<li><a href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener">https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/</a></li></ul></section></article>
 </main>
 </body>
 </html>
