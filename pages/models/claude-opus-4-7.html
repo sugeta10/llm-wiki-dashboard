@@ -21,7 +21,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-opus-4-7</h1>
-  <div class="meta">models/claude-opus-4-7 · models · updated 2026-05-09</div>
+  <div class="meta">models/claude-opus-4-7 · models · updated 2026-05-17</div>
   <article><h1>Claude Opus 4.7</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> の最上位モデル。2026年4月16日リリース。コーディング・画像認識・エージェント系ベンチマークで首位を奪還。</p>
 <h2>主要ベンチマーク</h2>
@@ -83,10 +83,61 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>トーン・口調は明示で再現</strong>: warmな応答に依存したプロンプトは「親しみやすく共感的な口調で」のように明示が必要</li>
 <li><strong>知能要求の高い用途は <code>effort</code> を上げる</strong>: コーディング・エージェント用途は <code>xhigh</code>、それ以外の高度な用途は <code>high</code> 以上推奨</li>
 </ol>
+<h2>2026-05-13 GA発表：追加情報</h2>
+<h3>Mythos Previewとの位置づけ</h3>
+<p><a href="../models/claude-mythos.html">claude-mythos</a>（Mythos Preview）が最高能力・最高安全性のモデルだが、サイバー能力の懸念から一般公開を限定。Opus 4.7は新しいサイバーセーフガードを試験した最初のモデルとして先に一般公開された。</p>
+<h3>新機能・API変更</h3>
+<ul>
+<li><strong>xhigh effort</strong>: <code>high</code> と <code>max</code> の間の新effortレベル。Claude Codeではデフォルトを <code>xhigh</code> に変更</li>
+<li><strong>task budgets</strong>（public beta）: 長時間実行でのトークン消費をコントロール</li>
+<li><strong><code>/ultrareview</code></strong>: Claude Codeの新スラッシュコマンド。変更をレビューしてバグ・設計問題をフラグ。Pro/Maxユーザーに3回無料トライアル</li>
+<li><strong>auto mode</strong>: Max ユーザーに拡張。Claudeが自律的にパーミッション判断して長時間タスクを実行</li>
+</ul>
+<h3>追加ベンチマーク（GA版）</h3>
+<table>
+<thead>
+<tr>
+<th>ベンチマーク</th>
+<th>スコア</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GDPval-AA（法律・財務等の経済価値知識業務）</td>
+<td>SOTA</td>
+</tr>
+<tr>
+<td>CyberGym</td>
+<td>73.8%（Opus 4.6から更新）</td>
+</tr>
+<tr>
+<td>SWE-bench Multilingual</td>
+<td>Opus 4.6比改善</td>
+</tr>
+</tbody>
+</table>
+<h3>ファイルシステムベースメモリ</h3>
+<p>長期・マルチセッション作業でのメモリ運用が改善。重要メモを複数セッションをまたいで記憶し、次タスクで参照できる。</p>
+<h3>サイバーセキュリティ用途</h3>
+<p>セキュリティ専門家向けに <strong>Cyber Verification Program</strong> を設置。申請すると脆弱性リサーチ・ペネトレーションテスト・レッドチーム用途でOpus 4.7を利用可能。</p>
+<h3>安全性評価</h3>
+<ul>
+<li>欺瞞・追従・誤用への協力は低率（Opus 4.6と同等）</li>
+<li>誠実性・プロンプトインジェクション耐性はOpus 4.6より改善</li>
+<li>Mythos Previewが依然として最も低い誤整合行動率</li>
+</ul>
+<h2>提供プラットフォーム</h2>
+<ul>
+<li>Claude.ai 全プロダクト・API（<code>claude-opus-4-7</code>）</li>
+<li>Amazon Bedrock</li>
+<li>Google Cloud Vertex AI</li>
+<li>Microsoft Foundry</li>
+</ul>
 <h2>推奨用途</h2>
 <ul>
 <li>コーディング × 長時間エージェント × PC操作</li>
 <li>画像・スクリーンショットベースの操作自動化</li>
+<li>法律・財務など経済価値の高い知識業務（GDPval-AA SOTA）</li>
 </ul>
 <p>コスト最優先の定常タスクは <strong>Sonnet 4.6</strong>（約40%安）が現時点の推奨。</p>
 <h2>関連</h2>
@@ -95,7 +146,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
 <li><a href="../models/claude-mythos.html">claude-mythos</a></li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/n06f6b192ae68" rel="noopener">https://note.com/kajiken0630/n/n06f6b192ae68</a></li></ul></section></article>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/n06f6b192ae68" rel="noopener">https://note.com/kajiken0630/n/n06f6b192ae68</a></li>
+<li><a href="https://www.anthropic.com/news/claude-opus-4-7" rel="noopener">https://www.anthropic.com/news/claude-opus-4-7</a></li></ul></section></article>
 </main>
 </body>
 </html>
