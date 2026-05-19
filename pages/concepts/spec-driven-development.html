@@ -21,7 +21,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>spec-driven-development</h1>
-  <div class="meta">concepts/spec-driven-development · concepts · updated 2026-05-10</div>
+  <div class="meta">concepts/spec-driven-development · concepts · updated 2026-05-19</div>
   <article><h1>仕様駆動開発（Spec-driven Development）</h1>
 <p><strong>仕様駆動開発</strong>とは、AIエージェントにコードを書かせる際に、曖昧な指示のまま渡さず、事前に仕様・要件を整理してから渡すアプローチ。<a href="../concepts/vibe-coding.html">vibe-coding</a> の反省から生まれた。</p>
 <h2>Vibe Codingの限界</h2>
@@ -106,6 +106,41 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>プロンプトの共有資産化</h2>
 <p>AIへの指示をリポジトリで管理する（<code>.claude/skills/</code>・<code>.cursor/rules/</code>・<code>AGENTS.md</code>等）。「3回繰り返したらリポジトリに引っ越す」というルールが実践的。</p>
 <p>個人のチャット履歴に書いた指示は、その人が辞めた瞬間に消える。</p>
+<h2>SDDワークフローの実践（JetBrains / DeepLearning.AI コース）</h2>
+<p>Karpathy自身が2026年に「Vibe Codingの時代は終わり、エージェンティックエンジニアリングへ移行している」と認めた。典型的なSDD実践フローは以下の3フェーズ：</p>
+<h3>Phase 1: コンスティテューション（憲法）の作成</h3>
+<p>プロジェクト全体の合意文書。3つのコアドキュメントで構成：
+- <code>mission.md</code> — なぜ作るか・主要目標
+- <code>tech-stack.md</code> — 技術スタックと開発・デプロイ方針
+- <code>roadmap.md</code> — フェーズ分けされた実装計画</p>
+<p><strong>重要</strong>: コンスティテューションの作成はエージェントに手伝わせてよいが、<strong>最終確認は人間が行う</strong>。ここで使った1時間が、実装フェーズで節約する数日になる。</p>
+<h3>Phase 2: フィーチャーフェーズ（plan → implement → validate のループ）</h3>
+<p>各機能に対して専用ディレクトリを作成（例: <code>specs/YYYY-MM-DD-feature-name/</code>）：
+- <code>plan.md</code> — 番号付きタスクグループのリスト
+- <code>requirements.md</code> — スコープ・主要決定・コンテキスト
+- <code>validation.md</code> — 成功の定義と確認方法</p>
+<p><strong>実装の進め方</strong>: タスクグループ単位で実装し、都度 <code>plan.md</code> と <code>validation.md</code> のステータスを更新する。一括実装は避ける。</p>
+<blockquote>
+<p>誘惑：仕様を更新せず直接エージェントに「修正して」と伝えたくなる。しかし<strong>仕様を真実の源として維持することがSDDの堅牢性の根拠</strong>。</p>
+</blockquote>
+<h3>Phase 3: リプランニング（方向性の再確認）</h3>
+<p>最初の機能実装後に<strong>必ず立ち止まり</strong>、以下を行う：
+- コンスティテューションと実際の進捗の整合性確認
+- ロードマップの優先順位の見直し
+- CHANGELOGの作成・更新</p>
+<blockquote>
+<p>「現在のAI時代において、人間の価値はコードを書くことではなく<strong>思考とアーキテクチャ</strong>にある」</p>
+</blockquote>
+<h2>ツールサポート：Spec Kit（GitHub製）</h2>
+<pre><code class="language-bash">uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+specify init . --integration claude
+</code></pre>
+<p>30以上のエージェント統合に対応。JetBrainsのアプローチと違い、コンスティテューションをコード品質・テスト標準・UX一貫性等の高レベル基準に重点を置く。</p>
+<h2>エンジニアの役割の変化</h2>
+<p>SDDによって開発者の役割は：
+- <strong>旧</strong>: コードを直接書く
+- <strong>新</strong>: アーキテクチャ決定・レビュー・方向性のステアリング</p>
+<p>「いずれ英語が主要なプログラミング言語インターフェースになる」方向への移行が進んでいる。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/vibe-coding.html">vibe-coding</a> — 仕様駆動が反省として生まれたスタイル</li>
@@ -113,7 +148,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計全般</li>
 <li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> — Spec-anchoredの具体的実践：AIに実装ノートを並走させるプロンプト</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — Planモードを持つAIコーディングCLI</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener">https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501</a></li></ul></section></article>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener">https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501</a></li>
+<li><a href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener">https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/</a></li></ul></section></article>
 </main>
 </body>
 </html>
