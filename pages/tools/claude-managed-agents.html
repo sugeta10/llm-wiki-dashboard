@@ -21,7 +21,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-managed-agents</h1>
-  <div class="meta">tools/claude-managed-agents · tools · updated 2026-05-09</div>
+  <div class="meta">tools/claude-managed-agents · tools · updated 2026-05-20</div>
   <article><h1>Claude Managed Agents</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> が提供するエージェント管理プラットフォーム。長期実行エージェントのメモリ管理・自己改善・マルチエージェント協調を提供する。</p>
 <h2>主要機能</h2>
@@ -121,15 +121,25 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
+<h2>セキュリティ機能（2026-05-19 追加）</h2>
+<p>@ClaudeDevs（公式）が発表した2つのセキュリティ改善：</p>
+<h3>Self-hosted Sandboxes</h3>
+<p>エージェントの実行環境を <strong>自社インフラ</strong> または <strong>マネージドサンドボックスプロバイダー</strong> に置ける。Anthropicのクラウドを通さずに実行でき、データが自社セキュリティ境界内に留まる。</p>
+<h3>MCP Tunnels</h3>
+<p>エージェントがセキュリティ境界内のサービス（社内システム・DB等）に接続できるトンネル。<a href="../tools/claude-mcp.html">claude-mcp</a> ベースで、ファイアウォールを越えずに内部リソースに安全にアクセス。</p>
+<p>→ エンタープライズの「データを外に出したくない」という要件に直接応える機能。<a href="../concepts/claude-code-security.html">claude-code-security</a> と組み合わせることで、エンプラ向けClaude展開の完全なセキュリティスタックが構成できる。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
 <li><a href="../tools/claude-finance-agents.html">claude-finance-agents</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>（Pipeline・Fan-Out・Specialist Teamパターンの設計ガイド）</li>
 </ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/new-in-claude-managed-agents" rel="noopener">https://claude.com/blog/new-in-claude-managed-agents</a></li>
-<li><a href="https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1" rel="noopener">https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1</a></li></ul></section></article>
+<li><a href="https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1" rel="noopener">https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1</a></li>
+<li><a href="https://x.com/i/web/status/2056740346529468717" rel="noopener">https://x.com/i/web/status/2056740346529468717</a></li></ul></section></article>
 </main>
 </body>
 </html>

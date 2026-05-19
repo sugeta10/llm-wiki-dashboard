@@ -21,7 +21,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-security</h1>
-  <div class="meta">concepts/claude-code-security · concepts · updated 2026-05-09</div>
+  <div class="meta">concepts/claude-code-security · concepts · updated 2026-05-20</div>
   <article><h1>Claude Code セキュリティ設定と組織展開</h1>
 <p>メルカリ AI Security Team による <a href="../tools/claude-code.html">claude-code</a> の組織展開戦略。エンジニアと非エンジニアの双方が安全かつ生産性高く利用できる設定を MDM で配布する方法論。</p>
 <h2>Claude Code のリスク</h2>
@@ -64,11 +64,22 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>MDM に連携した情報から配布設定を分離することで、それぞれが生産性高く安全に利用できる環境を実現。</p>
+<h2>エンタープライズ展開事例：NOT A HOTEL</h2>
+<p>@oikon48 による紹介（2026-05-19）。エンプラ組織での参考になる3点セット：</p>
+<p><strong>① アクセス制御</strong>
+- <strong>ドメインクレーム + Okta SSO 必須化</strong> — テナントアクセスをIdPで一元管理
+- <strong>IdP プロビジョニング自動化</strong> — シャドーテナント（管理外テナント）を構造的に発生させない
+- 申請対応・退職時の棚卸しを自動化</p>
+<p><strong>② ガードレール</strong>（詳細は元ツイートで続報）</p>
+<p>→ メルカリのMDM戦略と合わせて、「個人端末設定」×「テナントアクセス制御」という2層でClaude Codeのエンプラ展開をカバーできる。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
+<li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener">https://speakerdeck.com/hi120ki/claude-code-organization-settings</a></li></ul></section></article>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener">https://speakerdeck.com/hi120ki/claude-code-organization-settings</a></li>
+<li><a href="https://x.com/i/web/status/2056571858242404578" rel="noopener">https://x.com/i/web/status/2056571858242404578</a></li></ul></section></article>
 </main>
 </body>
 </html>
