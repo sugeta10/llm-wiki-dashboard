@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-large-codebase - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-large-codebase</h1>
+  <div class="meta">concepts/claude-code-large-codebase · concepts · updated 2026-05-20</div>
+  <article><h1>Claude Code 大規模コードベースのベストプラクティス</h1>
+<p>Anthropic公式ベストプラクティスに基づく、大規模コードベースでのClaude Code活用指針。<strong>精度はモデルよりハーネスの整備で決まる</strong>というのが根幹の主張。</p>
+<p>関連: <a href="../tools/claude-code.html">claude-code</a> | <a href="../concepts/claude-md-rules.html">claude-md-rules</a> | <a href="../concepts/agentic-coding.html">agentic-coding</a></p>
+<h2>Claude Codeはインデックスを作らない</h2>
+<p>RAGツールと異なり、Claude Codeはコードベース全体をベクトル化しない。代わりにファイルツリーをたどり、grepで必要箇所を探す（= 常に<strong>ライブのコードベース</strong>を見る）。</p>
+<p>これは古いインデックスを参照するリスクを排除する一方、「どこを見ればいいか」の手がかりがないと探索でコンテキストを使い切るリスクがある。CLAUDE.mdとハーネス整備がその手がかりを与える。</p>
+<h2>ハーネスの5層</h2>
+<table>
+<thead>
+<tr>
+<th>層</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLAUDE.md</td>
+<td>文脈</td>
+</tr>
+<tr>
+<td>hooks</td>
+<td>自動化</td>
+</tr>
+<tr>
+<td>skills</td>
+<td>専門知識</td>
+</tr>
+<tr>
+<td>plugins</td>
+<td>配布</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>外部ツール接続</td>
+</tr>
+</tbody>
+</table>
+<p><strong>積む順番が重要</strong>: 土台（CLAUDE.md → hooks）が固まってから skills/plugins/MCPを足す。いきなりMCPを生やすと不安定になる。</p>
+<h2>CLAUDE.md の設計原則</h2>
+<ul>
+<li><strong>ルートは薄く</strong>: 全体像と「ここを踏むと事故る」ハマりどころだけ</li>
+<li><strong>ローカル規約はサブディレクトリに</strong>: Claude はディレクトリを下りながらCLAUDE.mdを順に積み上げるため、深い階層の文脈もちゃんと届く</li>
+<li><strong>定期的な棚卸し</strong>: モデルが進化すると古いルールが足かせになる。3〜6ヶ月ごと、または大きなモデルアップデート後に見直す</li>
+</ul>
+<h2>起動位置: ルートではなくサブディレクトリ</h2>
+<p>タスクに関係するサブディレクトリでClaude Codeを起動すると精度が出る。親ディレクトリのCLAUDE.mdは自動で読まれるため、コンテキストは失われない。サブディレクトリのCLAUDE.mdにはそのサービス固有のテスト・リントコマンドを書く（全スイート実行のタイムアウトとコンテキスト汚染を防ぐ）。</p>
+<h2>hooks の真価: 自己改善ループ</h2>
+<p>hooks の主な用途は「止めるスクリプト」ではなく<strong>セットアップを育てる</strong>こと:</p>
+<ul>
+<li><strong>stop hook</strong>: セッション終了時にその回の学びをCLAUDE.mdの更新案として出力。文脈が新しいうちに反映できる</li>
+<li><strong>start hook</strong>: セッション開始時にチーム固有の文脈を動的に注入</li>
+<li>リント・フォーマットは hooks で機械的に実行 → 「覚えといてね」より安定</li>
+</ul>
+<h2>個人開発者向けの絞り込み</h2>
+<p>エンタープライズ向けの「専任チーム・DRI・エージェントマネージャー」は不要。</p>
+<p>やることのシンプルな順序:
+1. CLAUDE.mdをルートとサブディレクトリに分けて薄く整える
+2. stop hookを1つ入れて自己改善を回す
+3. 土台が安定したらskills/plugins/MCPを追加</p>
+<h2>古い設定は能力を制限する</h2>
+<p>「リファクタは1ファイルずつ」といった古モデル向けの制約が、最新モデルではかえって能力を殺すことがある。設定の棚卸しは定期的に。</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a> — Claude Code本体の概要</li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — CLAUDE.md行動ルール体系</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIが自律的にコードを書くスタイル全般</li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — 自己改善ループの設計パターン</li>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener">https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55</a></li></ul></section></article>
+</main>
+</body>
+</html>

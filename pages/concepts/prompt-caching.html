@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>prompt-caching - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>prompt-caching</h1>
+  <div class="meta">concepts/prompt-caching · concepts · updated 2026-05-20</div>
+  <article><h1>プロンプトキャッシング（Prompt Caching）</h1>
+<p>Anthropic Claude APIが提供する<strong>プロンプトの前処理結果を再利用する機能</strong>。同一のプレフィックスを含むリクエストで、処理時間とコストを大幅に削減できる。</p>
+<p>関連: <a href="../concepts/prompt-cache-prewarm.html">prompt-cache-prewarm</a> | <a href="../concepts/prompt-engineering.html">prompt-engineering</a> | <a href="../companies/anthropic.html">anthropic</a></p>
+<h2>キャッシュの有効化方法</h2>
+<h3>自動キャッシュ（推奨）</h3>
+<p>リクエストのトップレベルに <code>cache_control</code> を1つ追加するだけ。マルチターン会話で最後のキャッシュ可能ブロックに自動でキャッシュブレークポイントを適用し、会話が伸びるにつれて自動で前に進む。</p>
+<pre><code class="language-python">response = client.messages.create(
+    model=&quot;claude-opus-4-7&quot;,
+    max_tokens=1024,
+    cache_control={&quot;type&quot;: &quot;ephemeral&quot;},
+    system=&quot;...&quot;,
+    messages=[...]
+)
+</code></pre>
+<h3>明示的キャッシュブレークポイント</h3>
+<p>個別のコンテンツブロックに <code>cache_control</code> を直接配置する方法。変更頻度が異なる複数セクションをキャッシュしたい場合や、精密な制御が必要な場合に使う。最大4箇所まで設定可能。</p>
+<p>キャッシュ参照の順序: <code>tools</code> → <code>system</code> → <code>messages</code></p>
+<h2>仕組み</h2>
+<ol>
+<li>リクエスト送信時、指定されたキャッシュブレークポイントまでのプレフィックスがキャッシュに存在するかチェック</li>
+<li>キャッシュヒット → 前処理をスキップして応答生成</li>
+<li>キャッシュミス → フルプロンプトを処理し、キャッシュに書き込んでから応答生成</li>
+</ol>
+<p>デフォルトTTL: <strong>5分</strong>（リクエストのたびに無料で更新される）。1時間TTLも別料金で利用可能。</p>
+<h2>価格（Claudeモデル共通の倍率）</h2>
+<table>
+<thead>
+<tr>
+<th>種別</th>
+<th>倍率（ベース入力トークン比）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5分キャッシュ書き込み</td>
+<td>1.25倍</td>
+</tr>
+<tr>
+<td>1時間キャッシュ書き込み</td>
+<td>2倍</td>
+</tr>
+<tr>
+<td>キャッシュ読み込み</td>
+<td><strong>0.1倍</strong></td>
+</tr>
+<tr>
+<td>通常入力</td>
+<td>1.0倍</td>
+</tr>
+</tbody>
+</table>
+<h2>ルックバックの仕組み（明示的ブレークポイント）</h2>
+<ul>
+<li>キャッシュ書き込みはブレークポイントの位置のみ</li>
+<li>キャッシュ読み込みはブレークポイントから最大<strong>20ブロック</strong>さかのぼって検索</li>
+<li><strong>よくある誤り</strong>: タイムスタンプや毎回変わる内容のブロックにブレークポイントを置くとヒットしない。静的プレフィックスの末尾に置くのが正しい</li>
+</ul>
+<h2>キャッシュが無効化されるトリガー</h2>
+<table>
+<thead>
+<tr>
+<th>変更内容</th>
+<th>影響範囲</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ツール定義の変更</td>
+<td>tools + system + messages 全無効</td>
+</tr>
+<tr>
+<td>web search / citations ON/OFF</td>
+<td>system + messages 無効</td>
+</tr>
+<tr>
+<td>tool_choice の変更</td>
+<td>messages のみ無効</td>
+</tr>
+<tr>
+<td>画像の追加・削除</td>
+<td>messages のみ無効</td>
+</tr>
+</tbody>
+</table>
+<h2>キャッシュ対象・非対象</h2>
+<p><strong>キャッシュ可能</strong>: tools定義、system、テキスト/画像/ドキュメント/tool use/tool results</p>
+<p><strong>キャッシュ不可</strong>: thinking ブロック（直接指定不可。ただし前のターンとして渡すと間接的にキャッシュされる）、サブコンテンツブロック（citations等）、空テキストブロック</p>
+<h2>パフォーマンスの追跡</h2>
+<p>レスポンスの <code>usage</code> フィールドで確認:
+- <code>cache_read_input_tokens</code>: キャッシュから読み込んだトークン数
+- <code>cache_creation_input_tokens</code>: 新たにキャッシュに書き込んだトークン数
+- <code>input_tokens</code>: 最後のブレークポイント以降のトークン数（これだけでは全体ではない）</p>
+<p>総入力トークン = <code>cache_read</code> + <code>cache_creation</code> + <code>input_tokens</code></p>
+<h2>ベストプラクティス</h2>
+<ul>
+<li>マルチターン会話 → <strong>自動キャッシュから始める</strong></li>
+<li>変更頻度の異なる複数セクション → 明示的ブレークポイントを使い分ける</li>
+<li>静的コンテンツ（システムプロンプト・ツール定義・大量コンテキスト）をプロンプトの先頭に配置</li>
+<li>会話が20ブロック以上伸びる見込みなら2つ目のブレークポイントを事前に設定しておく</li>
+<li>1時間キャッシュは「5分以上間隔が空くが1時間以内に再利用する」用途に最適</li>
+</ul>
+<h2>キャッシュ分離</h2>
+<p>2026-02-05以降、Claude APIはワークスペース単位でキャッシュ分離（従来は組織単位）。Bedrock/Vertex AIは引き続き組織単位。</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/prompt-cache-prewarm.html">prompt-cache-prewarm</a> — キャッシュを事前ウォームアップして初回レイテンシを削減するテクニック</li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計全般</li>
+<li><a href="../companies/anthropic.html">anthropic</a> — Claude API提供元</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — Claude Code内でもキャッシュ戦略が関連</li>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener">https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache</a></li></ul></section></article>
+</main>
+</body>
+</html>
