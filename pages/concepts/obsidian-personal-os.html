@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>obsidian-personal-os - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>obsidian-personal-os</h1>
+  <div class="meta">concepts/obsidian-personal-os · concepts · updated 2026-05-21</div>
+  <article><h1>Obsidian パーソナルOS設計</h1>
+<p>ObsidianをAI自動化による「崩壊しないパーソナルオペレーティングシステム」として設計するアーキテクチャパターン（@cyrilXBT 提唱）。<strong>Storage（Obsidian）→ Intelligence（Claude Code + MCP）→ Automation（N8N）</strong>の3層構造で、生産性システムが壊れる3要因（手動メンテ負担・複雑化・知性ゼロ）を解決する。</p>
+<p>関連: <a href="../tools/claude-code-obsidian-project.html">claude-code-obsidian-project</a> / <a href="../tools/obsidian-skills.html">obsidian-skills</a> / <a href="../concepts/llm-wiki.html">llm-wiki</a></p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-21: <strong>3層アーキテクチャ</strong> — Layer 1: Storage（Obsidian本体・プレーンテキスト、人間/機械可読・永続）/ Layer 2: Intelligence（Claude Code + Filesystem MCP でvaultを読み・横断接続し・更新）/ Layer 3: Automation（N8N on $5サーバー、スケジューリング・API呼び出し・システム間データ転送）。「ツールを使う」から「システムが動く」への転換は3層すべてが揃うことで起きる</li>
+<li>2026-05-21: <strong>8フォルダ固定構造</strong> — <code>00-CAPTURE</code>（未処理の一次受け・判断不要）/ <code>01-ACTIVE</code>（projects/areas/daily）/ <code>02-RESOURCES</code>（参照ライブラリ）/ <code>03-SYSTEM</code>（CLAUDE.md・skills/・workflows/・logs/）/ <code>04-GENERATED</code>（Claude出力専用・手動編集禁止）/ <code>05-QUEUE</code>（Claudeへのタスク投入口）/ <code>06-CALENDAR</code>（時系列情報）/ <code>07-ARCHIVE</code>（完了・陳腐化、削除せずここへ）。フォルダ数は固定・相互排他・重複なし</li>
+<li>2026-05-21: <strong>CLAUDE.md単一ソース原則</strong> — Identity・Life Areas（Health/Finance/Relationships/Learning/Career）・Active Projects・Current Priorities・Standards・Operating Rules を1ファイルに集約。優先度変更時はCLAUDE.md 1ファイルだけ更新すれば以降の全ワークフローに伝播。毎週月曜にCurrent Prioritiesのみ5分更新が唯一の必須メンテ習慣</li>
+<li>2026-05-21: <strong>5つの自動ワークフロー</strong>（N8N cron）</li>
+<li>① Morning Briefing（毎朝6時）: CLAUDE.md読んで「今日の最優先1件・当日イベント・オープンループ・プロジェクトパルス」を300語以内で生成 → <code>GENERATED/briefings/[DATE]-morning.md</code></li>
+<li>② Capture Processor（毎晩20時）: 当日の00-CAPTUREファイルをTASK/IDEA/REFERENCE/NOTE/EVENTに分類して自動配置・アーカイブ</li>
+<li>③ Weekly Review Generator（毎週日曜19時）: 過去7日のデイリーノート+プロジェクト変更を分析しレビュー生成・CLAUDE.md Current Priorities自動更新</li>
+<li>④ Queue Processor（2時間毎）: <code>05-QUEUE</code> のファイル名（動詞+トピック形式: <code>RESEARCH-xxx.md</code>、<code>DRAFT-yyy.md</code> 等）を解析してタスク実行・<code>GENERATED</code> に出力</li>
+<li>⑤ Project Health Monitor（毎週月曜7時）: 全アクティブプロジェクトのSTATUS/EVIDENCE/NEXT ACTIONを評価。7日無活動はQUEUEに <code>REVIEW-[project].md</code> を自動生成</li>
+<li>2026-05-21: <strong>崩壊防止メカニズム3点</strong> — ① 00-CAPTUREキャプチャ安全網（忙しい日も「とりあえず全部CAPTURE」でOK、processor夜間処理）② ARCHIVE削除禁止ルール（完了物は削除せず07-ARCHIVEへ移動、日常操作では参照しない）③ CLAUDE.md単一真実（5分更新で全ワークフローに反映）</li>
+<li>2026-05-21: <strong>1ウィークエンド構築ロードマップ</strong> — 土曜AM(2h): 8フォルダ作成+CLAUDE.md自分情報で記入+最初のプロジェクトoverview作成 → 土曜PM(1h): Claude Desktop + Filesystem MCP設定+Morning Briefing手動実行で動作確認 → 土曜夜(30m): QUEUEに実タスク投入してアウトプット体感 → 日曜AM(2h): N8N構築+Morning Briefing cron化 → 日曜PM(2h): 残り4ワークフロー追加</li>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2056924424838815824" rel="noopener">https://x.com/i/web/status/2056924424838815824</a></li></ul></section></article>
+</main>
+</body>
+</html>
