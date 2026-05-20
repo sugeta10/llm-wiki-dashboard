@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-coding-lang-benchmark - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-coding-lang-benchmark</h1>
+  <div class="meta">concepts/ai-coding-lang-benchmark · concepts · updated 2026-05-20</div>
+  <article><h1>AIコーディング言語ベンチマーク（Claude Code版）</h1>
+<p><a href="../tools/claude-code.html">claude-code</a> に13言語で簡易 git を実装させ、時間・コスト・成功率を定量比較した実験（mametter/Zenn、2026-03 実施）。Ruby・Python・JavaScript が最速・最安で、静的型付け言語は 1.4〜2.6 倍コスト増の傾向。</p>
+<p>関連: <a href="../tools/claude-code.html">claude-code</a> / <a href="../concepts/agentic-coding.html">agentic-coding</a> / <a href="../concepts/vibe-coding.html">vibe-coding</a></p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-20: 速さの原因として著者が挙げた仮説（複合的と推測）: ①型システムの有無（動的型付けが有利）、②短く簡潔に書けること、③AIの習熟度（Python/Ruby/JS はトレーニングデータが豊富）、④言語固有の難しさ（C のメモリ管理・Rust の所有権）</li>
+<li>2026-05-20: LOC が少なくても速いとは限らない。OCaml・Haskell は行数最少クラスだが時間・コストは中位以下。思考トークン消費が多い可能性</li>
+<li>2026-05-20: 時間 ≒ コストの散布図が示す通り、所要時間とコストはほぼ比例する</li>
+<li>2026-05-20: 型なし動的型付けでもテスト外パスの型エラーリスクはある。ただし型エラーは検出しやすいバグで、検出しにくいロジックバグが同程度に混入するなら型検査の有無以前の問題では、という著者の見解</li>
+<li>2026-05-20: 差は最大2倍程度だが、プロンプト→待ち→次タスクのサイクルを高頻度で繰り返す実開発では体感差・集中力的に大きい、との著者主張</li>
+<li>2026-05-20: 将来的に「初期は動的型付けでスピーディーに開発 → 仕様が固まったら静的型付けに移行」戦略がより現実的になる可能性。コーディングエージェントは言語移植に強い印象があるため</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-20: 実験条件: Claude Opus 4.6 (high effort)、各言語20回試行、タスクは2段階（v1=新規作成、v2=機能拡張）</li>
+<li>2026-05-20: 600回実行中テスト失敗は3回のみ（Rust 2回・Haskell 1回）</li>
+<li>2026-05-20: 平均コスト上位3言語: Ruby $0.36、Python $0.38、JavaScript $0.39（v1+v2合算）</li>
+<li>2026-05-20: 平均コスト下位3言語: Ruby/Steep $0.84、Haskell $0.74、C $0.74</li>
+<li>2026-05-20: 所要時間上位3言語: Ruby 73.1s±4.2s、Python 74.6s±4.5s、JavaScript 81.1s±5.0s（標準偏差も最小）</li>
+<li>2026-05-20: 静的型付け言語の倍率（対 Ruby）: Go 1.4倍、Java 1.6倍、Rust 1.5倍、TypeScript 1.9倍、C 2.1倍、Haskell 2.4倍、Ruby/Steep 2.6倍</li>
+<li>2026-05-20: v1（新規作成）では言語差が大きく出る。プロジェクト設定ファイル（Cargo.toml等）の生成コストが影響している可能性</li>
+<li>2026-05-20: 実験コード・結果は GitHub (mame/ai-coding-lang-bench) で公開。実行ごとの生成コードも data ブランチに公開</li>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/mametter/articles/3e8580ec034201" rel="noopener">https://zenn.dev/mametter/articles/3e8580ec034201</a></li></ul></section></article>
+</main>
+</body>
+</html>
