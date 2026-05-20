@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>llm-doc-management - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>llm-doc-management</h1>
+  <div class="meta">concepts/llm-doc-management · concepts · updated 2026-05-20</div>
+  <article><h1>LLMコンテキスト向けコードベース文書化</h1>
+<p>Claude等のLLMと協働する際、アプリの構造・フローを<strong>HTML + JSON</strong>の形式でドキュメント化し、そのJSONをLLMのコンテキストとして渡す設計パターン。</p>
+<h2>DaveJ パターン（最も拡散・いいね6080）</h2>
+<p><code>@DaveJ</code> が提唱したシングルページHTML + JSONによるフロー文書化。</p>
+<blockquote>
+<p>Ask Claude to document and describe the main flows in your app and output in a single page html + json data file. Incredibly useful for humans and the JSON file is very useful for explaining the flow to the LLM when working on new features/bugfixes.</p>
+</blockquote>
+<h3>プロンプト全文</h3>
+<pre><code>Create a single page html that documents workflows between packages and components in the app.
+Have all the components/packages on the page and I can click on different actions
+like &quot;Invite new user&quot; or &quot;todesktop build&quot; or {insert other flows here}
+and then [highlight the relevant components and show the flow]
+</code></pre>
+<p><strong>出力物の二重活用:</strong>
+- <strong>HTMLファイル</strong>: 人間がクリックで各フローを視覚確認
+- <strong>JSONファイル</strong>: 次のClaude依頼の冒頭に貼り付けてコンテキスト提供</p>
+<h2>そう氏パターン（日本語版）</h2>
+<p><code>@so_ainsight</code> による日本語プロンプト変種：</p>
+<blockquote>
+<p>「このリポジトリ／このプロダクトの構成を、サービス単位で整理して。外部に見せるほどキレイじゃなくていいから、誰が読んでも迷子にならない粒度で」</p>
+</blockquote>
+<p>HTMLで全体像を確認し、JSONを次の依頼の最初に貼る、という同じ2段活用。</p>
+<h2>Obsidianでのドキュメント管理（GianMattya）</h2>
+<p><code>@GianMattya</code> による別アプローチ：LLMにドキュメントを自由生成させるとコンテキストを圧迫する構造になりがち。Obsidianで管理し常に整理された構造を維持することで、開発時に必要な部分だけを読み込めるようにする。</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a> — このパターンの実行プラットフォーム</li>
+<li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a> — 大規模コードベースでの活用指針</li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様を文書化してLLMに渡すアプローチ</li>
+<li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> — 実装と並走でノートを生成させる関連手法</li>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2053867258653339746" rel="noopener">https://x.com/i/web/status/2053867258653339746</a></li>
+<li><a href="https://x.com/i/web/status/2054085519642931466" rel="noopener">https://x.com/i/web/status/2054085519642931466</a></li>
+<li><a href="https://x.com/i/web/status/2055227037770719600" rel="noopener">https://x.com/i/web/status/2055227037770719600</a></li>
+<li><a href="https://x.com/i/web/status/2055818312970637823" rel="noopener">https://x.com/i/web/status/2055818312970637823</a></li></ul></section></article>
+</main>
+</body>
+</html>
