@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>codex-agent-loop - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>codex-agent-loop</h1>
+  <div class="meta">concepts/codex-agent-loop · concepts · updated 2026-05-22</div>
+  <article><h1>Codex エージェントループ</h1>
+<p><a href="../tools/openai-codex.html">openai-codex</a> の Codex CLI が採用するエージェントループの内部実装。OpenAI Responses API を使ってユーザー・モデル・ツールの三者間インタラクションを制御する中核ロジック。Michael Bolin（OpenAI MTS）による公式解説シリーズ第1弾（2026-01-23）。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-01-23: <code>previous_response_id</code> を意図的に使わない設計判断：ZDR（Zero Data Retention）対応と完全ステートレス性のトレードオフを優先。ステートレス化でプロバイダー側のキャッシュ保持義務が不要になる</li>
+<li>2026-01-23: MCP ツールは Codex CLI のサンドボックス外で動作する——MCP サーバー側が自前でガードレールを実装する責任を負う（Codex の shell ツールのみサンドボックス適用）</li>
+<li>2026-01-23: コンテキストウィンドウの増大は会話ターン数に対して<strong>二次オーダー</strong>で成長する。プロンプトキャッシュのヒット率が高ければ実質的に線形コストに抑えられる</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-01-23: <strong>エージェントループの基本構造</strong> — ユーザー入力 → プロンプト構築 → Responses API 推論 → ツールコール or アシスタントメッセージ の繰り返し。1ターン = 1アシスタントメッセージで終了</li>
+<li>2026-01-23: <strong>Responses API エンドポイント</strong> — 認証方式によりエンドポイントが分岐：ChatGPT ログインは <code>chatgpt.com/backend-api/codex/responses</code>、APIキーは <code>api.openai.com/v1/responses</code>、ローカル（<code>--oss</code>）は <code>localhost:11434/v1/responses</code></li>
+<li>2026-01-23: <strong>プロンプトロール優先度</strong> — <code>system &gt; developer &gt; user &gt; assistant</code> の降順。<code>instructions</code> フィールドが system/developer ロール、<code>input</code> フィールドの各アイテムが会話履歴を担う</li>
+<li>2026-01-23: <strong>input の構成順序（初回ターン）</strong>：①サンドボックス権限説明（developer ロール）→ ②developer_instructions（オプション）→ ③ユーザー指示（AGENTS.md 等の集約）→ ④環境コンテキスト（cwd・shell）→ ⑤ユーザーメッセージ</li>
+<li>2026-01-23: <strong>プロンプトキャッシュ保持の条件</strong> — ツールリストの順序変動・モデル切替・サンドボックス設定変更・カレントディレクトリ変更はキャッシュミスを引き起こす。MCP サーバーのツール順不整合バグ（<a href="https://github.com/openai/codex/pull/2611">PR #2611</a>）で発覚した実例あり</li>
+<li>2026-01-23: <strong>mid-conversation の設定変更対応</strong> — サンドボックスや cwd が変わっても <code>input</code> の既存アイテムを書き換えず、<strong>新しいメッセージを末尾に追記</strong>することでキャッシュプレフィックスを保護する</li>
+<li>2026-01-23: <strong>コンテキスト圧縮（Compaction）</strong> — <code>auto_compact_limit</code> 超過時に <code>/responses/compact</code> エンドポイントを自動呼び出し。返却される <code>type=compaction</code> アイテム（<code>encrypted_content</code> 付き）が以降の <code>input</code> を代替する。以前は <code>/compact</code> コマンドの手動実行のみだった</li>
+<li>2026-01-23: <strong>reasoning の扱い</strong> — モデルが出力した <code>type=reasoning</code> アイテムは次の推論リクエストの <code>input</code> に含める必要がある。ZDR 環境では <code>encrypted_content</code> がサーバー側で復号される（OpenAI は復号キーのみ保持・データは保持しない）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/openai-codex.html">openai-codex</a> — Codex CLIの概要・商用利用・Claude Codeとの比較</li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a> — プロンプトキャッシュの仕組みとベストプラクティス（Claude版だがOpenAI版と設計思想が共通）</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — エージェントアーキテクチャのパターン集</li>
+<li><a href="../concepts/12-factor-agents.html">12-factor-agents</a> — 信頼性の高いエージェント設計原則（ステートレス設計原則と共鳴）</li>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://openai.com/index/unrolling-the-codex-agent-loop/" rel="noopener">https://openai.com/index/unrolling-the-codex-agent-loop/</a></li></ul></section></article>
+</main>
+</body>
+</html>
