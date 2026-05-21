@@ -225,38 +225,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ol>
 <p>Claudeに「自分の結果を確認できるツール」（テスト・スクリーンショット等）を与えると自律的に反復改善できる。</p>
 <h3>Tips 5-6: コンテキスト階層の設計</h3>
-<p>CLAUDE.md の読み込み階層（優先度順）：</p>
-<table>
-<thead>
-<tr>
-<th>階層</th>
-<th>パス</th>
-<th>対象</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Enterprise policy</td>
-<td><code>/Library/Application Support/ClaudeCode/CLAUDE.md</code></td>
-<td>全社員</td>
-</tr>
-<tr>
-<td>Global</td>
-<td><code>~/.claude/CLAUDE.md</code></td>
-<td>自分の全プロジェクト</td>
-</tr>
-<tr>
-<td>Project (shared)</td>
-<td><code>CLAUDE.md</code></td>
-<td>チーム（Gitにコミット）</td>
-</tr>
-<tr>
-<td>Project (local)</td>
-<td><code>CLAUDE.local.md</code></td>
-<td>自分だけ</td>
-</tr>
-</tbody>
-</table>
+<p>Memory / Slash commands / Permissions / MCP servers の4種類すべてが同一の4層（Enterprise → Global → Project shared → Project local）に従う。詳細は <a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> を参照。</p>
 <p><code>/memory</code> コマンドで現在読み込まれているすべての記憶ファイルを確認できる。<code>#</code> でその場で記憶を追加するとどのファイルに保存するか選択できる。</p>
 <h3>Tip 7: チーム設定をGitにコミット</h3>
 <p>MCP サーバー・スラッシュコマンド・権限設定をプロジェクトの <code>.claude/</code> 以下に置いてGitコミットすることで、チーム全員が自動的に同じ設定で使える。</p>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hermes-agent - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>hermes-agent</h1>
+  <div class="meta">tools/hermes-agent · tools · updated 2026-05-22</div>
+  <article><h1>Hermes Agent</h1>
+<p>Nous Researchが開発したオープンソースAIエージェント基盤。<strong>自己進化するスキル</strong>・<strong>3層メモリシステム</strong>・<strong>GEPAオフライン最適化</strong>の3機能を統合した「使えば使うほど賢くなる」エージェント。2ヶ月でGitHubスター9万を超えた。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-13: @akshay_pachaar によるマスタークラス記事。Hermes Agentは「メモリ+スキル+学習ループ」を1フレームワークで実現する唯一のオープンソースエージェントと主張</li>
+<li>2026-05-13: <a href="../tools/openclaw.html">openclaw</a>との比較：「HermesはメッセージングGWの周りに学習エージェントをパッケージ、OpenClawはエージェントの周りにメッセージングGWをパッケージ」（Kiloブログの表現）</li>
+<li>2026-05-13: GEPA（Genetic-Pareto Prompt Evolution）はICRL 2026 Oral論文として発表済み。スキルのオフライン最適化。1回の実行コスト約$2〜10。GPUは不要（API呼び出しのみ）</li>
+<li>2026-05-13: Curatorは7日間非稼働+2時間アイドル時にバックグラウンドで起動。30日未使用スキルをstale、90日でarchive。自動削除はしない（archiveは1コマンドで復元可能）</li>
+<li>2026-05-13: マルチエージェントプロファイル機能あり。プログラマー・デザイナー・リサーチャーを完全分離（設定・メモリ・スキル・SOUL.mdが各自独立）</li>
+<li>2026-05-13: Claude Code CLIを下位エグゼキューターとして使う「スタッフエンジニア」モード設定が可能。Claude Maxサブスクをベースに利用できる</li>
+<li>2026-05-13: エージェントの「自己評価バイアス」問題（タスク結果を常に高く評価しすぎる）をGEPAが外部から補完する設計</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-13: GEPA論文はICRL 2026 Oral、NousResearch/hermes-agent-self-evolution リポジトリで公開（MITライセンス）</li>
+<li>2026-05-13: 公式Skills Hubに687スキル（built-in 87 + optional 79 + Anthropic製16 + LobeHub製505）</li>
+<li>2026-05-13: エージェントループの上限は90ターン。サブエージェントもこのバジェットを共有</li>
+</ul>
+<h2>アーキテクチャ</h2>
+<table>
+<thead>
+<tr>
+<th>コンポーネント</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SOUL.md</strong></td>
+<td>アイデンティティ層。システムプロンプト先頭に挿入。手書き・静的</td>
+</tr>
+<tr>
+<td><strong>MEMORY.md</strong> (2,200字上限)</td>
+<td>環境・プロジェクト慣習・教訓。セッション開始時に注入</td>
+</tr>
+<tr>
+<td><strong>USER.md</strong> (1,375字上限)</td>
+<td>ユーザープロファイル（名前・通信スタイル等）</td>
+</tr>
+<tr>
+<td><strong>SQLite (FTS5)</strong></td>
+<td>全セッション履歴をフルテキスト検索可能な形で保存（Tier 2メモリ）</td>
+</tr>
+<tr>
+<td><strong>外部メモリプロバイダー</strong></td>
+<td>8種のプラグイン（Tier 3メモリ）。同時有効化は1つのみ</td>
+</tr>
+<tr>
+<td><strong>スキル</strong></td>
+<td>エージェントが自作するMarkdown手順書。Curatorがガベージコレクション</td>
+</tr>
+<tr>
+<td><strong>GEPA</strong></td>
+<td>実行トレースを解析し進化的探索でスキルをオフライン最適化するパイプライン</td>
+</tr>
+</tbody>
+</table>
+<p>メモリ3層の使い分け：Tier 1（常時コンテキスト内、容量小）→ Tier 2（SQLite検索、容量無制限）→ Tier 3（外部プロバイダー、プリフェッチ）</p>
+<h2>自己進化ループ</h2>
+<pre><code>1. エージェントが複雑タスクを試行錯誤で解決（5+ツール呼び出し等でトリガー）
+2. skill_manageツールでSKILL.mdを自作保存
+3. Curatorが定期的に統合・整理（archive/consolidate）
+4. GEPAがオフラインで実行トレースを分析 → 改善案をPR形式で提案（直接コミットしない）
+</code></pre>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/openclaw.html">openclaw</a> — 直接競合。アーキテクチャ哲学が真逆</li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — Hermesのスキル自己改善は同コンセプトを大規模に実装</li>
+<li><a href="../tools/dspy.html">dspy</a> — GEPAはDSPyのCOPRO/GEPA最適化器と関連する概念</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Hermesのプロファイル機能はマルチエージェント設計パターンの実装例</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — プログラマープロファイルでのサブエグゼキューターとして連携可能</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — Claude Skillsと類似した「永続スキル」の概念</li>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054564519280804028" rel="noopener">https://x.com/i/web/status/2054564519280804028</a></li></ul></section></article>
+</main>
+</body>
+</html>
