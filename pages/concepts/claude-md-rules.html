@@ -21,7 +21,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-md-rules</h1>
-  <div class="meta">concepts/claude-md-rules · concepts · updated 2026-05-10</div>
+  <div class="meta">concepts/claude-md-rules · concepts · updated 2026-05-21</div>
   <article><h1>CLAUDE.md 行動ルール設計</h1>
 <p><strong>CLAUDE.md</strong> は <a href="../tools/claude-code.html">claude-code</a> の動作を規定する行動契約ファイル。ウィッシュリストではなく、「この命令でどの失敗モードを閉じるか」を根拠に記述する。</p>
 <h2>Karpathy 発端</h2>
@@ -165,13 +165,29 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
+<h2>ROI試算（2026-05-17時点の推計）</h2>
+<h3>観察ログ（未検証）</h3>
+<ul>
+<li>2026-05-17: @0xDepressionn がCLAUDE.md未設定時のコスト試算を公開。開発者1人あたり週$975の無駄（コンテキスト再説明$375/週 + 不要変更リバート$225/週 + 忘却による誤提案$375/週）。5人チームで年$253,500</li>
+<li>2026-05-17: GitHub Trendingで #1 を記録（82,000スター・7,800フォーク時点）。セットアップ時間は合計2時間と試算</li>
+<li>2026-05-17: CLAUDE.md の3セクション構造を提案: <strong>DEFAULTS</strong>（コンテキスト・スタック・口調）/ <strong>BEHAVIOR</strong>（スコープ・変更確認・プロダクション制限）/ <strong>MEMORY+STACK</strong>（技術選定経緯・MEMORY.md決定ログ・ERRORS.md失敗ログ）</li>
+</ul>
+<h3>検証済み事実</h3>
+<p>（なし — 上記は個人アカウントの試算。スター数は取得時点の観測値）</p>
+<h2>MEMORY.md + ERRORS.md 補助ファイル</h2>
+<p><a href="../concepts/claude-md-rules.html">claude-md-rules</a> の記憶補完として、同リポジトリルートに以下を併置する実践が広がっている：</p>
+<ul>
+<li><strong>MEMORY.md</strong>: セッション間で持ち越したい意思決定ログ（「PrismaではなくDrizzleを選んだ理由」等）</li>
+<li><strong>ERRORS.md</strong>: 過去の失敗パターン記録（Claudeが再度同じ誤提案をするのを防ぐ）</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2053116311132155938" rel="noopener">https://x.com/i/web/status/2053116311132155938</a></li></ul></section></article>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2053116311132155938" rel="noopener">https://x.com/i/web/status/2053116311132155938</a></li>
+<li><a href="https://x.com/i/web/status/2055999112470839383" rel="noopener">https://x.com/i/web/status/2055999112470839383</a></li></ul></section></article>
 </main>
 </body>
 </html>
