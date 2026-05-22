@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>grill-me - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>grill-me</h1>
+  <div class="meta">tools/grill-me · tools · updated 2026-05-23</div>
+  <article><p>Matt Pocock作の3行で書かれた<a href="../concepts/claude-skills.html">Agent Skill</a>。<code>/grill-me</code> をコマンドとして使い、実装前にAIが徹底的に要件を掘り下げる対話セッションを行わせる。</p>
+<h2>概要</h2>
+<p>スキル本文は以下の3行のみ：</p>
+<pre><code>この計画のあらゆる側面について、私たちが共通の認識に達するまで、徹底的に私に質問を投げかけてください。
+設計のツリーを枝分かれの先まで一つひとつたどり、決定事項間の依存関係を順番に解決していきましょう。
+各質問に対し、あなたの推奨する回答も併せて提示してください。
+
+質問は一度に一つずつお願いします。
+
+もしコードベースを探索することで答えが得られる質問であれば、質問する代わりにコードベースを調査してください。
+</code></pre>
+<p>AIが2〜5択形式で質問を繰り返し、1セッションで最大18〜24回深掘りする。セッション履歴自体が実装計画になるため、「OK。これで実装して」と続けることでシームレスに実装フェーズへ移行できる。</p>
+<h2>プランモードとの比較</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>プランモード（opusplan）</th>
+<th>grill-me</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>スタイル</td>
+<td>AIが単独で詳細計画を生成</td>
+<td>AIとユーザーが対話しながら共同作成</td>
+</tr>
+<tr>
+<td>計画修正</td>
+<td>一部修正 → 全体書き直しのループ</td>
+<td>段階的に積み上げるため修正が少ない</td>
+</tr>
+<tr>
+<td>コンテキスト引き継ぎ</td>
+<td>計画→実装間でモード切替が必要</td>
+<td>セッション継続でそのまま実装へ</td>
+</tr>
+</tbody>
+</table>
+<p>実践報告（ryonakae）では <code>/grill-me</code> 採用後にプランモードを使わなくなったとのこと。</p>
+<h2>推奨設定</h2>
+<ul>
+<li><strong>モデル</strong>: Opus 4.6（1Mコンテキスト）、medium effort</li>
+<li>Sonnet 4.6でも動作するが、深掘りの浅さを感じる場面あり</li>
+<li>medium effortでhighとほぼ同等の賢さが得られる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — Agent Skillsの概念・仕様</li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様先行開発のより広い文脈</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — grill-meを実行するコーディングCLI</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIと協調するコーディングスタイル全般</li>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/ryonakae/articles/8783c6b3ead2cb" rel="noopener">https://zenn.dev/ryonakae/articles/8783c6b3ead2cb</a></li></ul></section></article>
+</main>
+</body>
+</html>
