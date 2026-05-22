@@ -26,6 +26,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p><a href="../tools/openai-codex.html">openai-codex</a> の Codex CLI が採用するエージェントループの内部実装。OpenAI Responses API を使ってユーザー・モデル・ツールの三者間インタラクションを制御する中核ロジック。Michael Bolin（OpenAI MTS）による公式解説シリーズ第1弾（2026-01-23）。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
+<li>2026-05-21: <strong>Compactionの圧縮メカニズム</strong> — コンテキスト圧縮が劣化しにくい理由は、テキスト形式ではなく<strong>潜在空間のベクター表現でバイナリ圧縮</strong>しているため（@kenn の観察）。公式ブログでも "preserves the model's latent understanding" と記述。元々膨大なテキストを超圧縮したものがLLMの重みであることと整合する設計。セッションが極めて長くなっても意味的劣化が少ないのはこの仕組みによる</li>
 <li>2026-01-23: <code>previous_response_id</code> を意図的に使わない設計判断：ZDR（Zero Data Retention）対応と完全ステートレス性のトレードオフを優先。ステートレス化でプロバイダー側のキャッシュ保持義務が不要になる</li>
 <li>2026-01-23: MCP ツールは Codex CLI のサンドボックス外で動作する——MCP サーバー側が自前でガードレールを実装する責任を負う（Codex の shell ツールのみサンドボックス適用）</li>
 <li>2026-01-23: コンテキストウィンドウの増大は会話ターン数に対して<strong>二次オーダー</strong>で成長する。プロンプトキャッシュのヒット率が高ければ実質的に線形コストに抑えられる</li>
@@ -47,7 +48,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — プロンプトキャッシュの仕組みとベストプラクティス（Claude版だがOpenAI版と設計思想が共通）</li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — エージェントアーキテクチャのパターン集</li>
 <li><a href="../concepts/12-factor-agents.html">12-factor-agents</a> — 信頼性の高いエージェント設計原則（ステートレス設計原則と共鳴）</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://openai.com/index/unrolling-the-codex-agent-loop/" rel="noopener">https://openai.com/index/unrolling-the-codex-agent-loop/</a></li></ul></section></article>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://openai.com/index/unrolling-the-codex-agent-loop/" rel="noopener">https://openai.com/index/unrolling-the-codex-agent-loop/</a></li>
+<li><a href="https://x.com/i/web/status/2057462768857743569" rel="noopener">https://x.com/i/web/status/2057462768857743569</a></li></ul></section></article>
 </main>
 </body>
 </html>

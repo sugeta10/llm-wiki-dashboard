@@ -21,7 +21,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-opus-4-7</h1>
-  <div class="meta">models/claude-opus-4-7 · models · updated 2026-05-17</div>
+  <div class="meta">models/claude-opus-4-7 · models · updated 2026-05-22</div>
   <article><h1>Claude Opus 4.7</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> の最上位モデル。2026年4月16日リリース。コーディング・画像認識・エージェント系ベンチマークで首位を奪還。</p>
 <h2>主要ベンチマーク</h2>
@@ -140,14 +140,20 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>法律・財務など経済価値の高い知識業務（GDPval-AA SOTA）</li>
 </ul>
 <p>コスト最優先の定常タスクは <strong>Sonnet 4.6</strong>（約40%安）が現時点の推奨。</p>
+<h2>Claude Code × Opus 4.7 ベストプラクティス（追加情報）</h2>
+<ul>
+<li>2026-05-21: Algomatic AILabがAnthropicの公式ベストプラクティスを解説。要点: ① tokenizerが更新されており旧Opusとトークン数が異なる ② より深く思考するよう設計されているため、プロンプト構造や <code>effort</code> 設定の見直しが必要 ③ Claude Codeでの利用時は上記「Opus 4.7向けプロンプト変更点」セクションの3点が特に重要</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
 <li><a href="../models/claude-mythos.html">claude-mythos</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 </ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/n06f6b192ae68" rel="noopener">https://note.com/kajiken0630/n/n06f6b192ae68</a></li>
-<li><a href="https://www.anthropic.com/news/claude-opus-4-7" rel="noopener">https://www.anthropic.com/news/claude-opus-4-7</a></li></ul></section></article>
+<li><a href="https://www.anthropic.com/news/claude-opus-4-7" rel="noopener">https://www.anthropic.com/news/claude-opus-4-7</a></li>
+<li><a href="https://x.com/i/web/status/2057383695557021765" rel="noopener">https://x.com/i/web/status/2057383695557021765</a></li></ul></section></article>
 </main>
 </body>
 </html>
