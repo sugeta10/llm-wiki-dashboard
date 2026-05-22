@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>google-code-review - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>google-code-review</h1>
+  <div class="meta">concepts/google-code-review · concepts · updated 2026-05-22</div>
+  <article><h1>Google コードレビュー指針</h1>
+<p><strong>Google Engineering Practices</strong> は Google が CC-By 3.0 ライセンスで公開しているエンジニアリングガイドライン集。中心コンテンツはコードレビュー指針（Code Reviewer's Guide / Change Author's Guide）。</p>
+<p>関連: <a href="../concepts/spec-driven-development.html">spec-driven-development</a>, <a href="../concepts/agentic-coding.html">agentic-coding</a></p>
+<h2>ドキュメント構成</h2>
+<ul>
+<li><strong>The Code Reviewer's Guide</strong> — レビュアー視点: 何を見るか・どう指摘するか・LGTM基準</li>
+<li><strong>The Change Author's Guide</strong> — 作成者視点: CLをどう設計するか・レビュアーとのやり取り</li>
+</ul>
+<h2>用語定義（Google内部語）</h2>
+<table>
+<thead>
+<tr>
+<th>用語</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CL</strong>（Changelist）</td>
+<td>バージョン管理に提出された1つの自己完結した変更。他組織での PR / patch / pull-request に相当</td>
+</tr>
+<tr>
+<td><strong>LGTM</strong></td>
+<td>"Looks Good to Me" — レビュアーが CL を承認するときのサイン</td>
+</tr>
+</tbody>
+</table>
+<h2>AI時代との接点</h2>
+<p>AIエージェントがコードを自律生成・レビューする <a href="../concepts/agentic-coding.html">agentic-coding</a> の文脈で、人間のコードレビュー基準をドキュメント化したこの指針は「AIへの指示仕様」としても再利用できる。<a href="../concepts/spec-driven-development.html">spec-driven-development</a> の観点からは、レビュー基準を機械可読な形式で保持することがエージェント品質管理に直結する。</p><section class="sources"><h2>Sources</h2><ul><li><a href="https://github.com/google/eng-practices" rel="noopener">https://github.com/google/eng-practices</a></li></ul></section></article>
+</main>
+</body>
+</html>
