@@ -21,7 +21,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-managed-agents</h1>
-  <div class="meta">tools/claude-managed-agents · tools · updated 2026-05-20</div>
+  <div class="meta">tools/claude-managed-agents · tools · updated 2026-05-24</div>
   <article><h1>Claude Managed Agents</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> が提供するエージェント管理プラットフォーム。長期実行エージェントのメモリ管理・自己改善・マルチエージェント協調を提供する。</p>
 <h2>主要機能</h2>
@@ -128,6 +128,67 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h3>MCP Tunnels</h3>
 <p>エージェントがセキュリティ境界内のサービス（社内システム・DB等）に接続できるトンネル。<a href="../tools/claude-mcp.html">claude-mcp</a> ベースで、ファイアウォールを越えずに内部リソースに安全にアクセス。</p>
 <p>→ エンタープライズの「データを外に出したくない」という要件に直接応える機能。<a href="../concepts/claude-code-security.html">claude-code-security</a> と組み合わせることで、エンプラ向けClaude展開の完全なセキュリティスタックが構成できる。</p>
+<h2>公式仕様（2026-05-23 公式ドキュメントより）</h2>
+<h3>コアコンセプト</h3>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent</strong></td>
+<td>モデル・システムプロンプト・ツール・MCPサーバー・スキルの定義セット</td>
+</tr>
+<tr>
+<td><strong>Environment</strong></td>
+<td>セッション実行環境の設定（Anthropicマネージドクラウドコンテナ or 自社ホスト）</td>
+</tr>
+<tr>
+<td><strong>Session</strong></td>
+<td>特定タスクを実行しアウトプットを生成するエージェントの実行インスタンス</td>
+</tr>
+<tr>
+<td><strong>Events</strong></td>
+<td>アプリケーション↔エージェント間のメッセージ（ユーザーターン・ツール結果・ステータス更新）</td>
+</tr>
+</tbody>
+</table>
+<h3>組み込みツール</h3>
+<ul>
+<li><strong>Bash</strong>: コンテナ内シェルコマンド実行</li>
+<li><strong>File operations</strong>: Read / Write / Edit / Glob / Grep</li>
+<li><strong>Web search and fetch</strong>: Web検索・URL取得</li>
+<li><strong>MCP servers</strong>: 外部ツールプロバイダーとの接続（<a href="../tools/claude-mcp.html">claude-mcp</a>）</li>
+</ul>
+<h3>レートリミット（組織単位）</h3>
+<table>
+<thead>
+<tr>
+<th>エンドポイント種別</th>
+<th>上限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作成系（agents・sessions・environmentsなど）</td>
+<td>300 req/min</td>
+</tr>
+<tr>
+<td>読み取り系（retrieve・list・streamなど）</td>
+<td>600 req/min</td>
+</tr>
+</tbody>
+</table>
+<h3>データ保持・コンプライアンス注意事項</h3>
+<ul>
+<li>Managed Agents は<strong>ゼロデータリテンション（ZDR）対象外</strong>・<strong>HIPAA BAA対象外</strong></li>
+<li>セッション・ファイルはAPIから随時削除可能（ユーザー主導）</li>
+</ul>
+<h3>Dreaming（詳細）</h3>
+<p>Dreams のAPI仕様・ライフサイクル・エラー種別の詳細は <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> を参照。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
@@ -137,9 +198,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>（Pipeline・Fan-Out・Specialist Teamパターンの設計ガイド）</li>
+<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a>（Dreams APIの詳細仕様）</li>
 </ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/new-in-claude-managed-agents" rel="noopener">https://claude.com/blog/new-in-claude-managed-agents</a></li>
 <li><a href="https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1" rel="noopener">https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1</a></li>
-<li><a href="https://x.com/i/web/status/2056740346529468717" rel="noopener">https://x.com/i/web/status/2056740346529468717</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2056740346529468717" rel="noopener">https://x.com/i/web/status/2056740346529468717</a></li>
+<li><a href="https://platform.claude.com/docs/en/managed-agents/overview" rel="noopener">https://platform.claude.com/docs/en/managed-agents/overview</a></li></ul></section></article>
 </main>
 </body>
 </html>
