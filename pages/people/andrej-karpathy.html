@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,25 +33,25 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2050230239700152633" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2040448463540830705" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Andrej Karpathy</h1>
 <p>AI研究者。元 OpenAI 共同創業者・Tesla AI 責任者。現在は独立して教育・研究活動を続ける。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>主な貢献</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2040448463540830705" rel="noopener" target="_blank">x.com</a></div><h2>主な貢献</h2>
 <ul>
 <li><strong>「vibe coding」</strong> という概念の提唱者（<a href="../concepts/vibe-coding.html">vibe-coding</a>）</li>
 <li><strong>「LLM Wiki」</strong> の提唱者 — LLM が継続的にメンテナンスする Markdown 知識ベース（<a href="../concepts/llm-wiki.html">llm-wiki</a>）</li>
 <li>LLMと教育を結びつける活動（YouTube での深い解説動画シリーズ）</li>
 <li>Sequoia での講演でAIコーディングツールの現状を解説</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>Vibe Coding に関する発言</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2040448463540830705" rel="noopener" target="_blank">x.com</a></div><h2>Vibe Coding に関する発言</h2>
 <p>vibe coding を提唱した本人が「今まで感じたことがないほど自分がプログラマーとして遅れを感じている」と発言。AIコーディングの進化速度の速さを示唆している。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>Sequoia 講演</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2040448463540830705" rel="noopener" target="_blank">x.com</a></div><h2>Sequoia 講演</h2>
 <p>30分の講演で <a href="../tools/claude-code.html">claude-code</a>・<a href="../tools/cursor.html">cursor</a>・Codex について解説。vibe coding チュートリアル100本分以上の情報量と評される。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>Second Brain 実装</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2040448463540830705" rel="noopener" target="_blank">x.com</a></div><h2>Second Brain 実装</h2>
 <p>Karpathy の LLM Wiki 実装について NickSpisak_ が詳細解説（41,000件ブックマーク）：
 - <strong>3フォルダ</strong>: <code>raw/</code>・<code>wiki/</code>・<code>outputs/</code>
 - CLAUDE.md（AGENTS.md）でAIへの指示書を定義
 - 「super simple and flat」— Obsidianも不要、フラットな .md ディレクトリで十分</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>CLAUDE.md ルール設計への影響</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2040448463540830705" rel="noopener" target="_blank">x.com</a></div><h2>CLAUDE.md ルール設計への影響</h2>
 <p>2026年1月のスレッドでClaude のコーディング問題（サイレントな誤った前提・過剰複雑化・直交的破壊）を指摘。Forrest Chang がそれを4ルールに変換し120,000 stars を獲得。さらに8ルールが追加されて<a href="../concepts/claude-md-rules.html">claude-md-rules</a>として体系化された。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2040448463540830705" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>

@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,7 +33,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://sequoiacap.com/article/from-hierarchy-to-intelligence/" class="src-chip" rel="noopener" target="_blank">sequoiacap.com</a></div>
   <article><h1>AIによる組織設計変革：階層からインテリジェンスへ</h1>
 <p><strong>Sequoia Capital × Block（Jack Dorsey）</strong>による組織設計の根本的な再発明。AIが中間管理職の「情報ルーティング」を代替することで、2000年間続いた階層型組織の前提を覆す。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>歴史的背景：階層組織の起源</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://sequoiacap.com/article/from-hierarchy-to-intelligence/" rel="noopener" target="_blank">sequoiacap.com</a></div><h2>歴史的背景：階層組織の起源</h2>
 <p>組織の階層構造は「情報伝達の問題」を解くために生まれた：</p>
 <table>
 <thead>
@@ -73,7 +75,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p>問題の本質：組織が成長するにつれ、情報を伝達するために層が増え、情報の流れが遅くなる。</p>
 </blockquote>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>Blockの新しい組織モデル</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://sequoiacap.com/article/from-hierarchy-to-intelligence/" rel="noopener" target="_blank">sequoiacap.com</a></div><h2>Blockの新しい組織モデル</h2>
 <p>Blockが構築しているのは「<strong>階層ではなくインテリジェンスとして設計された会社</strong>」。4つの構成要素：</p>
 <h3>1. ケイパビリティ（Capabilities）</h3>
 <p>決済・融資・カード発行・銀行・BNPL・給与計算などの<strong>金融プリミティブ</strong>。製品ではなく積み木。UIを持たず、信頼性・コンプライアンス・パフォーマンスの目標値のみを持つ。</p>
@@ -87,7 +89,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p><strong>重要な示唆</strong>: インテリジェンス層が解を組み立てようとして「ケイパビリティが足りない」と失敗したシグナルが次のロードマップになる。PdMが仮説を立てて作るものではない。</p>
 <h3>4. インターフェース（Interfaces）</h3>
 <p>Square・Cash App・Afterpay・TIDAL・bitkey・protoなどの提供面。価値はここではなく、ワールドモデルとインテリジェンスにある。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>3つのロール（中間管理職を廃止）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://sequoiacap.com/article/from-hierarchy-to-intelligence/" rel="noopener" target="_blank">sequoiacap.com</a></div><h2>3つのロール（中間管理職を廃止）</h2>
 <table>
 <thead>
 <tr>
@@ -117,13 +119,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p>「従来の会社では、インテリジェンスが人全体に分散しており、階層がそれをルーティングする。このモデルでは、インテリジェンスはシステムに宿り、人はエッジにいる。」</p>
 </blockquote>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>「エッジ」が最重要の場所</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://sequoiacap.com/article/from-hierarchy-to-intelligence/" rel="noopener" target="_blank">sequoiacap.com</a></div><h2>「エッジ」が最重要の場所</h2>
 <p>インテリジェンスがモデルにある世界で人間の価値は：
 - モデルがまだ届かない場所に手を伸ばす
 - 直感・意見・文化的コンテキスト・場の空気など<strong>モデルが感知できないもの</strong>を知覚する
 - <strong>倫理的判断・前例なき状況・失敗コストが致命的な判断</strong>はモデルに任せるべきではない</p>
 <p>「ワールドモデルは現実に触れなければただのデータベース」。エッジの人間がリアリティを接地する。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>ビジネスへの示唆</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://sequoiacap.com/article/from-hierarchy-to-intelligence/" rel="noopener" target="_blank">sequoiacap.com</a></div><h2>ビジネスへの示唆</h2>
 <p>Sequoiaが提示する問い：</p>
 <blockquote>
 <p>「あなたの会社が本当に理解していて、毎日深まり続けているものは何か？」
@@ -131,7 +133,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - 答えが「ある」→ AIはその理解を増幅する</p>
 </blockquote>
 <p>AIによる組織設計変革は「会社が何を本質的に理解しているか」を露わにする。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://sequoiacap.com/article/from-hierarchy-to-intelligence/" rel="noopener" target="_blank">sequoiacap.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a> — AI時代における企業の垂直統合戦略・受託業界への影響（fladdict分析）</li>
 <li><a href="../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a> — AIエージェント時代の企業戦略5テーマ（梶谷健人）：ToA・Authorize権限・器を大きくする思考</li>

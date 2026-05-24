@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,7 +33,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2054564519280804028" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2057581065469055167" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Hermes Agent</h1>
 <p>Nous Researchが開発したオープンソースAIエージェント基盤。<strong>自己進化するスキル</strong>・<strong>3層メモリシステム</strong>・<strong>GEPAオフライン最適化</strong>の3機能を統合した「使えば使うほど賢くなる」エージェント。2ヶ月でGitHubスター9万を超えた。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>観察ログ（未検証）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">x.com</a></div><h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-05-13: @akshay_pachaar によるマスタークラス記事。Hermes Agentは「メモリ+スキル+学習ループ」を1フレームワークで実現する唯一のオープンソースエージェントと主張</li>
 <li>2026-05-13: <a href="../tools/openclaw.html">openclaw</a>との比較：「HermesはメッセージングGWの周りに学習エージェントをパッケージ、OpenClawはエージェントの周りにメッセージングGWをパッケージ」（Kiloブログの表現）</li>
@@ -42,13 +44,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-13: エージェントの「自己評価バイアス」問題（タスク結果を常に高く評価しすぎる）をGEPAが外部から補完する設計</li>
 <li>2026-05-21: X Premium（旧Twitter Blue）サブスクリプション対応に伴い再びトレンドに。X上でHermes Agentの理論解説記事が話題になっている（@shota7180 の日本語解説含む）</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>検証済み事実</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">x.com</a></div><h2>検証済み事実</h2>
 <ul>
 <li>2026-05-13: GEPA論文はICRL 2026 Oral、NousResearch/hermes-agent-self-evolution リポジトリで公開（MITライセンス）</li>
 <li>2026-05-13: 公式Skills Hubに687スキル（built-in 87 + optional 79 + Anthropic製16 + LobeHub製505）</li>
 <li>2026-05-13: エージェントループの上限は90ターン。サブエージェントもこのバジェットを共有</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>アーキテクチャ</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">x.com</a></div><h2>アーキテクチャ</h2>
 <table>
 <thead>
 <tr>
@@ -88,13 +90,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>メモリ3層の使い分け：Tier 1（常時コンテキスト内、容量小）→ Tier 2（SQLite検索、容量無制限）→ Tier 3（外部プロバイダー、プリフェッチ）</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>自己進化ループ</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">x.com</a></div><h2>自己進化ループ</h2>
 <pre><code>1. エージェントが複雑タスクを試行錯誤で解決（5+ツール呼び出し等でトリガー）
 2. skill_manageツールでSKILL.mdを自作保存
 3. Curatorが定期的に統合・整理（archive/consolidate）
 4. GEPAがオフラインで実行トレースを分析 → 改善案をPR形式で提案（直接コミットしない）
 </code></pre>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../tools/openclaw.html">openclaw</a> — 直接競合。アーキテクチャ哲学が真逆</li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — Hermesのスキル自己改善は同コンセプトを大規模に実装</li>

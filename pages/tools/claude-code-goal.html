@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,12 +33,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://code.claude.com/docs/ja/goal" class="src-chip" rel="noopener" target="_blank">code.claude.com</a><a href="https://code.claude.com/docs/en/goal" class="src-chip" rel="noopener" target="_blank">code.claude.com</a></div>
   <article><h1>Claude Code /goal コマンド</h1>
 <p><strong><code>/goal</code></strong> は <a href="../tools/claude-code.html">claude-code</a> のセッションスコープ自律ワークフロー機能。完了条件を設定すると、Claude が条件を満たすまで自動でターンを繰り返す。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>概要</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://code.claude.com/docs/ja/goal" rel="noopener" target="_blank">code.claude.com</a><a class="sec-src-chip" href="https://code.claude.com/docs/en/goal" rel="noopener" target="_blank">code.claude.com</a></div><h2>概要</h2>
 <p><code>/goal</code> の後に満たしたい条件を記述する：</p>
 <pre><code class="language-text">/goal all tests in test/auth pass and the lint step is clean
 </code></pre>
 <p>設定後は即座にターンが開始され、各ターン終了後に小さく高速なモデル（デフォルト: Haiku）が条件を評価する。条件が満たされるとゴールは自動でクリアされる。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>他の自律ワークフローとの比較</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://code.claude.com/docs/ja/goal" rel="noopener" target="_blank">code.claude.com</a><a class="sec-src-chip" href="https://code.claude.com/docs/en/goal" rel="noopener" target="_blank">code.claude.com</a></div><h2>他の自律ワークフローとの比較</h2>
 <table>
 <thead>
 <tr>
@@ -67,7 +69,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><code>/goal</code> と Stop hook は相互補完：<code>/goal</code> はセッション限定のショートカット、Stop hook は全セッション適用</li>
 <li><strong>自動モード</strong>（auto-mode）との組み合わせが強力：自動モードはツール呼び出しごとのプロンプトを削除、<code>/goal</code> はターンごとのプロンプトを削除</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>効果的な条件の書き方</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://code.claude.com/docs/ja/goal" rel="noopener" target="_blank">code.claude.com</a><a class="sec-src-chip" href="https://code.claude.com/docs/en/goal" rel="noopener" target="_blank">code.claude.com</a></div><h2>効果的な条件の書き方</h2>
 <p>条件は最大 4,000 文字。評価器は Claude の出力から判断するため、Claude が実証できる形で書く：</p>
 <ul>
 <li><strong>1つの測定可能な終了状態</strong>：テスト結果、ビルド終了コード、空のキュー</li>
@@ -77,26 +79,26 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>ターン・時間の上限も設定可能：</p>
 <pre><code class="language-text">/goal all tests pass or stop after 20 turns
 </code></pre>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>主要コマンド</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://code.claude.com/docs/ja/goal" rel="noopener" target="_blank">code.claude.com</a><a class="sec-src-chip" href="https://code.claude.com/docs/en/goal" rel="noopener" target="_blank">code.claude.com</a></div><h2>主要コマンド</h2>
 <pre><code class="language-text">/goal &amp;lt;条件&gt;          # ゴール設定（既存は上書き）
 /goal                 # ステータス確認（ターン数・トークン消費・理由）
 /goal clear           # 手動クリア（stop/off/reset/cancel も可）
 </code></pre>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>非対話的実行</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://code.claude.com/docs/ja/goal" rel="noopener" target="_blank">code.claude.com</a><a class="sec-src-chip" href="https://code.claude.com/docs/en/goal" rel="noopener" target="_blank">code.claude.com</a></div><h2>非対話的実行</h2>
 <p><code>-p</code> フラグと組み合わせて非対話的モードで動作する：</p>
 <pre><code class="language-bash">claude -p &quot;/goal CHANGELOG.md has an entry for every PR merged this week&quot;
 </code></pre>
 <p>ループが完了条件を満たすまで単一の呼び出しで継続実行される。Ctrl+C で中断可能。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>評価の仕組み</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://code.claude.com/docs/ja/goal" rel="noopener" target="_blank">code.claude.com</a><a class="sec-src-chip" href="https://code.claude.com/docs/en/goal" rel="noopener" target="_blank">code.claude.com</a></div><h2>評価の仕組み</h2>
 <p>セッションスコープの<strong>プロンプトベース Stop hook</strong> のラッパー。ターン終了ごとに条件と会話履歴を評価モデルへ送信：</p>
 <ul>
 <li><strong>Yes</strong> → ゴールクリア、トランスクリプトに記録</li>
 <li><strong>No</strong> → 理由を次ターンのガイダンスとして Claude へ渡す</li>
 </ul>
 <p>評価トークンはメインターンと比べて無視できる程度。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>セッション復元</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://code.claude.com/docs/ja/goal" rel="noopener" target="_blank">code.claude.com</a><a class="sec-src-chip" href="https://code.claude.com/docs/en/goal" rel="noopener" target="_blank">code.claude.com</a></div><h2>セッション復元</h2>
 <p><code>--resume</code> / <code>--continue</code> でセッション再開時、アクティブなゴールが復元される。ターン数・タイマー・トークン支出ベースラインはリセットされる。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://code.claude.com/docs/ja/goal" rel="noopener" target="_blank">code.claude.com</a><a class="sec-src-chip" href="https://code.claude.com/docs/en/goal" rel="noopener" target="_blank">code.claude.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a> — Claude Code 本体</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントの自律実行スタイル</li>

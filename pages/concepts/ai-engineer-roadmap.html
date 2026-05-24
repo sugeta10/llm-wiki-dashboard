@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,7 +33,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2009663737469542875" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2049548305408131349" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>AI Engineer ロードマップ（2026）</h1>
 <p>2026年時点での AI エンジニアとして学ぶべきこと・作るべきもの・スキップすべきことの整理。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>学ぶべきこと</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2009663737469542875" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049548305408131349" rel="noopener" target="_blank">x.com</a></div><h2>学ぶべきこと</h2>
 <ul>
 <li><strong>LLM API の活用</strong>: OpenAI / Anthropic / Google の API 設計と特性の違い</li>
 <li><strong>プロンプトエンジニアリング</strong>: <a href="../concepts/prompt-engineering.html">prompt-engineering</a> の基礎から応用</li>
@@ -39,25 +41,25 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>RAG（検索拡張生成）</strong>: ベクトル DB・チャンク設計・リランキング</li>
 <li><strong>評価（Eval）</strong>: LLM 出力の品質を定量的に測る手法</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>作るべきもの</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2009663737469542875" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049548305408131349" rel="noopener" target="_blank">x.com</a></div><h2>作るべきもの</h2>
 <ul>
 <li>自分のユースケースに特化したエージェント（汎用より専用が価値大）</li>
 <li>社内 LLM Wiki / ナレッジベース（<a href="../concepts/llm-wiki.html">llm-wiki</a>）</li>
 <li>CI/CD に組み込んだ自動コードレビュー</li>
 <li>データパイプライン（取得・変換・要約の自動化）</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>スキップしてよいこと</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2009663737469542875" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049548305408131349" rel="noopener" target="_blank">x.com</a></div><h2>スキップしてよいこと</h2>
 <ul>
 <li><strong>モデル学習・ファインチューニング</strong>: API で十分なケースが大半。コストと時間が見合わない</li>
 <li><strong>独自ベクトル DB 構築</strong>: 既存サービス（Pinecone・Weaviate 等）で事足りる</li>
 <li><strong>フルスタック AI フレームワーク</strong>: LangChain 等は学習コスト高。シンプルな API 直呼びの方が制御しやすい</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>2026 年の潮流</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2009663737469542875" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049548305408131349" rel="noopener" target="_blank">x.com</a></div><h2>2026 年の潮流</h2>
 <p>「What to Learn, Build, and Skip in AI Agents (2026)」（@rohit4verse）より：
 - エージェントは「賢い自動化」ではなく「自律的な判断主体」として設計する時代
 - ハーネス設計（<a href="../tools/claude-harness.html">claude-harness</a>）が差別化要因
 - 評価（Eval）がボトルネック — 作れるエンジニアが少ない</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2009663737469542875" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049548305408131349" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>

@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,14 +33,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2051970872995664239" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2052631588140421550" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>OpenAI Codex</h1>
 <p>OpenAI が提供するコード生成・エージェント実行プラットフォーム。<a href="../tools/claude-code.html">claude-code</a> の競合にあたる。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>Codex App Server</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2051970872995664239" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2052631588140421550" rel="noopener" target="_blank">x.com</a></div><h2>Codex App Server</h2>
 <p>Codex CLI および API を使ったアプリケーション販売の可否について OpenAI に3往復確認した事例（@akira_papa_IT, 2026-05）：</p>
 <ul>
 <li><strong>商用利用は可能</strong>: Codex API を使ったアプリの有料販売は利用規約上許可されている</li>
 <li><strong>ただし条件あり</strong>: OpenAI のブランド表記・利用規約への同意・API利用料の負担</li>
 <li>Codex App Server 経由でエンドユーザーにアプリを提供するモデルが現実的</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>Claude Code との比較</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2051970872995664239" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2052631588140421550" rel="noopener" target="_blank">x.com</a></div><h2>Claude Code との比較</h2>
 <table>
 <thead>
 <tr>
@@ -65,7 +67,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>X投稿の自己改善ループへの活用</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2051970872995664239" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2052631588140421550" rel="noopener" target="_blank">x.com</a></div><h2>X投稿の自己改善ループへの活用</h2>
 <p>@super_bonochin による実験（2026年5月）。Codex を毎回のX投稿ワークフローに組み込む試み：</p>
 <ol>
 <li>投稿者が雑に喋った内容をCodexが本人らしい文体で作文する</li>
@@ -73,7 +75,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>ポストごとに Codex へ「自分の提案の何がダメで、どうすべきだったか」を分析させる</li>
 </ol>
 <p>継続使用によりCodexが発信者のスタイル・批評を学習していく設計。<a href="../concepts/self-refining-skills.html">self-refining-skills</a> と同様のself-refinement ループをコンテンツ生成に適用した事例。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2051970872995664239" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2052631588140421550" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a></li>

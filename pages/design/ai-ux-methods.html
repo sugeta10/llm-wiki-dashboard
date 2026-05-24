@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -32,7 +34,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <article><h1>AI時代のUXデザイン5メソッド</h1>
 <p>梶谷健人（POSTS代表/プロダクト戦略アドバイザー）がまとめた、AIでサービスを作る時代に必須のUX設計フレームワーク。「AIで作れること」と「求められるものを作れること」は別という問題意識から出発する。</p>
 <p>関連: <a href="../design/fastview-design.html">fastview-design</a> | <a href="../concepts/spec-driven-development.html">spec-driven-development</a> | <a href="../people/fladdict.html">fladdict</a></p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>1. UXの構成式</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/kajiken0630/n/ndfbaec3f9479" rel="noopener" target="_blank">note.com</a></div><h2>1. UXの構成式</h2>
 <p><strong>UX = (u × e) / f</strong> で捉える:</p>
 <table>
 <thead>
@@ -61,7 +63,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p><strong>優先順位</strong>: まずu最大化とf最小化 → その後eを磨く。「この画面はダサい」ではなく「fが大きい」「uが弱い」と分解して考えられるようになることが目的。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>2. GarrettのUX 5レイヤー</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/kajiken0630/n/ndfbaec3f9479" rel="noopener" target="_blank">note.com</a></div><h2>2. GarrettのUX 5レイヤー</h2>
 <p>下の層から順に詰めてからAIに実装させる:</p>
 <table>
 <thead>
@@ -99,19 +101,19 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 「Scopeレイヤーとして、機能要件や仕様を設計して」
 </code></pre>
 <p>レイヤーを分けてAIに指示すると出力クオリティが上がる（AIが「今どの粒度の話か」を明確に認識できるため）。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>3. Information Architecture（IA）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/kajiken0630/n/ndfbaec3f9479" rel="noopener" target="_blank">note.com</a></div><h2>3. Information Architecture（IA）</h2>
 <p>GarrettのStructureレイヤーに相当。「情報をどう分類し、どんな導線でユーザーに届けるか」。飛ばされやすいが、機能が増えると後でツケを払う。</p>
 <p><strong>User Flow</strong> の設計が核心: ユーザーが目的達成までどの画面を通り、どのアクションをするかを図式化。現状フローを書き出すと「絡まり」（複雑・冗長な導線）が見つかる。</p>
 <pre><code>「Strategyレイヤーの内容を踏まえて、User FlowをMermaid記法で設計して。
   初期バージョンとフルバージョンの2パターンで」
 </code></pre>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>4. Pre-Mortem（事前検視）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/kajiken0630/n/ndfbaec3f9479" rel="noopener" target="_blank">note.com</a></div><h2>4. Pre-Mortem（事前検視）</h2>
 <p>「このサービスが失敗した未来」を先に書き出す手法。自分たちのアイデアへの都合の良い見方を防ぐ。</p>
 <pre><code>「このサービス案が1年後に失敗したと仮定して、考えられる失敗理由を10個出して」
 </code></pre>
 <p><strong>重要</strong>: 失敗理由を出して終わりにしない。「コア価値の体感が遅い」→「初回体験で擬似コア価値を体感させる工夫は？」と逆算して設計に組み込む。</p>
 <p>AIはこのブレインストーミングの相手として相性が良い（人間が見落とすリスクを多角的に出せる）。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>5. Problem Solution Fit（PSF）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/kajiken0630/n/ndfbaec3f9479" rel="noopener" target="_blank">note.com</a></div><h2>5. Problem Solution Fit（PSF）</h2>
 <p><strong>サービスアイデアの3要素</strong>:
 - 顧客（誰が困っているか）
 - 課題（何に困っているか）
@@ -122,7 +124,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - LPだけ作って反応を見る
 - コア機能のみでクイックにリリース</p>
 <p>AIで早く作れる時代だからこそ、「何を作るか」「何を検証するか」の判断力の重要性が増す。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>AI活用との対応</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/kajiken0630/n/ndfbaec3f9479" rel="noopener" target="_blank">note.com</a></div><h2>AI活用との対応</h2>
 <table>
 <thead>
 <tr>
@@ -159,7 +161,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/kajiken0630/n/ndfbaec3f9479" rel="noopener" target="_blank">note.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../design/fastview-design.html">fastview-design</a> — ファーストビュー設計原則（UXフリクション削減に関連）</li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — AI時代の仕様駆動設計（設計から実装への接続）</li>

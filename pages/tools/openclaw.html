@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,7 +33,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://note.com/akira_papa_ai/n/nf29e5855681c" class="src-chip" rel="noopener" target="_blank">note.com</a></div>
   <article><h1>OpenClaw</h1>
 <p>オープンソースのAIエージェント基盤。非同期タスク管理・モデル非依存・スキルズ（作業テンプレート）・定期実行を組み合わせた「24時間稼働するAI組織」を構築できる。GitHubスター21万超、フォーク4万、コントリビューター700人以上。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>5層アーキテクチャ</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/akira_papa_ai/n/nf29e5855681c" rel="noopener" target="_blank">note.com</a></div><h2>5層アーキテクチャ</h2>
 <table>
 <thead>
 <tr>
@@ -62,7 +64,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>主要コンポーネント</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/akira_papa_ai/n/nf29e5855681c" rel="noopener" target="_blank">note.com</a></div><h2>主要コンポーネント</h2>
 <h3>スキルズ（Skills）</h3>
 <ul>
 <li>膨大な作業手順をMarkdownファイル化した再利用可能テンプレート</li>
@@ -79,7 +81,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>30分ごとに自律的に次の行動を判断する定期プロセス</li>
 <li>人間の介入なしで24時間稼働し続ける</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>CDP vs MCP：ブラウザ操作の違い</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/akira_papa_ai/n/nf29e5855681c" rel="noopener" target="_blank">note.com</a></div><h2>CDP vs MCP：ブラウザ操作の違い</h2>
 <table>
 <thead>
 <tr>
@@ -102,30 +104,30 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>CDPを直接操作するためTikTokのカバー画像位置選択等の細かいUI操作も可能。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>特徴</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/akira_papa_ai/n/nf29e5855681c" rel="noopener" target="_blank">note.com</a></div><h2>特徴</h2>
 <ul>
 <li><strong>モデル非依存</strong>: Claude Code・Codex・Geminiを切り替え可能。<a href="../models/claude-opus-4-7.html">claude-opus-4-7</a>等の最新モデルへいつでも移行できる</li>
 <li><strong>記憶の永続化</strong>: 短期・長期記憶をMarkdownで保持。ハイブリッド検索で効率的に引き出す</li>
 <li><strong>設計の再利用性</strong>: 「ツールは入れ替わるけど設計は残る」— スキルズとして蓄積された設計資産はモデルが変わっても活用可能</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>活用例（マーケティング自動化）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/akira_papa_ai/n/nf29e5855681c" rel="noopener" target="_blank">note.com</a></div><h2>活用例（マーケティング自動化）</h2>
 <p>Discordチャンネルに1行送信するだけで：
 - Remotion + Gemini TTS + OpenAI Whisperで動画生成（1本あたり約1円以下）
 - YouTube / TikTok / Instagramへ自動アップロード
 - Qiita記事の下書き自動生成・定期投稿</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>セキュリティ対策</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/akira_papa_ai/n/nf29e5855681c" rel="noopener" target="_blank">note.com</a></div><h2>セキュリティ対策</h2>
 <ul>
 <li>メインPCではなく<strong>サブPC or VPS</strong>で運用（Xサーバーが月額約1,000円のイメージ提供）</li>
 <li>プロンプトインジェクション対策プロンプトを設定</li>
 <li>Chrome Remote Desktopで安全に遠隔操作</li>
 <li>外部スキル（ClawHub）は使わず自作推奨</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>コスト</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/akira_papa_ai/n/nf29e5855681c" rel="noopener" target="_blank">note.com</a></div><h2>コスト</h2>
 <ul>
 <li>OpenClaw自体はオープンソースで<strong>無料</strong></li>
 <li>モデル利用にはサブスク必要: Claude Max約3万円/月、またはOpenAI Codex等</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/akira_papa_ai/n/nf29e5855681c" rel="noopener" target="_blank">note.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/gstack.html">gstack</a>（gstack スキルは OpenClaw セッション経由でも動作する）</li>

@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,9 +33,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2026089537907364030" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>xurl</h1>
 <p>X Developer Platform が公式に提供する X API v2 専用 CLI ツール。Go製・MITライセンス。<a href="../tools/claude-code.html">claude-code</a> や <a href="../concepts/agentic-coding.html">agentic-coding</a> との親和性が高い。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>概要</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2026089537907364030" rel="noopener" target="_blank">x.com</a></div><h2>概要</h2>
 <p>「X API v2専用のcurl」。OAuthヘッダーの組み立て・エンドポイント調査・JSON生成を自動化し、ターミナルからコマンド一発でX操作が可能。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>v1.0.3 主要機能（2026年2月）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2026089537907364030" rel="noopener" target="_blank">x.com</a></div><h2>v1.0.3 主要機能（2026年2月）</h2>
 <h3>Agent-friendly shortcuts</h3>
 <pre><code class="language-bash">xurl post &quot;こんにちは！&quot;
 xurl media upload 画像.jpg
@@ -48,7 +50,7 @@ xurl reply 1234567890 &quot;返信だよ&quot;
 </ul>
 <h3>agentskills.io 統合・OpenClaw マージ</h3>
 <p>xurl 自体が <strong>SKILL protocol</strong> 対応スキルとして <a href="https://agentskills.io">agentskills.io</a> に登録。<strong>OpenClaw</strong>（エージェントフレームワーク）に正式マージ。LLMがトークンや認証を意識せずXを操れる。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>インストール（Mac）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2026089537907364030" rel="noopener" target="_blank">x.com</a></div><h2>インストール（Mac）</h2>
 <pre><code class="language-bash">brew install --cask xdevplatform/tap/xurl
 </code></pre>
 <p>認証セットアップ（X Developer Portalでアプリ作成後）：</p>
@@ -56,7 +58,7 @@ xurl reply 1234567890 &quot;返信だよ&quot;
 xurl auth default my-app
 xurl auth oauth2
 </code></pre>
-<a class="sec-src" href="#sources">参考 ↗</a><h2><a href="../tools/claude-code.html">claude-code</a> との連携</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2026089537907364030" rel="noopener" target="_blank">x.com</a></div><h2><a href="../tools/claude-code.html">claude-code</a> との連携</h2>
 <pre><code class="language-bash"># 検索結果をJSONで取得して分析パイプラインに流す
 xurl search &quot;AI agent&quot; -n 100 &gt; results.json
 
@@ -66,7 +68,7 @@ ID2=$(xurl reply $ID &quot;2/3: 続き&quot; | jq -r '.data.id')
 xurl reply $ID2 &quot;3/3: 最後&quot;
 </code></pre>
 <p>Claude Code + xurl で「記事を書いて → Xへポスト」がターミナル完結。定期的なアカウント分析や自動投稿パイプラインを構築可能。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2026089537907364030" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>

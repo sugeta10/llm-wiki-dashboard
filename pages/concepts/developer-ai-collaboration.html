@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,7 +33,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://zenn.dev/tomfook/articles/e4613c2f2fbb28" class="src-chip" rel="noopener" target="_blank">zenn.dev</a></div>
   <article><h1>開発者×AIエージェントの役割分担哲学</h1>
 <p>韓非子「主道篇」の政治哲学を <a href="../tools/claude-code.html">claude-code</a> 活用に適用した、開発者とAIエージェントの最適な協働パターン。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>核心概念</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/tomfook/articles/e4613c2f2fbb28" rel="noopener" target="_blank">zenn.dev</a></div><h2>核心概念</h2>
 <p>開発者が担うべきは「過程」ではなく「結果」への責任。</p>
 <table>
 <thead>
@@ -51,7 +53,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>主道篇から学ぶ原則</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/tomfook/articles/e4613c2f2fbb28" rel="noopener" target="_blank">zenn.dev</a></div><h2>主道篇から学ぶ原則</h2>
 <h3>1. 開始と終了だけを抑える</h3>
 <p>プロジェクト開始（何を作るかの決断）と最終成果物の受け入れ判断だけは開発者が担う。その中間では Claude Code に任せて待つのが理想。</p>
 <h3>2. 形名参同（けいめいさんどう）</h3>
@@ -67,7 +69,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h3>4. 制約条件は明確に、内心は隠す</h3>
 <p>事実・制約（「本番環境はPython 3.9」「締め切りは今日中」）は明確に伝える。<br>
 開発者の欲・意（好み・意図・先入観）は出さない。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>実践パターン</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/tomfook/articles/e4613c2f2fbb28" rel="noopener" target="_blank">zenn.dev</a></div><h2>実践パターン</h2>
 <p><strong>悪い例（意図を示す）:</strong>
 - 「この方法でOK？」→ 肯定方向に誘導してしまう
 - 「これで実装して」→ 選択肢を消す</p>
@@ -75,16 +77,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - 「異なるアプローチを3通り以上出して、トレードオフを分析せよ」
 - 「この設計の問題点を可能な限り列挙せよ」
 - 「成功基準を明確にせよ」「何をもって完了とするか事前に定義せよ」</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>習常（じゅうじょう）：型化された運用状態</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/tomfook/articles/e4613c2f2fbb28" rel="noopener" target="_blank">zenn.dev</a></div><h2>習常（じゅうじょう）：型化された運用状態</h2>
 <ul>
 <li>セッションはタスクごとに独立</li>
 <li>ルーチン作業は Agent Skill で定型化</li>
 <li>タスク難易度に応じてモデル・effort を切り替え</li>
 </ul>
 <p>この状態になると開発者は個別に指示しなくても意思が反映され、実際に手を動かすことが減っていく。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>自己改善ループとの統合</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/tomfook/articles/e4613c2f2fbb28" rel="noopener" target="_blank">zenn.dev</a></div><h2>自己改善ループとの統合</h2>
 <p>Agent Skill を自己改善させることで処理能力を継続向上。失敗はコンテキストやハーネスの改善契機として活用（<a href="../concepts/self-refining-skills.html">self-refining-skills</a> 参照）。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/tomfook/articles/e4613c2f2fbb28" rel="noopener" target="_blank">zenn.dev</a></div><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>

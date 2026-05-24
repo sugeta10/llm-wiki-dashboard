@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,14 +33,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://note.com/19831112/n/n5be18a115b2b" class="src-chip" rel="noopener" target="_blank">note.com</a></div>
   <article><h1>バックオフィスAI実装（グッドパッチ事例）</h1>
 <p>上場会社グッドパッチの管理部20名が1ヶ月で <a href="../tools/claude-code.html">claude-code</a> を含む30件のAIツールを実装した記録（2026年4月）。執行役員・坂口友紀氏による報告。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>背景とハードル</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/19831112/n/n5be18a115b2b" rel="noopener" target="_blank">note.com</a></div><h2>背景とハードル</h2>
 <p>管理部（経営企画・経理財務・法務・総務・情報システム）でのAI活用は3つのハードルがあった：</p>
 <ol>
 <li><strong>規制の重さ</strong> — 個人情報・金融商品取引法・内部統制</li>
 <li><strong>属人化の根深さ</strong> — 前任者しか分からない業務の散在</li>
 <li><strong>ツールへの距離</strong> — 日常業務がコード中心ではない</li>
 </ol>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>主な成果（業務インパクト）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/19831112/n/n5be18a115b2b" rel="noopener" target="_blank">note.com</a></div><h2>主な成果（業務インパクト）</h2>
 <h3>定型業務の自動化</h3>
 <table>
 <thead>
@@ -94,13 +96,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>重要案件モニタリング: 3〜4時間/週・精度低 → 20〜30分/週・精度高</li>
 <li>中期戦略資料ドラフト: 1〜2週間 → 1日</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>分業モデル</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/19831112/n/n5be18a115b2b" rel="noopener" target="_blank">note.com</a></div><h2>分業モデル</h2>
 <p>全事例に共通する構造：</p>
 <blockquote>
 <p><strong>AI = 一次担当、人間 = 最終判断</strong></p>
 </blockquote>
 <p>IRチェック・反社チェック・法務ニュース・ヘルプデスクすべてに適用。「AIが要確認と判定した項目のみ人間が見る」設計。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>管理部AI化 6ステップロードマップ</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/19831112/n/n5be18a115b2b" rel="noopener" target="_blank">note.com</a></div><h2>管理部AI化 6ステップロードマップ</h2>
 <pre><code>Step 0: ガバナンス整備（AIガイドライン・申請フロー・監査対応）
 Step 1: 業務の可視化・棚卸し
 Step 2: AI適用可能性の評価
@@ -109,13 +111,13 @@ Step 4: 実装・運用  ← 2026年5月現在
 Step 5: 効果測定・横展開
 </code></pre>
 <p>4月はStep 0〜1を完了し、Step 3〜4への移行中。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>ガバナンスの考え方</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/19831112/n/n5be18a115b2b" rel="noopener" target="_blank">note.com</a></div><h2>ガバナンスの考え方</h2>
 <ul>
 <li><strong>AIガイドライン＋ホワイトリスト</strong>: 何を入れて良いか・ダメかを明文化</li>
 <li><strong>AI利用申請フロー</strong>: 申請→ガイドライン照合→承認</li>
 <li>「完璧なガバナンスを先に置くのではなく、走りながら整える」実態</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>5つの成功パターン</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/19831112/n/n5be18a115b2b" rel="noopener" target="_blank">note.com</a></div><h2>5つの成功パターン</h2>
 <ol>
 <li><strong>業務の再設計思考</strong> — 今の仕事を早くするではなく、Claude前提で業務フロー自体を組み直す</li>
 <li><strong>業務の標準化・言語化が前提</strong> — 属人化業務はAI化の前に整理が必要</li>
@@ -123,14 +125,14 @@ Step 5: 効果測定・横展開
 <li><strong>まず触るが突破口</strong> — 「やる前のハードルより、触ってみた後の方が小さい」</li>
 <li><strong>AIは仕様を引き出すパートナー</strong> — 丸投げ失敗が業務言語化スキルの訓練になる</li>
 </ol>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>組織知化への移行課題</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/19831112/n/n5be18a115b2b" rel="noopener" target="_blank">note.com</a></div><h2>組織知化への移行課題</h2>
 <p>個人の実装を組織資産に変える3つの取り組み：</p>
 <ol>
 <li><strong>Skill化</strong> — 個人スクリプトを他部署で再利用できる構造に変換</li>
 <li><strong>ナレッジ集約</strong> — Notion「Claude活用状況DB」で部門横断管理</li>
 <li><strong>失敗ナレッジ共有</strong> — 先行者の失敗を後続者の成功率向上に</li>
 </ol>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://note.com/19831112/n/n5be18a115b2b" rel="noopener" target="_blank">note.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>

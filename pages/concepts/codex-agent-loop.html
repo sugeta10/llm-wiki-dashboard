@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,14 +33,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://openai.com/index/unrolling-the-codex-agent-loop/" class="src-chip" rel="noopener" target="_blank">openai.com</a><a href="https://x.com/i/web/status/2057462768857743569" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Codex エージェントループ</h1>
 <p><a href="../tools/openai-codex.html">openai-codex</a> の Codex CLI が採用するエージェントループの内部実装。OpenAI Responses API を使ってユーザー・モデル・ツールの三者間インタラクションを制御する中核ロジック。Michael Bolin（OpenAI MTS）による公式解説シリーズ第1弾（2026-01-23）。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>観察ログ（未検証）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://openai.com/index/unrolling-the-codex-agent-loop/" rel="noopener" target="_blank">openai.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057462768857743569" rel="noopener" target="_blank">x.com</a></div><h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-05-21: <strong>Compactionの圧縮メカニズム</strong> — コンテキスト圧縮が劣化しにくい理由は、テキスト形式ではなく<strong>潜在空間のベクター表現でバイナリ圧縮</strong>しているため（@kenn の観察）。公式ブログでも "preserves the model's latent understanding" と記述。元々膨大なテキストを超圧縮したものがLLMの重みであることと整合する設計。セッションが極めて長くなっても意味的劣化が少ないのはこの仕組みによる</li>
 <li>2026-01-23: <code>previous_response_id</code> を意図的に使わない設計判断：ZDR（Zero Data Retention）対応と完全ステートレス性のトレードオフを優先。ステートレス化でプロバイダー側のキャッシュ保持義務が不要になる</li>
 <li>2026-01-23: MCP ツールは Codex CLI のサンドボックス外で動作する——MCP サーバー側が自前でガードレールを実装する責任を負う（Codex の shell ツールのみサンドボックス適用）</li>
 <li>2026-01-23: コンテキストウィンドウの増大は会話ターン数に対して<strong>二次オーダー</strong>で成長する。プロンプトキャッシュのヒット率が高ければ実質的に線形コストに抑えられる</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>検証済み事実</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://openai.com/index/unrolling-the-codex-agent-loop/" rel="noopener" target="_blank">openai.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057462768857743569" rel="noopener" target="_blank">x.com</a></div><h2>検証済み事実</h2>
 <ul>
 <li>2026-01-23: <strong>エージェントループの基本構造</strong> — ユーザー入力 → プロンプト構築 → Responses API 推論 → ツールコール or アシスタントメッセージ の繰り返し。1ターン = 1アシスタントメッセージで終了</li>
 <li>2026-01-23: <strong>Responses API エンドポイント</strong> — 認証方式によりエンドポイントが分岐：ChatGPT ログインは <code>chatgpt.com/backend-api/codex/responses</code>、APIキーは <code>api.openai.com/v1/responses</code>、ローカル（<code>--oss</code>）は <code>localhost:11434/v1/responses</code></li>
@@ -49,7 +51,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-01-23: <strong>コンテキスト圧縮（Compaction）</strong> — <code>auto_compact_limit</code> 超過時に <code>/responses/compact</code> エンドポイントを自動呼び出し。返却される <code>type=compaction</code> アイテム（<code>encrypted_content</code> 付き）が以降の <code>input</code> を代替する。以前は <code>/compact</code> コマンドの手動実行のみだった</li>
 <li>2026-01-23: <strong>reasoning の扱い</strong> — モデルが出力した <code>type=reasoning</code> アイテムは次の推論リクエストの <code>input</code> に含める必要がある。ZDR 環境では <code>encrypted_content</code> がサーバー側で復号される（OpenAI は復号キーのみ保持・データは保持しない）</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://openai.com/index/unrolling-the-codex-agent-loop/" rel="noopener" target="_blank">openai.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057462768857743569" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../tools/openai-codex.html">openai-codex</a> — Codex CLIの概要・商用利用・Claude Codeとの比較</li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — プロンプトキャッシュの仕組みとベストプラクティス（Claude版だがOpenAI版と設計思想が共通）</li>

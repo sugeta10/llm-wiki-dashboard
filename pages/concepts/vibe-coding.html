@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,21 +33,21 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/1923072219908809004" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2050230239700152633" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Vibe Coding</h1>
 <p><strong>Vibe Coding</strong> は <a href="../people/andrej-karpathy.html">andrej-karpathy</a> が提唱したAI支援プログラミングのスタイル。コードの細部を自分で書かず、AIが生成するコードの「雰囲気（vibe）」を感じながら指示だけで開発を進めるアプローチ。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>特徴</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1923072219908809004" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">x.com</a></div><h2>特徴</h2>
 <ul>
 <li>開発者はコードを直接書かず、自然言語で指示</li>
 <li>AIが実装・レビュー・修正のループを自律的に回す</li>
 <li>細部の実装知識がなくても動くものを作れる</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>実践例</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1923072219908809004" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">x.com</a></div><h2>実践例</h2>
 <p><strong>Cursor × CodeRabbit ループ:</strong>
 1. <a href="../tools/cursor.html">cursor</a> がコードを書く
 2. CodeRabbit の無料拡張がレビュー
 3. Cursor が指摘を修正
 4. 1〜3 を繰り返す → 人間は見ているだけ</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>Karpathy の見解</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1923072219908809004" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">x.com</a></div><h2>Karpathy の見解</h2>
 <p><a href="../people/andrej-karpathy.html">andrej-karpathy</a> 自身が「vibe coding を提唱した自分が最も遅れを感じている」と発言。Sequoiaでの30分講演で <a href="../tools/claude-code.html">claude-code</a>・<a href="../tools/cursor.html">cursor</a>・Codexについて解説している。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1923072219908809004" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
 <li><a href="../tools/cursor.html">cursor</a></li>

@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,14 +33,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" class="src-chip" rel="noopener" target="_blank">speakerdeck.com</a><a href="https://x.com/i/web/status/2056571858242404578" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Claude Code セキュリティ設定と組織展開</h1>
 <p>メルカリ AI Security Team による <a href="../tools/claude-code.html">claude-code</a> の組織展開戦略。エンジニアと非エンジニアの双方が安全かつ生産性高く利用できる設定を MDM で配布する方法論。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>Claude Code のリスク</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener" target="_blank">speakerdeck.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">x.com</a></div><h2>Claude Code のリスク</h2>
 <ul>
 <li>ファイルの検索・読み書き・編集</li>
 <li>Web 検索とページ取得</li>
 <li>任意コマンドの実行（rm -rf、curl 等）</li>
 </ul>
 <p>PC 上の大事なファイルや認証情報にアクセスできる → クラウドストレージ活用・認証情報の短期化でも依然リスクあり。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>セキュリティ向上設定（5点）</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener" target="_blank">speakerdeck.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">x.com</a></div><h2>セキュリティ向上設定（5点）</h2>
 <ol>
 <li><strong>パーミッションモードのbypass禁止</strong> — 人間による確認を必須化</li>
 <li><strong>危険コマンドの確認必須</strong> — bash インライン実行・curl は許可前に確認</li>
@@ -46,12 +48,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>Sandbox によるアクセス制限</strong> — ディレクトリ外操作禁止、ネットワーク制限による漏洩防止</li>
 <li><strong>セキュリティポリシーをシステムプロンプトに追加</strong> — CLAUDE.md に記述</li>
 </ol>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>MDM による全社配布</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener" target="_blank">speakerdeck.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">x.com</a></div><h2>MDM による全社配布</h2>
 <p>MDM（端末管理システム）を使って以下を一斉展開：
 - Claude Code の設定ファイル
 - システムプロンプト（CLAUDE.md）</p>
 <p><strong>罠</strong>: MDM 配布設定は最高優先度で扱われるため、カスタマイズしたいエンジニアと、最初から安全な状態が欲しい非エンジニアの両方を単一設定では満たせない。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>解決策：ユーザータイプ別設定分離</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener" target="_blank">speakerdeck.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">x.com</a></div><h2>解決策：ユーザータイプ別設定分離</h2>
 <table>
 <thead>
 <tr>
@@ -71,7 +73,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>MDM に連携した情報から配布設定を分離することで、それぞれが生産性高く安全に利用できる環境を実現。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>エンタープライズ展開事例：NOT A HOTEL</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener" target="_blank">speakerdeck.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">x.com</a></div><h2>エンタープライズ展開事例：NOT A HOTEL</h2>
 <p>@oikon48 による紹介（2026-05-19）。エンプラ組織での参考になる3点セット：</p>
 <p><strong>① アクセス制御</strong>
 - <strong>ドメインクレーム + Okta SSO 必須化</strong> — テナントアクセスをIdPで一元管理
@@ -79,7 +81,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - 申請対応・退職時の棚卸しを自動化</p>
 <p><strong>② ガードレール</strong>（詳細は元ツイートで続報）</p>
 <p>→ メルカリのMDM戦略と合わせて、「個人端末設定」×「テナントアクセス制御」という2層でClaude Codeのエンプラ展開をカバーできる。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener" target="_blank">speakerdeck.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>

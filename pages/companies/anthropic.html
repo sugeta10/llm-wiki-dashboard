@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -31,19 +33,19 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2050842588157255894" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2050033020535820420" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Anthropic</h1>
 <p>AIセーフティ研究・開発を主軸とする企業。Claude シリーズの開発元。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>主要製品</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050842588157255894" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050033020535820420" rel="noopener" target="_blank">x.com</a></div><h2>主要製品</h2>
 <ul>
 <li><strong>Claude</strong> — LLMシリーズ（Claude 3.5 Sonnet, Claude 3 Opus 等）</li>
 <li><strong><a href="../tools/claude-code.html">claude-code</a></strong> — AIコーディング CLI ツール</li>
 <li><strong><a href="../tools/claude-mcp.html">claude-mcp</a></strong> — Model Context Protocol（外部ツール連携仕様）</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>マルチエージェントフレームワーク</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050842588157255894" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050033020535820420" rel="noopener" target="_blank">x.com</a></div><h2>マルチエージェントフレームワーク</h2>
 <p>Anthropicが公開したマルチエージェント構成では：
 - 人間1人が指示役、AI複数体が業務を分担
 - <a href="../concepts/agentic-coding.html">agentic-coding</a> の実践的な実装例</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>プロンプト教育</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050842588157255894" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050033020535820420" rel="noopener" target="_blank">x.com</a></div><h2>プロンプト教育</h2>
 <p>初心者向けプロンプト講座をインタラクティブ形式で無料公開。チェーンプロンプト・Few-shot・ハルシネーション回避などを学べる（<a href="../concepts/prompt-engineering.html">prompt-engineering</a> 参照）。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>金融サービス向けソリューション</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050842588157255894" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050033020535820420" rel="noopener" target="_blank">x.com</a></div><h2>金融サービス向けソリューション</h2>
 <p>銀行・保険・資産運用・フィンテック向けに特化した製品群を展開：
 - <strong>SOC 2・FedRAMP 準拠</strong>、出力はすべてソース追跡可能
 - <strong>データ連携</strong>: LSEG、FactSet、S&amp;P Global、Morningstar
@@ -51,16 +53,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - <strong>Claude for Microsoft 365</strong> — Excel / PowerPoint / Word / Outlook 統合
 - <strong>Agent テンプレート</strong> — ピッチブック、KYC スクリーニング、クレジットメモ等</p>
 <p>→ <a href="../tools/claude-finance-agents.html">claude-finance-agents</a> で10テンプレートの詳細を参照</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>開発速度の秘密</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050842588157255894" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050033020535820420" rel="noopener" target="_blank">x.com</a></div><h2>開発速度の秘密</h2>
 <p>「Anthropicはなぜ異次元の速度で開発できるのか」（2026-05-01）で指摘された要因：
 - <strong>小さく精鋭なチーム</strong>: 人数を絞り、1人当たりの裁量と責任を最大化
 - <strong>研究者が直接製品を作る</strong>: リサーチと製品開発の距離がゼロ
 - <strong>Claude を使って Claude を開発</strong>: 自社ツールで開発速度を自己加速するフライホイール構造
 - <strong>安全性研究が製品差別化</strong>: Constitutional AI 等の研究が製品信頼性に直結</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>企業向けAIサービス会社の設立</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050842588157255894" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050033020535820420" rel="noopener" target="_blank">x.com</a></div><h2>企業向けAIサービス会社の設立</h2>
 <p>2026年5月、<a href="../companies/openai.html">openai</a> の Deployment Company 設立と同時期に、Anthropic も Blackstone・Hellman &amp; Friedman・Goldman Sachs と組んで、Claude を企業の中核業務に組み込む AI サービス会社を設立。Applied AI エンジニアをパートナー企業のエンジニアチームと協働させる体制。</p>
 <p>→ 背景・産業インパクト分析は <a href="../business/ai-vertical-integration.html">ai-vertical-integration</a> を参照。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2050842588157255894" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2050033020535820420" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a></li>

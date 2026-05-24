@@ -15,8 +15,10 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
-.sec-src:hover{color:#58a6ff;text-decoration:none}
+.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
+.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
+.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
+.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -30,7 +32,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="meta">tools/grill-me · tools · updated 2026-05-23</div>
   <div class="src-bar"><span class="src-label">参考</span><a href="https://zenn.dev/ryonakae/articles/8783c6b3ead2cb" class="src-chip" rel="noopener" target="_blank">zenn.dev</a></div>
   <article><p>Matt Pocock作の3行で書かれた<a href="../concepts/claude-skills.html">Agent Skill</a>。<code>/grill-me</code> をコマンドとして使い、実装前にAIが徹底的に要件を掘り下げる対話セッションを行わせる。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>概要</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/ryonakae/articles/8783c6b3ead2cb" rel="noopener" target="_blank">zenn.dev</a></div><h2>概要</h2>
 <p>スキル本文は以下の3行のみ：</p>
 <pre><code>この計画のあらゆる側面について、私たちが共通の認識に達するまで、徹底的に私に質問を投げかけてください。
 設計のツリーを枝分かれの先まで一つひとつたどり、決定事項間の依存関係を順番に解決していきましょう。
@@ -41,7 +43,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 もしコードベースを探索することで答えが得られる質問であれば、質問する代わりにコードベースを調査してください。
 </code></pre>
 <p>AIが2〜5択形式で質問を繰り返し、1セッションで最大18〜24回深掘りする。セッション履歴自体が実装計画になるため、「OK。これで実装して」と続けることでシームレスに実装フェーズへ移行できる。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>プランモードとの比較</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/ryonakae/articles/8783c6b3ead2cb" rel="noopener" target="_blank">zenn.dev</a></div><h2>プランモードとの比較</h2>
 <table>
 <thead>
 <tr>
@@ -69,13 +71,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>実践報告（ryonakae）では <code>/grill-me</code> 採用後にプランモードを使わなくなったとのこと。</p>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>推奨設定</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/ryonakae/articles/8783c6b3ead2cb" rel="noopener" target="_blank">zenn.dev</a></div><h2>推奨設定</h2>
 <ul>
 <li><strong>モデル</strong>: Opus 4.6（1Mコンテキスト）、medium effort</li>
 <li>Sonnet 4.6でも動作するが、深掘りの浅さを感じる場面あり</li>
 <li>medium effortでhighとほぼ同等の賢さが得られる</li>
 </ul>
-<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
+<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/ryonakae/articles/8783c6b3ead2cb" rel="noopener" target="_blank">zenn.dev</a></div><h2>関連</h2>
 <ul>
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — Agent Skillsの概念・仕様</li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様先行開発のより広い文脈</li>
