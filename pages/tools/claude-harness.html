@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -29,14 +31,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2043981770371276971" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2052088740496146652" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://github.com/anthropics/cwc-long-running-agents" class="src-chip" rel="noopener" target="_blank">github.com</a></div>
   <article><h1>Claude Harness</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> の上に構築される品質保証レイヤー。LLM単体では保証できないループ制御・評価・引き継ぎを担う。</p>
-<h2>Hokage（vibecoder_japan 実装）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>Hokage（vibecoder_japan 実装）</h2>
 <p>「Claude Harness - Hokage v4.0.0」は日本の開発者が公開した Claude ハーネスフレームワーク。</p>
 <ul>
 <li>Claude を「Hokage（火影）」として位置づけ、複数サブエージェントを指揮する構成</li>
 <li>Default-FAIL contract・Fresh-context evaluator・Agent-maintained handoff の3プリミティブを実装</li>
 <li>v4.0.0 時点でループ品質の大幅改善</li>
 </ul>
-<h2>Anthropic 公式: cwc-long-running-agents</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>Anthropic 公式: cwc-long-running-agents</h2>
 <p>Anthropic が公開した長時間実行エージェント向けのハーネス設計パターン（GitHub: <code>anthropics/cwc-long-running-agents</code>）。</p>
 <p>3つのコアプリミティブ：
 1. <strong>Default-FAIL contract</strong> — <code>test-results.json</code> の全criterionは <code>false</code> 始まり。<code>track-read.sh</code> + <code>verify-gate.sh</code> フックがReadツールで証拠ファイルを開くまで書き込みをブロック
@@ -101,16 +103,16 @@ watch -n 2 'wc -l &amp;lt; .claude/.evidence-reads'# 証拠読み込みカウン
 <blockquote>
 <p>各モデルリリース後は harness の各ピースをコメントアウトして「まだ必要か」を再評価する（Re-simplify on model upgrades）</p>
 </blockquote>
-<h2><a href="../tools/claude-code.html">claude-code</a> との関係</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2><a href="../tools/claude-code.html">claude-code</a> との関係</h2>
 <p>Claude Code の5層アーキテクチャにおける <strong>Harness layer</strong>（第4層）に相当。プロンプトレベルの工夫ではなく、ループ制御の構造的な設計。</p>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../tools/slack-bolt.html">slack-bolt</a> — SlackをAIエージェントのUI/トリガーとして使う場合の実装フレームワーク（Claude CodeやWorkatoへの接続起点）</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2043981770371276971" rel="noopener" target="_blank">https://x.com/i/web/status/2043981770371276971</a></li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2043981770371276971" rel="noopener" target="_blank">https://x.com/i/web/status/2043981770371276971</a></li>
 <li><a href="https://x.com/i/web/status/2052088740496146652" rel="noopener" target="_blank">https://x.com/i/web/status/2052088740496146652</a></li>
 <li><a href="https://github.com/anthropics/cwc-long-running-agents" rel="noopener" target="_blank">https://github.com/anthropics/cwc-long-running-agents</a></li></ul></section></article>
 </main>

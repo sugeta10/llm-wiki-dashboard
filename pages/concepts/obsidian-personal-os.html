@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -30,7 +32,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <article><h1>Obsidian パーソナルOS設計</h1>
 <p>ObsidianをAI自動化による「崩壊しないパーソナルオペレーティングシステム」として設計するアーキテクチャパターン（@cyrilXBT 提唱）。<strong>Storage（Obsidian）→ Intelligence（Claude Code + MCP）→ Automation（N8N）</strong>の3層構造で、生産性システムが壊れる3要因（手動メンテ負担・複雑化・知性ゼロ）を解決する。</p>
 <p>関連: <a href="../tools/claude-code-obsidian-project.html">claude-code-obsidian-project</a> / <a href="../tools/obsidian-skills.html">obsidian-skills</a> / <a href="../concepts/llm-wiki.html">llm-wiki</a></p>
-<h2>観察ログ（未検証）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-05-21: <strong>3層アーキテクチャ</strong> — Layer 1: Storage（Obsidian本体・プレーンテキスト、人間/機械可読・永続）/ Layer 2: Intelligence（Claude Code + Filesystem MCP でvaultを読み・横断接続し・更新）/ Layer 3: Automation（N8N on $5サーバー、スケジューリング・API呼び出し・システム間データ転送）。「ツールを使う」から「システムが動く」への転換は3層すべてが揃うことで起きる</li>
 <li>2026-05-21: <strong>8フォルダ固定構造</strong> — <code>00-CAPTURE</code>（未処理の一次受け・判断不要）/ <code>01-ACTIVE</code>（projects/areas/daily）/ <code>02-RESOURCES</code>（参照ライブラリ）/ <code>03-SYSTEM</code>（CLAUDE.md・skills/・workflows/・logs/）/ <code>04-GENERATED</code>（Claude出力専用・手動編集禁止）/ <code>05-QUEUE</code>（Claudeへのタスク投入口）/ <code>06-CALENDAR</code>（時系列情報）/ <code>07-ARCHIVE</code>（完了・陳腐化、削除せずここへ）。フォルダ数は固定・相互排他・重複なし</li>
@@ -44,7 +46,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-21: <strong>崩壊防止メカニズム3点</strong> — ① 00-CAPTUREキャプチャ安全網（忙しい日も「とりあえず全部CAPTURE」でOK、processor夜間処理）② ARCHIVE削除禁止ルール（完了物は削除せず07-ARCHIVEへ移動、日常操作では参照しない）③ CLAUDE.md単一真実（5分更新で全ワークフローに反映）</li>
 <li>2026-05-21: <strong>HTMLをiframeでObsidian上に表示</strong> — Markdown形式の制約を超えて、HTMLをiframeとして埋め込むことでリッチな視覚表現をvault内で確認できる手法（@shotovim）。「HTMLは書きづらいがiframeで埋め込むと閲覧体験が良い」という評価。CLAUDE.md等のルールで <code>wiki/outputs/YYYY-MM-DD-{topic}.html</code> に保存したファイルをObsidianで確認する際にも応用可能</li>
 <li>2026-05-21: <strong>1ウィークエンド構築ロードマップ</strong> — 土曜AM(2h): 8フォルダ作成+CLAUDE.md自分情報で記入+最初のプロジェクトoverview作成 → 土曜PM(1h): Claude Desktop + Filesystem MCP設定+Morning Briefing手動実行で動作確認 → 土曜夜(30m): QUEUEに実タスク投入してアウトプット体感 → 日曜AM(2h): N8N構築+Morning Briefing cron化 → 日曜PM(2h): 残り4ワークフロー追加</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2056924424838815824" rel="noopener" target="_blank">https://x.com/i/web/status/2056924424838815824</a></li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2056924424838815824" rel="noopener" target="_blank">https://x.com/i/web/status/2056924424838815824</a></li>
 <li><a href="https://x.com/i/web/status/2057469209308004764" rel="noopener" target="_blank">https://x.com/i/web/status/2057469209308004764</a></li></ul></section></article>
 </main>
 </body>

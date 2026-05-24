@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -29,7 +31,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2055069548672631218" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>プロンプトキャッシュ事前ウォームアップ</h1>
 <p>Claude APIで <strong>time-to-first-token（初回トークン生成までの時間）</strong> を短縮するテクニック。システムプロンプトを実際のユーザーリクエストより先に送信してキャッシュに書き込んでおく手法。</p>
-<h2>仕組み</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>仕組み</h2>
 <p>通常のフロー:
 1. ユーザーリクエスト到着
 2. APIへ（システムプロンプト + ユーザーメッセージ）を送信
@@ -42,24 +44,24 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 3. APIへ（システムプロンプト + ユーザーメッセージ）を送信
 4. <strong>キャッシュヒット</strong> → システムプロンプト処理をスキップ
 5. 推論実行 → 応答生成（高速）</p>
-<h2>実装ポイント</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>実装ポイント</h2>
 <ul>
 <li>システムプロンプトのみを送信し、<code>max_tokens=1</code> 等で出力を最小化することでキャッシュ書き込みのみを実行できる</li>
 <li>キャッシュの有効期限（TTL）を考慮してウォームアップのタイミングを設定する</li>
 <li>長いシステムプロンプト（ドキュメント、ツール定義、コンテキスト）ほど効果が大きい</li>
 </ul>
-<h2>効果が出やすいケース</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>効果が出やすいケース</h2>
 <ul>
 <li>システムプロンプトが長い（数千トークン以上）</li>
 <li>同一システムプロンプトで多数のリクエストを処理するサービス</li>
 <li>レイテンシ要件が厳しいリアルタイムチャット・音声アプリ</li>
 </ul>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — プロンプトキャッシングの仕組み・価格・ベストプラクティス詳細</li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計全般の最適化テクニック</li>
 <li><a href="../companies/anthropic.html">anthropic</a> — Claude API提供元（公式ドキュメントでキャッシュ仕様を参照）</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055069548672631218" rel="noopener" target="_blank">https://x.com/i/web/status/2055069548672631218</a></li></ul></section></article>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055069548672631218" rel="noopener" target="_blank">https://x.com/i/web/status/2055069548672631218</a></li></ul></section></article>
 </main>
 </body>
 </html>

@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -29,7 +31,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://zenn.dev/zhizhiarv/articles/claude-code-webfetch-haiku-summary" class="src-chip" rel="noopener" target="_blank">zenn.dev</a></div>
   <article><h1>Claude Code WebFetch の内部実装</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> の <strong>WebFetch ツール</strong>は、Web ページを取得しても多くの場合は原文をそのまま読んでいない。小型高速モデル（Haiku）が事前に要約・抽出した結果のみをメインモデル（Opus/Sonnet）が受け取る構造になっている。</p>
-<h2>基本的な動作フロー</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>基本的な動作フロー</h2>
 <p>画面上は <code>Received 204.4KB (200 OK)</code> と表示されても、実際には：</p>
 <ol>
 <li>WebFetch が URL から HTML を取得（上限 10 MiB）</li>
@@ -38,7 +40,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>要約結果のみ</strong>がメインモデルへ渡る</li>
 </ol>
 <p>結果として数万文字の記事が数百文字の要約に圧縮される。<code>/config</code> で Verbose モードを ON にすると実際の挙動を確認できる。</p>
-<h2>Haiku バイパス条件（3つすべて必要）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>Haiku バイパス条件（3つすべて必要）</h2>
 <p>以下をすべて満たす場合のみ原文 Markdown が直接渡される：</p>
 <ol>
 <li><strong><code>Content-Type: text/markdown</code> をサポート</strong>しているサイト</li>
@@ -46,7 +48,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>Markdown が 10 万文字以下</strong></li>
 </ol>
 <p>3条件が揃うと Haiku を通さず原文が呼び出し側に返る（プロンプト指定は無視されて全文が返ってくることもある）。</p>
-<h2>内部プロンプト（著作権制限）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>内部プロンプト（著作権制限）</h2>
 <p>Haiku に与えられる内部プロンプトには著作権配慮の制限が含まれている：</p>
 <pre><code class="language-text">Provide a concise response based only on the content above. In your response:
 - Enforce a strict 125-character maximum for quotes from any source document.
@@ -58,7 +60,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - Never produce or reproduce exact song lyrics.
 </code></pre>
 <p>「原文のまま取得して」と指示しても要約・言い換えで返ってくる理由はここにある。</p>
-<h2>設計上の理由</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>設計上の理由</h2>
 <table>
 <thead>
 <tr>
@@ -82,7 +84,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>問題は設計判断そのものではなく、<strong>それがユーザーに見えにくいこと</strong>。<code>Received 204.4KB</code> と表示しながら実際には要約しか渡していない不透明性が課題。</p>
-<h2>ワークアラウンド</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>ワークアラウンド</h2>
 <h3>defuddle（推奨）</h3>
 <pre><code class="language-bash">defuddle parse URL --md
 </code></pre>
@@ -93,21 +95,21 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>AI 向け Markdown 整形なし。Raw HTML が返ってくる。</p>
 <h3>ドメイン専用 MCP</h3>
 <p>AWS MCP・GitHub MCP など専用ツールがある場合はそちらを優先（WebFetch より制約が少ない）。</p>
-<h2>エージェントフレンドリーな実装の動向</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>エージェントフレンドリーな実装の動向</h2>
 <p>AWS ドキュメントは <code>Accept: text/markdown</code> ヘッダーを付けると Markdown 版を返す（2026年5月確認）。URL の <code>.html</code> を <code>.md</code> に変えても Markdown 取得可能。こうした対応サイトが増えれば Haiku バイパスが活用しやすくなる。</p>
-<h2>関連 GitHub Issues</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連 GitHub Issues</h2>
 <ul>
 <li><a href="https://github.com/anthropics/claude-code/issues/53297">#53297</a> — Haiku がテンプレート文言を事実として要約する問題</li>
 <li><a href="https://github.com/anthropics/claude-code/issues/52799">#52799</a> — Haiku が <code>&amp;lt;system-reminder&gt;</code> タグを出力しエージェントが誤認する問題（セキュリティリスク）</li>
 <li><a href="https://github.com/anthropics/claude-code/issues/47628">#47628</a> — HTML 前処理挙動がドキュメント未記載</li>
 <li><a href="https://github.com/anthropics/claude-code/issues/51783">#51783</a> — 巨大 HTML の truncate 挙動がドキュメント未記載</li>
 </ul>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a> — Claude Code 本体</li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計（情報の正確性・一次情報の重要性）</li>
 <li><a href="../concepts/claude-code-security.html">claude-code-security</a> — Claude Code のセキュリティ設計（Prompt Injection 対策も含む）</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/zhizhiarv/articles/claude-code-webfetch-haiku-summary" rel="noopener" target="_blank">https://zenn.dev/zhizhiarv/articles/claude-code-webfetch-haiku-summary</a></li></ul></section></article>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/zhizhiarv/articles/claude-code-webfetch-haiku-summary" rel="noopener" target="_blank">https://zenn.dev/zhizhiarv/articles/claude-code-webfetch-haiku-summary</a></li></ul></section></article>
 </main>
 </body>
 </html>

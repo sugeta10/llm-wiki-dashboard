@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -29,23 +31,23 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://note.com/fladdict/n/nd42977e5443e" class="src-chip" rel="noopener" target="_blank">note.com</a><a href="https://openai.com/index/openai-launches-the-deployment-company/" class="src-chip" rel="noopener" target="_blank">openai.com</a></div>
   <article><h1>AI企業の垂直統合と受託業界への影響</h1>
 <p><a href="../people/fladdict.html">fladdict</a>（深津貴之 / note CXO）による分析（2026年5月）。<a href="../companies/openai.html">openai</a> の Deployment Company 設立・<a href="../companies/anthropic.html">anthropic</a> の企業向け AI サービス会社設立という動きを受けた産業構造の変化考察。</p>
-<h2>核心：「APIを売る」から「AIで御社を変革する」へ</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>核心：「APIを売る」から「AIで御社を変革する」へ</h2>
 <p>OpenAI・Anthropic がモデル API の提供にとどまらず、<strong>FDE（Forward Deployed Engineers）</strong> を企業内に常駐させ、業務の中核に AI を組み込む会社を設立し始めた。</p>
-<h2>なぜ新産業でなく既存産業へ？</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>なぜ新産業でなく既存産業へ？</h2>
 <p>新しい産業を作るより、<strong>すでにお金が流れている業務に入る</strong>方が合理的：</p>
 <ul>
 <li>顧客・法律・稟議フローはすぐには変わらない</li>
 <li>金融・セキュリティ・法務・会計・医療事務・バックオフィスは「地味だが固い」</li>
 <li>ビッグテックはすでに巨額設備投資済み → マネタイズを確実にする必要がある</li>
 </ul>
-<h2>コンビニのプライベートブランド戦略との類比</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>コンビニのプライベートブランド戦略との類比</h2>
 <ol>
 <li>まず API を開放し、どの業界・業務で AI が効くかデータを集める</li>
 <li>儲かるカテゴリが判明したら自社で直接参入（合弁・買収・FDE派遣）</li>
 <li>業務を吸い上げ、再利用できる部分をプロダクト化</li>
 </ol>
 <p><strong>棚を貸す側 → PB化する側</strong>へのシフト。</p>
-<h2>日本のSI業界への影響予測</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>日本のSI業界への影響予測</h2>
 <p>NTT・ソフトバンク・KDDI・NEC・<a href="../companies/fujitsu.html">fujitsu</a>・SCSK・TIS・アクセンチュア・デロイト・PwC・ベイカレントなど大手が、ビッグテックと組んで国内版 Forward Deployment 会社を作りにいく。</p>
 <p><strong>椅子の数は限られている</strong>：</p>
 <table>
@@ -71,19 +73,19 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p><strong>買われるなら早いほうが高い。</strong> 標準化が進むほど買収価値は下がる。</p>
-<h2>「ドメイン知識があるから大丈夫」の落とし穴</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>「ドメイン知識があるから大丈夫」の落とし穴</h2>
 <p>短期では正しいが、資本の視点では別の手がある：</p>
 <blockquote>
 <p>「ドメイン知識を持っている会社を買い、現場を観察し、業務を棚卸しし、暗黙知を形式知にし、データ化し、モデルを注入する」</p>
 </blockquote>
 <p><strong>AIに置き換わらない仕事 → AIから呼び出される外部モジュールになる。</strong><br>
 ラストワンマイルの会社を買って API 接続し、AI エージェントの外部スキルにするという手が来る。</p>
-<h2>会社は残る。でも職位は残らないかもしれない</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>会社は残る。でも職位は残らないかもしれない</h2>
 <p>自動適応製品（「この業界の最新ベストプラクティスに合わせて」くらいで設定変更が完了するもの）が出た瞬間に発注は激減する。</p>
 <blockquote>
 <p>受託が忙しい時期は、たぶんしばらく続く。でも、それは需要増ではなく、終わりの前の移行需要かもしれない。</p>
 </blockquote>
-<h2>エンジニア・PM・デザイナーの生き残り戦略</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>エンジニア・PM・デザイナーの生き残り戦略</h2>
 <p><strong>「AI でできない作業」を探す</strong>のは時間稼ぎにすぎない。目指すべきは：</p>
 <blockquote>
 <p>AIを含んだシステム全体の責任に近づくこと</p>
@@ -94,7 +96,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>デザイナー</strong>: 画面を作る人 → 人間が AI を信頼・監督・修正できる関係を作る人</li>
 </ul>
 <p><strong>自分自身を自動更新する</strong>：昨日の自分の仕事を今日の自分が AI で奪えるか。毎週少しずつ作業を AI に渡し、浮いた時間で顧客・意思決定・業務・資本に近づく。</p>
-<h2>守るべきは職位でなく資本</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>守るべきは職位でなく資本</h2>
 <p>3種の資本を積む：</p>
 <table>
 <thead>
@@ -118,15 +120,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<h2>ソブリンAI は万能ではない</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>ソブリンAI は万能ではない</h2>
 <p>国策 AI も<strong>資本集約は起きる</strong>（グローバル → 国内大手への集約に変わるだけ）。かつ「安全保障用の劣位 AI を持ちつつ、日常業務には高性能な海外 AI を使う」二重構造になる可能性が高い。</p>
-<h2>メタレベルの問い</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>メタレベルの問い</h2>
 <blockquote>
 <p>自社は棚を持つ側か、棚に置かれる側か。<br>
 AI を呼び出す側か、AI に呼び出される外部モジュールか。</p>
 </blockquote>
 <p><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a> と同じ問い：AGI時代に競争優位は「知識の占有」から「ポジション」に移る。</p>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../companies/openai.html">openai</a> — OpenAI Deployment Company 詳細</li>
 <li><a href="../companies/anthropic.html">anthropic</a> — 同時期に企業向け AI サービス会社を設立</li>
@@ -134,7 +136,7 @@ AI を呼び出す側か、AI に呼び出される外部モジュールか。</
 <li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a> — AGI時代の競争優位の変容</li>
 <li><a href="../business/ai-income-retirement-strategy.html">ai-income-retirement-strategy</a> — 個人レベルのAI×資本戦略</li>
 <li><a href="../people/fladdict.html">fladdict</a> — 著者プロフィール</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://note.com/fladdict/n/nd42977e5443e" rel="noopener" target="_blank">https://note.com/fladdict/n/nd42977e5443e</a></li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/fladdict/n/nd42977e5443e" rel="noopener" target="_blank">https://note.com/fladdict/n/nd42977e5443e</a></li>
 <li><a href="https://openai.com/index/openai-launches-the-deployment-company/" rel="noopener" target="_blank">https://openai.com/index/openai-launches-the-deployment-company/</a></li></ul></section></article>
 </main>
 </body>

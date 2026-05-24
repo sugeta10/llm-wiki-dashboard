@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -29,7 +31,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b" class="src-chip" rel="noopener" target="_blank">note.com</a></div>
   <article><h1>Claude Code コンテキスト階層設計</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> の設定・コンテキスト管理は、<strong>Memory / Slash commands / Permissions / MCP servers の4種類すべてが同一の4層階層</strong>に従う。"Build once, use everywhere"（一度作れば、どこでも使える）が設計思想。</p>
-<h2>4層の定義</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>4層の定義</h2>
 <table>
 <thead>
 <tr>
@@ -61,7 +63,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<h2>4種類の設定と対応パス</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>4種類の設定と対応パス</h2>
 <table>
 <thead>
 <tr>
@@ -104,7 +106,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>加えて <code>vendor/CLAUDE.md</code>（ベンダー提供設定）が存在する。<code>/memory</code> コマンドで現在読み込み中のファイルを全一覧できる。</p>
-<h2>各層に何を置くか</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>各層に何を置くか</h2>
 <p><strong>Enterprise policy</strong>（会社全体）
 - セキュリティ制約（<code>.env</code> 読み取り禁止・<code>sudo</code> 禁止）
 - 承認済みコマンドの自動許可
@@ -120,12 +122,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p><strong>Project (just me)（個人のプロジェクト設定・.gitignore）</strong>
 - 自分だけの実験的設定
 - ローカル環境固有のパス設定</p>
-<h2>操作ショートカット</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>操作ショートカット</h2>
 <ul>
 <li><code>/memory</code> — 現在読み込まれているすべての記憶ファイルを表示・選択編集</li>
 <li><code>#</code> — その場で記憶を追加（どの層のファイルに保存するか選択できる）</li>
 </ul>
-<h2>Enterprise policy の実用例</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>Enterprise policy の実用例</h2>
 <pre><code># policies.json で危険コマンドを全社員に禁止
 {
   &quot;denyTools&quot;: [&quot;Bash(rm -rf:*)&quot;],
@@ -133,13 +135,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 }
 </code></pre>
 <p>チーム全員が使うMCPサーバーを<code>.mcp.json</code>にコミットしておくと、誰かがそのリポジトリでClaude Codeを起動した際に自動でインストールを促す。</p>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — CLAUDE.md の12ルール設計・200行制限</li>
 <li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a> — ルートは薄く・サブディレクトリ分割の設計原則</li>
 <li><a href="../concepts/claude-code-security.html">claude-code-security</a> — MDMによる組織展開・ロール別設定分離</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — Claude Code 全体リファレンス</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b" rel="noopener" target="_blank">https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b</a></li></ul></section></article>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b" rel="noopener" target="_blank">https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b</a></li></ul></section></article>
 </main>
 </body>
 </html>

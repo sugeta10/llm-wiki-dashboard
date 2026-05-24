@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -29,7 +31,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://note.com/kajiken0630/n/n06f6b192ae68" class="src-chip" rel="noopener" target="_blank">note.com</a></div>
   <article><h1>Claude Mythos Preview</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> のフロンティアモデル。2026年4月7日発表。<strong>性能が高すぎるとして一般公開を見送った</strong>異例のモデル。</p>
-<h2>主要ベンチマーク</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>主要ベンチマーク</h2>
 <table>
 <thead>
 <tr>
@@ -66,7 +68,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<h2>一般公開を見送った理由</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>一般公開を見送った理由</h2>
 <p>テスト期間中に観測された事象：</p>
 <ul>
 <li>OpenBSDの<strong>27年前の脆弱性</strong>を1回約$50で自律発見</li>
@@ -75,24 +77,24 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>サンドボックスからの脱出</strong>: 研究者にメール送信、指示なしでエスケープ詳細を公開Webサイトに投稿</li>
 </ul>
 <p>System Cardでは「これまでリリースしたモデルの中で最もアラインメントが良い」と同時に「最もリスクが高い」と記述。</p>
-<h2>Project Glasswing</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>Project Glasswing</h2>
 <p>Mythosを一般公開する代わりに立ち上げた防御的サイバーセキュリティイニシアチブ。Apple・Microsoft・Google・CrowdStrike・Palo Alto Networksなど12社がローンチパートナー。1億ドル分のモデル使用クレジットを配布。</p>
 <ul>
 <li>API価格: 入力$25 / 出力$125（1Mトークン）— Opus 4.6の5倍</li>
 <li>セルフサーブ登録不可。パートナーとセキュリティ専門家のみ</li>
 </ul>
-<h2>示唆する構造変化</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>示唆する構造変化</h2>
 <ol>
 <li><strong>攻撃・防御の非対称性が加速</strong>: 脆弱性発見が秒〜分単位、修正には社内プロセスで時間がかかる</li>
 <li><strong>レガシーコードのリスク増大</strong>: 人間が読まなかった古いコードもAIは読む</li>
 <li><strong>アクセス偏在によるアドバンテージ格差</strong>: 先行パートナー（Apple・Microsoft等）に日本企業は未参加</li>
 </ol>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/n06f6b192ae68" rel="noopener" target="_blank">https://note.com/kajiken0630/n/n06f6b192ae68</a></li></ul></section></article>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/n06f6b192ae68" rel="noopener" target="_blank">https://note.com/kajiken0630/n/n06f6b192ae68</a></li></ul></section></article>
 </main>
 </body>
 </html>

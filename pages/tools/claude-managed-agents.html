@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -29,7 +31,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://claude.com/blog/new-in-claude-managed-agents" class="src-chip" rel="noopener" target="_blank">claude.com</a><a href="https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1" class="src-chip" rel="noopener" target="_blank">note.com</a><a href="https://x.com/i/web/status/2056740346529468717" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://platform.claude.com/docs/en/managed-agents/overview" class="src-chip" rel="noopener" target="_blank">platform.claude.com</a></div>
   <article><h1>Claude Managed Agents</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> が提供するエージェント管理プラットフォーム。長期実行エージェントのメモリ管理・自己改善・マルチエージェント協調を提供する。</p>
-<h2>主要機能</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>主要機能</h2>
 <h3>Dreaming（自己改善型メモリ）</h3>
 <p>スケジュール実行されるプロセスで、過去のエージェントセッションを振り返り、パターンを抽出してメモリを再構成する。</p>
 <ul>
@@ -60,13 +62,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - <strong>Spiral by Every</strong>: Haiku がオーケストレーターとして受付・フォローアップを担当し、複数ドラフトは Opus サブエージェントが並列生成。Outcomes でブランドボイス評価ルーブリックをメモリから参照しスコアリング</p>
 <h3>Webhooks</h3>
 <p>エージェントの完了通知を任意のエンドポイントに送信。非同期ワークフローとの統合が容易。</p>
-<h2>Memory + Dreaming の組み合わせ</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>Memory + Dreaming の組み合わせ</h2>
 <ul>
 <li><strong>Memory</strong>: 各エージェントが実行中に学習した内容をリアルタイムにキャプチャ</li>
 <li><strong>Dreaming</strong>: セッション間でメモリを精製、エージェント横断で共有知識を統合</li>
 </ul>
 <p>→ 長期稼働・マルチエージェント環境での「組織的学習」を実現する。</p>
-<h2>料金体系</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>料金体系</h2>
 <p>「トークン料金 ＋ 稼働時間料金」の2軸。</p>
 <ul>
 <li>トークン料金: 通常の Messages API と同じ（Opus 4.7: 入力$5/出力$25 per 1M）</li>
@@ -95,7 +97,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>ビジネスモデル上の意義: Anthropicが「質問1回ごとに課金するモデル」から「エージェントの稼働時間を売るモデル」へ転換。</p>
-<h2>公開状況（2026-05-09時点）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>公開状況（2026-05-09時点）</h2>
 <table>
 <thead>
 <tr>
@@ -126,14 +128,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<h2>セキュリティ機能（2026-05-19 追加）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>セキュリティ機能（2026-05-19 追加）</h2>
 <p>@ClaudeDevs（公式）が発表した2つのセキュリティ改善：</p>
 <h3>Self-hosted Sandboxes</h3>
 <p>エージェントの実行環境を <strong>自社インフラ</strong> または <strong>マネージドサンドボックスプロバイダー</strong> に置ける。Anthropicのクラウドを通さずに実行でき、データが自社セキュリティ境界内に留まる。</p>
 <h3>MCP Tunnels</h3>
 <p>エージェントがセキュリティ境界内のサービス（社内システム・DB等）に接続できるトンネル。<a href="../tools/claude-mcp.html">claude-mcp</a> ベースで、ファイアウォールを越えずに内部リソースに安全にアクセス。</p>
 <p>→ エンタープライズの「データを外に出したくない」という要件に直接応える機能。<a href="../concepts/claude-code-security.html">claude-code-security</a> と組み合わせることで、エンプラ向けClaude展開の完全なセキュリティスタックが構成できる。</p>
-<h2>公式仕様（2026-05-23 公式ドキュメントより）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>公式仕様（2026-05-23 公式ドキュメントより）</h2>
 <h3>コアコンセプト</h3>
 <table>
 <thead>
@@ -194,7 +196,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul>
 <h3>Dreaming（詳細）</h3>
 <p>Dreams のAPI仕様・ライフサイクル・エラー種別の詳細は <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> を参照。</p>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
@@ -204,7 +206,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>（Pipeline・Fan-Out・Specialist Teamパターンの設計ガイド）</li>
 <li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a>（Dreams APIの詳細仕様）</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/new-in-claude-managed-agents" rel="noopener" target="_blank">https://claude.com/blog/new-in-claude-managed-agents</a></li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/new-in-claude-managed-agents" rel="noopener" target="_blank">https://claude.com/blog/new-in-claude-managed-agents</a></li>
 <li><a href="https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1" rel="noopener" target="_blank">https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1</a></li>
 <li><a href="https://x.com/i/web/status/2056740346529468717" rel="noopener" target="_blank">https://x.com/i/web/status/2056740346529468717</a></li>
 <li><a href="https://platform.claude.com/docs/en/managed-agents/overview" rel="noopener" target="_blank">https://platform.claude.com/docs/en/managed-agents/overview</a></li></ul></section></article>

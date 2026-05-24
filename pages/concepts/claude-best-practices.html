@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -29,7 +31,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2054568935274549597" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Claude効果的活用ガイド（18ステップ）</h1>
 <p>@AnatoliKopadzeによるClaude完全活用ガイド。「多くの人は毎日使っていても10%のポテンシャルしか活かせていない」という問題意識から、Projects設定・Custom Instructions・Extended Thinking・トークン最適化など18の実践ステップを解説。</p>
-<h2>観察ログ（未検証）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-05-13: <strong>Projects</strong>が最重要起点。毎回コンテキストを入力し直す必要がなく、Claudeが会話をまたいで記憶を保持する永続ワークスペース（サイドバーから作成）</li>
 <li>2026-05-13: <strong>Custom Instructions</strong>：Projectsにユーザー自身のプロフィール（役割・目標・好みのコミュニケーションスタイル等）を保存し、全チャットに自動適用させる。プロフィールをClaudeに渡して「Custom Instructionsに変換させる」のが効率的</li>
@@ -45,15 +47,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-13: <strong>フェインマン法プロンプト</strong>：「analogiesを使って5歳にも分かるように説明して、その後専門用語に戻して」形式で、専門用語が飛び交うデフォルト説明よりも真の理解が得られる</li>
 <li>2026-05-13: <strong>ビジネスアイデアのストレステスト</strong>：アイデアに恋する前に「厳しいベンチャーキャピタリストとして攻撃して」と依頼することで、コストをかける前に本質的な問題を発見できる</li>
 </ul>
-<h2>検証済み事実</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>検証済み事実</h2>
 <p>（著者の個人的推奨事項のため、現時点では公式に検証された客観的事実なし）</p>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — 同著者(@AnatoliKopadze)によるClaudeサブスク活用20選を含む技術的プロンプト設計ガイド</li>
 <li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a> — Claude使用制限回避の5ステップ（計画優先・モデルスタッキング・チャット長管理）</li>
 <li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a> — ChatGPT版のカスタム指示活用法（同様の概念）</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — Anthropic製AIコーディングCLI（同じClaudeエコシステム）</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054568935274549597" rel="noopener" target="_blank">https://x.com/i/web/status/2054568935274549597</a></li></ul></section></article>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054568935274549597" rel="noopener" target="_blank">https://x.com/i/web/status/2054568935274549597</a></li></ul></section></article>
 </main>
 </body>
 </html>

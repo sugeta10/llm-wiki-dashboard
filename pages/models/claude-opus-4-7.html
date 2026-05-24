@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -29,7 +31,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://note.com/kajiken0630/n/n06f6b192ae68" class="src-chip" rel="noopener" target="_blank">note.com</a><a href="https://www.anthropic.com/news/claude-opus-4-7" class="src-chip" rel="noopener" target="_blank">anthropic.com</a><a href="https://x.com/i/web/status/2057383695557021765" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Claude Opus 4.7</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> の最上位モデル。2026年4月16日リリース。コーディング・画像認識・エージェント系ベンチマークで首位を奪還。</p>
-<h2>主要ベンチマーク</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>主要ベンチマーク</h2>
 <table>
 <thead>
 <tr>
@@ -71,7 +73,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<h2>料金（1Mトークンあたり）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>料金（1Mトークンあたり）</h2>
 <ul>
 <li>入力: $5.00 / 出力: $25.00（Opus 4.6から据え置き）</li>
 <li><strong>実質値上げ注意</strong>: 新tokenizerにより同じ文でも消費トークンが最大 <strong>1.35倍</strong> に増加</li>
@@ -79,16 +81,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>プロンプトキャッシュ読み取り: 入力の10%</li>
 <li>バッチAPI: 入出力ともに50%オフ</li>
 </ul>
-<h2>画像認識の大幅向上</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>画像認識の大幅向上</h2>
 <p>XBOWベンチで 54.5% → 98.5%（+44pt）。最大画像解像度は長辺2,576px（従来比3倍超、A4相当の画面を丸ごと読める）。スクリーンショットベースのUI操作自動化が実用レベルに到達。</p>
-<h2>Opus 4.7向けプロンプト変更点</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>Opus 4.7向けプロンプト変更点</h2>
 <p>Opus 4.7は「指示されたことを忠実にやる」方向に調整されており、以前のプロンプトがそのまま使えない場合がある：</p>
 <ol>
 <li><strong>指示は「書き切り」が前提</strong>: 「全体的に」「いい感じに」は伝わりにくい。適用範囲を明示する</li>
 <li><strong>トーン・口調は明示で再現</strong>: warmな応答に依存したプロンプトは「親しみやすく共感的な口調で」のように明示が必要</li>
 <li><strong>知能要求の高い用途は <code>effort</code> を上げる</strong>: コーディング・エージェント用途は <code>xhigh</code>、それ以外の高度な用途は <code>high</code> 以上推奨</li>
 </ol>
-<h2>2026-05-13 GA発表：追加情報</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>2026-05-13 GA発表：追加情報</h2>
 <h3>Mythos Previewとの位置づけ</h3>
 <p><a href="../models/claude-mythos.html">claude-mythos</a>（Mythos Preview）が最高能力・最高安全性のモデルだが、サイバー能力の懸念から一般公開を限定。Opus 4.7は新しいサイバーセーフガードを試験した最初のモデルとして先に一般公開された。</p>
 <h3>新機能・API変更</h3>
@@ -131,32 +133,32 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>誠実性・プロンプトインジェクション耐性はOpus 4.6より改善</li>
 <li>Mythos Previewが依然として最も低い誤整合行動率</li>
 </ul>
-<h2>提供プラットフォーム</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>提供プラットフォーム</h2>
 <ul>
 <li>Claude.ai 全プロダクト・API（<code>claude-opus-4-7</code>）</li>
 <li>Amazon Bedrock</li>
 <li>Google Cloud Vertex AI</li>
 <li>Microsoft Foundry</li>
 </ul>
-<h2>推奨用途</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>推奨用途</h2>
 <ul>
 <li>コーディング × 長時間エージェント × PC操作</li>
 <li>画像・スクリーンショットベースの操作自動化</li>
 <li>法律・財務など経済価値の高い知識業務（GDPval-AA SOTA）</li>
 </ul>
 <p>コスト最優先の定常タスクは <strong>Sonnet 4.6</strong>（約40%安）が現時点の推奨。</p>
-<h2>Claude Code × Opus 4.7 ベストプラクティス（追加情報）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>Claude Code × Opus 4.7 ベストプラクティス（追加情報）</h2>
 <ul>
 <li>2026-05-21: Algomatic AILabがAnthropicの公式ベストプラクティスを解説。要点: ① tokenizerが更新されており旧Opusとトークン数が異なる ② より深く思考するよう設計されているため、プロンプト構造や <code>effort</code> 設定の見直しが必要 ③ Claude Codeでの利用時は上記「Opus 4.7向けプロンプト変更点」セクションの3点が特に重要</li>
 </ul>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
 <li><a href="../models/claude-mythos.html">claude-mythos</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/n06f6b192ae68" rel="noopener" target="_blank">https://note.com/kajiken0630/n/n06f6b192ae68</a></li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/n06f6b192ae68" rel="noopener" target="_blank">https://note.com/kajiken0630/n/n06f6b192ae68</a></li>
 <li><a href="https://www.anthropic.com/news/claude-opus-4-7" rel="noopener" target="_blank">https://www.anthropic.com/news/claude-opus-4-7</a></li>
 <li><a href="https://x.com/i/web/status/2057383695557021765" rel="noopener" target="_blank">https://x.com/i/web/status/2057383695557021765</a></li></ul></section></article>
 </main>

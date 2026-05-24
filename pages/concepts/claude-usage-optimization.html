@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -28,7 +30,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="meta">concepts/claude-usage-optimization · concepts · updated 2026-05-20</div>
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2049618781841031551" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><p>Claudeのトークン使用制限（レートリミット）を回避するための実践的フレームワーク。計画優先・チャット長管理・モデルスタッキング・記憶管理・ツール分割の5ステップで構成。関連: <a href="../tools/claude-code.html">claude-code</a>・<a href="../concepts/prompt-engineering.html">prompt-engineering</a></p>
-<h2>観察ログ（未検証）</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-04-29: @milesdeutscher が $200/月プランでも使用上限に達していたと報告。5ステップを導入して以降3週間ゼロ上限達成と主張</li>
 <li>2026-04-29: Claudeのトークン消費はテキストチャットより、描画・コーディング・実装作業が圧倒的に多いという観察</li>
@@ -41,18 +43,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-04-29: Extended/Adaptive Thinking は大半のタスクでOFF推奨。Conciseスタイル設定でトークン節約可</li>
 <li>2026-04-29: プラン更新（$20→$100→$200）より追加クレジット購入の方がコスパ良いケースがあるという主張</li>
 </ul>
-<h2>検証済み事実</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>検証済み事実</h2>
 <ul>
 <li>2026-04-29: Claude Code に Plan Mode（Shift+Tab×2 または <code>/Plan</code>）が存在し、計画フェーズ専用モードとして機能する</li>
 <li>2026-04-29: Claude Code に <code>/Usage</code> コマンドが存在し、現在の使用量確認が可能（Overview セクション追加済み）</li>
 <li>2026-04-29: Claude Code/Chat と Claude Design はトークン使用量が別カウント（異なる利用枠）</li>
 </ul>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a>（Plan Mode・モデル切替・設定詳細）</li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a>（プロンプト設計・最適化）</li>
 <li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a>（大規模コードベースでのコンテキスト管理）</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2049618781841031551" rel="noopener" target="_blank">https://x.com/i/web/status/2049618781841031551</a></li></ul></section></article>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2049618781841031551" rel="noopener" target="_blank">https://x.com/i/web/status/2049618781841031551</a></li></ul></section></article>
 </main>
 </body>
 </html>

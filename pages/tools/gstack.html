@@ -15,6 +15,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
+.sec-src{display:block;text-align:right;font-size:11px;color:#7d8590;font-family:monospace;margin:8px 0 0}
+.sec-src:hover{color:#58a6ff;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -29,16 +31,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://github.com/garrytan/gstack" class="src-chip" rel="noopener" target="_blank">github.com</a></div>
   <article><h1>gstack</h1>
 <p><a href="../people/garry-tan.html">garry-tan</a>（Y Combinator CEO）が作成したオープンソースの<strong>AIソフトウェアファクトリー</strong>。<a href="../tools/claude-code.html">claude-code</a>を「バーチャルエンジニアリングチーム」に変換する23以上のスラッシュコマンド集。MIT ライセンス、無料。</p>
-<h2>背景・動機</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>背景・動機</h2>
 <p>Garry Tan の 2026 年コーディング生産性は 2013 年比で <strong>~810倍</strong>（論理コード行数ベース）。2026年のYTD（4月18日時点）は2013年年間の240倍。AI が書いたコードが大半だが「誰が打ち込んだかではなく、何をリリースしたかが重要」という哲学。</p>
 <blockquote>
 <p>"I don't think I've typed like a line of code probably since December" — <a href="../people/andrej-karpathy.html">andrej-karpathy</a>（No Priors podcast, 2026年3月）</p>
 </blockquote>
 <p>この Karpathy の発言が gstack 開発の直接的動機。</p>
-<h2>スプリントプロセス</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>スプリントプロセス</h2>
 <p><strong>Think → Plan → Build → Review → Test → Ship → Reflect</strong></p>
 <p>各スキルが連鎖する設計。<code>/office-hours</code> が書いたデザインドキュメントを <code>/plan-ceo-review</code> が読み込む。ステップ間でコンテキストが継承されるため「抜け落ちがない」。</p>
-<h2>主要スキル一覧</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>主要スキル一覧</h2>
 <table>
 <thead>
 <tr>
@@ -120,29 +122,29 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<h2>OpenClaw との連携</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>OpenClaw との連携</h2>
 <p>gstack のスキルは <a href="../tools/openclaw.html">openclaw</a> 経由で Claude Code セッションを spawn する際にも動作する。ClawHub 経由で会話スキルも4種インストール可能。</p>
 <p>ディスパッチ例：
 - 「セキュリティ監査実行」→ Claude Code セッションに <code>Run /cso</code> を渡す
 - 「通知機能を作って」→ <code>/autoplan</code> → 実装 → <code>/ship</code> の順で自動進行</p>
-<h2>対応AIエージェント</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>対応AIエージェント</h2>
 <p>Claude Code だけでなく10種のAIエージェントに対応（<code>./setup --host &amp;lt;name&gt;</code> で切り替え）：
 OpenAI Codex CLI, OpenCode, Cursor, Factory Droid, Slate, Kiro, Hermes, GBrain 等。</p>
-<h2>GBrain</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>GBrain</h2>
 <p>永続知識ベース。セッション間でエージェントの記憶を保持する仕組み。<code>/setup-gbrain</code> で3種から選択：
 - <strong>Supabase（自動プロビジョニング）</strong>: PAT を貼るだけ、~90秒で完了
 - <strong>Supabase（既存URL）</strong>: 複数マシン間で記憶を共有
 - <strong>PGLite（ローカル）</strong>: アカウント不要・~30秒</p>
-<h2>並列スプリント</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>並列スプリント</h2>
 <p>10〜15の並列スプリントを <a href="https://conductor.build/">Conductor</a> で管理する使い方を Garry Tan 自身が実践。「プロセスがあるから並列化が機能する。プロセスなしの10エージェントは10のカオス源になる」。</p>
-<h2>セキュリティ</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>セキュリティ</h2>
 <ul>
 <li><strong>プロンプトインジェクション防御</strong>: 22MB ML 分類器 + Claude Haiku トランスクリプト検査 + ランダムカナリートークン</li>
 <li><code>/careful</code>: 破壊的コマンド（rm -rf, DROP TABLE, force-push）前に警告</li>
 <li><code>/freeze</code>: 特定ディレクトリ外への編集を禁止</li>
 <li><code>/guard</code>: <code>/careful</code> + <code>/freeze</code> を同時有効化</li>
 </ul>
-<h2>関連</h2>
+<a class="sec-src" href="#sources">参考 ↗</a><h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/openclaw.html">openclaw</a></li>
@@ -150,7 +152,7 @@ OpenAI Codex CLI, OpenCode, Cursor, Factory Droid, Slate, Kiro, Hermes, GBrain �
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://github.com/garrytan/gstack" rel="noopener" target="_blank">https://github.com/garrytan/gstack</a></li></ul></section></article>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/garrytan/gstack" rel="noopener" target="_blank">https://github.com/garrytan/gstack</a></li></ul></section></article>
 </main>
 </body>
 </html>
