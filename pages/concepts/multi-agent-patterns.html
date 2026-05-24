@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -33,13 +29,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2055215784092401966" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" class="src-chip" rel="noopener" target="_blank">dev.classmethod.jp</a><a href="https://x.com/i/web/status/2055941714561613896" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Multi-Agent Patterns</h1>
 <p>複数のAIエージェントが協調してタスクを処理するアーキテクチャパターン。単一エージェントの限界を超え、<strong>専門化</strong>と<strong>並列実行</strong>によって複雑タスクを高速・高品質に処理する。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener" target="_blank">dev.classmethod.jp</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">x.com</a></div><h2>なぜマルチエージェントか</h2>
+<h2>なぜマルチエージェントか</h2>
 <p>単一エージェントは「優秀な一人の従業員」。5つのサブタスクを順番にこなすため遅く、全方面に注意が分散して品質も中程度になりやすい。</p>
 <p>マルチエージェントは「専門チーム」：
 - <strong>速度</strong>: 並列実行により処理時間が大幅短縮（例: 1時間 → 15分）
 - <strong>品質</strong>: 各エージェントが得意領域に集中するため各パートの品質が上がる
 - <strong>スケール</strong>: タスク量が増えてもエージェント数を増やすだけで対応可能</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener" target="_blank">dev.classmethod.jp</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">x.com</a></div><h2>3つの基本パターン</h2>
+<h2>3つの基本パターン</h2>
 <h3>Pattern 1: Pipeline（パイプライン）</h3>
 <p>エージェントが順番にバトンを渡す直列構成。後のステップが前のステップの出力に依存する場合に適する。</p>
 <pre><code>Research Agent → Analysis Agent → Writing Agent → Review Agent
@@ -69,7 +65,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - <strong>Copy Agent</strong>: マーケティング資料・LPコピー作成
 - <strong>Review Agent</strong>: 一貫性・品質チェック</p>
 <p>Harvey（法律AI）がこのパターンを採用：リサーチ・判例分析・文書作成・コンプライアンス確認を専門エージェントが分担し、完全な法律パッケージを生成。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener" target="_blank">dev.classmethod.jp</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">x.com</a></div><h2>Anthropicの5パターン（Claude Code公式）</h2>
+<h2>Anthropicの5パターン（Claude Code公式）</h2>
 <p>Anthropicが公開した<a href="https://claude.com/blog/multi-agent-coordination-patterns">マルチエージェント協調パターン</a>。「まず <strong>Orchestrator-subagent</strong> から始め、困った課題が出たら別のパターンへ進む」という進め方を推奨している。</p>
 <table>
 <thead>
@@ -129,7 +125,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>EventBridgeなどをハブに各エージェントがpublish/subscribeで連携するイベント駆動型。疎結合でエージェント追加が容易だが、デバッグのために<strong>全イベントのログ記録が実質必須</strong>。</p>
 <h3>Shared State</h3>
 <p>中央司令塔なしに全エージェントが共通ストレージを読み書きして協調。終了条件（「最後の更新から30分経過」「調査エントリ100件超」など）を<strong>最初から明示的に設計</strong>しないと無限ループになる。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener" target="_blank">dev.classmethod.jp</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">x.com</a></div><h2>実装ステップ</h2>
+<h2>実装ステップ</h2>
 <h3>Step 1: チームを設計する</h3>
 <p>実装前に以下を定義する:
 1. <strong>全体目標</strong>は何か
@@ -164,7 +160,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 | <strong>冗長な作業</strong> | 複数エージェントが同じことをする | 各エージェントのスコープを極めて具体的に |
 | <strong>品質劣化</strong> | パイプラインが長くなるにつれ品質低下 | 重要チェックポイントにレビューエージェントを追加 |
 | <strong>トークン肥大</strong> | エージェントが不必要に冗長な出力を生成 | 出力長に制約を追加 |</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener" target="_blank">dev.classmethod.jp</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">x.com</a></div><h2>よくある失敗と回避策</h2>
+<h2>よくある失敗と回避策</h2>
 <ol>
 <li><strong>エージェントを汎用にしすぎる</strong>: 専門化こそマルチエージェントの価値。各エージェントは1つのことを極める</li>
 <li><strong>出力フォーマット非標準化</strong>: エージェント間の「データ契約」（フィールド・フォーマット・欠損時の扱い）を事前に定義する</li>
@@ -172,7 +168,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>エラーハンドリングなし</strong>: 「価格データが取得できない場合は過去データで継続し、レポートにフラグを立てる」のような明示的なフォールバックを定義する</li>
 <li><strong>トークンコスト無視</strong>: マルチエージェントは単一エージェントより多くのトークンを消費する。プロンプトを簡潔に保ちコストを監視する</li>
 </ol>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener" target="_blank">dev.classmethod.jp</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">x.com</a></div><h2>実装例（本番稼働）</h2>
+<h2>実装例（本番稼働）</h2>
 <p><strong>週次市場インテリジェンスレポート</strong>:
 - Agent 1〜3（並列）: Web調査・競合モニタリング・SNSリスニング
 - Agent 4: 分析（1〜3の結果を受取り、重要な5事象を評価）
@@ -183,9 +179,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - <strong>Netflix</strong>: 数百ビルドのログを並列分析（Fan-Out パターン）
 - <strong>Harvey</strong>: 複数文書にまたがる法律作業の協調（Specialist Team パターン）
 - <strong>Shopify</strong>: 2026年Q3までに自律コーディング90%を目標</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener" target="_blank">dev.classmethod.jp</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">x.com</a></div><h2>フリーランス・個人活用</h2>
+<h2>フリーランス・個人活用</h2>
 <p>Anthropicが公開しているエージェント量産手法は、<strong>英語圏のフリーランサー</strong>がいち早く活用し始めているとされる。数百体規模のエージェントを並列稼働させることで、従来は企業が担っていた規模の仕事を個人が請け負える可能性がある。<a href="../business/ai-income-retirement-strategy.html">ai-income-retirement-strategy</a> の「AIによる収益自動化」戦略とも親和性が高い。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener" target="_blank">dev.classmethod.jp</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a>（Dreaming・Outcomes・Multiagent OrchestrationのAPI）</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>

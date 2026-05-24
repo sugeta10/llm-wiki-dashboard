@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -33,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2048486242321662189" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Claude Code サブエージェント</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> のサブエージェント機能。専用のコンテキストウィンドウで独立して動作し、メインエージェントのコンテキストを汚染せずに作業を完了して結果だけを返す。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2048486242321662189" rel="noopener" target="_blank">x.com</a></div><h2>観察ログ（未検証）</h2>
+<h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-04-26: サブエージェントは <code>.claude/agents/</code> または <code>~/.claude/agents/</code> に Markdown ファイルとして定義する。frontmatter（description など）を Claude Code が自動検出し、タスクが説明に一致すると起動する</li>
 <li>2026-04-26: 優先度は「プロジェクトローカル（<code>.claude/agents/</code>）&gt; グローバル（<code>~/.claude/agents/</code>）」。同名の場合は高優先度が勝つ。チーム共有はプロジェクトローカル、個人用途はグローバルが推奨</li>
@@ -42,12 +38,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-04-26: <code>/fork</code> スラッシュコマンドでオンデマンドのフォーク。フォークされたサブエージェントは親と <strong>プロンプトキャッシュプレフィックスを共有</strong>し、2番目以降の子は入力トークンが約10倍安くなるとされる</li>
 <li>2026-04-26: <code>context-timeline</code> フック（<code>https://www.aitmpl.com/component/hook/monitoring/context-timeline</code>）でメインエージェントと並行動作中のサブエージェントのコンテキストをリアルタイム表示できる</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2048486242321662189" rel="noopener" target="_blank">x.com</a></div><h2>検証済み事実</h2>
+<h2>検証済み事実</h2>
 <ul>
 <li>2026-05-23: Claude Code のフォルダ構造に <code>~/.claude/agents/</code> と <code>.claude/agents/</code> が存在することは <a href="../tools/claude-code.html">claude-code</a> のフォルダ構成セクションで公式に確認済み</li>
 <li>2026-05-23: built-in サブエージェント <strong>Explore</strong>（コードベース検索）と <strong>Plan</strong>（実装計画立案）が Claude Code に同梱されていることは <a href="../tools/claude-code.html">claude-code</a> の記述と一致する</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2048486242321662189" rel="noopener" target="_blank">x.com</a></div><h2>Built-in サブエージェント</h2>
+<h2>Built-in サブエージェント</h2>
 <table>
 <thead>
 <tr>
@@ -66,7 +62,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2048486242321662189" rel="noopener" target="_blank">x.com</a></div><h2>コンテキストフォーク</h2>
+<h2>コンテキストフォーク</h2>
 <pre><code class="language-bash">export CLAUDE_CODE_FORK_SUBAGENT=1
 </code></pre>
 <p>設定後はすべてのサブエージェントがデフォルトで親コンテキストを継承。オンデマンドは <code>/fork</code> コマンドを使う。</p>
@@ -75,7 +71,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - 親とプロンプトキャッシュプレフィックスを共有（2〜N番目の子は約10倍安い）
 - ツール呼出は親のコンテキストに入らない
 - 最終サマリーのみを親に返す</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2048486242321662189" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a>（サブエージェントのフォルダ構成・<code>/batch</code> コマンド等）</li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>（マルチエージェント設計パターン全般）</li>

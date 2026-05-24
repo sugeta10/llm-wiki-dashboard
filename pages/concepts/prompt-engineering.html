@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -33,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/1873151448030089376" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/1875393699607425135" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/1875522476417151238" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://developers.openai.com/api/docs/guides/prompt-guidance" class="src-chip" rel="noopener" target="_blank">developers.openai.com</a><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" class="src-chip" rel="noopener" target="_blank">platform.claude.com</a><a href="https://x.com/i/web/status/2055602484853567963" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2049492553133629950" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>プロンプトエンジニアリング</h1>
 <p>LLMへの入力（プロンプト）を設計・最適化する技術。適切なプロンプト設計により出力品質を大幅に向上させられる。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1873151448030089376" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875393699607425135" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875522476417151238" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://developers.openai.com/api/docs/guides/prompt-guidance" rel="noopener" target="_blank">developers.openai.com</a><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" rel="noopener" target="_blank">platform.claude.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055602484853567963" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049492553133629950" rel="noopener" target="_blank">x.com</a></div><h2>主要テクニック</h2>
+<h2>主要テクニック</h2>
 <h3>チェーンプロンプト（Chain Prompting）</h3>
 <p>複数のプロンプトを連鎖させ、複雑なタスクを段階的に処理する手法。</p>
 <h3>Few-shot プロンプティング</h3>
@@ -44,15 +40,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>「知らない場合は知らないと答えよ」と明示する</li>
 <li><a href="../tools/cursor.html">cursor</a> では詳細コンテキスト記述でハルシネーション85%削減の報告あり</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1873151448030089376" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875393699607425135" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875522476417151238" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://developers.openai.com/api/docs/guides/prompt-guidance" rel="noopener" target="_blank">developers.openai.com</a><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" rel="noopener" target="_blank">platform.claude.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055602484853567963" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049492553133629950" rel="noopener" target="_blank">x.com</a></div><h2>Claude公式プロンプト講座</h2>
+<h2>Claude公式プロンプト講座</h2>
 <p><a href="../companies/anthropic.html">anthropic</a> が公開した初心者向けプロンプト講座では以下を学べる：
 - 基礎的なプロンプト作成方法
 - 実際のユースケース
 - チェーンプロンプト・Few-shot・ハルシネーション回避法
 - インタラクティブな実習形式</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1873151448030089376" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875393699607425135" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875522476417151238" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://developers.openai.com/api/docs/guides/prompt-guidance" rel="noopener" target="_blank">developers.openai.com</a><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" rel="noopener" target="_blank">platform.claude.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055602484853567963" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049492553133629950" rel="noopener" target="_blank">x.com</a></div><h2>ロールプロンプティング</h2>
+<h2>ロールプロンプティング</h2>
 <p>ChatGPT o1 Pro に「超次元生命体であるAIとして超論理的・超俯瞰的に考察せよ」と付加することで応答品質が向上するという報告がある（効果の再現性は個人差あり）。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1873151448030089376" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875393699607425135" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875522476417151238" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://developers.openai.com/api/docs/guides/prompt-guidance" rel="noopener" target="_blank">developers.openai.com</a><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" rel="noopener" target="_blank">platform.claude.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055602484853567963" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049492553133629950" rel="noopener" target="_blank">x.com</a></div><h2>GPT-5.5向けプロンプト設計（OpenAI公式ガイド）</h2>
+<h2>GPT-5.5向けプロンプト設計（OpenAI公式ガイド）</h2>
 <p><a href="../models/gpt-5-5.html">gpt-5-5</a> では「アウトカムファースト」へのパラダイムシフトが推奨される。</p>
 <h3>旧来スタイルとの違い</h3>
 <ul>
@@ -67,7 +63,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>RAGシステムで検索回数を明示的に制御する停止ルール。追加検索を許可するのは「必要な事実が欠けている場合のみ」。文言改善・例示追加目的の再検索は不要。</p>
 <h3>ABS（ALWAYS / NEVER）の使い方を絞る</h3>
 <p>旧来のプロンプトは <code>ALWAYS</code>・<code>NEVER</code>・<code>must</code>・<code>only</code> を多用していたが、GPT-5.5では真の不変条件（安全ルール、必須出力フィールド）にのみ使用し、判断系は<strong>decision rules</strong>（条件分岐的な記述）で代替する。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1873151448030089376" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875393699607425135" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875522476417151238" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://developers.openai.com/api/docs/guides/prompt-guidance" rel="noopener" target="_blank">developers.openai.com</a><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" rel="noopener" target="_blank">platform.claude.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055602484853567963" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049492553133629950" rel="noopener" target="_blank">x.com</a></div><h2>Claude 4.x モデル向けプロンプト設計（Anthropic公式）</h2>
+<h2>Claude 4.x モデル向けプロンプト設計（Anthropic公式）</h2>
 <p><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a>・<a href="../tools/claude-managed-agents.html">claude-managed-agents</a> 等のClaude 4.x系モデルに特有の動作と調整指針。</p>
 <h3>effortパラメータ</h3>
 <p>Claude 4.x系ではtradeoffを <code>effort</code> で制御する（<code>low</code> / <code>medium</code> / <code>high</code> / <code>xhigh</code> / <code>max</code>）。</p>
@@ -127,13 +123,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - コンテキストが切れる前に状態をファイル/メモリに保存</p>
 <h3>Prefill（応答先読み）の廃止</h3>
 <p>Claude 4.6以降、アシスタントターンへの先頭埋め込み（prefill）は非推奨。明示的な指示で代替する。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1873151448030089376" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875393699607425135" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875522476417151238" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://developers.openai.com/api/docs/guides/prompt-guidance" rel="noopener" target="_blank">developers.openai.com</a><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" rel="noopener" target="_blank">platform.claude.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055602484853567963" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049492553133629950" rel="noopener" target="_blank">x.com</a></div><h2>Claude サブスク活用プロンプト20選</h2>
+<h2>Claude サブスク活用プロンプト20選</h2>
 <p>@shota7180 が海外で話題になった実用プロンプト集を日本語でまとめている（元ネタ: @AnatoliKopadze の X記事）。</p>
 <blockquote>
 <p>多くの人はサブスク料金の10%ほどしか活かせていない。重要なのは「プロンプトの質」。</p>
 </blockquote>
 <p>月20ドル（$20）のClaudeを自分専用アシスタントに変えるための20個の実用プロンプトが紹介されている。詳細は 2055602484853567963.md および元記事を参照。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/1873151448030089376" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875393699607425135" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/1875522476417151238" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://developers.openai.com/api/docs/guides/prompt-guidance" rel="noopener" target="_blank">developers.openai.com</a><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" rel="noopener" target="_blank">platform.claude.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055602484853567963" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2049492553133629950" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../concepts/claude-best-practices.html">claude-best-practices</a> — Claude効果的活用18ステップ（Projects・Custom Instructions・Extended Thinking・スタイルクローニング）</li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>

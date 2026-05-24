@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -34,10 +30,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <article><h1>Claude Code 大規模コードベースのベストプラクティス</h1>
 <p>Anthropic公式ベストプラクティスに基づく、大規模コードベースでのClaude Code活用指針。<strong>精度はモデルよりハーネスの整備で決まる</strong>というのが根幹の主張。</p>
 <p>関連: <a href="../tools/claude-code.html">claude-code</a> | <a href="../concepts/claude-md-rules.html">claude-md-rules</a> | <a href="../concepts/agentic-coding.html">agentic-coding</a></p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">izanami.dev</a></div><h2>Claude Codeはインデックスを作らない</h2>
+<h2>Claude Codeはインデックスを作らない</h2>
 <p>RAGツールと異なり、Claude Codeはコードベース全体をベクトル化しない。代わりにファイルツリーをたどり、grepで必要箇所を探す（= 常に<strong>ライブのコードベース</strong>を見る）。</p>
 <p>これは古いインデックスを参照するリスクを排除する一方、「どこを見ればいいか」の手がかりがないと探索でコンテキストを使い切るリスクがある。CLAUDE.mdとハーネス整備がその手がかりを与える。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">izanami.dev</a></div><h2>ハーネスの5層</h2>
+<h2>ハーネスの5層</h2>
 <table>
 <thead>
 <tr>
@@ -69,30 +65,30 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p><strong>積む順番が重要</strong>: 土台（CLAUDE.md → hooks）が固まってから skills/plugins/MCPを足す。いきなりMCPを生やすと不安定になる。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">izanami.dev</a></div><h2>CLAUDE.md の設計原則</h2>
+<h2>CLAUDE.md の設計原則</h2>
 <ul>
 <li><strong>ルートは薄く</strong>: 全体像と「ここを踏むと事故る」ハマりどころだけ</li>
 <li><strong>ローカル規約はサブディレクトリに</strong>: Claude はディレクトリを下りながらCLAUDE.mdを順に積み上げるため、深い階層の文脈もちゃんと届く</li>
 <li><strong>定期的な棚卸し</strong>: モデルが進化すると古いルールが足かせになる。3〜6ヶ月ごと、または大きなモデルアップデート後に見直す</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">izanami.dev</a></div><h2>起動位置: ルートではなくサブディレクトリ</h2>
+<h2>起動位置: ルートではなくサブディレクトリ</h2>
 <p>タスクに関係するサブディレクトリでClaude Codeを起動すると精度が出る。親ディレクトリのCLAUDE.mdは自動で読まれるため、コンテキストは失われない。サブディレクトリのCLAUDE.mdにはそのサービス固有のテスト・リントコマンドを書く（全スイート実行のタイムアウトとコンテキスト汚染を防ぐ）。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">izanami.dev</a></div><h2>hooks の真価: 自己改善ループ</h2>
+<h2>hooks の真価: 自己改善ループ</h2>
 <p>hooks の主な用途は「止めるスクリプト」ではなく<strong>セットアップを育てる</strong>こと:</p>
 <ul>
 <li><strong>stop hook</strong>: セッション終了時にその回の学びをCLAUDE.mdの更新案として出力。文脈が新しいうちに反映できる</li>
 <li><strong>start hook</strong>: セッション開始時にチーム固有の文脈を動的に注入</li>
 <li>リント・フォーマットは hooks で機械的に実行 → 「覚えといてね」より安定</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">izanami.dev</a></div><h2>個人開発者向けの絞り込み</h2>
+<h2>個人開発者向けの絞り込み</h2>
 <p>エンタープライズ向けの「専任チーム・DRI・エージェントマネージャー」は不要。</p>
 <p>やることのシンプルな順序:
 1. CLAUDE.mdをルートとサブディレクトリに分けて薄く整える
 2. stop hookを1つ入れて自己改善を回す
 3. 土台が安定したらskills/plugins/MCPを追加</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">izanami.dev</a></div><h2>古い設定は能力を制限する</h2>
+<h2>古い設定は能力を制限する</h2>
 <p>「リファクタは1ファイルずつ」といった古モデル向けの制約が、最新モデルではかえって能力を殺すことがある。設定の棚卸しは定期的に。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">izanami.dev</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a> — Claude Code本体の概要</li>
 <li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — CLAUDE.md行動ルール体系</li>

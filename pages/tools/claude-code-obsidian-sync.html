@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -33,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://zenn.dev/pepabo/articles/ffb79b5279f6ee" class="src-chip" rel="noopener" target="_blank">zenn.dev</a></div>
   <article><h1>Claude Code × Obsidian 自動同期</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> の会話履歴を自動的に Obsidian の Markdown ファイルとして保存する仕組み。Zenn（pepabo/kentaro）による実装例。<a href="../concepts/llm-wiki.html">llm-wiki</a> とも親和性が高い。プロジェクト全体設計については <a href="../tools/claude-code-obsidian-project.html">claude-code-obsidian-project</a> も参照。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/pepabo/articles/ffb79b5279f6ee" rel="noopener" target="_blank">zenn.dev</a></div><h2>仕組み</h2>
+<h2>仕組み</h2>
 <pre><code>Claude Code セッション
     ↓ (jsonlに記録)
 ~/.claude/projects/*/session.jsonl
@@ -44,7 +40,7 @@ watch-and-save.sh (LaunchAgent常駐)
     ↓ (自動 git commit)
 GitHub同期
 </code></pre>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/pepabo/articles/ffb79b5279f6ee" rel="noopener" target="_blank">zenn.dev</a></div><h2>実装のポイント</h2>
+<h2>実装のポイント</h2>
 <h3>セッションファイルの場所</h3>
 <p>Claude Code は会話履歴を <code>~/.claude/projects/{project-hash}/{session-id}.jsonl</code> に JSONL 形式で保存する。このファイルをパースして会話を抽出する。</p>
 <h3>追記モード</h3>
@@ -61,26 +57,26 @@ GitHub同期
 - <code>subagents/</code> 配下のサブエージェントセッション</p>
 <h3>日付ベースのフィルタリング</h3>
 <p>各エントリのタイムスタンプを確認して当日の会話だけを抽出。日をまたいだセッションにも対応。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/pepabo/articles/ffb79b5279f6ee" rel="noopener" target="_blank">zenn.dev</a></div><h2>LaunchAgent 常駐化</h2>
+<h2>LaunchAgent 常駐化</h2>
 <pre><code class="language-xml">&amp;lt;!-- ~/Library/LaunchAgents/com.claude.obsidian-sync.plist --&gt;
 &amp;lt;key&gt;KeepAlive&amp;lt;/key&gt;&amp;lt;true/&gt;
 &amp;lt;key&gt;RunAtLoad&amp;lt;/key&gt;&amp;lt;true/&gt;
 </code></pre>
 <p><code>launchctl load</code> で登録することで macOS 再起動後も自動起動。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/pepabo/articles/ffb79b5279f6ee" rel="noopener" target="_blank">zenn.dev</a></div><h2>出力例</h2>
+<h2>出力例</h2>
 <pre><code class="language-markdown"># 2026年1月9日 Claudeとの会話
 
 **ユーザー**: uvを入れて
 **Claude**: uvをインストールします。
 **Claude**: uv 0.9.22 がインストールされました。
 </code></pre>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/pepabo/articles/ffb79b5279f6ee" rel="noopener" target="_blank">zenn.dev</a></div><h2>今後の展望</h2>
+<h2>今後の展望</h2>
 <ul>
 <li>トピックごとの自動分類</li>
 <li>要約の自動生成</li>
 <li>スマホの Claude アプリからの会話も GitHub API 経由で統合</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/pepabo/articles/ffb79b5279f6ee" rel="noopener" target="_blank">zenn.dev</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a>（会話履歴の保存元）</li>
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a>（Obsidian ナレッジベースとの統合）</li>

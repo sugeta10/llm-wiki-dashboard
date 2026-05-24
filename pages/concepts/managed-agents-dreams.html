@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -33,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://platform.claude.com/docs/en/managed-agents/dreams" class="src-chip" rel="noopener" target="_blank">platform.claude.com</a></div>
   <article><h1>Managed Agents Dreams（メモリ再構成パイプライン）</h1>
 <p><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> の非同期ジョブ機能。既存のメモリストアと過去のセッション記録（1〜100件）を入力に受け取り、重複削除・矛盾解消・インサイト統合を行った<strong>新しいメモリストア</strong>を生成する。入力ストアは変更されないため、出力をレビューして不要なら破棄できる。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/managed-agents/dreams" rel="noopener" target="_blank">platform.claude.com</a></div><h2>観察ログ（未検証）</h2>
+<h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-05-23: Research Preview段階でアクセス申請制。<code>managed-agents-2026-04-01</code> と <code>dreaming-2026-04-21</code> の2ベータヘッダーが必要（SDKは自動設定）</li>
 <li>2026-05-23: <code>instructions</code> パラメータでドリーム実行の重点領域を指定可能（例: "コーディングスタイルの好みに注目し、一回限りのデバッグメモは無視"）</li>
@@ -41,7 +37,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-23: 対応モデルは <code>claude-opus-4-7</code> と <code>claude-sonnet-4-6</code>（ベータ期間中のみ）</li>
 <li>2026-05-23: 課金は標準APIトークン料金。入力セッション数・長さに比例して増える。小バッチから試して品質確認後にスケールアップ推奨</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/managed-agents/dreams" rel="noopener" target="_blank">platform.claude.com</a></div><h2>検証済み事実</h2>
+<h2>検証済み事実</h2>
 <ul>
 <li>2026-05-23: Anthropic公式ドキュメント（platform.claude.com）に記載された正式仕様</li>
 <li>2026-05-23: ライフサイクル5状態 — <code>pending</code>（キュー済み）→ <code>running</code>（処理中）→ <code>completed</code> / <code>failed</code> / <code>canceled</code></li>
@@ -50,7 +46,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-23: <code>pending</code>/<code>running</code> 中の出力ストア削除・アーカイブは 400 エラーで拒否。入力ストア削除は <code>input_memory_store_unavailable</code> でドリーム失敗</li>
 <li>2026-05-23: エラー種別 — <code>timeout</code> / <code>internal_error</code> / <code>memory_store_org_limit_exceeded</code> / <code>input_memory_store_too_large</code> / <code>input_memory_store_unavailable</code> / <code>input_session_unavailable</code></li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/managed-agents/dreams" rel="noopener" target="_blank">platform.claude.com</a></div><h2>API早見き</h2>
+<h2>API早見き</h2>
 <pre><code class="language-python"># ドリーム作成
 dream = client.beta.dreams.create(
     inputs=[
@@ -75,7 +71,7 @@ session = client.beta.sessions.create(
     resources=[{&quot;type&quot;: &quot;memory_store&quot;, &quot;memory_store_id&quot;: output_store_id}],
 )
 </code></pre>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/managed-agents/dreams" rel="noopener" target="_blank">platform.claude.com</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a>（Dreams が属するプラットフォーム全体）</li>
 <li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a>（LLMエージェントのメモリ劣化問題 — Dreamsが解決しようとしている課題と対応）</li>

@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -34,7 +30,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <article><h1>AIコーディング言語ベンチマーク（Claude Code版）</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> に13言語で簡易 git を実装させ、時間・コスト・成功率を定量比較した実験（mametter/Zenn、2026-03 実施）。Ruby・Python・JavaScript が最速・最安で、静的型付け言語は 1.4〜2.6 倍コスト増の傾向。</p>
 <p>関連: <a href="../tools/claude-code.html">claude-code</a> / <a href="../concepts/agentic-coding.html">agentic-coding</a> / <a href="../concepts/vibe-coding.html">vibe-coding</a></p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/mametter/articles/3e8580ec034201" rel="noopener" target="_blank">zenn.dev</a></div><h2>観察ログ（未検証）</h2>
+<h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-05-20: 速さの原因として著者が挙げた仮説（複合的と推測）: ①型システムの有無（動的型付けが有利）、②短く簡潔に書けること、③AIの習熟度（Python/Ruby/JS はトレーニングデータが豊富）、④言語固有の難しさ（C のメモリ管理・Rust の所有権）</li>
 <li>2026-05-20: LOC が少なくても速いとは限らない。OCaml・Haskell は行数最少クラスだが時間・コストは中位以下。思考トークン消費が多い可能性</li>
@@ -43,7 +39,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-20: 差は最大2倍程度だが、プロンプト→待ち→次タスクのサイクルを高頻度で繰り返す実開発では体感差・集中力的に大きい、との著者主張</li>
 <li>2026-05-20: 将来的に「初期は動的型付けでスピーディーに開発 → 仕様が固まったら静的型付けに移行」戦略がより現実的になる可能性。コーディングエージェントは言語移植に強い印象があるため</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://zenn.dev/mametter/articles/3e8580ec034201" rel="noopener" target="_blank">zenn.dev</a></div><h2>検証済み事実</h2>
+<h2>検証済み事実</h2>
 <ul>
 <li>2026-05-20: 実験条件: Claude Opus 4.6 (high effort)、各言語20回試行、タスクは2段階（v1=新規作成、v2=機能拡張）</li>
 <li>2026-05-20: 600回実行中テスト失敗は3回のみ（Rust 2回・Haskell 1回）</li>

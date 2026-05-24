@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -33,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2053867258653339746" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2054085519642931466" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2055227037770719600" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2055818312970637823" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>LLMコンテキスト向けコードベース文書化</h1>
 <p>Claude等のLLMと協働する際、アプリの構造・フローを<strong>HTML + JSON</strong>の形式でドキュメント化し、そのJSONをLLMのコンテキストとして渡す設計パターン。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053867258653339746" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2054085519642931466" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055227037770719600" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055818312970637823" rel="noopener" target="_blank">x.com</a></div><h2>DaveJ パターン（最も拡散・いいね6080）</h2>
+<h2>DaveJ パターン（最も拡散・いいね6080）</h2>
 <p><code>@DaveJ</code> が提唱したシングルページHTML + JSONによるフロー文書化。</p>
 <blockquote>
 <p>Ask Claude to document and describe the main flows in your app and output in a single page html + json data file. Incredibly useful for humans and the JSON file is very useful for explaining the flow to the LLM when working on new features/bugfixes.</p>
@@ -47,15 +43,15 @@ and then [highlight the relevant components and show the flow]
 <p><strong>出力物の二重活用:</strong>
 - <strong>HTMLファイル</strong>: 人間がクリックで各フローを視覚確認
 - <strong>JSONファイル</strong>: 次のClaude依頼の冒頭に貼り付けてコンテキスト提供</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053867258653339746" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2054085519642931466" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055227037770719600" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055818312970637823" rel="noopener" target="_blank">x.com</a></div><h2>そう氏パターン（日本語版）</h2>
+<h2>そう氏パターン（日本語版）</h2>
 <p><code>@so_ainsight</code> による日本語プロンプト変種：</p>
 <blockquote>
 <p>「このリポジトリ／このプロダクトの構成を、サービス単位で整理して。外部に見せるほどキレイじゃなくていいから、誰が読んでも迷子にならない粒度で」</p>
 </blockquote>
 <p>HTMLで全体像を確認し、JSONを次の依頼の最初に貼る、という同じ2段活用。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053867258653339746" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2054085519642931466" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055227037770719600" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055818312970637823" rel="noopener" target="_blank">x.com</a></div><h2>Obsidianでのドキュメント管理（GianMattya）</h2>
+<h2>Obsidianでのドキュメント管理（GianMattya）</h2>
 <p><code>@GianMattya</code> による別アプローチ：LLMにドキュメントを自由生成させるとコンテキストを圧迫する構造になりがち。Obsidianで管理し常に整理された構造を維持することで、開発時に必要な部分だけを読み込めるようにする。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053867258653339746" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2054085519642931466" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055227037770719600" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055818312970637823" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a> — このパターンの実行プラットフォーム</li>
 <li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a> — 大規模コードベースでの活用指針</li>

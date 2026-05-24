@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -34,7 +30,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <article><h1>プロンプトキャッシング（Prompt Caching）</h1>
 <p>Anthropic Claude APIが提供する<strong>プロンプトの前処理結果を再利用する機能</strong>。同一のプレフィックスを含むリクエストで、処理時間とコストを大幅に削減できる。</p>
 <p>関連: <a href="../concepts/prompt-cache-prewarm.html">prompt-cache-prewarm</a> | <a href="../concepts/prompt-engineering.html">prompt-engineering</a> | <a href="../companies/anthropic.html">anthropic</a></p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">platform.claude.com</a></div><h2>キャッシュの有効化方法</h2>
+<h2>キャッシュの有効化方法</h2>
 <h3>自動キャッシュ（推奨）</h3>
 <p>リクエストのトップレベルに <code>cache_control</code> を1つ追加するだけ。マルチターン会話で最後のキャッシュ可能ブロックに自動でキャッシュブレークポイントを適用し、会話が伸びるにつれて自動で前に進む。</p>
 <pre><code class="language-python">response = client.messages.create(
@@ -48,14 +44,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h3>明示的キャッシュブレークポイント</h3>
 <p>個別のコンテンツブロックに <code>cache_control</code> を直接配置する方法。変更頻度が異なる複数セクションをキャッシュしたい場合や、精密な制御が必要な場合に使う。最大4箇所まで設定可能。</p>
 <p>キャッシュ参照の順序: <code>tools</code> → <code>system</code> → <code>messages</code></p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">platform.claude.com</a></div><h2>仕組み</h2>
+<h2>仕組み</h2>
 <ol>
 <li>リクエスト送信時、指定されたキャッシュブレークポイントまでのプレフィックスがキャッシュに存在するかチェック</li>
 <li>キャッシュヒット → 前処理をスキップして応答生成</li>
 <li>キャッシュミス → フルプロンプトを処理し、キャッシュに書き込んでから応答生成</li>
 </ol>
 <p>デフォルトTTL: <strong>5分</strong>（リクエストのたびに無料で更新される）。1時間TTLも別料金で利用可能。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">platform.claude.com</a></div><h2>価格（Claudeモデル共通の倍率）</h2>
+<h2>価格（Claudeモデル共通の倍率）</h2>
 <table>
 <thead>
 <tr>
@@ -82,13 +78,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">platform.claude.com</a></div><h2>ルックバックの仕組み（明示的ブレークポイント）</h2>
+<h2>ルックバックの仕組み（明示的ブレークポイント）</h2>
 <ul>
 <li>キャッシュ書き込みはブレークポイントの位置のみ</li>
 <li>キャッシュ読み込みはブレークポイントから最大<strong>20ブロック</strong>さかのぼって検索</li>
 <li><strong>よくある誤り</strong>: タイムスタンプや毎回変わる内容のブロックにブレークポイントを置くとヒットしない。静的プレフィックスの末尾に置くのが正しい</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">platform.claude.com</a></div><h2>キャッシュが無効化されるトリガー</h2>
+<h2>キャッシュが無効化されるトリガー</h2>
 <table>
 <thead>
 <tr>
@@ -115,16 +111,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">platform.claude.com</a></div><h2>キャッシュ対象・非対象</h2>
+<h2>キャッシュ対象・非対象</h2>
 <p><strong>キャッシュ可能</strong>: tools定義、system、テキスト/画像/ドキュメント/tool use/tool results</p>
 <p><strong>キャッシュ不可</strong>: thinking ブロック（直接指定不可。ただし前のターンとして渡すと間接的にキャッシュされる）、サブコンテンツブロック（citations等）、空テキストブロック</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">platform.claude.com</a></div><h2>パフォーマンスの追跡</h2>
+<h2>パフォーマンスの追跡</h2>
 <p>レスポンスの <code>usage</code> フィールドで確認:
 - <code>cache_read_input_tokens</code>: キャッシュから読み込んだトークン数
 - <code>cache_creation_input_tokens</code>: 新たにキャッシュに書き込んだトークン数
 - <code>input_tokens</code>: 最後のブレークポイント以降のトークン数（これだけでは全体ではない）</p>
 <p>総入力トークン = <code>cache_read</code> + <code>cache_creation</code> + <code>input_tokens</code></p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">platform.claude.com</a></div><h2>ベストプラクティス</h2>
+<h2>ベストプラクティス</h2>
 <ul>
 <li>マルチターン会話 → <strong>自動キャッシュから始める</strong></li>
 <li>変更頻度の異なる複数セクション → 明示的ブレークポイントを使い分ける</li>
@@ -132,9 +128,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>会話が20ブロック以上伸びる見込みなら2つ目のブレークポイントを事前に設定しておく</li>
 <li>1時間キャッシュは「5分以上間隔が空くが1時間以内に再利用する」用途に最適</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">platform.claude.com</a></div><h2>キャッシュ分離</h2>
+<h2>キャッシュ分離</h2>
 <p>2026-02-05以降、Claude APIはワークスペース単位でキャッシュ分離（従来は組織単位）。Bedrock/Vertex AIは引き続き組織単位。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">platform.claude.com</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../concepts/prompt-cache-prewarm.html">prompt-cache-prewarm</a> — キャッシュを事前ウォームアップして初回レイテンシを削減するテクニック</li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計全般</li>

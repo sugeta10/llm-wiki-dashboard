@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -33,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2056415973125796184" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2056418157305454805" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2056419378154139656" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>実装ノート並走プロンプト（Implementation Notes Prompt）</h1>
 <p>LLMに仕様実装を依頼する際、<strong>実装ノートファイルを同時に書き続けさせる</strong>プロンプト手法。Anthropicエンジニアが実践し広まった。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2056415973125796184" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056418157305454805" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056419378154139656" rel="noopener" target="_blank">x.com</a></div><h2>プロンプト（英語原文）</h2>
+<h2>プロンプト（英語原文）</h2>
 <pre><code>Implement &amp;lt;SPEC&gt;. As you work, maintain a running implementation-notes.html file
 that captures anything I should know about how the implementation deviates from
 or interprets the spec, including:
@@ -42,7 +38,7 @@ or interprets the spec, including:
 - Tradeoffs you made
 - Anything else I should know
 </code></pre>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2056415973125796184" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056418157305454805" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056419378154139656" rel="noopener" target="_blank">x.com</a></div><h2>なぜ有効か</h2>
+<h2>なぜ有効か</h2>
 <p>仕様書があっても<strong>曖昧さ・未知の未知（unknown unknowns）</strong>は必ず残る。LLMが実装中に判断した内容を記録させることで：</p>
 <ul>
 <li>人間がレビュー時に「なぜこうなったか」を追跡できる</li>
@@ -52,15 +48,15 @@ or interprets the spec, including:
 <blockquote>
 <p>「specがあっても必ず曖昧さと未知の未知が出てくる。これでモデルに判断の逃げ道を与えつつ、人間をループに残せる」— @trq212（Anthropicエンジニア）</p>
 </blockquote>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2056415973125796184" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056418157305454805" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056419378154139656" rel="noopener" target="_blank">x.com</a></div><h2>形式</h2>
+<h2>形式</h2>
 <ul>
 <li><code>implementation-notes.html</code> が推奨（構造化しやすい）</li>
 <li>Markdownでも可</li>
 <li>実装と<strong>並走</strong>させる点が重要（事後ではなくリアルタイム更新）</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2056415973125796184" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056418157305454805" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056419378154139656" rel="noopener" target="_blank">x.com</a></div><h2><a href="../concepts/spec-driven-development.html">spec-driven-development</a> との関係</h2>
+<h2><a href="../concepts/spec-driven-development.html">spec-driven-development</a> との関係</h2>
 <p><strong>Spec-anchored</strong>（実装と並走して書き直す生きたドキュメント）の具体的な実践形。仕様書とは逆方向のドキュメント——「AIが何をどう判断したか」を捕捉する。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2056415973125796184" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056418157305454805" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2056419378154139656" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様駆動開発・Spec-anchoredアプローチ</li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計全般</li>

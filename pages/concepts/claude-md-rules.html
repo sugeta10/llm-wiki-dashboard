@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -33,13 +29,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2053116311132155938" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2055999112470839383" class="src-chip" rel="noopener" target="_blank">x.com</a><a href="https://x.com/i/web/status/2057643942980751527" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>CLAUDE.md 行動ルール設計</h1>
 <p><strong>CLAUDE.md</strong> は <a href="../tools/claude-code.html">claude-code</a> の動作を規定する行動契約ファイル。ウィッシュリストではなく、「この命令でどの失敗モードを閉じるか」を根拠に記述する。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">x.com</a></div><h2>Karpathy 発端</h2>
+<h2>Karpathy 発端</h2>
 <p>2026年1月末、<a href="../people/andrej-karpathy.html">andrej-karpathy</a> が Claude のコーディング問題を3点指摘するスレッドを投稿：
 - <strong>サイレントな誤った前提</strong>: 聞かずに推測して進む
 - <strong>過剰複雑化</strong>: 不要な抽象化・スペキュレーティブ機能の追加
 - <strong>直交的破壊</strong>: 触れる必要のないコードまで変更する</p>
 <p>Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → 初日 5,828 stars、2週間で 60,000 ブックマーク、2026年最速成長シングルファイルリポジトリ（120,000 stars）。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">x.com</a></div><h2>基本4ルール（Karpathy/Chang）</h2>
+<h2>基本4ルール（Karpathy/Chang）</h2>
 <table>
 <thead>
 <tr>
@@ -67,7 +63,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>→ 未管理セッションの失敗モードの約40%を閉じる効果。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">x.com</a></div><h2>追加8ルール（May 2026 対応）</h2>
+<h2>追加8ルール（May 2026 対応）</h2>
 <p>30コードベース × 6週間のテストから導出。Karpathy の4ルールが対象としなかった <strong>エージェント運用・マルチステップ問題</strong> に対応。</p>
 <table>
 <thead>
@@ -111,7 +107,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">x.com</a></div><h2>測定効果</h2>
+<h2>測定効果</h2>
 <table>
 <thead>
 <tr>
@@ -139,7 +135,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>コンプライアンスをほぼ維持しながらミス率を追加削減 → 8ルールは4ルールと競合しない。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">x.com</a></div><h2>制約・注意事項</h2>
+<h2>制約・注意事項</h2>
 <ul>
 <li><strong>200行上限</strong>: CLAUDE.md が200行を超えると重要ルールが埋もれコンプライアンスが急落</li>
 <li><strong>14ルール上限</strong>: 18ルールでテストするとコンプライアンスが76% → 52%に低下</li>
@@ -147,7 +143,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>「シニアに」は無意味</strong>: Claude はすでに自己をシニアと評価している。命令形の具体的ルールが有効</li>
 <li><strong>capability-agnostic</strong>: ツール依存のルール（「eslintを使え」等）はツール非存在時に無言で失敗する。「コードベースの強制スタイルに従え」のように記述する</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">x.com</a></div><h2>Karpathy 4ルールの限界（May 2026 時点）</h2>
+<h2>Karpathy 4ルールの限界（May 2026 時点）</h2>
 <table>
 <thead>
 <tr>
@@ -174,7 +170,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">x.com</a></div><h2>ROI試算（2026-05-17時点の推計）</h2>
+<h2>ROI試算（2026-05-17時点の推計）</h2>
 <h3>観察ログ（未検証）</h3>
 <ul>
 <li>2026-05-17: @0xDepressionn がCLAUDE.md未設定時のコスト試算を公開。開発者1人あたり週$975の無駄（コンテキスト再説明$375/週 + 不要変更リバート$225/週 + 忘却による誤提案$375/週）。5人チームで年$253,500</li>
@@ -184,13 +180,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul>
 <h3>検証済み事実</h3>
 <p>（なし — 上記は個人アカウントの試算。スター数は取得時点の観測値）</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">x.com</a></div><h2>MEMORY.md + ERRORS.md 補助ファイル</h2>
+<h2>MEMORY.md + ERRORS.md 補助ファイル</h2>
 <p><a href="../concepts/claude-md-rules.html">claude-md-rules</a> の記憶補完として、同リポジトリルートに以下を併置する実践が広がっている：</p>
 <ul>
 <li><strong>MEMORY.md</strong>: セッション間で持ち越したい意思決定ログ（「PrismaではなくDrizzleを選んだ理由」等）</li>
 <li><strong>ERRORS.md</strong>: 過去の失敗パターン記録（Claudeが再度同じ誤提案をするのを防ぐ）</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">x.com</a><a class="sec-src-chip" href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">x.com</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>

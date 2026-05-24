@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -33,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://platform.claude.com/docs/en/build-with-claude/workload-identity-federation" class="src-chip" rel="noopener" target="_blank">platform.claude.com</a></div>
   <article><h1>Workload Identity Federation</h1>
 <p>Anthropic Claude APIへの認証をOIDCトークンで行う仕組み。AWS IAM・Google Cloud・GitHub Actions等、既存のIDプロバイダーが発行する短命トークンを使い、長期有効なAPIキー（<code>sk-ant-...</code>）を排除する。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/workload-identity-federation" rel="noopener" target="_blank">platform.claude.com</a></div><h2>仕組み</h2>
+<h2>仕組み</h2>
 <ol>
 <li>ワークロードがIDプロバイダー（AWS STS・GCPメタデータサーバー等）から署名済みJWTを取得</li>
 <li><code>POST /v1/oauth/token</code> でAnthropicにJWTを提示（RFC 7523 jwt-bearer）</li>
@@ -41,7 +37,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>SDKがこのトークンをAPIリクエストに使用し、有効期限前に自動更新</li>
 </ol>
 <p>APIキーは「静的な資格情報」。サービスアカウントは「必要時にのみ資格情報が発行される主体」。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/workload-identity-federation" rel="noopener" target="_blank">platform.claude.com</a></div><h2>3つの設定リソース（Claude Console）</h2>
+<h2>3つの設定リソース（Claude Console）</h2>
 <h3>1. サービスアカウント（<code>svac_...</code>）</h3>
 <ul>
 <li>組織内の非人間アイデンティティ</li>
@@ -61,7 +57,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>トークン有効期間: 60〜86400秒（デフォルト3600秒）</li>
 <li>クライアントはリクエスト時にルールIDを指定（暗黙の検索なし）</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/workload-identity-federation" rel="noopener" target="_blank">platform.claude.com</a></div><h2>Python SDK での使用</h2>
+<h2>Python SDK での使用</h2>
 <pre><code class="language-python">from anthropic import Anthropic, WorkloadIdentityCredentials, IdentityTokenFile
 
 client = Anthropic(
@@ -75,7 +71,7 @@ client = Anthropic(
 )
 </code></pre>
 <p>環境変数 <code>ANTHROPIC_FEDERATION_RULE_ID</code>・<code>ANTHROPIC_ORGANIZATION_ID</code>・<code>ANTHROPIC_SERVICE_ACCOUNT_ID</code>・<code>ANTHROPIC_WORKSPACE_ID</code>・<code>ANTHROPIC_IDENTITY_TOKEN_FILE</code> でも設定可能（ゼロ引数形式が本番推奨）。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/workload-identity-federation" rel="noopener" target="_blank">platform.claude.com</a></div><h2>クレデンシャル優先順位</h2>
+<h2>クレデンシャル優先順位</h2>
 <ol>
 <li>コンストラクタ引数</li>
 <li><code>ANTHROPIC_API_KEY</code> / <code>ANTHROPIC_AUTH_TOKEN</code></li>
@@ -84,7 +80,7 @@ client = Anthropic(
 <li>デフォルトのアクティブプロファイル</li>
 </ol>
 <p>⚠️ <code>ANTHROPIC_API_KEY</code> がフェデレーションより優先されるため、APIキーからWIFへ移行する際は環境変数を完全に削除すること。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/workload-identity-federation" rel="noopener" target="_blank">platform.claude.com</a></div><h2>対応プラットフォーム</h2>
+<h2>対応プラットフォーム</h2>
 <ul>
 <li><strong>AWS</strong>: STS web identity token / EKS IRSA projected tokens</li>
 <li><strong>Google Cloud</strong>: メタデータサーバー経由のGoogle署名済みIDトークン</li>
@@ -94,9 +90,9 @@ client = Anthropic(
 <li><strong>SPIFFE</strong>: SPIRE等のJWT-SVID</li>
 <li><strong>Okta</strong>: クライアントクレデンシャルフロー</li>
 </ul>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/workload-identity-federation" rel="noopener" target="_blank">platform.claude.com</a></div><h2>トークンライフタイム</h2>
+<h2>トークンライフタイム</h2>
 <p>発行トークンの有効期間は「ルールの<code>token_lifetime_seconds</code>」と「提示したJWTの残存期間×2」の短い方（最低60秒）。SDKはキャッシュし、有効期限の5分前に更新（Kubernetes projected tokenは<code>ANTHROPIC_IDENTITY_TOKEN_FILE</code>再読み込みで自動対応）。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://platform.claude.com/docs/en/build-with-claude/workload-identity-federation" rel="noopener" target="_blank">platform.claude.com</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>

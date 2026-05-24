@@ -15,10 +15,6 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
 .src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
 .src-chip:hover{background:#30363d;text-decoration:none}
-.sec-src-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:10px 0 0;padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px}
-.sec-src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px}
-.sec-src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:1px 7px;font-size:11px;color:#58a6ff;font-family:monospace;text-decoration:none}
-.sec-src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -33,13 +29,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="src-bar"><span class="src-label">参考</span><a href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" class="src-chip" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" class="src-chip" rel="noopener" target="_blank">towardsdatascience.com</a></div>
   <article><h1>仕様駆動開発（Spec-driven Development）</h1>
 <p><strong>仕様駆動開発</strong>とは、AIエージェントにコードを書かせる際に、曖昧な指示のまま渡さず、事前に仕様・要件を整理してから渡すアプローチ。<a href="../concepts/vibe-coding.html">vibe-coding</a> の反省から生まれた。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a class="sec-src-chip" href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">towardsdatascience.com</a></div><h2>Vibe Codingの限界</h2>
+<h2>Vibe Codingの限界</h2>
 <p><a href="../concepts/vibe-coding.html">vibe-coding</a> スタイルは最初の生産性は高いが、機能を数個追加した段階でコードベース全体が崩壊し始める傾向がある。</p>
 <blockquote>
 <p>「Vibe Codingは『動くもの』は作れるが、『育つもの』は作れない」</p>
 </blockquote>
 <p>この反省から、<strong>上流で意図を固めてから下流（AIエージェント）に渡す</strong>スタイルが主流になった。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a class="sec-src-chip" href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">towardsdatascience.com</a></div><h2>仕様の3種類</h2>
+<h2>仕様の3種類</h2>
 <table>
 <thead>
 <tr>
@@ -67,7 +63,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p><strong>Planモード</strong>はSpec-firstとして振る舞う。真に差別化するにはSpec-anchoredかSpec-as-sourceへ踏み込む必要がある。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a class="sec-src-chip" href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">towardsdatascience.com</a></div><h2>要件・仕様・契約の区別</h2>
+<h2>要件・仕様・契約の区別</h2>
 <table>
 <thead>
 <tr>
@@ -95,7 +91,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>3つを混同すると議論が壊れる。仕様駆動の「仕様」が実際にどれを指すかで書き方・精度・書き手が全く異なる。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a class="sec-src-chip" href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">towardsdatascience.com</a></div><h2>AIが書いたコードを信じにくい理由</h2>
+<h2>AIが書いたコードを信じにくい理由</h2>
 <p>人間が書いたコードのレビューでは、<strong>書き手との共有知</strong>（チームの癖・過去の議論・ドメイン常識）が直感的な判断を支える。AIが書いたコードにはその共有知がなく、1行ずつ明示的に「これは合っているか」を判定する必要がある。</p>
 <blockquote>
 <p>人間のPRなら15分で終わるレビューが、AIのPRだと45分かかった（差は3倍）</p>
@@ -105,17 +101,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 2. <strong>責務の分離</strong> — Bounded Contextを明示することでAIへの命令の解像度を上げる
 3. <strong>プロセスの再設計</strong> — 実装前に合意を取る（「とりあえず作らせて考える」は試作のみ）
 4. <strong>チーム展開</strong> — 指示を個人の暗黙知からチームの共有資産（リポジトリ）へ移す</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a class="sec-src-chip" href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">towardsdatascience.com</a></div><h2>コンテキストエンジニアリング</h2>
+<h2>コンテキストエンジニアリング</h2>
 <p>仕様の量を増やすだけでは逆効果になる場合がある。</p>
 <ul>
 <li><strong>Context Rot</strong> — 長すぎるコンテキストは精度を下げる</li>
 <li><strong>Lost in the Middle</strong> — 先頭・末尾に比べ中間の情報の認識精度が大幅に下がる</li>
 </ul>
 <p>対策: 仕様書に書くべきは「人間にしか判断できない業務文脈」のみ。残りはテスト・型・CI等の決定論的ゲートに任せる。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a class="sec-src-chip" href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">towardsdatascience.com</a></div><h2>プロンプトの共有資産化</h2>
+<h2>プロンプトの共有資産化</h2>
 <p>AIへの指示をリポジトリで管理する（<code>.claude/skills/</code>・<code>.cursor/rules/</code>・<code>AGENTS.md</code>等）。「3回繰り返したらリポジトリに引っ越す」というルールが実践的。</p>
 <p>個人のチャット履歴に書いた指示は、その人が辞めた瞬間に消える。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a class="sec-src-chip" href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">towardsdatascience.com</a></div><h2>SDDワークフローの実践（JetBrains / DeepLearning.AI コース）</h2>
+<h2>SDDワークフローの実践（JetBrains / DeepLearning.AI コース）</h2>
 <p>Karpathy自身が2026年に「Vibe Codingの時代は終わり、エージェンティックエンジニアリングへ移行している」と認めた。典型的なSDD実践フローは以下の3フェーズ：</p>
 <h3>Phase 1: コンスティテューション（憲法）の作成</h3>
 <p>プロジェクト全体の合意文書。3つのコアドキュメントで構成：
@@ -140,17 +136,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p>「現在のAI時代において、人間の価値はコードを書くことではなく<strong>思考とアーキテクチャ</strong>にある」</p>
 </blockquote>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a class="sec-src-chip" href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">towardsdatascience.com</a></div><h2>ツールサポート：Spec Kit（GitHub製）</h2>
+<h2>ツールサポート：Spec Kit（GitHub製）</h2>
 <pre><code class="language-bash">uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 specify init . --integration claude
 </code></pre>
 <p>30以上のエージェント統合に対応。JetBrainsのアプローチと違い、コンスティテューションをコード品質・テスト標準・UX一貫性等の高レベル基準に重点を置く。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a class="sec-src-chip" href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">towardsdatascience.com</a></div><h2>エンジニアの役割の変化</h2>
+<h2>エンジニアの役割の変化</h2>
 <p>SDDによって開発者の役割は：
 - <strong>旧</strong>: コードを直接書く
 - <strong>新</strong>: アーキテクチャ決定・レビュー・方向性のステアリング</p>
 <p>「いずれ英語が主要なプログラミング言語インターフェースになる」方向への移行が進んでいる。</p>
-<div class="sec-src-bar"><span class="sec-src-label">参考</span><a class="sec-src-chip" href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">syu-m-5151.hatenablog.com</a><a class="sec-src-chip" href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">towardsdatascience.com</a></div><h2>関連</h2>
+<h2>関連</h2>
 <ul>
 <li><a href="../concepts/vibe-coding.html">vibe-coding</a> — 仕様駆動が反省として生まれたスタイル</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントによる自律的なコード生成</li>
