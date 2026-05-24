@@ -10,7 +10,11 @@ body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMa
 a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
-.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+.meta{color:#7d8590;font-size:12px;margin-bottom:12px;font-family:monospace}
+.src-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:22px;padding:9px 12px;background:#161b22;border:1px solid #30363d;border-radius:8px}
+.src-label{color:#7d8590;font-size:11px;font-family:monospace;margin-right:4px;white-space:nowrap}
+.src-chip{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:2px 8px;font-size:11px;color:#58a6ff;font-family:monospace;white-space:nowrap}
+.src-chip:hover{background:#30363d;text-decoration:none}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
@@ -22,6 +26,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-subagents</h1>
   <div class="meta">tools/claude-code-subagents · tools · updated 2026-05-23</div>
+  <div class="src-bar"><span class="src-label">参考</span><a href="https://x.com/i/web/status/2048486242321662189" class="src-chip" rel="noopener" target="_blank">x.com</a></div>
   <article><h1>Claude Code サブエージェント</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> のサブエージェント機能。専用のコンテキストウィンドウで独立して動作し、メインエージェントのコンテキストを汚染せずに作業を完了して結果だけを返す。</p>
 <h2>観察ログ（未検証）</h2>
@@ -72,7 +77,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>（マルチエージェント設計パターン全般）</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a>（自律コーディングスタイルの文脈）</li>
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a>（4層設定構造との関係）</li>
-</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2048486242321662189" rel="noopener">https://x.com/i/web/status/2048486242321662189</a></li></ul></section></article>
+</ul><section class="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2048486242321662189" rel="noopener" target="_blank">https://x.com/i/web/status/2048486242321662189</a></li></ul></section></article>
 </main>
 </body>
 </html>
