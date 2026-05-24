@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>wbs-skills - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>wbs-skills</h1>
+  <div class="meta">tools/wbs-skills · tools · updated 2026-05-24</div>
+  <article><h1>WBSスキル群（wbs-hearing / wbs-generator / wbs-edit）</h1>
+<p>「すぅ | AI駆動PM」が開発・公開したAIスキル3本セット。WBSの<strong>立ち上げ〜生成〜運用</strong>の全工程をAIに委任し、PMが「判断」に集中できる構造を実現する。Excel/Googleスプレッドシートベースで、ほぼすべての現場環境に対応する設計。<a href="../concepts/claude-skills.html">claude-skills</a> の実践事例。</p>
+<p>関連: <a href="../tools/taskmd-shelf.html">taskmd-shelf</a>（タスク管理の別アプローチ）、<a href="../concepts/spec-driven-development.html">spec-driven-development</a>（AI駆動開発手法全般）</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-24: 著者（すぅ/AI駆動PM、元アクセンチュアPM）の実務経験から設計。ExcelをAI操作のベースに選んだ理由は「顧客ごとにツールが変わっても通用する普遍性」と「更新しない人が必ず出るという現実」への対処</li>
+<li>2026-05-24: <strong>wbs-hearing</strong> — 立ち上げ期。プロジェクトの目的・スコープ・体制・スケジュール・リスクを全12フェーズの選択式ヒアリングで引き出す。「自由記述は空欄で固まる」を解消するため選択肢形式に統一。出力は1枚の整理済みドキュメントでwbs-generatorの入力になる</li>
+<li>2026-05-24: <strong>wbs-generator</strong> — ヒアリング結果または要件定義書を渡すとExcel WBSを生成。タスクID自動採番（T-001〜）、期限超過の赤ハイライト、完了タスクのグレーアウト、タスクID重複警告、課題管理表シート同梱が最初から入っている。Excel/Excel for the web/Googleスプレッドシートの3環境互換</li>
+<li>2026-05-24: <strong>wbs-edit</strong> — 運用期の核心。SharePointやGoogleスプレッドシートの共有WBSに対して自然言語で編集。WBS本体・会議タスク・課題管理表の3シートをAIが自動振り分け（例: 「T-005の期限を5/27に」「議事録のアクションを会議タスクに」）</li>
+<li>2026-05-24: wbs-editの5つの事故防止機構 — ①最新ファイルを必ず取得してから編集（古いファイル上書き防止）、②AI変更セルを黄色マーキング（差分確認の効率化）、③期限変更の依存関係波及を全提示してから承認確認、④削除ではなく「取り下げステータス」で履歴保持、⑤3シート分の差分をまとめてセル単位で本番反映（ローカル取り残し防止）</li>
+<li>2026-05-24: 以前は運用スキルが3本に分かれており、「ローカルのxlsxにだけ課題が溜まり本番に反映されない事故」が発生。wbs-editへの統合で構造的に解消</li>
+<li>2026-05-24: 著者の主張「PMの本来の仕事はセルに値を打ち込むことではなく、このタスクは本当に必要か・期限を変えたら誰が困るか・リスクは何か、を判断すること」</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-24: Skillsファイル（wbs-skills.zip、87.9KB）をnote記事から無料ダウンロード可能。Mac環境での動作確認済み、Windows動作は保証外</li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/suh_sunaneko/n/n683f77e7e926?sub_rt=share_sb" rel="noopener" target="_blank">https://note.com/suh_sunaneko/n/n683f77e7e926?sub_rt=share_sb</a></li></ul></section></article>
+</main>
+</body>
+</html>
