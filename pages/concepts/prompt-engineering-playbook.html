@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>prompt-engineering-playbook - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>prompt-engineering-playbook</h1>
+  <div class="meta">concepts/prompt-engineering-playbook · concepts · updated 2026-05-26</div>
+  <article><h1>プロンプトエンジニアリング・プレイブック（40技術）</h1>
+<p>海外AIガチ勢が実践するプロンプト設計の体系的技術集。「指示を与える」から「思考プロセスを設計する」へのパラダイムシフトを10章・約40技術で解説。<a href="../concepts/prompt-engineering.html">prompt-engineering</a> の実践的拡張。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-25: 日本のプロンプトは「指示」（命令文）止まり。海外プロは1行目から「思考プロセス」「ゴール」「設計図」を渡す（著者 @MakeAI_CEO の主張）</li>
+</ul>
+<h3>第1章：思考プロセスを渡す</h3>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>概要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Chain-of-Verification (CoVe)</strong></td>
+<td>叩き台→自己検証質問5つ→エビデンスで回答→矛盾修正。ハルシネーション削減</td>
+</tr>
+<tr>
+<td><strong>Self-Refine</strong></td>
+<td>生成→辛口採点（説得力・独自性・論理性・読みやすさ・抜け漏れ）→改稿の3ロールを1回で</td>
+</tr>
+<tr>
+<td><strong>Tree of Thoughts (ToT)</strong></td>
+<td>3本の枝を展開→強弱評価→最善枝を深掘り。アイデア・戦略立案向け</td>
+</tr>
+<tr>
+<td><strong>Skeleton-of-Thought (SoT)</strong></td>
+<td>骨組み（見出し5つ）を先に並列作成→各見出しを独立肉付け→統合</td>
+</tr>
+<tr>
+<td><strong>Meta-Prompting</strong></td>
+<td>プロンプト自体の改良版5案を生成させ自己進化させる。月1メンテで資産育成</td>
+</tr>
+</tbody>
+</table>
+<h3>第2章：出口から逆算（Outcome-First設計）</h3>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>概要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Output-First Specification</strong></td>
+<td>完成形テンプレ（タイトル字数・導入構成・本論H2数・CTA）を先に固定してAIに穴埋めさせる</td>
+</tr>
+<tr>
+<td><strong>Prefilling</strong></td>
+<td>AIの応答の書き出し一文を先に指定してロック。前置き・余計な枕詞を消去</td>
+</tr>
+<tr>
+<td><strong>Negative Constraints</strong></td>
+<td>禁止事項を具体的箇条書きで列挙。曖昧な禁止は守られない</td>
+</tr>
+<tr>
+<td><strong>XML Structured Tagging</strong></td>
+<td><code>&amp;lt;goal&gt;</code> <code>&amp;lt;context&gt;</code> <code>&amp;lt;constraints&gt;</code> <code>&amp;lt;examples&gt;</code> <code>&amp;lt;output_format&gt;</code> タグで情報を分離</td>
+</tr>
+<tr>
+<td><strong>Persona Stack</strong></td>
+<td>執筆役・添削役・想定読者の3人格を同時に持たせて1レスポンスで実行</td>
+</tr>
+</tbody>
+</table>
+<h3>第3章：マルチエージェント運用</h3>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>概要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Routing Pattern</strong></td>
+<td>振り分け役が入力を①リサーチ②執筆③分析④コード系に分類→専門プロンプト生成→実行</td>
+</tr>
+<tr>
+<td><strong>Parallelization</strong></td>
+<td>同一タスクを5人の独立専門家視点で並列回答→多数決で最終回答</td>
+</tr>
+<tr>
+<td><strong>Evaluator-Optimizer</strong></td>
+<td>生成役と評価役を「人格完全切り替え」で分離。Self-Refineより採点が辛口になる</td>
+</tr>
+<tr>
+<td><strong>Multi-Agent Debate</strong></td>
+<td>肯定派×否定派が3往復論戦→中立裁定役が統合。意思決定タスクに有効</td>
+</tr>
+<tr>
+<td><strong>Self-Verifying Output</strong></td>
+<td>出力前に海外競合・ターゲット読者・辛口上司の3視点で取り調べ→改善版提示</td>
+</tr>
+</tbody>
+</table>
+<h3>第4章：コンテキスト4階層設計</h3>
+<ul>
+<li><strong>Bookend Placement</strong>: 重要制約を冒頭と末尾の両方に配置。長文プロンプトの中盤盲点対策</li>
+<li><strong>Goldilocks Altitude</strong>: システムプロンプトの高度を①不変原則②状況判断枠組み③個別自由度の3層で設計</li>
+<li><strong>JIT Context Injection</strong>: 大資料は目次・サマリー・索引のみ先行投入し、必要な章だけ都度取得</li>
+<li><strong>Intent Encoding</strong>: 優先順位・絶対NG・デフォルト判断基準を冒頭に明文化。AIを代理人化</li>
+<li><strong>Specification Layer</strong>: 品質基準・業務ルールを仕様書として固定し毎セッションの起点に</li>
+</ul>
+<h3>第5章：KVキャッシュ前提の構造設計</h3>
+<ul>
+<li><strong>Stable Prefix First</strong>: 動かないもの（前提・資料・ルール）を冒頭固定、変わるもの（質問）を末尾に</li>
+<li><strong>Anchor Document Pattern</strong>: 参考資料は最初に1回だけ投入してアンカー化。以降は再提示不要</li>
+<li><strong>Session Continuity</strong>: 関連作業は1スレッドで継続。新規チャット乱発が制限引っかかりの原因</li>
+<li><strong>Differential Edit Pattern</strong>: 修正時は差分のみ指示。全文再投稿はキャッシュ破壊になる</li>
+<li><strong>Cache-Aware Sub-agent Design</strong>: マルチエージェント時、全エージェントのシステムプロンプト冒頭を揃えてキャッシュを効かせる</li>
+</ul>
+<h3>第6章：ハーネスとエージェント</h3>
+<p>エージェントは Model + <strong>Harness</strong>（指示+ガードレール）+ Tools + Environment + Agent Loopの5要素で構成される。</p>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>概要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Execution Loop</strong></td>
+<td>毎ステップで観察→思考→自己批判→行動の4段階を明示的に踏む</td>
+</tr>
+<tr>
+<td><strong>Context Compaction</strong></td>
+<td>10往復ごとに「確定事実3+保留タスク2+次の最重要アクション1」に強制圧縮</td>
+</tr>
+<tr>
+<td><strong>Playbook Memory</strong></td>
+<td>タスク後に「汎用ルール3つ」を出力して蓄積。次回プレイブックとして投入</td>
+</tr>
+<tr>
+<td><strong>Self-Modification Loop</strong></td>
+<td>タスク後にAI自身が「次回のための改良版指示テンプレ」を書き換える</td>
+</tr>
+<tr>
+<td><strong>Auto-Harness Optimization</strong></td>
+<td>プロンプト構造全体の改善案5つ→狙い・効果・リスク評価→最強案採用</td>
+</tr>
+</tbody>
+</table>
+<h3>第7章：裏プロンプト5選</h3>
+<ul>
+<li><strong>Question Reframing</strong>: AIの媚び（同調バイアス）を防ぐため、こちらの発言をまず中立疑問文に変換させてから回答させる</li>
+<li><strong>Verbalized Sampling</strong>: 回答案を「選ばれるべき確率%」付きで5案出力→分布に従って1案選択。出力多様性向上</li>
+<li><strong>反事実アンカリング</strong>: 直感答えの「完全反対案」を先出し→根拠5つ→検証後に最終回答。慣性破壊</li>
+<li><strong>自己Pre-Mortem</strong>: 実行前に「最低品質に終わった場合の原因5つ」を列挙→回避策→タスク実行</li>
+<li><strong>Calibrated Confidence Prompting</strong>: 各主張に確信度0-100%・推測/事実ラベルを必ず付ける。ハルシネーション可視化</li>
+</ul>
+<h3>第8章：推奨MCP 4選</h3>
+<ul>
+<li><strong>Supadata MCP</strong>: YouTube/TikTok/X動画から文字起こし一発抽出</li>
+<li><strong>Firecrawl MCP</strong>: WebサイトをクリーンなMarkdownに変換（JS描画対応）</li>
+<li><strong>Google Knowledge Graph MCP</strong>: Googleの情報パネル元データに直接アクセス。ファクトチェック用</li>
+<li><strong>Memory MCP</strong>: セッション跨ぎの永続記憶。決定事項・好み・ルールを蓄積</li>
+</ul>
+<h3>第9章：Claude Code &amp; Codex自動化の5ポイントと落とし穴</h3>
+<ol>
+<li><strong>Plan Modeを必ず挟む</strong>: ファイル名・関数名・手順まで確認してから承認。落とし穴: スキップして並列実行すると誤成果物を高速量産</li>
+<li><strong>耐久ルールは設定ファイルに</strong>: CLAUDE.md / AGENTS.mdに書き、プロンプトには今回だけの指示のみ。落とし穴: ファイルを大きくしすぎると内容カット</li>
+<li><strong>サブエージェントは専門特化＋権限絞り</strong>: 1機能=1専門役割・最小ツール権限。落とし穴: 親の全権限を引き継いでしまう</li>
+<li><strong>MCPは盛らない</strong>: 使うMCPは3-5個に絞る。落とし穴: 10-20個刺すとコンテキスト圧迫+セキュリティリスク</li>
+<li><strong>繰り返し作業はSkill化</strong>: 2-3個の使用例があるワークフローはすぐSkill化。Claude Code/Codex共通形式で書く</li>
+</ol>
+<h3>第10章：やめたほうがいい習慣</h3>
+<ol>
+<li><strong>ペルソナ乱用</strong>: 「あなたは○○の専門家」は安全・倫理判断系には有効だが、事実調査・推論・コード生成では精度が下がる研究あり</li>
+<li><strong>「ステップバイステップで」を機械的付与</strong>: 最新モデルは思考深度を自律判断。代わりに目的・制約・期待形式を明示しモデルのthinking機能に任せる</li>
+<li><strong>プロンプトを手書き直感調整</strong>: 海外プロはプロンプトをコードとして管理・バージョン管理・eval採点で最適化。手書き直感では「9割動くが残り1割で壊滅」を検知できない</li>
+</ol>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-25: CoVe・Self-Refine・Tree of Thoughts・Skeleton-of-Thoughtはいずれも実在の学術論文から派生した手法（著者も出典を言及）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプトエンジニアリング基礎・Claude/GPT公式ガイド</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — マルチエージェント設計パターン（Anthropic公式5パターン）</li>
+<li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a> — Codexエージェントループ内部実装</li>
+<li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a> — 大規模コードベースでのClaude Code活用とハーネス設計</li>
+<li><a href="../tools/dspy.html">dspy</a> — プロンプトを機械学習問題に変換して自動最適化するフレームワーク</li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a> — MCP（Model Context Protocol）仕様</li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2058839596826612188" rel="noopener" target="_blank">https://x.com/i/web/status/2058839596826612188</a></li></ul></section></article>
+</main>
+</body>
+</html>
