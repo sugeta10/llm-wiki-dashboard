@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>skill-cleaner - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>skill-cleaner</h1>
+  <div class="meta">tools/skill-cleaner · tools · updated 2026-05-27</div>
+  <article><h1>skill-cleaner</h1>
+<p><strong>skill-cleaner</strong>は、Codex/OpenClawのスキルを監査するNode.js製CLIツール。プロンプトバジェット超過・重複スキル・未使用スキルを検出し、整理を促す。steipete（Peter Steinberger）の <a href="https://github.com/steipete/agent-scripts">agent-scripts</a> リポジトリ内のスキルとして公開。</p>
+<h2>主な機能</h2>
+<ul>
+<li><strong>Skill Budget分析</strong>: GPT-5.5コンテキストサイズの2%をスキル予算として、どのスキルが何トークン消費しているか可視化</li>
+<li><strong>重複検出</strong>: 同名スキルや内容が近似したスキルをCodex本体・プラグインキャッシュ・リポジトリ・個人スキルルート横断で検出</li>
+<li><strong>未使用候補の検出</strong>: 最近のCodex/OpenClawログを解析し、一定期間使われていないスキルを特定</li>
+<li><strong>説明文の最適化候補</strong>: 長すぎる description を検出し、文法緩和でバジェット削減できる箇所を提案</li>
+<li><strong>ルートサマリー</strong>: スキルの出所（Codexシステム/プラグイン/個人）と有効/無効状態の一覧</li>
+</ul>
+<h2>実行方法</h2>
+<pre><code class="language-bash"># 基本実行（3ヶ月のログを対象）
+node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --months 3
+
+# ログなし・深掘りなし
+node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --no-logs
+
+# カスタムトークン予算指定
+node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --context-tokens 272000 --budget-percent 2 --no-logs
+
+# 任意のスキルルートを指定
+node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --root ~/Dropbox/boxd/skills --no-logs
+</code></pre>
+<h2>削除・編集ポリシー</h2>
+<ul>
+<li><strong>提案ファースト</strong>: 変更はユーザーが明示的に求めるまで実行しない</li>
+<li><strong>削除候補の優先度</strong>: Codexシステムスキル &gt; プラグインスキル &gt; 個人/リポジトリコピー（上位が残す対象）</li>
+<li><strong>保護すべきスキル</strong>: リポジトリポリシーや運用手順をエンコードしたOpenClawメンテナー向けスキルは削除しない</li>
+<li><strong>説明文のトリガー名詞を保持</strong>: 製品名・ツール名・アクション名・対象名はバジェット削減でも除去しない</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — LLMスキルに自己改善ループを組み込む設計パターン（LESSONS.mdアプローチ）</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — Claudeスキルの概念（永続的職務定義ファイル・Claude.ai/Claude Code両対応）</li>
+<li><a href="../tools/obsidian-skills.html">obsidian-skills</a> — kepano製 Obsidian向けAgent Skills集（agentskills.io仕様準拠）</li>
+<li><a href="../tools/gstack.html">gstack</a> — Garry Tan製AIソフトウェアファクトリー（Claude Code拡張・23スキル収録）</li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/steipete/agent-scripts/blob/main/skills/skill-cleaner/SKILL.md" rel="noopener" target="_blank">https://github.com/steipete/agent-scripts/blob/main/skills/skill-cleaner/SKILL.md</a></li></ul></section></article>
+</main>
+</body>
+</html>

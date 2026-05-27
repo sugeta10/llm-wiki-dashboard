@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>behavioral-specification - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>behavioral-specification</h1>
+  <div class="meta">concepts/behavioral-specification · concepts · updated 2026-05-27</div>
+  <article><h1>振る舞い仕様（Behavioral Specification）</h1>
+<p><strong>振る舞い仕様</strong>とは、外部から観測可能なシステムの振る舞いに関して「正解・不正解」を判定する成果物。<a href="../concepts/spec-driven-development.html">spec-driven-development</a> の中核概念であり、AIに実装を指示する前に人間が確定させる基準となる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-23: kuniwak（blog.kuniwak.com）が「仕様駆動開発における振る舞い仕様の書き方」として4つのポイントを整理</li>
+<li>2026-05-23: 「良い仕様とは、実装の正誤を判断でき、かつその判断に追加の質問をなるべく要しないもの」と定義</li>
+<li>2026-05-23: 実装をそのまま仕様にすると「正解を狭くしすぎる」という問題指摘（エラーメッセージの文字列レベルまで固定されてしまう）</li>
+</ul>
+<h2>検証済み事実</h2>
+<p>（公式発表・査読済み情報はなし。以下は著者の観察・主張に基づく）</p>
+<hr>
+<h2>システムの2分類</h2>
+<p>振る舞い仕様の表現はシステムの種類によって異なる。</p>
+<h3>変換システム（Transformation System）</h3>
+<p>入力すると停止して出力を返すシステム。FizzBuzz関数・ソート・コンパイラ・Web API等。</p>
+<p><strong>振る舞い仕様の形式</strong>: 入力と「許される出力」の関係（表・場合分け・数式）</p>
+<pre><code>| 入力 | 出力 |
+|-----|------|
+| 3で5でも割り切れない | 入力の10進数文字列 |
+| 3で割り切れ5で割り切れない | &quot;Fizz&quot; |
+| ...（場合分けで圧縮）|
+</code></pre>
+<p><strong>注意点</strong>: 1つの入力に複数の許容出力がある場合（サイコロ等）、同じ入力を複数行書く。「表に書かない入力 = 何を返しても仕様違反にしない」という意味になる。</p>
+<h3>リアクティブシステム（Reactive System）</h3>
+<p>何度も入力できて停止しないシステム。WebApp・GUI・自販機・ゲーム等。</p>
+<p><strong>振る舞い仕様の形式</strong>: 発生できるイベントの流れ（状態遷移図）</p>
+<pre><code>Idle → 貨幣投入 → Paid → 商品選択 → Dropping → 商品排出 → Idle
+</code></pre>
+<ul>
+<li>正常系だけでなく異常系（売り切れ選択・現金回収）も必ず書く</li>
+<li>図にない遷移は「その仕様では発生できない流れ」として扱う</li>
+</ul>
+<h2>状態遷移図の注意点</h2>
+<p>状態遷移図は「状態そのもの」ではなく「イベントの流れを表現すること」が目的。実装側の内部状態は仕様の状態と一致しなくて構わない。</p>
+<p><strong>仕様バグの典型例（自販機）</strong>:
+- 選んだ商品を状態に記録していない → 水を選んでもコーヒーが出ても仕様違反にならない
+- 商品選択イベントが抜けている → 点灯後に何も押さないまま商品排出が可能になる
+- 売り切れ遷移がない → 在庫0でも販売し続ける実装が仕様違反にならない</p>
+<h2>内部イベント τ（タウ）</h2>
+<p>外から制御も観測もできないイベント。サーバー内部処理・通信エラー・時間経過等。</p>
+<pre><code>おみくじを引く → τ(大吉が選ばれる) → &quot;大吉&quot;を表示
+                → τ(凶が選ばれる) → &quot;凶&quot;を表示
+</code></pre>
+<p>τを書かずに「大吉になるイベント」と書くと、ユーザーが結果を制御できる振る舞い仕様になってしまう。<strong>通信エラーは必ずτで正常系と異常系に分岐</strong>させる（AIはデフォルトで異常系を省略しがち）。</p>
+<h2>AIとの協働</h2>
+<ul>
+<li><strong>AIに仕様を作成させる</strong>: 代表的なトレースを質問し、AIがPlantUMLで状態遷移図を埋める → 人間が確認・修正</li>
+<li><strong>AIに仕様バグを探させる</strong>: 完成した仕様を読ませて「意図しない流れ」「抜けた流れ」を質問する</li>
+<li><strong>AIにテストを作らせる</strong>: 仕様を渡して「振る舞い仕様からテストを作って」と指示（property-based testingと相性良）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様駆動開発の全体プロセス（3種類の仕様・コンテキストエンジニアリング）</li>
+<li><a href="../concepts/vibe-coding.html">vibe-coding</a> — 仕様なしにAIにコードを書かせるスタイル（振る舞い仕様の反省点）</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントが自律的にコードを書く開発スタイル</li>
+<li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> — Spec-anchored実践：AIに実装ノートを並走させるプロンプト</li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://blog.kuniwak.com/entry/2026/05/23/143148" rel="noopener" target="_blank">https://blog.kuniwak.com/entry/2026/05/23/143148</a></li></ul></section></article>
+</main>
+</body>
+</html>
