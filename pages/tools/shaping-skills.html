@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>shaping-skills - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>shaping-skills</h1>
+  <div class="meta">tools/shaping-skills · tools · updated 2026-05-28</div>
+  <article><p>Ryan Singer（Shape Up著者、元Basecamp）が作成したClaude Code向けスキル集。<a href="https://basecamp.com/shapeup">Shape Up手法</a>のShaping（問題と解決策の反復）とBreadboarding（UI/コード/配線のマッピング）をLLMとの協働に適応させた4スキル。</p>
+<h2>スキル一覧</h2>
+<p><strong>ドキュメントスキル（実プロジェクト向け）</strong></p>
+<ul>
+<li><strong><code>/framing-doc</code></strong> — 会話のトランスクリプトを「解くべき問題とその選択理由」を捉えたFraming Documentに変換</li>
+<li><strong><code>/kickoff-doc</code></strong> — Shaped projectのキックオフ議事を実装担当者向け参照ドキュメントに変換</li>
+</ul>
+<blockquote>
+<p>これらはGIGO（Garbage In, Garbage Out）。良い入力があって初めて時間を節約できる。</p>
+</blockquote>
+<p><strong>ソロスキル（より実験的）</strong></p>
+<ul>
+<li><strong><code>/shaping</code></strong> — 要件（What）と解決策（How）を分離しながら反復。フィットチェックで解決済み・未解決を追跡</li>
+<li><strong><code>/breadboarding</code></strong> — システムをUIアフォーダンス・コードアフォーダンス・配線に分解して1つのビューで可視化。垂直スコープへの分割に有効</li>
+</ul>
+<h2>Ripple Checkフック</h2>
+<p><code>shaping: true</code> のfrontmatterを持つMarkdownを編集すると、Claudeがアフォーダンステーブル・フィットチェック・ワークストリームの更新を促すフックが自動起動する。</p>
+<h2>インストール</h2>
+<pre><code class="language-bash">git clone https://github.com/rjs/shaping-skills.git ~/.local/share/shaping-skills
+ln -s ~/.local/share/shaping-skills/shaping ~/.claude/skills/shaping
+# 他スキルも同様にシンボリックリンク
+</code></pre>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a> — 実行プラットフォーム</li>
+<li><a href="../tools/compound-engineering.html">compound-engineering</a> — 同様の計画先行開発哲学を持つプラグイン</li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様先行開発の広い文脈</li>
+<li><a href="../tools/grill-me.html">grill-me</a> — 実装前の要件深掘り対話スキル</li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059319662597611914" rel="noopener" target="_blank">https://x.com/i/web/status/2059319662597611914</a></li>
+<li><a href="https://github.com/rjs/shaping-skills" rel="noopener" target="_blank">https://github.com/rjs/shaping-skills</a></li></ul></section></article>
+</main>
+</body>
+</html>
