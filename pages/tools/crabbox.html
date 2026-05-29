@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>crabbox - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>crabbox</h1>
+  <div class="meta">tools/crabbox · tools · updated 2026-05-29</div>
+  <article><h1>Crabbox</h1>
+<p>リモートボックスにローカルの差分をrsyncし、コマンドを実行してログをストリーミングする<strong>AIエージェント向け共有ワークスペースコントロールプレーン</strong>。ローカルの編集・gitワークフローをそのまま維持しながら、計算・テスト・レビューエビデンスをクラウドへ移動できる。<a href="../tools/openclaw.html">openclaw</a> のネイティブプラグインとしても機能し、<code>crabbox_run</code> / <code>crabbox_warmup</code> 等のエージェントツールを提供する。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-28: Cloudflare Worker（+ Durable Object）がブローカーとして機能し、各CLIはベアラートークンのみ保有。プロバイダー認証情報はCLIに渡らない「brokered」設計</li>
+<li>2026-05-28: TTL境界付きマシン・月次スペンドキャップ・ユーザー/組織/プロバイダーごとの使用量をブローカーが管理</li>
+<li>2026-05-28: <code>crabbox warmup</code> でボックスをウォーム状態に保ち、<code>--id</code> で複数ラン・SSH・CI間で再利用可能</li>
+<li>2026-05-28: <code>actions hydrate</code> でリポジトリのGitHub Actionsセットアップ手順を再利用し、同一ハイドレート済みワークスペースでローカル実行が可能</li>
+<li>2026-05-28: <code>crabbox webvnc</code> でLinux/macOS/Windowsデスクトップをブラウザにストリーミング（VPN不要・UIテスト・スクリーンショット取得・ライブセッション共有）</li>
+<li>2026-05-28: <code>crabbox artifacts collect</code> でスクリーンショット・動画・JUnitサマリー・ログ・リースメタデータをバンドルしPRエビデンスとして添付可能</li>
+<li>2026-05-28: 対応プロバイダー: Hetzner / AWS / Azure / E2B / Daytona / Blacksmith / Semaphore / GCP / Proxmox / Parallels / Modal / Cloudflare 等多数</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-28: CLIはGoバイナリ。ブローカーはCloudflare Worker + 単一Durable Object（公式サイト記載）</li>
+<li>2026-05-28: <code>brew install openclaw/tap/crabbox</code> でインストール可能（公式）</li>
+<li>2026-05-28: <a href="../tools/openclaw.html">openclaw</a> のネイティブプラグインパッケージとしてリポジトリルートに含まれる（Linuxランナーは vanilla Ubuntu / cloud-init 準備済み）</li>
+</ul>
+<h2>アーキテクチャ</h2>
+<pre><code>your laptop          Cloudflare Worker         cloud provider
+------- HTTPS -------&gt; Fleet Durable Object --&gt; Hetzner / AWS / Azure / GCP
+   |                    lease + cost state           |
+   +------- SSH + rsync to leased runner &amp;lt;-----------+
+</code></pre>
+<h2>ランの流れ（6ステップ）</h2>
+<ol>
+<li>CLIがフラグ・env・リポジトリ・ユーザー・デフォルトから設定をロード</li>
+<li>CLIがリースごとのSSHキーとスラグを生成し <code>POST /v1/leases</code> をブローカーに送信</li>
+<li>Workerがアクティブリースとスペンドキャップをチェック、最悪ケースTTLコストを予約し、サーバーをプロビジョニング（host/port/user/workdir/expiry/slug を返す）</li>
+<li>CLIが <code>crabbox-ready</code> を待ち、可能ならリモートGitをシード、Gitファイルリストマニフェストをrsync</li>
+<li>CLIがSSH経由でコマンドを実行し出力をストリーミング、実行イベントを記録・ハートビート送信</li>
+<li><code>--keep</code> がない限りリースをリリース（保持リースもアイドルタイムアウト後にブローカーが解放）</li>
+</ol>
+<h2>クイックスタート</h2>
+<pre><code class="language-sh">crabbox login --url https://broker.example.com  # 1回のみ
+crabbox run -- pnpm test                        # 新規リースで1回実行
+crabbox warmup                                  # ウォームボックスを起動
+crabbox run --id blue-lobster -- pnpm test:changed
+crabbox ssh --id blue-lobster
+crabbox stop blue-lobster
+</code></pre>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/openclaw.html">openclaw</a> — CrabboxはOpenClawのネイティブプラグインとして動作（<code>crabbox_run</code> / <code>crabbox_warmup</code> / <code>crabbox_status</code> 等）</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントがリモートコンピューティングリソースを使う文脈</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — Crabboxをオーケストレーター経由でClaude Codeと組み合わせ可能</li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://crabbox.sh/" rel="noopener" target="_blank">https://crabbox.sh/</a></li></ul></section></article>
+</main>
+</body>
+</html>

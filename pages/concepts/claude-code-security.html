@@ -21,7 +21,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-security</h1>
-  <div class="meta">concepts/claude-code-security · concepts · updated 2026-05-20</div>
+  <div class="meta">concepts/claude-code-security · concepts · updated 2026-05-29</div>
   <article><h1>Claude Code セキュリティ設定と組織展開</h1>
 <p>メルカリ AI Security Team による <a href="../tools/claude-code.html">claude-code</a> の組織展開戦略。エンジニアと非エンジニアの双方が安全かつ生産性高く利用できる設定を MDM で配布する方法論。</p>
 <h2>Claude Code のリスク</h2>
@@ -72,6 +72,50 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - 申請対応・退職時の棚卸しを自動化</p>
 <p><strong>② ガードレール</strong>（詳細は元ツイートで続報）</p>
 <p>→ メルカリのMDM戦略と合わせて、「個人端末設定」×「テナントアクセス制御」という2層でClaude Codeのエンプラ展開をカバーできる。</p>
+<h2>公式security-guidanceプラグインのフック構造</h2>
+<p><code>anthropics/claude-code</code> リポジトリに含まれる公式 <code>security-guidance</code> プラグインは、以下のライフサイクルフックで自動的にセキュリティレビューを挿入する（<code>hooks/hooks.json</code> より）：</p>
+<table>
+<thead>
+<tr>
+<th>フックイベント</th>
+<th>トリガー条件</th>
+<th>挙動</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SessionStart</code></td>
+<td>セッション開始時</td>
+<td><code>ensure_agent_sdk.py</code> でエージェントSDKをセットアップ（タイムアウト180秒）</td>
+</tr>
+<tr>
+<td><code>UserPromptSubmit</code></td>
+<td>プロンプト送信ごと</td>
+<td><code>security_reminder_hook.py</code> でセキュリティ注意喚起</td>
+</tr>
+<tr>
+<td><code>PostToolUse</code></td>
+<td>Edit / Write / MultiEdit / NotebookEdit 後</td>
+<td><code>security_reminder_hook.py</code> でパターンベース警告</td>
+</tr>
+<tr>
+<td><code>PostToolUse</code></td>
+<td>Bash で <code>git commit:*</code> 実行後</td>
+<td><code>security_reminder_hook.py</code> + <strong>asyncRewake</strong>（バックグラウンドでgit差分ベースLLMレビュー）</td>
+</tr>
+<tr>
+<td><code>PostToolUse</code></td>
+<td>Bash で <code>git push:*</code> 実行後</td>
+<td><code>security_reminder_hook.py</code> + <strong>asyncRewake</strong>（プッシュ済みコミットのバックグラウンドレビュー）</td>
+</tr>
+<tr>
+<td><code>Stop</code></td>
+<td>セッション終了時</td>
+<td><code>security_reminder_hook.py</code> + <strong>asyncRewake</strong>（セッション終了後のバックグラウンド総括レビュー）</td>
+</tr>
+</tbody>
+</table>
+<p><code>asyncRewake: true</code> により、git commit/push/Stop 後もバックグラウンドでセキュリティレビューが走り、問題があればClaudeが自動的に再起動して知らせる。<code>rewakeMessage</code> でユーザーへの再起動メッセージを指定する仕組み。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
@@ -79,7 +123,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 </ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener" target="_blank">https://speakerdeck.com/hi120ki/claude-code-organization-settings</a></li>
-<li><a href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">https://x.com/i/web/status/2056571858242404578</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">https://x.com/i/web/status/2056571858242404578</a></li>
+<li><a href="https://github.com/anthropics/claude-code/blob/b7339920b69f4a395c28727a1e2305dc5b122cb2/plugins/security-guidance/hooks/hooks.json#L63" rel="noopener" target="_blank">https://github.com/anthropics/claude-code/blob/b7339920b69f4a395c28727a1e2305dc5b122cb2/plugins/security-guidance/hooks/hooks.json#L63</a></li></ul></section></article>
 </main>
 </body>
 </html>
