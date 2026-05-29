@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>autoreview-skill - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>autoreview-skill</h1>
+  <div class="meta">tools/autoreview-skill · tools · updated 2026-05-30</div>
+  <article><h1>autoreview スキル</h1>
+<p><a href="../tools/openclaw.html">openclaw</a> の agent-skills リポジトリに含まれるコードレビュー自動化スキル。ローカル変更・ブランチ・PRを対象に構造化されたレビューを実行するクローズアウトチェック用ツール。Codex がデフォルトエンジン（最良結果）。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-28: レビュー出力は「助言」扱い。すべての指摘を実際のコードパスで検証し、非現実的なエッジケース・投機的リスク・広範なリファクタリング提案は拒否する設計</li>
+<li>2026-05-28: セキュリティ監査抑制変更は「抑制済み指摘」を構造化出力に残すことで、有効出力が無関係なリスクを隠さないよう保証する</li>
+<li>2026-05-28: <code>--parallel-tests</code> でテストとレビューを並行実行し、どちらかが変更を引き起こした場合は再実行する</li>
+<li>2026-05-28: 最大30分間実行可能（大きなバンドル時）。30分未満のサイレント期間でプロセスを強制終了しない</li>
+<li>2026-05-28: <code>--stream-engine-output</code> でライブエンジン出力をストリーミング可能（Codex/Claudeはツールイベントとファイルイベントをフィルタリングし、コンパクトサマリーを出力）</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-28: デフォルトエンジンは Codex（環境変数 <code>AUTOREVIEW_ENGINE</code> で切替可能）</li>
+<li>2026-05-28: <code>--reviewers codex,claude</code> または <code>--panel</code> で複数エンジンレビューパネルを実行できる</li>
+<li>2026-05-28: ヘルパーは stdout のみに出力し、<code>--output</code> / <code>--json-output</code> 指定時以外はファイルを書かない</li>
+</ul>
+<h2>主なモード</h2>
+<table>
+<thead>
+<tr>
+<th>モード</th>
+<th>コマンド例</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ローカル変更</td>
+<td><code>autoreview --mode local</code></td>
+<td>ステージ済み・未ステージの変更</td>
+</tr>
+<tr>
+<td>ブランチ/PR</td>
+<td><code>autoreview --mode branch --base origin/main</code></td>
+<td>ブランチとの差分</td>
+</tr>
+<tr>
+<td>単一コミット</td>
+<td><code>autoreview --mode commit --commit HEAD</code></td>
+<td>着地済み・push済み作業</td>
+</tr>
+</tbody>
+</table>
+<h2>レビューパネル</h2>
+<p>複数エンジンを1つの冷凍バンドルに対して実行できる。</p>
+<pre><code>autoreview --reviewers codex,claude --model codex=gpt-5.1 --thinking codex=high --model claude=sonnet --thinking claude=max
+</code></pre>
+<p>Codex は <code>model_reasoning_effort</code>（low/medium/high/xhigh）、Claude は <code>--effort</code>（max まで対応）にマッピングされる。</p>
+<h2>Contract（要約）</h2>
+<ul>
+<li>指摘はすべて実コードで検証してから適用する</li>
+<li>セキュリティ指摘は具体的・実行可能なリスクのみ報告</li>
+<li>ネストされたレビュー・別のエンジン呼び出しは禁止（ヘルパー内部で行う）</li>
+<li>アクション可能な指摘がゼロで exit 0 が出たら停止。追加確認レビューは不要</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/openclaw.html">openclaw</a></li>
+<li><a href="../concepts/google-code-review.html">google-code-review</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/openclaw/agent-skills/blob/main/skills/autoreview/SKILL.md" rel="noopener" target="_blank">https://github.com/openclaw/agent-skills/blob/main/skills/autoreview/SKILL.md</a></li></ul></section></article>
+</main>
+</body>
+</html>

@@ -28,20 +28,61 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>価格は Opus 4.7 と同額で提供開始</li>
 <li>「sharper judgment」「more honesty about its own progress」「work independently for longer」が公式の差分</li>
 </ul>
-<h2>CodeRabbitによるベンチマーク（2026-05-29）</h2>
-<p><a href="../tools/claude-code.html">claude-code</a> でのコードレビュー・コード生成ユースケースでの評価結果。</p>
+<h2>観察ログ（未検証）</h2>
 <ul>
-<li>Opus 4.8は全体的に強力だが、<strong>重大な指摘（critical findings）は前世代より減少</strong>した</li>
-<li>コード生成と長時間の独立作業（long-running tasks）に向いている</li>
-<li>詳細: <a href="https://www.coderabbit.ai/ja/blog/opus-4-8-release">CodeRabbit日本語解説記事</a></li>
+<li>2026-05-29: コメントの内訳がベースラインよりノイズが多い。major指摘が119件→81件に減少し、minor/nitpickがほぼ倍増（CodeRabbit評価）</li>
+<li>2026-05-29: レビュー指示を文字通りに従う傾向があり、「重大度の高い問題だけを報告する」保守的プロンプトが再現率を強く抑制するとの仮説</li>
+<li>2026-05-29: 200kトークン超えでコンテキスト性能が目に見えて低下。モノレポや大規模コードベースは壁にぶつかる可能性</li>
+<li>2026-05-29: セッション途中のsystemプロンプト（messages配列内の<code>{"role":"system"}</code>）をプロンプトキャッシュを無効化せずに追加可能</li>
+<li>2026-05-29: Web検索は以前より頻繁に起動するが、1回の作業で繰り返す回数は減少。文脈から回答する傾向が強まった（高精度・低再現率）</li>
+</ul>
+<h2>検証済み事実（CodeRabbitベンチマーク、2026-05-29）</h2>
+<ul>
+<li>2026-05-29: 評価対象：軽微・小規模・大規模の複雑度階層からサンプリングした100件のオープンソースPR</li>
+<li>2026-05-29: フルシステムのパス率：Opus 4.8 72% vs ベースライン 68%（+4ポイント）</li>
+<li>2026-05-29: 実用的な指摘のパス率：Opus 4.8 61% vs ベースライン 62%（誤差範囲内）</li>
+<li>2026-05-29: 致命的な指摘（critical）が35件→29件に減少</li>
+<li>2026-05-29: コストは1回あたり$0.20〜0.28（Opus 4.5は約$0.13、Sonnet 4.5は$0.04〜0.12）</li>
+</ul>
+<h2>3つの主要改善点</h2>
+<table>
+<thead>
+<tr>
+<th>改善点</th>
+<th>詳細</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>長期エージェント実行</strong></td>
+<td>多数ツール呼び出しにまたがるタスクで文脈を維持。高い推論負荷を前提に最初から仕様全体を渡す設計が有効</td>
+</tr>
+<tr>
+<td><strong>セッション途中のsystemプロンプト</strong></td>
+<td>messages配列中途のsystemプロンプトでもキャッシュ無効化なし。上書き指示よりも文脈として扱うと安定</td>
+</tr>
+<tr>
+<td><strong>ツール利用の再調整</strong></td>
+<td>Web検索は積極化しつつ繰り返し減少。高精度・低再現率の挙動に変化</td>
+</tr>
+</tbody>
+</table>
+<h2>プロンプト調整の実践指針</h2>
+<ul>
+<li>"x-high" より "high" の思考設定から始め、階層ごとにテスト</li>
+<li>長期タスクでは全文脈を最初にまとめて渡す（少しずつ追加するのはNG）</li>
+<li>調査系タスクで「まず検索する」「サブエージェントに任せる」を明示的に指示</li>
+<li>レビュープロンプトから保守的な表現を外し、下流でフィルタリング</li>
 </ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li>
 </ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060042702150930686" rel="noopener" target="_blank">https://x.com/i/web/status/2060042702150930686</a></li>
-<li><a href="https://x.com/i/web/status/2060153411627257928" rel="noopener" target="_blank">https://x.com/i/web/status/2060153411627257928</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2060153411627257928" rel="noopener" target="_blank">https://x.com/i/web/status/2060153411627257928</a></li>
+<li><a href="https://www.coderabbit.ai/ja/blog/opus-4-8-release" rel="noopener" target="_blank">https://www.coderabbit.ai/ja/blog/opus-4-8-release</a></li></ul></section></article>
 </main>
 </body>
 </html>

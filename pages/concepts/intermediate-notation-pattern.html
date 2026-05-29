@@ -21,21 +21,107 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>intermediate-notation-pattern</h1>
-  <div class="meta">concepts/intermediate-notation-pattern · concepts · updated 2026-05-29</div>
+  <div class="meta">concepts/intermediate-notation-pattern · concepts · updated 2026-05-30</div>
   <article><h1>中間記法パターン（MNP: Intermediate Notation Pattern）</h1>
-<p>「AIにGUIを直接操作させるのではなく、GUIと同等のデータを持てる内部処理用のDSLを設計し、それをAIに操作させる」アプローチ。複雑な内製アプリを人間とAIで共同編集したい要件に対し、GUIをそのDSLのレンダラに変換することで、LLMによる高速・高精度な操作を実現する。</p>
+<p>「AIにGUIを直接操作させるのではなく、GUIと同等のデータを持てる内部処理用のDSLを設計し、それをAIに操作させる」アプローチ。GUIをそのDSLのレンダラに変換することで、LLMによる高速・高精度な操作と人間との双方向編集を実現する。なつ（@Dia_Nexus）が2026年5月に提唱・命名。</p>
+<h2>観察ログ（未検証）</h2>
 <ul>
-<li>GUIを直接操作するのではなくDSLを中間層として挟む点がポイント</li>
-<li>MermaidのようなDSLをアプリ専用に設計し、GUIはそのDSLのビューとして機能させる</li>
-<li>LLMはテキストベースのDSLを扱うことでGUI操作より精度・速度が大幅に向上する</li>
-<li>まだ業界的に広く採用されていない手法だが高いポテンシャルを持つとされる（2026-05-28時点）</li>
+<li>2026-05-29: AI業界でまだ同様の手法を実装している事例は見当たらないとされる（著者調査時点）</li>
+<li>2026-05-29: APIコストが通常のHTML毎回生成と比べて4〜8倍安くなる（出力トークン量が圧倒的に少ないため）</li>
+<li>2026-05-29: コンテキストが長くなると中間記法自体が肥大化する課題がある（5000字超えたらトリム処理推奨）</li>
+<li>2026-05-29: 既存プロダクトへの後付けは難しく、新規開発時に最初からこのパターンで設計するのが適切</li>
+<li>2026-05-29: 実装手順：①手法概念の理解 → ②HTMLで再現 → ③エディタ化 → ④AI化（MNP導入）</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-29: デモが公開されている（mnp-demo.vercel.app）。APIなし・APIありの両バージョン</li>
+</ul>
+<h2>4要素アーキテクチャ</h2>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DSL（記法）</strong></td>
+<td>手法固有のテキスト表現。例：<code>actor USER "ユーザー" teal person</code></td>
+</tr>
+<tr>
+<td><strong>パーサー</strong></td>
+<td>記法テキスト → 内部データ構造への変換</td>
+</tr>
+<tr>
+<td><strong>シリアライザー</strong></td>
+<td>内部データ構造 → 記法テキストへの逆変換（双方向性の源泉）</td>
+</tr>
+<tr>
+<td><strong>システムプロンプト</strong></td>
+<td>AIにDSLを書かせるための指示（役割・概念説明・記法の3つを定義）</td>
+</tr>
+</tbody>
+</table>
+<h2>同期ループ</h2>
+<pre><code>serialize() → 現在状態をテキスト化
+↓
+システムプロンプトに埋め込む（AIが現在状態を把握した上で指示を受ける）
+↓
+AIが記法テキストを含む構造化レスポンスを返す
+parseNota() → applyParsed() → 再描画
+↓
+また serialize() で状態が取れる
+</code></pre>
+<p>AIにとって「操作しやすい簡易DB」を DSL で実装している形に近い。</p>
+<h2>3つの実装パターン</h2>
+<table>
+<thead>
+<tr>
+<th>パターン</th>
+<th>概要</th>
+<th>特徴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API版</strong></td>
+<td>内部にAIを組み込みサービス提供</td>
+<td>標準的なWebアプリ形態</td>
+</tr>
+<tr>
+<td><strong>システムプロンプト型</strong></td>
+<td>記法だけ返せばよいのでセキュアなAI環境でも動作</td>
+<td>社内AI/M365 Copilot環境対応</td>
+</tr>
+<tr>
+<td><strong>ローカルLLM型</strong></td>
+<td>OllamaなどのローカルLLMと組み合わせ</td>
+<td>未検証・実験的</td>
+</tr>
+</tbody>
+</table>
+<h2>メリット</h2>
+<ul>
+<li><strong>出力の安定性</strong>: 状態が常にテキストとして存在するため再生成してもブレにくい</li>
+<li><strong>双方向編集</strong>: GUIで編集すると記法に反映、記法を変えると図に反映</li>
+<li><strong>高速</strong>: AIはテキスト記法のみを返すため処理が爆速（HTML全体の再生成不要）</li>
+<li><strong>コンプライアンス対応</strong>: APIキー不要（システムプロンプト型）でIT審査不要。M365 CopilotしかOKな環境でも使える</li>
+<li><strong>軽い配布</strong>: 単一HTMLで完結。サーバーレス・ログイン不要</li>
+</ul>
+<h2>限界</h2>
+<ul>
+<li>状態が大きくなるとコンテキストウィンドウを超えて崩壊するリスク</li>
+<li>既存プロダクトへの後付けは serialize/parse の対から設計し直す必要があり重い</li>
 </ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../tools/claude-computer-use.html">claude-computer-use</a></li>
-</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059817477165723676" rel="noopener" target="_blank">https://x.com/i/web/status/2059817477165723676</a></li></ul></section></article>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059817477165723676" rel="noopener" target="_blank">https://x.com/i/web/status/2059817477165723676</a></li>
+<li><a href="https://note.com/art_reflection/n/nccfe6cc57073" rel="noopener" target="_blank">https://note.com/art_reflection/n/nccfe6cc57073</a></li></ul></section></article>
 </main>
 </body>
 </html>
