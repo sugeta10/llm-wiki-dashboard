@@ -21,7 +21,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-dynamic-workflows</h1>
-  <div class="meta">concepts/claude-code-dynamic-workflows · concepts · updated 2026-05-29</div>
+  <div class="meta">concepts/claude-code-dynamic-workflows · concepts · updated 2026-05-30</div>
   <article><h1>Claude Code Dynamic Workflows</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> の Research Preview 機能（2026-05-28発表）。プロンプトに「workflow」という単語を含めるだけでClaude自身がオーケストレーションスクリプトをその場で生成し、複雑なタスクを大量の協調サブエージェントに並列分散させて実行する。</p>
 <ul>
@@ -29,14 +29,26 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>大規模なサブエージェントフリートを並列起動して協調させる</li>
 <li>プロンプトに「workflow」と入れるだけで起動できる（Research Preview）</li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> の Fan-Out / Orchestrator-subagent パターンをユーザー向けに抽象化したもの</li>
+<li>1つのセッション内で数十〜数百の並列サブエージェントを動かすことができる</li>
 </ul>
+<h2>使い方</h2>
+<ol>
+<li><code>/config</code> の <strong>Dynamic workflows</strong> が <code>true</code> になっていることを確認する</li>
+<li>プロンプトに「workflow」という単語を含めて指示を出す</li>
+<li>Claude が動的にオーケストレーションプランを作成し、厳密に実行する — 各ステージが正しい順序で処理されることが保証される</li>
+</ol>
+<blockquote>
+<p>公式説明（@_catwu）: "Claude will dynamically create an orchestration plan that it strictly follows, allowing you to confidently trust that every stage happens in the right order"</p>
+</blockquote>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a></li>
 <li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
-</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060044853279617150" rel="noopener" target="_blank">https://x.com/i/web/status/2060044853279617150</a></li></ul></section></article>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060044853279617150" rel="noopener" target="_blank">https://x.com/i/web/status/2060044853279617150</a></li>
+<li><a href="https://x.com/i/web/status/2060051213727744218" rel="noopener" target="_blank">https://x.com/i/web/status/2060051213727744218</a></li>
+<li><a href="https://x.com/i/web/status/2060054180379689074" rel="noopener" target="_blank">https://x.com/i/web/status/2060054180379689074</a></li></ul></section></article>
 </main>
 </body>
 </html>
