@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-hooks-async - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-hooks-async</h1>
+  <div class="meta">concepts/claude-code-hooks-async · concepts · updated 2026-05-29</div>
+  <article><h1>Claude Code Hooks 非同期エージェントパターン（asyncRewake）</h1>
+<p><a href="../tools/claude-code.html">claude-code</a> の Hooks 機能と Claude Agent SDK を組み合わせた<strong>非同期サブエージェント起動パターン</strong>。メインエージェントの処理をブロックせずにバックグラウンドでサブエージェントを実行し、完了後にメインエージェントへ結果を報告する。</p>
+<p><code>asyncRewake: true</code> を指定することで非同期起動が有効になる。</p>
+<h2>代表的な実装例：security-guidance プラグイン</h2>
+<p><code>claude-code-plugins-official</code> の <code>security-guidance</code> プラグイン（<a href="../tools/claude-code-plugins.html">claude-code-plugins</a> 参照）が実装している Hooks 設計：</p>
+<pre><code class="language-json">{
+  &quot;asyncRewake&quot;: true,
+  &quot;description&quot;: &quot;Run security review via Claude Agent SDK&quot;
+}
+</code></pre>
+<ol>
+<li>Claude Code の Hook イベント（ファイル保存・ツール実行など）が発火</li>
+<li>Hook が Claude Agent SDK を呼び出してセキュリティレビューエージェントをバックグラウンド起動</li>
+<li>メインエージェントは処理を継続（ブロックなし）</li>
+<li>セキュリティレビュー完了後、結果をメインエージェントに報告（<code>asyncRewake</code> で再起動）</li>
+</ol>
+<h2>asyncRewake パターンの特性</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用途</td>
+<td>メインフロー非遮断の非同期検査・監視</td>
+</tr>
+<tr>
+<td>代表例</td>
+<td>セキュリティ脆弱性レビュー、品質チェック、ログ解析</td>
+</tr>
+<tr>
+<td>対比</td>
+<td>同期フックは応答を待つため、重い処理では UX が劣化する</td>
+</tr>
+</tbody>
+</table>
+<h2>なぜ重要か</h2>
+<ul>
+<li><strong>コスト分離</strong>: 重いセキュリティレビューをメインエージェントのターンコストから切り離せる</li>
+<li><strong>並列処理</strong>: メインエージェントと検査エージェントが同時進行</li>
+<li><strong>非侵襲的監視</strong>: 開発者のフローを妨げずに継続的な品質チェックを実現</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code-plugins.html">claude-code-plugins</a> — security-guidance プラグインが実装例</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — マルチエージェント設計パターン全般</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — Hooks 機能の基盤</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — エージェント協調設計の文脈</li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059758293414023464" rel="noopener" target="_blank">https://x.com/i/web/status/2059758293414023464</a></li></ul></section></article>
+</main>
+</body>
+</html>

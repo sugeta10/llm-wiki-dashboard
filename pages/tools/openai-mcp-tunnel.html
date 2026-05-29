@@ -27,6 +27,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>対応製品: ChatGPT・Codex・Responses API・その他サポート済みOpenAIサービス。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
+<li>2026-05-29: エンタープライズ展開における意義：「社内MCPサーバーを外に晒さずにChatGPT/Codexと繋げる」ことで、セキュリティ部門が「絶対ダメ」と言い続けてきたAI連携の障壁を解消する発表として受け止められている（@tetumemo 解説）</li>
 <li>2026-05-28: Harpoon（<code>tunnel-client</code> 組み込みのMCPサーバー）により、設定済みのHTTPターゲットのみに絞った狭いスコープのHTTP呼び出しが可能（汎用プロキシではない）</li>
 <li>2026-05-28: OAuth発見はトンネルパスを通過できるが、認可サーバー自体は自動トンネル化されない（認可サーバーがパブリックに到達できない場合はOAuthフローが失敗することがある）</li>
 <li>2026-05-28: ストリーミング結果（server-sent events）もトンネル経由で転送可能</li>
@@ -93,7 +94,8 @@ tunnel-client run --profile local-stdio
 <li><a href="../tools/claude-mcp.html">claude-mcp</a> — MCPプロトコル全般・MCP仕様</li>
 <li><a href="../companies/openai.html">openai</a> — OpenAI製品群・ChatGPT・Codex</li>
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — プライベートMCPとエージェントアクセス制御設計</li>
-</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://developers.openai.com/api/docs/guides/secure-mcp-tunnels" rel="noopener" target="_blank">https://developers.openai.com/api/docs/guides/secure-mcp-tunnels</a></li></ul></section></article>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://developers.openai.com/api/docs/guides/secure-mcp-tunnels" rel="noopener" target="_blank">https://developers.openai.com/api/docs/guides/secure-mcp-tunnels</a></li>
+<li><a href="https://x.com/i/web/status/2059783181759557962" rel="noopener" target="_blank">https://x.com/i/web/status/2059783181759557962</a></li></ul></section></article>
 </main>
 </body>
 </html>
