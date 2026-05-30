@@ -74,15 +74,32 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>調査系タスクで「まず検索する」「サブエージェントに任せる」を明示的に指示</li>
 <li>レビュープロンプトから保守的な表現を外し、下流でフィルタリング</li>
 </ul>
+<h2>運用コスト最適化（@zodchiii セットアップガイド, 2026-05-29）</h2>
+<h3>Effort Control</h3>
+<p>Opus 4.8のデフォルトはHigh effort。Claude CodeとClaude.aiの両方でLow/High/Maxを切り替え可能。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-30: Effort ControlがOpus 4.8で最もコスト削減効果の高い新機能。プロンプトの60%をLow、10%のみMaxに振り分けることで月額コストを半減できるとの主張（@zodchiii）</li>
+<li>2026-05-30: Fast mode は通常の2.5倍速・約3倍安価。コードレビュー・定型コード生成・繰り返し処理に適する</li>
+<li>2026-05-30: <a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> は1セッションで最大1,000サブエージェントを並列実行可能。ただし100エージェント規模で$50〜$200のコストがかかるため予算上限設定が必須</li>
+<li>2026-05-30: Opus 4.8の正直性改善：自己コードの欠陥を未報告のまま放置する確率が旧世代比4倍低下、欠陥ある結果を無批判に報告する率は0%（スコア）</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-30: Anthropicが公式に示したOpus 4.8の3機能：Effort Control、Fast Mode（2.5x速度）、Dynamic Workflows（最大1,000並列エージェント）</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
 </ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060042702150930686" rel="noopener" target="_blank">https://x.com/i/web/status/2060042702150930686</a></li>
 <li><a href="https://x.com/i/web/status/2060153411627257928" rel="noopener" target="_blank">https://x.com/i/web/status/2060153411627257928</a></li>
-<li><a href="https://www.coderabbit.ai/ja/blog/opus-4-8-release" rel="noopener" target="_blank">https://www.coderabbit.ai/ja/blog/opus-4-8-release</a></li></ul></section></article>
+<li><a href="https://www.coderabbit.ai/ja/blog/opus-4-8-release" rel="noopener" target="_blank">https://www.coderabbit.ai/ja/blog/opus-4-8-release</a></li>
+<li><a href="https://x.com/i/web/status/2060293472091771114" rel="noopener" target="_blank">https://x.com/i/web/status/2060293472091771114</a></li></ul></section></article>
 </main>
 </body>
 </html>
