@@ -21,7 +21,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>multi-agent-patterns</h1>
-  <div class="meta">concepts/multi-agent-patterns · concepts · updated 2026-05-19</div>
+  <div class="meta">concepts/multi-agent-patterns · concepts · updated 2026-05-30</div>
   <article><h1>Multi-Agent Patterns</h1>
 <p>複数のAIエージェントが協調してタスクを処理するアーキテクチャパターン。単一エージェントの限界を超え、<strong>専門化</strong>と<strong>並列実行</strong>によって複雑タスクを高速・高品質に処理する。</p>
 <h2>なぜマルチエージェントか</h2>
@@ -185,9 +185,27 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a> — Hooks + Agent SDK を使った asyncRewake 非同期パターン実装例</li>
 <li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — Claude Code Dynamic Workflows（Research Preview）</li>
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — AIにGUIではなくDSLを操作させる中間記法パターン</li>
+<li><a href="../concepts/llm-council.html">llm-council</a> — 5人のアドバイザーが匿名ピアレビューで意思決定を支援するパターン</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-03-15 (@akshay_pachaar): <strong>サブエージェントとエージェントチームの本質的な違い</strong>:</li>
+<li><strong>サブエージェント（fire-and-forget）</strong>: 独立コンテキストで短命動作。完了結果のみ親に返す。エージェント間通信なし。目的は「コンテキスト圧縮（膨大な探索を信号に凝縮）」</li>
+<li><strong>エージェントチーム（ongoing coordination）</strong>: 長期稼働・ピアツーピア直接通信・共有タスクリスト（<code>blockedBy</code> フィールドで依存管理）。リードが常に介在しなくてよい</li>
+<li>2026-03-15: <strong>コンテキスト中心分解（Context-centric decomposition）</strong>: タスクを役割ではなく「コンテキスト境界」で分割する。2つのサブタスクが深く重複するコンテキストを必要とするなら同一エージェントへ。コーディングエージェントが機能実装とテストを両方担当すべき理由もこれ（ハンドオフでコンテキストが劣化するコスト &gt; 並列化の利益）</li>
+<li>2026-03-15: <strong>5つの古典的オーケストレーションパターン</strong>（Anthropic公式5パターンとは別の分類）:</li>
+<li><strong>Prompt Chaining</strong>: 前ステップ出力を次ステップが処理する順次型。順序と依存がある場合</li>
+<li><strong>Routing</strong>: 分類器がタスクを専門ハンドラーへ振り分け。難易度でモデル選択しコストを制御</li>
+<li><strong>Parallelization</strong>: 独立サブタスクの同時実行（同一タスク複数実行→投票、または異なるサブタスクの並列）</li>
+<li><strong>Orchestrator-Worker</strong>: 中央エージェントが分解→ワーカーへ委任→統合。本番の最多構成</li>
+<li><strong>Evaluator-Optimizer</strong>: 生成と評価のループ。品質重視・1パスでは信頼できない場合</li>
+<li>2026-03-15: コーディングでの特別な注意: 並列エージェントが同時にコードを書くと互いに矛盾する暗黙の前提を持ち込む。コーディング用サブエージェントは調査・探索に留め、コードの同時執筆はしない</li>
+<li>2026-03-15: <strong>マルチエージェントを使うべき3条件のみ</strong>: コンテキスト保護（サブタスク情報が親に不要）・真の並列化（独立した調査）・専門化（矛盾するシステムプロンプトが必要 or ツール過多でパフォーマンス劣化）</li>
+<li>2026-03-15: <strong>3つの典型失敗パターン</strong>: ①曖昧なタスク記述→複数エージェントが重複作業（明確な目標・出力フォーマット・スコープが必須）, ②検証エージェントが実際に検証せず完了宣言（明示的かつ具体的な検証基準が必須）, ③トークンコストの指数的増大（モデル階層化とバジェット制御が必要）</li>
 </ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">https://x.com/i/web/status/2055215784092401966</a></li>
 <li><a href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener" target="_blank">https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/</a></li>
-<li><a href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">https://x.com/i/web/status/2055941714561613896</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">https://x.com/i/web/status/2055941714561613896</a></li>
+<li><a href="https://x.com/i/web/status/2033167408463069526" rel="noopener" target="_blank">https://x.com/i/web/status/2033167408463069526</a></li></ul></section></article>
 </main>
 </body>
 </html>

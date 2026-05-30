@@ -33,6 +33,30 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>Weekly Insights Engine</strong>: 最近のブックマーク、既存wiki、孤立ページ、ホットクラスタを横断して、短い示唆・問い・次アクションを定期生成する。</li>
 <li><strong>知識品質の編集レイヤー</strong>: wikiページを単なる要約から「観察、関係、反証、次に試すこと」まで含む知識単位に引き上げる。</li>
 </ol>
+<h2>Opus 4.6案の評価と統合方針</h2>
+<p><code>wiki/outputs/2026-05-26-wiki-ux-improvement.md</code> は採用価値が高い。特に、こちらの5/30案がプロダクト設計・PKMループを中心に捉えたのに対し、Opus 4.6案は実装箇所と工数順が具体的だった。</p>
+<h3>採用すべき点</h3>
+<p>| 項目 | 評価 | 統合方針 |
+|---|
+orphan: true
+---|---|
+| <code>@media(max-width:760px)</code> が実質3規則のみという指摘 | 妥当 | モバイル改善の根拠として採用 |
+| <code>cy.on('mouseover')</code> がタッチデバイスで効かない | 重要 | グラフUX修正に追加 |
+| <code>#kgraph</code> 固定高さ・9pxラベル・100+ノード問題 | 重要 | モバイルでは折りたたみ/簡易表示を優先 |
+| Cytoscape同期ロード | 妥当 | ただしPhase 1ではなくバックログ寄り |
+| グラフヒント1行変更 | 高ROI | Phase 1 quick fixへ格上げ |
+| Stats Rowに「今週追加」を出す | 高ROI | ダッシュボード価値訴求として採用 |
+| Related Pages / 鮮度インジケーター | 高 | WikiページUX改善へ追加 |
+| Orphan Pages → Unconnected Seeds | 高 | すぐ実装する表現改善として採用 |
+| PKM 5軸スコア | 方向性は妥当 | 数値は仮説扱い。定性評価として採用 |</p>
+<h3>修正すべき点</h3>
+<ul>
+<li>Opus 4.6案は「今日2hでダッシュボード仮置き」まで踏み込んでいるが、現時点では実装前の提案統合フェーズなので、まずは優先度の再整理として扱う。</li>
+<li><code>gen_weekly_insights.py</code> を来週以降に置いている点は保守的で妥当。ただし手動Weeklyの反応が良ければ今週中に最小スクリプト化してよい。</li>
+<li>Cytoscape遅延ロードは性能面では正しいが、最初に価値を変える施策ではない。モバイル折りたたみ後に必要性を再評価する。</li>
+</ul>
+<h3>統合後の判断</h3>
+<p>最重要は変わらず <strong>Weekly Insightsの静的プロトタイプ</strong>。ただし、並行して5〜30分でできるUI文言・CSS quick fixを先に入れるのがよい。理由は、Weekly Insightsを置いてもモバイルで読めなければ価値検証が濁るため。</p>
 <h2>実態観察</h2>
 <h3>現在の構成</h3>
 <ul>
@@ -200,6 +224,15 @@ BJ FoggのCue→Routine→Reward、Zettelkastenの接続原則、Karpathy式LLM 
 <h2>改善提案</h2>
 <h3>1. モバイル対応: ダッシュボードを「探索画面」から「二層UI」にする</h3>
 <p>現在の <code>gen_dashboard.py</code> は <code>@media(max-width:760px)</code> を持つが、実質的には <code>bottom-grid</code> を1列にする程度。Knowledge Graph、Recent Activity、Ranking、Categories、Most Referenced、Orphans が同列に近く、iphoneでは情報密度が高すぎる。</p>
+<p>Opus 4.6案のコード観察により、追加で以下が問題として確度高く見えている。</p>
+<ul>
+<li><code>#kgraph{height:356px}</code> 固定で、スマホの縦画面ではグラフが画面を占有しすぎる</li>
+<li>Cytoscapeノードの <code>font-size:9</code> はスマホで読みにくい</li>
+<li><code>cy.on('mouseover')</code> ベースのツールチップはタッチ端末で機能しない</li>
+<li><code>cy.on('tap','node',...)</code> によるページ遷移は実装済みだが、「クリック/タップで開く」ヒントがない</li>
+<li>ランキング行 <code>grid-template-columns:28px 1fr auto</code> は320px端末で詰まりやすい</li>
+<li>タッチターゲットが44px基準を下回る箇所がある</li>
+</ul>
 <p><strong>提案する表示順:</strong></p>
 <ol>
 <li>Weekly Insight / 今週の問い</li>
@@ -219,6 +252,9 @@ BJ FoggのCue→Routine→Reward、Zettelkastenの接続原則、Karpathy式LLM 
 <li><code>.ranking-item</code> は3カラムから <code>rank + body</code> の2カラムにし、bookmark数は本文下へ</li>
 <li>長いページIDは <code>overflow-wrap:anywhere</code> を使い、単一行省略だけに頼らない</li>
 <li>タップ対象は最低44px相当の高さ</li>
+<li>グラフヒントを「ホバーで繋がりを確認」から「タップでページを開く。PCではホバーで関連表示」へ変更</li>
+<li>モバイルではCytoscapeを初期非表示にし、「Knowledge Graphを開く」ボタンで展開</li>
+<li>Cytoscape遅延ロードは、折りたたみ実装後も初期表示が重い場合に実施</li>
 </ul>
 <h3>2. Wikiページ: 読む順番を設計する</h3>
 <p>個別ページはMarkdown本文をそのままHTML化しており、PCでは悪くないが、スマホでは「何を読めばいいか」の足場が少ない。</p>
@@ -229,6 +265,7 @@ BJ FoggのCue→Routine→Reward、Zettelkastenの接続原則、Karpathy式LLM 
 <li>Related pages</li>
 <li>Sources</li>
 <li>Last updated / confidence</li>
+<li>鮮度インジケーター（例: updated 90+ days ago）</li>
 <li>Next question</li>
 </ul>
 <p><strong>ページテンプレート案:</strong></p>
@@ -316,6 +353,15 @@ sugeta-sanの反復作業で、GUI操作ではなくDSL/skill/subagentに落と�
 <li><strong>Recent Additions</strong>: 新着5件</li>
 <li><strong>Knowledge Health</strong>: Orphansやリンク数は下部に移動</li>
 </ol>
+<p><strong>Stats Rowの変更:</strong></p>
+<p>現在の <code>pages / categories / links / orphans</code> は管理指標としては有用だが、「今週何が増えたか」が見えない。<code>wiki/log.jsonl</code> から直近7日のcreate/update数を集計し、次のように変える。</p>
+<ul>
+<li>total pages</li>
+<li>this week additions</li>
+<li>links</li>
+<li>unconnected seeds</li>
+<li>updated date</li>
+</ul>
 <h3>6. 孤立ページを「欠陥」ではなく「未接続の種」として扱う</h3>
 <p><code>orphan_pages</code> は現在警告に近い表現。だが個人wikiでは孤立ページは「まだ接続されていない新しい関心」の可能性がある。</p>
 <p><strong>改善案:</strong></p>
@@ -340,30 +386,45 @@ sugeta-sanの反復作業で、GUI操作ではなくDSL/skill/subagentに落と�
 <li>orphan connected</li>
 <li>query led to wiki update</li>
 </ul>
-<h2>実装優先度</h2>
-<h3>Phase 1: 1日でできる</h3>
+<h2>実装優先度（Opus 4.6案を統合後）</h2>
+<h3>Phase 0: 今日、30分〜2時間</h3>
+<p>目的は「価値検証を始められる状態」にすること。自動化より先に、目に見える再訪理由を作る。</p>
 <ul>
-<li>ダッシュボードCSSのモバイル修正</li>
-<li>Knowledge Graphをモバイルで折りたたみ</li>
+<li><code>Orphan Pages</code> → <code>Unconnected Seeds</code> にラベル変更</li>
+<li>グラフヒントを「タップでページを開く」込みの文言に変更</li>
+<li>タッチターゲット/ランキング行の最低限CSS修正</li>
+<li>今週分の <code>Weekly Insights</code> 静的サンプルを1本作る</li>
+<li>ダッシュボード最上部に仮置きする</li>
+</ul>
+<h3>Phase 1: 今日〜明日、3時間程度</h3>
+<ul>
+<li>モバイルでKnowledge Graphをデフォルト折りたたみ</li>
 <li>Recent Activityを5件優先表示</li>
 <li>個別ページに <code>overflow-wrap:anywhere</code> とレスポンシブ余白を追加</li>
-<li><code>weekly-insights</code> の静的サンプルを1件生成</li>
+<li>Stats Rowに「今週追加」を追加</li>
+<li><code>cy.on('tap')</code> の導線が分かるように文言を調整</li>
 </ul>
-<h3>Phase 2: 2〜3日</h3>
+<h3>Phase 2: 今週中、2〜5日</h3>
 <ul>
-<li><code>gen_weekly_insights.py</code> 実装</li>
-<li><code>wiki/weekly/</code> と <code>public-site/weekly/</code> 生成</li>
-<li>Slack通知用テキスト生成</li>
-<li>Hot clustersをログとリンクグラフから生成</li>
+<li><code>wiki/weekly/</code> と <code>public-site/weekly/</code> の出力形式を決める</li>
+<li>手動Weeklyの型を固定し、Slack通知用テキストを同じ内容から作る</li>
+<li>公開サイトにRelated Pagesセクションを自動生成</li>
+<li>鮮度インジケーターを個別ページに追加</li>
+<li>Hot clustersをログとリンクグラフから生成する試作</li>
 <li>Orphan pagesの接続候補生成</li>
+<li>Wikiページテンプレート改善をingestルールに追加</li>
 </ul>
-<h3>Phase 3: 1〜2週間</h3>
+<h3>Phase 3: 来週以降</h3>
 <ul>
+<li><code>scripts/gen_weekly_insights.py</code> 実装</li>
+<li><code>wiki/weekly/YYYY-WW.md</code> と <code>public-site/weekly/YYYY-WW.html</code> を生成</li>
+<li>Slack通知の自動化</li>
 <li>通知のフィードバックループ</li>
 <li>LINE連携</li>
 <li>クリック/閲覧ログ</li>
 <li>query結果からweekly insightへ反映</li>
-<li>ページ品質テンプレートのingest統合</li>
+<li>Cytoscape遅延ロード</li>
+<li>Cmd+K検索（200ページ到達後で十分）</li>
 </ul>
 <h2>セルフレビュー</h2>
 <h3>妥当な点</h3>
@@ -380,6 +441,7 @@ sugeta-sanの反復作業で、GUI操作ではなくDSL/skill/subagentに落と�
 <li>LINE連携は実装コストや認証まわりがSlackより重い可能性がある。MVPはSlackまたはHTML公開ページで十分。</li>
 <li>クリック計測は個人用途では過剰かもしれない。最初は生成物の質を手動で見ればよい。</li>
 <li>モバイル対応はCSSだけで応急処置できるが、本質的には情報優先度の再設計が必要。</li>
+<li>Opus 4.6案の実装指摘は有用だが、quick fixを積み上げるだけでは「知識が戻ってこない」問題は解けない。必ずWeekly Insightsとセットで進める必要がある。</li>
 </ul>
 <h3>反対意見への回答</h3>
 <p><strong>反対:</strong> 「自分でクエリすればよいので通知はいらない」<br>

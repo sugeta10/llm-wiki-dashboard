@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-26-wiki-ux-improvement - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-05-26-wiki-ux-improvement</h1>
+  <div class="meta">outputs/2026-05-26-wiki-ux-improvement · other · updated </div>
+  <article><h1>LLM Wiki UX改善提案（統合版）</h1>
+<p>作成日: 2026-05-26<br>
+更新日: 2026-05-30（GPT-5.5出力との統合反映）<br>
+対象: <code>/Users/sugeta/environment/obsidian-vault</code> の外部公開システム、ダッシュボード、wikiページ、ブックマーク活用ワークフロー</p>
+<hr>
+<h2>結論</h2>
+<p>このwikiの問題は「モバイルで崩れるUI」だけではない。より大きい問題は、知識が <code>ingest</code> されたあと、ユーザーが明示的にクエリするまで価値が発火しないことにある。</p>
+<p><strong>改善の優先順位:</strong></p>
+<ol>
+<li><strong>今日</strong>: Weekly Insightsを手動で1本書いてダッシュボードに置く（2h） + Orphan Pagesラベル変更（5min）</li>
+<li><strong>今日〜明日</strong>: グラフヒント1行変更・タッチターゲットCSS修正</li>
+<li><strong>今週</strong>: ダッシュボード v2 + Wikiページ構造改善 + Weekly Digest自動化</li>
+<li><strong>来週以降</strong>: gen_weekly_insights.py 実装
+orphan: true</li>
+</ol>
+<hr>
+<h2>実態観察</h2>
+<h3>量的状況</h3>
+<ul>
+<li>wikiページ数: 106（日次 3〜5ページ追加中）</li>
+<li>カテゴリ分布: concepts 43、tools 41、business 8、models 4、design 3、people 3、companies 3、papers 1</li>
+<li>直近のingest (2026-05-25〜30):</li>
+<li><code>wiki/models/claude-opus-4-8.md</code></li>
+<li><code>wiki/concepts/claude-code-dynamic-workflows.md</code></li>
+<li><code>wiki/concepts/intermediate-notation-pattern.md</code></li>
+<li><code>wiki/tools/openai-mcp-tunnel.md</code></li>
+<li><code>wiki/concepts/ai-quality-amplification.md</code></li>
+<li><code>wiki/tools/skill-cleaner.md</code></li>
+<li><code>wiki/business/saas-inside-ai-agents.md</code></li>
+</ul>
+<h3>今週のホットクラスタ（log.jsonl実データより）</h3>
+<table>
+<thead>
+<tr>
+<th>クラスタ</th>
+<th>ページ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>エージェント実行環境の高度化</td>
+<td>claude-opus-4-8, claude-code-dynamic-workflows, crabbox</td>
+</tr>
+<tr>
+<td>エンタープライズ接続 &amp; セキュリティ</td>
+<td>openai-mcp-tunnel, claude-code-security</td>
+</tr>
+<tr>
+<td>AI時代の開発品質と設計思想</td>
+<td>ai-quality-amplification, intermediate-notation-pattern, behavioral-specification, skill-cleaner</td>
+</tr>
+<tr>
+<td>AIが主作業環境になる流れ</td>
+<td>saas-inside-ai-agents, claude-code-hooks-async</td>
+</tr>
+</tbody>
+</table>
+<p><strong>今週のテーマ文（GPT-5.5生成）:</strong></p>
+<blockquote>
+<p>「AIエージェントは、SaaSの外側ではなく作業環境そのものになりつつある。」</p>
+</blockquote>
+<hr>
+<h2>問題の構造</h2>
+<pre><code>入力: ブックマークとURLは増える
+  ↓
+ingest: wikiページ化される（自動・高品質）
+  ↓
+現在: ダッシュボードに更新履歴として並ぶ
+  ↓
+問題: ユーザーの生活・学習・意思決定に戻ってこない ← Cueが存在しない
+  ↓
+結果: 高品質な知識資産なのに、検索されるまで眠る
+</code></pre>
+<hr>
+<h2>PKM 5軸評価</h2>
+<table>
+<thead>
+<tr>
+<th>軸</th>
+<th>スコア</th>
+<th>判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>キャプチャ → 使用の比率</td>
+<td>15/100</td>
+<td><strong>要緊急対処</strong></td>
+</tr>
+<tr>
+<td>習慣ループの設計（Cue欠如）</td>
+<td>10/100</td>
+<td><strong>最重要課題</strong></td>
+</tr>
+<tr>
+<td>知識グラフ vs アーカイブ</td>
+<td>55/100</td>
+<td>部分的に実装済み</td>
+</tr>
+<tr>
+<td>90日後のシナリオ</td>
+<td>25/100</td>
+<td>失速濃厚</td>
+</tr>
+<tr>
+<td>メンテナンスの認知負荷</td>
+<td>72/100</td>
+<td>自動化が優秀</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>3つの専門ペルソナ</h2>
+<h3>Yuki Tanaka（Mobile Product Designer, ex-Mercari/DeNA）</h3>
+<p>コードを実際に読んで特定した問題:</p>
+<ul>
+<li><code>@media(max-width:760px)</code> の規則が3行のみ（bottom-grid/stats-row/dash-urlのみ対応）</li>
+<li><code>#kgraph{height:356px}</code> 固定高さ + 9pxフォント + 100+ノード → モバイルで操作不能</li>
+<li><code>cy.on('mouseover')</code> はタッチデバイスで発火しない</li>
+<li><code>cdn.jsdelivr.net/npm/cytoscape@3.31.2</code> を <code>&amp;lt;head&gt;</code> で同期ロード（500KB+）</li>
+<li>ランキング行 <code>grid-template-columns:28px 1fr auto</code> が320px端末で崩れるリスク</li>
+<li>タッチターゲットが44px最小基準を下回る</li>
+</ul>
+<h3>Rin Kobayashi（Growth &amp; PKM Designer、BJ Fogg Behavior Design修了）</h3>
+<p>習慣ループの診断:</p>
+<ul>
+<li><strong>Cue（引き金）</strong>: 完全欠如。<code>slack_notify.sh</code> はingest完了通知のみで「読む」行動のCueではない</li>
+<li><strong>Routine（行動）</strong>: 偶発的Queryのみ。能動的なレビュー・発見ルーティンなし</li>
+<li><strong>Reward（報酬）</strong>: 遅延かつ不確実。即時報酬がない</li>
+</ul>
+<h3>Kenji Mori（Information Architect, ex-Yahoo Japan R&amp;D）</h3>
+<p>ダッシュボードの問題:</p>
+<ul>
+<li>グラフのタップナビゲーションが発見不能（<code>cy.on('tap','node',...)</code> は実装済みだがヒントなし）</li>
+<li>Stats Rowに週次シグナルがない（「今週追加: N pages」が見えない）</li>
+<li>カテゴリ分布が静的（成長率なし）</li>
+</ul>
+<p>Wikiページの問題:</p>
+<ul>
+<li>Related Pages セクションがない → 回遊が起きない</li>
+<li>鮮度シグナルが弱い（「90日前」という相対表示なし）</li>
+<li>ページ読了後の次アクション誘導なし</li>
+</ul>
+<hr>
+<h2>GPT-5.5 との比較統合</h2>
+<p>同一プロンプトをGPT-5.5に投げた結果と照合した。</p>
+<h3>Claudeの分析が先行していた点</h3>
+<ul>
+<li>コードを実際に読んで問題を特定（<code>cy.on('mouseover')</code> 非対応、3行メディアクエリ等）</li>
+<li><code>public_dashboard_html()</code> が既にActivityをリンク化済みと確認（GPT-5.5は見落とし）</li>
+<li>P3-A（グラフヒント1行変更）という最高ROI quick fixの特定</li>
+<li>PKM 5軸の定量スコアリング</li>
+<li>各施策の具体的工数見積もり</li>
+</ul>
+<h3>GPT-5.5が追加した視点（全採用）</h3>
+<table>
+<thead>
+<tr>
+<th>視点</th>
+<th>提案内容</th>
+<th>採用方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phase 0「静的プロトタイプ先行」</td>
+<td>自動化前に手動で1本作り形式を検証</td>
+<td>ロードマップのPhase 0として追加</td>
+</tr>
+<tr>
+<td>Knowledge Quality Auditor</td>
+<td>ページ品質テンプレート（TL;DR + 問い + 未検証）</td>
+<td>P3-Gとして追加</td>
+</tr>
+<tr>
+<td>Orphan → Unconnected Seeds</td>
+<td>欠陥ではなく「未接続の種」リフレーム</td>
+<td>P4-Aとして追加</td>
+</tr>
+<tr>
+<td>North Star Metric</td>
+<td>「週1回、過去知識が行動に接続された回数」</td>
+<td>P4-Bとして追加</td>
+</tr>
+<tr>
+<td>Weekly Insightsの型</td>
+<td>中心テーマ+根拠+問い+アクションのフォーマット</td>
+<td>P2-Aの実装仕様に採用</td>
+</tr>
+<tr>
+<td>ホットクラスタの特定</td>
+<td>実データから今週のテーマを抽出</td>
+<td>週次生成スクリプトの仕様に採用</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>改善提案 15施策</h2>
+<h3>Problem 1: モバイル体験</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>提案</th>
+<th>コスト</th>
+<th>インパクト</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1-A</td>
+<td>タッチターゲット44px統一 + ランキング行グリッド修正</td>
+<td>低（1h）</td>
+<td>高</td>
+</tr>
+<tr>
+<td>P1-B</td>
+<td>モバイルでグラフ折りたたみ（デフォルト閉、展開ボタン付き）</td>
+<td>低（2h）</td>
+<td>高</td>
+</tr>
+<tr>
+<td>P1-C</td>
+<td>モバイルでセクション並び替え（CSS order）</td>
+<td>低（1h）</td>
+<td>中</td>
+</tr>
+<tr>
+<td>P1-D</td>
+<td>Cytoscape遅延ロード（P1-Bと統合）</td>
+<td>中（2h）</td>
+<td>中</td>
+</tr>
+</tbody>
+</table>
+<h3>Problem 2: 知識の死蔵</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>提案</th>
+<th>コスト</th>
+<th>インパクト</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P2-A</td>
+<td>Weekly Insights（Phase 0: 手動、Phase 2: 自動化）</td>
+<td>中（2h+4h）</td>
+<td><strong>最高</strong></td>
+</tr>
+<tr>
+<td>P2-B</td>
+<td>ダッシュボードに「今週のピックアップ」（Serendipityエンジン）</td>
+<td>低（3h）</td>
+<td>高</td>
+</tr>
+<tr>
+<td>P2-C</td>
+<td>gen_weekly_insights.py 実装（wiki/weekly/ + public-site/weekly/）</td>
+<td>中（6h）</td>
+<td>高</td>
+</tr>
+<tr>
+<td>P2-D</td>
+<td>Ingest時に関連ページ自動付与（P3-Eと統合）</td>
+<td>中</td>
+<td>中</td>
+</tr>
+</tbody>
+</table>
+<h3>Problem 3: ダッシュボード &amp; WikiページUX</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>提案</th>
+<th>コスト</th>
+<th>インパクト</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P3-A</td>
+<td>グラフに「クリックで開く」ヒント追加（1行変更）</td>
+<td>低（30min）</td>
+<td>中</td>
+</tr>
+<tr>
+<td>P3-B</td>
+<td>Stats Rowに週次追加数を追加（Python 10行）</td>
+<td>低（1h）</td>
+<td>高</td>
+</tr>
+<tr>
+<td>P3-E</td>
+<td>公開サイトにRelated Pagesセクション自動生成</td>
+<td>低（3h）</td>
+<td>高</td>
+</tr>
+<tr>
+<td>P3-F</td>
+<td>鮮度インジケーター（相対日付 + 古いページ警告）</td>
+<td>低（2h）</td>
+<td>中</td>
+</tr>
+<tr>
+<td>P3-G</td>
+<td>Wikiページテンプレート改善（TL;DR + 問い + 観察 + 未検証）</td>
+<td>中（4h）</td>
+<td>高</td>
+</tr>
+<tr>
+<td>P3-C</td>
+<td>In-browser検索 Cmd+K</td>
+<td>中（4h）</td>
+<td>中（200p到達後）</td>
+</tr>
+</tbody>
+</table>
+<h3>GPT-5.5統合追加施策</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>提案</th>
+<th>コスト</th>
+<th>インパクト</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P4-A</td>
+<td>"Orphan Pages" → "Unconnected Seeds" ラベル変更（1行）</td>
+<td>低（5min）</td>
+<td>中</td>
+</tr>
+<tr>
+<td>P4-B</td>
+<td>North Star Metric の定義（週次check-inから開始）</td>
+<td>低（30min）</td>
+<td>高</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Weekly Insights フォーマット（採用型）</h2>
+<pre><code class="language-markdown"># Weekly Insights: YYYY-W##
+
+## 今週の中心テーマ
+（1文で表現）
+
+## なぜそう見えるか（根拠ページ）
+- wiki/page1, wiki/page2, wiki/page3
+
+## 既存wikiとの接続
+- xxx
+- yyy
+
+## sugeta-sanへの問い
+（内省・判断・行動につながる1問）
+
+## 今週の小アクション
+（5分以内でできる具体的な1行動）
+
+## さらに読むべきページ
+- xxx / yyy / zzz
+</code></pre>
+<hr>
+<h2>成功指標</h2>
+<h3>North Star Metric</h3>
+<blockquote>
+<p><strong>「週に1回以上、過去のwiki知識が新しい問い・判断・行動に接続された回数」</strong></p>
+</blockquote>
+<p>現状の pages / links カウントはサロゲートメトリクスに過ぎない。</p>
+<h3>計測イベント（手動check-inから開始）</h3>
+<ul>
+<li>weekly insight generated</li>
+<li>weekly insight opened</li>
+<li>related page clicked</li>
+<li>action accepted / dismissed</li>
+<li>source revived after 14d+</li>
+<li>orphan connected</li>
+<li>query led to wiki update</li>
+</ul>
+<hr>
+<h2>ロードマップ（統合版）</h2>
+<h3>Phase 0 — 今日（〜2h）</h3>
+<blockquote>
+<p>GPT-5.5 の「静的プロトタイプ先行」を採用。自動化の前に価値を手動で検証する。</p>
+</blockquote>
+<ul>
+<li><strong>P2-A (手動)</strong>: 今週分のWeekly Insightsを手動で1本作成し、ダッシュボード最上部に仮置き</li>
+<li><strong>P4-A</strong>: "Orphan Pages" → "Unconnected Seeds" ラベル変更（gen_dashboard.py 1行）</li>
+</ul>
+<h3>Phase 1 — 今日〜明日（〜3h）</h3>
+<ul>
+<li><strong>P3-A</strong>: グラフに「クリックで開く」ヒント（1行変更）</li>
+<li><strong>P1-A</strong>: タッチターゲット44px統一（CSS変更）</li>
+<li><strong>P3-B</strong>: Stats Rowに週次追加数（Python 10行）</li>
+</ul>
+<h3>Phase 2 — 今週中（2〜5日）</h3>
+<ul>
+<li><strong>P2-A (自動化)</strong>: Phase 0で形式確認後、launchd + claude -p で自動化</li>
+<li><strong>P1-B</strong>: モバイルでグラフ折りたたみ</li>
+<li><strong>P2-B</strong>: ダッシュボードに「今週のピックアップ」セクション</li>
+<li><strong>P3-E</strong>: 公開サイトにRelated Pages自動生成</li>
+<li><strong>P3-F</strong>: 鮮度インジケーター</li>
+<li><strong>P3-G</strong>: Wikiページテンプレート改善</li>
+<li><strong>P4-B</strong>: North Star Metric の定義</li>
+</ul>
+<h3>Phase 3 — 来週以降</h3>
+<ul>
+<li><strong>P2-C</strong>: gen_weekly_insights.py 実装（wiki/weekly/ + public-site/weekly/）</li>
+<li><strong>P1-C</strong>: モバイルセクション並び替え</li>
+</ul>
+<h3>バックログ（200ページ到達時）</h3>
+<ul>
+<li>P3-C: In-browser検索（Cmd+K）</li>
+<li>P1-D: Cytoscape遅延ロード</li>
+</ul>
+<hr>
+<h2>現状すでに実装されているもの（評価）</h2>
+<table>
+<thead>
+<tr>
+<th>状態</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✅ 済</td>
+<td><code>public_dashboard_html()</code> がActivityをリンク化済み</td>
+</tr>
+<tr>
+<td>✅ 済</td>
+<td><code>cy.on('tap','node',...)</code> でノードクリック遷移実装済み（但し発見不能）</td>
+</tr>
+<tr>
+<td>✅ 済</td>
+<td>viewport meta タグが正しく設定されている</td>
+</tr>
+<tr>
+<td>✅ 済</td>
+<td>孤立ページの自動検出・ダッシュボード表示</td>
+</tr>
+<tr>
+<td>✅ 済</td>
+<td>XSS対策（DOM API構築・html.escape）</td>
+</tr>
+<tr>
+<td>✅ 済</td>
+<td>Sources セクションがwikiページ下部に表示</td>
+</tr>
+<tr>
+<td>✅ 済</td>
+<td>slack_notify.sh が存在し通知基盤が整っている</td>
+</tr>
+<tr>
+<td>✅ 済</td>
+<td>launchd による自動ingestが稼働中</td>
+</tr>
+<tr>
+<td>△ 不足</td>
+<td><code>@media(max-width:760px)</code> は3規則のみ</td>
+</tr>
+<tr>
+<td>△ 不足</td>
+<td>タグ情報はfrontmatterに存在するが公開サイトで未活用</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>前提仮定（検証が必要）</h2>
+<ol>
+<li>sugeta-san が Slack を毎週月曜朝に確認する習慣があること（なければ LINE か別チャネルを検討）</li>
+<li>モバイルアクセスが実際に行われていること（ログにアクセス解析がないため推定）</li>
+<li>公開サイトに外部訪問者がいること（Weekly Insights 公開ページの価値前提）</li>
+</ol>
+<hr>
+<h2>参照</h2>
+<ul>
+<li>HTML版（図解あり）: <code>wiki/outputs/2026-05-26-wiki-ux-improvement.html</code></li>
+<li>GPT-5.5版: <code>wiki/outputs/2026-05-30-wiki-public-ux-insights-proposal.md</code></li>
+</ul></article>
+</main>
+</body>
+</html>

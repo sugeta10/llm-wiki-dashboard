@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>llm-council - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>llm-council</h1>
+  <div class="meta">concepts/llm-council · concepts · updated 2026-05-30</div>
+  <article><h1>LLM Council</h1>
+<p>複数のAIアドバイザーが異なる思考スタイルで同じ質問を分析し、匿名ピアレビューを経て意思決定を支援するパターン。単一AIへの質問では「同意バイアス」（質問の枠組みによって真逆の答えが返る問題）が発生する。それを構造的に解消する手法。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-03-30 (@itsolelehmann): <a href="../people/andrej-karpathy.html">andrej-karpathy</a> が考案した <strong>LLM Council</strong> の原型: GPT・Claude・Gemini等の複数モデルを同じ質問にポーリング → 匿名で相互レビュー → 議長モデルが最終統合。@itsolelehmann がこれを Claude 内部の5サブエージェントに置き換えて「council this」スキルとして実装</li>
+<li>2026-03-30: <strong>5つのアドバイザー役割</strong>（思考スタイルの分担）:</li>
+<li><strong>The Contrarian</strong>: 失敗ポイントを探す。アイデアに致命的欠陥があると仮定して掘り下げる（「いい感じだけど…」のギャップを検出）</li>
+<li><strong>The First Principles Thinker</strong>: 「本当に解くべき問いは何か」に立ち返り、前提を剥がして問題を再構築する（「間違った変数を最適化している」問題を検出）</li>
+<li><strong>The Expansionist</strong>: 見逃している上振れを発見する。「もっと大きく考えられないか」「隣の機会は何か」</li>
+<li><strong>The Outsider</strong>: ゼロコンテキストで判断。「知識の呪い」（自分には自明だが顧客に見えないもの）を検出する</li>
+<li><strong>The Executor</strong>: 月曜朝に何をするかだけを考える。実行パスのない計画を即却下する</li>
+<li>2026-03-30: <strong>匿名ピアレビューのメカニズム</strong>: 5人の回答後、ラベルをシャッフルして誰がどの回答かを伏せた上でレビュー。各レビュアーが3つの質問に答える: ①最も強い回答とその理由、②最大の盲点はどれか、③<strong>5人全員が見落としたものは何か</strong>（3番目が最も重要）。「5つの視点を並べたときにそのギャップが誰も言及しなかった問題を浮かび上がらせる」</li>
+<li>2026-03-30: 実際の適用例（コース形式の選択）: 自己ペースコースという「当たり前の答え」に対し — First Principles Thinker が AIツールの鮮度問題（数週間で陳腐化）を提示、Contrarian が完了率3〜5%問題を提示、Executor がタイムライン差（8〜12週 vs 2〜3週）を提示、Expansionist が「ライブ＋録画の両方提供」案を発見。最終決定: ライブワークショップ（180名参加・4.8/5点）</li>
+<li>2026-03-30: 適切なユースケース: コンテンツ・ポジショニング戦略、採用・オペレーション判断（VA雇用 vs 自動化）、価格設定、長期間行き来している二択。「すでに答えを知っていて承認が欲しいだけなら使わない」—— Councilは望まない答えを返すことがある、それが目的</li>
+</ul>
+<h2>検証済み事実</h2>
+<p>（現時点で当事者発の一次情報なし）</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a> — LLM Council 原型アイデアの考案者</li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a> — Council 実装基盤（並列サブエージェント）</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — より広いマルチエージェント設計パターン（Orchestrator-Worker等）</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — Claude Code スキルとして実装可能な形式</li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2038661433626333649" rel="noopener" target="_blank">https://x.com/i/web/status/2038661433626333649</a></li></ul></section></article>
+</main>
+</body>
+</html>
