@@ -15,13 +15,15 @@ h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 .sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 </style>
 </head>
 <body>
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>2026-peng-llm-memory-faulty</h1>
-  <div class="meta">papers/2026-peng-llm-memory-faulty · papers · updated 2026-05-22</div>
+  <div class="meta">papers/2026-peng-llm-memory-faulty · papers · <span title="2026-05-22">1週間前</span></div>
   <article><h1>LLMメモリの継続更新による劣化</h1>
 <p>Hao Peng (@haopeng_uiuc, UIUC) らによる研究論文。<strong>「Useful Memories Become Faulty When Continuously Updated by LLMs」</strong>。LLMエージェントが過去の経験を「コンパクトな再利用可能なメモリ」に変換し続けると、メモリが改善されるどころか<strong>劣化する（faulty）</strong>という発見。</p>
 <h2>観察ログ（未検証）</h2>
@@ -38,7 +40,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — LLMスキルの自己改善ループ（LESSONS.md方式）：継続更新と品質劣化のトレードオフを設計上どう扱うかが課題</li>
 <li><a href="../tools/hermes-agent.html">hermes-agent</a> — 3層メモリシステムとGEPAオフライン最適化を持つエージェント。この論文の「継続更新によるメモリ劣化」問題への対処として外部最適化パイプラインを使う設計が参考になる</li>
-</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055695064148410764" rel="noopener" target="_blank">https://x.com/i/web/status/2055695064148410764</a></li></ul></section></article>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
+<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055695064148410764" rel="noopener" target="_blank">https://x.com/i/web/status/2055695064148410764</a></li></ul></section></article>
 </main>
 </body>
 </html>

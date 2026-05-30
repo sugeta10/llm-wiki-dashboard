@@ -15,13 +15,15 @@ h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 .sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 </style>
 </head>
 <body>
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>crabbox</h1>
-  <div class="meta">tools/crabbox · tools · updated 2026-05-29</div>
+  <div class="meta">tools/crabbox · tools · <span title="2026-05-29">2日前</span></div>
   <article><h1>Crabbox</h1>
 <p>リモートボックスにローカルの差分をrsyncし、コマンドを実行してログをストリーミングする<strong>AIエージェント向け共有ワークスペースコントロールプレーン</strong>。ローカルの編集・gitワークフローをそのまま維持しながら、計算・テスト・レビューエビデンスをクラウドへ移動できる。<a href="../tools/openclaw.html">openclaw</a> のネイティブプラグインとしても機能し、<code>crabbox_run</code> / <code>crabbox_warmup</code> 等のエージェントツールを提供する。</p>
 <h2>観察ログ（未検証）</h2>
@@ -68,7 +70,10 @@ crabbox stop blue-lobster
 <li><a href="../tools/openclaw.html">openclaw</a> — CrabboxはOpenClawのネイティブプラグインとして動作（<code>crabbox_run</code> / <code>crabbox_warmup</code> / <code>crabbox_status</code> 等）</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントがリモートコンピューティングリソースを使う文脈</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — Crabboxをオーケストレーター経由でClaude Codeと組み合わせ可能</li>
-</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://crabbox.sh/" rel="noopener" target="_blank">https://crabbox.sh/</a></li></ul></section></article>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openclaw.html">openclaw</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://crabbox.sh/" rel="noopener" target="_blank">https://crabbox.sh/</a></li></ul></section></article>
 </main>
 </body>
 </html>

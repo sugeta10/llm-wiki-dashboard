@@ -15,13 +15,15 @@ h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 .sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 </style>
 </head>
 <body>
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>prompt-cache-prewarm</h1>
-  <div class="meta">concepts/prompt-cache-prewarm · concepts · updated 2026-05-15</div>
+  <div class="meta">concepts/prompt-cache-prewarm · concepts · <span title="2026-05-15">2週間前</span></div>
   <article><h1>プロンプトキャッシュ事前ウォームアップ</h1>
 <p>Claude APIで <strong>time-to-first-token（初回トークン生成までの時間）</strong> を短縮するテクニック。システムプロンプトを実際のユーザーリクエストより先に送信してキャッシュに書き込んでおく手法。</p>
 <h2>仕組み</h2>
@@ -54,7 +56,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — プロンプトキャッシングの仕組み・価格・ベストプラクティス詳細</li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計全般の最適化テクニック</li>
 <li><a href="../companies/anthropic.html">anthropic</a> — Claude API提供元（公式ドキュメントでキャッシュ仕様を参照）</li>
-</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055069548672631218" rel="noopener" target="_blank">https://x.com/i/web/status/2055069548672631218</a></li></ul></section></article>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055069548672631218" rel="noopener" target="_blank">https://x.com/i/web/status/2055069548672631218</a></li></ul></section></article>
 </main>
 </body>
 </html>

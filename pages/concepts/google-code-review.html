@@ -15,13 +15,15 @@ h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2
 p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 .sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 </style>
 </head>
 <body>
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>google-code-review</h1>
-  <div class="meta">concepts/google-code-review · concepts · updated 2026-05-23</div>
+  <div class="meta">concepts/google-code-review · concepts · <span title="2026-05-23">1週間前</span></div>
   <article><h1>Google コードレビュー指針</h1>
 <p><strong>Google Engineering Practices</strong> は Google が CC-By 3.0 ライセンスで公開しているエンジニアリングガイドライン集。中心コンテンツはコードレビュー指針（Code Reviewer's Guide / Change Author's Guide）。</p>
 <p>関連: <a href="../concepts/spec-driven-development.html">spec-driven-development</a>, <a href="../concepts/agentic-coding.html">agentic-coding</a>, <a href="../tools/claude-code.html">claude-code</a>, <a href="../concepts/claude-skills.html">claude-skills</a></p>
@@ -55,7 +57,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h3>観察ログ（未検証）</h3>
 <ul>
 <li>2026-05-22: @commte が Google Engineering Practices リポジトリ全体を <a href="../tools/claude-code.html">claude-code</a> の <strong>スキル</strong> として投入し、PRの質を改善する手法を公開。「レビュアー視点（何をチェックされるか）」と「開発者視点（PRをどう小分けにして説明文を書くか）」の両技術基準がまとまったドキュメントとして参照させることで、<a href="../tools/claude-code.html">claude-code</a> が書くPRの粒度・説明文の質が向上するとされる。スキルとして入れることで「必要な部分だけ読ませる」効率化も可能。</li>
-</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/google/eng-practices" rel="noopener" target="_blank">https://github.com/google/eng-practices</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../tools/autoreview.html">autoreview</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/google/eng-practices" rel="noopener" target="_blank">https://github.com/google/eng-practices</a></li>
 <li><a href="https://x.com/i/web/status/2057657923753697286" rel="noopener" target="_blank">https://x.com/i/web/status/2057657923753697286</a></li></ul></section></article>
 </main>
 </body>
