@@ -28,7 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>TL;DR</strong>: 技術書・ドキュメントを <code>/book-to-skill &amp;lt;path&gt;</code> 一発で <a href="../concepts/claude-skills.html">Claude Code スキル</a> に変換し、「一度読んで忘れた本」を必要な時にオンデマンド参照できるようにするOSSツール。</p>
 </blockquote>
-<p>book-to-skill は、技術書やドキュメントを <a href="../concepts/claude-skills.html">Claude Code スキル</a> に変換するツール。<code>/book-to-skill &amp;lt;path&gt;</code> を実行すると、書籍の内容を参照しながら作業できるスキルセットが自動生成される。狙いは「一度読んだが内容を忘れた本を、必要な時に即座に参照できる」状態をつくることにある。</p>
+<p>本一冊をそのままコンテキストに載せるとトークンが膨れ、必要のない章まで常時抱え込むことになる。book-to-skill はこれを、コアメンタルモデルと章インデックスだけを起点に置き、本文は質問が来た章だけを引き込むオンデマンドロード構成へ変換することで回避する。<code>/book-to-skill &amp;lt;path&gt;</code> 一発で、この分割済みスキルセットが自動生成される。</p>
 <p>変換時には書籍を複数ファイルに分解し、トークン効率を最適化したスキル構成を生成する。<code>SKILL.md</code> がコアメンタルモデルと章インデックスを担い、本文の各章は <code>chapters/ch*.md</code> に分割される。この章ファイルは<strong>オンデマンドロード</strong>方式で、そのトピックを質問するまでトークンを消費しない。これにより本全体を常時コンテキストに載せることなく、必要な章だけを引き込める。</p>
 <table>
 <thead>

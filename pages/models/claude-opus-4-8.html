@@ -28,7 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>TL;DR</strong>: <a href="../companies/anthropic.html">anthropic</a> が2026-05-28にリリースした最上位モデルで、長期エージェント実行・正直な自己進捗報告・高精度低再現の挙動と、コストを制御するEffort Control/Fast Modeを特徴とする。</p>
 </blockquote>
-<p><a href="../companies/anthropic.html">anthropic</a> が2026-05-28にリリースした最上位モデル。<a href="../models/claude-opus-4-7.html">claude-opus-4-7</a> の後継で、価格はOpus 4.7と同額で提供開始された。公式が示す前世代との差分は「sharper judgment（より鋭い判断力）」「more honesty about its own progress（自己進捗の正直な報告）」「work independently for longer（より長く独立して作業できる能力）」の3点。</p>
+<p><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a> の後継にあたり、価格は据え置きで提供開始された。Anthropicが前世代との差分として挙げるのは「sharper judgment（より鋭い判断力）」「more honesty about its own progress（自己進捗の正直な報告）」「work independently for longer（より長く独立して作業できる能力）」の3点で、TL;DRの各特徴はこの公式の主張に対応する。</p>
 <p><strong>3つの主要な性質。</strong> (1) 長期エージェント実行：多数のツール呼び出しにまたがるタスクで文脈を維持する。高い推論負荷を前提とするため、仕様を少しずつ追加するのではなく最初に全文脈をまとめて渡す設計が有効。(2) セッション途中のsystemプロンプト：messages配列中途の <code>{"role":"system"}</code> をプロンプトキャッシュを無効化せずに追加できる。上書き指示としてではなく文脈として扱うと挙動が安定する。(3) ツール利用の再調整：Web検索は以前より頻繁に起動する一方、1回の作業内で繰り返す回数は減り、文脈から回答する傾向が強まった（高精度・低再現率の方向へシフト）。</p>
 <p><strong>コスト制御の仕組み。</strong> Opus 4.8はデフォルトがHigh effortで、Claude CodeとClaude.aiの両方で Effort Control（Low/High/Max）を切り替えられる。Fast Mode は通常の約2.5倍速・約3倍安価で、コードレビュー・定型コード生成・繰り返し処理に向く。<a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> は1セッションで最大1,000サブエージェントを並列実行できる。コスト最適化の起点としてまず Effort Control を使うのが効果的（<a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a>）。</p>
 <p><strong>プロンプト調整の実践指針。</strong></p>
@@ -70,9 +70,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li>
 <li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
 <li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
-<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060042702150930686" rel="noopener" target="_blank">https://x.com/i/web/status/2060042702150930686</a></li>
 <li><a href="https://x.com/i/web/status/2060153411627257928" rel="noopener" target="_blank">https://x.com/i/web/status/2060153411627257928</a></li>

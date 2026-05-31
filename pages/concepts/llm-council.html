@@ -28,7 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>TL;DR</strong>: 複数のAIアドバイザーが異なる思考スタイルで同じ質問を分析し、匿名ピアレビューを経て「全員が見落とした盲点」を浮かび上がらせることで、単一AIの同意バイアスを構造的に解消する意思決定支援パターン。</p>
 </blockquote>
-<p>複数のAIアドバイザーが異なる思考スタイルで同じ質問を分析し、匿名ピアレビューを経て意思決定を支援するパターン。単一AIへの質問では「同意バイアス」（質問の枠組みによって真逆の答えが返る問題）が発生する。それを構造的に解消する手法。</p>
+<p>単一AIに相談すると、質問の枠組み次第で真逆の答えが返ってくる——これが「同意バイアス」である。AIは問いの前提に引きずられ、ユーザーが暗に望む結論に寄せてしまう。Councilはこれを意志の力ではなく構造で防ぐ。視点を複数のアドバイザーに分担させ、回答を匿名化して権威ではなく内容で競わせることで、単一の視点が支配する余地を消す。</p>
 <h2>仕組み</h2>
 <p>基本フローは3段階で構成される: ①複数モデル（または複数サブエージェント）を同じ質問にポーリングする → ②ラベルをシャッフルして誰がどの回答かを伏せた状態で相互レビューする → ③議長（統合）モデルが最終的な判断を合成する。複数モデルを横断する原型に対し、<a href="../tools/claude-code-subagents.html">claude-code-subagents</a> を使えば単一のClaude内に5つのサブエージェントを立てて「council this」スキルとして実装できる（<a href="../concepts/claude-skills.html">claude-skills</a>）。</p>
 <h3>5つのアドバイザー役割（思考スタイルの分担）</h3>
@@ -60,9 +60,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a> — Council 実装基盤（並列サブエージェント）</li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — より広いマルチエージェント設計パターン（Orchestrator-Worker等）</li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — Claude Code スキルとして実装可能な形式</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2038661433626333649" rel="noopener" target="_blank">https://x.com/i/web/status/2038661433626333649</a></li></ul></section></article>
 </main>

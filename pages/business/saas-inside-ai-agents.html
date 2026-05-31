@@ -28,7 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>TL;DR</strong>: 「SaaSにAIを組み込む」のではなく、AIエージェント（Codex・Claude Code）を主作業環境とし、その中のin-appブラウザでSaaSツールを使う——という主従逆転のワークフロー仮説。</p>
 </blockquote>
-<p><strong>SaaS inside AI Agents</strong> とは、作業の起点を従来のSaaSアプリからAIエージェントへ移すワークフローの考え方を指す。これまでの主流は、既存のSaaSプロダクトにAI機能を後付けで埋め込む方向（SaaS + AI）だった。この概念はその向きを反転させ、<strong>AIエージェントが作業環境（ワークスペース）の中心になり、SaaSツールはエージェント内のブラウザから呼び出されるサブツールになる</strong>と捉える。</p>
+<p>これまでの主流は、既存のSaaSプロダクトにAI機能を後付けで埋め込む方向（SaaS + AI）だった——入口はあくまでSaaSアプリで、AIはその一機能にとどまる。<strong>SaaS inside AI Agents</strong> はこの向きを反転させ、作業の起点をAIエージェント側に置く。SaaSは独立した入口ではなく、エージェント内のブラウザから必要に応じて呼び出されるサブツールへと格下げされる。</p>
 <p>構造としては、エージェントが「人間が直接アプリを操作する」という前提を吸収し、ドキュメント作成・調査・ツール横断の操作をエージェント側で完結させる。SaaSは独立した入口ではなく、エージェントが必要に応じて開く部品になる。これは、コマンドラインツールやスタンドアロンSaaSを人間が直接叩く従来モデルに対する代替であり、<a href="../tools/openai-codex.html">openai-codex</a> や <a href="../tools/claude-code.html">claude-code</a> のようなコーディングエージェントが汎用作業環境へと用途拡張していく流れと整合する。</p>
 <p>読者にとっての含意は、ツール選定・プロダクト設計の軸が「単体で使われるSaaS」から「エージェントから呼び出される/エージェントに統合される前提のツール」へ移りうる、という点にある。<a href="../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a>（権限設計・ToA等）や <a href="../business/ai-vertical-integration.html">ai-vertical-integration</a>（垂直統合とSaaS業界への影響）とあわせて、エージェント中心時代のプロダクト戦略を考える材料になる。</p>
 <h2>観察ログ（未検証）</h2>
@@ -51,8 +51,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a> — 競合ポジションにありながらDanが事前に注目していたツール</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a></li>
 <li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li>
-<li><a href="../tools/openai-codex.html">openai-codex</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/openai-codex.html">openai-codex</a></li>
 <li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2058914803360600238" rel="noopener" target="_blank">https://x.com/i/web/status/2058914803360600238</a></li></ul></section></article>
 </main>
 </body>

@@ -28,7 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>TL;DR</strong>: Nous ResearchのオープンソースAIエージェント基盤で、自己進化スキル・3層メモリ・GEPAオフライン最適化を1フレームワークに統合し「使うほど賢くなる」設計を実現する。</p>
 </blockquote>
-<p>Hermes Agentは<strong>メモリ・スキル・学習ループ</strong>を1つのフレームワークに統合したオープンソースのAIエージェント基盤である。中心となるのは「使えば使うほど賢くなる」自己進化の仕組みで、エージェント自身がタスク解決の過程からスキルを生成・蓄積し、それをオフラインで最適化していく。</p>
+<p>既存のエージェントはセッションをまたいで賢くならない。メモリは容量と即応性のトレードオフに突き当たり、エージェントが自作したスキルは整理されず溜まり続け、しかも当人は自分のタスク結果を過大評価しがちで自己改善の方向を誤る。Hermes Agentはこの3つを、3層メモリ・Curatorによるスキルのガベージコレクション・GEPAによる外部からのオフライン最適化という形でそれぞれ構造的に手当てする。</p>
 <h2>アーキテクチャ</h2>
 <p>メモリは3層に分かれ、容量と即応性をトレードオフする：Tier 1（常時コンテキスト内・容量小）→ Tier 2（SQLite検索・容量無制限）→ Tier 3（外部プロバイダー・プリフェッチ）。</p>
 <table>
@@ -110,11 +110,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Hermesのプロファイル機能はマルチエージェント設計パターンの実装例</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — プログラマープロファイルでのサブエグゼキューターとして連携可能</li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — Claude Skillsと類似した「永続スキル」の概念</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-skills.html">claude-skills</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openclaw.html">openclaw</a></li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../tools/openclaw.html">openclaw</a></li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/dspy.html">dspy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">https://x.com/i/web/status/2054564519280804028</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">https://x.com/i/web/status/2054564519280804028</a></li>
 <li><a href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">https://x.com/i/web/status/2057581065469055167</a></li></ul></section></article>
 </main>
 </body>

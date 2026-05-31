@@ -28,7 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>TL;DR</strong>: <a href="../tools/openai-codex.html">openai-codex</a> の Codex CLI が「ユーザー入力→プロンプト構築→Responses API 推論→ツールコール or アシスタントメッセージ」を繰り返す中核ループ。完全ステートレス設計とプロンプトキャッシュ保護を両立させるため、<code>input</code> 配列を末尾追記のみで成長させるのが設計の肝。</p>
 </blockquote>
-<p>Codex CLI のエージェントループは、OpenAI Responses API を使ってユーザー・モデル・ツールの三者間インタラクションを制御する中核ロジックである。基本構造は <strong>ユーザー入力 → プロンプト構築 → Responses API 推論 → ツールコール or アシスタントメッセージ</strong> の繰り返しで、1ターンは1アシスタントメッセージで終了する。</p>
+<p>このループが解くのは、完全ステートレス設計（<code>previous_response_id</code> を使わない）とプロンプトキャッシュのヒット率維持を同時に満たすという緊張関係である。ステートレスゆえ毎ターン会話全体を <code>input</code> 配列として送り直すが、その際プレフィックスが一致しないとキャッシュミスが起き、ツールリスト・モデル・サンドボックス設定・cwd の変動がそれを引き起こす。1ターンは1アシスタントメッセージで終了し、ユーザー・モデル・ツールの三者間インタラクションが Responses API 上で制御される。</p>
 <p><strong>プロンプトの構成</strong>。プロンプトのロール優先度は <code>system &gt; developer &gt; user &gt; assistant</code> の降順。<code>instructions</code> フィールドが system/developer ロールを、<code>input</code> フィールドの各アイテムが会話履歴を担う。初回ターンの <code>input</code> は ①サンドボックス権限説明（developer ロール）→ ②developer_instructions（オプション）→ ③ユーザー指示（AGENTS.md 等の集約）→ ④環境コンテキスト（cwd・shell）→ ⑤ユーザーメッセージ の順で構成される。</p>
 <p><strong>エンドポイントの分岐</strong>。Responses API のエンドポイントは認証方式で分かれる：ChatGPT ログインは <code>chatgpt.com/backend-api/codex/responses</code>、APIキーは <code>api.openai.com/v1/responses</code>、ローカル（<code>--oss</code>）は <code>localhost:11434/v1/responses</code>。</p>
 <p><strong>プロンプトキャッシュの保護</strong>。ツールリストの順序変動・モデル切替・サンドボックス設定変更・カレントディレクトリ変更はキャッシュミスを引き起こす。そのため会話の途中でサンドボックスや cwd が変わっても、既存の <code>input</code> アイテムは書き換えず<strong>新しいメッセージを末尾に追記</strong>することでキャッシュプレフィックスを保護する。この末尾追記の不変則は <a href="../concepts/prompt-caching.html">prompt-caching</a> の設計思想とも共通する。</p>
@@ -60,9 +60,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — エージェントアーキテクチャのパターン集</li>
 <li><a href="../concepts/12-factor-agents.html">12-factor-agents</a> — 信頼性の高いエージェント設計原則（ステートレス設計原則と共鳴）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openai-codex.html">openai-codex</a></li>
-<li><a href="../concepts/12-factor-agents.html">12-factor-agents</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+<li><a href="../concepts/12-factor-agents.html">12-factor-agents</a></li>
 <li><a href="../concepts/prompt-engineering-playbook.html">prompt-engineering-playbook</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://openai.com/index/unrolling-the-codex-agent-loop/" rel="noopener" target="_blank">https://openai.com/index/unrolling-the-codex-agent-loop/</a></li>
 <li><a href="https://x.com/i/web/status/2057462768857743569" rel="noopener" target="_blank">https://x.com/i/web/status/2057462768857743569</a></li></ul></section></article>
 </main>

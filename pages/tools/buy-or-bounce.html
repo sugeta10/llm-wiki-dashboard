@@ -27,7 +27,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <article><blockquote>
 <p><strong>TL;DR</strong>: ランディングページ・メール・広告クリエイティブに対し5種類のバイヤーペルソナを並行シミュレーションし、コンバージョンを阻む箇所を特定して修正提案する<a href="../tools/claude-code.html">claude-code</a>スキル。</p>
 </blockquote>
-<p>「buy or bounce」は、セールス用クリエイティブ（LP・メール・広告など）を5種類のバイヤーペルソナの視点で並行レビューし、購買か離脱かを判定させてコンバージョン上の摩擦を可視化する手法。<a href="../tools/claude-code.html">claude-code</a>のスキルとして動作し、約3分でHTML形式のレポートを生成する。元はShopifyの「SimGym」（専用インフラ上で複数ペルソナが実際のブラウザで購買判断を行うABテスト代替）の発想を、Claude Codeスキルとして再実装したもの。</p>
+<p>クリエイティブのコンバージョン検証は本来、実ユーザーを集めるABテストを要し時間とコストがかかる。「buy or bounce」はこの検証を、Shopifyの「SimGym」（専用インフラ上で複数ペルソナが実際のブラウザで購買判断を行うABテスト代替）の発想を<a href="../tools/claude-code.html">claude-code</a>スキルとして再実装することで代替した。約3分でHTML形式のレポートを生成し、流入前のLP検証を可能にする。</p>
 <h3>5つのバイヤーペルソナ</h3>
 <p>コンバージョン失敗の主要因を網羅するよう設計された5類型。</p>
 <ol>
@@ -61,8 +61,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — 5ペルソナ並行実行はFan-Outパターンに相当</li>
 <li><a href="../design/ai-ux-methods.html">ai-ux-methods</a> — AI時代のUX・コンバージョン設計</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../design/ai-ux-methods.html">ai-ux-methods</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2047668468904808531" rel="noopener" target="_blank">https://x.com/i/web/status/2047668468904808531</a></li></ul></section></article>
 </main>
 </body>

@@ -28,7 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>TL;DR</strong>: <a href="../tools/claude-code.html">claude-code</a> のサブエージェント機能は、専用のコンテキストウィンドウで独立動作し、ツール呼出のノイズをメインに残さず結果サマリーだけを返すことで、長セッションのコンテキスト汚染を防ぐ仕組み。</p>
 </blockquote>
-<p>サブエージェントは <a href="../tools/claude-code.html">claude-code</a> の機能で、メインエージェントとは別の独立したコンテキストウィンドウでタスクを実行し、最終的な結果だけを親に返す。grep・find・ls といった探索系ツールの呼出や中間ファイルの読込はサブエージェント側のコンテキストに閉じるため、メインエージェントのコンテキストが汚染されない。これにより、長いセッションでツール呼出が蓄積してノイズになる問題や、<code>/compact</code> 時に重要情報が圧縮で失われる問題を緩和できる。</p>
+<p>長いセッションでは grep・find・ls といった探索系ツールの呼出や中間ファイルの読込がすべてメインのコンテキストに蓄積し、ノイズになる。さらに <code>/compact</code> 時にはこの蓄積が原因で重要情報が圧縮で失われやすい。サブエージェントはこの問題を、探索系の呼出や中間読込をサブエージェント側のコンテキストに閉じ込めることで構造的に防ぐ。メインに戻るのは最終的な結果サマリーだけなので、親のコンテキストは汚染されない。</p>
 <p><strong>定義方法</strong>: サブエージェントは <code>.claude/agents/</code>（プロジェクトローカル）または <code>~/.claude/agents/</code>（グローバル）に Markdown ファイルとして置く。frontmatter の <code>description</code> などを Claude Code が自動検出し、タスクが説明に一致すると起動する。優先度は「プロジェクトローカル &gt; グローバル」で、同名定義がある場合は高優先度側が勝つ。チーム共有はプロジェクトローカル、個人用途はグローバルに置くのが使い分けの基本。</p>
 <p><strong>起動時のコンテキスト</strong>: デフォルトのサブエージェントは空コンテキスト（クリーン）で起動する。環境変数 <code>CLAUDE_CODE_FORK_SUBAGENT=1</code> を設定すると、親コンテキストの完全コピーを引き継ぐフォーク起動になる。オンデマンドでフォークする場合は <code>/fork</code> スラッシュコマンドを使う。</p>
 <pre><code class="language-bash">export CLAUDE_CODE_FORK_SUBAGENT=1

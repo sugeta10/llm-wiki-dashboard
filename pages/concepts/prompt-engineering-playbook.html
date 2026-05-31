@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p><strong>TL;DR</strong>: 「指示を与える」から「思考プロセス・ゴール・設計図を渡す」へ発想を切り替えるための、10章・約40のプロンプト設計技術カタログ。<a href="../concepts/prompt-engineering.html">prompt-engineering</a> の実践的拡張。</p>
 </blockquote>
 <h2>概念説明</h2>
-<p>プロンプトを「命令文」ではなく「思考プロセスの設計図」として書くと、出力品質と再現性が上がる。以下は目的別に整理した約40の技術。各章は独立しており、必要なものだけ組み合わせて使える。</p>
+<p>命令文だけを渡すとモデルは推論手順や完成形を自前で補完するため、出力品質が安定せず再現性も落ちる。設計図を明示的に渡すことでこの揺れを抑えるのが狙いだ。以下は目的別に整理した約40の技術。各章は独立しており、必要なものだけ組み合わせて使える。</p>
 <h3>第1章：思考プロセスを渡す</h3>
 <p>モデルに最終回答だけでなく、そこに至る推論手順を踏ませる技術群。</p>
 <table>
@@ -227,10 +227,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/dspy.html">dspy</a> — プロンプトを機械学習問題に変換して自動最適化するフレームワーク</li>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a> — MCP（Model Context Protocol）仕様</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
 <li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li>
 <li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li>
-<li><a href="../tools/dspy.html">dspy</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2058839596826612188" rel="noopener" target="_blank">https://x.com/i/web/status/2058839596826612188</a></li></ul></section></article>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2058839596826612188" rel="noopener" target="_blank">https://x.com/i/web/status/2058839596826612188</a></li></ul></section></article>
 </main>
 </body>
 </html>

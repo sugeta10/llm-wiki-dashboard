@@ -28,7 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>TL;DR</strong>: 外部から観測可能なシステムの振る舞いについて「正解・不正解」を判定するための成果物で、AIに実装させる前に人間が確定させるべき基準である。</p>
 </blockquote>
-<p><strong>振る舞い仕様</strong>とは、外部から観測可能なシステムの振る舞いに関して「正解・不正解」を判定する成果物。<a href="../concepts/spec-driven-development.html">spec-driven-development</a> の中核概念であり、AIに実装を指示する前に人間が確定させる基準となる。良い仕様の条件は「実装の正誤を判断でき、かつその判断に追加の質問をなるべく要しないもの」。実装をそのまま仕様にすると正解を狭くしすぎる（エラーメッセージの文字列レベルまで固定されてしまう）ため、観測可能な振る舞いの範囲で「許される出力・流れ」を記述する。</p>
+<p>良い仕様の条件は「実装の正誤を判断でき、かつその判断に追加の質問をなるべく要しないもの」。ここで実装をそのまま仕様にしてしまうと正解を狭くしすぎる（エラーメッセージの文字列レベルまで固定されてしまう）。そこで観測可能な振る舞いの範囲で「許される出力・流れ」を記述するのが核心となる。<a href="../concepts/spec-driven-development.html">spec-driven-development</a> の中核概念。</p>
 <h2>システムの2分類</h2>
 <p>振る舞い仕様の表現はシステムの種類によって異なる。</p>
 <h3>変換システム（Transformation System）</h3>

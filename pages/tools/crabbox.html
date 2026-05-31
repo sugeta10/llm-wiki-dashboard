@@ -28,7 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>TL;DR</strong>: ローカルの差分をrsyncでリモートのリース済みマシンに送り、SSH経由でコマンド実行してログをストリーミングする、AIエージェント向けのリモート実行コントロールプレーン。ローカルの編集・gitワークフローを維持したまま、計算・テスト・PRエビデンス収集をクラウドへ逃がせる。</p>
 </blockquote>
-<p>リモートボックスにローカルの差分をrsyncし、コマンドを実行してログをストリーミングする、AIエージェント向け共有ワークスペースコントロールプレーン。ローカルの編集・gitワークフローをそのまま維持しながら、計算・テスト・レビューエビデンスをクラウドへ移動できる。CLIはGoバイナリで、<code>brew install openclaw/tap/crabbox</code> でインストールできる。<a href="../tools/openclaw.html">openclaw</a> のネイティブプラグインとしても機能し、<code>crabbox_run</code> / <code>crabbox_warmup</code> / <code>crabbox_status</code> 等のエージェントツールを提供する。</p>
+<p>エージェントにクラウド計算を使わせる際の典型的な障害は、プロバイダーの認証情報をクライアント側に配ること（漏洩・暴走コストのリスク）と、リモート環境のためにローカルの編集・gitワークフローを捨てること。Crabboxはこの2つを、ベアラートークンだけを持つCLIと差分rsync方式で回避する。CLIはGoバイナリで、<code>brew install openclaw/tap/crabbox</code> でインストールできる。<a href="../tools/openclaw.html">openclaw</a> のネイティブプラグインとしても機能し、<code>crabbox_run</code> / <code>crabbox_warmup</code> / <code>crabbox_status</code> 等のエージェントツールを提供する。</p>
 <h2>仕組みと構造</h2>
 <p>ブローカーを中心に据えた「brokered」設計を取る。各CLIはベアラートークンのみを保有し、クラウドプロバイダーの認証情報はCLIに渡らない。ブローカー（Cloudflare Worker + Durable Object）が、リースの発行、TTL境界付きマシンの管理、月次スペンドキャップ、ユーザー/組織/プロバイダーごとの使用量管理を担う。</p>
 <pre><code>your laptop          Cloudflare Worker         cloud provider
@@ -82,8 +82,8 @@ crabbox stop blue-lobster
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントがリモートコンピューティングリソースを使う文脈</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — Crabboxをオーケストレーター経由でClaude Codeと組み合わせ可能</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openclaw.html">openclaw</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://crabbox.sh/" rel="noopener" target="_blank">https://crabbox.sh/</a></li></ul></section></article>
 </main>
 </body>

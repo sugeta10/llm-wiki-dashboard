@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p><strong>TL;DR</strong>: AIにGUIを直接操作させず、GUIと等価なデータを表現できるDSL（中間記法）を設計してAIにそれを操作させ、GUIはそのDSLのレンダラにすることで、低トークン・高精度なAI操作と人間との双方向編集を両立させる設計パターン。</p>
 </blockquote>
 <h2>概念説明</h2>
-<p>中間記法パターンは、LLMにアプリの状態を操作させる際、HTMLやGUI要素を直接生成させるのではなく、GUIと同等の情報を持つ手法固有のテキストDSL（中間記法）を介在させる設計アプローチである。AIは軽量なテキスト記法だけを読み書きし、GUIはその記法をレンダリングする表示層として機能する。これにより、AIが返す出力量が小さくなり処理が速くなると同時に、状態が常にテキストとして存在するため再生成しても結果がブレにくくなる。</p>
+<p>AIにHTMLやGUI要素を直接生成させると、出力トークン量が大きく処理が重いうえ、状態がGUIの中に閉じているため再生成のたびに結果がブレやすい。中間記法パターンはこの問題を、GUIと同等の情報を持つ手法固有のテキストDSL（中間記法）を間に挟むことで解く。AIは軽量なテキスト記法だけを読み書きし、GUIはその記法をレンダリングする表示層に徹する。状態が常にテキストとして存在するため、AIが返す出力量は小さく処理が速く、再生成しても結果がブレにくい。</p>
 <h3>4要素アーキテクチャ</h3>
 <p>この設計は4つの構成要素から成る。</p>
 <table>
@@ -138,8 +138,8 @@ parseNota() → applyParsed() → 再描画
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../tools/claude-computer-use.html">claude-computer-use</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059817477165723676" rel="noopener" target="_blank">https://x.com/i/web/status/2059817477165723676</a></li>
 <li><a href="https://note.com/art_reflection/n/nccfe6cc57073" rel="noopener" target="_blank">https://note.com/art_reflection/n/nccfe6cc57073</a></li></ul></section></article>
 </main>

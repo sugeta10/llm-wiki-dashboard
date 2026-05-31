@@ -28,7 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>TL;DR</strong>: プライベートネットワーク内のMCPサーバーを、ファイアウォールのインバウンドポートを一切開けずにアウトバウンドHTTPSだけでChatGPT/Codex/Responses APIから接続させる、OpenAI公式の <code>tunnel-client</code> トンネル機能。</p>
 </blockquote>
-<p>プライベートネットワーク内のMCPサーバーを、ファイアウォールのポート開放なしでOpenAI製品から利用するためのアウトバウンドトンネル機能。<code>tunnel-client</code> をプライベートネットワーク内で実行し、OpenAI側へアウトバウンドHTTPS接続のみで通信する。MCPサーバーにパブリックリスナーは不要で、インバウンドポートを開ける必要もない。</p>
+<p>従来、社内MCPサーバーをChatGPT/Codexに繋ぐには何らかのインバウンド経路（パブリックリスナーやポート開放）が必要で、ここがセキュリティ部門の承認を阻む最大の障壁になっていた。本機能はこの方向を反転させ、<code>tunnel-client</code> をプライベートネットワーク内で実行してOpenAI側へアウトバウンドHTTPS接続のみで通信させる。MCPサーバーはインターネットに露出せず、インバウンドポートを一切開けないまま外部AIから到達できる。</p>
 <p>対応製品: ChatGPT・Codex・Responses API・その他サポート済みOpenAIサービス。MCPプロトコル全般については <a href="../tools/claude-mcp.html">claude-mcp</a> を参照。</p>
 <h2>アーキテクチャ</h2>
 <pre><code>OpenAI products → OpenAI-hosted tunnel endpoint

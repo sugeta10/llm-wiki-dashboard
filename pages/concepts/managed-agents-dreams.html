@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p><strong>TL;DR</strong>: 過去セッションとメモリストアを入力に、重複削除・矛盾解消・インサイト統合を非同期で行い、入力を壊さずに新しいメモリストアを生成する <a href="../tools/claude-managed-agents.html">claude-managed-agents</a> のジョブ機能。</p>
 </blockquote>
 <h2>概念説明</h2>
-<p>Dreams は <a href="../tools/claude-managed-agents.html">claude-managed-agents</a> の非同期ジョブ機能で、既存のメモリストアと過去のセッション記録（1〜100件）を入力に受け取り、重複削除・矛盾解消・インサイト統合を行った<strong>新しいメモリストア</strong>を生成する。入力ストアは変更されないため、出力をレビューして不要なら破棄できる。これは長期運用でメモリが断片化・矛盾していく問題（<a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a>）への対処にあたる。</p>
+<p>長期運用ではエージェントのメモリが断片化・矛盾していき、蓄積されるほど質が落ちていく問題がある（<a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a>）。Dreams が再構成を<strong>入力非破壊</strong>で行うのはこの問題への安全な対処であり、既存のメモリストアと過去のセッション記録（1〜100件）を入力に受け取り、結果を新しいストアとして別に書き出す。元の入力は一切変更されないため、出力品質をレビューして不要ならそのまま破棄し、再実行すればよい。</p>
 <h3>入力と出力</h3>
 <p>入力は2種類を混在できる。既存の <code>memory_store</code>（再構成対象のストア）と、生のやり取りである <code>sessions</code>（最大100件）。<code>instructions</code> パラメータでドリーム実行の重点領域を自然言語で指定できる（例: コーディングスタイルの好みに注目し、一回限りのデバッグメモは無視する）。<code>instructions</code> は最大4,096文字。</p>
 <p>出力ストアIDは <code>outputs[]</code> に格納される。ジョブが <code>completed</code> した後は通常のメモリストアとして扱え、次セッションの <code>resources</code> に付与するだけで利用できる。入力は不変なので、出力品質が悪ければそのまま破棄して再実行すればよい。</p>
