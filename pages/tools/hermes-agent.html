@@ -25,25 +25,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>hermes-agent</h1>
   <div class="meta">tools/hermes-agent · tools · <span title="2026-05-22">1週間前</span></div>
   <article><h1>Hermes Agent</h1>
-<p>Nous Researchが開発したオープンソースAIエージェント基盤。<strong>自己進化するスキル</strong>・<strong>3層メモリシステム</strong>・<strong>GEPAオフライン最適化</strong>の3機能を統合した「使えば使うほど賢くなる」エージェント。2ヶ月でGitHubスター9万を超えた。</p>
-<h2>観察ログ（未検証）</h2>
-<ul>
-<li>2026-05-13: @akshay_pachaar によるマスタークラス記事。Hermes Agentは「メモリ+スキル+学習ループ」を1フレームワークで実現する唯一のオープンソースエージェントと主張</li>
-<li>2026-05-13: <a href="../tools/openclaw.html">openclaw</a>との比較：「HermesはメッセージングGWの周りに学習エージェントをパッケージ、OpenClawはエージェントの周りにメッセージングGWをパッケージ」（Kiloブログの表現）</li>
-<li>2026-05-13: GEPA（Genetic-Pareto Prompt Evolution）はICRL 2026 Oral論文として発表済み。スキルのオフライン最適化。1回の実行コスト約$2〜10。GPUは不要（API呼び出しのみ）</li>
-<li>2026-05-13: Curatorは7日間非稼働+2時間アイドル時にバックグラウンドで起動。30日未使用スキルをstale、90日でarchive。自動削除はしない（archiveは1コマンドで復元可能）</li>
-<li>2026-05-13: マルチエージェントプロファイル機能あり。プログラマー・デザイナー・リサーチャーを完全分離（設定・メモリ・スキル・SOUL.mdが各自独立）</li>
-<li>2026-05-13: Claude Code CLIを下位エグゼキューターとして使う「スタッフエンジニア」モード設定が可能。Claude Maxサブスクをベースに利用できる</li>
-<li>2026-05-13: エージェントの「自己評価バイアス」問題（タスク結果を常に高く評価しすぎる）をGEPAが外部から補完する設計</li>
-<li>2026-05-21: X Premium（旧Twitter Blue）サブスクリプション対応に伴い再びトレンドに。X上でHermes Agentの理論解説記事が話題になっている（@shota7180 の日本語解説含む）</li>
-</ul>
-<h2>検証済み事実</h2>
-<ul>
-<li>2026-05-13: GEPA論文はICRL 2026 Oral、NousResearch/hermes-agent-self-evolution リポジトリで公開（MITライセンス）</li>
-<li>2026-05-13: 公式Skills Hubに687スキル（built-in 87 + optional 79 + Anthropic製16 + LobeHub製505）</li>
-<li>2026-05-13: エージェントループの上限は90ターン。サブエージェントもこのバジェットを共有</li>
-</ul>
+<blockquote>
+<p><strong>TL;DR</strong>: Nous ResearchのオープンソースAIエージェント基盤で、自己進化スキル・3層メモリ・GEPAオフライン最適化を1フレームワークに統合し「使うほど賢くなる」設計を実現する。</p>
+</blockquote>
+<p>Hermes Agentは<strong>メモリ・スキル・学習ループ</strong>を1つのフレームワークに統合したオープンソースのAIエージェント基盤である。中心となるのは「使えば使うほど賢くなる」自己進化の仕組みで、エージェント自身がタスク解決の過程からスキルを生成・蓄積し、それをオフラインで最適化していく。</p>
 <h2>アーキテクチャ</h2>
+<p>メモリは3層に分かれ、容量と即応性をトレードオフする：Tier 1（常時コンテキスト内・容量小）→ Tier 2（SQLite検索・容量無制限）→ Tier 3（外部プロバイダー・プリフェッチ）。</p>
 <table>
 <thead>
 <tr>
@@ -57,12 +44,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <td>アイデンティティ層。システムプロンプト先頭に挿入。手書き・静的</td>
 </tr>
 <tr>
-<td><strong>MEMORY.md</strong> (2,200字上限)</td>
-<td>環境・プロジェクト慣習・教訓。セッション開始時に注入</td>
+<td><strong>MEMORY.md</strong>（2,200字上限）</td>
+<td>環境・プロジェクト慣習・教訓。セッション開始時に注入（Tier 1メモリ）</td>
 </tr>
 <tr>
-<td><strong>USER.md</strong> (1,375字上限)</td>
-<td>ユーザープロファイル（名前・通信スタイル等）</td>
+<td><strong>USER.md</strong>（1,375字上限）</td>
+<td>ユーザープロファイル（名前・通信スタイル等）（Tier 1メモリ）</td>
 </tr>
 <tr>
 <td><strong>SQLite (FTS5)</strong></td>
@@ -82,13 +69,39 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<p>メモリ3層の使い分け：Tier 1（常時コンテキスト内、容量小）→ Tier 2（SQLite検索、容量無制限）→ Tier 3（外部プロバイダー、プリフェッチ）</p>
 <h2>自己進化ループ</h2>
+<p>スキルはエージェントが自分で書き溜める永続的なMarkdown手順書として扱われ、生成・整理・最適化の3段で循環する。</p>
 <pre><code>1. エージェントが複雑タスクを試行錯誤で解決（5+ツール呼び出し等でトリガー）
 2. skill_manageツールでSKILL.mdを自作保存
 3. Curatorが定期的に統合・整理（archive/consolidate）
 4. GEPAがオフラインで実行トレースを分析 → 改善案をPR形式で提案（直接コミットしない）
 </code></pre>
+<p><strong>Curator</strong>はスキルのガベージコレクタで、アイドル時にバックグラウンド起動し、長期間未使用のスキルをstale→archiveへと段階的に整理する。自動削除はせず、archiveは1コマンドで復元できる。</p>
+<p><strong>GEPA（Genetic-Pareto Prompt Evolution）</strong>は実行トレースを進化的探索で解析し、スキルをオフラインで最適化するパイプライン。GPUは不要でAPI呼び出しのみで動作し、改善案を直接コミットせずPR形式で提案する。エージェントが自分のタスク結果を過大評価しがちな「自己評価バイアス」を、外部からの最適化によって補う設計になっている。</p>
+<h2>設定モード・プロファイル</h2>
+<p><strong>マルチエージェントプロファイル</strong>で、プログラマー・デザイナー・リサーチャーなど役割ごとに設定・メモリ・スキル・SOUL.mdを完全分離できる。これは<a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>の実装例にあたる。</p>
+<p>「スタッフエンジニア」モードでは<a href="../tools/claude-code.html">claude-code</a> CLIを下位エグゼキューターとして使い、Claude Maxサブスクをベースに動作させられる。</p>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-13: GEPA論文はICRL 2026 Oral、NousResearch/hermes-agent-self-evolution リポジトリで公開（MITライセンス）</li>
+<li>2026-05-13: 公式Skills Hubに687スキル（built-in 87 + optional 79 + Anthropic製16 + LobeHub製505）</li>
+<li>2026-05-13: エージェントループの上限は90ターン。サブエージェントもこのバジェットを共有</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-13: @akshay_pachaar によるマスタークラス記事。Hermes Agentは「メモリ+スキル+学習ループ」を1フレームワークで実現する唯一のオープンソースエージェントと主張</li>
+<li>2026-05-13: <a href="../tools/openclaw.html">openclaw</a>との比較：「HermesはメッセージングGWの周りに学習エージェントをパッケージ、OpenClawはエージェントの周りにメッセージングGWをパッケージ」（Kiloブログの表現）</li>
+<li>2026-05-13: GEPAの1回の実行コストは約$2〜10との記載（単一ソース・未確認）</li>
+<li>2026-05-13: Curatorは7日間非稼働+2時間アイドル時に起動、30日未使用でstale、90日でarchiveという具体的な閾値（単一ソース）</li>
+<li>2026-05-13: 2ヶ月でGitHubスター9万超えとの主張（未確認）</li>
+<li>2026-05-21: X Premium（旧Twitter Blue）サブスクリプション対応に伴い再びトレンドに。X上でHermes Agentの理論解説記事が話題になっている（@shota7180 の日本語解説含む）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>3層メモリの自動振り分けは実運用でコンテキスト圧迫を防げるか、それとも手動チューニングが必要か</li>
+<li>GEPAの「自己評価バイアスを外部補完する」設計は、自分のwikiシステムの自己改善ループにも応用できるか</li>
+<li>Curatorのstale/archive閾値（30日/90日）は妥当か、自分の利用頻度なら何日が適切か</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/openclaw.html">openclaw</a> — 直接競合。アーキテクチャ哲学が真逆</li>
@@ -97,11 +110,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Hermesのプロファイル機能はマルチエージェント設計パターンの実装例</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — プログラマープロファイルでのサブエグゼキューターとして連携可能</li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — Claude Skillsと類似した「永続スキル」の概念</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openclaw.html">openclaw</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">https://x.com/i/web/status/2054564519280804028</a></li>
+<li><a href="../tools/openclaw.html">openclaw</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/dspy.html">dspy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">https://x.com/i/web/status/2054564519280804028</a></li>
 <li><a href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">https://x.com/i/web/status/2057581065469055167</a></li></ul></section></article>
 </main>
 </body>

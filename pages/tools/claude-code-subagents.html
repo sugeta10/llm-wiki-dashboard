@@ -25,22 +25,23 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>claude-code-subagents</h1>
   <div class="meta">tools/claude-code-subagents · tools · <span title="2026-05-23">1週間前</span></div>
   <article><h1>Claude Code サブエージェント</h1>
-<p><a href="../tools/claude-code.html">claude-code</a> のサブエージェント機能。専用のコンテキストウィンドウで独立して動作し、メインエージェントのコンテキストを汚染せずに作業を完了して結果だけを返す。</p>
-<h2>観察ログ（未検証）</h2>
+<blockquote>
+<p><strong>TL;DR</strong>: <a href="../tools/claude-code.html">claude-code</a> のサブエージェント機能は、専用のコンテキストウィンドウで独立動作し、ツール呼出のノイズをメインに残さず結果サマリーだけを返すことで、長セッションのコンテキスト汚染を防ぐ仕組み。</p>
+</blockquote>
+<p>サブエージェントは <a href="../tools/claude-code.html">claude-code</a> の機能で、メインエージェントとは別の独立したコンテキストウィンドウでタスクを実行し、最終的な結果だけを親に返す。grep・find・ls といった探索系ツールの呼出や中間ファイルの読込はサブエージェント側のコンテキストに閉じるため、メインエージェントのコンテキストが汚染されない。これにより、長いセッションでツール呼出が蓄積してノイズになる問題や、<code>/compact</code> 時に重要情報が圧縮で失われる問題を緩和できる。</p>
+<p><strong>定義方法</strong>: サブエージェントは <code>.claude/agents/</code>（プロジェクトローカル）または <code>~/.claude/agents/</code>（グローバル）に Markdown ファイルとして置く。frontmatter の <code>description</code> などを Claude Code が自動検出し、タスクが説明に一致すると起動する。優先度は「プロジェクトローカル &gt; グローバル」で、同名定義がある場合は高優先度側が勝つ。チーム共有はプロジェクトローカル、個人用途はグローバルに置くのが使い分けの基本。</p>
+<p><strong>起動時のコンテキスト</strong>: デフォルトのサブエージェントは空コンテキスト（クリーン）で起動する。環境変数 <code>CLAUDE_CODE_FORK_SUBAGENT=1</code> を設定すると、親コンテキストの完全コピーを引き継ぐフォーク起動になる。オンデマンドでフォークする場合は <code>/fork</code> スラッシュコマンドを使う。</p>
+<pre><code class="language-bash">export CLAUDE_CODE_FORK_SUBAGENT=1
+</code></pre>
+<p>フォークされたサブエージェントの特性：</p>
 <ul>
-<li>2026-04-26: サブエージェントは <code>.claude/agents/</code> または <code>~/.claude/agents/</code> に Markdown ファイルとして定義する。frontmatter（description など）を Claude Code が自動検出し、タスクが説明に一致すると起動する</li>
-<li>2026-04-26: 優先度は「プロジェクトローカル（<code>.claude/agents/</code>）&gt; グローバル（<code>~/.claude/agents/</code>）」。同名の場合は高優先度が勝つ。チーム共有はプロジェクトローカル、個人用途はグローバルが推奨</li>
-<li>2026-04-26: 長いセッションでは grep・find・ls などのツール呼出がすべてコンテキストに残り、30分で 80k トークンのノイズが生じる。<code>/compact</code> 時に重要情報が圧縮で失われる問題をサブエージェントが防ぐ</li>
-<li>2026-04-26: デフォルトのサブエージェントは空コンテキストで起動（クリーン）。<code>CLAUDE_CODE_FORK_SUBAGENT=1</code> で親コンテキストの完全コピーを引き継いでフォーク起動できる</li>
-<li>2026-04-26: <code>/fork</code> スラッシュコマンドでオンデマンドのフォーク。フォークされたサブエージェントは親と <strong>プロンプトキャッシュプレフィックスを共有</strong>し、2番目以降の子は入力トークンが約10倍安くなるとされる</li>
-<li>2026-04-26: <code>context-timeline</code> フック（<code>https://www.aitmpl.com/component/hook/monitoring/context-timeline</code>）でメインエージェントと並行動作中のサブエージェントのコンテキストをリアルタイム表示できる</li>
-</ul>
-<h2>検証済み事実</h2>
-<ul>
-<li>2026-05-23: Claude Code のフォルダ構造に <code>~/.claude/agents/</code> と <code>.claude/agents/</code> が存在することは <a href="../tools/claude-code.html">claude-code</a> のフォルダ構成セクションで公式に確認済み</li>
-<li>2026-05-23: built-in サブエージェント <strong>Explore</strong>（コードベース検索）と <strong>Plan</strong>（実装計画立案）が Claude Code に同梱されていることは <a href="../tools/claude-code.html">claude-code</a> の記述と一致する</li>
+<li>親の会話全体をフォーク時点で継承する</li>
+<li>親とプロンプトキャッシュプレフィックスを共有する</li>
+<li>ツール呼出は親のコンテキストに入らない</li>
+<li>最終サマリーのみを親に返す</li>
 </ul>
 <h2>Built-in サブエージェント</h2>
+<p>Claude Code には以下のサブエージェントが同梱されている。</p>
 <table>
 <thead>
 <tr>
@@ -59,15 +60,22 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<h2>コンテキストフォーク</h2>
-<pre><code class="language-bash">export CLAUDE_CODE_FORK_SUBAGENT=1
-</code></pre>
-<p>設定後はすべてのサブエージェントがデフォルトで親コンテキストを継承。オンデマンドは <code>/fork</code> コマンドを使う。</p>
-<p>フォークされたサブエージェントの特性：
-- 親の会話全体をフォーク時点で継承
-- 親とプロンプトキャッシュプレフィックスを共有（2〜N番目の子は約10倍安い）
-- ツール呼出は親のコンテキストに入らない
-- 最終サマリーのみを親に返す</p>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-23: Claude Code のフォルダ構造に <code>~/.claude/agents/</code> と <code>.claude/agents/</code> が存在することは <a href="../tools/claude-code.html">claude-code</a> のフォルダ構成セクションで公式に確認済み</li>
+<li>2026-05-23: built-in サブエージェント <strong>Explore</strong>（コードベース検索）と <strong>Plan</strong>（実装計画立案）が Claude Code に同梱されていることは <a href="../tools/claude-code.html">claude-code</a> の記述と一致する</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-04-26: 長いセッションでは grep・find・ls などのツール呼出がすべてコンテキストに残り、30分で 80k トークンのノイズが生じる（単一ソースの数字）</li>
+<li>2026-04-26: フォークされたサブエージェントは親とプロンプトキャッシュプレフィックスを共有するため、2番目以降の子は入力トークンが約10倍安くなるとされる（未確認の効果測定）</li>
+<li>2026-04-26: <code>context-timeline</code> フック（<code>https://www.aitmpl.com/component/hook/monitoring/context-timeline</code>）でメインエージェントと並行動作中のサブエージェントのコンテキストをリアルタイム表示できるという紹介</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li><code>CLAUDE_CODE_FORK_SUBAGENT=1</code> のフォーク起動は、空コンテキスト起動と比べて実タスクでどちらが安定するか自分のワークフローで試す</li>
+<li>「2番目以降の子が約10倍安い」というプロンプトキャッシュ共有の効果は、実際のトークン課金で再現できるか測定する</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a>（サブエージェントのフォルダ構成・<code>/batch</code> コマンド等）</li>

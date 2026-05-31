@@ -25,24 +25,33 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>codex-agent-loop</h1>
   <div class="meta">concepts/codex-agent-loop · concepts · <span title="2026-05-22">1週間前</span></div>
   <article><h1>Codex エージェントループ</h1>
-<p><a href="../tools/openai-codex.html">openai-codex</a> の Codex CLI が採用するエージェントループの内部実装。OpenAI Responses API を使ってユーザー・モデル・ツールの三者間インタラクションを制御する中核ロジック。Michael Bolin（OpenAI MTS）による公式解説シリーズ第1弾（2026-01-23）。</p>
+<blockquote>
+<p><strong>TL;DR</strong>: <a href="../tools/openai-codex.html">openai-codex</a> の Codex CLI が「ユーザー入力→プロンプト構築→Responses API 推論→ツールコール or アシスタントメッセージ」を繰り返す中核ループ。完全ステートレス設計とプロンプトキャッシュ保護を両立させるため、<code>input</code> 配列を末尾追記のみで成長させるのが設計の肝。</p>
+</blockquote>
+<p>Codex CLI のエージェントループは、OpenAI Responses API を使ってユーザー・モデル・ツールの三者間インタラクションを制御する中核ロジックである。基本構造は <strong>ユーザー入力 → プロンプト構築 → Responses API 推論 → ツールコール or アシスタントメッセージ</strong> の繰り返しで、1ターンは1アシスタントメッセージで終了する。</p>
+<p><strong>プロンプトの構成</strong>。プロンプトのロール優先度は <code>system &gt; developer &gt; user &gt; assistant</code> の降順。<code>instructions</code> フィールドが system/developer ロールを、<code>input</code> フィールドの各アイテムが会話履歴を担う。初回ターンの <code>input</code> は ①サンドボックス権限説明（developer ロール）→ ②developer_instructions（オプション）→ ③ユーザー指示（AGENTS.md 等の集約）→ ④環境コンテキスト（cwd・shell）→ ⑤ユーザーメッセージ の順で構成される。</p>
+<p><strong>エンドポイントの分岐</strong>。Responses API のエンドポイントは認証方式で分かれる：ChatGPT ログインは <code>chatgpt.com/backend-api/codex/responses</code>、APIキーは <code>api.openai.com/v1/responses</code>、ローカル（<code>--oss</code>）は <code>localhost:11434/v1/responses</code>。</p>
+<p><strong>プロンプトキャッシュの保護</strong>。ツールリストの順序変動・モデル切替・サンドボックス設定変更・カレントディレクトリ変更はキャッシュミスを引き起こす。そのため会話の途中でサンドボックスや cwd が変わっても、既存の <code>input</code> アイテムは書き換えず<strong>新しいメッセージを末尾に追記</strong>することでキャッシュプレフィックスを保護する。この末尾追記の不変則は <a href="../concepts/prompt-caching.html">prompt-caching</a> の設計思想とも共通する。</p>
+<p><strong>コンテキスト圧縮（Compaction）</strong>。<code>auto_compact_limit</code> を超過すると <code>/responses/compact</code> エンドポイントを自動呼び出しし、返却される <code>type=compaction</code> アイテム（<code>encrypted_content</code> 付き）が以降の <code>input</code> を代替する。公式ブログは圧縮が "preserves the model's latent understanding"（モデルの潜在的理解を保持する）と記述している。</p>
+<p><strong>reasoning と ZDR</strong>。モデルが出力した <code>type=reasoning</code> アイテムは次の推論リクエストの <code>input</code> に含める必要がある。ZDR（Zero Data Retention）環境では <code>encrypted_content</code> がサーバー側で復号され、OpenAI は復号キーのみ保持しデータは保持しない。<code>previous_response_id</code> を使わない完全ステートレス設計により、プロバイダー側でキャッシュを保持する義務がなくなる点が ZDR 対応と整合する。これは <a href="../concepts/12-factor-agents.html">12-factor-agents</a> のステートレス設計原則と共鳴する。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
-<li>2026-05-21: <strong>Compactionの圧縮メカニズム</strong> — コンテキスト圧縮が劣化しにくい理由は、テキスト形式ではなく<strong>潜在空間のベクター表現でバイナリ圧縮</strong>しているため（@kenn の観察）。公式ブログでも "preserves the model's latent understanding" と記述。元々膨大なテキストを超圧縮したものがLLMの重みであることと整合する設計。セッションが極めて長くなっても意味的劣化が少ないのはこの仕組みによる</li>
-<li>2026-01-23: <code>previous_response_id</code> を意図的に使わない設計判断：ZDR（Zero Data Retention）対応と完全ステートレス性のトレードオフを優先。ステートレス化でプロバイダー側のキャッシュ保持義務が不要になる</li>
-<li>2026-01-23: MCP ツールは Codex CLI のサンドボックス外で動作する——MCP サーバー側が自前でガードレールを実装する責任を負う（Codex の shell ツールのみサンドボックス適用）</li>
-<li>2026-01-23: コンテキストウィンドウの増大は会話ターン数に対して<strong>二次オーダー</strong>で成長する。プロンプトキャッシュのヒット率が高ければ実質的に線形コストに抑えられる</li>
+<li>2026-05-21: <strong>Compaction が劣化しにくい理由（@kenn の解釈）</strong> — コンテキスト圧縮が劣化しにくいのは、テキスト形式ではなく<strong>潜在空間のベクター表現でバイナリ圧縮</strong>しているためという見方。元々膨大なテキストを超圧縮したものがLLMの重みであることと整合する設計、という解釈。公式記述の "preserves the model's latent understanding" をこのメカニズムの裏付けと読む（単一ソースの推論）</li>
+<li>2026-01-23: <code>previous_response_id</code> を意図的に使わない設計判断は、ZDR 対応と完全ステートレス性のトレードオフを優先したものという解釈</li>
+<li>2026-01-23: MCP ツールは Codex CLI のサンドボックス外で動作し、MCP サーバー側が自前でガードレールを実装する責任を負う（サンドボックス適用は Codex の shell ツールのみ、という著者の説明）</li>
+<li>2026-01-23: コンテキストウィンドウの増大は会話ターン数に対して<strong>二次オーダー</strong>で成長するが、プロンプトキャッシュのヒット率が高ければ実質的に線形コストに抑えられるという見立て</li>
 </ul>
 <h2>検証済み事実</h2>
 <ul>
-<li>2026-01-23: <strong>エージェントループの基本構造</strong> — ユーザー入力 → プロンプト構築 → Responses API 推論 → ツールコール or アシスタントメッセージ の繰り返し。1ターン = 1アシスタントメッセージで終了</li>
-<li>2026-01-23: <strong>Responses API エンドポイント</strong> — 認証方式によりエンドポイントが分岐：ChatGPT ログインは <code>chatgpt.com/backend-api/codex/responses</code>、APIキーは <code>api.openai.com/v1/responses</code>、ローカル（<code>--oss</code>）は <code>localhost:11434/v1/responses</code></li>
-<li>2026-01-23: <strong>プロンプトロール優先度</strong> — <code>system &gt; developer &gt; user &gt; assistant</code> の降順。<code>instructions</code> フィールドが system/developer ロール、<code>input</code> フィールドの各アイテムが会話履歴を担う</li>
-<li>2026-01-23: <strong>input の構成順序（初回ターン）</strong>：①サンドボックス権限説明（developer ロール）→ ②developer_instructions（オプション）→ ③ユーザー指示（AGENTS.md 等の集約）→ ④環境コンテキスト（cwd・shell）→ ⑤ユーザーメッセージ</li>
-<li>2026-01-23: <strong>プロンプトキャッシュ保持の条件</strong> — ツールリストの順序変動・モデル切替・サンドボックス設定変更・カレントディレクトリ変更はキャッシュミスを引き起こす。MCP サーバーのツール順不整合バグ（<a href="https://github.com/openai/codex/pull/2611">PR #2611</a>）で発覚した実例あり</li>
-<li>2026-01-23: <strong>mid-conversation の設定変更対応</strong> — サンドボックスや cwd が変わっても <code>input</code> の既存アイテムを書き換えず、<strong>新しいメッセージを末尾に追記</strong>することでキャッシュプレフィックスを保護する</li>
-<li>2026-01-23: <strong>コンテキスト圧縮（Compaction）</strong> — <code>auto_compact_limit</code> 超過時に <code>/responses/compact</code> エンドポイントを自動呼び出し。返却される <code>type=compaction</code> アイテム（<code>encrypted_content</code> 付き）が以降の <code>input</code> を代替する。以前は <code>/compact</code> コマンドの手動実行のみだった</li>
-<li>2026-01-23: <strong>reasoning の扱い</strong> — モデルが出力した <code>type=reasoning</code> アイテムは次の推論リクエストの <code>input</code> に含める必要がある。ZDR 環境では <code>encrypted_content</code> がサーバー側で復号される（OpenAI は復号キーのみ保持・データは保持しない）</li>
+<li>2026-01-23: <strong>公式解説シリーズ第1弾</strong> — Michael Bolin（OpenAI MTS）による Codex エージェントループの公式解説（2026-01-23）</li>
+<li>2026-01-23: <strong>プロンプトキャッシュミスの実例</strong> — MCP サーバーのツール順不整合バグ（<a href="https://github.com/openai/codex/pull/2611">PR #2611</a>）でツールリスト順序変動によるキャッシュミスが発覚した</li>
+<li>2026-01-23: <strong>Compaction の挙動変更</strong> — 以前は <code>/compact</code> コマンドの手動実行のみだったが、<code>auto_compact_limit</code> 超過時に自動で <code>/responses/compact</code> を呼び出すようになった</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>末尾追記によるキャッシュ保護は、自分の wiki ingest パイプライン（プロンプト前半固定・新規分のみ末尾追加）にもそのまま適用できるか</li>
+<li>@kenn の「潜在空間でバイナリ圧縮」という解釈は公式の実装説明と一致するか、それとも比喩か（一次ソースで検証したい）</li>
+<li>二次オーダー成長とキャッシュ線形化の主張は、実際のトークン課金ログで確認できるか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -51,8 +60,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — エージェントアーキテクチャのパターン集</li>
 <li><a href="../concepts/12-factor-agents.html">12-factor-agents</a> — 信頼性の高いエージェント設計原則（ステートレス設計原則と共鳴）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openai-codex.html">openai-codex</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../concepts/12-factor-agents.html">12-factor-agents</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
 <li><a href="../concepts/prompt-engineering-playbook.html">prompt-engineering-playbook</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://openai.com/index/unrolling-the-codex-agent-loop/" rel="noopener" target="_blank">https://openai.com/index/unrolling-the-codex-agent-loop/</a></li>
 <li><a href="https://x.com/i/web/status/2057462768857743569" rel="noopener" target="_blank">https://x.com/i/web/status/2057462768857743569</a></li></ul></section></article>

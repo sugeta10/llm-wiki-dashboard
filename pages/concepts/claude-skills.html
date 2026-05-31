@@ -25,21 +25,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>claude-skills</h1>
   <div class="meta">concepts/claude-skills · concepts · <span title="2026-05-30">1日前</span></div>
   <article><h1>Claude Skills（Claudeスキル）</h1>
-<p>Claudeにタスク固有の「永続的な職務定義」を与えるMarkdownファイル（.md）。プロンプトとの違いは <strong>セッションをまたいで永続し、対応タスク時に自動でロードされる</strong>点。一度作れば毎回の文脈再構築が不要になる。技術書からスキルを自動生成するには <a href="../tools/book-to-skill.html">book-to-skill</a> が使える。PM向け実践例として <a href="../tools/wbs-skills.html">wbs-skills</a> も参照。</p>
-<h2>観察ログ（未検証）</h2>
-<ul>
-<li>2026-05-29: 佐藤亮（@nobita2040）著「<strong>Claude Codeで学ぶ Agent Skills入門</strong>」が2026-06-08発売予定。デザイン系・ドキュメント系・開発&amp;コラボレーション系の3カテゴリでAgent Skillsを体系的に解説する書籍</li>
-<li>2026-05-25: @steipete（Peter Steinberger）が指摘するスキル設計のアンチパターン：「スキル説明に本1冊分を書くな。全コンテキストに毎回ロードされるゴミになる。エージェントにトークン効率・文法省略を指示せよ」。<a href="https://github.com/steipete/agent-scripts/blob/main/skills/skill-cleaner/SKILL.md">skill-cleanerツール</a>（スキルの最悪の冗長箇所を発見するスキル）を公開</li>
-<li>2026-05-19: @sairahul1 によるスキル実践ガイド。「プロンプトは期限付き、スキルは永続」という概念整理。20スキル・5カテゴリを紹介</li>
-<li>2026-05-19: 「10倍の成果を出すビルダーは賢いのではなく、スキルを一度作って毎回再構築しないだけ」という主張</li>
-<li>2026-05-19: Claude.ai と Claude Code で同じ仕組みで動作。Claude.ai は Settings → Sub-Agents → Add。Claude Code は <code>.claude/agents/</code> にMarkdownファイルを置くと自動認識</li>
-</ul>
-<h2>検証済み事実</h2>
-<ul>
-<li>2026-05-19: Claude.ai・Claude Desktop: Settings → Sub-Agents → Add でインストール</li>
-<li>2026-05-19: Claude Code: プロジェクトルートの <code>.claude/agents/skillname.md</code> に保存で自動認識</li>
-</ul>
-<h2>スキルとプロンプトの違い</h2>
+<blockquote>
+<p><strong>TL;DR</strong>: タスク固有の「永続的な職務定義」をMarkdownファイルで与え、対応タスク時に自動ロードさせる仕組み。プロンプトと違いセッションをまたいで持続するため、毎回の文脈再構築が不要になる。</p>
+</blockquote>
+<p>Claude Skillsは、Claudeにタスク固有の振る舞いを与える <strong>永続的な職務定義</strong> をMarkdownファイル（.md）として記述する仕組み。プロンプトとの本質的な違いは、プロンプトが「今回これをせよ」という都度の指示でセッション終了とともに消えるのに対し、スキルは「このタスクでは常にこうあれ」という職務定義として <strong>セッションをまたいで永続し、対応タスク時に自動でロードされる</strong> 点にある。一度作れば毎回の文脈再構築が不要になり、再利用可能な能力として蓄積されていく。</p>
 <table>
 <thead>
 <tr>
@@ -66,7 +55,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<h2>20スキル・5カテゴリ一覧</h2>
+<h2>導入方法</h2>
+<p>Claude.ai と Claude Code は同じ仕組みでスキルを動作させる。</p>
+<ul>
+<li><strong>Claude.ai / Claude Desktop</strong>: Settings → Sub-Agents → Add からインストールする</li>
+<li><strong>Claude Code</strong>: プロジェクトルートの <code>.claude/agents/skillname.md</code> にMarkdownファイルを保存すると自動認識される</li>
+</ul>
+<p>技術書からスキルを自動生成するには <a href="../tools/book-to-skill.html">book-to-skill</a> が使える。PM向けの実践例として <a href="../tools/wbs-skills.html">wbs-skills</a> も参照。</p>
+<h2>設計上の注意点</h2>
+<p>スキルの説明（description）は呼び出し対象を判定するために全コンテキストへロードされる。そのため冗長な説明を書くとトークンを無駄に消費し続ける。説明は簡潔に保ち、必要に応じてエージェントにトークン効率・文法省略を指示するのが望ましい。スキルの冗長箇所を検出する <a href="https://github.com/steipete/agent-scripts/blob/main/skills/skill-cleaner/SKILL.md">skill-cleanerツール</a> のような補助ツールも存在する。</p>
+<h2>スキルの実践カタログ（20スキル・5カテゴリ）</h2>
+<p>スキルが具体的にどんなタスクに適用できるかの例。タスクごとに独立した職務定義を切り出す設計が見て取れる。</p>
 <p><strong>コンテンツ &amp; ライティング</strong></p>
 <table>
 <thead>
@@ -227,6 +226,19 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-29: 佐藤亮（@nobita2040）著「<strong>Claude Codeで学ぶ Agent Skills入門</strong>」が2026-06-08発売予定。デザイン系・ドキュメント系・開発&amp;コラボレーション系の3カテゴリでAgent Skillsを体系的に解説する書籍</li>
+<li>2026-05-25: @steipete（Peter Steinberger）が指摘するアンチパターン：「スキル説明に本1冊分を書くな。全コンテキストに毎回ロードされるゴミになる」</li>
+<li>2026-05-19: @sairahul1 による「プロンプトは期限付き、スキルは永続」という概念整理（20スキル・5カテゴリを紹介）</li>
+<li>2026-05-19: 「10倍の成果を出すビルダーは賢いのではなく、スキルを一度作って毎回再構築しないだけ」という主張</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のwikiシステムの操作（ingest/lint/review）を、CLAUDE.md直書きではなくスキル化すると保守性は上がるか？</li>
+<li>スキル説明を簡潔に保ちつつ自動ロードの判定精度を保つ境界はどこか？description肥大の損益分岐点を測れるか</li>
+<li>カタログの20スキルのうち、どれが実際に再利用され続けるか（作って放置されないものの特徴）</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — スキルに自己改善ループを組み込む発展的なパターン（LESSONS.mdアプローチ）</li>
@@ -238,9 +250,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/hermes-agent.html">hermes-agent</a> — 類似コンセプトを実装。スキルを自己作成・進化させる</li>
 <li><a href="../tools/obsidian-skills.html">obsidian-skills</a> — kepano製 Obsidian向けAgent Skills集（同仕様）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/grill-me.html">grill-me</a></li>
-<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../tools/book-to-skill.html">book-to-skill</a></li>
 <li><a href="../tools/buy-or-bounce.html">buy-or-bounce</a></li>
+<li><a href="../tools/book-to-skill.html">book-to-skill</a></li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
 <li><a href="../tools/wbs-skills.html">wbs-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2056665329305256232" rel="noopener" target="_blank">https://x.com/i/web/status/2056665329305256232</a></li>
 <li><a href="https://x.com/i/web/status/2058917897590673525" rel="noopener" target="_blank">https://x.com/i/web/status/2058917897590673525</a></li>
 <li><a href="https://x.com/i/web/status/2060281205220913325" rel="noopener" target="_blank">https://x.com/i/web/status/2060281205220913325</a></li></ul></section></article>

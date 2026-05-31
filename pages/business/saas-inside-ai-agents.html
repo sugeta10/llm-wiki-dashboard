@@ -25,16 +25,24 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>saas-inside-ai-agents</h1>
   <div class="meta">business/saas-inside-ai-agents · business · <span title="2026-05-26">5日前</span></div>
   <article><h1>SaaS inside AI Agents（AIエージェントがワークスペースになる時代）</h1>
-<p>AIエージェント（Codex・Claude Code）が主要作業環境になり、SaaSツールをその中のブラウザで使う時代へのシフト。従来の「SaaSにAIを組み込む」方向とは逆の流れ。Dan Shipper（Every.to CEO）がLenny's Podcastで提唱（@lennysan要約, 2026-05-25）。</p>
+<blockquote>
+<p><strong>TL;DR</strong>: 「SaaSにAIを組み込む」のではなく、AIエージェント（Codex・Claude Code）を主作業環境とし、その中のin-appブラウザでSaaSツールを使う——という主従逆転のワークフロー仮説。</p>
+</blockquote>
+<p><strong>SaaS inside AI Agents</strong> とは、作業の起点を従来のSaaSアプリからAIエージェントへ移すワークフローの考え方を指す。これまでの主流は、既存のSaaSプロダクトにAI機能を後付けで埋め込む方向（SaaS + AI）だった。この概念はその向きを反転させ、<strong>AIエージェントが作業環境（ワークスペース）の中心になり、SaaSツールはエージェント内のブラウザから呼び出されるサブツールになる</strong>と捉える。</p>
+<p>構造としては、エージェントが「人間が直接アプリを操作する」という前提を吸収し、ドキュメント作成・調査・ツール横断の操作をエージェント側で完結させる。SaaSは独立した入口ではなく、エージェントが必要に応じて開く部品になる。これは、コマンドラインツールやスタンドアロンSaaSを人間が直接叩く従来モデルに対する代替であり、<a href="../tools/openai-codex.html">openai-codex</a> や <a href="../tools/claude-code.html">claude-code</a> のようなコーディングエージェントが汎用作業環境へと用途拡張していく流れと整合する。</p>
+<p>読者にとっての含意は、ツール選定・プロダクト設計の軸が「単体で使われるSaaS」から「エージェントから呼び出される/エージェントに統合される前提のツール」へ移りうる、という点にある。<a href="../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a>（権限設計・ToA等）や <a href="../business/ai-vertical-integration.html">ai-vertical-integration</a>（垂直統合とSaaS業界への影響）とあわせて、エージェント中心時代のプロダクト戦略を考える材料になる。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
-<li>2026-05-25: Dan Shipperの予測「未来の仕事はCodexまたはClaude Codeの中で行われる。SaaSツールにAIを入れるのではなく、AIエージェントのin-appブラウザの中でSaaSツールを使う」</li>
-<li>2026-05-25: Dan Shipper本人はすでに全作業をCodexで行っている（ドキュメント作成を含む）</li>
-<li>2026-05-25: 引用ツイート「Automation is a lie. CLIs are over. The SaaSpocalypse is dumb.」——1年前の予測が概ね的中した（Claude Codeの台頭含む）</li>
+<li>2026-05-25: Dan Shipper（Every.to CEO、Lenny's Podcast出演）の予測「未来の仕事はCodexまたはClaude Codeの中で行われる。SaaSツールにAIを入れるのではなく、AIエージェントのin-appブラウザの中でSaaSツールを使う」</li>
+<li>2026-05-25: Dan Shipper本人はすでに全作業をCodexで行っている（ドキュメント作成を含む）と述べた——単一ソースの自己申告</li>
+<li>2026-05-25: 引用ツイート「Automation is a lie. CLIs are over. The SaaSpocalypse is dumb.」——1年前の予測が概ね的中したとの主張（Claude Codeの台頭含む）</li>
 <li>2026-05-25: @lennysan評: Danは1年前のポッドキャスト収録時点ですでにClaude Codeを注目株として挙げていた</li>
 </ul>
-<h2>検証済み事実</h2>
-<p>（なし — 上記はすべて個人の観察・予測）</p>
+<h2>問い</h2>
+<ul>
+<li>「エージェント内ブラウザでSaaSを使う」は本当にプロダクションの日常業務で成立するか、それとも開発者中心の早期事例にとどまるか？</li>
+<li>SaaS側はエージェント統合（API・権限委譲）でこの流れに乗るのか、入口を奪われて防御に回るのか——<a href="../business/ai-vertical-integration.html">ai-vertical-integration</a> と突き合わせて検討する。</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a> — AIエージェント時代の企業戦略5テーマ（ToA・Authorize権限設計等）</li>
@@ -42,8 +50,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/openai-codex.html">openai-codex</a> — Dan Shipperが主作業環境として使うCodex</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — 競合ポジションにありながらDanが事前に注目していたツール</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a></li>
-<li><a href="../tools/openai-codex.html">openai-codex</a></li>
 <li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li>
+<li><a href="../tools/openai-codex.html">openai-codex</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2058914803360600238" rel="noopener" target="_blank">https://x.com/i/web/status/2058914803360600238</a></li></ul></section></article>
 </main>

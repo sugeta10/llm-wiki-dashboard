@@ -25,22 +25,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>openai-mcp-tunnel</h1>
   <div class="meta">tools/openai-mcp-tunnel · tools · <span title="2026-05-29">2日前</span></div>
   <article><h1>OpenAI Secure MCP Tunnel</h1>
-<p>プライベートネットワーク内の<strong>MCPサーバーをファイアウォールポート開放なし</strong>でOpenAI製品から接続するためのアウトバウンドトンネル機能。<code>tunnel-client</code> をプライベートネットワーク内で実行し、OpenAI側へアウトバウンドHTTPS接続のみで通信する。MCPサーバーにパブリックリスナーは不要。</p>
-<p>対応製品: ChatGPT・Codex・Responses API・その他サポート済みOpenAIサービス。</p>
-<h2>観察ログ（未検証）</h2>
-<ul>
-<li>2026-05-29: エンタープライズ展開における意義：「社内MCPサーバーを外に晒さずにChatGPT/Codexと繋げる」ことで、セキュリティ部門が「絶対ダメ」と言い続けてきたAI連携の障壁を解消する発表として受け止められている（@tetumemo 解説）</li>
-<li>2026-05-28: Harpoon（<code>tunnel-client</code> 組み込みのMCPサーバー）により、設定済みのHTTPターゲットのみに絞った狭いスコープのHTTP呼び出しが可能（汎用プロキシではない）</li>
-<li>2026-05-28: OAuth発見はトンネルパスを通過できるが、認可サーバー自体は自動トンネル化されない（認可サーバーがパブリックに到達できない場合はOAuthフローが失敗することがある）</li>
-<li>2026-05-28: ストリーミング結果（server-sent events）もトンネル経由で転送可能</li>
-</ul>
-<h2>検証済み事実</h2>
-<ul>
-<li>2026-05-28: <code>tunnel-client</code> はOpenAI公式リリース (<code>openai/tunnel-client</code>) として公開（公式APIドキュメント記載）</li>
-<li>2026-05-28: デフォルト接続先 <code>api.openai.com:443</code>、制御プレーンmTLS設定時は <code>mtls.api.openai.com:443</code>（<code>/v1/tunnel/*</code> パス）</li>
-<li>2026-05-28: <code>/healthz</code> / <code>/readyz</code> / <code>/metrics</code> / <code>/ui</code>（ループバック限定のローカル管理UI）エンドポイントを提供</li>
-<li>2026-05-28: 運用パターン: Kubernetesサイドカー / 専用Deployment / VMのsystemdサービス</li>
-</ul>
+<blockquote>
+<p><strong>TL;DR</strong>: プライベートネットワーク内のMCPサーバーを、ファイアウォールのインバウンドポートを一切開けずにアウトバウンドHTTPSだけでChatGPT/Codex/Responses APIから接続させる、OpenAI公式の <code>tunnel-client</code> トンネル機能。</p>
+</blockquote>
+<p>プライベートネットワーク内のMCPサーバーを、ファイアウォールのポート開放なしでOpenAI製品から利用するためのアウトバウンドトンネル機能。<code>tunnel-client</code> をプライベートネットワーク内で実行し、OpenAI側へアウトバウンドHTTPS接続のみで通信する。MCPサーバーにパブリックリスナーは不要で、インバウンドポートを開ける必要もない。</p>
+<p>対応製品: ChatGPT・Codex・Responses API・その他サポート済みOpenAIサービス。MCPプロトコル全般については <a href="../tools/claude-mcp.html">claude-mcp</a> を参照。</p>
 <h2>アーキテクチャ</h2>
 <pre><code>OpenAI products → OpenAI-hosted tunnel endpoint
                           ↕ long-poll (outbound HTTPS only)
@@ -48,14 +37,29 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
                           ↓
                     private MCP server (no public listener required)
 </code></pre>
+<p><code>tunnel-client</code> がOpenAI側のトンネルエンドポイントに対してアウトバウンドHTTPSでロングポーリングし、OpenAI製品からのリクエストを受け取ってプライベートMCPサーバーへ中継する。MCPサーバー自体はインターネットに露出しない。</p>
+<p>接続先・パスの仕様:</p>
+<ul>
+<li>デフォルト接続先は <code>api.openai.com:443</code>。制御プレーンでmTLSを設定した場合は <code>mtls.api.openai.com:443</code>（いずれも <code>/v1/tunnel/*</code> パス）。</li>
+<li>ストリーミング結果（server-sent events）もトンネル経由で転送できる。</li>
+<li>OAuth発見（OAuth discovery）はトンネルパスを通過できる。ただし認可サーバー自体は自動的にはトンネル化されないため、認可サーバーがパブリックに到達できない構成ではOAuthフローが失敗しうる。</li>
+</ul>
+<h2>tunnel-client の構成要素</h2>
+<ul>
+<li><code>tunnel-client</code> はOpenAI公式リリース（<code>openai/tunnel-client</code>）として公開されている。</li>
+<li>Harpoon（<code>tunnel-client</code> 組み込みのMCPサーバー）を使うと、設定済みのHTTPターゲットのみに絞った狭いスコープのHTTP呼び出しができる。汎用プロキシではなく、許可したターゲットだけに限定される点が特徴。</li>
+<li>提供エンドポイント: <code>/healthz</code> / <code>/readyz</code> / <code>/metrics</code> / <code>/ui</code>（<code>/ui</code> はループバック限定のローカル管理UI）。</li>
+<li>運用パターン: Kubernetesサイドカー / 専用Deployment / VMのsystemdサービス。</li>
+</ul>
 <h2>セキュリティモデル</h2>
 <ul>
-<li>MCPサーバーはインターネットへの公開不要（パブリックリスナー不要）</li>
-<li><code>tunnel-client</code> はアウトバウンドHTTPSのみ（インバウンドポート開放不要）</li>
-<li>APIキーによる認証 + オプションで制御プレーンmTLS</li>
-<li>アウトバウンドプロキシ・カスタムCAバンドル・MCP側mTLSをサポート</li>
-<li>rawHTTPロギングはデフォルト無効・サポートエクスポートはリダクション済み</li>
+<li>MCPサーバーはインターネットへの公開不要（パブリックリスナー不要）。</li>
+<li><code>tunnel-client</code> はアウトバウンドHTTPSのみ（インバウンドポート開放不要）。</li>
+<li>APIキーによる認証 + オプションで制御プレーンmTLS。</li>
+<li>アウトバウンドプロキシ・カスタムCAバンドル・MCP側mTLSをサポート。</li>
+<li>rawHTTPロギングはデフォルト無効・サポートエクスポートはリダクション済み。</li>
 </ul>
+<p>このモデルにより、社内MCPサーバーを外部に露出させずにAI連携を実現できる。プライベートMCPとエージェントアクセス制御の設計観点は <a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> を参照。</p>
 <h2>セットアップ</h2>
 <pre><code class="language-bash">export CONTROL_PLANE_API_KEY=&quot;sk-...&quot;
 
@@ -91,13 +95,28 @@ tunnel-client run --profile local-stdio
 </tr>
 </tbody>
 </table>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-29: エンタープライズ展開における意義：「社内MCPサーバーを外に晒さずにChatGPT/Codexと繋げる」ことで、セキュリティ部門が「絶対ダメ」と言い続けてきたAI連携の障壁を解消する発表として受け止められている（@tetumemo 解説）</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-28: <code>tunnel-client</code> はOpenAI公式リリース（<code>openai/tunnel-client</code>）として公開（公式APIドキュメント記載）。</li>
+<li>2026-05-28: デフォルト接続先 <code>api.openai.com:443</code>、制御プレーンmTLS設定時は <code>mtls.api.openai.com:443</code>（<code>/v1/tunnel/*</code> パス）。</li>
+<li>2026-05-28: <code>/healthz</code> / <code>/readyz</code> / <code>/metrics</code> / <code>/ui</code>（ループバック限定のローカル管理UI）エンドポイントを提供。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のユースケースで認可サーバーがパブリック到達不可の場合、OAuthフロー失敗をどう回避するか（認可サーバーも別途公開する/トンネル化する余地はあるか）を確認する。</li>
+<li>Cloudflare Tunnel や ngrok などの既存トンネルソリューションと比べ、MCP特化スコープ（Harpoon）がどこまで攻撃面を削減できるか試す。</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a> — MCPプロトコル全般・MCP仕様</li>
 <li><a href="../companies/openai.html">openai</a> — OpenAI製品群・ChatGPT・Codex</li>
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — プライベートMCPとエージェントアクセス制御設計</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/openai.html">openai</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../companies/openai.html">openai</a></li>
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
 <li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://developers.openai.com/api/docs/guides/secure-mcp-tunnels" rel="noopener" target="_blank">https://developers.openai.com/api/docs/guides/secure-mcp-tunnels</a></li>
 <li><a href="https://x.com/i/web/status/2059783181759557962" rel="noopener" target="_blank">https://x.com/i/web/status/2059783181759557962</a></li></ul></section></article>

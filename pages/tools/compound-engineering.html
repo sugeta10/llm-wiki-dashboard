@@ -24,19 +24,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>compound-engineering</h1>
   <div class="meta">tools/compound-engineering · tools · <span title="2026-05-28">3日前</span></div>
-  <article><p>EveryInc製のClaude Code・Codex・Cursor等対応プラグイン。「<strong>各エンジニアリング作業が次の作業をより楽にする</strong>」という複利的発想で、計画80%・実行20%のワークフローを9スキル+多数エージェントで実現する。<code>/plugin marketplace add EveryInc/compound-engineering-plugin</code> でインストール。現在37スキル・51エージェント収録。</p>
-<p><a href="../concepts/spec-driven-development.html">spec-driven-development</a>と目的が重なる：仕様→計画→実行→レビュー→知識化のループを自動的に積み上げていく設計。</p>
-<h2>観察ログ（未検証）</h2>
-<ul>
-<li>2026-05-27: @nurijananianがSuperpowersから乗り換えたと推薦</li>
-<li>2026-05-27: 設計思想「技術的負債の逆転」 — 従来開発は機能追加のたびに複雑化するが、Compound EngineeringはレビューとCompound Note（学習の文書化）により次のエージェントが同じ教訓を再学習しなくて済む構造</li>
-</ul>
-<h2>検証済み事実</h2>
-<ul>
-<li>2026-05-27: コアループは <code>/ce-brainstorm</code> → <code>/ce-plan</code> → <code>/ce-work</code> → <code>/ce-code-review</code> → <code>/ce-compound</code>（公式README）</li>
-<li>2026-05-27: 上流スキル <code>/ce-strategy</code> がSTRATEGY.mdとして問題・アプローチ・ペルソナ・メトリクス・トラックを記録。後続スキルがこれを参照することで戦略が各作業に流れ込む（公式README）</li>
-<li>2026-05-27: <code>/ce-product-pulse</code> で実際のユーザー体験・エラー・パフォーマンスの時系列レポートを<code>docs/pulse-reports/</code>に保存。過去パルスが次のbrainstormとstrategyにシグナルを提供（公式README）</li>
-</ul>
+  <article><blockquote>
+<p><strong>TL;DR</strong>: 「各エンジニアリング作業が次の作業をより楽にする」複利的発想を、計画80%・実行20%のワークフローを9種のコアスキル＋多数のエージェントで実装したEveryInc製のClaude Code・Codex・Cursor対応プラグイン。</p>
+</blockquote>
+<p>Compound Engineeringは、開発の各サイクルが次のサイクルのコストを下げていくよう設計されたワークフロープラグインである。インストールは <code>/plugin marketplace add EveryInc/compound-engineering-plugin</code>。Claude Code・Codex・Cursorに対応する。</p>
+<p>中核となる発想は<strong>技術的負債の逆転</strong>である。従来の開発では機能を追加するたびにコードベースが複雑化し、後続作業のコストが増える。Compound Engineeringはレビューと<strong>Compound Note（学習の文書化）</strong>を各サイクルに組み込むことで、次のエージェントが同じ教訓を再学習せずに済む構造を作り、作業を重ねるほど後続が楽になることを狙う。重心は実行よりも計画側（計画80%・実行20%）に置かれる。</p>
+<p>コアループは <code>/ce-brainstorm</code>（要件のQ&amp;A）→ <code>/ce-plan</code>（実装計画）→ <code>/ce-work</code>（ワークツリーで実行）→ <code>/ce-code-review</code>（マージ前のマルチエージェントレビュー）→ <code>/ce-compound</code>（学習の文書化）。上流に <code>/ce-strategy</code> があり、問題・アプローチ・ペルソナ・メトリクス・トラックを <code>STRATEGY.md</code> として記録、後続スキルがこれを参照することで戦略が各作業に流れ込む。<code>/ce-product-pulse</code> は実際のユーザー体験・エラー・パフォーマンスの時系列レポートを <code>docs/pulse-reports/</code> に保存し、過去のパルスが次のbrainstormとstrategyへのシグナルになる。</p>
+<p>主要スキルの役割:</p>
 <table>
 <thead>
 <tr>
@@ -83,6 +77,25 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
+<p><code>/ce-code-review</code> をはじめ複数スキルが <a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> を活用する。目的の面では <a href="../concepts/spec-driven-development.html">spec-driven-development</a> と重なり、仕様→計画→実行→レビュー→知識化のループを自動的に積み上げていく設計といえる。</p>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-27: コアループは <code>/ce-brainstorm</code> → <code>/ce-plan</code> → <code>/ce-work</code> → <code>/ce-code-review</code> → <code>/ce-compound</code>（公式README）</li>
+<li>2026-05-27: 上流スキル <code>/ce-strategy</code> がSTRATEGY.mdとして問題・アプローチ・ペルソナ・メトリクス・トラックを記録。後続スキルがこれを参照することで戦略が各作業に流れ込む（公式README）</li>
+<li>2026-05-27: <code>/ce-product-pulse</code> で実際のユーザー体験・エラー・パフォーマンスの時系列レポートを <code>docs/pulse-reports/</code> に保存。過去パルスが次のbrainstormとstrategyにシグナルを提供（公式README）</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-27: 現在37スキル・51エージェント収録（単一ソースの数字、未確認）</li>
+<li>2026-05-27: @nurijananianがSuperpowersから乗り換えたと推薦</li>
+<li>2026-05-27: 設計思想「技術的負債の逆転」 — 従来開発は機能追加のたびに複雑化するが、Compound EngineeringはレビューとCompound Note（学習の文書化）により次のエージェントが同じ教訓を再学習しなくて済むという主張</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>計画80%・実行20%の比率は自分のワークフローでも有効か、それともプロジェクト規模に依存するか</li>
+<li>Compound Note（<code>/ce-compound</code>）の学習蓄積は、自分のLLM Wikiの知識化ループと統合できるか</li>
+<li><a href="../tools/shaping-skills.html">shaping-skills</a>・<a href="../tools/grill-me.html">grill-me</a>と機能が重複する部分はどれで、併用する意味はあるか</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a> — メイン対応プラットフォーム</li>
@@ -91,10 +104,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/grill-me.html">grill-me</a> — 類似の「実装前深掘り対話」スキル</li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — <code>/ce-code-review</code>等がマルチエージェントを活用</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/shaping-skills.html">shaping-skills</a></li>
-<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
 <li><a href="../tools/grill-me.html">grill-me</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059319662597611914" rel="noopener" target="_blank">https://x.com/i/web/status/2059319662597611914</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059319662597611914" rel="noopener" target="_blank">https://x.com/i/web/status/2059319662597611914</a></li>
 <li><a href="https://github.com/EveryInc/compound-engineering-plugin" rel="noopener" target="_blank">https://github.com/EveryInc/compound-engineering-plugin</a></li></ul></section></article>
 </main>
 </body>

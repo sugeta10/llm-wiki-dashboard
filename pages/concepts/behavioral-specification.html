@@ -25,16 +25,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>behavioral-specification</h1>
   <div class="meta">concepts/behavioral-specification · concepts · <span title="2026-05-27">4日前</span></div>
   <article><h1>振る舞い仕様（Behavioral Specification）</h1>
-<p><strong>振る舞い仕様</strong>とは、外部から観測可能なシステムの振る舞いに関して「正解・不正解」を判定する成果物。<a href="../concepts/spec-driven-development.html">spec-driven-development</a> の中核概念であり、AIに実装を指示する前に人間が確定させる基準となる。</p>
-<h2>観察ログ（未検証）</h2>
-<ul>
-<li>2026-05-23: kuniwak（blog.kuniwak.com）が「仕様駆動開発における振る舞い仕様の書き方」として4つのポイントを整理</li>
-<li>2026-05-23: 「良い仕様とは、実装の正誤を判断でき、かつその判断に追加の質問をなるべく要しないもの」と定義</li>
-<li>2026-05-23: 実装をそのまま仕様にすると「正解を狭くしすぎる」という問題指摘（エラーメッセージの文字列レベルまで固定されてしまう）</li>
-</ul>
-<h2>検証済み事実</h2>
-<p>（公式発表・査読済み情報はなし。以下は著者の観察・主張に基づく）</p>
-<hr>
+<blockquote>
+<p><strong>TL;DR</strong>: 外部から観測可能なシステムの振る舞いについて「正解・不正解」を判定するための成果物で、AIに実装させる前に人間が確定させるべき基準である。</p>
+</blockquote>
+<p><strong>振る舞い仕様</strong>とは、外部から観測可能なシステムの振る舞いに関して「正解・不正解」を判定する成果物。<a href="../concepts/spec-driven-development.html">spec-driven-development</a> の中核概念であり、AIに実装を指示する前に人間が確定させる基準となる。良い仕様の条件は「実装の正誤を判断でき、かつその判断に追加の質問をなるべく要しないもの」。実装をそのまま仕様にすると正解を狭くしすぎる（エラーメッセージの文字列レベルまで固定されてしまう）ため、観測可能な振る舞いの範囲で「許される出力・流れ」を記述する。</p>
 <h2>システムの2分類</h2>
 <p>振る舞い仕様の表現はシステムの種類によって異なる。</p>
 <h3>変換システム（Transformation System）</h3>
@@ -74,6 +68,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>AIに仕様バグを探させる</strong>: 完成した仕様を読ませて「意図しない流れ」「抜けた流れ」を質問する</li>
 <li><strong>AIにテストを作らせる</strong>: 仕様を渡して「振る舞い仕様からテストを作って」と指示（property-based testingと相性良）</li>
 </ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-23: 出所 — kuniwak（blog.kuniwak.com）が「仕様駆動開発における振る舞い仕様の書き方」として整理した内容を本文に合成。単一ブログソースのため、変換/リアクティブの2分類やτの扱いが広く合意された標準かは未検証</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のwikiやツール開発で、状態遷移図ベースの振る舞い仕様をAIに先に書かせるフローは実際に回るか？</li>
+<li>τ（内部イベント）の明示は、AIが省きがちな異常系の網羅をどこまで改善できるか？</li>
+<li>変換システムの「表に書かない入力＝仕様違反にしない」という暗黙ルールは、AI生成テストとどう噛み合うか？</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様駆動開発の全体プロセス（3種類の仕様・コンテキストエンジニアリング）</li>
@@ -81,9 +85,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントが自律的にコードを書く開発スタイル</li>
 <li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> — Spec-anchored実践：AIに実装ノートを並走させるプロンプト</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
 <li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
 <li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://blog.kuniwak.com/entry/2026/05/23/143148" rel="noopener" target="_blank">https://blog.kuniwak.com/entry/2026/05/23/143148</a></li></ul></section></article>
 </main>
 </body>

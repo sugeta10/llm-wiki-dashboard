@@ -25,14 +25,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>google-code-review</h1>
   <div class="meta">concepts/google-code-review · concepts · <span title="2026-05-23">1週間前</span></div>
   <article><h1>Google コードレビュー指針</h1>
-<p><strong>Google Engineering Practices</strong> は Google が CC-By 3.0 ライセンスで公開しているエンジニアリングガイドライン集。中心コンテンツはコードレビュー指針（Code Reviewer's Guide / Change Author's Guide）。</p>
-<p>関連: <a href="../concepts/spec-driven-development.html">spec-driven-development</a>, <a href="../concepts/agentic-coding.html">agentic-coding</a>, <a href="../tools/claude-code.html">claude-code</a>, <a href="../concepts/claude-skills.html">claude-skills</a></p>
-<h2>ドキュメント構成</h2>
+<blockquote>
+<p><strong>TL;DR</strong>: Google が CC-By 3.0 で公開するコードレビュー指針（レビュアー視点と作成者視点の2文書）は、人間のレビュー基準をドキュメント化したものであり、AIエージェントへの「レビュー仕様」としても再利用できる。</p>
+</blockquote>
+<p><strong>Google Engineering Practices</strong> は Google が CC-By 3.0 ライセンスで公開しているエンジニアリングガイドライン集で、中心コンテンツはコードレビュー指針である。指針は2つの視点に分かれる。</p>
 <ul>
 <li><strong>The Code Reviewer's Guide</strong> — レビュアー視点: 何を見るか・どう指摘するか・LGTM基準</li>
-<li><strong>The Change Author's Guide</strong> — 作成者視点: CLをどう設計するか・レビュアーとのやり取り</li>
+<li><strong>The Change Author's Guide</strong> — 作成者視点: CLをどう設計するか・レビュアーとどうやり取りするか</li>
 </ul>
-<h2>用語定義（Google内部語）</h2>
+<p>両ガイドは Google 内部語で記述される。</p>
 <table>
 <thead>
 <tr>
@@ -54,13 +55,21 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>AI時代との接点</h2>
 <p>AIエージェントがコードを自律生成・レビューする <a href="../concepts/agentic-coding.html">agentic-coding</a> の文脈で、人間のコードレビュー基準をドキュメント化したこの指針は「AIへの指示仕様」としても再利用できる。<a href="../concepts/spec-driven-development.html">spec-driven-development</a> の観点からは、レビュー基準を機械可読な形式で保持することがエージェント品質管理に直結する。</p>
 <h2>Claude Codeスキルとしての活用</h2>
-<h3>観察ログ（未検証）</h3>
+<p>このリポジトリ全体を <a href="../tools/claude-code.html">claude-code</a> の <strong>スキル</strong> として投入すると、エージェントが書く PR の品質管理にレビュー基準を直接参照させられる。指針には「レビュアー視点（何をチェックされるか）」と「作成者視点（PR をどう小分けにして説明文を書くか）」の両技術基準がまとまっているため、PR の粒度や説明文の質を改善する仕様として機能する。スキル化すれば、必要な部分だけをエージェントに読ませる効率化も可能になる。</p>
+<h2>観察ログ（未検証）</h2>
 <ul>
-<li>2026-05-22: @commte が Google Engineering Practices リポジトリ全体を <a href="../tools/claude-code.html">claude-code</a> の <strong>スキル</strong> として投入し、PRの質を改善する手法を公開。「レビュアー視点（何をチェックされるか）」と「開発者視点（PRをどう小分けにして説明文を書くか）」の両技術基準がまとまったドキュメントとして参照させることで、<a href="../tools/claude-code.html">claude-code</a> が書くPRの粒度・説明文の質が向上するとされる。スキルとして入れることで「必要な部分だけ読ませる」効率化も可能。</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li>2026-05-22: @commte が Google Engineering Practices リポジトリ全体を <a href="../tools/claude-code.html">claude-code</a> のスキルとして投入し、PR の質を改善する手法を公開。スキルとして参照させることで Claude Code が書く PR の粒度・説明文の質が向上するとされる（単一ソースの主張、効果測定は未確認）。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このレビュー指針をスキル化したとき、<a href="../tools/claude-code.html">claude-code</a> の PR 粒度・説明文は定量的にどれだけ改善するか測れるか？</li>
+<li>レビュー基準のどの部分をエージェントに読ませると効果が高いか（全文 vs 抜粋）？</li>
+</ul>
+<h2>関連</h2>
+<p>関連: <a href="../concepts/spec-driven-development.html">spec-driven-development</a>, <a href="../concepts/agentic-coding.html">agentic-coding</a>, <a href="../tools/claude-code.html">claude-code</a>, <a href="../concepts/claude-skills.html">claude-skills</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/autoreview.html">autoreview</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/google/eng-practices" rel="noopener" target="_blank">https://github.com/google/eng-practices</a></li>
 <li><a href="https://x.com/i/web/status/2057657923753697286" rel="noopener" target="_blank">https://x.com/i/web/status/2057657923753697286</a></li></ul></section></article>
 </main>

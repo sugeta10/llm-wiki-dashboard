@@ -25,16 +25,27 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>2026-peng-llm-memory-faulty</h1>
   <div class="meta">papers/2026-peng-llm-memory-faulty · papers · <span title="2026-05-22">1週間前</span></div>
   <article><h1>LLMメモリの継続更新による劣化</h1>
-<p>Hao Peng (@haopeng_uiuc, UIUC) らによる研究論文。<strong>「Useful Memories Become Faulty When Continuously Updated by LLMs」</strong>。LLMエージェントが過去の経験を「コンパクトな再利用可能なメモリ」に変換し続けると、メモリが改善されるどころか<strong>劣化する（faulty）</strong>という発見。</p>
+<blockquote>
+<p><strong>TL;DR</strong>: LLMエージェントが過去の経験を「コンパクトな教訓」に繰り返し書き直してメモリを継続更新すると、メモリは改善されるどころか劣化（faulty）し、有用だった経験が壊れやすくなる。</p>
+</blockquote>
+<h2>概念説明</h2>
+<p>LLMエージェントは、過去の経験を毎回フルに保持する代わりに、テキストの「教訓（lessons）」や要約に圧縮して再利用可能なメモリへ変換することが多い。このメモリ統合（memory consolidation）を継続的・強制的に繰り返すと、情報が累積的に書き換えられていく。</p>
+<p>問題は、この書き直しが単調に品質を上げないことにある。経験を繰り返しテキスト教訓に再要約すると、当初は有用だったメモリが劣化し、壊れやすく（fragile）なる。各更新ステップで微妙なニュアンスや前提が失われ、誤りが累積する方向に働きうるため、結果として下流タスクの性能が更新前より悪化することがある。</p>
+<p>設計上の含意は、メモリ更新を「常に良くなる操作」と仮定してはならないこと。継続更新には品質劣化のトレードオフがあり、何を統合し何を生データのまま残すか、いつ更新を止めるかを明示的に管理する必要がある。<a href="../concepts/self-refining-skills.html">self-refining-skills</a> のような自己改善ループ（LESSONS.md方式）や、<a href="../tools/hermes-agent.html">hermes-agent</a> のように外部の最適化パイプライン（オフライン最適化）でメモリ品質を担保する設計は、この劣化問題への対処として位置づけられる。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
-<li>2026-05-16: 複数の環境で、強制的なメモリ統合（forced consolidation）は有用な経験を劣化させるパターンが繰り返し観察されたと著者が報告</li>
-<li>2026-05-16: 継続的に統合されたメモリは「壊れやすい（fragile）」傾向があり、期待に反して悪化しうる</li>
+<li>2026-05-16: 複数の環境で、強制的なメモリ統合（forced consolidation）が有用な経験を劣化させるパターンが繰り返し観察されたと著者が報告</li>
+<li>2026-05-16: 継続的に統合されたメモリは「壊れやすい（fragile）」傾向があり、期待に反して悪化しうる、という著者の主張</li>
 <li>2026-05-16: 関連コメント（@dylan_works_）: 「LLMエージェントが経験を繰り返しテキストの"教訓"に書き直すと、メモリが良くなるのではなく悪くなる」</li>
 </ul>
 <h2>検証済み事実</h2>
 <ul>
-<li>2026-05-16: 論文タイトル「Useful Memories Become Faulty When Continuously Updated by LLMs」（著者: Hao Peng et al., UIUC）</li>
+<li>2026-05-16: 論文タイトル「Useful Memories Become Faulty When Continuously Updated by LLMs」（著者: Hao Peng (@haopeng_uiuc) et al., UIUC）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のwiki運用で、ページの継続的な要約・統合がこの「劣化」を起こしていないか? 生ソース（sources/）を不変に保つ設計はその対策として機能しているか確認する。</li>
+<li>どの程度の更新回数・どんな統合方式で劣化が始まるのか、論文本文の実験条件を確認したい。</li>
 </ul>
 <h2>関連</h2>
 <ul>

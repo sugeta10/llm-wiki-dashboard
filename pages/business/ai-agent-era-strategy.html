@@ -25,24 +25,43 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>ai-agent-era-strategy</h1>
   <div class="meta">business/ai-agent-era-strategy · business · <span title="2026-05-22">1週間前</span></div>
   <article><h1>AIエージェント時代の企業戦略：5つのテーマ</h1>
-<p>梶谷健人（POSTS代表 / プロダクト戦略アドバイザー）による AIエージェント時代の企業競争力に関する5テーマ論考（2026-05-22）。AI活用を「効率化」で測ることの危うさを指摘し、事業・組織・競争ルールそのものの書き換えを論じる。</p>
-<p>関連: <a href="../business/org-design-intelligence.html">org-design-intelligence</a>, <a href="../business/ai-vertical-integration.html">ai-vertical-integration</a>, <a href="../concepts/agentic-coding.html">agentic-coding</a>, <a href="../business/saas-inside-ai-agents.html">saas-inside-ai-agents</a></p>
+<blockquote>
+<p><strong>TL;DR</strong>: AI活用を「業務効率化」で測ると競争力を測り損なう。AIネイティブ参入者が一夜で業界をディスラプトしうる超流動的市場では、効率化（器の中の整理）より新価値創造（器を大きくする）・分散・AIに選ばれる整備・意思決定速度の引き上げが企業の生存条件になる。</p>
+</blockquote>
+<p>AIエージェント時代の企業競争力をめぐる論考。AI活用の成否を「効率化」で評価することの限界を起点に、事業・組織・競争ルールそのものの書き換えを扱う。</p>
+<h2>概念説明</h2>
+<h3>効率化スコープの罠：「器の中の整理」vs「器を大きくする」</h3>
+<p>AI活用には2つのスコープがある。既存業務をAIで速く安くこなす「器の中の整理」（効率化）と、AIでしか作れない新たな価値・事業を生む「器を大きくする」（新価値創造）だ。効率化は測りやすく着手しやすいが、競争力の本質は後者にある。カイゼン・現場改善を得意とする組織文化ほど、AI活用のスコープを無意識に「器の中」へ限定しやすいという落とし穴がある。AIの導入効果をコスト削減率だけで評価する設計は、この罠を構造的に強化する。</p>
+<h3>ToA（To AI）マーケティング：「AIに選ばれる」整備</h3>
+<p>AIエージェントがユーザーに代わってサービスを自律的に選択・利用する時代には、購買意思決定の相手が人間からエージェントへ移る。従来のB2B（To Business）・B2C（To Consumer）に加え、ToA（To AI）という訴求対象が立ち上がる。鍵はMachine Readability — エージェントが発見・理解・実行できるよう、API・CLI・構造化されたインターフェースを提供すること。人間向けのUIや広告ではなく、機械が解釈できる形でサービスを露出させる整備が新たな獲得チャネルになる。</p>
+<h3>承認権限（Authorize）：Read/Write/Executeの先の第4段階</h3>
+<p>権限モデルをRead（読む）・Write（書く）・Execute（実行する）の3段階で捉えると、AIエージェント時代には第4段階としてAuthorize（承認する）が重要になる。エージェントが処理速度を100倍にしても、その出力を承認・意思決定する速度が従来のままなら、組織全体のスループットはボトルネックである意思決定速度に律速される。AIを活かすには、誰がどこまでをエージェントに承認委譲するかという権限設計が組織速度を決める。</p>
+<h3>超流動的AI市場と「選択と集中」の再評価</h3>
+<p>AIネイティブな新規参入者が短期間で既存プレイヤーをディスラプトしうる市場では、事業ポートフォリオを1点に絞る「選択と集中」がリスク集中になりうる。主力事業が一夜で陳腐化する可能性が高い環境下では、多動・分散によって複数の事業機会に張る方が合理的になりうる、という競争戦略の組み替えが論じられる。</p>
+<h3>日本特有の制約：余剰人員の再配置</h3>
+<p>レイオフが法制度上難しい環境では、AIによって生じる余剰人員をコスト削減で吸収できない。代わりに、余剰人員を新規事業の立ち上げに再配置する戦略が選択肢になる。この戦略が機能するには、突出した人材だけでなく標準的な人材でも再現性高く新規事業を立ち上げられる仕組み（型・ツール・プロセス）が前提となる。</p>
+<h3>関連する事業形態</h3>
+<p>AIによる生産性向上は、ソロプレナー（少人数・極小資本で大規模売上を狙う事業者）や、AIを業務の中核に据えて既存業界の専門サービスを直接代替するAIネイティブ・ディスラプターという事業形態を後押しする。詳細な数字は観察ログを参照。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
-<li>2026-05-22: METR 2025年データ: AIが80%成功率で自律遂行できるタスクの上限時間は約7ヶ月で2倍ペース拡大 → 6年で約1000倍</li>
-<li>2026-05-22: ソロプレナー事例 — Medvi（Matthew Gallagher、社員1人・2万ドル元手・初年度売上4億100万ドル、2026年18億ドルペース・利益率はHims社の3倍）; Pieter Levels（複数SaaS・月商20〜30万ドル）</li>
-<li>2026-05-22: AIネイティブ・ディスラプター3社 — Sierra（CS特化・評価額100億ドル・解決件数×成果報酬モデル）、Rillet（AIネイティブERPで「ゼロ・デイ・クローズ」・累計9,500万ドル調達）、Crosby（弁護士ライセンス保有の法律事務所として運営・Big Law顧客を直接奪う）</li>
-<li>2026-05-22: 著者論点「ToA（To AI）マーケティング」— AIエージェントがサービスを自律選択する時代には「AIに選ばれる」整備が必要。APIやCLI提供とMachine Readabilityがポイント</li>
-<li>2026-05-22: 著者論点「承認権限（Authorize）」— Read/Write/Executeの先の第4段階。処理速度が100倍になっても意思決定速度が同じなら組織全体の速度は変わらない</li>
-<li>2026-05-22: 著者論点「選択と集中は超流動的AI市場では悪手」— AIネイティブ参入者に一夜でディスラプトされるリスク下では多動・分散が合理的</li>
-<li>2026-05-22: 日本特有課題 — レイオフが難しい労働法制 → AI余剰人員を新規事業立ち上げに再配置する戦略。B〜Cクラス人材でも再現性高く成功できる仕組みが必要</li>
-<li>2026-05-22: 「器の中の整理」（効率化）vs「器を大きくする」（新価値創造）の対比。日本企業のカイゼン文化がAI活用スコープを「器の中」に限定させる皮肉</li>
+<li>2026-05-22: 著者（梶谷健人 / POSTS代表・プロダクト戦略アドバイザー）による5テーマ論考。AI活用を「効率化」で測ることの危うさを指摘する立場</li>
+<li>2026-05-22: METR 2025年データ（著者引用）: AIが80%成功率で自律遂行できるタスクの上限時間は約7ヶ月で2倍ペースで拡大 → 6年で約1000倍、という推計</li>
+<li>2026-05-22: ソロプレナー事例（単一ソース・独立検証未済） — Medvi（Matthew Gallagher、社員1人・2万ドル元手・初年度売上4億100万ドル、2026年18億ドルペース・利益率はHims社の3倍）; Pieter Levels（複数SaaS・月商20〜30万ドル）</li>
+<li>2026-05-22: AIネイティブ・ディスラプター3社（単一ソース） — Sierra（CS特化・評価額100億ドル・解決件数×成果報酬モデル）、Rillet（AIネイティブERPで「ゼロ・デイ・クローズ」・累計9,500万ドル調達）、Crosby（弁護士ライセンス保有の法律事務所として運営・Big Law顧客を直接奪う）</li>
+<li>2026-05-22: 著者の予測「選択と集中は超流動的AI市場では悪手」 — AIネイティブ参入者に一夜でディスラプトされるリスク下では多動・分散が合理的、という主張</li>
+<li>2026-05-22: 著者の見立て — 日本企業のカイゼン文化がAI活用スコープを「器の中」に限定させるという皮肉</li>
 </ul>
-<h2>検証済み事実</h2>
-<p>（なし — 引用元はすべて著者の分析・解釈。数字は著者が参照したMETR・各社プレスリリース等に基づくが独立検証未済）</p><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/saas-inside-ai-agents.html">saas-inside-ai-agents</a></li>
-<li><a href="../business/org-design-intelligence.html">org-design-intelligence</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/nb2017204ac13" rel="noopener" target="_blank">https://note.com/kajiken0630/n/nb2017204ac13</a></li></ul></section></article>
+<h2>問い</h2>
+<ul>
+<li>自分の/関心ある事業で「ToA（AIに選ばれる）」整備は具体的に何を意味するか（API・CLI・構造化データのうちどれが効くか）を1つ試算してみる</li>
+<li>「承認権限」のボトルネックが自分の手元のワークフローのどこにあるか、意思決定の待ち時間を1度計測してみる</li>
+<li>ソロプレナー／AIネイティブ・ディスラプターの売上・評価額の数字は単一ソース。一次情報（各社IR・プレスリリース）で裏が取れるか確認する</li>
+</ul>
+<h2>関連</h2>
+<p>関連: <a href="../business/org-design-intelligence.html">org-design-intelligence</a>, <a href="../business/ai-vertical-integration.html">ai-vertical-integration</a>, <a href="../concepts/agentic-coding.html">agentic-coding</a>, <a href="../business/saas-inside-ai-agents.html">saas-inside-ai-agents</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/org-design-intelligence.html">org-design-intelligence</a></li>
+<li><a href="../business/saas-inside-ai-agents.html">saas-inside-ai-agents</a></li>
+<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/nb2017204ac13" rel="noopener" target="_blank">https://note.com/kajiken0630/n/nb2017204ac13</a></li></ul></section></article>
 </main>
 </body>
 </html>

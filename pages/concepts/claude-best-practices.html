@@ -25,25 +25,47 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>claude-best-practices</h1>
   <div class="meta">concepts/claude-best-practices · concepts · <span title="2026-05-22">1週間前</span></div>
   <article><h1>Claude効果的活用ガイド（18ステップ）</h1>
-<p>@AnatoliKopadzeによるClaude完全活用ガイド。「多くの人は毎日使っていても10%のポテンシャルしか活かせていない」という問題意識から、Projects設定・Custom Instructions・Extended Thinking・トークン最適化など18の実践ステップを解説。</p>
+<blockquote>
+<p><strong>TL;DR</strong>: Projects・Custom Instructions・Extended Thinking・出力長指定などを組み合わせ、Claudeを検索エンジンではなく永続コンテキスト付きの思考パートナーとして使い倒すための実践テクニック集。</p>
+</blockquote>
+<p>Claudeを日常的に使っていても多くのユーザーはその能力の一部しか引き出せていない。以下は、永続コンテキストの活用・プロンプト設計・トークン最適化という3つの軸で出力品質と効率を高める実践手法をまとめたもの。</p>
+<h2>永続コンテキストの活用</h2>
+<ul>
+<li><strong>Projects</strong>：会話をまたいでコンテキストを保持する永続ワークスペース（サイドバーから作成）。毎回コンテキストを入力し直す必要がなくなり、継続的なタスクの起点になる。</li>
+<li><strong>Custom Instructions</strong>：ユーザー自身のプロフィール（役割・目標・好みのコミュニケーションスタイル等）をProjectsに保存し、全チャットへ自動適用する仕組み。既存プロフィールをClaudeに渡して「Custom Instructionsに変換して」と依頼すると効率的に設定できる。</li>
+<li><strong>コンテキスト汚染を防ぐ</strong>：無関係な前コンテキストが残っていると処理が遅くなり、コンテキストブリード（過去の文脈の意図しない混入）が起きる。Projectsのメモリは保持したまま、関係のない話題は新しいチャットで開始する。</li>
+</ul>
+<h2>思考パートナーとしての使い方</h2>
+<ul>
+<li><strong>質問の立て方を変える</strong>：「Xとは何か？」ではなく「この文脈でXがどう役立つか一緒に考えて」と問う。Claudeは推論・合成・議論ができる思考パートナーであり、検索エンジンではない。</li>
+<li><strong>先に質問させる</strong>：複雑なタスクの前に「始める前に必要な情報を収集して（質問して）」と指示すると、前提を揃えてから実行でき、いきなり着手するより出力品質が上がる。</li>
+<li><strong>スパーリングパートナー</strong>：アイデアを「批評（critique）」させると同意しながら膨らませる方向に偏る。「攻撃（attack）」させると本質的な弱点が浮かび上がる。</li>
+<li><strong>ビジネスアイデアのストレステスト</strong>：アイデアに入れ込む前に「厳しいベンチャーキャピタリストとして攻撃して」と依頼すると、コストをかける前に本質的な問題を発見できる。</li>
+<li><strong>フェインマン法プロンプト</strong>：「アナロジーを使って5歳にも分かるように説明して、その後専門用語に戻して」と依頼する。専門用語が飛び交うデフォルト説明より深い理解が得られる。</li>
+</ul>
+<h2>プロンプト設計</h2>
+<ul>
+<li><strong>Extended Thinking</strong>（脳アイコン）：パターンマッチではなく実際に推論させるモード。複雑な意思決定・分析タスクに向く。プロンプトに <code>Think through this step by step before responding</code> を加えても同様の効果が得られる。</li>
+<li><strong>Claudeにプロンプトを書かせる</strong>：最適なプロンプトが不明なときは「このタスク用の最適なプロンプトを書いて」と依頼する。Claudeは何が良い指示になるかを理解している。</li>
+<li><strong>スタイルクローニング</strong>：自分の文章サンプルを3〜5個渡して「スタイルを分析して」と依頼する。サンプルなしだと「AIらしい文章」になるが、パターン分析後は自分の声に近づけられる。</li>
+</ul>
+<h2>トークン最適化</h2>
+<ul>
+<li><strong>出力長の指定</strong>：「3文以内で」「箇条書き5点で」と事前指定するとトークン使用量を抑えられる。</li>
+<li><strong>前置き除去</strong>：Custom Instructionsに「要約・前置き・結論の繰り返しを省く」を追加し、不要なトークンを削減する。</li>
+</ul>
+<p>これらはClaudeに限らず、永続コンテキストとカスタム指示を持つLLMチャット製品に広く応用できる。技術的なプロンプト設計の体系は <a href="../concepts/prompt-engineering.html">prompt-engineering</a>、使用制限の回避は <a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a> を参照。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
-<li>2026-05-13: <strong>Projects</strong>が最重要起点。毎回コンテキストを入力し直す必要がなく、Claudeが会話をまたいで記憶を保持する永続ワークスペース（サイドバーから作成）</li>
-<li>2026-05-13: <strong>Custom Instructions</strong>：Projectsにユーザー自身のプロフィール（役割・目標・好みのコミュニケーションスタイル等）を保存し、全チャットに自動適用させる。プロフィールをClaudeに渡して「Custom Instructionsに変換させる」のが効率的</li>
-<li>2026-05-13: <strong>思考パートナーとして使う</strong>：「Xとは何か？」より「この文脈でXがどう役立つか一緒に考えて」に変えるだけで価値が大幅向上。Claudeは推論・合成・議論ができる思考パートナーであり検索エンジンではない</li>
-<li>2026-05-13: <strong>先に質問させるテクニック</strong>：複雑タスク前に「始める前に情報を収集してください」と指示すると、前提を正しく揃えてから実行できる。最初から始めるより出力品質が劇的に向上する</li>
-<li>2026-05-13: <strong>スタイルクローニング</strong>：3〜5個の自分の文章サンプルを渡し「スタイルを分析して」と依頼する。サンプルなしでClaudeが書くと「AIらしい文章」になるが、パターン分析後は自分の声で書けるようになる</li>
-<li>2026-05-13: <strong>スパーリングパートナー</strong>：アイデアを「批評（critique）」ではなく「攻撃（attack）」させる。"批評"はClaudeが同意しながら膨らませるが、"攻撃"は本質的な弱点を発見させる</li>
-<li>2026-05-13: <strong>Extended Thinking</strong>（脳アイコン）：パターンマッチではなく実際に推論させるモード。複雑な意思決定・分析タスクで出力品質が顕著に向上するとのこと。プロンプトに <code>Think through this step by step before responding</code> を追加しても同等効果</li>
-<li>2026-05-13: <strong>Claudeにプロンプトを書かせる</strong>：最適なプロンプトが不明なときはClaudeに「このタスク用の最適プロンプトを書いて」と依頼する。Claudeは何が良い指示になるか理解している</li>
-<li>2026-05-13: <strong>出力長の指定</strong>：「3文以内で」「箇条書き5点で」と事前指定するだけでトークン使用量を40〜60%削減できるとのこと。価値を失わずに効率化できる</li>
-<li>2026-05-13: <strong>前置き除去</strong>：Custom Instructionsに「要約・前置き・結論の繰り返しを省く」を追加するだけで不要トークンを削減できる</li>
-<li>2026-05-13: <strong>コンテキスト汚染を防ぐ</strong>：Projectsのメモリは保持したまま、関係のない前コンテキストからは新しいチャットを開く。無関係な前コンテキストがあると処理が遅くなりコンテキストブリードが起きる</li>
-<li>2026-05-13: <strong>フェインマン法プロンプト</strong>：「analogiesを使って5歳にも分かるように説明して、その後専門用語に戻して」形式で、専門用語が飛び交うデフォルト説明よりも真の理解が得られる</li>
-<li>2026-05-13: <strong>ビジネスアイデアのストレステスト</strong>：アイデアに恋する前に「厳しいベンチャーキャピタリストとして攻撃して」と依頼することで、コストをかける前に本質的な問題を発見できる</li>
+<li>2026-05-13: 「多くの人は毎日使っていても10%のポテンシャルしか活かせていない」（@AnatoliKopadzeの問題意識）</li>
+<li>2026-05-13: Extended Thinking は複雑な意思決定・分析タスクで出力品質が「顕著に向上する」とのこと（単一ソースの主張）</li>
+<li>2026-05-13: 出力長の事前指定でトークン使用量を「40〜60%削減できる」とのこと（単一ソースの未検証数字）</li>
 </ul>
-<h2>検証済み事実</h2>
-<p>（著者の個人的推奨事項のため、現時点では公式に検証された客観的事実なし）</p>
+<h2>問い</h2>
+<ul>
+<li>出力長指定によるトークン削減率（40〜60%）は自分の典型的なタスクで再現するか、実測してみる。</li>
+<li>Extended Thinking と <code>Think step by step</code> 追記の効果差を、同一プロンプトで比較する。</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — 同著者(@AnatoliKopadze)によるClaudeサブスク活用20選を含む技術的プロンプト設計ガイド</li>
@@ -51,9 +73,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a> — ChatGPT版のカスタム指示活用法（同様の概念）</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — Anthropic製AIコーディングCLI（同じClaudeエコシステム）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a></li>
 <li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a></li>
 <li><a href="../concepts/ai-employee-workflow.html">ai-employee-workflow</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054568935274549597" rel="noopener" target="_blank">https://x.com/i/web/status/2054568935274549597</a></li></ul></section></article>
 </main>
 </body>

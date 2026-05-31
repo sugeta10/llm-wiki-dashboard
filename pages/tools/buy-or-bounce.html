@@ -24,19 +24,35 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>buy-or-bounce</h1>
   <div class="meta">tools/buy-or-bounce · tools · <span title="2026-05-28">3日前</span></div>
-  <article><p>Claude Codeスキル「buy or bounce」は、ランディングページ・メール・広告クリエイティブに対して5種類のバイヤーペルソナを並行シミュレーションし、コンバージョンを阻む箇所を特定・修正提案するツール。<a href="../tools/claude-code.html">claude-code</a>のスキルとして動作し、約3分でHTML形式のレポートを生成する。</p>
+  <article><blockquote>
+<p><strong>TL;DR</strong>: ランディングページ・メール・広告クリエイティブに対し5種類のバイヤーペルソナを並行シミュレーションし、コンバージョンを阻む箇所を特定して修正提案する<a href="../tools/claude-code.html">claude-code</a>スキル。</p>
+</blockquote>
+<p>「buy or bounce」は、セールス用クリエイティブ（LP・メール・広告など）を5種類のバイヤーペルソナの視点で並行レビューし、購買か離脱かを判定させてコンバージョン上の摩擦を可視化する手法。<a href="../tools/claude-code.html">claude-code</a>のスキルとして動作し、約3分でHTML形式のレポートを生成する。元はShopifyの「SimGym」（専用インフラ上で複数ペルソナが実際のブラウザで購買判断を行うABテスト代替）の発想を、Claude Codeスキルとして再実装したもの。</p>
+<h3>5つのバイヤーペルソナ</h3>
+<p>コンバージョン失敗の主要因を網羅するよう設計された5類型。</p>
+<ol>
+<li><strong>Shut-up-and-take-my-Money</strong> — 問題を抱え予算もあり積極的に購買する層</li>
+<li><strong>Skeptic</strong> — 証拠が不足すると離脱する層</li>
+<li><strong>Price-Conscious</strong> — ROI計算が合わないと離脱する層</li>
+<li><strong>Confused Visitor</strong> — オファーが不明瞭だと離脱する層</li>
+<li><strong>Comparison Shopper</strong> — 差別化が不足すると離脱する層</li>
+</ol>
+<h3>仕組み（セクションバイセクション方式）</h3>
+<p>各バイヤーがページの各セクションを順に読み進めながら「内面の独白」を実況する形式が中核。これにより、どのセクションで読者の関心が死ぬか（離脱が発生する瞬間）が可視化される。5ペルソナを同時に走らせる点は<a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>のFan-Outパターンに相当する。</p>
+<h3>使い方</h3>
+<p><code>/goal "buy or bounce this"</code> でクリエイティブをペーストすると、HTML出力（スコア・摩擦マップ・修正優先リスト・フルバイヤーウォークスルー）が生成される。ランディングページ（流入前）・メールシーケンス（送信前）・広告クリエイティブ・提案書・ピッチデッキなど、購買判断を伴うあらゆるクリエイティブの事前検証に応用できる。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
-<li>2026-04-24: @itsolelehmannがShopifyの「SimGym」（専用インフラで複数ペルソナが実際のブラウザ上で購買判断するABテスト代替）をClaude Codeスキルとして再実装したと主張</li>
-<li>2026-04-24: 5つのバイヤーペルソナ設計 — ①Shut-up-and-take-my-Money（問題あり・金あり・積極購買層）②Skeptic（証拠不足で離脱）③Price-Conscious（ROI計算で離脱）④Confused Visitor（オファー不明瞭で離脱）⑤Comparison Shopper（差別化不足で離脱）— これら5つがコンバージョン失敗の主要因を網羅すると説明</li>
-<li>2026-04-24: セクションバイセクション方式が鍵。各バイヤーがページの各セクションで「内面の独白」を実況し、関心が死ぬ瞬間が可視化されるとのこと</li>
-<li>2026-04-24: 自身のClaudeワークショップLP（$197）でテスト実施。5人中3人コンバート・2人フェンス。改善提案として「Claude Cowork自体を1文で説明する」「8分LP作成のビデオデモ追加」「成果数値付きテスティモニアル強化」「10M+という数値の文脈明確化」「恐怖フレーミングから願望フレーミングへ変更」が挙がった</li>
-<li>2026-04-24: <code>/goal "buy or bounce this"</code> でペースト → HTML出力（スコア・摩擦マップ・修正優先リスト・フルバイヤーウォークスルー）が生成されると説明</li>
-<li>2026-04-24: ランディングページ（流入前）・メールシーケンス（送信前）・広告クリエイティブ・提案書・ピッチデッキへの応用を提案</li>
+<li>2026-04-24: @itsolelehmannがShopifyの「SimGym」をClaude Codeスキルとして再実装したと主張</li>
+<li>2026-04-24: 5ペルソナ設計がコンバージョン失敗の主要因を網羅すると本人が説明</li>
+<li>2026-04-24: 自身のClaudeワークショップLP（$197）でテスト実施。5人中3人コンバート・2人フェンスという結果（単一ソースの未確認数字）</li>
+<li>2026-04-24: 上記テストでの改善提案として「Claude Cowork自体を1文で説明する」「8分LP作成のビデオデモ追加」「成果数値付きテスティモニアル強化」「10M+という数値の文脈明確化」「恐怖フレーミングから願望フレーミングへ変更」が挙がったと報告</li>
+<li>2026-04-24: 約3分でレポート生成という所要時間は個人ブログの主張（公式スペックなし）</li>
 </ul>
-<h2>検証済み事実</h2>
+<h2>問い</h2>
 <ul>
-<li>（当事者公表のスペック・公式実験結果なし。上記はすべて個人ブログの主張）</li>
+<li>自分のLPで実際に走らせ、5ペルソナの独白が実在ユーザーのテスト結果とどこまで一致するか検証する</li>
+<li>SimGym（実ブラウザ＋実インフラ）とLLMシミュレーションの判定精度の差はどの程度か調べる</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -46,8 +62,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../design/ai-ux-methods.html">ai-ux-methods</a> — AI時代のUX・コンバージョン設計</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../design/ai-ux-methods.html">ai-ux-methods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2047668468904808531" rel="noopener" target="_blank">https://x.com/i/web/status/2047668468904808531</a></li></ul></section></article>
+<li><a href="../design/ai-ux-methods.html">ai-ux-methods</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2047668468904808531" rel="noopener" target="_blank">https://x.com/i/web/status/2047668468904808531</a></li></ul></section></article>
 </main>
 </body>
 </html>

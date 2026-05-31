@@ -25,22 +25,35 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>llm-council</h1>
   <div class="meta">concepts/llm-council · concepts · <span title="2026-05-30">1日前</span></div>
   <article><h1>LLM Council</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 複数のAIアドバイザーが異なる思考スタイルで同じ質問を分析し、匿名ピアレビューを経て「全員が見落とした盲点」を浮かび上がらせることで、単一AIの同意バイアスを構造的に解消する意思決定支援パターン。</p>
+</blockquote>
 <p>複数のAIアドバイザーが異なる思考スタイルで同じ質問を分析し、匿名ピアレビューを経て意思決定を支援するパターン。単一AIへの質問では「同意バイアス」（質問の枠組みによって真逆の答えが返る問題）が発生する。それを構造的に解消する手法。</p>
-<h2>観察ログ（未検証）</h2>
+<h2>仕組み</h2>
+<p>基本フローは3段階で構成される: ①複数モデル（または複数サブエージェント）を同じ質問にポーリングする → ②ラベルをシャッフルして誰がどの回答かを伏せた状態で相互レビューする → ③議長（統合）モデルが最終的な判断を合成する。複数モデルを横断する原型に対し、<a href="../tools/claude-code-subagents.html">claude-code-subagents</a> を使えば単一のClaude内に5つのサブエージェントを立てて「council this」スキルとして実装できる（<a href="../concepts/claude-skills.html">claude-skills</a>）。</p>
+<h3>5つのアドバイザー役割（思考スタイルの分担）</h3>
+<p>各アドバイザーは異なる観点を担当し、互いに重ならない盲点をカバーする:</p>
 <ul>
-<li>2026-03-30 (@itsolelehmann): <a href="../people/andrej-karpathy.html">andrej-karpathy</a> が考案した <strong>LLM Council</strong> の原型: GPT・Claude・Gemini等の複数モデルを同じ質問にポーリング → 匿名で相互レビュー → 議長モデルが最終統合。@itsolelehmann がこれを Claude 内部の5サブエージェントに置き換えて「council this」スキルとして実装</li>
-<li>2026-03-30: <strong>5つのアドバイザー役割</strong>（思考スタイルの分担）:</li>
 <li><strong>The Contrarian</strong>: 失敗ポイントを探す。アイデアに致命的欠陥があると仮定して掘り下げる（「いい感じだけど…」のギャップを検出）</li>
 <li><strong>The First Principles Thinker</strong>: 「本当に解くべき問いは何か」に立ち返り、前提を剥がして問題を再構築する（「間違った変数を最適化している」問題を検出）</li>
 <li><strong>The Expansionist</strong>: 見逃している上振れを発見する。「もっと大きく考えられないか」「隣の機会は何か」</li>
 <li><strong>The Outsider</strong>: ゼロコンテキストで判断。「知識の呪い」（自分には自明だが顧客に見えないもの）を検出する</li>
 <li><strong>The Executor</strong>: 月曜朝に何をするかだけを考える。実行パスのない計画を即却下する</li>
-<li>2026-03-30: <strong>匿名ピアレビューのメカニズム</strong>: 5人の回答後、ラベルをシャッフルして誰がどの回答かを伏せた上でレビュー。各レビュアーが3つの質問に答える: ①最も強い回答とその理由、②最大の盲点はどれか、③<strong>5人全員が見落としたものは何か</strong>（3番目が最も重要）。「5つの視点を並べたときにそのギャップが誰も言及しなかった問題を浮かび上がらせる」</li>
-<li>2026-03-30: 実際の適用例（コース形式の選択）: 自己ペースコースという「当たり前の答え」に対し — First Principles Thinker が AIツールの鮮度問題（数週間で陳腐化）を提示、Contrarian が完了率3〜5%問題を提示、Executor がタイムライン差（8〜12週 vs 2〜3週）を提示、Expansionist が「ライブ＋録画の両方提供」案を発見。最終決定: ライブワークショップ（180名参加・4.8/5点）</li>
-<li>2026-03-30: 適切なユースケース: コンテンツ・ポジショニング戦略、採用・オペレーション判断（VA雇用 vs 自動化）、価格設定、長期間行き来している二択。「すでに答えを知っていて承認が欲しいだけなら使わない」—— Councilは望まない答えを返すことがある、それが目的</li>
 </ul>
-<h2>検証済み事実</h2>
-<p>（現時点で当事者発の一次情報なし）</p>
+<h3>匿名ピアレビューのメカニズム</h3>
+<p>5人の回答後、ラベルをシャッフルして誰がどの回答かを伏せた上でレビューする。匿名化により発言者の権威ではなく内容で評価される。各レビュアーは3つの質問に答える: ①最も強い回答とその理由、②最大の盲点はどれか、③<strong>5人全員が見落としたものは何か</strong>。3番目が最も重要で、5つの視点を並べたときに初めて、誰も言及しなかった問題のギャップが浮かび上がる。</p>
+<h3>適切なユースケース</h3>
+<p>コンテンツ・ポジショニング戦略、採用・オペレーション判断（VA雇用 vs 自動化）、価格設定、長期間行き来している二択などに向く。逆に「すでに答えを知っていて承認が欲しいだけ」の場面では使わない —— Councilは望まない答えを返すことがあり、それこそが目的だからである。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-03-30 (@itsolelehmann): <a href="../people/andrej-karpathy.html">andrej-karpathy</a> が <strong>LLM Council</strong> の原型（GPT・Claude・Gemini等の複数モデルをポーリング→匿名相互レビュー→議長統合）を考案したという主張。@itsolelehmann がこれを Claude 内部の5サブエージェントに置き換えて「council this」スキルとして実装したと述べている</li>
+<li>2026-03-30: 実際の適用例（コース形式の選択）として報告された内容: 自己ペースコースという「当たり前の答え」に対し — First Principles Thinker が AIツールの鮮度問題（数週間で陳腐化）を提示、Contrarian が完了率3〜5%問題を提示、Executor がタイムライン差（8〜12週 vs 2〜3週）を提示、Expansionist が「ライブ＋録画の両方提供」案を発見。最終決定はライブワークショップ（180名参加・4.8/5点）とされる。いずれも単一ソースの未検証の数字</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>5サブエージェント版（Claude内）と複数モデル版（GPT/Claude/Gemini横断）で、盲点検出の質に差は出るか</li>
+<li>自分のwikiのQuery/Review判断にCouncilパターンを適用できるか（特に「全員が見落としたもの」の問い）</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a> — LLM Council 原型アイデアの考案者</li>
@@ -48,8 +61,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — より広いマルチエージェント設計パターン（Orchestrator-Worker等）</li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — Claude Code スキルとして実装可能な形式</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
 <li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2038661433626333649" rel="noopener" target="_blank">https://x.com/i/web/status/2038661433626333649</a></li></ul></section></article>
 </main>

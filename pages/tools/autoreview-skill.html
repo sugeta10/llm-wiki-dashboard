@@ -25,22 +25,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>autoreview-skill</h1>
   <div class="meta">tools/autoreview-skill · tools · <span title="2026-05-30">1日前</span></div>
   <article><h1>autoreview スキル</h1>
-<p><a href="../tools/openclaw.html">openclaw</a> の agent-skills リポジトリに含まれるコードレビュー自動化スキル。ローカル変更・ブランチ・PRを対象に構造化されたレビューを実行するクローズアウトチェック用ツール。Codex がデフォルトエンジン（最良結果）。</p>
-<h2>観察ログ（未検証）</h2>
-<ul>
-<li>2026-05-28: レビュー出力は「助言」扱い。すべての指摘を実際のコードパスで検証し、非現実的なエッジケース・投機的リスク・広範なリファクタリング提案は拒否する設計</li>
-<li>2026-05-28: セキュリティ監査抑制変更は「抑制済み指摘」を構造化出力に残すことで、有効出力が無関係なリスクを隠さないよう保証する</li>
-<li>2026-05-28: <code>--parallel-tests</code> でテストとレビューを並行実行し、どちらかが変更を引き起こした場合は再実行する</li>
-<li>2026-05-28: 最大30分間実行可能（大きなバンドル時）。30分未満のサイレント期間でプロセスを強制終了しない</li>
-<li>2026-05-28: <code>--stream-engine-output</code> でライブエンジン出力をストリーミング可能（Codex/Claudeはツールイベントとファイルイベントをフィルタリングし、コンパクトサマリーを出力）</li>
-</ul>
-<h2>検証済み事実</h2>
-<ul>
-<li>2026-05-28: デフォルトエンジンは Codex（環境変数 <code>AUTOREVIEW_ENGINE</code> で切替可能）</li>
-<li>2026-05-28: <code>--reviewers codex,claude</code> または <code>--panel</code> で複数エンジンレビューパネルを実行できる</li>
-<li>2026-05-28: ヘルパーは stdout のみに出力し、<code>--output</code> / <code>--json-output</code> 指定時以外はファイルを書かない</li>
-</ul>
-<h2>主なモード</h2>
+<blockquote>
+<p><strong>TL;DR</strong>: ローカル変更・ブランチ・PRに対し、検証済みの実行可能な指摘だけを構造化して返すコードレビュー自動化スキル。デフォルトエンジンは Codex で、複数エンジンのレビューパネルにも対応する。</p>
+</blockquote>
+<p>autoreview は <a href="../tools/openclaw.html">openclaw</a> の agent-skills リポジトリに含まれるコードレビュー自動化スキルで、クローズアウトチェック（着地前の最終確認）に使う。レビュー出力はあくまで「助言」であり、すべての指摘は実際のコードパスで検証してから採用する設計になっている。非現実的なエッジケース・投機的リスク・広範なリファクタリング提案は拒否され、アクション可能な指摘だけが残る。</p>
+<p><strong>レビュー対象モード</strong>は3種類あり、レビューしたい差分の単位で選ぶ。</p>
 <table>
 <thead>
 <tr>
@@ -67,17 +56,29 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
-<h2>レビューパネル</h2>
-<p>複数エンジンを1つの冷凍バンドルに対して実行できる。</p>
+<p><strong>エンジン</strong>はデフォルトが Codex（最良結果）で、環境変数 <code>AUTOREVIEW_ENGINE</code> で切り替えられる。<code>--reviewers codex,claude</code> または <code>--panel</code> を指定すると、複数エンジンを1つの「冷凍バンドル（固定された差分スナップショット）」に対して並行して走らせるレビューパネルになる。</p>
 <pre><code>autoreview --reviewers codex,claude --model codex=gpt-5.1 --thinking codex=high --model claude=sonnet --thinking claude=max
 </code></pre>
-<p>Codex は <code>model_reasoning_effort</code>（low/medium/high/xhigh）、Claude は <code>--effort</code>（max まで対応）にマッピングされる。</p>
-<h2>Contract（要約）</h2>
+<p><code>--thinking</code> は各エンジンの推論強度にマッピングされる。Codex は <code>model_reasoning_effort</code>（low/medium/high/xhigh）、Claude は <code>--effort</code>（max まで対応）に対応する。</p>
+<p><strong>実行とテストの連携</strong>: <code>--parallel-tests</code> を付けるとテストとレビューを並行実行し、どちらかが変更を引き起こした場合は再実行する。大きなバンドルでは最大30分間実行可能で、30分未満のサイレント期間ではプロセスを強制終了しない。<code>--stream-engine-output</code> でライブのエンジン出力をストリーミングでき、Codex/Claude はツールイベントとファイルイベントをフィルタリングしてコンパクトなサマリーを出力する。</p>
+<p><strong>出力の挙動</strong>: ヘルパーは stdout のみに出力し、<code>--output</code> / <code>--json-output</code> を指定しない限りファイルを書かない。セキュリティ監査の指摘を抑制する変更を行う場合でも、「抑制済み指摘」を構造化出力に残すことで、有効な出力が無関係なリスクを隠さないよう保証する。</p>
+<p><strong>スキルが守る契約（Contract）</strong>:</p>
 <ul>
 <li>指摘はすべて実コードで検証してから適用する</li>
-<li>セキュリティ指摘は具体的・実行可能なリスクのみ報告</li>
+<li>セキュリティ指摘は具体的・実行可能なリスクのみ報告する</li>
 <li>ネストされたレビュー・別のエンジン呼び出しは禁止（ヘルパー内部で行う）</li>
-<li>アクション可能な指摘がゼロで exit 0 が出たら停止。追加確認レビューは不要</li>
+<li>アクション可能な指摘がゼロで exit 0 が出たら停止する。追加の確認レビューは不要</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-28: デフォルトエンジンは Codex（環境変数 <code>AUTOREVIEW_ENGINE</code> で切替可能）</li>
+<li>2026-05-28: <code>--reviewers codex,claude</code> または <code>--panel</code> で複数エンジンレビューパネルを実行できる</li>
+<li>2026-05-28: ヘルパーは stdout のみに出力し、<code>--output</code> / <code>--json-output</code> 指定時以外はファイルを書かない</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このレビュー検証フロー（指摘を実コードで検証してから採用）を自分のwiki運用やレビュー作業に転用できるか</li>
+<li><a href="../concepts/google-code-review.html">google-code-review</a> の人手レビュー原則と autoreview の自動レビューはどこで役割分担すべきか</li>
 </ul>
 <h2>関連</h2>
 <ul>

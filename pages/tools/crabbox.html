@@ -25,30 +25,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>crabbox</h1>
   <div class="meta">tools/crabbox · tools · <span title="2026-05-29">2日前</span></div>
   <article><h1>Crabbox</h1>
-<p>リモートボックスにローカルの差分をrsyncし、コマンドを実行してログをストリーミングする<strong>AIエージェント向け共有ワークスペースコントロールプレーン</strong>。ローカルの編集・gitワークフローをそのまま維持しながら、計算・テスト・レビューエビデンスをクラウドへ移動できる。<a href="../tools/openclaw.html">openclaw</a> のネイティブプラグインとしても機能し、<code>crabbox_run</code> / <code>crabbox_warmup</code> 等のエージェントツールを提供する。</p>
-<h2>観察ログ（未検証）</h2>
-<ul>
-<li>2026-05-28: Cloudflare Worker（+ Durable Object）がブローカーとして機能し、各CLIはベアラートークンのみ保有。プロバイダー認証情報はCLIに渡らない「brokered」設計</li>
-<li>2026-05-28: TTL境界付きマシン・月次スペンドキャップ・ユーザー/組織/プロバイダーごとの使用量をブローカーが管理</li>
-<li>2026-05-28: <code>crabbox warmup</code> でボックスをウォーム状態に保ち、<code>--id</code> で複数ラン・SSH・CI間で再利用可能</li>
-<li>2026-05-28: <code>actions hydrate</code> でリポジトリのGitHub Actionsセットアップ手順を再利用し、同一ハイドレート済みワークスペースでローカル実行が可能</li>
-<li>2026-05-28: <code>crabbox webvnc</code> でLinux/macOS/Windowsデスクトップをブラウザにストリーミング（VPN不要・UIテスト・スクリーンショット取得・ライブセッション共有）</li>
-<li>2026-05-28: <code>crabbox artifacts collect</code> でスクリーンショット・動画・JUnitサマリー・ログ・リースメタデータをバンドルしPRエビデンスとして添付可能</li>
-<li>2026-05-28: 対応プロバイダー: Hetzner / AWS / Azure / E2B / Daytona / Blacksmith / Semaphore / GCP / Proxmox / Parallels / Modal / Cloudflare 等多数</li>
-</ul>
-<h2>検証済み事実</h2>
-<ul>
-<li>2026-05-28: CLIはGoバイナリ。ブローカーはCloudflare Worker + 単一Durable Object（公式サイト記載）</li>
-<li>2026-05-28: <code>brew install openclaw/tap/crabbox</code> でインストール可能（公式）</li>
-<li>2026-05-28: <a href="../tools/openclaw.html">openclaw</a> のネイティブプラグインパッケージとしてリポジトリルートに含まれる（Linuxランナーは vanilla Ubuntu / cloud-init 準備済み）</li>
-</ul>
-<h2>アーキテクチャ</h2>
+<blockquote>
+<p><strong>TL;DR</strong>: ローカルの差分をrsyncでリモートのリース済みマシンに送り、SSH経由でコマンド実行してログをストリーミングする、AIエージェント向けのリモート実行コントロールプレーン。ローカルの編集・gitワークフローを維持したまま、計算・テスト・PRエビデンス収集をクラウドへ逃がせる。</p>
+</blockquote>
+<p>リモートボックスにローカルの差分をrsyncし、コマンドを実行してログをストリーミングする、AIエージェント向け共有ワークスペースコントロールプレーン。ローカルの編集・gitワークフローをそのまま維持しながら、計算・テスト・レビューエビデンスをクラウドへ移動できる。CLIはGoバイナリで、<code>brew install openclaw/tap/crabbox</code> でインストールできる。<a href="../tools/openclaw.html">openclaw</a> のネイティブプラグインとしても機能し、<code>crabbox_run</code> / <code>crabbox_warmup</code> / <code>crabbox_status</code> 等のエージェントツールを提供する。</p>
+<h2>仕組みと構造</h2>
+<p>ブローカーを中心に据えた「brokered」設計を取る。各CLIはベアラートークンのみを保有し、クラウドプロバイダーの認証情報はCLIに渡らない。ブローカー（Cloudflare Worker + Durable Object）が、リースの発行、TTL境界付きマシンの管理、月次スペンドキャップ、ユーザー/組織/プロバイダーごとの使用量管理を担う。</p>
 <pre><code>your laptop          Cloudflare Worker         cloud provider
 ------- HTTPS -------&gt; Fleet Durable Object --&gt; Hetzner / AWS / Azure / GCP
    |                    lease + cost state           |
    +------- SSH + rsync to leased runner &amp;lt;-----------+
 </code></pre>
-<h2>ランの流れ（6ステップ）</h2>
+<h3>ランの流れ（6ステップ）</h3>
 <ol>
 <li>CLIがフラグ・env・リポジトリ・ユーザー・デフォルトから設定をロード</li>
 <li>CLIがリースごとのSSHキーとスラグを生成し <code>POST /v1/leases</code> をブローカーに送信</li>
@@ -57,6 +45,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>CLIがSSH経由でコマンドを実行し出力をストリーミング、実行イベントを記録・ハートビート送信</li>
 <li><code>--keep</code> がない限りリースをリリース（保持リースもアイドルタイムアウト後にブローカーが解放）</li>
 </ol>
+<h2>主な機能</h2>
+<ul>
+<li><strong>ウォームボックス再利用</strong>: <code>crabbox warmup</code> でボックスをウォーム状態に保ち、<code>--id</code> を付ければ複数ラン・SSH・CI間で同じボックスを再利用できる。</li>
+<li><strong>GitHub Actionsのローカル再現</strong>: <code>actions hydrate</code> でリポジトリのGitHub Actionsセットアップ手順を再利用し、同一のハイドレート済みワークスペースでローカル実行できる。</li>
+<li><strong>リモートデスクトップのブラウザ配信</strong>: <code>crabbox webvnc</code> でLinux/macOS/Windowsデスクトップをブラウザにストリーミングできる。VPN不要で、UIテスト・スクリーンショット取得・ライブセッション共有に使える。</li>
+<li><strong>PRエビデンスのバンドル</strong>: <code>crabbox artifacts collect</code> でスクリーンショット・動画・JUnitサマリー・ログ・リースメタデータをバンドルし、PRエビデンスとして添付できる。</li>
+<li><strong>マルチプロバイダー対応</strong>: Hetzner / AWS / Azure / E2B / Daytona / Blacksmith / Semaphore / GCP / Proxmox / Parallels / Modal / Cloudflare 等に対応。</li>
+</ul>
 <h2>クイックスタート</h2>
 <pre><code class="language-sh">crabbox login --url https://broker.example.com  # 1回のみ
 crabbox run -- pnpm test                        # 新規リースで1回実行
@@ -65,14 +61,29 @@ crabbox run --id blue-lobster -- pnpm test:changed
 crabbox ssh --id blue-lobster
 crabbox stop blue-lobster
 </code></pre>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-28: CLIはGoバイナリ。ブローカーはCloudflare Worker + 単一Durable Object（公式サイト記載）</li>
+<li>2026-05-28: <code>brew install openclaw/tap/crabbox</code> でインストール可能（公式）</li>
+<li>2026-05-28: <a href="../tools/openclaw.html">openclaw</a> のネイティブプラグインパッケージとしてリポジトリルートに含まれる（Linuxランナーは vanilla Ubuntu / cloud-init 準備済み）</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-28: 対応プロバイダーとして Hetzner / AWS / Azure / E2B / Daytona / Blacksmith / Semaphore / GCP / Proxmox / Parallels / Modal / Cloudflare 等が挙げられているが、各プロバイダーの実際の稼働状況・完成度は単一ソース記載のみで未確認</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>既存のCIランナー（GitHub Actions等）と比べて、ローカル差分rsync方式はどの程度フィードバックが速いか実測してみる</li>
+<li><code>webvnc</code> でのUIテストやスクリーンショット取得を、自分のエージェントワークフロー（<a href="../tools/claude-code.html">claude-code</a> 連携）に組み込めるか試す</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/openclaw.html">openclaw</a> — CrabboxはOpenClawのネイティブプラグインとして動作（<code>crabbox_run</code> / <code>crabbox_warmup</code> / <code>crabbox_status</code> 等）</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントがリモートコンピューティングリソースを使う文脈</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — Crabboxをオーケストレーター経由でClaude Codeと組み合わせ可能</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openclaw.html">openclaw</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://crabbox.sh/" rel="noopener" target="_blank">https://crabbox.sh/</a></li></ul></section></article>
 </main>
 </body>

@@ -25,70 +25,42 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <h1>claude-opus-4-8</h1>
   <div class="meta">models/claude-opus-4-8 · models · <span title="2026-05-30">1日前</span></div>
   <article><h1>Claude Opus 4.8</h1>
-<p><a href="../companies/anthropic.html">anthropic</a> が2026-05-28にリリースした最上位モデル。<a href="../models/claude-opus-4-7.html">claude-opus-4-7</a> の後継。判断力の向上・自己進捗の正直な報告・前世代より長く独立して作業できる能力を特徴とする。</p>
+<blockquote>
+<p><strong>TL;DR</strong>: <a href="../companies/anthropic.html">anthropic</a> が2026-05-28にリリースした最上位モデルで、長期エージェント実行・正直な自己進捗報告・高精度低再現の挙動と、コストを制御するEffort Control/Fast Modeを特徴とする。</p>
+</blockquote>
+<p><a href="../companies/anthropic.html">anthropic</a> が2026-05-28にリリースした最上位モデル。<a href="../models/claude-opus-4-7.html">claude-opus-4-7</a> の後継で、価格はOpus 4.7と同額で提供開始された。公式が示す前世代との差分は「sharper judgment（より鋭い判断力）」「more honesty about its own progress（自己進捗の正直な報告）」「work independently for longer（より長く独立して作業できる能力）」の3点。</p>
+<p><strong>3つの主要な性質。</strong> (1) 長期エージェント実行：多数のツール呼び出しにまたがるタスクで文脈を維持する。高い推論負荷を前提とするため、仕様を少しずつ追加するのではなく最初に全文脈をまとめて渡す設計が有効。(2) セッション途中のsystemプロンプト：messages配列中途の <code>{"role":"system"}</code> をプロンプトキャッシュを無効化せずに追加できる。上書き指示としてではなく文脈として扱うと挙動が安定する。(3) ツール利用の再調整：Web検索は以前より頻繁に起動する一方、1回の作業内で繰り返す回数は減り、文脈から回答する傾向が強まった（高精度・低再現率の方向へシフト）。</p>
+<p><strong>コスト制御の仕組み。</strong> Opus 4.8はデフォルトがHigh effortで、Claude CodeとClaude.aiの両方で Effort Control（Low/High/Max）を切り替えられる。Fast Mode は通常の約2.5倍速・約3倍安価で、コードレビュー・定型コード生成・繰り返し処理に向く。<a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> は1セッションで最大1,000サブエージェントを並列実行できる。コスト最適化の起点としてまず Effort Control を使うのが効果的（<a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a>）。</p>
+<p><strong>プロンプト調整の実践指針。</strong></p>
 <ul>
-<li>価格は Opus 4.7 と同額で提供開始</li>
-<li>「sharper judgment」「more honesty about its own progress」「work independently for longer」が公式の差分</li>
+<li>思考設定は "x-high" ではなく "high" から始め、複雑度の階層ごとにテストする</li>
+<li>長期タスクでは全文脈を最初にまとめて渡す（少しずつ追加しない）</li>
+<li>調査系タスクでは「まず検索する」「サブエージェントに任せる」を明示的に指示する</li>
+<li>レビュープロンプトから保守的な表現を外し、フィルタリングは下流で行う（モデルが指示を文字通りに従うため、上流で絞ると再現率が落ちやすい）</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-30: Anthropic公式が示したOpus 4.8の3機能：Effort Control、Fast Mode（約2.5倍速度）、<a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a>（最大1,000並列エージェント）</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: 評価対象は軽微・小規模・大規模の複雑度階層からサンプリングした100件のオープンソースPR</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: フルシステムのパス率はOpus 4.8 72% vs ベースライン 68%（+4ポイント）</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: 実用的な指摘のパス率はOpus 4.8 61% vs ベースライン 62%（誤差範囲内）</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: 致命的な指摘（critical）が35件→29件に減少</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: コストは1回あたり$0.20〜0.28（Opus 4.5は約$0.13、Sonnet 4.5は$0.04〜0.12）</li>
 </ul>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-05-29: コメントの内訳がベースラインよりノイズが多い。major指摘が119件→81件に減少し、minor/nitpickがほぼ倍増（CodeRabbit評価）</li>
 <li>2026-05-29: レビュー指示を文字通りに従う傾向があり、「重大度の高い問題だけを報告する」保守的プロンプトが再現率を強く抑制するとの仮説</li>
 <li>2026-05-29: 200kトークン超えでコンテキスト性能が目に見えて低下。モノレポや大規模コードベースは壁にぶつかる可能性</li>
-<li>2026-05-29: セッション途中のsystemプロンプト（messages配列内の<code>{"role":"system"}</code>）をプロンプトキャッシュを無効化せずに追加可能</li>
-<li>2026-05-29: Web検索は以前より頻繁に起動するが、1回の作業で繰り返す回数は減少。文脈から回答する傾向が強まった（高精度・低再現率）</li>
-</ul>
-<h2>検証済み事実（CodeRabbitベンチマーク、2026-05-29）</h2>
-<ul>
-<li>2026-05-29: 評価対象：軽微・小規模・大規模の複雑度階層からサンプリングした100件のオープンソースPR</li>
-<li>2026-05-29: フルシステムのパス率：Opus 4.8 72% vs ベースライン 68%（+4ポイント）</li>
-<li>2026-05-29: 実用的な指摘のパス率：Opus 4.8 61% vs ベースライン 62%（誤差範囲内）</li>
-<li>2026-05-29: 致命的な指摘（critical）が35件→29件に減少</li>
-<li>2026-05-29: コストは1回あたり$0.20〜0.28（Opus 4.5は約$0.13、Sonnet 4.5は$0.04〜0.12）</li>
-</ul>
-<h2>3つの主要改善点</h2>
-<table>
-<thead>
-<tr>
-<th>改善点</th>
-<th>詳細</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>長期エージェント実行</strong></td>
-<td>多数ツール呼び出しにまたがるタスクで文脈を維持。高い推論負荷を前提に最初から仕様全体を渡す設計が有効</td>
-</tr>
-<tr>
-<td><strong>セッション途中のsystemプロンプト</strong></td>
-<td>messages配列中途のsystemプロンプトでもキャッシュ無効化なし。上書き指示よりも文脈として扱うと安定</td>
-</tr>
-<tr>
-<td><strong>ツール利用の再調整</strong></td>
-<td>Web検索は積極化しつつ繰り返し減少。高精度・低再現率の挙動に変化</td>
-</tr>
-</tbody>
-</table>
-<h2>プロンプト調整の実践指針</h2>
-<ul>
-<li>"x-high" より "high" の思考設定から始め、階層ごとにテスト</li>
-<li>長期タスクでは全文脈を最初にまとめて渡す（少しずつ追加するのはNG）</li>
-<li>調査系タスクで「まず検索する」「サブエージェントに任せる」を明示的に指示</li>
-<li>レビュープロンプトから保守的な表現を外し、下流でフィルタリング</li>
-</ul>
-<h2>運用コスト最適化（@zodchiii セットアップガイド, 2026-05-29）</h2>
-<h3>Effort Control</h3>
-<p>Opus 4.8のデフォルトはHigh effort。Claude CodeとClaude.aiの両方でLow/High/Maxを切り替え可能。</p>
-<h2>観察ログ（未検証）</h2>
-<ul>
 <li>2026-05-30: Effort ControlがOpus 4.8で最もコスト削減効果の高い新機能。プロンプトの60%をLow、10%のみMaxに振り分けることで月額コストを半減できるとの主張（@zodchiii）</li>
-<li>2026-05-30: Fast mode は通常の2.5倍速・約3倍安価。コードレビュー・定型コード生成・繰り返し処理に適する</li>
-<li>2026-05-30: <a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> は1セッションで最大1,000サブエージェントを並列実行可能。ただし100エージェント規模で$50〜$200のコストがかかるため予算上限設定が必須</li>
-<li>2026-05-30: Opus 4.8の正直性改善：自己コードの欠陥を未報告のまま放置する確率が旧世代比4倍低下、欠陥ある結果を無批判に報告する率は0%（スコア）</li>
+<li>2026-05-30: <a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> は100エージェント規模で$50〜$200のコストがかかるため予算上限設定が必須との指摘</li>
+<li>2026-05-30: Opus 4.8の正直性改善：自己コードの欠陥を未報告のまま放置する確率が旧世代比4倍低下、欠陥ある結果を無批判に報告する率は0%（単一ソースのスコア）</li>
 </ul>
-<h2>検証済み事実</h2>
+<h2>問い</h2>
 <ul>
-<li>2026-05-30: Anthropicが公式に示したOpus 4.8の3機能：Effort Control、Fast Mode（2.5x速度）、Dynamic Workflows（最大1,000並列エージェント）</li>
+<li>200kトークン超での性能低下は自分のモノレポ規模で実際にボトルネックになるか、Fast Modeで緩和できるか</li>
+<li>「プロンプトの60%をLowに振ってコスト半減」は自分のワークロードで再現するか、品質劣化とのトレードオフはどの程度か</li>
+<li>レビュー用途で保守的プロンプトを外して下流フィルタする運用は、CodeRabbitのノイズ増加問題を回避できるか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -98,11 +70,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li>
 <li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
-<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
+<li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
 <li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
-<li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060042702150930686" rel="noopener" target="_blank">https://x.com/i/web/status/2060042702150930686</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060042702150930686" rel="noopener" target="_blank">https://x.com/i/web/status/2060042702150930686</a></li>
 <li><a href="https://x.com/i/web/status/2060153411627257928" rel="noopener" target="_blank">https://x.com/i/web/status/2060153411627257928</a></li>
 <li><a href="https://www.coderabbit.ai/ja/blog/opus-4-8-release" rel="noopener" target="_blank">https://www.coderabbit.ai/ja/blog/opus-4-8-release</a></li>
 <li><a href="https://x.com/i/web/status/2060293472091771114" rel="noopener" target="_blank">https://x.com/i/web/status/2060293472091771114</a></li></ul></section></article>
