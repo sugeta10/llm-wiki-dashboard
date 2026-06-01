@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-W23 - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-W23</h1>
+  <div class="meta">weekly/2026-W23 · weekly · <span title="2026-06-01">今日</span></div>
+  <article><h1>Weekly Insights: 2026-W23（2026-06-01〜06-07）</h1>
+<h2>今週の中心テーマ</h2>
+<p><strong>AIエージェントの主戦場が「賢さ」から「働く環境の設計」へ移った——モデル単体の性能より、作業場所・ワークフロー・スキルをどう設計するかが成果を決めるようになった週。</strong></p>
+<h2>なぜそう見えるか（根拠ページ）</h2>
+<ul>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — Claude Code が単発コマンドから「自分でワークフローを組んで遂行するエージェント」へ。実行環境そのものの進化を象徴する</li>
+<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a> — エージェントが成果を出すには「作業場（ディレクトリ構成）」が要る、プロンプトより先に棚を作るという設計思想</li>
+<li><a href="../tools/compound-engineering.html">compound-engineering</a> / <a href="../tools/shaping-skills.html">shaping-skills</a> — スキルやワークフローを使いながら育て、複利的に積み上げる。成果を一度きりにせず資産化する</li>
+<li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a> — AIは作り手の基準を増幅する鏡。だからこそ環境・基準の設計が結果を左右する</li>
+</ul>
+<h2>既存wikiとの接続</h2>
+<ul>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — 今週の work-folder 設計はこの8フォルダ固定構造の最小版。「未整理の受け口・参照・生成物の隔離」という同じ原則を共有する</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — 今週の動的ワークフローは Fan-Out / Orchestrator パターンをユーザー向けに抽象化した具体形として接続する</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — 今週追加されたスキル・フック・ワークフロー機能はすべてこのツールの進化として束ねられる</li>
+</ul>
+<h2>sugeta-san への問い</h2>
+<p><strong>あなたの LLM Wiki は、いま「賢いモデルに頼るシステム」と「環境設計で成果を出すシステム」のどちらに寄っているか？</strong></p>
+<p>→ <a href="../business/saas-inside-ai-agents.html">saas-inside-ai-agents</a> が示すように、既存の Obsidian ワークフローに作業を溶け込ませる設計は強い。次の一手はモデルを上げることより、<code>sources/</code>・<code>wiki/</code>・スキルという「作業環境」をどう育てるか（<a href="../tools/shaping-skills.html">shaping-skills</a>）に投資する方向が効きそう。</p>
+<h2>今週の小アクション（5分）</h2>
+<p>既存スキルを1つ開き、「使いながら気づいた改善点」を1行だけ追記する（<a href="../tools/shaping-skills.html">shaping-skills</a> / <a href="../concepts/self-refining-skills.html">self-refining-skills</a> の実践）。完璧な書き直しではなく、1行の蓄積でよい。</p>
+<h2>さらに読むべきページ</h2>
+<ul>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — 「考える場所」をDSLとして与えると精度が上がる。プロンプト設計に即効性がある</li>
+<li><a href="../concepts/llm-council.html">llm-council</a> — 複数モデルで匿名相互評価する手法。Wiki の品質チェックに応用できる</li>
+<li><a href="../concepts/behavioral-specification.html">behavioral-specification</a> — 「what」を書いて「how」をAIに委ねる設計スタイル。スキル設計の指針になる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/saas-inside-ai-agents.html">saas-inside-ai-agents</a></li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../tools/shaping-skills.html">shaping-skills</a></li>
+<li><a href="../concepts/behavioral-specification.html">behavioral-specification</a></li>
+<li><a href="../concepts/llm-council.html">llm-council</a></li></ul></section></article>
+</main>
+</body>
+</html>
