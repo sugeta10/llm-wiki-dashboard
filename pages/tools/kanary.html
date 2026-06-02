@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kanary - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>kanary</h1>
+  <div class="meta">tools/kanary · tools · <span title="2026-06-02">今日</span></div>
+  <article><h1>Kanary</h1>
+<blockquote>
+<p>孤立理由: 完全ローカル動作のMac会議録音ツールという領域で、現状wiki内に近接する既存ページがない</p>
+</blockquote>
+<p>Macで聞こえる音声を録音し、文字起こし・要約までを<strong>完全オンデバイス</strong>で完結させるmacOSアプリ。会議に参加するボット型ノートテイカー（Granola / Otter / クラウドサービス）と異なり、ミーティングにゲストを招き入れず、音声をクラウドに送らない点が設計上の核になっている。2026-05-26に @kenn が v2 の音声対応を発表した。</p>
+<h2>仕組み</h2>
+<ul>
+<li><strong>録音</strong>: Google Meet / Zoom / Teams など、Macで鳴る音なら何でも録音できる（アプリ固有の連携セットアップ不要）。マイクとスピーカーを別チャンネルで取得し、「自分」と「相手」を構造的に分離する（話者ダイアライゼーションの推測に頼らない）</li>
+<li><strong>文字起こし</strong>: オンデバイスの SpeechAnalyzer がタイムスタンプ付きトランスクリプトを生成。複数言語対応・アップロードなし</li>
+<li><strong>要約</strong>: overview / decisions / action items / open questions / review items を含む構造化された議事メモを生成。再生成も可能</li>
+<li><strong>要件</strong>: macOS 26 Tahoe 以降・Apple Silicon。基本無料</li>
+</ul>
+<blockquote>
+<p>録音の合法性は地域により異なる。全当事者の同意が必要な地域では録音前に周知する旨が公式に明記されている。</p>
+</blockquote>
+<h2>問い</h2>
+<ul>
+<li>完全ローカルの文字起こし・要約品質は、クラウド型（Granola等）と実用上どこまで差があるか</li>
+<li>自分の会議ワークフロー（議事録→wiki ingest）の入口として使えるか。出力Markdownをsources/notesに流し込めるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li>まだ強い関連ページなし（オンデバイスAI・プライバシー優先ツールが増えたらリンクを張る）</li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059199375289778619" rel="noopener" target="_blank">https://x.com/i/web/status/2059199375289778619</a></li>
+<li><a href="https://kanary.download/voice" rel="noopener" target="_blank">https://kanary.download/voice</a></li></ul></section></article>
+</main>
+</body>
+</html>

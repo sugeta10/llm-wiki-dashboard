@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eval-loop - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>eval-loop</h1>
+  <div class="meta">concepts/eval-loop · concepts · <span title="2026-06-02">今日</span></div>
+  <article><h1>Eval Loop（AI出力の品質ゲート）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIスロップ（量産される薄い出力）はプロンプト問題ではなく品質管理問題であり、出力を基準に対して自動採点し閾値未満を出荷前に止める「eval loop」という品質レイヤーの欠如が原因。プロンプト改良・高価なモデル・メモリは全て入力側の対症療法で、根治しない。</p>
+</blockquote>
+<p>LLMは非決定論的なので、同じプロンプトを2回流せば2つの異なる答えが返る。つまり「完璧なプロンプト」ですら一定割合でスロップを出力し、どの実行が外れかは出荷時までわからない。完璧なプロンプトは品質保証ではなく「少しマシなコイン投げ」にすぎず、人はその全てのフリップを出荷している。スロップを根治する唯一のレイヤーは、生成を磨くこと（入力側）ではなく<strong>出力を測ること</strong>（出力側）——ソフトウェアエンジニアが当然持つ「テスト」を、非決定論的な出力に対して持つこと。</p>
+<p>eval loopは「<strong>生成→基準に対して採点→閾値未満を捕捉→修正→再採点→合格分のみ通す</strong>」という反復テスト。これがほぼ誰も持っていない品質レイヤーである理由は人口統計的なもので、今AIで作っている人々はコンテンツ・営業・プロダクト・起業の出身でエンジニア出身ではないため、「出力にテストを書く」がツールキットに入っていない。</p>
+<h2>スロップが潜む2つの場所</h2>
+<p>同じ病気・同じ治療法だが、ほとんどの人は片方しか見ていない：</p>
+<ul>
+<li><strong>コンテンツ出力</strong> — ツイート・記事・メール・LP。技術的には問題ないが中身が空虚で、タイムラインの他のAIアカウントと同じ声がする。公の場で静かに死ぬが、1本ずつ見ると「まあOK」に見えるため原因を言語化できない</li>
+<li><strong>プロダクト出力</strong> — AI機能・エージェント・チャットボット・抽出パイプライン。自信満々に間違った答え、幻覚の数字、壊れたJSON、ブランドに合わないトーン。公の場では死なず<strong>沈黙の中でスケールする</strong>——全ユーザーが少しずつ悪い体験をし、ほとんどが何も言わず去る</li>
+</ul>
+<p>両者は「測定されていないAI出力が、ゲートなしで観客に直行している」という同一の構造。違いはステークスと可視性だけ。</p>
+<h2>ベンチマークの3要素</h2>
+<p>コンテンツでもプロダクトでも構造は同じ。3つのうち1つでも欠けると「ゲート」ではなく「願望」になる：</p>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>コンテンツの場合</th>
+<th>プロダクトの場合</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>テストケース</strong>（入力＋good output=ground truth）</td>
+<td>自分のベスト20〜50本（ブックマークされた投稿・名前を出せる記事）= 既に到達した基準を抽出する</td>
+<td>ログ・実ユーザーセッションの実入力（ハッピーパス3例ではなく、壊す変な入力）</td>
+</tr>
+<tr>
+<td><strong>メトリクス</strong>（出力→0〜1のスコア）</td>
+<td>ルーブリック。曖昧な観点（「良くて魅力的か」）は曖昧なスコアしか生まない。具体的観点（「コピペできるテンプレを最低1つ含むか」）は信頼できるスコアを生む</td>
+<td>タスクに合わせる：exact match（1つの正解ラベル）/validator（構造保持）/semantic similarity＋judge（オープンエンド）</td>
+</tr>
+<tr>
+<td><strong>閾値</strong>（これ未満は出荷しない線）</td>
+<td>0.7が出発点。気に入ったからと0.6を通さない。深夜のエゴを判断から排除するのが目的</td>
+<td>同上。ベースライン未満はデプロイをブロック</td>
+</tr>
+</tbody>
+</table>
+<p>コンテンツのルーブリック例（4観点）：①具体的なやり方を説明している（vibeでなく明日取れる行動）②聴衆の誰でも追える（ジャーゴンの壁なし）③構造化・再現可能・ステップバイステップ ④新規性がある。メタ基準は「これをブックマークして後で実装しに戻るか」——Noならどれだけ文が綺麗でもスロップ。<strong>judgeは自分の好みを書き下した時だけそれを継承する</strong>。</p>
+<h2>3つの実行ポイント（LLM-as-a-judge）</h2>
+<p>eval loopは3か所で走り、それぞれ捕捉する失敗が違う：</p>
+<ol>
+<li><strong>出荷前（回帰テスト）</strong> — 新プロンプト・新モデルを保存済みケースに対して走らせ、悪化していないか確認。1つを直して3つを静かに壊す変更を止める</li>
+<li><strong>実行時（ガードレール）</strong> — 生成と同時に採点し、条件分岐で失敗をユーザーに届く前に捕捉</li>
+<li><strong>本番（継続モニタリング）</strong> — 実実行のサンプルを継続採点し、品質劣化を「始まった日」に検知（「クライアントが苦情を言った週」ではなく）</li>
+</ol>
+<p>採点役は<strong>LLM-as-a-judge</strong>（鋭いルーブリックを持つモデル）。エゴも特定の一文への愛着もないため、人間より一貫した批評家になりうる。「品質が数字になった瞬間、スロップは抱え続ける感覚ではなく直せるバグになる。vibeはデバッグできないが、0.82から0.61に落ちたスコアはデバッグできる」。</p>
+<h2>エージェントへの実装（Hermesでの6手順）</h2>
+<p>記事は<a href="../tools/hermes-agent.html">hermes-agent</a>を実行基盤として、loopを「evalsボタン」ではなく既存プリミティブの組み立てとして構築する例を示す：</p>
+<ol>
+<li>エージェントを立ち上げ、割り込める通信チャネル（Telegram/Slack）に接続。ゲートは中断できて初めて機能する</li>
+<li>ゴールドスタンダード（ベスト20〜50本）を永続メモリにロード（ground truth化）</li>
+<li>ルーブリックを<strong>judgeスキル</strong>に変換（出力＋ルーブリック→観点ごと0〜1スコア＋一言理由）。スキル＝手続き的記憶なので一度書けば全出力を永久に採点する</li>
+<li>テストケース＋メトリクス関数を<strong>suiteスキル</strong>化（スプレッドシートでなく）</li>
+<li>出荷ゲート：変更が走るとsuiteを再実行→ベースラインとのスコア差分を計算→Slackで「0.81→0.74、2ケース回帰、承認?」と承認ボタンを出す</li>
+<li>本番をcronで監視：実行サンプルを同じjudgeで採点し、線が下がったらDM。サムダウンされた出力は新テストケースとしてsuiteに書き戻され、品質の床が自動で上がる</li>
+</ol>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-30: @EXM7777 によるX article "How To Fix AI Slop (Using Hermes)"。Hermes宣伝色が強く、「nous発：20+自作スキルを持つエージェントは類似タスクを40%速く終える」等の数字は単一ソース・未確認</li>
+<li>2026-05-30: 「コンテンツスロップとプロダクトスロップは同じ病気・同じ治療」という主張は著者の枠組み。実際は評価メトリクスの質（exact match vs semantic）が大きく異なるため、同一judgeで両方を捌けるかは検証余地あり</li>
+<li>2026-05-30: 閾値0.7は著者の経験則であり、タスク・ルーブリックに依存する</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のLLM wiki（ingest品質）にeval loopを適用できるか——「ingestしたページがブックマークして実装しに戻る価値があるか」をjudgeスキルで0〜1採点し、閾値未満を再生成する設計は回るか</li>
+<li>ground truth（ベスト20〜50本）を集める初期コストが、回帰テストの恩恵を上回るのはどの出力量からか</li>
+<li>LLM-as-a-judge自体のスロップ（採点の非決定性）はどう抑えるか。judgeにもeval loopが要るのか（<a href="../concepts/llm-council.html">llm-council</a>の複数judge匿名レビューが効くか）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a> — 記事が実行基盤に使うエージェント（スキル・メモリ・cron・承認ボタンでloopを組む）</li>
+<li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a> — 「AIは品質増幅器」論。eval loopは品質をスケールさせる具体的機構</li>
+<li><a href="../concepts/slop-grenade.html">slop-grenade</a> — スロップが場を破壊する現象。eval loopはその出荷前ゲート</li>
+<li><a href="../tools/dspy.html">dspy</a> — メトリクス＋訓練データでプロンプトを最適化する自動化版（GEPAはフィードバックテキストを使う）</li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — eval loopは「プロンプト改良では根治しない」と位置づける上位レイヤー</li>
+<li><a href="../concepts/llm-council.html">llm-council</a> — 複数AIの匿名ピアレビューによる品質担保（judgeの多重化）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/dspy.html">dspy</a></li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
+<li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a></li>
+<li><a href="../concepts/llm-council.html">llm-council</a></li>
+<li><a href="../concepts/slop-grenade.html">slop-grenade</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060736517564477901" rel="noopener" target="_blank">https://x.com/i/web/status/2060736517564477901</a></li></ul></section></article>
+</main>
+</body>
+</html>

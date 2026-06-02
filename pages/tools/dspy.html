@@ -23,7 +23,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>dspy</h1>
-  <div class="meta">tools/dspy · tools · <span title="2026-05-10">3週間前</span></div>
+  <div class="meta">tools/dspy · tools · <span title="2026-06-02">今日</span></div>
   <article><h1>DSPy</h1>
 <p><strong>DSPy</strong>は、手動のプロンプトエンジニアリングを排除し、プロンプト最適化を機械学習問題として扱うPythonフレームワーク。スタンフォード大学NLPグループが開発。</p>
 <h2>核心思想</h2>
@@ -90,14 +90,27 @@ gepa_compiled = gepa.compile(model, trainset=trainset, valset=valset)
 </code></pre>
 <h2>PyTorchとの比較</h2>
 <p>PyTorchよりもKerasに近い使い心地（高度に抽象化された訓練ループ）。「Define by Run」ではなく宣言的なDefine and Run的な設計に近い。データ・モデル・オプティマイザーの責務分離という思想はPyTorchから影響を受けている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-31: @MakeAI_CEO が「海外のAI研究者界隈で『日本人のプロンプトはDSPyすら知らない化石レベル』と煽る人物がいる」と紹介（出典記事は未取得）。手書きプロンプト文化に対し、DSPyのような<strong>プロンプト最適化を機械化する設計</strong>が先端標準として位置づけられている、という言説の温度感を示す事例。煽り文脈であり技術的主張の中身は未検証</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>手書きプロンプト（<a href="../concepts/prompt-engineering.html">prompt-engineering</a>）からDSPyへ移る損益分岐点はどこか——訓練データ・評価指標を用意するコストが、手チューニングを上回る出力量・タスク数は</li>
+<li>DSPyのOptimizer（COPRO/GEPA）と<a href="../concepts/eval-loop.html">eval-loop</a>の関係：eval loopが「人が回す品質ゲート」なら、DSPyは「その採点を目的関数にしてプロンプトを自動探索する」自動化版と捉えてよいか</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — DSPyが自動化しようとしているプロンプト設計技術</li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — プロンプト自動化と仕様駆動の関係</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 評価指標で出力を採点するループ。DSPyはそのスコアを最適化の目的関数に使う</li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a> — GEPAオフライン最適化を実装するエージェント基盤</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 <li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
-<li><a href="../concepts/prompt-engineering-playbook.html">prompt-engineering-playbook</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/cybernetics/articles/39fb763aca746c" rel="noopener" target="_blank">https://zenn.dev/cybernetics/articles/39fb763aca746c</a></li></ul></section></article>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../concepts/prompt-engineering-playbook.html">prompt-engineering-playbook</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/cybernetics/articles/39fb763aca746c" rel="noopener" target="_blank">https://zenn.dev/cybernetics/articles/39fb763aca746c</a></li>
+<li><a href="https://x.com/i/web/status/2061027265274843378" rel="noopener" target="_blank">https://x.com/i/web/status/2061027265274843378</a></li></ul></section></article>
 </main>
 </body>
 </html>
