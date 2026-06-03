@@ -23,7 +23,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>openai-codex</h1>
-  <div class="meta">tools/openai-codex · tools · <span title="2026-05-26">1週間前</span></div>
+  <div class="meta">tools/openai-codex · tools · <span title="2026-06-03">今日</span></div>
   <article><h1>OpenAI Codex</h1>
 <p>OpenAI が提供するコード生成・エージェント実行プラットフォーム。<a href="../tools/claude-code.html">claude-code</a> の競合にあたる。</p>
 <h2>Codex App Server</h2>
@@ -85,6 +85,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>画像を Hermes Agent に投げて音声付き動画化</li>
 </ol>
 <p><a href="../tools/hermes-agent.html">hermes-agent</a> との連携で、テキスト→画像→動画の全工程を自動化できる事例。</p>
+<h2>Codexによるスレッド自己管理（2026-05）</h2>
+<p>@guinnesschen（OpenAI Codexチーム）による機能発表。これまで人間が手で管理していたCodexのスレッド（会話）を、Codex自身がメタ操作できるようになった：</p>
+<ul>
+<li><strong>スレッド作成・検索・整理</strong> — Codexが自分の過去スレッドを検索し、トピック別に整理する</li>
+<li><strong>重要スレッドのピン留め</strong> — 後で参照する会話を固定</li>
+<li><strong>worktree起動による並列タスク</strong> — 複数タスクを git worktree 上で並行して回す</li>
+</ul>
+<p>エージェントが「実行」だけでなく自身の作業環境（スレッド・ブランチ）の管理まで担うようになった点が新しい。<a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a> が人間側で棚を用意する発想なのに対し、こちらはエージェントが棚自体を運用する方向。worktree並列は <a href="../tools/claude-code-subagents.html">claude-code-subagents</a> のサブエージェント並列と同じ「複数作業の同時進行」を、IDE/CLI側のブランチ分離で実現している。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
@@ -94,13 +102,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 <li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a> — エージェントループの内部実装詳細（Responses API・プロンプト構築・Compaction）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
-<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2051970872995664239" rel="noopener" target="_blank">https://x.com/i/web/status/2051970872995664239</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
+<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2051970872995664239" rel="noopener" target="_blank">https://x.com/i/web/status/2051970872995664239</a></li>
 <li><a href="https://x.com/i/web/status/2052631588140421550" rel="noopener" target="_blank">https://x.com/i/web/status/2052631588140421550</a></li>
 <li><a href="https://x.com/i/web/status/2058907483150926229" rel="noopener" target="_blank">https://x.com/i/web/status/2058907483150926229</a></li>
-<li><a href="https://x.com/i/web/status/2058907486372172092" rel="noopener" target="_blank">https://x.com/i/web/status/2058907486372172092</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2058907486372172092" rel="noopener" target="_blank">https://x.com/i/web/status/2058907486372172092</a></li>
+<li><a href="https://x.com/i/web/status/2060464235868836235" rel="noopener" target="_blank">https://x.com/i/web/status/2060464235868836235</a></li></ul></section></article>
 </main>
 </body>
 </html>

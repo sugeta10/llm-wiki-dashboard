@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>agent-memory-layer - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>agent-memory-layer</h1>
+  <div class="meta">concepts/agent-memory-layer · concepts · <span title="2026-06-03">今日</span></div>
+  <article><h1>共有エージェントメモリ層（One Memory Layer）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 各AIエージェントに独立した記憶を持たせるのではなく、ユーザーが所有する単一のメモリ層を全エージェントの下に敷く設計思想。あるエージェントが学んだことを即座に他のエージェントも使えるようにする。</p>
+</blockquote>
+<p>複数のAIエージェントを使い分けると、それぞれが「自分専用の脳」を持ち、ユーザーや作業についての断片的な像しか持たなくなる。新しい人に会うたびに自己紹介をやり直す人間の「知識は頭蓋骨の中にあり、頭蓋骨は同期しない」という制約を、わざわざソフトウェアの中に再現してしまっている状態である。エージェントは本来この制約を持つ必要がないため、共有メモリ層を敷けば、ある場で得た知見が部屋を越えて即座に他のエージェントへ波及する「ハイブマインド」的な振る舞いが可能になる。</p>
+<p>核心は「リポジトリはメモリではない」という指摘にある。Markdownや計画書、決定ログをリポジトリに残すのは<strong>到達点（destination）の保存</strong>であり、そこに至る<strong>過程（journey）= セッションそのもの</strong>——試行錯誤、捨てた分岐、後で蘇る半端なアイデア——は失われる。計画を文章に固めた時点で会話は圧縮され、結論だけ残して経路の大半が捨てられる。数日後にその経路が再び必要になったとき、リポジトリ同期では解決できない。残すべき単位は「保持する価値のあるもの（the thing worth keeping）」だけであり、全トランスクリプトのばら撒きではない（ノイズ・機密・誤り・期限切れを含むため）。</p>
+<p>断片化は概念的なだけでなく物理的でもある。エージェントは異なるマシン・ファイルシステム・ローカル状態・クラウドサービスに分散し、リポジトリはGitHub経由で同期できてもプロジェクトの記憶は同期しない。これは今後1年の重要な開発領域とされ、既存の取り組みが問題を異なる角度から攻めている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-31: @pejmanjohn のエッセイ "Stop Giving Every Agent Its Own Skull"。自身は OpenClaw（個人アシスタント・アイデア発展）/ Codex（実装）/ Claude Code（デザイン・執筆）を役割分担で使い分けるが、アイデアを生んだ推論が OpenClaw に取り残され、他エージェントは「有能だが文脈盲目（competent and context-blind）」な出力を返すと指摘。</li>
+<li>2026-05-31: 関連プロジェクトとして @garrytan の <strong>GBrain</strong>（MCPの背後に共有ナレッジグラフを置き、各エージェントが自前メモリを持たず共有グラフをクエリする）と、@doodlestein の <strong>CASS</strong>（Codex/Claude Code/OpenClaw/Cursor/Aider 等のローカルセッション履歴を横断検索可能にし、リポジトリが取りこぼす推論を拾う）を「答えの重要なピースが見え始めた兆候」として挙げる。</li>
+<li>2026-05-31: 企業版の例えとして「10の会議に同時出席するAI版リーダー」を提示。価格への顧客の混乱・製品チームの価格議論・営業の失注理由が、人間なら数日〜数週かかる点の接続を会議進行中に衝突させられる、と主張。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「保持する価値のあるもの」を会話から自動抽出する基準をどう設計するか。<a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> の重複削除・矛盾解消パイプラインがこの選別を担えるか。</li>
+<li>自分の <a href="../concepts/llm-wiki.html">llm-wiki</a>（Markdownベース知識ベース）は「到達点の保存」に偏っていないか。捨てた分岐・推論経路を残す仕組みが必要か。</li>
+<li>共有メモリ層は <a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> が示すメモリ劣化を増幅しないか（全エージェントが汚染された記憶を共有するリスク）。</li>
+</ul>
+<h2>関連</h2>
+<p>関連: <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> · <a href="../concepts/llm-wiki.html">llm-wiki</a> · <a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> · <a href="../tools/openclaw.html">openclaw</a> · <a href="../people/garry-tan.html">garry-tan</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openclaw.html">openclaw</a></li>
+<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../people/garry-tan.html">garry-tan</a></li>
+<li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061091767030825003" rel="noopener" target="_blank">https://x.com/i/web/status/2061091767030825003</a></li></ul></section></article>
+</main>
+</body>
+</html>
