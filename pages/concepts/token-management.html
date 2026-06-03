@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>token-management - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>token-management</h1>
+  <div class="meta">concepts/token-management · concepts · <span title="2026-06-04">今日</span></div>
+  <article><h1>トークンマネジメント</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIのトークン消費を人件費・マーケ費と並ぶ経営イシューとして可視化・最適化する考え方。「とにかく使う」トークンマキシングの次に来るフェーズ。</p>
+</blockquote>
+<p>トークンマキシング（最強モデルを浴びせ続け、利用量そのものを成功指標にする段階）を経た企業が直面するのは「そのトークンが何を生み、次にどこへ振り分けるか」という資源配分問題である。海外では <strong>トークンオプティマイゼーション</strong> と同義で語られる。出発点は極めて基本的で、「誰が・どのモデルに・どんなタスクで・何トークン使ったか」を可視化すること。人事評価やCAC管理に相当するマネジメント基盤が、AIコストにはまだ存在しないという空白を埋める。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-04: トークンマキシングへの反動が2026年に顕在化。象徴例としてUberが社内にClaude Codeのリーダーボードを置き利用を競わせた結果、2026年のAIコーディング予算を<strong>わずか4ヶ月で使い切った</strong>（COO Andrew Macdonald のPodcast発言）とされる（@fukkyy 紹介）。</li>
+<li>2026-06-04: Microsoft の Satya Nadella が2026年3月Morgan Stanley TMTで「なぜこれほど多くのトークンを使っているのか。トークン効率としてはむしろ最悪のことをやっているケースが少なくない」と発言、社内のClaude Code直接ライセンスを大幅縮小したとの言及。</li>
+<li>2026-06-04: エンジニアが消費するトークンコストが「給与の数十パーセント〜半分相当」に達するケースも珍しくないとの主張。「給与＋AIトークン費」のセットで人件費を考える新コスト科目という見立て。</li>
+<li>2026-06-04: 現在のAIサブスクは基盤モデル各社にとって赤字提供が常態化しており、API従量課金で計算し直すとコストは桁違いに跳ね上がる、という「時限爆弾」論。定額→従量シフト・値上げで補助分が顧客に転嫁され始めた瞬間に跳ね上がるという予測（単一ソースの主張）。</li>
+<li>2026-06-04: 一方で「ある一定以上の大規模トークン利用は競争の必要条件」とも主張。LayerX社内で最適化したが利用トークン数はマキシング期と大きく変わらなかったとの自社事例。</li>
+<li>2026-06-04: コーディングエージェントは「最初にこの構図に到達した先行事例」にすぎず、営業・CS・経費精算・法務・マーケ・人事採用など自律実行型エージェント化が進むと全業務が同じトークン消費プロファイルに収束する、という見立て。</li>
+</ul>
+<blockquote>
+<p>📝 出典は <a href="../people/fladdict.html">fladdict</a> とは別のLayerX経営者（@fukkyy）の個人発信であり、自社プロダクト（AIトークンアドバイザー）のポジショントークを含む。数字は二次引用で未検証。</p>
+</blockquote>
+<h2>最適化の論点：タスクとモデルのミスマッチ</h2>
+<p>可視化の次に立ち上がる問いは「そのタスクは、本当にそのモデルを使うべきだったのか」。</p>
+<ul>
+<li>「今日の天気は？」のような問いに最上位推論モデル（<a href="../models/claude-opus-4-8.html">claude-opus-4-8</a> や <a href="../models/gpt-5-5.html">gpt-5-5</a> 等）を使うのは過剰。定型メール作成など枯れたタスクへの高価モデル利用が社内に大量に存在。</li>
+<li>AIに不慣れな人ほど「とりあえず一番強いモデル」を選ぶ傾向があり、使いこなす人はタスクの性質でモデルを使い分ける。この差はコスト・品質両面で組織的に無視できない。</li>
+<li>入力は最終的にすべて「プロンプト」に変換されるため、プロンプトを見ればタスクとモデルのミスマッチを検出できる。最終的には人が都度選ぶのでなく、システムが自動でモデルを割り当てる方向へ。</li>
+<li>エージェント時代は「いまOpusは贅沢かな」と都度考える余地がないため、最適モデル選択をシステム側に任せる以外の選択肢がなくなる。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「給与＋AIトークン費」でエンジニアコストを捉える視点は、自分の作業（このwikiのingest含む）にも適用できるか。タスク別にモデルを使い分ける運用ルールを作れるか。</li>
+<li>サブスク赤字提供→従量転嫁の「時限爆弾」は本当に起きるか、それともモデルの効率化が先行してコストが下がるか。<a href="../concepts/ai-coding-lang-benchmark.html">ai-coding-lang-benchmark</a> のようなコスト実測と突き合わせて検証したい。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a> — AI企業の垂直統合・経営戦略</li>
+<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a> — Claude使用制限回避・モデルスタッキング（個人レベルのトークン最適化）</li>
+<li><a href="../concepts/ai-coding-lang-benchmark.html">ai-coding-lang-benchmark</a> — 言語別のトークンコスト実測</li>
+<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a> — AGI時代の競争優位の変容</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li>
+<li><a href="../people/fladdict.html">fladdict</a></li>
+<li><a href="../models/gpt-5-5.html">gpt-5-5</a></li>
+<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li>
+<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061285149774663814" rel="noopener" target="_blank">https://x.com/i/web/status/2061285149774663814</a></li></ul></section></article>
+</main>
+</body>
+</html>

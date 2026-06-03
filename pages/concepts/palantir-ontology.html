@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>palantir-ontology - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>palantir-ontology</h1>
+  <div class="meta">concepts/palantir-ontology · concepts · <span title="2026-06-04">今日</span></div>
+  <article><h1>Palantirのオントロジー（動的オントロジー）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Palantirが企業全体を「世界モデル」として写し取る中間層。名詞（存在）＋動詞（実行）＋動的化（状態遷移・権限・書き戻し）で、データとAIの間に業務文脈を保持する。</p>
+</blockquote>
+<p>AI時代のエンタープライズ競争は「企業固有の文脈（コンテキスト）を誰が握るか」に移りつつある。Salesforce・Microsoft・ServiceNow・Databricksらが既存アプリ（CRM/Office/ITSM/データ基盤）を起点にコンテキストレイヤーを拡張するのに対し、Palantirは<strong>順番が逆</strong>で、最初に「企業全体をどう表現するか」から出発し、その上にアプリが生まれた。データは意味を剥ぎ取られて散らばるため、データとAIの間に業務文脈を保持する層を一枚挟む必要がある——それがオントロジーであり、Palantirはこれを単なる意味づけ（セマンティックレイヤー）ではなく「組織のためのオペレーショナルレイヤー」と定義する。</p>
+<h2>オントロジーの2層＋動的化</h2>
+<table>
+<thead>
+<tr>
+<th>層</th>
+<th>内容</th>
+<th>問い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>意味層（名詞）</strong></td>
+<td>エンティティ（Customer/Aircraft/Contract）・関係・属性。散らばった呼称（user/client/individual）を統一エンティティに調停</td>
+<td>我々の世界に存在するモノは何か？</td>
+</tr>
+<tr>
+<td><strong>実行層（動詞）</strong></td>
+<td>Renew・Approve・Assign・Schedule Maintenance 等の業務行為をオントロジーの一部としてモデル化</td>
+<td>何ができるか？</td>
+</tr>
+<tr>
+<td><strong>動的化（性質）</strong></td>
+<td>状態遷移（Prospect→Active→Renewal→Churn）・権限・ポリシー・ライフサイクルを織り込む</td>
+<td>どう変化し、誰が何を実行できるか？</td>
+</tr>
+</tbody>
+</table>
+<p>BIのセマンティックレイヤーは名詞（指標定義）で止まり「見る」ためのもの。Palantirは名詞に動詞を組み合わせ「文（sentence）＝意思決定」を表現し、さらに2層に「動き」を与えた点が真の差別化。</p>
+<h2>動的化を支える4要素（四位一体）</h2>
+<ul>
+<li><strong>データ</strong>: あらゆるソースを統一されたオブジェクト・属性・リンクにする（＝名詞）</li>
+<li><strong>アクション</strong>: 権限・条件・記録とセットの業務動詞。複雑なものは関数バックドアクションで記述</li>
+<li><strong>書き戻し（write-back）</strong>: webhookで外部システムへ反映。「分析して終わり」でなく現実の業務システムを動かすまでを一つのループに含める＝kinetic</li>
+<li><strong>アクションログ</strong>: 「いつ・誰が・どんな世界の状態で・何を判断したか」を構造化して残し、次の意思決定の入力に再利用</li>
+</ul>
+<p>LLMが見るのはデータベースではなくオントロジー。データ→オントロジー→文脈→より賢い意思決定というフライホイールが回り、各判断が新たなシグナルを生んで還流する。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-04: Airbus A350（約500万部品・数百チーム・4か国・8工場超）にFoundry/オントロジーを導入し、ボトルネック可視化と優先順位付けで<strong>納入を33%加速</strong>させたとされる（Palantir/Airbus公式資料の二次引用）。後にSkywiseとして業界プラットフォーム化、100社以上が参加・年間8.5億ドル超の収益機会試算。</li>
+<li>2026-06-04: Palantirの競争優位の核心は「AIPが優れているから」ではなく「AIが理解できる企業全体のコンテキスト構造を20年以上かけて既に持っていたから」という解釈（@zakiryo1533）。</li>
+<li>2026-06-04: オントロジー構築は安くない。組織全体を正確に表現するオントロジーの構築・維持は極めて複雑で継続的更新を要する（批判的論者の指摘）。手厚いコンサル（<a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a>）を伴うのはこのコストの裏返し。</li>
+</ul>
+<blockquote>
+<p>📝 出典は一次情報（Palantir公式ドキュメント・Airbus公開情報）を丁寧に引用したVC（@zakiryo1533）の解説記事。数値は公表値・第三者試算を含み未検証。</p>
+</blockquote>
+<h2>AIスタートアップへの示唆（著者の主張）</h2>
+<ol>
+<li>「データ統合」ではなく「意思決定」から設計を始める（誰が・どんな制約で・何を判断しているか）</li>
+<li>名詞だけでなく動詞（何を実行できるか）を設計に含める</li>
+<li>「読むだけ」で終わらせず、書き戻しとアクションログで実行・記録までを一つの流れにする</li>
+<li>AIエージェントに人間と同じ権限・ガバナンスを継承させる（本番投入の前提条件）</li>
+</ol>
+<blockquote>
+<p>競争優位はモデルの賢さでなく「顧客の世界をどれだけ深く、動的に、現実と同期した形でモデル化できるか」という文脈の深さに移る——という結論。</p>
+</blockquote>
+<h2>問い</h2>
+<ul>
+<li>このオントロジー＝中間層の発想は、自分のLLM wiki（<a href="../concepts/llm-wiki.html">llm-wiki</a>）にも適用できるか。wikiの <code>リンク</code> グラフは「名詞＋関係」に相当するが、「動詞（アクション）」「状態遷移」をどこまで持たせるべきか。</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> の「ユーザー所有の単一メモリ層」とオントロジーの「企業の世界モデル」は同じ問題の別表現か、層の粒度が違うのか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a> — 顧客現場で世界モデルを組み上げる職種。オントロジーの前提</li>
+<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a> — 競争優位が「知識の占有」から「文脈の深さ」へ移る</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — エージェントに渡すコンテキスト層の設計</li>
+<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a> — FDE常駐による垂直統合</li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a> — リンクグラフによる知識構造化</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li>
+<li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li>
+<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061460782844694831" rel="noopener" target="_blank">https://x.com/i/web/status/2061460782844694831</a></li></ul></section></article>
+</main>
+</body>
+</html>
