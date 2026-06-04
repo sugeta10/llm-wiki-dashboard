@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-teacher-prompt - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-teacher-prompt</h1>
+  <div class="meta">concepts/ai-teacher-prompt · concepts · <span title="2026-06-04">今日</span></div>
+  <article><h1>AI教師プロンプト（Stay in the Loop / 学習用プロンプト）</h1>
+<blockquote>
+<p>📌 X bookmark: 10,435（2026-06-02 時点・@trq212 原ポスト）</p>
+</blockquote>
+<p>エージェントに作業を任せきりにすると、人間は<strong>何が行われたかを理解しないまま成果物だけを受け取る</strong>状態に陥る。これを防ぐため、Anthropic社内では「Claudeとの作業ループの中に居続け、行われた仕事を完全に理解する」ための個人プラクティスが共有されている。AI教師プロンプトはその一つで、セッション終盤にAIへ<strong>教師役</strong>を割り当て、こなした作業内容を学習者である自分に解説させる手法。</p>
+<h2>プロンプト</h2>
+<p>Suzanne（Anthropic）が共有し、@trq212 がお気に入りとして紹介したもの。日本語訳（@oikon48 による）：</p>
+<blockquote>
+<p>あなたは賢く、非常に効果的な教師です。あなたの目標は、ユーザーがこのセッションの内容を深く理解することです。</p>
+</blockquote>
+<p>短い指示だが、AIの出力姿勢を「タスク実行者」から「理解の伴走者」へ切り替える点が核心。コードを書く・調査するといった作業の後に同じセッションへ投げることで、AIが何を・なぜそうしたかを噛み砕いて説明し直す。</p>
+<h2>なぜ有効か</h2>
+<ul>
+<li><strong>人間をループに残す</strong>: エージェントが自律的に進めた判断を、事後に自分の言葉で理解できる状態へ引き戻す</li>
+<li><strong>学習機会への転換</strong>: 単なる成果物受け取りを、ドメイン知識・実装意図を吸収する機会に変える</li>
+<li><strong>属人化の緩和</strong>: AIが暗黙に行った設計判断を言語化させることで、レビュー・引き継ぎが容易になる</li>
+</ul>
+<h2>関連手法との位置づけ</h2>
+<p>同じ @trq212 が広めた <a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> は「作業<strong>中</strong>に並走ノートを書かせて判断を可視化する」アプローチ。本手法は「作業<strong>後</strong>に教師役で理解を補完する」アプローチで、両者は「人間をループに残す」という同一目的の前後ペアとして組み合わせられる。</p>
+<h2>問い</h2>
+<ul>
+<li>自分のwiki ingest作業の後にこの教師プロンプトを投げると、判断基準の再利用（LESSONS.md への蓄積）に使えるか</li>
+<li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> と併用したとき、並走ノート＋事後解説で理解の重複・抜けはどう変わるか</li>
+<li>「教師役」指定だけで出力姿勢が十分変わるか、それとも具体的な観点指定（決定・トレードオフ）まで足すべきか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> — 作業中に判断を並走ノート化する姉妹手法（同じ@trq212発）</li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計全般</li>
+<li><a href="../concepts/developer-ai-collaboration.html">developer-ai-collaboration</a> — 開発者とAIエージェントの役割分担</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a></li>
+<li><a href="../concepts/developer-ai-collaboration.html">developer-ai-collaboration</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061545633560010826" rel="noopener" target="_blank">https://x.com/i/web/status/2061545633560010826</a></li>
+<li><a href="https://x.com/i/web/status/2061549233900331424" rel="noopener" target="_blank">https://x.com/i/web/status/2061549233900331424</a></li></ul></section></article>
+</main>
+</body>
+</html>

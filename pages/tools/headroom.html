@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>headroom - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>headroom</h1>
+  <div class="meta">tools/headroom · tools · <span title="2026-06-04">今日</span></div>
+  <article><h1>headroom</h1>
+<p>AIエージェントがLLMへ送るデータを<strong>送信前に圧縮</strong>してトークンを削減するライブラリ（<a href="https://github.com/chopratejas/headroom">github.com/chopratejas/headroom</a>）。Claude Code でも利用できると紹介されている。</p>
+<h2>何を圧縮するか</h2>
+<p>エージェントがLLMに渡す各種コンテキストを対象とする：</p>
+<ul>
+<li>ツール出力</li>
+<li>ログ</li>
+<li>RAGチャンク</li>
+<li>ファイル</li>
+<li>会話履歴</li>
+</ul>
+<p>これらを送信前段で圧縮し、<strong>トークンを60〜95%削減しつつ同等の回答精度を維持する</strong>と主張されている。</p>
+<h2>なぜ重要か</h2>
+<p>コンテキストウィンドウへ投入するデータ量がそのままコストと遅延に跳ね返るエージェント運用において、入力側の圧縮はモデル選択や <a href="../concepts/prompt-caching.html">prompt-caching</a> とは別軸の最適化レバー。<a href="../concepts/token-management.html">token-management</a> が説く「タスクとモデルのミスマッチ検出」が<em>どのモデルを使うか</em>の最適化なら、headroomは<em>同じモデルへ何をどれだけ送るか</em>の最適化にあたる。</p>
+<h2>問い</h2>
+<ul>
+<li>「60〜95%削減・精度維持」は実タスクで再現するか。圧縮で欠落する情報が回答品質に効くケースはどこか</li>
+<li>このwikiのingest/Query作業（ファイル全文読み込み）に組み込めるか。<a href="../concepts/prompt-caching.html">prompt-caching</a> と併用したときの効果の重複・相乗はどうか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/token-management.html">token-management</a> — トークン消費を経営イシューとして可視化・最適化する考え方</li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a> — Claude APIのプロンプトキャッシング（送信データ再利用によるコスト削減）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/token-management.html">token-management</a></li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061645252503670966" rel="noopener" target="_blank">https://x.com/i/web/status/2061645252503670966</a></li></ul></section></article>
+</main>
+</body>
+</html>
