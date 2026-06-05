@@ -12,7 +12,8 @@ a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
 .meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
 h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
-p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
 table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
 .sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
 .related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
@@ -46,16 +47,44 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>→ <code>links</code> という軽量テキスト記法でAIと人間が同じ知識を読み書きし、dashboard がそのレンダラに徹している——これはまさに <a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> の4要素（DSL／パーサー／シリアライザー／レンダラ）と同型。次の一手は新しいツールを足すことより、この「記法↔レンダラ」の双方向性を意識的に強くする（例: 機械可読なfrontmatterを増やし、生成側がそれを当てにできるようにする）方向が効きそう。</p>
 <h2>今週の小アクション（5分）</h2>
 <p>自分のwikiで「中間記法→レンダラ」が効いている実例を1つ確認する: 任意の1ページの被リンク数を dashboard で見て、<code>links</code>（記法）が被参照ランキング（レンダリング結果）に正しく反映されているかを目視する。ズレていれば、それが記法側で直すべき箇所。</p>
+<h2>いますぐAIと一緒に（コピペ）</h2>
+<p>以下をそのまま Claude / Claude Code に貼って、今週のテーマを自分のwikiに引き寄せる:</p>
+<pre><code>私のLLM Wiki（Obsidian vault）について相談したい。今週の中心テーマは「中間記法パターン（AIにGUIを直接触らせず、LLMの母語＝テキスト記法を界面に挟む）」。
+
+1. このwiki自体を「中間記法パターンの実装」として捉えたとき、DSL/パーサー/シリアライザー/レンダラの4要素は今それぞれ何が担っているか整理して。
+2. frontmatter を「もっと機械可読な中間記法」にして生成側（dashboard/gen_*.py）が当てにできるようにするなら、追加すべきフィールドを3つ、理由つきで提案して。
+3. 提案のうち最も低コストで効果が高い1つだけを、今日試せる最小ステップに落として。
+
+参照: wiki/concepts/intermediate-notation-pattern.md, wiki/concepts/self-refining-skills.md
+</code></pre>
 <h2>さらに読むべきページ</h2>
 <ul>
 <li><a href="../concepts/llm-council.html">llm-council</a> — 中間記法とは別軸だが今週のもう一つの伏流。AI出力を鵜呑みにせず匿名相互レビューという <em>構造</em> で同意バイアスを潰す。「記法で入力を整える」の出力版＝「構造で出力を検証する」として対になる</li>
 <li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a> — そのモデル基盤。高精度・低再現／自己進捗の正直な報告という性質は、中間記法で渡した意図を素直に実行させる前提になる</li>
 <li><a href="../tools/autoreview-skill.html">autoreview-skill</a> — 「自動レビュー出力は信用できない」前提で実コード検証を必須にする実装。出力側の構造的検証の具体例</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../tools/hyperframes.html">hyperframes</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hyperframes.html">hyperframes</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
-<li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li></ul></section></article>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li></ul></section></article>
 </main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
 </body>
 </html>
