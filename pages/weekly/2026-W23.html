@@ -23,38 +23,39 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>2026-W23</h1>
-  <div class="meta">weekly/2026-W23 · weekly · <span title="2026-06-01">4日前</span></div>
+  <div class="meta">weekly/2026-W23 · weekly · <span title="2026-06-05">今日</span></div>
   <article><h1>Weekly Insights: 2026-W23（2026-06-01〜06-07）</h1>
 <h2>今週の中心テーマ</h2>
-<p><strong>AIエージェントの主戦場が「賢さ」から「働く環境の設計」へ移った——モデル単体の性能より、作業場所・ワークフロー・スキルをどう設計するかが成果を決めるようになった週。</strong></p>
+<p><strong>今週の隠れた主役は「中間記法」——AIにGUIやバイナリを直接触らせず、LLMが大量に学習したテキスト/Web表現を界面に挟むと、精度とトークン効率が同時に上がる。勝負どころは「どこで働かせるか」ではなく「どの記法で渡すか」に移った。</strong></p>
+<p>先週（W22）が「AIエージェントが"働く場所"になった」という <em>場所</em> の話だったのに対し、今週は同じ素材を <em>界面＝AIに渡す記法の設計</em> という別の次元で切る。</p>
 <h2>なぜそう見えるか（根拠ページ）</h2>
 <ul>
-<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — Claude Code が単発コマンドから「自分でワークフローを組んで遂行するエージェント」へ。実行環境そのものの進化を象徴する</li>
-<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a> — エージェントが成果を出すには「作業場（ディレクトリ構成）」が要る、プロンプトより先に棚を作るという設計思想</li>
-<li><a href="../tools/compound-engineering.html">compound-engineering</a> / <a href="../tools/shaping-skills.html">shaping-skills</a> — スキルやワークフローを使いながら育て、複利的に積み上げる。成果を一度きりにせず資産化する</li>
-<li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a> — AIは作り手の基準を増幅する鏡。だからこそ環境・基準の設計が結果を左右する</li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — 今週の通奏低音。AIにGUIを直接生成させずDSL（中間記法）を操作させ、GUIはそのレンダラに徹する。出力トークンが減り再生成のブレも消える、という原理そのもの</li>
+<li><a href="../tools/hyperframes.html">hyperframes</a> — その実例。動画編集のXML/バイナリ（人間の視覚操作前提でLLMには外国語）を捨て、HTML+<code>data-*</code>属性という「LLMの母語」に状態を載せ替えてMP4を決定論生成する。ページ自身が「MNPの実例」と明言している</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — 記法を <em>持続させる</em> 版。職務定義をMarkdownで書き自動ロードさせ、毎回の文脈再構築をなくす。「中間表現をテキストで固定し再利用する」という同じ動きを時間軸でやっている</li>
+<li><a href="../tools/understand-anything.html">understand-anything</a> — 逆向きの中間表現。コードベースを事前に <em>ナレッジグラフ</em> という中間構造へ変換して俯瞰させる。grepライブ探索（<a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a>）との対比が「どの中間表現を選ぶか」の問いを際立たせる</li>
 </ul>
 <h2>既存wikiとの接続</h2>
 <ul>
-<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — 今週の work-folder 設計はこの8フォルダ固定構造の最小版。「未整理の受け口・参照・生成物の隔離」という同じ原則を共有する</li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — 今週の動的ワークフローは Fan-Out / Orchestrator パターンをユーザー向けに抽象化した具体形として接続する</li>
-<li><a href="../tools/claude-code.html">claude-code</a> — 今週追加されたスキル・フック・ワークフロー機能はすべてこのツールの進化として束ねられる</li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — wiki地図で被参照16の主要ハブ。中間記法（特に<a href="../concepts/claude-skills.html">claude-skills</a>）は「一度書いて使いながら育てる」資産であり、このハブの具体的な実装手段として接続する</li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 被参照14のハブ。MNPの「記法で意図を固定し、実装＝レンダリングをAIに委ねる」構図は、specでwhatを固定しhowを委ねる発想の界面設計版として地続き</li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — 被参照26のハブ。今週の含意は「プロンプトを磨くより、AIに渡す記法そのものを設計し直すほうが効く局面がある」——プロンプト最適化の一段上のレイヤーとして接続する</li>
 </ul>
 <h2>sugeta-san への問い</h2>
-<p><strong>あなたの LLM Wiki は、いま「賢いモデルに頼るシステム」と「環境設計で成果を出すシステム」のどちらに寄っているか？</strong></p>
-<p>→ <a href="../business/saas-inside-ai-agents.html">saas-inside-ai-agents</a> が示すように、既存の Obsidian ワークフローに作業を溶け込ませる設計は強い。次の一手はモデルを上げることより、<code>sources/</code>・<code>wiki/</code>・スキルという「作業環境」をどう育てるか（<a href="../tools/shaping-skills.html">shaping-skills</a>）に投資する方向が効きそう。</p>
+<p><strong>あなたの LLM Wiki 自体が、すでに中間記法パターンの実装になっていないか？</strong></p>
+<p>→ <code>links</code> という軽量テキスト記法でAIと人間が同じ知識を読み書きし、dashboard がそのレンダラに徹している——これはまさに <a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> の4要素（DSL／パーサー／シリアライザー／レンダラ）と同型。次の一手は新しいツールを足すことより、この「記法↔レンダラ」の双方向性を意識的に強くする（例: 機械可読なfrontmatterを増やし、生成側がそれを当てにできるようにする）方向が効きそう。</p>
 <h2>今週の小アクション（5分）</h2>
-<p>既存スキルを1つ開き、「使いながら気づいた改善点」を1行だけ追記する（<a href="../tools/shaping-skills.html">shaping-skills</a> / <a href="../concepts/self-refining-skills.html">self-refining-skills</a> の実践）。完璧な書き直しではなく、1行の蓄積でよい。</p>
+<p>自分のwikiで「中間記法→レンダラ」が効いている実例を1つ確認する: 任意の1ページの被リンク数を dashboard で見て、<code>links</code>（記法）が被参照ランキング（レンダリング結果）に正しく反映されているかを目視する。ズレていれば、それが記法側で直すべき箇所。</p>
 <h2>さらに読むべきページ</h2>
 <ul>
-<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — 「考える場所」をDSLとして与えると精度が上がる。プロンプト設計に即効性がある</li>
-<li><a href="../concepts/llm-council.html">llm-council</a> — 複数モデルで匿名相互評価する手法。Wiki の品質チェックに応用できる</li>
-<li><a href="../concepts/behavioral-specification.html">behavioral-specification</a> — 「what」を書いて「how」をAIに委ねる設計スタイル。スキル設計の指針になる</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/shaping-skills.html">shaping-skills</a></li>
-<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li>
-<li><a href="../business/saas-inside-ai-agents.html">saas-inside-ai-agents</a></li>
-<li><a href="../concepts/behavioral-specification.html">behavioral-specification</a></li></ul></section></article>
+<li><a href="../concepts/llm-council.html">llm-council</a> — 中間記法とは別軸だが今週のもう一つの伏流。AI出力を鵜呑みにせず匿名相互レビューという <em>構造</em> で同意バイアスを潰す。「記法で入力を整える」の出力版＝「構造で出力を検証する」として対になる</li>
+<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a> — そのモデル基盤。高精度・低再現／自己進捗の正直な報告という性質は、中間記法で渡した意図を素直に実行させる前提になる</li>
+<li><a href="../tools/autoreview-skill.html">autoreview-skill</a> — 「自動レビュー出力は信用できない」前提で実コード検証を必須にする実装。出力側の構造的検証の具体例</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
+<li><a href="../tools/hyperframes.html">hyperframes</a></li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li></ul></section></article>
 </main>
 </body>
 </html>

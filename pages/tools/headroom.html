@@ -23,7 +23,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>headroom</h1>
-  <div class="meta">tools/headroom · tools · <span title="2026-06-04">1日前</span></div>
+  <div class="meta">tools/headroom · tools · <span title="2026-06-05">今日</span></div>
   <article><h1>headroom</h1>
 <p>AIエージェントがLLMへ送るデータを<strong>送信前に圧縮</strong>してトークンを削減するライブラリ（<a href="https://github.com/chopratejas/headroom">github.com/chopratejas/headroom</a>）。Claude Code でも利用できると紹介されている。</p>
 <h2>何を圧縮するか</h2>
@@ -38,6 +38,32 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>これらを送信前段で圧縮し、<strong>トークンを60〜95%削減しつつ同等の回答精度を維持する</strong>と主張されている。</p>
 <h2>なぜ重要か</h2>
 <p>コンテキストウィンドウへ投入するデータ量がそのままコストと遅延に跳ね返るエージェント運用において、入力側の圧縮はモデル選択や <a href="../concepts/prompt-caching.html">prompt-caching</a> とは別軸の最適化レバー。<a href="../concepts/token-management.html">token-management</a> が説く「タスクとモデルのミスマッチ検出」が<em>どのモデルを使うか</em>の最適化なら、headroomは<em>同じモデルへ何をどれだけ送るか</em>の最適化にあたる。</p>
+<h2>導入形態（4通り）</h2>
+<p>コードを変えずに既存スタックへ挿し込めるよう、複数の接続点を持つ。</p>
+<ul>
+<li><strong>ライブラリ</strong> — <code>compress(messages)</code> を Python / TypeScript でインライン呼び出し</li>
+<li><strong>プロキシ</strong> — <code>headroom proxy --port 8787</code>、コード変更ゼロ・任意の言語（OpenAI互換クライアントが通る）</li>
+<li><strong>エージェントwrap</strong> — <code>headroom wrap claude|codex|cursor|aider|copilot</code> の1コマンド</li>
+<li><strong>MCPサーバー</strong> — <code>headroom_compress</code> / <code>headroom_retrieve</code> / <code>headroom_stats</code> を任意のMCPクライアントに提供</li>
+</ul>
+<p>ローカル実行（local-first）でデータが外部に出ない点を、ホスト型API圧縮サービス（Compresr等）やプロバイダ純正コンパクション（OpenAI Compaction）との差別化点として挙げている。</p>
+<h2>内部構成（コンテンツ種別ごとに圧縮器を切替）</h2>
+<p><code>ContentRouter</code> がコンテンツ種別を検出し、最適な圧縮器へ振り分けるのが中核設計。</p>
+<ul>
+<li><strong>SmartCrusher</strong> — JSON（配列・ネスト・混在型）の汎用圧縮</li>
+<li><strong>CodeCompressor</strong> — AST認識。Python/JS/Go/Rust/Java/C++対応</li>
+<li><strong>Kompress-base</strong> — agenticトレースで学習した自社HuggingFaceモデル（プローズ＝自然文の圧縮）</li>
+<li><strong>CacheAligner</strong> — プレフィックスを安定化させ Anthropic/OpenAI の KVキャッシュをヒットさせる（<a href="../concepts/prompt-caching.html">prompt-caching</a> と相補的）</li>
+<li><strong>CCR（reversible compression）</strong> — 原文はローカルに保持し削除しない。LLMが必要時に <code>headroom_retrieve</code> で復元する可逆圧縮</li>
+<li><strong>Cross-agent memory</strong> — Claude/Codex/Gemini 間で共有するメモリストア（出所付き・自動重複排除）</li>
+</ul>
+<p><code>headroom learn</code> は失敗セッションをマイニングし、修正を <code>CLAUDE.md</code> / <code>AGENTS.md</code> / <code>GEMINI.md</code> に書き戻す機能。これは <a href="../concepts/self-refining-skills.html">self-refining-skills</a> と同じ「失敗から学習ルールを蓄積する」発想を、ツール側で自動化したもの。</p>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-06-02: 公式READMEが提示する<strong>自己公表ベンチマーク</strong>（独立検証ではない）。実エージェント負荷での削減率: Code search 17,765→1,408トークン（92%）、SRE incident debugging 65,694→5,118（92%）、GitHub issue triage 54,174→14,761（73%）、Codebase exploration 78,502→41,254（47%）</li>
+<li>2026-06-02: 精度保持ベンチ（N=100）: GSM8K 0.870→0.870（±0.000）、TruthfulQA 0.530→0.560（+0.030）、SQuAD v2 97%（19%圧縮時）、BFCL 97%（32%圧縮時）</li>
+<li>ライセンス Apache 2.0。Python 3.10+。シェル出力書き換えに <a href="https://github.com/rtk-ai/rtk">RTK</a> バイナリを同梱</li>
+</ul>
 <h2>問い</h2>
 <ul>
 <li>「60〜95%削減・精度維持」は実タスクで再現するか。圧縮で欠落する情報が回答品質に効くケースはどこか</li>
@@ -46,9 +72,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/token-management.html">token-management</a> — トークン消費を経営イシューとして可視化・最適化する考え方</li>
-<li><a href="../concepts/prompt-caching.html">prompt-caching</a> — Claude APIのプロンプトキャッシング（送信データ再利用によるコスト削減）</li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a> — Claude APIのプロンプトキャッシング（送信データ再利用によるコスト削減）。CacheAlignerが狙うKVキャッシュヒットと同じレバー</li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — <code>headroom learn</code> が CLAUDE.md/AGENTS.md に修正を書き戻す失敗学習ループの発想</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/token-management.html">token-management</a></li>
-<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061645252503670966" rel="noopener" target="_blank">https://x.com/i/web/status/2061645252503670966</a></li></ul></section></article>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061645252503670966" rel="noopener" target="_blank">https://x.com/i/web/status/2061645252503670966</a></li>
+<li><a href="https://github.com/chopratejas/headroom" rel="noopener" target="_blank">https://github.com/chopratejas/headroom</a></li></ul></section></article>
 </main>
 </body>
 </html>
