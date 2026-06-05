@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>skill-building-best-practices - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>skill-building-best-practices</h1>
+  <div class="meta">concepts/skill-building-best-practices · concepts · <span title="2026-06-05">1日前</span></div>
+  <article><h1>スキル構築のベストプラクティス（Anthropic社内知見）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 効果的なスキルは9カテゴリのどれか1つにきれいに収まる。複数を跨ぐスキルはエージェントを混乱させる。説明文は人間向けの要約ではなく「いつ起動するか」のトリガー定義として書く。</p>
+</blockquote>
+<p>Anthropic社内では数百のスキルが実運用されており、その分類と書き方から「何が効くか」のパターンが抽出されている。スキルは「ただのMarkdownファイル」ではなく、スクリプト・アセット・データを含むフォルダであり、ファイルシステム全体をコンテキストエンジニアリングと<a href="../concepts/spec-driven-development.html">progressive disclosure</a>の道具として設計できる点が核心。良いスキルは数行と1つのgotchaから始まり、エージェントが新しいエッジケースに当たるたびに育てられていく。</p>
+<h2>スキルの9カテゴリ（分類フレーム）</h2>
+<p>自社スキルライブラリの穴を見つけるための枠組み。1スキル＝1カテゴリが理想。</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>カテゴリ</th>
+<th>中身</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Library/API reference</strong></td>
+<td>内部・共通ライブラリ/CLI/SDKの正しい使い方。参照コード片フォルダ＋gotcha一覧</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Product verification</strong></td>
+<td>コードが動くか検証する手順。playwright/tmux等と連携。社内で<strong>最も品質インパクトが大きい</strong>カテゴリ（エンジニアが1週間専念する価値あり）</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Data fetching/analysis</strong></td>
+<td>データ・監視スタックへの接続。認証付き取得ライブラリ・ダッシュボードID・正規テーブル定義</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Business process/team automation</strong></td>
+<td>反復ワークフローを1コマンド化。過去結果をログ保存して一貫性を担保（standup-post等）</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Code scaffolding/templates</strong></td>
+<td>フレームワークのボイラープレート生成。自然言語要件がコードで覆えない部分に有効</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Code quality/review</strong></td>
+<td>コード品質強制・レビュー。決定論スクリプトやhook/GitHub Actionで自動実行（adversarial-review等）</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>CI/CD and deployment</strong></td>
+<td>fetch/push/deploy（babysit-pr・deploy-service・cherry-pick-prod）</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Runbooks</strong></td>
+<td>症状（Slackスレッド・アラート・エラー署名）→多ツール調査→構造化レポート</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Infrastructure operations</strong></td>
+<td>定常運用・破壊的操作。ガードレール付きでベストプラクティスを強制</td>
+</tr>
+</tbody>
+</table>
+<h2>スキルを書くときの実践原則</h2>
+<ul>
+<li><strong>当たり前を書くな</strong>: Claudeは既にコードが書けコードベースも読める。デフォルト挙動の再記述は価値ゼロでコンテキストを食うだけ。知識系スキルはClaudeを「通常の思考の外」へ押し出す情報に集中する（frontend-designがInterフォント・紫グラデを避けさせるのが好例）</li>
+<li><strong>Gotchasセクションが最高シグナル</strong>: 実際にClaudeがハマった失敗点を蓄積する。「subscriptionsテーブルはappend-only、欲しいのはcreated_at最新でなくversion最大の行」のような具体的落とし穴</li>
+<li><strong>ファイルシステムでprogressive disclosure</strong>: SKILL.mdから<code>references/api.md</code>等を指し示し、必要時にClaudeが読む。詳細な関数シグネチャやテンプレートは別ファイルに分離</li>
+<li><strong>Claudeをレールに乗せ過ぎるな（railroading回避）</strong>: スキルは再利用されるので過度に具体的な指示は危険。情報は与えつつ状況適応の余地を残す</li>
+<li><strong>セットアップを設計する</strong>: ユーザー固有コンテキストが要るスキルは<code>config.json</code>に保存し、未設定ならエージェントがユーザーに尋ねる。構造化質問には<code>AskUserQuestion</code>ツールを使わせる</li>
+<li><strong>説明文はモデル向けに書く</strong>: セッション開始時にClaudeは全スキルのdescriptionを走査して「このリクエストに合うスキルはあるか」を判定する。<strong>descriptionは要約ではなくトリガー定義</strong>。「babysit」のような起動語を含める</li>
+<li><strong>記憶を持たせる（Help Claude remember）</strong>: append-onlyテキストログ・JSON・SQLiteでスキル内にデータを保存。<code>standup-post</code>がstandups.logを読めば前回からの差分を語れる。<code>${CLAUDE_PLUGIN_DATA}</code>で安定したデータディレクトリを取得</li>
+<li><strong>スクリプトを同梱しコード生成させる</strong>: コードを与えるとClaudeはボイラープレート再構築でなく「次に何をするか」の合成にターンを使える。データ取得ヘルパー関数群を渡せば高度な分析スクリプトをその場で書ける</li>
+<li><strong>on-demandフック</strong>: スキル呼び出し時のみ・セッション中だけ有効なフックを仕込める。<code>/careful</code>（rm -rf・DROP TABLE・force-push・kubectl deleteをPreToolUseでブロック）、<code>/freeze</code>（特定ディレクトリ外のEdit/Writeをブロック）など、常時onにすると鬱陶しいが時々極めて有用なものに使う</li>
+</ul>
+<h2>配布・マーケットプレイス運用</h2>
+<ul>
+<li><strong>2つの共有方法</strong>: ①リポジトリに<code>./.claude/skills</code>としてチェックイン（小チーム・少数リポ向け、ただし全スキルがモデルのコンテキストを少し食う）／②<strong>プラグイン</strong>化してマーケットプレイスで配布（スケール時。チームが選んでインストールでき、セットアップフローも持てる）</li>
+<li><strong>マーケットプレイスの選定はオーガニック</strong>: 中央委員会で決めない。試したいスキルはGitHubのsandboxフォルダにアップしSlack等で告知→トラクションが付いたらPRでマーケットプレイスに昇格</li>
+<li><strong>スキルの合成（composing）</strong>: 依存はまだネイティブ機能ではないが、スキル名で他スキルを参照すれば、インストール済みならモデルが呼び出す</li>
+<li><strong>計測</strong>: PreToolUseフックでスキル使用をログ化し、人気/期待より過少起動のスキルを発見する</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-05: 著者はThariq Shihipar（Anthropic技術スタッフ、Claude Code担当）。「9カテゴリは決定版ではないが自社スキルライブラリの穴を見つけるのに有用なフレーム」と位置づけ</li>
+<li>2026-06-05: 「verification系スキルが社内で最も計測可能な品質インパクトを持つ」というのはAnthropicのClaude Code運用に基づく主張（汎用的に成立するかは未検証）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このwikiの操作（ingest/lint/review）は9カテゴリのどれに当たるか？ ingest=business process automation、lint/review=code quality に近い。1スキル1カテゴリ原則に照らすと現状のwiki-ingestは肥大していないか</li>
+<li>「verification系が最高ROI」を自分のwikiに適用するなら、validate_wiki.py を中心にした検証スキルへの投資が効くか</li>
+<li>description＝トリガー定義の原則で、既存スキルのdescription起動精度を測れるか（<a href="../concepts/claude-skills.html">claude-skills</a>の損益分岐点の問いと接続）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — Claudeスキルの基本概念（永続的職務定義・自動ロード）。本ページはその「作り方」側</li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — スキルに自己改善ループを組み込む設計（gotchas蓄積をLESSONS.mdで体系化したもの）</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — スキルの実行基盤</li>
+<li><a href="../tools/claude-code-plugins.html">claude-code-plugins</a> — プラグイン/マーケットプレイス配布の実例カタログ</li>
+<li><a href="../tools/skill-cleaner.html">skill-cleaner</a> — スキルの冗長・未使用・プロンプトバジェット超過を検出（計測の補助）</li>
+<li><a href="../design/ai-skills-design.html">ai-skills-design</a> — デザイン職のSkillsとエージェントSkillsの交差</li>
+<li><a href="../tools/openclaw-agent-skills.html">openclaw-agent-skills</a> — 「1度書いて全所で再利用」を実装した共有スキルリポジトリの実例</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-skills.html">claude-skills</a></li>
+<li><a href="../tools/openclaw-agent-skills.html">openclaw-agent-skills</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../tools/skill-cleaner.html">skill-cleaner</a></li>
+<li><a href="../design/ai-skills-design.html">ai-skills-design</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/lessons-from-building-claude-code-how-we-use-skills" rel="noopener" target="_blank">https://claude.com/blog/lessons-from-building-claude-code-how-we-use-skills</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
