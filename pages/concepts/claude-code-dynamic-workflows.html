@@ -92,6 +92,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-06-02: 著者いわく「workflowはベストプラクティスがまだ発展途上」「非技術タスクの方がむしろ有用なことが多い」「many tasks resemble coding tasks（多くのタスクはコーディングタスクに似ている）」</li>
+<li>2026-06-03: @0xCodez が同ローンチ内容を「6パターン・14ステップ」として再構成した二次まとめを投稿（X bookmark 2,715 / 1,118,716 imp、2026-06-05時点）。中核APIを <code>agent()</code> / <code>parallel()</code> / <code>pipeline()</code> の3関数と整理し、「<code>parallel()</code> はバリア（全結果を待つ）、<code>pipeline()</code> はストリーミング（各itemが独立に各stageを流れ、安く速い）」と対比。判断基準は「次に進む前に全結果が要るか？ Yes→parallel / No→pipeline」。新情報は本文に既出のため観察ログのみに記録</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -110,12 +111,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — <code>/goal</code> との組み合わせ（ハード完了要件）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
 <li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060044853279617150" rel="noopener" target="_blank">https://x.com/i/web/status/2060044853279617150</a></li>
 <li><a href="https://x.com/i/web/status/2060051213727744218" rel="noopener" target="_blank">https://x.com/i/web/status/2060051213727744218</a></li>
 <li><a href="https://x.com/i/web/status/2060054180379689074" rel="noopener" target="_blank">https://x.com/i/web/status/2060054180379689074</a></li>
-<li><a href="https://x.com/i/web/status/2061907337154367865" rel="noopener" target="_blank">https://x.com/i/web/status/2061907337154367865</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2061907337154367865" rel="noopener" target="_blank">https://x.com/i/web/status/2061907337154367865</a></li>
+<li><a href="https://x.com/i/web/status/2062127385923776831" rel="noopener" target="_blank">https://x.com/i/web/status/2062127385923776831</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
