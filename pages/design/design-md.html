@@ -28,9 +28,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <article><h1>DESIGN.md</h1>
 <p>有名サービスのデザイン仕様を <code>.md</code> 形式でまとめたコンテキストファイル。プロジェクトに置くだけでコーディングエージェントが自動で参照し、バイブコーディングで起きがちな「デザインがダサい」問題を緩和する。</p>
 <p>CLAUDE.md / AGENTS.md がエージェントの<strong>行動ルール</strong>を与えるのに対し、DESIGN.md は<strong>デザインの参照仕様</strong>（既存サービスの配色・タイポ・レイアウト規範）をプロジェクト文脈に常駐させる発想。エージェントは趣味（taste）を言葉で説明されるより参照を与えられた方が良い出力を出す、という <a href="../design/claude-premium-website-build.html">claude-premium-website-build.md</a> と同じ前提に立つ。frontend-design スキルがバックグラウンドで「やってはいけない凡庸パターン」を禁止するのに対し、DESIGN.md は「真似るべき良い基準」をプロジェクト側に置く点が補完的。</p>
+<p>仕様自体は Google が策定した <strong>DESIGN.md spec</strong> に基づく。既製のDESIGN.mdを探すなら <strong>getdesign.md</strong>（<code>getdesign.md</code>）が、有名ブランド80弱（Apple・Stripe・Linear・Tesla・Vercel・Claude・Figma・Nike・Spotify 等）のデザインシステム分析を「パターン・トークン・ルール」単位で配布するカタログサイトになっている。各ブランドの配色・タイポ・レイアウトの個性（例: Teslaは「徹底した引き算・全画面写真・ほぼゼロUI」、Linearは「超ミニマル・紫アクセント」）を一文要約＋詳細ページで提供する。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-06-04: @miz_apps_ が「バイブコーディングでデザインがダサいのにお悩みの方」向けに推奨。プロジェクトに置くだけでエージェントが「いい感じに参照してくれる」との体験ベースの推薦（X bookmark 1,757 / 2026-06-06時点）</li>
+<li>2026-06-06: getdesign.md がGoogleのDESIGN.md specを基盤とするカタログサイトとして稼働。voltagent の awesome-design-md 系プロジェクトが運営し「月間6M+ views」を謳う。BMW M / Binance / Airtable等をfeatured掲載。スポンサー枠あり＝商用ホスティング前提のため、掲載ブランド数・spec準拠の度合いは一次未確認</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -44,10 +46,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — frontend-design 等スキルとの補完関係</li>
 <li><a href="../concepts/llm-doc-management.html">llm-doc-management</a> — アプリ文脈をドキュメント化してLLMに渡すパターンの一種</li>
 <li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a> — AGENTS.md/Rules等のプロジェクト常駐コンテキスト手段</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/book-to-skill.html">book-to-skill</a></li>
-<li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062481013721403508" rel="noopener" target="_blank">https://x.com/i/web/status/2062481013721403508</a></li></ul></section></article>
+<li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li>
+<li><a href="../tools/book-to-skill.html">book-to-skill</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062481013721403508" rel="noopener" target="_blank">https://x.com/i/web/status/2062481013721403508</a></li>
+<li><a href="https://getdesign.md/" rel="noopener" target="_blank">https://getdesign.md/</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
