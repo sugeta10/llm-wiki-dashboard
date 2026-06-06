@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>design-md - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>design-md</h1>
+  <div class="meta">design/design-md · design · <span title="2026-06-07">今日</span></div>
+  <article><h1>DESIGN.md</h1>
+<p>有名サービスのデザイン仕様を <code>.md</code> 形式でまとめたコンテキストファイル。プロジェクトに置くだけでコーディングエージェントが自動で参照し、バイブコーディングで起きがちな「デザインがダサい」問題を緩和する。</p>
+<p>CLAUDE.md / AGENTS.md がエージェントの<strong>行動ルール</strong>を与えるのに対し、DESIGN.md は<strong>デザインの参照仕様</strong>（既存サービスの配色・タイポ・レイアウト規範）をプロジェクト文脈に常駐させる発想。エージェントは趣味（taste）を言葉で説明されるより参照を与えられた方が良い出力を出す、という <a href="../design/claude-premium-website-build.html">claude-premium-website-build.md</a> と同じ前提に立つ。frontend-design スキルがバックグラウンドで「やってはいけない凡庸パターン」を禁止するのに対し、DESIGN.md は「真似るべき良い基準」をプロジェクト側に置く点が補完的。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-04: @miz_apps_ が「バイブコーディングでデザインがダサいのにお悩みの方」向けに推奨。プロジェクトに置くだけでエージェントが「いい感じに参照してくれる」との体験ベースの推薦（X bookmark 1,757 / 2026-06-06時点）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>DESIGN.md は frontend-design / UI/UX Pro Max スキルと併用して衝突しないか。役割分担（禁止ルール vs 参照仕様）は実際に噛み合うか</li>
+<li>自分のwikiのoutputs/ HTML生成時に、共通の DESIGN.md を置けば視覚品質を底上げできるか</li>
+<li>有名サービスのデザイン仕様をmd化する作業自体を <a href="../tools/book-to-skill.html">book-to-skill</a> 的に自動生成できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../design/claude-premium-website-build.html">claude-premium-website-build.md</a> — 同じ「AIデザインの凡庸さ」問題への制作ワークフロー側の解</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — frontend-design 等スキルとの補完関係</li>
+<li><a href="../concepts/llm-doc-management.html">llm-doc-management</a> — アプリ文脈をドキュメント化してLLMに渡すパターンの一種</li>
+<li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a> — AGENTS.md/Rules等のプロジェクト常駐コンテキスト手段</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/book-to-skill.html">book-to-skill</a></li>
+<li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
+<li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062481013721403508" rel="noopener" target="_blank">https://x.com/i/web/status/2062481013721403508</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>

@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-dynamic-workflows</h1>
-  <div class="meta">concepts/claude-code-dynamic-workflows · concepts · <span title="2026-06-05">1日前</span></div>
+  <div class="meta">concepts/claude-code-dynamic-workflows · concepts · <span title="2026-06-07">今日</span></div>
   <article><h1>Claude Code Dynamic Workflows</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Claudeがタスクごとに使い捨てのオーケストレーション（JavaScriptハーネス）をその場で書き、独立コンテキストを持つサブエージェント群に分散・協調実行させる <a href="../tools/claude-code.html">claude-code</a> の Research Preview 機能。</p>
@@ -93,6 +93,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li>2026-06-02: 著者いわく「workflowはベストプラクティスがまだ発展途上」「非技術タスクの方がむしろ有用なことが多い」「many tasks resemble coding tasks（多くのタスクはコーディングタスクに似ている）」</li>
 <li>2026-06-03: @0xCodez が同ローンチ内容を「6パターン・14ステップ」として再構成した二次まとめを投稿（X bookmark 2,715 / 1,118,716 imp、2026-06-05時点）。中核APIを <code>agent()</code> / <code>parallel()</code> / <code>pipeline()</code> の3関数と整理し、「<code>parallel()</code> はバリア（全結果を待つ）、<code>pipeline()</code> はストリーミング（各itemが独立に各stageを流れ、安く速い）」と対比。判断基準は「次に進む前に全結果が要るか？ Yes→parallel / No→pipeline」。新情報は本文に既出のため観察ログのみに記録</li>
+<li>2026-06-04: @omarsar0（Elvis Saravia / DAIR.AI）が「Dynamic Workflowsにハマっている。ハーネスをその場で生成する発想が魅力的で、自分のエージェントオーケストレータ向けにリバースエンジニアリングした」と投稿。さらにタスク・メトリクス・レポートを追うモニタリングダッシュボードをHTML artifactとして自作（X bookmark 1,563 / 2026-06-05時点）。Claude Code固有機能が外部のエージェント基盤へ移植・模倣され始めた事例</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -109,15 +110,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a>（Opus 4.8でのDynamic Workflows設定・コスト目安）</li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a> — generate-and-filter / adversarial verification の品質ゲート応用</li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — <code>/goal</code> との組み合わせ（ハード完了要件）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
-<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060044853279617150" rel="noopener" target="_blank">https://x.com/i/web/status/2060044853279617150</a></li>
+<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060044853279617150" rel="noopener" target="_blank">https://x.com/i/web/status/2060044853279617150</a></li>
 <li><a href="https://x.com/i/web/status/2060051213727744218" rel="noopener" target="_blank">https://x.com/i/web/status/2060051213727744218</a></li>
 <li><a href="https://x.com/i/web/status/2060054180379689074" rel="noopener" target="_blank">https://x.com/i/web/status/2060054180379689074</a></li>
 <li><a href="https://x.com/i/web/status/2061907337154367865" rel="noopener" target="_blank">https://x.com/i/web/status/2061907337154367865</a></li>
-<li><a href="https://x.com/i/web/status/2062127385923776831" rel="noopener" target="_blank">https://x.com/i/web/status/2062127385923776831</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2062127385923776831" rel="noopener" target="_blank">https://x.com/i/web/status/2062127385923776831</a></li>
+<li><a href="https://x.com/i/web/status/2062553527730540611" rel="noopener" target="_blank">https://x.com/i/web/status/2062553527730540611</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
