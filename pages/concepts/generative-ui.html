@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>generative-ui - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>generative-ui</h1>
+  <div class="meta">concepts/generative-ui · concepts · <span title="2026-06-06">今日</span></div>
+  <article><h1>Generative UI</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: エージェントがユーザーの要求からUIをリアルタイムに「描画」する新しいフロントエンド層。実装は Controlled / Declarative / Open-ended の3パターンに分かれ、制御 vs 柔軟性のトレードオフで選ぶ。</p>
+</blockquote>
+<p>従来のフロントエンドは「デザイナーが描き、エンジニアが作り、ユーザーは出荷されたものを受け取る」固定物だった。Generative UI は、エージェントが「説明する（describe）」のをやめて「見せる（show）」ようにする層である。「テーブルが欲しい」と言えば、テーブルを説明する段落ではなく、実際のテーブルが返る。重要なのは「どう作るか」に唯一解がなく、3つのパターンが存在し、その差が<strong>化粧的ではなくアーキテクチャ的</strong>である点。多くのチームは自分がどれを選んだか自覚しないまま1つを選び、スケール時に各パターン固有の壁にぶつかる。</p>
+<h2>プロトコルスタック（3つの役割分担）</h2>
+<p>3つのプロトコルがそれぞれ1つの仕事をする：</p>
+<ul>
+<li><strong>MCP</strong> — エージェントとツールをつなぐ（<a href="../tools/claude-mcp.html">claude-mcp</a>）</li>
+<li><strong>A2A</strong> — エージェント同士をつなぐ（agent-to-agent）</li>
+<li><strong>AG-UI</strong> — エージェントとユーザーをつなぐ。ストリーミング層で、tool call / A2UIスキーマ / MCP Appイベント / state delta をすべて運ぶ。SSE上を双方向に状態が流れる（ユーザー編集→エージェントが見る、エージェント変更→ユーザーが見る）</li>
+<li><strong>A2UI</strong> — Googleの仕様。エージェントがUIをスキーマとして発行する。AG-UIの上に乗る</li>
+</ul>
+<p>CopilotKit は AG-UI クライアントとしてこのストリームをデコードし、3パターンすべてを同一ランタイムで扱える。</p>
+<h2>3つのパターン（制御⇔柔軟性のスペクトラム）</h2>
+<h3>Pattern 1: Controlled（フロントエンドがUIを所有）</h3>
+<p>コンポーネントを事前に作り、ツール名にバインドする。エージェントがそのツールを選ぶと、引数をpropsとしてコンポーネントがチャット内にインライン描画される。フロントエンドのフック1つ、エージェント側コードはゼロ。デザインシステムが主導権を保つ。</p>
+<ul>
+<li><strong>トークン税</strong>: 登録した全コンポーネントがユーザー発話前からコンテキストに乗る。ツール記述＋JSONスキーマで約400トークン/個 → 25個で毎ターン10,000トークン。リクエストごとに課金される</li>
+<li><strong>誤選択</strong>: 似たコンポーネントが増えるとエージェントが間違える（円グラフとドーナツグラフはどちらも「割合を示す」）</li>
+<li><strong>適: 10個以下の高価値フロー・ピクセル精度が要る・必要なUIが確定している場合</strong>。コンポーネント数がユースケースと線形に増えるのが弱点</li>
+<li><strong>壊れ方の対策</strong>: ツール記述を「視覚（pie chart）」でなく「ユーザー意図（割合の比較を求めたとき）」で書く</li>
+</ul>
+<h3>Pattern 2: Declarative / A2UI（エージェントがスキーマを発行）</h3>
+<p>エージェントがUIを記述するJSONスキーマを発行し、アプリ側のコンポーネントカタログがスキーマノードをReact等にマップする。ツール1つで多数のUI。これは<a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a>（中間記法パターン）の一種——エージェントにGUIでなくスキーマ（DSL）を操作させることで、コンポーネントライブラリが増えてもトークンは横ばい（50種でも500種でもエージェントが見る関数は1つ）。</p>
+<ul>
+<li><strong>カタログが契約</strong>: 許可コンポーネントとprops（Zodスキーマ）を定義。typoがビルドエラーになり空白画面を防ぐ</li>
+<li><strong>fixed schema vs dynamic schema</strong>: コンポーネントツリーを人間が書きエージェントはデータだけ埋める（fixed）か、二次LLMが会話文脈から毎ターンツリーを生成する（dynamic）</li>
+<li><strong>インタラクション</strong>: ボタン等はスキーマにactionを持ち、クリックがAG-UI経由でイベントを返す。クリックハンドラ不要</li>
+<li><strong>トレードオフ</strong>: レイアウトをLLMが所有し、実行ごとに出力がカタログ内で揺れる。法的開示・マーケ面などピクセル配置が厳密に要る場面には不向き</li>
+<li><strong>適: 作る時間より多くのユースケースがある・トークン経済を気にする段階</strong>。ロングテール（ダッシュボード・結果・フォーム・カード）向け</li>
+</ul>
+<h3>Pattern 3: Open-ended（カタログもスキーマもなし）</h3>
+<p>2つのサブパターン。<strong>MCP Apps</strong>: MCPサーバーがUIサーフェスを公開しエージェントが駆動（Excalidrawの例ではキャンバスの全ピクセルをエージェントが制御）。<strong>Sandboxed HTML</strong>: エージェントが生HTMLを書き、アプリがサンドボックス化iframe内で描画。</p>
+<ul>
+<li><strong>ブランド不整合問題</strong>: スタイル指示はエージェントを自社ブランドに寄せるが保証しない。「火曜はネオブルータリズム、水曜はiOS 4クローン」のように毎回変わり、プロダクトが「真剣に見えない」。著者は主UIとして投入したが1週間で撤退</li>
+<li><strong>適: 一発限り・使い捨ての可視化（ユーザーが二度と見ない）</strong>。「電子の動きを見せて」等。主サーフェスには絶対に使わない</li>
+<li><strong>対策</strong>: iframe sandboxは <code>allow-scripts</code> と <code>allow-forms</code> のみ。<code>allow-same-origin</code> は絶対付けない</li>
+</ul>
+<h2>選び方（決定木）</h2>
+<ul>
+<li>デザイナーがピクセル精度のモックを持つフロー → <strong>Controlled</strong></li>
+<li>多数のカード型・ウィジェットを出荷 → <strong>Declarative</strong></li>
+<li>一発・使い捨ての可視化 → <strong>Open-ended</strong></li>
+<li>決められない → <strong>Declarative をデフォルト</strong>にし、上位3フローだけ Controlled に格上げ。Open-ended をデフォルトにはしない</li>
+</ul>
+<blockquote>
+<p>既に出荷中で迷子なら render tool の数を数える。15を超えていれば Controlled の壁が近い → A2UI 配線を今週始める</p>
+</blockquote>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-03: @Saboo_Shubham_ の主張「2026年に出荷されるインターフェースは一部エージェント自身がリアルタイムに描く」「ほとんどのチームはフレームワークの既定（Controlled）に流され、25コンポーネントで壁にぶつかり、デモ映えする Open-ended に手を伸ばす——どちらも決定ではなくドリフト」</li>
+<li>著者は CopilotKit を「3パターンを同一ランタイムで AG-UI 上に扱える」として選択（単一スタックでの検証であり比較の網羅性は不明）。3パターンの参照実装は <code>awesome-llm-apps</code> の Generative UI Agents セクションにあると主張</li>
+<li>トークン税の具体値（400トークン/コンポーネント、25個で10,000トークン/ターン）は著者提示の見積もりで、独立検証は未確認</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のwikiシステムの HTML出力（UC-2）は事実上 Open-ended パターン。使い捨て可視化に限定すべきという指針と整合しているか</li>
+<li>Declarative/A2UI の「スキーマが契約」という発想は <a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> と同型。wiki の構造化出力にカタログ＝契約の考え方を持ち込めるか</li>
+<li>AG-UI / A2UI / MCP / A2A の4プロトコル分担は本当に普及するか、それともベンダー固有仕様に留まるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a> — Generative UIスタックの「エージェント⇔ツール」層</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — A2A（エージェント間連携）の設計パターン</li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — Declarative/A2UIが体現する「GUIでなくスキーマを操作させる」設計思想</li>
+<li><a href="../design/fastview-design.html">fastview-design</a> — エージェント生成UIにも適用できるUI設計原則</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/fastview-design.html">fastview-design</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062220865643982875" rel="noopener" target="_blank">https://x.com/i/web/status/2062220865643982875</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
