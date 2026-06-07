@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>skill-self-improving-loop - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>skill-self-improving-loop</h1>
+  <div class="meta">concepts/skill-self-improving-loop · concepts · <span title="2026-06-07">今日</span></div>
+  <article><h1>スキル自己改善ループ（会話履歴→Issue→Routines→triage→PR）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: スキルが「うまくいかなかったsignal」を自分の会話履歴から拾ってGitHub Issue化し、別の無人スキルがそれを判定・SKILL.md修正・PR作成まで回す3段構成。ふりかえり〜PR出しを自動化し、人間はマージ判断だけ残す。</p>
+</blockquote>
+<p><a href="../concepts/self-refining-skills.html">self-refining-skills</a>がスキル内の <code>LESSONS.md</code> に学びを追記する<strong>スキル内蔵型</strong>なのに対し、これはスキル本体とは別セッション・別スキルで改善を回す<strong>外部ループ型</strong>。発見（会話jsonlからのsignal抽出）と適用（SKILL.md修正＋PR）を分離するのが要点で、これにより対話前提の本体スキルの品質を落とさずに無人運転を実現できる。役割を3段に切る：</p>
+<table>
+<thead>
+<tr>
+<th>段</th>
+<th>やること</th>
+<th>場所</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 発見</td>
+<td>本体スキルの完了時に会話jsonlをサブエージェントに丸投げし「signal」を抽出→Issue起票</td>
+<td>ローカル</td>
+</tr>
+<tr>
+<td>2. 判定+適用</td>
+<td>専用triageスキルがIssueをaccept/reject、acceptならSKILL.md修正＋PR作成</td>
+<td>Web（無人）</td>
+</tr>
+<tr>
+<td>3. 無人運転</td>
+<td>Routinesが2を1日1回起動</td>
+<td>Web（無人）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>signalの定義</strong>：ユーザーの修正指示（「違う」「stop doing X」）、同じ指示の繰り返し（スキルが内面化していないサイン）、進まないステップのループ、レビュースキルがSKILL.md文面をroot causeと名指しした箇所。生の会話jsonlはサイズが大きいのでメインコンテキストに乗せずサブエージェント側で処理する。</p>
+<p><strong>なぜ本体と別スキルにするか</strong>：本体スキルはユーザーとの対話前提なので無人運転に向かない。triage専用のローカルスキルを別建てし、本体の開発品質を保ったまま無人で回す。</p>
+<p><strong>品質ゲート3段＋外側ループ</strong>：完全自動の改善を見据え、<code>verify-diff</code>（Editがfinding意図を達成したかの実証検証・<a href="../concepts/eval-loop.html">eval-loop</a>のempirical発想）／<code>skill-review</code>（SKILL.mdのbest practices）／<code>publicity-review</code>（公開リポへのleak＝絶対パス・内部hostname・credential検出）の3段を直列で流す。各ゲートは内側ループを持ち、3段全体をさらに<strong>最大3回外側ループ</strong>させる。skill-reviewがSKILL.mdを編集するとverify-diffやpublicity-reviewの結果が変わりうるため、1回流して終わりでは整合が取れないのが理由。「どのゲートも1件もeditを入れないiterがあれば収束」「fatal verdictでbreak」で抜ける。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-06: SonicGardenのプログラマ（hiroro-work）による実践報告。本体スキルは <code>dev-workflow</code>、triage側は <code>dev-workflow-triage</code>（<a href="https://github.com/hiroro-work/claude-plugins">hiroro-work/claude-plugins</a>で公開）</li>
+<li>2026-06-06: 数字は「自分1人だけが有効化した試験運用段階」のもの — 自動triageコミット40件以上/13日、自己ふりかえりIssue 21起票/21close/0open、1Issueあたりfinding 1〜4件</li>
+<li>2026-06-06: 「自分がうまくいったと思ったときでも裏のサブエージェントとのやり取りで起きた問題を拾ってくれる」という主張（効果の一般性は未検証）</li>
+<li>2026-06-06: Routinesで止めずに最後まで走らせる際のgotcha — ①サブスキルから戻った直後に待ち始める→判断ポイント直前に「止まるな」を再掲、②サブスキル出力が長文だと完結扱いされる→末尾を短いJSON（<code>{"status":...,"suggested_edits":[...]}</code>）で閉じる、③<code>.claude/</code>配下に作業ファイルを置くと許可ダイアログで止まる→<code>.triage/</code>等の外に置き<code>.gitignore</code>、④<code>allowed-tools</code>の書き漏れ（<code>TodoWrite</code>等）で停止、⑤Webデフォルトの <code>stop-hook-git-check.sh</code> が未コミット中間状態で誤発火</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このwikiの <code>wiki-ingest</code>／<code>LESSONS.md</code> 運用は<a href="../concepts/self-refining-skills.html">self-refining-skills</a>型（内蔵）だが、外部triageループ型に移すと改善の質は上がるか。会話履歴からのsignal抽出を <code>retro</code> スキルが担えるか</li>
+<li>「長文出力は完結扱いされるので短いJSONで閉じる」は headless 実行の一般則として効くか。自分のheadless ingestの出力形式に適用すべきか</li>
+<li>品質ゲート3段を直列で外側ループさせる設計は、lint/review/ingestの整合検証にそのまま流用できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — スキル内蔵型の自己改善（LESSONS.md追記）。本ページはそれを別セッション・別スキルに外部化した形</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 生成→採点→閾値未満で止めるループ。verify-diffの実証検証と品質ゲートの一般形</li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> — AIがAI開発を加速する論考。本ページはその「スキル改善」版のミニチュア実装</li>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a> — スキルの書き方ベストプラクティス（gotchas蓄積・on-demandフック）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/sonicgarden/articles/claude-code-self-improving-loop" rel="noopener" target="_blank">https://zenn.dev/sonicgarden/articles/claude-code-self-improving-loop</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
