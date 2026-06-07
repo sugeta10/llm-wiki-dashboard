@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>managed-agents-dreams</h1>
-  <div class="meta">concepts/managed-agents-dreams · concepts · <span title="2026-05-24">2週間前</span></div>
+  <div class="meta">concepts/managed-agents-dreams · concepts · <span title="2026-06-08">今日</span></div>
   <article><h1>Managed Agents Dreams（メモリ再構成パイプライン）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 過去セッションとメモリストアを入力に、重複削除・矛盾解消・インサイト統合を非同期で行い、入力を壊さずに新しいメモリストアを生成する <a href="../tools/claude-managed-agents.html">claude-managed-agents</a> のジョブ機能。</p>
@@ -75,8 +75,11 @@ session = client.beta.sessions.create(
 <li>2026-05-23: 必要ベータヘッダー — <code>managed-agents-2026-04-01</code> と <code>dreaming-2026-04-21</code></li>
 <li>2026-05-23: 対応モデルは <code>claude-opus-4-7</code> と <code>claude-sonnet-4-6</code>（ベータ期間中のみ）</li>
 </ul>
+<h2>ベンダー横断の収束: 忘却でなく再合成</h2>
+<p>Claude の Dreams と同型の発想が ChatGPT 側にも現れている。OpenAI の新メモリ機能「<strong>Dreaming</strong>」は、長期メモリ運用の課題に「<strong>消す</strong>（忘却曲線で古い記憶を削除する）」のではなく「<strong>裏で会話を読み直し、一貫した"今の自分"に書き直す</strong>」=<strong>再合成</strong>で答えるという設計だと観察されている。これは Dreams の「重複削除・矛盾解消・インサイト統合を非破壊で行い、新しいメモリストアを生成する」という方向性と一致しており、自作の長期メモリを設計する側にとっては「忘却アルゴリズムを磨く」より「再合成パイプラインを持つ」方が筋がよい可能性を示唆する（<a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> / <a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> と接続）。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
+<li>2026-06-05: @AI_masaou のポスト（X bookmark 293）。ChatGPTの新メモリ「Dreaming」は「古い記憶を忘却曲線で消す」のではなく「裏で会話を読み直して一貫した今の自分に書き直す＝忘却でなく再合成」という発想だと指摘。OpenAI公式の正式仕様ではなく個人の解釈・要約であり、機構の詳細は未確認</li>
 <li>2026-05-23: Research Preview段階でアクセス申請制</li>
 <li>2026-05-23: 処理時間は入力サイズによって「数分〜数十分」かかる（公式の概算）</li>
 <li>2026-05-23: 課金は標準APIトークン料金。入力セッション数・長さに比例。小バッチから試して品質確認後にスケールアップ推奨</li>
@@ -92,11 +95,12 @@ session = client.beta.sessions.create(
 <li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a>（LLMエージェントのメモリ劣化問題 — Dreamsが解決しようとしている課題と対応）</li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>（マルチエージェント環境でのメモリ共有設計）</li>
 <li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a>（複数エージェント間でメモリを共有する設計思想 — Dreamsはその「保持価値の選別」を担いうる）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
-<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a></li>
-<li><a href="../concepts/ai-employee-workflow.html">ai-employee-workflow</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/managed-agents/dreams" rel="noopener" target="_blank">https://platform.claude.com/docs/en/managed-agents/dreams</a></li></ul></section></article>
+<li><a href="../concepts/ai-employee-workflow.html">ai-employee-workflow</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/managed-agents/dreams" rel="noopener" target="_blank">https://platform.claude.com/docs/en/managed-agents/dreams</a></li>
+<li><a href="https://x.com/i/web/status/2062854993313751372" rel="noopener" target="_blank">https://x.com/i/web/status/2062854993313751372</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

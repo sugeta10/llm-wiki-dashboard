@@ -24,48 +24,94 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-engineer-roadmap</h1>
-  <div class="meta">concepts/ai-engineer-roadmap · concepts · <span title="2026-05-09">4週間前</span></div>
+  <div class="meta">concepts/ai-engineer-roadmap · concepts · <span title="2026-06-08">今日</span></div>
   <article><h1>AI Engineer ロードマップ（2026）</h1>
-<p>2026年時点での AI エンジニアとして学ぶべきこと・作るべきもの・スキップすべきことの整理。</p>
-<h2>学ぶべきこと</h2>
+<blockquote>
+<p><strong>TL;DR</strong>: 2026年のAIエンジニアの仕事は「モデルを選ぶ・プロンプトを書く」ことではなく、モデルを取り囲む<strong>ハーネス</strong>（エージェントループ・コンテキスト管理・eval・耐久性）を設計し運用すること。同一モデルでもハーネス次第でベンチマークが10〜36ポイント動く。</p>
+</blockquote>
+<p>「賢いラッパー」と「本番で生き残るシステム」の差がそのまま市場価値の差になっている。GPTを数個のプロンプトで包んだだけのものは機能であって事業ではなく、Big Techにいつでも飲み込まれる（Sherlocked）。企業が金を払うのは、深夜に壊れないエージェント・回帰を計測で証明できるシステム・同じモデルを大幅に性能向上させるハーネスの方。<strong>ハーネスこそが仕事の本体</strong>であり、プロンプトエンジニアリングは単独スキルとしては終わり、<a href="../concepts/12-factor-agents.html">12-factor-agents</a> に通じる<strong>コンテキストエンジニアリング</strong>がそれを置き換えた。</p>
+<h2>コンテキストエンジニアリングの4プリミティブ</h2>
+<p>エージェントエンジニアが扱う「モデルの前に何のトークンを置くか」の操作は4種類に集約される。これは <a href="../tools/claude-harness.html">claude-harness</a> / <a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a> のハーネス設計と地続き。</p>
 <ul>
-<li><strong>LLM API の活用</strong>: OpenAI / Anthropic / Google の API 設計と特性の違い</li>
-<li><strong>プロンプトエンジニアリング</strong>: <a href="../concepts/prompt-engineering.html">prompt-engineering</a> の基礎から応用</li>
-<li><strong>エージェント設計</strong>: ループ制御・ツール呼び出し・エラーリカバリー（<a href="../concepts/agentic-coding.html">agentic-coding</a>）</li>
-<li><strong>RAG（検索拡張生成）</strong>: ベクトル DB・チャンク設計・リランキング</li>
-<li><strong>評価（Eval）</strong>: LLM 出力の品質を定量的に測る手法</li>
+<li><strong>Write</strong> — スクラッチパッド・メモリファイル（エージェントが読み書きする外部記憶）</li>
+<li><strong>Select</strong> — 必要な時点での検索（前倒しの一括投入でなく、使う地点でのretrieval）</li>
+<li><strong>Compress</strong> — コンテキストウィンドウの85〜95%地点での要約・圧縮（<a href="../concepts/prompt-caching.html">prompt-caching</a> と併用）</li>
+<li><strong>Isolate</strong> — サブエージェントに独立コンテキストを持たせる（<a href="../tools/claude-code-subagents.html">claude-code-subagents</a> / <a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>）</li>
 </ul>
-<h2>作るべきもの</h2>
+<h2>Workflow と Agent の使い分け</h2>
 <ul>
-<li>自分のユースケースに特化したエージェント（汎用より専用が価値大）</li>
-<li>社内 LLM Wiki / ナレッジベース（<a href="../concepts/llm-wiki.html">llm-wiki</a>）</li>
-<li>CI/CD に組み込んだ自動コードレビュー</li>
-<li>データパイプライン（取得・変換・要約の自動化）</li>
+<li><strong>Workflow</strong>: 制御フローを人間が固定で書く（<a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> のAnthropic5パターン: Prompt chaining / Routing / Parallelization / Orchestrator-worker / Evaluator-optimizer）</li>
+<li><strong>Agent</strong>: ループ内でモデル自身が制御フローを決める</li>
+<li>ワークフローで足りる場面でエージェントを作ると、コストは約10倍・故障率は2倍になる。最初に正しく見極める。</li>
+</ul>
+<h2>ハーネス＝OS というメンタルモデル</h2>
+<p>モデル=CPU（生の計算）、コンテキストウィンドウ=RAM、ハーネス=OS、スキル=アプリ。OSがCPUの実力を決めるのと同じで、ハーネスがモデルの実力を決める。モダンなハーネスの構成要素は概ね10個に分解できる：ループ制御 / ツールディスパッチ（レジストリ・スキーマ検証・並列・リトライ）/ コンテキスト管理（85%地点でcompaction）/ 永続化（各ノードでcheckpoint、resume/rewind/fork可能に）/ サブエージェントオーケストレーション / スキル＋progressive disclosure（<a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a>）/ フック（Pre/PostToolUse・PreCompact・Stop）/ 観測性（モデル・ツール・サブエージェント呼び出しごとのOTELスパン）/ サンドボックス / 認証ブローカリング（モデルにクレデンシャルを見せない）。</p>
+<h2>evalがボトルネック</h2>
+<p>「改善した」をvibesでなく計測で言えるエンジニアが希少。実装すべきeval4種：</p>
+<ol>
+<li><strong>Single-turn eval</strong> — 入力に対し出力が正しいか。最安・決定論的グレーダー優先・常時実行</li>
+<li><strong>Trajectory eval</strong> — 正しいツールを正しい引数・正しい順序で呼んだか（single-step / full-turn / multi-turn）</li>
+<li><strong>LLM-as-judge</strong> — 自由記述出力（レポート・コードレビュー）向け。人手採点と週次でキャリブレーション（<a href="../concepts/eval-loop.html">eval-loop</a>）</li>
+<li><strong>End-state eval</strong> — ステートフルエージェント向け。DB・ファイルの最終状態をground truthと比較</li>
+</ol>
+<p>注意点: モデルは「評価されている」ことを検知して挙動を変える。合成クエリでなく実本番クエリで組む。</p>
+<h2>本番ハードニング（終わらないフェーズ）</h2>
+<ul>
+<li><strong>コスト規律</strong>: CLAUDE.md・システムプロンプト・ツール定義をキャッシュ（<a href="../concepts/prompt-caching.html">prompt-caching</a>・最大90%削減）/ 難度でルーティング（Haiku→Sonnet→Opus）/ 非リアルタイムはBatch API（50%オフ）/ マルチエージェントは単一の約15倍トークンを焼くので価値が見合う時だけ（<a href="../concepts/token-management.html">token-management</a>）</li>
+<li><strong>レイテンシ</strong>: 並列ツール呼び出し常用 / 部分出力ストリーミング / サブエージェントfan-out</li>
+<li><strong>安全性</strong>: コード実行は必ずサンドボックス（Modal/E2B）/ クレデンシャルはモデルコンテキスト外でブローカー / 不可逆操作はhuman-in-the-loop</li>
+<li><strong>モニタリング</strong>: トークンコスト・ツール失敗率・judgeスコア・p95でアラート / モデルアップグレード後はeval再ベースライン（ハーネスはモデルの「できないこと」を前提に書かれており、その前提が陳腐化する）</li>
+<li><strong>レジリエンス</strong>: 60秒超のエージェントは耐久実行（Inngest/Temporal/PostgresSaver）/ 各ノードでcheckpoint</li>
 </ul>
 <h2>スキップしてよいこと</h2>
 <ul>
 <li><strong>モデル学習・ファインチューニング</strong>: API で十分なケースが大半。コストと時間が見合わない</li>
-<li><strong>独自ベクトル DB 構築</strong>: 既存サービス（Pinecone・Weaviate 等）で事足りる</li>
-<li><strong>フルスタック AI フレームワーク</strong>: LangChain 等は学習コスト高。シンプルな API 直呼びの方が制御しやすい</li>
+<li><strong>独自ベクトルDB構築</strong>: 実際のrecall問題を計測する前に作らない。既存サービスで足りる</li>
+<li><strong>No-code エージェントプラットフォーム</strong>: 使い捨て用途以外は不要</li>
+<li><strong>OpenAI Swarm / Assistants API</strong>: 前者は公式に本番非対応、後者は2026年半ばにsunsetting</li>
 </ul>
-<h2>2026 年の潮流</h2>
-<p>「What to Learn, Build, and Skip in AI Agents (2026)」（@rohit4verse）より：
-- エージェントは「賢い自動化」ではなく「自律的な判断主体」として設計する時代
-- ハーネス設計（<a href="../tools/claude-harness.html">claude-harness</a>）が差別化要因
-- 評価（Eval）がボトルネック — 作れるエンジニアが少ない</p>
+<h2>観察ログ（未検証）</h2>
+<p>「How To Become An AI Engineer in 2026」（@sairahul1, 2026-06-05, X bookmark 2,378）の固有主張・数字：</p>
+<ul>
+<li>2026-06-05: 同一モデル（Opus 4.5）をハーネス違いでCOREベンチに通すと、Claude Codeハーネス78% vs Smolagentsハーネス42%（36ポイント差）と主張。「賢いラッパー」と「本番システム」の給与差は約$150,000とも</li>
+<li>2026-06-05: 6フェーズ・17週間（フルタイム）/ 40週間（副業）ロードマップを提示。Phase 0=メンタルモデル / Phase 1=生SDK＋Claude Agent SDKで素のエージェント二度書き / Phase 2=LangGraph+Deep Agentsで本番構成 / Phase 3=自前ミニハーネス約1,500行 / Phase 4=eval・回帰ハーネス（golden 30-50問・CI gate） / Phase 5=本番ハードニング（永久）</li>
+<li>2026-06-05: 推奨スタックは LangGraph 1.0 + Deep Agents（state machine＋PostgresSaver耐久性＋time-travel debug＋OTEL）、ハーネス参照実装は Claude Agent SDK（Claude Codeと同一ハーネス）、観測性は LangSmith / Braintrust / Arize Phoenix から1つ</li>
+<li>2026-06-05: CrewAI=デモ最速だが本番脆弱、AutoGen=Microsoft Agent Frameworkへ統合で先行き不透明、との評</li>
+<li>2026-06-05: ベンチ数字（2026年5月時点・単一ソース）: SWE-bench Verified Claude Opus 4.7 ~87.6% / GPT-5.5 ~88.7%、GAIA Claude Sonnet 4.5 74.6%、τ-bench Claude Mythos Preview 89.2%</li>
+<li>2026-06-05: 「57%のチームが本番にエージェントを持ち、そのうち89%が観測性を配線済み」と主張</li>
+</ul>
+<p>「What to Learn, Build, and Skip in AI Agents (2026)」（@rohit4verse）の整理：</p>
+<ul>
+<li>エージェントは「賢い自動化」でなく「自律的な判断主体」として設計する時代</li>
+<li>ハーネス設計（<a href="../tools/claude-harness.html">claude-harness</a>）が差別化要因</li>
+<li>学ぶべき基礎: LLM API活用 / <a href="../concepts/prompt-engineering.html">prompt-engineering</a> / <a href="../concepts/agentic-coding.html">agentic-coding</a> / RAG / eval</li>
+<li>作るべきもの: 専用エージェント / 社内 <a href="../concepts/llm-wiki.html">llm-wiki</a> / CI組込み自動コードレビュー / データパイプライン</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「同一モデル×ハーネス違いで36ポイント差」は自分のwikiシステムのハーネス（<a href="../tools/claude-harness.html">claude-harness</a>）でも再現するか？小さなeval setで測れるか</li>
+<li>Phase 3「自前ミニハーネス1,500行」を実際に書くと、Claude Agent SDK / Deep Agents に対し何を切り何を得るか</li>
+<li>このロードマップの「ハーネスが仕事の本体」という主張は、<a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a>・<a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a> の実践者像とどこまで一致するか</li>
+</ul>
 <h2>関連</h2>
 <ul>
+<li><a href="../tools/claude-harness.html">claude-harness</a> — ハーネス＝仕事の本体という本ページの中心主張の実体</li>
+<li><a href="../concepts/12-factor-agents.html">12-factor-agents</a> — コンテキストエンジニアリング・ステートレス設計の原則</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Anthropic5ワークフローパターン・サブエージェント設計</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 生成→採点→ゲートの品質ループ（eval4種の基盤）</li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a> — plan先行・大量並列の実践者総合スタック</li>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a> — スキル＋progressive disclosure</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/claude-harness.html">claude-harness</a></li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-<li><a href="../tools/claude-harness.html">claude-harness</a></li>
-<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2009663737469542875" rel="noopener" target="_blank">https://x.com/i/web/status/2009663737469542875</a></li>
-<li><a href="https://x.com/i/web/status/2049548305408131349" rel="noopener" target="_blank">https://x.com/i/web/status/2049548305408131349</a></li></ul></section></article>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-harness.html">claude-harness</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
+<li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2009663737469542875" rel="noopener" target="_blank">https://x.com/i/web/status/2009663737469542875</a></li>
+<li><a href="https://x.com/i/web/status/2049548305408131349" rel="noopener" target="_blank">https://x.com/i/web/status/2049548305408131349</a></li>
+<li><a href="https://x.com/i/web/status/2062809249064141017" rel="noopener" target="_blank">https://x.com/i/web/status/2062809249064141017</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
