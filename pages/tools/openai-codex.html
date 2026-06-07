@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>openai-codex</h1>
-  <div class="meta">tools/openai-codex · tools · <span title="2026-06-05">2日前</span></div>
+  <div class="meta">tools/openai-codex · tools · <span title="2026-06-07">今日</span></div>
   <article><h1>OpenAI Codex</h1>
 <p>OpenAI が提供するコード生成・エージェント実行プラットフォーム。<a href="../tools/claude-code.html">claude-code</a> の競合にあたる。</p>
 <h2>Codex App Server</h2>
@@ -101,6 +101,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>まず Business / Enterprise プランへロールアウトし、その後より広く展開予定</li>
 </ul>
 <p>エージェントが「コードを書く」段階から「成果物を共有可能なアプリとして出力する」段階へ広がった動き。アプリ販売の可否を整理した上記「Codex App Server」の議論と地続きで、Codexを成果物配信プラットフォーム化する方向性を示す。</p>
+<h2>Build iOS Apps プラグイン（2026-06）</h2>
+<p>@OpenAIDevs 公式発表（2026-06-04）。iOSアプリ開発ループを Codex 内で完結させるプラグイン：</p>
+<ul>
+<li>アプリ内ブラウザで iOS アプリを<strong>閲覧・テスト</strong>できる</li>
+<li>SwiftUI プレビューを開く</li>
+<li>Codex から離れずに<strong>編集をホットリロード</strong>する</li>
+</ul>
+<p>「コードを書く」だけでなく、ビルド→プレビュー→テストの反復をエージェント環境内に取り込む動き。前述「Codex Sites」（成果物のWeb化）と並び、Codexを単なる生成器から開発ループ全体のランタイムへ拡張する方向の一例。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
@@ -110,15 +118,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 <li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a> — エージェントループの内部実装詳細（Responses API・プロンプト構築・Compaction）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2051970872995664239" rel="noopener" target="_blank">https://x.com/i/web/status/2051970872995664239</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2051970872995664239" rel="noopener" target="_blank">https://x.com/i/web/status/2051970872995664239</a></li>
 <li><a href="https://x.com/i/web/status/2052631588140421550" rel="noopener" target="_blank">https://x.com/i/web/status/2052631588140421550</a></li>
 <li><a href="https://x.com/i/web/status/2058907483150926229" rel="noopener" target="_blank">https://x.com/i/web/status/2058907483150926229</a></li>
 <li><a href="https://x.com/i/web/status/2058907486372172092" rel="noopener" target="_blank">https://x.com/i/web/status/2058907486372172092</a></li>
 <li><a href="https://x.com/i/web/status/2060464235868836235" rel="noopener" target="_blank">https://x.com/i/web/status/2060464235868836235</a></li>
-<li><a href="https://x.com/i/web/status/2061845949170045346" rel="noopener" target="_blank">https://x.com/i/web/status/2061845949170045346</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2061845949170045346" rel="noopener" target="_blank">https://x.com/i/web/status/2061845949170045346</a></li>
+<li><a href="https://x.com/i/web/status/2062599291479478275" rel="noopener" target="_blank">https://x.com/i/web/status/2062599291479478275</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
