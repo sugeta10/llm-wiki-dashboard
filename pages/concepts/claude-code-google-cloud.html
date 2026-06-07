@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-google-cloud - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-google-cloud</h1>
+  <div class="meta">concepts/claude-code-google-cloud · concepts · <span title="2026-06-08">今日</span></div>
+  <article><h1>Claude Code on Google Cloud（E2E開発フロー）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Claude Code＋Vertex AI上のClaudeモデルで、PM/UX/SWE/Security/Dataの5ペルソナを1人が演じ、フィードバックアプリをゼロからGCPへデプロイするまでをライブ実演したパターン。スキル・MCPサーバー・サブエージェントがSDLCの各工程を埋める。</p>
+</blockquote>
+<p>エンタープライズのソフトウェア開発ライフサイクル（SDLC）は本来 PM→UI/UXデザイナー→ソフトウェアエンジニア→セキュリティエンジニア→データ担当（グロースマーケ/アナリスト）という複数ロールの連携で回る。このパターンの主張は、Claude Code の3つの構成要素（<strong>Skills / MCPサーバー / サブエージェント</strong>）が各ロールを増強し、1人がすべての帽子をかぶってE2Eで完結できる、というもの。モデルを Google Cloud（Vertex AI）上で動かすことで、エンタープライズ要件（課金・データ所在・可用性）を満たしながら同じ体験を得る。</p>
+<h2>なぜ Claude on Google Cloud か</h2>
+<ul>
+<li><strong>従量課金</strong>：メッセージ上限でなくトークン単位。本番向けには Provisioned Throughput でスループットを予約できる</li>
+<li><strong>セットアップが容易</strong>：Application Default Credentials（ADC）が認証情報を自動検出。<strong>ローテーションすべきAPIキーや環境変数が不要</strong>（<a href="../concepts/workload-identity-federation.html">workload-identity-federation</a> と同系統の発想）。Claude Code に project/region 検出とモデルpin留めのウィザードが追加された</li>
+<li><strong>データ所在とガバナンス</strong>：データは自分のプロジェクト内に留まり、自社ポリシーを適用可能。グローバル/リージョナルエンドポイントを可用性要件で選べる</li>
+</ul>
+<h2>5ペルソナ × Claude Code 構成要素</h2>
+<table>
+<thead>
+<tr>
+<th>ロール</th>
+<th>やったこと</th>
+<th>使った機能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PM</strong></td>
+<td>手描きのワイヤーフレーム画像 → プロトタイプを描画</td>
+<td>CLAUDE.md に「PMとして画像からワイヤーフレームを起こす」指示</td>
+</tr>
+<tr>
+<td><strong>UI/UXデザイナー</strong></td>
+<td>landing / thank-you / dashboard の3ページを本番品質UIへ</td>
+<td><strong>plan mode</strong>（実装前に計画を提示し承認できる）＋ Figma の design doc を MCP で参照</td>
+</tr>
+<tr>
+<td><strong>ソフトウェアエンジニア</strong></td>
+<td>GCPの事前知識なしでアーキ設計＆デプロイ</td>
+<td><strong>Developer Knowledge API＋MCPサーバー</strong>（最新GCPドキュメントを供給し最適アーキを判断）＋ <strong>Google Cloud Skills</strong>（Cloud Runへのデプロイ、Cloud Run⇔Firestore接続など個別ブロックを担当）＋ <strong>サブエージェント並列</strong>（API/取り込みパイプライン/ダッシュボードを別エージェントで同時実装）</td>
+</tr>
+<tr>
+<td><strong>セキュリティエンジニア</strong></td>
+<td>リリース前レビューと自動修正</td>
+<td>Claude Code 同梱の <strong>pre-built security review</strong>（OWASP・サービスアカウントの最小権限）。問題を検出し自動修正</td>
+</tr>
+<tr>
+<td><strong>データ担当</strong></td>
+<td>収集データの分析・ダッシュボード化</td>
+<td><strong>BigQuery MCPサーバー</strong>でクエリ、<strong>MCP Toolbox for Databases</strong>（OSSのMCPサーバー、Looker統合）でダッシュボード</td>
+</tr>
+</tbody>
+</table>
+<p>実装されたアーキテクチャ：フィードバックAPIを <strong>Cloud Run</strong>（サーバーレス）に、生レスポンスを <strong>Firestore</strong> に、分析用に <strong>BigQuery</strong>（DWH）へ蓄積、レポートを <strong>Looker</strong> で可視化。サブエージェントを「チームのスプリントのように」並列で走らせ、実装後のテストまで自動でこなす。</p>
+<h2>Developer Knowledge API と Agent Registry</h2>
+<p>GCP側がagenticコーディングのエコシステムに合わせて出した2要素が鍵：</p>
+<ul>
+<li><strong>Developer Knowledge API（＋MCPサーバー）</strong>：常に最新のGCPドキュメントをClaude Codeに直接供給。「GCPでどうデプロイするか」を人間が知らなくても、エージェントが最適なアーキ・実装を導く（アーキ設計＝MCP、個別実装＝Skills の役割分担）</li>
+<li><strong>Agent Platform / Agent Registry</strong>：GCPがネイティブサポートするMCPサーバーの一覧（Developer Knowledge service、BigQuery MCP 等）。各サーバーのセットアップ方法・可観測性・ツール説明を提供</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-06: Google Cloud DevAdvocate の Ivan Nardini が登壇デモ（Anthropicとのパートナーシップで制作）。「ゼロからデプロイまで30分」のライブビルドとして提示。コードはセッション後に公開予定とのこと</li>
+<li>2026-06-06: デモは強い単純化（security engineerがデプロイまで担う等、実運用とは異なる）と本人が明言。あくまで1シナリオの実演であり、各工程の品質・本番耐性は検証対象</li>
+<li>2026-06-06: 講演中の口頭で製品名が "Cloud Code" "Co-Code" "Clockwork" などと揺れて文字起こしされているが、文脈上すべて Claude / Claude Code を指すと判断</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>5ペルソナを1人＋Claude Codeで回す構成は、実際のエンタープライズで「品質ゲート」を満たせるか。security review の自動修正はどこまで信頼できるか。</li>
+<li>Developer Knowledge API（最新ドキュメントのMCP供給）は、自分のwikiの「最新情報をエージェントに渡す」課題に転用できる発想か。</li>
+<li>サブエージェント並列（API/パイプライン/ダッシュボード）は <a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> のどのパターン（Fan-Out/Specialist Team）に当たるか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a> — 本パターンの実行基盤</li>
+<li><a href="../tools/google-agent-skills.html">google-agent-skills</a> — デモで使われたGoogle Cloud製スキル群</li>
+<li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a> — ADCによるキーレス認証と同系統</li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a> — 並列実装に使ったサブエージェント</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — 並列エージェント分業の設計パターン</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/google-agent-skills.html">google-agent-skills</a></li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
+<li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://youtu.be/SqHsS737CeA" rel="noopener" target="_blank">https://youtu.be/SqHsS737CeA</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>

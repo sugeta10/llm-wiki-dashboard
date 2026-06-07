@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>generative-ui</h1>
-  <div class="meta">concepts/generative-ui · concepts · <span title="2026-06-06">2日前</span></div>
+  <div class="meta">concepts/generative-ui · concepts · <span title="2026-06-08">今日</span></div>
   <article><h1>Generative UI</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントがユーザーの要求からUIをリアルタイムに「描画」する新しいフロントエンド層。実装は Controlled / Declarative / Open-ended の3パターンに分かれ、制御 vs 柔軟性のトレードオフで選ぶ。</p>
@@ -59,6 +59,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul>
 <h3>Pattern 3: Open-ended（カタログもスキーマもなし）</h3>
 <p>2つのサブパターン。<strong>MCP Apps</strong>: MCPサーバーがUIサーフェスを公開しエージェントが駆動（Excalidrawの例ではキャンバスの全ピクセルをエージェントが制御）。<strong>Sandboxed HTML</strong>: エージェントが生HTMLを書き、アプリがサンドボックス化iframe内で描画。</p>
+<p>MCP Appsの具体的な仕組み（claude-mcp 公式拡張、Anthropic・OpenAIらが協力して標準化）：MCPツールがUIのURI（<code>ui://...</code>）を返す → エージェントがアクセスし、ツールがフルHTML文字列を返却 → エージェントがそのHTMLをチャット内に <strong>iframe</strong> で読み込み描画。チャットとUI間は <strong><code>postMessage</code></strong> で双方向通信し、UIは <strong>CSPで指定したリソースのみ</strong>にアクセス可能。これは「Sandboxed HTML」をプロトコル化したものに等しく、Open-endedパターンの標準実装と言える。ユーザー向けにも ChatGPT/Claude の地図・写真表示、Apps in ChatGPT（ZOZO/Canva/Spotify等を会話画面から呼び出し）として展開が始まっている。</p>
 <ul>
 <li><strong>ブランド不整合問題</strong>: スタイル指示はエージェントを自社ブランドに寄せるが保証しない。「火曜はネオブルータリズム、水曜はiOS 4クローン」のように毎回変わり、プロダクトが「真剣に見えない」。著者は主UIとして投入したが1週間で撤退</li>
 <li><strong>適: 一発限り・使い捨ての可視化（ユーザーが二度と見ない）</strong>。「電子の動きを見せて」等。主サーフェスには絶対に使わない</li>
@@ -79,6 +80,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-06-03: @Saboo_Shubham_ の主張「2026年に出荷されるインターフェースは一部エージェント自身がリアルタイムに描く」「ほとんどのチームはフレームワークの既定（Controlled）に流され、25コンポーネントで壁にぶつかり、デモ映えする Open-ended に手を伸ばす——どちらも決定ではなくドリフト」</li>
 <li>著者は CopilotKit を「3パターンを同一ランタイムで AG-UI 上に扱える」として選択（単一スタックでの検証であり比較の網羅性は不明）。3パターンの参照実装は <code>awesome-llm-apps</code> の Generative UI Agents セクションにあると主張</li>
 <li>トークン税の具体値（400トークン/コンポーネント、25個で10,000トークン/ターン）は著者提示の見積もりで、独立検証は未確認</li>
+<li>2026-06-06: Yusuke Wada（@yusukebe, Hono作者/Cloudflare DevAdvocate）が同一題材（旅行プランナーAIエージェント）で Static/Declarative/Open-ended の3パターンを実装比較し登壇発表（「AI時代のUIはどこへ行く？ その2」フロントエンドカンファレンス北海道）。@Saboo_Shubham_ とは独立した発信だが、3パターン分類（コントロール⇔オープンのスペクトラム）がほぼ一致——枠組みの収斂を示唆。実装記事は zenn.dev/peintango の記事を参照とのこと</li>
+<li>2026-06-06: Wadaの「並べて初めてわかった」所感——①ストリーミング体験の差は想像以上に大きく、Static のスケルトンローダーは「あると便利」でなく「ないと不安」レベル（Declarative/Open-endedはデータ収集中にユーザーがただ待つ時間が生まれる）。②Declarativeの「制約された自由」は見た目以上に表現力があり、コンポーネントの並べ方と組み合わせだけでLLMは驚くほど多様なUIを生成する。③Zodスキーマは制約ではなく「契約」として機能する</li>
+<li>2026-06-06: Wadaのパターン比較表（観点別）——出力の再現性: Controlled◎/Declarative○（スキーマ制約）/Open-ended✗。HTMLスケルトンローダー: Controlled◎（ツール名で自動）/Declarative✗/Open-ended✗。レイアウト自由度: Controlled✗/Declarative○/Open-ended◎。トークン消費: Static小（ツール名＋引数）/Declarative中（JSON構造）/Open-ended大（HTML/CSS/JS全文）。@Saboo_Shubham_ のトークン税分析と同方向</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -92,10 +96,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — A2A（エージェント間連携）の設計パターン</li>
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — Declarative/A2UIが体現する「GUIでなくスキーマを操作させる」設計思想</li>
 <li><a href="../design/fastview-design.html">fastview-design</a> — エージェント生成UIにも適用できるUI設計原則</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/fastview-design.html">fastview-design</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../design/fastview-design.html">fastview-design</a></li>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
-<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062220865643982875" rel="noopener" target="_blank">https://x.com/i/web/status/2062220865643982875</a></li></ul></section></article>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062220865643982875" rel="noopener" target="_blank">https://x.com/i/web/status/2062220865643982875</a></li>
+<li><a href="https://speakerdeck.com/yusukebe/aishi-dai-nouihadokohexing-ku-sono2?slide=52" rel="noopener" target="_blank">https://speakerdeck.com/yusukebe/aishi-dai-nouihadokohexing-ku-sono2?slide=52</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
