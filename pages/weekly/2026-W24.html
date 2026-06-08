@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-W24 - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-W24</h1>
+  <div class="meta">weekly/2026-W24 · weekly · <span title="2026-06-08">今日</span></div>
+  <article><h1>Weekly Insights: 2026-W24（2026-06-08〜06-14）</h1>
+<h2>今週の中心テーマ</h2>
+<p><strong>コードもモデルもコモディティ化した今、複利で積み上がる唯一の資産は「言語化された判断」——スキル・オントロジー・コンテキスト——であり、それは自己改善ループに配線して初めて資産になる。</strong></p>
+<p>先週は「どの記法でAIに渡すか（中間記法）」、先々週は「AIが働く場所」の話だった。今週はさらに一段上——<strong>何が手元に積み上がるのか（資産論）</strong>へ視点が移る。複数ページが別々の入口から同じ結論に着地している：再利用の単位が「コード→サービス→業務プロセス」を経て、ついに<strong>「判断（judgment）」</strong>まで上がった。そして判断は、書き留めて夜間も回るループに繋いだときだけ複利になる。</p>
+<h2>なぜそう見えるか（根拠ページ）</h2>
+<ul>
+<li><a href="../business/skill-library-strategy.html">skill-library-strategy</a> — 再利用の抽象化を「Unixコマンド→ライブラリ→API→ワークフロー→<strong>判断</strong>」と並べ、企業のAI優位はモデル選定でなく「自社最良の仕事を明文化したスキルライブラリ」から来る、と明言。最も価値あるスキルは具体的ゆえ私有化する＝資産になる。</li>
+<li><a href="../business/self-improving-company.html">self-improving-company</a> — 会社を「センサー→ポリシー→ツール→品質ゲート→学習」の自走ループの集合に再設計する構想。監視エージェントが失敗を夜間にコード修正→MR→マージまで回す＝判断とコードが寝ている間に積み上がる。</li>
+<li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a> — 価値が「速く実装できること」から「何を作るべきかの見極めとAI出力の批判的評価」へ移る（LayerX）。コモディティ化した実装の外側＝判断が差別化要因。</li>
+<li><a href="../concepts/palantir-ontology.html">palantir-ontology</a> — 競争優位は「モデルの賢さ」でなく「顧客の世界をどれだけ深く動的にモデル化できたか＝文脈の深さ」へ。オントロジー（名詞＋動詞＋状態遷移）は判断を構造として資産化した中間層。</li>
+</ul>
+<h2>既存wikiとの接続</h2>
+<ul>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — <code>LESSONS.md</code> に学びを追記する自己改善はまさに「判断を書き留めてループに配線する」最小実装。今週の資産論の個人スケール版。</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — スキル＝永続的職務定義という仕組みが、判断を「アクティブなプレイブック」として再利用可能にする土台。</li>
+<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a> — 競争優位が「モデル性能」から「知識・文脈の占有」へ移るという論点。今週の根拠ページ群が共通して指す堀の正体。</li>
+</ul>
+<h2>sugeta-san への問い</h2>
+<p><strong>あなたのLLM Wikiは、すでに「言語化された判断の私有ライブラリ」そのもの（ingest/lint/review/gen-weekly-insights スキル＋ <code>[[]]</code> グラフ＝個人版オントロジー）だが、その判断は本当に自己改善ループに配線されているか？ それとも書き留めただけで止まっているか？</strong></p>
+<p>→ <code>evolve-insights</code>＋<code>LESSONS.md</code> は配線の試み（<a href="../concepts/self-refining-skills.html">self-refining-skills</a>）だが、<a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a>の「発見（会話履歴からsignal抽出）と適用（SKILL.md修正＋PR）を別スキルに分ける外部ループ型」に比べると、まだ「内蔵・人手前提」に留まる。次の一手は、失敗signalの自動抽出を <code>retro</code> に担わせ、適用を分離できるか。</p>
+<h2>今週の小アクション（5分）</h2>
+<p><code>.claude/skills/wiki-ingest/LESSONS.md</code> を開き、直近2週間で自分が手で修正した失敗（例: scoped-rewriteが重複を隣段落へ移す、autosyncの競合）が1件でも反映されているか確認する。反映されていない失敗が1つでもあれば、それが「判断がループに配線されていない」証拠——その場で1行追記する。</p>
+<h2>いますぐAIと一緒に（コピペ）</h2>
+<p>以下をそのまま Claude / Claude Code に貼って、自分のスキルライブラリを「判断の資産」として棚卸ししてください。</p>
+<pre><code>このリポの .claude/skills/ 配下のスキル（wiki-ingest, gen-weekly-insights, evolve-insights, retro など）を棚卸ししたい。次の3ステップで進めて：
+
+1. 各スキルを wiki/concepts/skill-building-best-practices.md の「9カテゴリ」で分類し、「1スキル＝1カテゴリ」原則に照らして肥大しているスキル（複数カテゴリを跨ぐもの）を指摘する
+2. wiki/business/skill-library-strategy.md の観点で、「私のwiki運用にあるのに、まだスキルとして言語化されていない暗黙の判断」を3つ挙げる（ingest時のカテゴリ判定の勘所など）
+3. それぞれを「発見（signal抽出）」と「適用（SKILL.md修正）」に分離した自己改善ループに載せるとしたら、最小の次の一手は何か——wiki/concepts/skill-self-improving-loop.md の3段構成に対応づけて提案する
+
+参照: wiki/concepts/skill-building-best-practices.md, wiki/business/skill-library-strategy.md, wiki/concepts/skill-self-improving-loop.md
+</code></pre>
+<h2>さらに読むべきページ</h2>
+<ul>
+<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> — 判断を「会話履歴→Issue→triage→PR」で自走させる外部ループの具体設計。今週テーマの「配線」側の実装図。</li>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a> — 判断を資産化する「書き方」（9カテゴリ・gotchas蓄積・description＝トリガー定義）。Anthropic社内知見。</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 自己改善ループの心臓＝「生成→採点→閾値未満で止める」品質ゲートの一般形。資産が腐らず複利化するための検証層。</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a></li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
+<li><a href="../business/skill-library-strategy.html">skill-library-strategy</a></li>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a></li>
+<li><a href="../concepts/palantir-ontology.html">palantir-ontology</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
