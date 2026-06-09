@@ -50,17 +50,24 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>Web Clipper for NotebookLM 拡張（Docs/Sheets/Slides対応）</h2>
 <p>ブラウザ拡張「Web Clipper for NotebookLM」が v1.19.0 で <strong>Google Docs・スプレッドシート・スライドのツールバーから1クリックでソース追加</strong>できるようになった（@Majin_AppSheet 経由・2026-06-05）。従来はNotebookLM側からDriveピッカーを掘ってソースを探す必要があったが、逆に<strong>ソース側からどのノートブックに追加するか選べる</strong>動線になった。</p>
 <p>ポイントは、MarkdownやテキストへのHTML変換でなく<strong>Googleソースとしてそのまま入る</strong>こと。そのため AutoSync が効き、元ドキュメントの更新が<strong>live source として追従</strong>する（静的コピーにならない）。</p>
+<h2>Google Antigravity 経由での操作自動化</h2>
+<p>@tetumemo（2026-05-20）が、Google Antigravity から NotebookLM操作の Skill を呼び出し「本日分をお願い」と依頼するだけで、Manus で調査済みの日刊AI系ニュースまとめファイルを取得して NotebookLM に反映する自動化を報告。Antigravity は Gemini 3.5 ベースのため、Codex / <a href="../tools/claude-code.html">claude-code</a> より応答が速いと評価している。</p>
+<p>ポイントは、NotebookLM を <strong>AIコーディングIDE側のスキルから操作する</strong>ことで、日次の調査→ソース投入のルーチンを「一言の指示」に畳める点。<a href="../tools/notebooklm-py.html">notebooklm-py</a> の Python CLI が API 直叩きの自動化なのに対し、こちらは IDE のエージェント＋Skill 経由で同じことをノーコードで回す動線。</p>
+<p><strong>補足（@m13v_, 2026-05-20）</strong>: 出力がテキスト Q&amp;A で止まる点を指摘。通勤・散歩で聞き流せる <strong>audio まで自動化</strong>（podlog.io 等）すると、リポジトリ／情報の追跡が習慣として定着しやすい、と提案している。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/notebooklm-py.html">notebooklm-py</a> — NotebookLM非公式Python API/CLI（Web UI非公開機能をバッチ操作）</li>
 <li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — Obsidian+Claude Code+N8NによるパーソナルOS設計</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/notebooklm-py.html">notebooklm-py</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
 <li><a href="../concepts/modular-research-pipeline.html">modular-research-pipeline</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055768828626588109" rel="noopener" target="_blank">https://x.com/i/web/status/2055768828626588109</a></li>
 <li><a href="https://x.com/i/web/status/2055032973758775581" rel="noopener" target="_blank">https://x.com/i/web/status/2055032973758775581</a></li>
 <li><a href="https://x.com/i/web/status/2054147963719495893" rel="noopener" target="_blank">https://x.com/i/web/status/2054147963719495893</a></li>
 <li><a href="https://x.com/i/web/status/2062847427242238047" rel="noopener" target="_blank">https://x.com/i/web/status/2062847427242238047</a></li>
-<li><a href="https://x.com/i/web/status/2063003011492835710" rel="noopener" target="_blank">https://x.com/i/web/status/2063003011492835710</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2063003011492835710" rel="noopener" target="_blank">https://x.com/i/web/status/2063003011492835710</a></li>
+<li><a href="https://x.com/i/web/status/2057117679090364739" rel="noopener" target="_blank">https://x.com/i/web/status/2057117679090364739</a></li>
+<li><a href="https://x.com/i/web/status/2057137586028888504" rel="noopener" target="_blank">https://x.com/i/web/status/2057137586028888504</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
