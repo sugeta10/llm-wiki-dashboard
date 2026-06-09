@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>obsidian-claude-second-brain - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>obsidian-claude-second-brain</h1>
+  <div class="meta">concepts/obsidian-claude-second-brain · concepts · <span title="2026-06-09">今日</span></div>
+  <article><h1>Obsidian + Claude 第二の脳</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Obsidianを単なるノートアプリ、Claudeを単なるチャットボットとして別々に使うのをやめ、両者を「統合レイヤー」で接続すると、自分の全知識を文脈に持つAI第二の脳になる。鍵はプラグイン選定でも個別ワークフローでもなく、vaultをAIの永続メモリに据える設計にある。</p>
+</blockquote>
+<p>多くの人がObsidianとClaudeを<strong>別々のツール</strong>として使うため、Claudeは毎セッション知識ゼロから始まり、Obsidianの蓄積は検索されるだけの死蔵データになる。両者を繋ぐと、Claudeは過去のノート全体を参照して回答し、その出力をまたvaultへ書き戻すため、使うほど知識が複利で積み上がる。導入の構造は3層に整理できる。</p>
+<p><strong>① 基盤プラグイン（vaultをAI可読にする）</strong>: Smart Connections / Copilot（RAGでvault全体と対話）、Templater（ノートを常に構造化＝AI検索精度が上がる）、Dataview（vaultをクエリ可能なDB化）、Tasks（全ノート横断のタスク把握）、Periodic Notes/Calendar（時系列の記録）、Obsidian Git（履歴と復元）、そして2026年リリースの<strong>Obsidian CLI</strong>（Claude Codeがコマンド経由でvaultをプログラム操作できる接続点）。</p>
+<p><strong>② ワークフロー（人間の定型作業をClaudeに渡す）</strong>: 朝のシンセシス（直近の日次ノート＋進行中プロジェクトから「今日の起点」ノートを生成）、会議プロセッサ（生メモ→アクション項目・決定事項・リンク・タグ）、リサーチ取り込みパイプライン（URL/PDF→要約＋既存ノートへのリンク＋矛盾検出）、週次レビュー自動化、アイデア相互受粉（非自明なノート間接続の発掘）、vault健全性チェック（孤立ノート・陳腐化・停滞プロジェクトの監査）など。</p>
+<p><strong>③ 上級セットアップ（vaultをAIの脳に固定する）</strong>: <code>CLAUDE.md</code> にvaultを長期記憶として定義する、mcpvault等のMCPサーバでObsidian非起動でもvaultを読ませる、kepano（Obsidian CEO）公式スキルやobsidian-second-brainスキルを使う、夜間Routineでinbox自動整理、Zettelkasten×AI（原子的ノートのリンク鎖をAIが辿って推論）、Claude.ai Projectsへvaultの一部を知識ファイルとして渡す、AI出力を<code>#ai-generated</code>で書き戻すフィードバックループ。</p>
+<p>最小実用構成は「6プラグイン＋1 MCPサーバ＋2自動化」程度で組め、PARAフォルダ構造・日次ノート習慣・最初のMCP接続の3ステップから始めるのが定石。ボトルネックは技術ではなく初期セットアップを越える最初の数時間にある。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-31: 出典は@eng_khairallah1の「30 Obsidian Workflows, Plugins, and Setups」listicle（AIコース系アカウント・X article）。Obsidianのコミュニティプラグインは2,700+、うちAI関連100+と主張</li>
+<li>2026-05-31: kepano（Obsidian CEO）公式Claude Skillsが「3ヶ月未満でGitHub 12,900+ stars」と記載（→ <a href="../tools/obsidian-skills.html">obsidian-skills</a> の数値更新材料）。obsidian-second-brainスキルは「31コマンド」、mcpvaultは「ゼロ依存・BM25検索・14 MCPメソッド」と紹介</li>
+<li>2026-05-31: 著者の常用スタック＝Obsidian（Smart Connections/Templater/Dataview/Periodic Notes/Tasks）＋mcpvault＋CLAUDE.md＋夜間Routine＋金曜週次レビュー。「セットアップに半日、毎週数時間を節約」と主張（単一ソース・効果は未検証）</li>
+<li>二次まとめlisticleのため、個別プラグインの機能記述は一次確認推奨。本ページは「統合レイヤーという設計思想」の合成に重心を置き、個別ツールの数値は観察ログに留める</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このlisticleの30項目のうち、自分のllm-wikiシステム（ingest/lint/Weekly Insights）に既にあるもの・無いものはどれか。「vault健全性チェック」は <code>scripts/validate_wiki.py</code> と重複/補完どちらか</li>
+<li>mcpvault等のMCPサーバ導入は、現在のClaude Code直接ファイル操作より速いか。BM25検索は <code>wiki/index.md</code> 手動カタログより有効か</li>
+<li>「AI出力を書き戻すフィードバックループ」は、根拠なし追記禁止（sources必須）の本vault規約とどう両立させるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — Obsidian+Claude Code+N8Nの3層で「崩壊しないパーソナルOS」を設計する手法（こちらはアーキテクチャ重心、本ページはプラグイン/ワークフロー網羅重心）</li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a> — Karpathy提唱のLLMが継続メンテする知識ベース（本vault自体の設計思想）</li>
+<li><a href="../tools/obsidian-skills.html">obsidian-skills</a> — kepano製Obsidian向けAgent Skills集（listicleで言及される公式スキル）</li>
+<li><a href="../tools/claude-code-obsidian-project.html">claude-code-obsidian-project</a> — Claude Code+Obsidian「何でも相談」プロジェクトの実践設計例</li>
+<li><a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a> — Claude Code会話履歴をObsidianに自動記録する実装</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
+<li><a href="../tools/obsidian-skills.html">obsidian-skills</a></li>
+<li><a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../tools/claude-code-obsidian-project.html">claude-code-obsidian-project</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061012675824644161" rel="noopener" target="_blank">https://x.com/i/web/status/2061012675824644161</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-session-handover - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-session-handover</h1>
+  <div class="meta">concepts/ai-session-handover · concepts · <span title="2026-06-09">今日</span></div>
+  <article><h1>AIセッション引き継ぎ（コンテキストエクスポート）</h1>
+<p>あるAIセッションで積み上げた重要コンテキストを、別セッション・別AIへ丸ごと持ち越すための<strong>エクスポート指示</strong>を、カスタム指示・<code>AGENTS.md</code>・Skillに仕込んでおくパターン。「引き継ぎ」「エクスポートして」といった短いトリガー語だけで、後続エージェントが読めるMarkdownファイル一式を出力させる。会話のたびにゼロから状況説明をやり直す手間を消し、長いタスクを複数セッション・複数エージェントにまたいで継続できるようにする。</p>
+<p>仕組みの核心は「人間が要約をコピペする」のではなく「<strong>現役セッション自身に、自分の文脈を構造化ファイルとして書き出させる</strong>」点にある。現役セッションは自分が何をやってきたか・何が未決か・次に何をすべきかを最もよく知っているため、要約の質が高い。出力されたMarkdownを次のセッションの冒頭に渡せば、決定事項・進行中の課題・残タスク・参照ファイルなどが一括で復元される。Skillとして定義しておけば、Skillを読む仕組みを持つエージェント（Claude Code等）では「引き継ぎ」の一語で起動でき、持たないエージェントには同じ指示文をそのまま貼って使い回せる。</p>
+<p>このリポジトリ自身も <code>handover</code> スキルでこの発想を実装しており、<code>.claude/handovers/</code> にセッション引き継ぎノートを蓄積している。</p>
+<h2>設計のポイント</h2>
+<ul>
+<li><strong>トリガー語の固定</strong>: 「引き継ぎ」「エクスポート」など短い合図を1つ決め、長い指示を毎回書かずに起動する</li>
+<li><strong>出力先の固定</strong>: 引き継ぎファイルを決まったフォルダ（例: <code>handovers/</code>）に吐かせ、後続セッションが探さなくて済むようにする</li>
+<li><strong>Skill化 vs 指示文</strong>: Skillを読めるエージェントにはSkill化（再利用・自己改善が効く）、読めないものには同じ指示文を直接貼る二段構え</li>
+<li><strong>何を書き出させるか</strong>: 決定事項・進行中タスク・未解決の論点・参照すべきファイル/リンク・次の一手。単なる会話ログではなく「次のエージェントが即動ける状態」を狙う</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>引き継ぎファイルに何を含めるべきかは、タスク種別（コーディング/調査/執筆）で変わるか。テンプレートを分けるべきか</li>
+<li>このvaultの <code>handover</code> スキルが出力するノートと、汎用の「引き継ぎ」プロンプトの差分は何か。良い所を相互に取り込めるか</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> のような永続メモリ層があれば、明示的エクスポート指示は不要になるか。それとも併用が最適か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — ユーザー所有の単一メモリ層をエージェント間に敷く設計（こちらはインフラ層、本ページは明示的エクスポート指示の手法）</li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — CLAUDE.md/AGENTS.mdに行動ルールを仕込むアプローチ（引き継ぎ指示の置き場所）</li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a> — plan.md先行・スキルを束ねる実践者スタック（セッションをまたぐ作業継続の文脈）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055203679851180356" rel="noopener" target="_blank">https://x.com/i/web/status/2055203679851180356</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
