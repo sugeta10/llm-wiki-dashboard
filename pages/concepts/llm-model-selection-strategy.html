@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>llm-model-selection-strategy - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>llm-model-selection-strategy</h1>
+  <div class="meta">concepts/llm-model-selection-strategy · concepts · <span title="2026-06-13">今日</span></div>
+  <article><h1>LLMモデル選択戦略（工程分解型コスト最適化）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: タスクを上流（設計・方針）・中流（実装）・下流（整形・量産）に分解し、各工程に最適な規模のモデルを当てる。大モデルを全工程に使うのは最弱の運用で、前処理（小）→上流（大）→中流（中）→下流（小）の「サンドイッチ」往復が速度・コスト・質を同時に最適化する。</p>
+</blockquote>
+<pre><code class="language-mermaid">flowchart LR
+  A[&quot;前処理\n小モデル\n要約・整理&quot;] --&gt; B[&quot;上流\n大モデル\n設計・方針&quot;] --&gt; C[&quot;中流\n中モデル\n実装・展開&quot;] --&gt; D[&quot;下流\n小モデル\n整形・量産&quot;]
+</code></pre>
+<p>長く複雑なタスクほど大モデルの優位が拡大するという非対称性が、「最強モデルを何にでも使う」運用を最も非効率な選択にする。大モデルは応答が遅く1トークンあたりの単価が高いため、誤方向への実行をやり直すと「クレジット（コスト）と実行時間」の二重損失が生じる。この二重コスト構造を回避する設計原則が工程分解型モデル選択だ。</p>
+<h2>工程ごとのモデル配分</h2>
+<p><strong>前処理</strong>（生メモ・議事録の要約・重複削除・構造化）は小モデルで十分。整理された文脈を上流の大モデルへ渡す「下ごしらえ」であり、小さなモデルが「入口（文脈整備）」と「出口（量産・整形）」の両端を担う。</p>
+<p><strong>上流（設計・方針・難所突破）</strong> には大モデル × 濃いコンテキストを投入する。方向を一発で決める工程で、ここでのズレは下流すべてを巻き戻すため最も投資対効果が高い。大モデルほど「最初に何を渡したか」で成果が引きずられるため、<strong>コンテキストエンジニアリング</strong>（前提・制約・ゴール・評価基準・参照資料を冒頭で渡し切る）が決定的に重要になる。途中で止めて修正しにくい設計ゆえに「走り出す前に決め切る」発想への転換が求められる。</p>
+<p><strong>中流（実装・展開）</strong> は上流で判断が済んでいるため過剰な推論力は不要。速度とコストのバランスを取る中モデル（Sonnet級）が最適。</p>
+<p><strong>下流（整形・量産・反復）</strong> は失敗しても作り直しが軽い領域。安く速く大量に回す小モデル（Haiku級）に任せる。ここを大モデルに任せるのはコストの垂れ流しになる。</p>
+<h2>コストとタイパは別軸</h2>
+<p><strong>コスパ（単価）</strong> はモデルの規模配分でしか改善できない。大モデルを並列実行しても1トークンあたりの単価は下がらない。<br>
+<strong>タイパ（速度）</strong> は並列オーケストレーション（複数モデルを同時実行）で改善できる。</p>
+<p>この二軸は競合しない。上流に大モデルを置くのは「質への投資」、下流に小モデルを置くのは「コスパ」、並列化は「タイパ」と役割が分かれている。実際の最適化は「どのモデルか × どのエフォート（推論量）設定か」の二軸で決まる。同じモデルでも最大〜低エフォートの段階があり、モデルの大小だけでなくエフォート設定も変数として扱う。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-09 (@ozaken_AI): 「全部大モデルで回す」のが最強でなく、最弱の運用になると主張。上流の文脈づくりへの投資が最大のコスト節約になるとみる</li>
+<li>2026-06-09 (@ozaken_AI): 「これからの実力差は上流にどれだけ文脈を積めるかで決まる」と予測。モデルは指数で強くなるほど最初の指示品質に成果が引きずられる</li>
+<li>2026-06-09 (@ozaken_AI): 実務ではモデル × エフォート設定の二軸で連続的に最適点を探ると強調。単純な「大/中/小」の三分類より広い選択肢を想定</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のワークフローで「上流→大モデル、下流→小モデル」を徹底している場面はどこか？ <a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a> のモデルスタッキングと統合できるか？</li>
+<li>「冒頭で詰め切れた」の判断基準をどう持つか。コンテキストエンジニアリング品質の評価指標はあるか？</li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> の「長い自律タスクほど差が出る」特性と、この工程分解戦略を組み合わせるベストプラクティスは？</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> — この戦略が明示的に論じているMythos-classモデル</li>
+<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a> — モデルスタッキング・レートリミット管理（モデル選択の隣接概念）</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Pipeline/Fan-Outパターン（並列実行とコスト最適化の接点）</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — ループ設計でFable 5性能を引き出す手法</li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — 上流で「濃いコンテキスト」を作るコンテキストエンジニアリングの実践</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2064496342412746814" rel="noopener" target="_blank">https://x.com/i/web/status/2064496342412746814</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
