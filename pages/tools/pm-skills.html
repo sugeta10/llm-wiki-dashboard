@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>pm-skills</h1>
-  <div class="meta">tools/pm-skills · tools · <span title="2026-06-09">今日</span></div>
+  <div class="meta">tools/pm-skills · tools · <span title="2026-06-10">2日前</span></div>
   <article><h1>PM Skills</h1>
 <p>Pawel Huryn が公開するプロダクトマネジメント向けの Claude Code スキル集（OSS・MIT・GitHub 12K stars）。プロダクト発見・検証・意思決定の方法論を「日々のワークフローに組み込めるスキル／コマンド」として配布し、PM の思考プロセスをエージェントに肩代わりさせる。<a href="../concepts/claude-skills.html">claude-skills</a> の PM ドメインへの具体적用例。</p>
 <p>著名 PM 方法論の「型」をスキルとして内蔵しているのが特徴 —— Teresa Torres（継続的ディスカバリー／Opportunity Solution Tree）、Marty Cagan（プロダクト発見・Empowered チーム）、Alberto Savoia（Pretotyping＝作る前に確かめる）の rigor を、自分のワークフローに直接効かせられる。代表コマンドに <code>/red-team-prd</code>（PRD を敵対的にレビューして穴を炙り出す）がある。</p>
@@ -32,10 +32,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>検証済み事実</h2>
 <ul>
 <li>2026-06-05: 作者 Pawel Huryn が v2.0 を告知。<strong>9 plugins / 68 skills / 42 commands</strong>、Free・MIT ライセンス。OSS リポジトリは GitHub <strong>12K stars</strong>（作者の自己公表値）</li>
+<li>2026-06-10 (公式リポジトリREADME): 9プラグインの内訳は pm-product-discovery（13skills/5cmd）・pm-product-strategy（12/5）・pm-execution（16/11）・pm-market-research（7/3）・pm-data-analytics（3/3）・pm-go-to-market（6/3）・pm-marketing-growth（5/2）・pm-toolkit（4/5）・pm-ai-shipping（2/5）。<strong>Codex CLI はClaude Codeと同じmarketplaceファイルを直接読むためネイティブ導入可</strong>（ただし<code>/slash</code>コマンドはClaude Code専用、Codexではプレーン言語で記述）。Gemini CLI/OpenCode/Cursor/Kiro は <code>SKILL.md</code> をコピーすればスキルのみ利用可</li>
+<li>コマンドはスキルを連鎖させるワークフロー。例: <code>/discover</code> = brainstorm-ideas → identify-assumptions → prioritize-assumptions → brainstorm-experiments の4スキル連鎖。各コマンド完了時に次のコマンドを提案しPMワークフローに沿って流れる設計</li>
+<li>companion として <a href="../tools/pm-skills.html">pm-skills</a> とは別に <strong>PM Brain</strong>（Pawel Huryn製、ラップトップ上のplain markdownフォルダをClaudeが回答前に読み・回答後に書き・毎週金曜にsweepする「PM向け第二の脳」。vector DB/クラウド/agent memory無し）が組み合わせ可能</li>
 </ul>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-06-05 (@PawelHuryn): Teresa Torres / Marty Cagan / Alberto Savoia の rigor が日々のワークフローに組み込まれている、という作者の主張。<code>/red-team-prd</code> をリンク付きで紹介</li>
+<li>2026-06-06 (@PawelHuryn): 「agentic engineering の究極コンボ」として4コマンドの連鎖を提示——<code>/document-app</code>（システムドキュメントを生成）→ <code>/security-audit-static</code>（ドキュメント化した意図に対しセキュリティを静的検査）→ <code>/performance-audit-static</code>（over-fetching・index欠落・キャッシュを検査）→ <code>/derive-tests</code>（テスト済み/未テストの対応をマッピング）。ドキュメント＝意図の正本を起点に監査・テスト導出を連鎖させる設計思想（<a href="../concepts/llm-doc-management.html">llm-doc-management</a> と同型の「文書を契約にする」発想）</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -49,11 +53,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a> — スキル構築のベストプラクティス</li>
 <li><a href="../tools/buy-or-bounce.html">buy-or-bounce</a> — バイヤーペルソナ並行シミュレーションでLP/広告の障壁特定</li>
 <li><a href="../tools/grill-me.html">grill-me</a> — 実装前の徹底的要件掘り下げ対話スキル</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/buy-or-bounce.html">buy-or-bounce</a></li>
-<li><a href="../business/skill-library-strategy.html">skill-library-strategy</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/skill-library-strategy.html">skill-library-strategy</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
+<li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li>
 <li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a></li>
-<li><a href="../tools/grill-me.html">grill-me</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062987917576790256" rel="noopener" target="_blank">https://x.com/i/web/status/2062987917576790256</a></li></ul></section></article>
+<li><a href="../tools/grill-me.html">grill-me</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062987917576790256" rel="noopener" target="_blank">https://x.com/i/web/status/2062987917576790256</a></li>
+<li><a href="https://x.com/i/web/status/2063286326183567713" rel="noopener" target="_blank">https://x.com/i/web/status/2063286326183567713</a></li>
+<li><a href="https://github.com/phuryn/pm-skills" rel="noopener" target="_blank">https://github.com/phuryn/pm-skills</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

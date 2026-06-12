@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>attention - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>attention</h1>
+  <div class="meta">concepts/attention · concepts · <span title="2026-06-10">2日前</span></div>
+  <article><h1>Attention（アテンション機構）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Transformer の中核。各トークンの「文脈を含まない汎用埋め込み」を、周囲のトークンから情報を引き込んで「文脈に富んだ埋め込み」へ更新する仕組み。2017年の論文 <em>Attention is All You Need</em> で登場。</p>
+</blockquote>
+<p>LLMのゴールはテキストの続きを予測すること。入力はトークンに分解され、各トークンはまず高次元ベクトル（埋め込み）へ対応付けられる。この最初の埋め込みは<strong>文脈を考慮しない参照表</strong>にすぎず、同じ単語（例: "mole"＝モル/ほくろ/モグラ）はどの文でも同一ベクトルになる。アテンションは「形容詞が直前の名詞の意味を調整する」「Eiffel の直後の Tower をパリ・鋼鉄の方向へ動かす」といった具合に、文脈の関数として埋め込みに加算すべき変化量 ΔE を計算し、汎用ベクトルを具体的な方向へ移す。これを何層も繰り返すことで、各埋め込みは単語そのものより遥かに豊かな意味（感情・トーン・背後の事実など）を吸収していく。</p>
+<h2>仕組み（Query / Key / Value）</h2>
+<p>3つの<strong>学習可能な行列</strong>でできている。</p>
+<ol>
+<li><strong>Query（W_Q）</strong>: 各埋め込みに掛けて、より小さな次元（例: 128次元）のクエリベクトル Q を作る。概念的には「私の前に形容詞はある？」のような“問い”</li>
+<li><strong>Key（W_K）</strong>: 各埋め込みに掛けてキーベクトル K を作る。クエリへの“答え”の候補。あるトークンのキーが別トークンのクエリと<strong>揃って（内積が大きく）</strong>いれば、前者が後者に「アテンドしている」</li>
+<li><strong>Value（W_V）</strong>: あるトークンが別トークンの意味調整に関わるとき、その埋め込みに何を足すべきかを表す Value ベクトルを作る</li>
+</ol>
+<p><strong>アテンションパターン</strong>: 全クエリ×全キーの内積表を作り、計算安定化のためキー/クエリ空間次元の平方根で割り、<strong>列ごとに softmax</strong> で正規化する（各列が0〜1で合計1の確率分布）。この重みで Value ベクトルの重み付き和を取り、ΔE として元の埋め込みに加算する。</p>
+<ul>
+<li><strong>マスキング（causal）</strong>: GPT系では「後ろのトークンが前のトークンに影響を与えてはならない」（答えを漏らすため）。softmax前に該当成分を<strong>−∞</strong>にすると、softmax後に0になりつつ列の正規化は保たれる</li>
+<li><strong>計算量はコンテキストサイズの2乗</strong>になり、これが長文脈スケールの大きなボトルネック。近年は各種バリエーションが提案されている</li>
+<li><strong>Value の低ランク分解</strong>: Value写像は「Value down（大きな埋め込み空間→小さな空間）」と「Value up（小さな空間→埋め込み空間）」の2行列に分解でき、パラメータ数をKey/Queryと揃えると効率的。実装では各ヘッドの Value up をまとめた巨大な <strong>Output 行列</strong> として現れることが多い（論文の表記では「Value 行列」が Value down だけを指すことも）</li>
+</ul>
+<h2>マルチヘッド &amp; スケール</h2>
+<p>ここまでは<strong>シングルヘッド</strong>。実際の Transformer は<strong>マルチヘッドアテンション</strong>で、異なる Q/K/V 写像による演算を並列実行し、文脈に応じた意味更新の様々なパターンを同時に学習する。各ヘッドが提案する ΔE を全て足して元の埋め込みに加算する。</p>
+<ul>
+<li>GPT-3: 1ブロックあたり<strong>96ヘッド</strong>、ヘッド1つあたり約63万パラメータ、全<strong>96層</strong>。アテンション全体で約580億パラメータ（ネットワーク全体1,750億の約1/3）</li>
+<li>アテンションの成功要因の核心は具体的な振る舞いより<strong>並列化のしやすさ</strong> —— GPUで膨大な計算を短時間でこなせること。「スケールだけで大きな質的改善が見込める」という深層学習の知見を、並列化可能なアーキテクチャが実現可能にした</li>
+<li><strong>Self-attention</strong>（Q/K/Vが同一データ）に対し、<strong>Cross-attention</strong> はQとKが異なるデータに働く（例: 翻訳元↔翻訳先、音声↔文字起こし）。Cross では後続トークンの影響を防ぐ必要がないため通常マスキングしない</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>出典は 3Blue1Brown の解説動画（日本語版）。Andrej Karpathy（<a href="../people/andrej-karpathy.html">andrej-karpathy</a>）や Chris Olah のコンテンツが追加学習先として推奨されている</li>
+<li>動画では「アテンションパターン後、実際の写像の振る舞いはコスト関数の極小値を取る膨大な調整の結果であり、本来は解釈困難」と繰り返し注意喚起。Q/K/V の役割説明はあくまで“想像上の例”</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>O(n²) ボトルネックを緩和する近年のアテンション変種（線形アテンション・スパース等）は、長文脈での品質をどこまで保てるか</li>
+<li>KV キャッシュ（<a href="../concepts/prompt-caching.html">prompt-caching</a>）は Key/Value の再計算を省くものだが、アテンション機構のどの部分が具体的にキャッシュ対象になるか</li>
+<li>この基盤理解は、自分のLLM活用（プロンプト設計・コンテキスト管理）の判断にどう効いてくるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a> — Transformer/LLM解説の追加学習先として推奨</li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a> — アテンションで計算した Key/Value をキャッシュし再利用する機能の基盤</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://youtu.be/j3_VgCt18fA?si=XPpZytcxyQjfGlqJ" rel="noopener" target="_blank">https://youtu.be/j3_VgCt18fA?si=XPpZytcxyQjfGlqJ</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-projects-blueprint - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-projects-blueprint</h1>
+  <div class="meta">concepts/claude-projects-blueprint · concepts · <span title="2026-06-10">2日前</span></div>
+  <article><h1>Claude Projects 設計図（6パート・AI社員化）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Claude Projectsを「名前を付けたチャット箱」でなく「自分の声・基準・読者・ワークフローを学習済みのカスタムAI社員」として組むための6要素テンプレート——曖昧なシステムプロンプト・知識ファイル不在・1プロジェクトで全部やる、の3失敗を構造で潰す。</p>
+</blockquote>
+<p>多くの利用者はProjectを「ラベル付きフォルダ」として扱い、名前を付け一言のシステムプロンプトを書いて使い始めるため、出力が通常のClaudeと変わらない。差を生むのは、Projectを起動した瞬間にClaudeが既に自分の声・品質基準・読者・定義する「良い出力」を把握している状態を作り込むこと。失敗には3つの典型がある——①システムプロンプトが曖昧（「親切な執筆アシスタント」はClaudeが既に知っていることの再宣言で、固有の声・読者・禁止事項を伝えていない）、②知識ファイル未アップロード（永続参照ドキュメントこそProjectの本体で、これ無しは「ラベル付き会話」に過ぎない）、③1つのProjectに全業務を詰める（メール・コンテンツ・戦略・調査・コードを兼ねる「Work Stuff」は全領域で凡庸になる）。ワークフローごとにProjectを分離し、各々を一点特化させる。</p>
+<p><strong>6パート設計図</strong>（1つでも欠くと出力品質が即座に落ちると著者は主張）:</p>
+<table>
+<thead>
+<tr>
+<th>パート</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① Identity（人格定義）</td>
+<td>システムプロンプト冒頭。「2年間一緒に働いてきた専属の〇〇」のように具体的な役割・読者規模・コミュニケーションスタイルを宣言し、無難な汎用出力でなく自信を持った具体出力をデフォルト化する</td>
+</tr>
+<tr>
+<td>② Rules（規則）</td>
+<td>最重要パート。ALWAYS/NEVERの非交渉リスト（段落は3文以内・「many」でなく数値・em dash禁止・「In today's」で始めない 等）。出力を修正するたびその修正をルール化すると、数週間でルール群が精密器具になる</td>
+</tr>
+<tr>
+<td>③ Process（思考手順）</td>
+<td>何を作るかでなく「どう考えるか」。書く前に読者の既存信念を想定しそれを覆す/全体構成を先に出して承認を取る/一気に初稿/ルール照合/各主張に具体数字 等の手順</td>
+</tr>
+<tr>
+<td>④ Output Format（出力形式）</td>
+<td>完成物の正確な仕様（タイトル式・語数・構成順・小見出しの書き方）。形式を先に与えると労力が均等配分され、序盤に詰め込み終盤を雑にする偏りが消える</td>
+</tr>
+<tr>
+<td>⑤ Knowledge Files（知識ファイル）</td>
+<td>Projectの実知能。スタイルガイド（自作の最良サンプル3本以上＝声のパターンマッチ）・読者ペルソナ・競合分析・パフォーマンスデータ・テンプレート集。前2つは必須</td>
+</tr>
+<tr>
+<td>⑥ Onboarding Message（起動メッセージ）</td>
+<td>新会話の初手。「今日は〇〇／文脈は〇〇／スタイルガイドと読者プロフィルと実績データを参照／着手前に角度・覆す通念・一文フックを提示せよ」と全知識ファイルを起動し戦略思考を強制する</td>
+</tr>
+</tbody>
+</table>
+<p>業務は20個でなく<strong>5つのProject</strong>に集約するのが定石——①コンテンツ制作、②調査・分析、③コミュニケーション（メール等）、④戦略・計画、⑤コード・技術作業。各Projectのシステムプロンプトに固有の基準を、知識ファイルに参照資料（コード用なら<a href="../concepts/claude-md-rules.html">claude-md-rules</a>相当のCLAUDE.md内容・ADR・好みのパターン例）を入れる。狙いは「詳細プロンプト→出力→20分編集」を「2文のタスク記述→声・規則・読者を満たした出力→2分レビュー」へ転換し、編集時間を構造的に削ること（著者は45分の一度の設定で編集時間90%減・年間250時間と試算するが、効果は単一ソースの主張）。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-06: @eng_khairallah1（AIコース系アカウント）の方法論記事。同一Projectを12回作り直して検証、6要素を1つずつ外して品質低下を測定したと記載。「設定45分→編集時間90%減→年250時間（6営業週）節約」は単一ソースの試算で未検証</li>
+<li>2026-06-06: 著者は<a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a>（30 Obsidian Workflows listicle）と同一。本記事もコピペ可の完全システムプロンプトテンプレートを含むlisticle/article形式（X bookmark 1,089、2026-06-07 時点）</li>
+<li>2026-06-06: 「You have been working with me for two years」のような擬似的な関係性の埋め込みがClaudeを自信ある具体出力に寄せる、という主張（プロンプト技法としての効果は要検証）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>この6パート構成は<a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a>（What/Howの2欄）と何が本質的に違うか。Knowledge Files＋Onboarding Messageの2要素がChatGPT版に対する差分の核か</li>
+<li>「修正のたびにルール化」の運用は、本vaultのLESSONS.md自己改善ループと同型。ingestスキルに同じ「失敗→ルール昇格」を回せているか</li>
+<li>Claude Code（CLAUDE.md/スキル）とClaude.ai Projectsで、この設計図はどこまで転用できるか。Knowledge Filesはスキルのprogressive disclosureに対応するか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a> — ChatGPT版の同種カスタマイズ（What/How 2欄・メモリ/Projectsの使い分け）。本ページのClaude版と対をなす</li>
+<li><a href="../concepts/claude-best-practices.html">claude-best-practices</a> — Claude効果的活用（Projects・Custom Instructions・スタイルクローニングを含む総合）</li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a> — システムプロンプト/CLAUDE.mdを「永続契約」として設計する考え方（Identity/Rules設計の背景）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
+<li><a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a></li>
+<li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a></li>
+<li><a href="../concepts/claude-best-practices.html">claude-best-practices</a></li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063186252606865711" rel="noopener" target="_blank">https://x.com/i/web/status/2063186252606865711</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>

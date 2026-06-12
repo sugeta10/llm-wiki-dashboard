@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-opus-4-8</h1>
-  <div class="meta">models/claude-opus-4-8 · models · <span title="2026-05-30">1週間前</span></div>
+  <div class="meta">models/claude-opus-4-8 · models · <span title="2026-06-12">今日</span></div>
   <article><h1>Claude Opus 4.8</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: <a href="../companies/anthropic.html">anthropic</a> が2026-05-28にリリースした最上位モデルで、長期エージェント実行・正直な自己進捗報告・高精度低再現の挙動と、コストを制御するEffort Control/Fast Modeを特徴とする。</p>
@@ -56,6 +56,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-30: Effort ControlがOpus 4.8で最もコスト削減効果の高い新機能。プロンプトの60%をLow、10%のみMaxに振り分けることで月額コストを半減できるとの主張（@zodchiii）</li>
 <li>2026-05-30: <a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> は100エージェント規模で$50〜$200のコストがかかるため予算上限設定が必須との指摘</li>
 <li>2026-05-30: Opus 4.8の正直性改善：自己コードの欠陥を未報告のまま放置する確率が旧世代比4倍低下、欠陥ある結果を無批判に報告する率は0%（単一ソースのスコア）</li>
+<li>2026-06-08: @bcherny（Claude Code作者）がOpusが長時間自律作業ベンチマークで最優秀との報告が増えていると発信。Opus自律実行の推奨tips: ①auto modeでpermissions確認を省略 ②<a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a>でオーケストレーションを活用</li>
+<li>2026-06-08: SWE-Marathon（@rishi_desai2 引用）：1Bトークン予算でコーディングエージェントの継続動作を評価するベンチマーク。SlackをゼロからビルドしたりJAXコードベースをPyTorchに書き直したりCコンパイラをRustで実装するタスクを含む</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -71,14 +73,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li>
 <li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
-<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
-<li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060042702150930686" rel="noopener" target="_blank">https://x.com/i/web/status/2060042702150930686</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060042702150930686" rel="noopener" target="_blank">https://x.com/i/web/status/2060042702150930686</a></li>
 <li><a href="https://x.com/i/web/status/2060153411627257928" rel="noopener" target="_blank">https://x.com/i/web/status/2060153411627257928</a></li>
 <li><a href="https://www.coderabbit.ai/ja/blog/opus-4-8-release" rel="noopener" target="_blank">https://www.coderabbit.ai/ja/blog/opus-4-8-release</a></li>
-<li><a href="https://x.com/i/web/status/2060293472091771114" rel="noopener" target="_blank">https://x.com/i/web/status/2060293472091771114</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2060293472091771114" rel="noopener" target="_blank">https://x.com/i/web/status/2060293472091771114</a></li>
+<li><a href="https://x.com/i/web/status/2063792263067754658" rel="noopener" target="_blank">https://x.com/i/web/status/2063792263067754658</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

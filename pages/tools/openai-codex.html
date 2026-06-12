@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>openai-codex</h1>
-  <div class="meta">tools/openai-codex · tools · <span title="2026-06-07">2日前</span></div>
+  <div class="meta">tools/openai-codex · tools · <span title="2026-06-11">1日前</span></div>
   <article><h1>OpenAI Codex</h1>
 <p>OpenAI が提供するコード生成・エージェント実行プラットフォーム。<a href="../tools/claude-code.html">claude-code</a> の競合にあたる。</p>
 <h2>Codex App Server</h2>
@@ -110,6 +110,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>Codex から離れずに<strong>編集をホットリロード</strong>する</li>
 </ul>
 <p>「コードを書く」だけでなく、ビルド→プレビュー→テストの反復をエージェント環境内に取り込む動き。前述「Codex Sites」（成果物のWeb化）と並び、Codexを単なる生成器から開発ループ全体のランタイムへ拡張する方向の一例。</p>
+<h2>Codex /goal の進捗可視化（2026-06）</h2>
+<p>@gosrum による運用改善。Codex の <code>/goal</code> コマンドで「現在何%進んだか」が見えない問題を、goalプロンプトに以下のTODO管理ルールを含めることで解決した:</p>
+<ul>
+<li>作業開始時に、goalを実現するためのTODOリストをチェックリスト形式で作成する</li>
+<li>TODOは「未着手 / 進行中 / 完了 / 保留」が分かる形で管理する</li>
+</ul>
+<p>心理的負担が大幅に減る実感があるという報告。<a href="../concepts/harness-engineering.html">harness-engineering</a> のセッション初期化ルーティン（7ステップ起動）と同じ「エージェントに現在地を明示する」アプローチ。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
@@ -118,17 +125,19 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 <li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a> — エージェントループの内部実装詳細（Responses API・プロンプト構築・Compaction）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/image2-brand-slides.html">image2-brand-slides</a></li>
-<li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — ハーネスエンジニアリング全体論・/goal進捗管理との思想的接続</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li>
+<li><a href="../design/image2-brand-slides.html">image2-brand-slides</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
-<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2051970872995664239" rel="noopener" target="_blank">https://x.com/i/web/status/2051970872995664239</a></li>
+<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2051970872995664239" rel="noopener" target="_blank">https://x.com/i/web/status/2051970872995664239</a></li>
 <li><a href="https://x.com/i/web/status/2052631588140421550" rel="noopener" target="_blank">https://x.com/i/web/status/2052631588140421550</a></li>
 <li><a href="https://x.com/i/web/status/2058907483150926229" rel="noopener" target="_blank">https://x.com/i/web/status/2058907483150926229</a></li>
 <li><a href="https://x.com/i/web/status/2058907486372172092" rel="noopener" target="_blank">https://x.com/i/web/status/2058907486372172092</a></li>
 <li><a href="https://x.com/i/web/status/2060464235868836235" rel="noopener" target="_blank">https://x.com/i/web/status/2060464235868836235</a></li>
 <li><a href="https://x.com/i/web/status/2061845949170045346" rel="noopener" target="_blank">https://x.com/i/web/status/2061845949170045346</a></li>
-<li><a href="https://x.com/i/web/status/2062599291479478275" rel="noopener" target="_blank">https://x.com/i/web/status/2062599291479478275</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2062599291479478275" rel="noopener" target="_blank">https://x.com/i/web/status/2062599291479478275</a></li>
+<li><a href="https://x.com/i/web/status/2063622000795594782" rel="noopener" target="_blank">https://x.com/i/web/status/2063622000795594782</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

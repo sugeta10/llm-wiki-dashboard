@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>harness-engineering - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>harness-engineering</h1>
+  <div class="meta">concepts/harness-engineering · concepts · <span title="2026-06-11">1日前</span></div>
+  <article><h1>Harness Engineering</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: エージェント = モデル + ハーネス。ハーネスはモデルでないすべて（制約・フィードバックループ・コンテキスト・ツール許可）であり、同一モデルでもハーネス設計で13ポイント超の性能差が生まれる。2026年の工学的差別化は「最良のモデルを選ぶ」ではなく「最良の制約を設計し、不要になったら捨てる」に移った。</p>
+</blockquote>
+<pre><code class="language-mermaid">flowchart TD
+  M[&quot;Model（CPU）&quot;] --&gt; A[&quot;Agent（Application）&quot;]
+  H[&quot;Harness（OS）&quot;] --&gt; A
+  H --&gt; FF[&quot;Feedforward\n（事前制御）&quot;]
+  H --&gt; FB[&quot;Feedback\n（事後センサー）&quot;]
+  FF --&gt; CF[&quot;Computational\n型検査・Lint・アーキ制約&quot;]
+  FF --&gt; IF[&quot;Inferential\nSpec文書・制約記述&quot;]
+  FB --&gt; CF2[&quot;Computational\nテストスイート・カバレッジ&quot;]
+  FB --&gt; IF2[&quot;Inferential\nLLMコードレビュー・行動検証&quot;]
+</code></pre>
+<p>ThoughtWorksが定式化した <code>Agent = Model + Harness</code> が最も正確な定義。ハーネスとはモデルでないすべて——制約・フィードバックループ・エージェントが読むドキュメント・使用を許可されたツール——の集合体。ハーネスのないモデルは、コードベースを手探りで進む生のLMに過ぎない。馬具（harness）の語源の通り、「馬を賢くするのではなく、その力を有用な方向に向ける道具を設計する」思想。</p>
+<p><strong>ハーネス = OSのメンタルモデル</strong>: モデル = CPU（生の計算力）、コンテキストウィンドウ = RAM、ハーネス = OS、エージェント = その上のアプリケーション。OSがCPUの実力を決めるのと同じで、ハーネスがモデルの実力を決める。同一モデルでハーネスを差し替えると LangChain Terminal Bench 2.0 で旧52.8% → 新66.5%（+13.7pt）。Vercelはエージェントのツールを80%削減して性能が向上した。2026年の不快な真実: エージェントは難しくなかった。ハーネスが難しかった。</p>
+<h2>5つのハーネスアーティファクト</h2>
+<p>実際のハーネスを構成する5種のファイル・仕組み:</p>
+<ol>
+<li><strong>AGENT.md / CLAUDE.md</strong> — セッション開始時にエージェントが読むオンボーディングドキュメント。プロジェクトのコンテキスト・コーディング規約・アーキテクチャ決定・進行中の作業を記述。モジュールごとに1ファイル配置。これなしでは、エージェントは毎セッション何も知らない状態から始まる。</li>
+<li><strong>JSON機能リスト</strong> — 複数セッションにわたるビルドで「何が完了済みか」をエージェントが把握するファイル。各エントリに機能・検証方法・Pass/Failステータスを持つ。Markdown より JSON の方がエージェントが誤上書きしにくいことをAnthropicが発見した。</li>
+<li><strong>セッション初期化ルーティン</strong> — 毎回同じ7ステップで起動: 作業ディレクトリ確認 → gitログ読込 → 機能リスト確認 → devサーバー起動 → E2E確認 → 1機能実装 → コミット＆進捗更新。これがないと最初の20分をウォームアップに使い続ける。</li>
+<li><strong>スプリント契約</strong> — 実装前にGeneratorエージェントとEvaluatorエージェントが「何を作るか・どう検証するか」を協議するAI間設計レビュー。計画と実行を同一パスで行うと出力が不安定になる。</li>
+<li><strong>構造化タスクテンプレート</strong> — 実装前にコードベースを解析し、実存するファイルパス・シンボル名・既存パターン・具体的な受け入れ条件をマップする。ハルシネーションされたAPIやファイル構造での実装を防ぐ。</li>
+</ol>
+<h2>3陣営の独立的収斂</h2>
+<p>OpenAI・Anthropic・ThoughtWorksが調整なく同じ壁にぶつかり、異なる解を出した:</p>
+<ul>
+<li><strong>OpenAI（環境ファースト）</strong>: 依存フロー（Types → Config → Repo → Service → Runtime → UI）を厳格化し、AGENT.mdをコードベース全体に配置、CI/CDに直結。実証: Sora Androidアプリを4人のエンジニア・28日・Playストア1位・クラッシュフリー率99.9%で完成。Codexは社内PRの70%を週次で処理。</li>
+<li><strong>Anthropic（実行者と評価者を分離）</strong>: Planner（仕様作成）+ Generator（実装）+ Evaluator（ブラウザ自動化でテスト）の3役割分離。エージェントに自己評価させると「優れた出力」と答え続けるため、第三者的Evaluatorが必要。</li>
+<li><strong>ThoughtWorks（2×2フレームワーク）</strong>: Feedforward（事前制御） × Feedback（事後センサー） と Computational（決定論的・ミリ秒） × Inferential（LLM使用・秒単位）の2軸で全制御を分類。Feedforwardだけでは制御が実際に機能しているか確認できない。</li>
+</ul>
+<h2>5つの普遍原則</h2>
+<p>3陣営が独立的に到達した一致点:</p>
+<ol>
+<li><strong>コンテキストが指示に勝る</strong> — 抽象的な指示より現実の状態（実ファイルパス・現在の進捗）を見せる。<a href="../concepts/12-factor-agents.html">12-factor-agents</a> の「コンテキストエンジニアリング」と同じ発見。</li>
+<li><strong>計画と実行を分離する</strong> — 同一パスでの計画+実行は信頼性を下げる。AI同士の協議でもよいが、分離ステップが必須。</li>
+<li><strong>フィードバックループは非交渉的</strong> — CI/CD統合・評価エージェント・テストスイートの何かで閉じなければ「指示付きプロンプト」に過ぎない。</li>
+<li><strong>一度に一つ</strong> — コンテキスト枯渇・整合性崩壊・要件のサイレントドロップを防ぐ強制インクリメンタリズム。</li>
+<li><strong>コードベースがドキュメント</strong> — 別の知識ベースをエージェント用に維持しない。規約・制約・アーキテクチャ決定がリポジトリになければエージェントは知らない。</li>
+</ol>
+<h2>ハーネス崩壊（Build to Delete）</h2>
+<p>ハーネスの各コンポーネントは「モデルができないこと」を前提に書かれる。モデルが改善されると前提が消え、コンポーネントはオーバーヘッドになる:</p>
+<ul>
+<li>Opus 4.5: スプリント分解 + スプリントごとの評価が必須</li>
+<li>Opus 4.6: スプリント分解不要 + 単一パス評価（コスト38%削減）</li>
+<li>Opus 4.7: モデルが自己検証を開始 → Evaluatorの役割が縮小</li>
+</ul>
+<p>"Build to delete" の原則: 定期的にコンポーネントをオフにして品質が変化するか測定する。変化しなければ削除する。Manus は6ヶ月で5回、LangChainは1年で3回ハーネスを再構築。死んだコンポーネントはすべての実行でトークンを消費するだけで価値をもたらさない。これは悪いエンジニアリングではなく、急速に改善するモデルの上に構築することの自然な帰結。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-07: &gt; 📌 X bookmark: 11,136（2026-06-08時点）— @steipete が "Here's your monthly reminder that you shouldn't be prompting coding agents anymore. You should be designing loops that prompt your agents." と投稿。impression 3,831,755。ハーネスエンジニアリングの本質を2文で表現した最も拡散したフォーミュレーション。</li>
+<li>2026-06-07: @sairahul1 記事。ハーネスなし: $9・20分 → 動作するUI・コア機能破損。フルハーネス（Opus 4.5）: $200・6時間 → 動作するソフト・磨かれたUI（22倍コスト増）。Opus 4.5→4.6でハーネス簡素化により$124に削減（37%コストダウン）。</li>
+<li>2026-06-07: LangChain Terminal Bench 2.0 同一モデル比較: 旧ハーネス52.8% → 新ハーネス66.5%（+13.7pt）。単一ソースの数字。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のwikiハーネス（<a href="../tools/claude-harness.html">claude-harness</a>）のどのコンポーネントが最新モデルで「崩壊済み」か？定期的にオフにしてテストする仕組みを作れるか？</li>
+<li>@steipeteの「ループを設計する」という表現と<a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a>の「ハーネスが仕事の本体」は同じ主張の異なる粒度か、微妙に異なる主張か？</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a> — ハーネス設計者に求められる6フェーズロードマップ・eval4種・推奨スタック</li>
+<li><a href="../tools/claude-harness.html">claude-harness</a> — ハーネスの実装例（Default-FAIL contract・Fresh-context evaluator・Agent-maintained handoff）</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Anthropic公式5ワークフローパターン・サブエージェント設計</li>
+<li><a href="../concepts/12-factor-agents.html">12-factor-agents</a> — コンテキストエンジニアリング・ステートレスReducer設計</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントが自律的にコードを書く開発スタイル</li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様先行開発・コンテキストエンジニアリングとの接続</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-harness.html">claude-harness</a></li>
+<li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063544956158185927" rel="noopener" target="_blank">https://x.com/i/web/status/2063544956158185927</a></li>
+<li><a href="https://x.com/i/web/status/2063697162748260627" rel="noopener" target="_blank">https://x.com/i/web/status/2063697162748260627</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
