@@ -24,10 +24,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-fable-5</h1>
-  <div class="meta">models/claude-fable-5 · models · <span title="2026-06-10">2日前</span></div>
+  <div class="meta">models/claude-fable-5 · models · <span title="2026-06-12">今日</span></div>
   <article><h1>Claude Fable 5 / Mythos 5</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: <a href="../companies/anthropic.html">anthropic</a> が一般公開した初の <strong>Mythos クラス</strong>（Opusの上位ティア）モデル。中身は Fable 5 = Mythos 5 で同一、違いはセーフガードの有無だけ。</p>
+<p>📌 X bookmark: 11,120（2026-06-09 時点、@RLanceMartinによるFable 5ループ設計解説）</p>
 </blockquote>
 <p>Mythos クラスは性能が高すぎて<a href="../models/claude-mythos.html">Mythos Preview</a>として一般公開を見送ってきたティア。今回はセーフガード（分類器による検知＋<a href="../models/claude-opus-4-8.html">Opus 4.8</a>へのフォールバック）を整備したことで、<strong>Fable 5</strong>を全ユーザーに開放できた。<strong>Fable と Mythos は同一の基盤モデル</strong>で、サイバー・生物化学・蒸留の領域でセーフガードを掛けたものが Fable、外したものが Mythos。Mythos 5 は Project Glasswing のサイバー防御パートナーと一部生物研究者にのみ提供される。名称の由来は Fable（ラテン語 <em>fabula</em>「語られるもの」）が Mythos（ギリシャ語）と同根で、両者を分けるのはセーフガードのみという設計思想を反映している。</p>
 <h2>検証済み事実</h2>
@@ -45,6 +46,45 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>アラインメント</strong>: Mythos 5 の誤整合行動（欺瞞・誤用への協力等）は低水準で Opus 4.8 と同程度。Fable も同一基盤モデルゆえ同様</li>
 <li><strong>データ保持ポリシー変更</strong>: Mythos クラス（および今後の同等以上モデル）は1st/3rdパーティ全トラフィックで<strong>30日保持を必須化</strong>。訓練・非安全目的には使わず、人間アクセスのログ化と30日後削除を制度化</li>
 </ul>
+<h2>ループ設計・メモリ能力（@RLanceMartin, Anthropicリサーチャー）</h2>
+<p>Fable 5 は自己修正ループとセッション間メモリの両面で前モデルを大きく上回る。</p>
+<h3>自己修正ループ（Parameter Golf ベンチマーク）</h3>
+<p><a href="../concepts/loop-engineering.html">loop-engineering</a> のループ設計で Fable 5 と Opus 4.7 を比較したAnthropicリサーチャーの実験（Claude Managed Agents + 8xH100 GPU セルフホストサンドボックス）:</p>
+<ul>
+<li>Fable 5 はトレーニングパイプラインを Opus 4.7 の <strong>約6倍</strong> 改善</li>
+<li><strong>アプローチの違い</strong>: Fable 5 は構造的変更（アーキテクチャ変更）に賭け、量子化のリグレッションを乗り越えて最大の勝利を達成。Opus 4.7 は小さな勝利を出すと以降ほぼ同じテンプレート（スカラー値の調整→計測→キープ）を繰り返す</li>
+<li><strong>検証サブエージェント</strong>: 作成者自身の自己批評より、独立したコンテキストウィンドウを持つ検証サブエージェントの方が Fable 5 では高性能。<a href="../tools/claude-managed-agents.html">claude-managed-agents</a> の Outcomes が自動でグレーダーサブエージェントを生成するのはこれが理由</li>
+</ul>
+<h3>セッション間メモリ（Continual Learning Bench 1.0）</h3>
+<p>@pgasawa らが公開した Continual Learning Bench 1.0 でのメモリ能力比較（CMA メモリ付き、同一FSを複数セッションで共有）:</p>
+<table>
+<thead>
+<tr>
+<th>モデル</th>
+<th>メモリ活用の段階</th>
+<th>検証カバレッジ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sonnet 4.6</td>
+<td>ステップ1（失敗ノート+推測の羅列）で停止。事前メモを参照しない</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Opus 4.7</td>
+<td>ステップ3（不確実性フラグ付きスキーマ参照）で停止</td>
+<td>17%（7〜33%）</td>
+</tr>
+<tr>
+<td>Fable 5</td>
+<td>ステップ5まで完走（最強実行時）</td>
+<td>73%（22/30）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>失敗→調査→検証→蒸留→参照</strong> の5段階メモリ活用プログレッション。Fable 5 は失敗から汎用ルールを導出し、後続セッションでそのルールを参照する。Sonnet/Opus は失敗ノートを蓄積するだけで蒸留・参照まで至らない。</p>
+<p><strong>設計の含意</strong>: Fable 5 は直接プロンプトして操作するより、<strong>環境フィードバックに応じて自己修正できるループを設計する</strong>（<code>/goal</code> や Outcomes 等）方が性能を引き出せる。</p>
 <h2>セーフガード設計（一般公開を可能にした核心）</h2>
 <p>Fable 5 の分類器が<strong>サイバーセキュリティ・生物化学・蒸留</strong>に関わるリクエストを検知すると、応答は自動的に <a href="../models/claude-opus-4-8.html">Opus 4.8</a> に肩代わりされ、ユーザーに通知される（拒否でなくフォールバック）。</p>
 <ul>
@@ -71,11 +111,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a> — セーフガード発火時のフォールバック先・次点モデル</li>
 <li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> — Mythos が主役として登場するAI開発加速の論考</li>
 <li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a> — モデルスタッキング・レートリミット管理（段階ロールアウト下での運用）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
-<li><a href="../models/claude-mythos.html">claude-mythos</a></li>
-<li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
-<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
-<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" rel="noopener" target="_blank">https://www.anthropic.com/news/claude-fable-5-mythos-5</a></li></ul></section></article>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — Fable 5のパフォーマンスを最大化するループ設計手法（4条件テスト・MVL・失敗パターン）</li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — Fable 5のループ実験で使用したCMAプラットフォーム（Outcomes・セルフホストサンドボックス）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/claude-mythos.html">claude-mythos</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" rel="noopener" target="_blank">https://www.anthropic.com/news/claude-fable-5-mythos-5</a></li>
+<li><a href="https://x.com/i/web/status/2064397389189071163" rel="noopener" target="_blank">https://x.com/i/web/status/2064397389189071163</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

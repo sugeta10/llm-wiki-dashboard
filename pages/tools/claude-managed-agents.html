@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-managed-agents</h1>
-  <div class="meta">tools/claude-managed-agents · tools · <span title="2026-06-06">6日前</span></div>
+  <div class="meta">tools/claude-managed-agents · tools · <span title="2026-06-12">今日</span></div>
   <article><h1>Claude Managed Agents</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> が提供するエージェント管理プラットフォーム。長期実行エージェントのメモリ管理・自己改善・マルチエージェント協調を提供する。</p>
 <h2>主要機能</h2>
@@ -192,6 +192,54 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul>
 <h3>Dreaming（詳細）</h3>
 <p>Dreams のAPI仕様・ライフサイクル・エラー種別の詳細は <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> を参照。</p>
+<h2>エージェントシステムプロンプト設計フレームワーク</h2>
+<p>信頼性の高いエージェントのシステムプロンプトに含める4要素:</p>
+<ol>
+<li><strong>役割の明示</strong>: 汎用「helpful assistant」でなく具体的な職能を与える（例: 「競合インテリジェンス専門のリサーチアナリスト」）</li>
+<li><strong>成功基準の定義</strong>: 期待するアウトプットの形式・分量・必須の構成要素を明示（例: 「各競合について変更点をカテゴリ別にリストし、推奨セクションを末尾に付ける」）</li>
+<li><strong>禁止事項の明示</strong>: 「データを捏造しない・確認できない情報はflagする」等のバウンダリ</li>
+<li><strong>エッジケース対応</strong>: 「サイトがダウンしている場合はログに残して継続し、最終レポートに不完全性を明記。リトライは最大2回」等</li>
+</ol>
+<p>曖昧なプロンプト → 曖昧なエージェント。精密なプロンプト → 信頼性の高いエージェント。</p>
+<h2>よくある失敗と対策</h2>
+<table>
+<thead>
+<tr>
+<th>症状</th>
+<th>根本原因</th>
+<th>対策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>指示されていないことをやる（やりすぎ）</td>
+<td>プロンプトが曖昧</td>
+<td>「上記のステップのみ実行する」等の明示的制約を追加</td>
+</tr>
+<tr>
+<td>表面的な出力しか出ない（やらなすぎ）</td>
+<td>「完了」の定義が不明確</td>
+<td>期待する成果物の具体例・量・フォーマットを明示</td>
+</tr>
+<tr>
+<td>ハルシネーション</td>
+<td>検証ステップなし</td>
+<td>「データポイントを含める前にソース素材で確認する。確認できなければ除外し不足を明記」</td>
+</tr>
+<tr>
+<td>エッジケースでクラッシュ</td>
+<td>エラー処理未定義</td>
+<td>「〔特定シナリオ〕の場合は〔具体的行動〕」をプロンプトに追加</td>
+</tr>
+</tbody>
+</table>
+<p>→ 最初のエージェントが1度で完璧に動くことは稀。5〜10回のイテレーションでプロンプトを精錬するほど出力品質が上がる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-09 @eng_khairallah1（個人ブログ）: マルチエージェントオーケストレーションで最大20エージェントを並列実行できると主張（公式ドキュメントでの確認未実施）</li>
+<li>2026-06-09 @eng_khairallah1: 夜間バグトリアージ（Linearから取得→優先度付け→Slack投稿）・週次競合分析・日次コンテンツリサーチのようなユースケースで実際に稼働中のエージェントがあると主張</li>
+<li>2026-06-09 @eng_khairallah1: Routines機能で「ラップトップを開かなくてよい」自律型スケジュール実行が可能と主張（Research Preview）</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
@@ -204,14 +252,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a>（Dreams APIの詳細仕様）</li>
 <li><a href="../tools/ant-cli.html">ant-cli</a> — ターミナルから Managed Agents を起動できる公式CLI</li>
 <li><a href="../business/dinii-ask-anything.html">dinii-ask-anything</a> — Managed Agentsで社内問い合わせ代行botを構築した実運用事例（KPI付き・自前orchestration7割削減）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-finance-agents.html">claude-finance-agents</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li>
-<li><a href="../tools/ant-cli.html">ant-cli</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/new-in-claude-managed-agents" rel="noopener" target="_blank">https://claude.com/blog/new-in-claude-managed-agents</a></li>
+<li><a href="../tools/ant-cli.html">ant-cli</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/new-in-claude-managed-agents" rel="noopener" target="_blank">https://claude.com/blog/new-in-claude-managed-agents</a></li>
 <li><a href="https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1" rel="noopener" target="_blank">https://note.com/npaka/n/n800e489e1be9?rt=email&amp;amp;sub_rt=daily_report_followee_notes_card_1&amp;amp;position=1</a></li>
 <li><a href="https://x.com/i/web/status/2056740346529468717" rel="noopener" target="_blank">https://x.com/i/web/status/2056740346529468717</a></li>
-<li><a href="https://platform.claude.com/docs/en/managed-agents/overview" rel="noopener" target="_blank">https://platform.claude.com/docs/en/managed-agents/overview</a></li></ul></section></article>
+<li><a href="https://platform.claude.com/docs/en/managed-agents/overview" rel="noopener" target="_blank">https://platform.claude.com/docs/en/managed-agents/overview</a></li>
+<li><a href="https://x.com/i/web/status/2064265923993755814" rel="noopener" target="_blank">https://x.com/i/web/status/2064265923993755814</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
