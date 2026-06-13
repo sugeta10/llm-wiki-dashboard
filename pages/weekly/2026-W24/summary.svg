@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="444" viewBox="0 0 800 444">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eef2ff"/>
+      <stop offset="100%" stop-color="#f0fdf4"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="444" rx="16" fill="url(#bg)" stroke="#e0e7ff" stroke-width="1.5"/>
+  <text x="40" y="52" font-size="13" fill="#6366f1" font-family="sans-serif" font-weight="600">2026-W24</text>
+  <text x="40" y="90" font-size="20" fill="#1e1b4b" font-family="sans-serif" font-weight="700">コードもモデルもコモディティ化した今、複利で積み上がる唯一の資産は「言語化された判断」——スキル・オントロジー・コンテキ</text>
+  <text x="40" y="118" font-size="20" fill="#1e1b4b" font-family="sans-serif" font-weight="700">スト——であり、それは自己改善ループに配線して初めて資産になる。</text>
+  <line x1="40" y1="150" x2="760" y2="150" stroke="#c7d2fe" stroke-width="1"/>
+  <text x="40" y="182" font-size="12" fill="#6b7280" font-family="sans-serif">根拠ページ</text>
+  <text x="52" y="220" font-size="14" fill="#374151"><tspan fill="#6366f1">▸</tspan> [[business/skill-library-strategy]] — 再利用の抽象化を「Unixコマンド→ライブラリ→API→ワークフロー→**判断**」</text>
+  <text x="52" y="256" font-size="14" fill="#374151"><tspan fill="#6366f1">▸</tspan> [[business/self-improving-company]] — 会社を「センサー→ポリシー→ツール→品質ゲート→学習」の自走ループの集合に再設計する</text>
+  <text x="52" y="292" font-size="14" fill="#374151"><tspan fill="#6366f1">▸</tspan> [[concepts/ai-era-good-engineer]] — 価値が「速く実装できること」から「何を作るべきかの見極めとAI出力の批判的評価」へ移る（</text>
+  <text x="52" y="328" font-size="14" fill="#374151"><tspan fill="#6366f1">▸</tspan> [[concepts/palantir-ontology]] — 競争優位は「モデルの賢さ」でなく「顧客の世界をどれだけ深く動的にモデル化できたか＝文脈の深さ」</text>
+</svg>
