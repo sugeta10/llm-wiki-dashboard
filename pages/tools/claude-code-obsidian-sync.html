@@ -50,15 +50,15 @@ GitHub同期
 </ul>
 <h3>ノイズ除去</h3>
 <p><code>jq</code> を使って以下を除外：
-- <code>&amp;lt;system-reminder&gt;</code> 等のシステムメッセージ
-- <code>&amp;lt;local-command-...&gt;</code> のローカルコマンド出力
+- <code>&lt;system-reminder&gt;</code> 等のシステムメッセージ
+- <code>&lt;local-command-...&gt;</code> のローカルコマンド出力
 - <code>subagents/</code> 配下のサブエージェントセッション</p>
 <h3>日付ベースのフィルタリング</h3>
 <p>各エントリのタイムスタンプを確認して当日の会話だけを抽出。日をまたいだセッションにも対応。</p>
 <h2>LaunchAgent 常駐化</h2>
-<pre><code class="language-xml">&amp;lt;!-- ~/Library/LaunchAgents/com.claude.obsidian-sync.plist --&gt;
-&amp;lt;key&gt;KeepAlive&amp;lt;/key&gt;&amp;lt;true/&gt;
-&amp;lt;key&gt;RunAtLoad&amp;lt;/key&gt;&amp;lt;true/&gt;
+<pre><code class="language-xml">&lt;!-- ~/Library/LaunchAgents/com.claude.obsidian-sync.plist --&gt;
+&lt;key&gt;KeepAlive&lt;/key&gt;&lt;true/&gt;
+&lt;key&gt;RunAtLoad&lt;/key&gt;&lt;true/&gt;
 </code></pre>
 <p><code>launchctl load</code> で登録することで macOS 再起動後も自動起動。</p>
 <h2>出力例</h2>
@@ -78,8 +78,8 @@ GitHub同期
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a>（会話履歴の保存元）</li>
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a>（Obsidian ナレッジベースとの統合）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/claude-code-obsidian-project.html">claude-code-obsidian-project</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code-obsidian-project.html">claude-code-obsidian-project</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
 <li><a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/pepabo/articles/ffb79b5279f6ee" rel="noopener" target="_blank">https://zenn.dev/pepabo/articles/ffb79b5279f6ee</a></li></ul></section></article>
 </main>

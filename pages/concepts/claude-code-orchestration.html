@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-orchestration</h1>
-  <div class="meta">concepts/claude-code-orchestration · concepts · <span title="2026-06-09">4日前</span></div>
+  <div class="meta">concepts/claude-code-orchestration · concepts · <span title="2026-06-09">5日前</span></div>
   <article><h1>Claude Code オーケストレーション（並列運用）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Claude Code が公式に持つ3つの並列の仕組み（subagent / agent teams / git worktree）を守備範囲で使い分け、役割は CLAUDE.md ではなく subagent 定義で固定し、人間は「コードを書く側」から「設計して任せる側」へ回るための運用フレーム。</p>
@@ -66,7 +66,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>「CLAUDE.md に役割ID（arch / dev-main…）を書いて起動のたびにペルソナを切り替える」という説明が出回るが、これは仕組みとして存在しない。CLAUDE.md は context であって強制される設定ではなく、system prompt の後に user message として渡されるため厳密な遵守は保証されない（必ず止めたいことは <a href="../concepts/claude-md-rules.html">claude-md-rules</a> でなく hooks で縛る）。</p>
 <p>役割の正本は <strong>subagent 定義</strong>（<code>.claude/agents/</code> 配下の Markdown）。name / description / tools / model を frontmatter に書けば再利用可能な専門家が1つ完成し、これは <strong>agent teams の teammate としても名前指定で呼び出せる</strong>（tools許可リストとモデルを引き継ぐ）。1回書けば subagent としてもチームメンバーとしても使い回せる、という設計。詳細は <a href="../tools/claude-code-subagents.html">claude-code-subagents</a>。</p>
 <h2>記憶の共有は SQLite でなく公式 auto memory（markdown）</h2>
-<p>複数セッションをまたぐ記憶共有で「SQLite にタグ付きで記憶を貯めて動的注入する」テクニックが紹介されることがあるが、それは標準機能ではない（MCP経由でDBを組むなら可能、という別の話）。公式の auto memory は markdown ファイルで動き、<code>~/.claude/projects/&amp;lt;project&gt;/memory/</code> に MEMORY.md（索引）と話題別ファイルを置き、Claude が作業しながら自分で書き溜める。毎セッション読まれるのは MEMORY.md の先頭分だけで、詳細は必要時に取りに行く設計なのでコンテキストをクリーンに保てる。<strong>SQLite自作の前に、まず公式 markdown auto memory を使い切る</strong>のが順序。</p>
+<p>複数セッションをまたぐ記憶共有で「SQLite にタグ付きで記憶を貯めて動的注入する」テクニックが紹介されることがあるが、それは標準機能ではない（MCP経由でDBを組むなら可能、という別の話）。公式の auto memory は markdown ファイルで動き、<code>~/.claude/projects/&lt;project&gt;/memory/</code> に MEMORY.md（索引）と話題別ファイルを置き、Claude が作業しながら自分で書き溜める。毎セッション読まれるのは MEMORY.md の先頭分だけで、詳細は必要時に取りに行く設計なのでコンテキストをクリーンに保てる。<strong>SQLite自作の前に、まず公式 markdown auto memory を使い切る</strong>のが順序。</p>
 <h2>並列運用の落とし穴</h2>
 <ul>
 <li><strong>トークンコスト</strong>: agent teams は teammate ごとに独立コンテキストを持つため、使用量は人数に比例して増える。ルーチン作業を大人数でやるとコスト負けする</li>
@@ -98,9 +98,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a> — Claude Code本体</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
 <li><a href="../concepts/llm-council.html">llm-council</a></li>
-<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
-<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062862940039188669" rel="noopener" target="_blank">https://x.com/i/web/status/2062862940039188669</a></li></ul></section></article>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062862940039188669" rel="noopener" target="_blank">https://x.com/i/web/status/2062862940039188669</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>generative-ui</h1>
-  <div class="meta">concepts/generative-ui · concepts · <span title="2026-06-10">3日前</span></div>
+  <div class="meta">concepts/generative-ui · concepts · <span title="2026-06-10">4日前</span></div>
   <article><h1>Generative UI</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントがユーザーの要求からUIをリアルタイムに「描画」する新しいフロントエンド層。実装は Controlled / Declarative / Open-ended の3パターンに分かれ、制御 vs 柔軟性のトレードオフで選ぶ。</p>
@@ -59,7 +59,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul>
 <h3>Pattern 3: Open-ended（カタログもスキーマもなし）</h3>
 <p>2つのサブパターン。<strong>MCP Apps</strong>: MCPサーバーがUIサーフェスを公開しエージェントが駆動（Excalidrawの例ではキャンバスの全ピクセルをエージェントが制御）。<strong>Sandboxed HTML</strong>: エージェントが生HTMLを書き、アプリがサンドボックス化iframe内で描画。</p>
-<p>MCP Appsの具体的な仕組み（claude-mcp 公式拡張、Anthropic・OpenAIらが協力して標準化）：MCPツールがUIのURI（<code>ui://...</code>）を返す → エージェントがアクセスし、ツールがフルHTML文字列を返却 → エージェントがそのHTMLをチャット内に <strong>iframe</strong> で読み込み描画。チャットとUI間は <strong><code>postMessage</code></strong> で双方向通信し、UIは <strong>CSPで指定したリソースのみ</strong>にアクセス可能。これは「Sandboxed HTML」をプロトコル化したものに等しく、Open-endedパターンの標準実装と言える。ユーザー向けにも ChatGPT/Claude の地図・写真表示、Apps in ChatGPT（ZOZO/Canva/Spotify等を会話画面から呼び出し）として展開が始まっている。</p>
+<p>MCP Appsの具体的な仕組み（<a href="../tools/claude-mcp.html">claude-mcp</a> 公式拡張、Anthropic・OpenAIらが協力して標準化）：MCPツールがUIのURI（<code>ui://...</code>）を返す → エージェントがアクセスし、ツールがフルHTML文字列を返却 → エージェントがそのHTMLをチャット内に <strong>iframe</strong> で読み込み描画。チャットとUI間は <strong><code>postMessage</code></strong> で双方向通信し、UIは <strong>CSPで指定したリソースのみ</strong>にアクセス可能。これは「Sandboxed HTML」をプロトコル化したものに等しく、Open-endedパターンの標準実装と言える。ユーザー向けにも ChatGPT/Claude の地図・写真表示、Apps in ChatGPT（ZOZO/Canva/Spotify等を会話画面から呼び出し）として展開が始まっている。</p>
 <ul>
 <li><strong>ブランド不整合問題</strong>: スタイル指示はエージェントを自社ブランドに寄せるが保証しない。「火曜はネオブルータリズム、水曜はiOS 4クローン」のように毎回変わり、プロダクトが「真剣に見えない」。著者は主UIとして投入したが1週間で撤退</li>
 <li><strong>適: 一発限り・使い捨ての可視化（ユーザーが二度と見ない）</strong>。「電子の動きを見せて」等。主サーフェスには絶対に使わない</li>
@@ -98,9 +98,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — Declarative/A2UIが体現する「GUIでなくスキーマを操作させる」設計思想</li>
 <li><a href="../design/fastview-design.html">fastview-design</a> — エージェント生成UIにも適用できるUI設計原則</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../design/fastview-design.html">fastview-design</a></li>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
-<li><a href="../design/fastview-design.html">fastview-design</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062220865643982875" rel="noopener" target="_blank">https://x.com/i/web/status/2062220865643982875</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062220865643982875" rel="noopener" target="_blank">https://x.com/i/web/status/2062220865643982875</a></li>
 <li><a href="https://speakerdeck.com/yusukebe/aishi-dai-nouihadokohexing-ku-sono2?slide=52" rel="noopener" target="_blank">https://speakerdeck.com/yusukebe/aishi-dai-nouihadokohexing-ku-sono2?slide=52</a></li>
 <li><a href="https://x.com/i/web/status/2063230906354241921" rel="noopener" target="_blank">https://x.com/i/web/status/2063230906354241921</a></li></ul></section></article>
 </main>

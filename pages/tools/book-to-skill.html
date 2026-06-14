@@ -27,9 +27,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="meta">tools/book-to-skill · tools · <span title="2026-06-03">1週間前</span></div>
   <article><h1>book-to-skill</h1>
 <blockquote>
-<p><strong>TL;DR</strong>: 技術書・ドキュメントを <code>/book-to-skill &amp;lt;path&gt;</code> 一発で <a href="../concepts/claude-skills.html">Claude Code スキル</a> に変換し、「一度読んで忘れた本」を必要な時にオンデマンド参照できるようにするOSSツール。</p>
+<p><strong>TL;DR</strong>: 技術書・ドキュメントを <code>/book-to-skill &lt;path&gt;</code> 一発で <a href="../concepts/claude-skills.html">Claude Code スキル</a> に変換し、「一度読んで忘れた本」を必要な時にオンデマンド参照できるようにするOSSツール。</p>
 </blockquote>
-<p>本一冊をそのままコンテキストに載せるとトークンが膨れ、必要のない章まで常時抱え込むことになる。book-to-skill はこれを、コアメンタルモデルと章インデックスだけを起点に置き、本文は質問が来た章だけを引き込むオンデマンドロード構成へ変換することで回避する。<code>/book-to-skill &amp;lt;path&gt;</code> 一発で、この分割済みスキルセットが自動生成される。</p>
+<p>本一冊をそのままコンテキストに載せるとトークンが膨れ、必要のない章まで常時抱え込むことになる。book-to-skill はこれを、コアメンタルモデルと章インデックスだけを起点に置き、本文は質問が来た章だけを引き込むオンデマンドロード構成へ変換することで回避する。<code>/book-to-skill &lt;path&gt;</code> 一発で、この分割済みスキルセットが自動生成される。</p>
 <p>変換時には書籍を複数ファイルに分解し、トークン効率を最適化したスキル構成を生成する。<code>SKILL.md</code> がコアメンタルモデルと章インデックスを担い、本文の各章は <code>chapters/ch*.md</code> に分割される。この章ファイルは<strong>オンデマンドロード</strong>方式で、そのトピックを質問するまでトークンを消費しない。これにより本全体を常時コンテキストに載せることなく、必要な章だけを引き込める。</p>
 <table>
 <thead>
@@ -69,7 +69,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </table>
 <p>入力フォーマットは幅広く、PDF・EPUB・DOCX・TXT・Markdown・reStructuredText・AsciiDoc・HTML・RTF・MOBI/AZW/AZW3 に対応する。</p>
 <h2>使い方</h2>
-<pre><code>/book-to-skill &amp;lt;path-to-document&gt; [skill-name-slug]
+<pre><code>/book-to-skill &lt;path-to-document&gt; [skill-name-slug]
 
 # 例
 /book-to-skill ~/Downloads/designing-data-intensive-applications.pdf

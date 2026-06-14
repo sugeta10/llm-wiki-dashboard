@@ -31,8 +31,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>検証済み事実</h2>
 <ul>
 <li>2026-06-02: Anthropic 公式（@ClaudeDevs）が ant CLI を発表。Claude Platform の全 API エンドポイントをターミナルから実行可能、Messages API 呼び出し・Claude Managed Agents の起動・結果のシェルへのパイプに対応。Claude Code が <code>claude-api</code> スキルを使うことで ant CLI を理解する、と告知</li>
-<li>2026-06-05（公式ドキュメント）: コマンド体系は <code>ant &amp;lt;resource&gt;[:&amp;lt;subresource&gt;] &amp;lt;action&gt; [flags]</code>（例 <code>ant messages create</code>、<code>ant models list</code>）。ネストリソースはコロン区切り</li>
-<li>認証は2系統。<code>ant auth login</code> がブラウザOAuthでConsoleに対し認証しトークンを workspace にスコープ（リモート/ブラウザ無し環境は <code>--no-browser</code>）。または環境変数 <code>ANTHROPIC_API_KEY</code>。複数 workspace は<strong>named profile</strong>（<code>ant profile activate &amp;lt;name&gt;</code> / <code>--profile</code>）で切替。<code>ANTHROPIC_API_KEY</code> が設定されていると profile より優先される</li>
+<li>2026-06-05（公式ドキュメント）: コマンド体系は <code>ant &lt;resource&gt;[:&lt;subresource&gt;] &lt;action&gt; [flags]</code>（例 <code>ant messages create</code>、<code>ant models list</code>）。ネストリソースはコロン区切り</li>
+<li>認証は2系統。<code>ant auth login</code> がブラウザOAuthでConsoleに対し認証しトークンを workspace にスコープ（リモート/ブラウザ無し環境は <code>--no-browser</code>）。または環境変数 <code>ANTHROPIC_API_KEY</code>。複数 workspace は<strong>named profile</strong>（<code>ant profile activate &lt;name&gt;</code> / <code>--profile</code>）で切替。<code>ANTHROPIC_API_KEY</code> が設定されていると profile より優先される</li>
 <li>ベータ機能（agents・sessions・deployments・environments・skills）は <code>beta:</code> プレフィックス配下にあり、対応する <code>anthropic-beta</code> ヘッダを自動送出する</li>
 <li>出力フォーマットは <code>auto</code>/<code>json</code>/<code>jsonl</code>/<code>yaml</code>/<code>pretty</code>/<code>raw</code>/<code>explore</code>。List・retrieve は端末接続時に<strong>対話型エクスプローラ（TUI）</strong>を既定で開き、パイプ時は pretty JSON に切替</li>
 <li>非対話ワークロード（CI・サーバ・コンテナ）は interactive login でなく <a href="../concepts/workload-identity-federation.html">workload-identity-federation</a> の利用が推奨されている</li>
@@ -51,10 +51,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a> — CI/サーバ等の非対話ワークロードで ant CLI が推奨する認証方式</li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/xurl.html">xurl</a></li>
-<li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a></li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061877343078244459" rel="noopener" target="_blank">https://x.com/i/web/status/2061877343078244459</a></li>
+<li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061877343078244459" rel="noopener" target="_blank">https://x.com/i/web/status/2061877343078244459</a></li>
 <li><a href="https://platform.claude.com/docs/en/api/sdks/cli" rel="noopener" target="_blank">https://platform.claude.com/docs/en/api/sdks/cli</a></li></ul></section></article>
 </main>
 <script>
