@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-md-rules</h1>
-  <div class="meta">concepts/claude-md-rules · concepts · <span title="2026-05-23">3週間前</span></div>
+  <div class="meta">concepts/claude-md-rules · concepts · <span title="2026-06-15">今日</span></div>
   <article><h1>CLAUDE.md 行動ルール設計</h1>
 <p><strong>CLAUDE.md</strong> は <a href="../tools/claude-code.html">claude-code</a> の動作を規定する行動契約ファイル。ウィッシュリストではなく、「この命令でどの失敗モードを閉じるか」を根拠に記述する。</p>
 <h2>Karpathy 発端</h2>
@@ -178,6 +178,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul>
 <h3>検証済み事実</h3>
 <p>（なし — 上記は個人アカウントの試算。スター数は取得時点の観測値）</p>
+<h2>自律運用での実践知（観察ログ・未検証）</h2>
+<p>長時間の自律タスクを回す現場では、ミス防止より「捏造とスコープ逸脱を止める」定型文が効くという報告が出ている。</p>
+<ul>
+<li>2026-06-11 @AI_masaou: <a href="../models/claude-fable-5.html">claude-fable-5</a> を数時間ぶん回す自律タスクで効く定型文が結局4つに集約されたと投稿。記事への導線つきteaserで本文では2つのみ可視:
+  1. <strong>報告の前に各主張をツールの実行結果と突き合わせて監査させる</strong> → 捏造された進捗報告がほぼ消えると主張。Rule 12（失敗を可視化して隠さない・正常完了を装う問題）を自律ランで強化した形
+  2. <strong>頼んでないことはするな／相談されただけなら直す前に見立てを返せ、と境界を引く</strong> → Rule 3（Surgical Changes）と <a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a> の②暴走止め（勝手なアクション禁止・スコープ厳守）に対応</li>
+<li>自律実行が長くなるほどコード生成の瞬間を縛る基本ルールより、報告の正直さと境界の維持が支配的になる、という <a href="../concepts/loop-engineering.html">loop-engineering</a> のEscalation/Verification設計とも整合する観点。残り2つの定型文は元記事未取得のため捏造せず保留。</li>
+</ul>
 <h2>MEMORY.md + ERRORS.md 補助ファイル</h2>
 <p><a href="../concepts/claude-md-rules.html">claude-md-rules</a> の記憶補完として、同リポジトリルートに以下を併置する実践が広がっている：</p>
 <ul>
@@ -194,13 +202,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> — CLAUDE.mdを含む4種設定の4層階層設計</li>
 <li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a> — 同じKarpathy素材を「永続契約」フレームで非エンジニア向けに5領域21指示へ再構成したもの</li>
 <li><a href="../concepts/ai-session-handover.html">ai-session-handover</a> — AGENTS.md/カスタム指示に「引き継ぎ」エクスポート指示を仕込むパターン</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/ccmd.html">ccmd</a></li>
-<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
 <li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">https://x.com/i/web/status/2053116311132155938</a></li>
 <li><a href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">https://x.com/i/web/status/2055999112470839383</a></li>
-<li><a href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">https://x.com/i/web/status/2057643942980751527</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">https://x.com/i/web/status/2057643942980751527</a></li>
+<li><a href="https://x.com/i/web/status/2065026899861229870" rel="noopener" target="_blank">https://x.com/i/web/status/2065026899861229870</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

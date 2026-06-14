@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>loop-engineering</h1>
-  <div class="meta">concepts/loop-engineering · concepts · <span title="2026-06-12">3日前</span></div>
+  <div class="meta">concepts/loop-engineering · concepts · <span title="2026-06-15">今日</span></div>
   <article><h1>ループエンジニアリング（Loop Engineering）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントをプロンプトする「人間」をやめ、エージェントをプロンプトする「ループ」を設計することで、自分がループの外に出る工学的転換。スケジューラー（cron）＋意思決定者（モデル）＋フィードバック機構の三つ組が本質。</p>
@@ -193,8 +193,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-06-08 @mvanhorn: ralph loop は Geoffrey Huntley が2025年7月に公開した bash ワンライナー。同一プロンプトファイルをエージェントに繰り返しパイプするだけだが、イテレーションごとにコンテキストをアンカーファイルにリセットする規律が革新。約 $297 でプログラミング言語を構築したと主張</li>
 <li>2026-06-08 @addyosmani: ループが変えるのは「仕事がなくなる」ではなく「仕事の重心が移動する」。Verification（検証）・comprehension debt（理解の劣化）・cognitive surrender（思考の放棄）という3つの問題はループが自動化されるほど先鋭化すると指摘</li>
 <li>2026-06-09 @masa_okamura108: Codex /goal を活用した Notion タスクAI自動実行ループで、1日で43件のコミットを生成。しかし修正範囲が元のPRの趣旨から逸脱し、ほぼ全件却下。「ループの設計ミス→暴走→トークン爆増」の実例として紹介</li>
+<li>2026-06-09 @masa_okamura108: 不要ブランチ削除ループは即効性があり129件の不要ブランチを削除（著者の実測値・未検証）</li>
 <li>
-<p>2026-06-09 @masa_okamura108: 不要ブランチ削除ループは即効性があり129件の不要ブランチを削除（著者の実測値・未検証）</p>
+<p>2026-06-11 @steipete: codexにリポジトリのメンテを任せ、5分ごとに起き上がって複数スレッドへ作業を割り振るループを回していると報告。orchestratorスキルをtriage・autoreview・computer useの各スキルと組み合わせることで一部の作業はそのままマージまで到達すると述べる。Stage 5（ループがループを監視・起動するオーケストレーション）の具体例であり、「ループが鋭い名前付きスキルを呼ぶ」構成の実践（単一ソース・<a href="../tools/autoreview-skill.html">autoreview-skill</a> / <a href="../tools/skill-cleaner.html">skill-cleaner</a> と同じ作者）</p>
 </li>
 <li>
 <p>2026-06-09 @0xCodez（二次まとめ）: Anthropicエンジニアが1日に8倍のコードをマージするようになったとAnthropicが報告——ただし同社自身が「真の生産性向上の過大評価の可能性が高い」と注記。ループの効果は実在するが数字は議論中</p>
@@ -227,14 +228,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/claude-fable-5.html">claude-fable-5</a> — Fable 5のParameter Golf・Continual Learning Benchでのループ有効性ベンチマーク（Anthropicリサーチャー実験）</li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — CMAのOutcomes機能がループの検証サブエージェントを自動生成する</li>
 <li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a> — ReActループを5構成要素の中核に据えたエージェント入門（@sairahul1）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
-<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
 <li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a></li>
-<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
-<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063865685558903149" rel="noopener" target="_blank">https://x.com/i/web/status/2063865685558903149</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063865685558903149" rel="noopener" target="_blank">https://x.com/i/web/status/2063865685558903149</a></li>
 <li><a href="https://x.com/i/web/status/2064127981161959567" rel="noopener" target="_blank">https://x.com/i/web/status/2064127981161959567</a></li>
 <li><a href="https://x.com/i/web/status/2064182475920908722" rel="noopener" target="_blank">https://x.com/i/web/status/2064182475920908722</a></li>
-<li><a href="https://x.com/i/web/status/2064374643729773029" rel="noopener" target="_blank">https://x.com/i/web/status/2064374643729773029</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2064374643729773029" rel="noopener" target="_blank">https://x.com/i/web/status/2064374643729773029</a></li>
+<li><a href="https://x.com/i/web/status/2064998499780084154" rel="noopener" target="_blank">https://x.com/i/web/status/2064998499780084154</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
