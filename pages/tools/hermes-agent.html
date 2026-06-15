@@ -24,7 +24,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>hermes-agent</h1>
-  <div class="meta">tools/hermes-agent · tools · <span title="2026-05-22">3週間前</span></div>
+  <div class="meta">tools/hermes-agent · tools · <span title="2026-06-16">今日</span></div>
   <article><h1>Hermes Agent</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Nous ResearchのオープンソースAIエージェント基盤で、自己進化スキル・3層メモリ・GEPAオフライン最適化を1フレームワークに統合し「使うほど賢くなる」設計を実現する。</p>
@@ -96,7 +96,61 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-13: Curatorは7日間非稼働+2時間アイドル時に起動、30日未使用でstale、90日でarchiveという具体的な閾値（単一ソース）</li>
 <li>2026-05-13: 2ヶ月でGitHubスター9万超えとの主張（未確認）</li>
 <li>2026-05-21: X Premium（旧Twitter Blue）サブスクリプション対応に伴い再びトレンドに。X上でHermes Agentの理論解説記事が話題になっている（@shota7180 の日本語解説含む）</li>
+<li>2026-06-03: @IBuzovskyi による10ハック解説記事。macOS/Windows/Linux デスクトップアプリの新提供・<code>localhost:9119</code> ダッシュボード・Kanban（SQLite・7ステータス・60秒ディスパッチ）の詳細が含まれる。「チャットアプリとして使うと90%の機能を残す」と主張（X bookmark: 2,421）</li>
 </ul>
+<h2>実践的な運用パターン（10ハック）</h2>
+<p>Hermesを「チャットアプリ」として使うと機能の90%を残すことになる。以下10のセットアップを積み重ねると、24時間稼働する自動化システムに変わる。</p>
+<table>
+<thead>
+<tr>
+<th>セットアップ</th>
+<th>概要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mission Control</strong></td>
+<td><code>localhost:9119</code> のダッシュボードで全タスク・スキル・Kanbanを俯瞰（macOS/Windows/Linux デスクトップ版も提供）</td>
+</tr>
+<tr>
+<td><strong>Event Triggers</strong></td>
+<td>Notionのカード移動・Sheetsの更新など「状態変化」を検知して自動反応。cronポーリング（10分間隔）またはWebhookで即時反応</td>
+</tr>
+<tr>
+<td><strong>Cron Jobs</strong></td>
+<td>自然言語で「毎朝〇時に〜して」と記述するだけで定期実行。crontab記法は不要</td>
+</tr>
+<tr>
+<td><strong>/goal 構造化</strong></td>
+<td>Outcome（達成条件）/Sources（参照先）/Constraints（制約）/Deliverable（完了物）の4フィールドで目標を構造化するとファジーな結果を排除できる</td>
+</tr>
+<tr>
+<td><strong>Sub-agents</strong></td>
+<td>研究タスクを複数のサブエージェントに並列割当。各エージェントが独立したコンテキストウィンドウを持ち、メインセッションは要約だけを受け取る</td>
+</tr>
+<tr>
+<td><strong>Telegram Topics</strong></td>
+<td>Telegramのトピック機能でYouTube・コーディング・リサーチ等ワークスペースを分離し、コンテキスト混濁を防ぐ</td>
+</tr>
+<tr>
+<td><strong>Kanban Board</strong></td>
+<td>SQLite永続ストレージ。Triage→To-Do→Ready→Running→Blocked→Done の7ステータス。60秒ごとに自動ディスパッチ。ゾンビ検知＋ハートビート監視付き</td>
+</tr>
+<tr>
+<td><strong>Skills as SOPs</strong></td>
+<td>繰り返す作業を一度スキル化すれば次回以降は自動実行。エージェントが複雑タスク完了後にスキルを自作保存（<code>~/.hermes/skills/</code>）</td>
+</tr>
+<tr>
+<td><strong>Webhooks</strong></td>
+<td>新リード到着・GitHubのPRオープン・競合コンテンツ投稿などの外部イベントをHermesゲートウェイで受信→即時対応（Make/Zapier/n8n対応）</td>
+</tr>
+<tr>
+<td><strong>プロファイル分離</strong></td>
+<td>役割ごとにモデル・ツール・権限・メモリを完全分離。プロファイルはgitで他者に配布可能</td>
+</tr>
+</tbody>
+</table>
+<p>これら10設定は組み合わさると複合的な効果を発揮する：コンテンツトレンド監視→ドラフト生成→Kanban記録→承認待ち、という1本のチェーンが朝の数時間に自動完結する。</p>
 <h2>問い</h2>
 <ul>
 <li>3層メモリの自動振り分けは実運用でコンテキスト圧迫を防げるか、それとも手動チューニングが必要か</li>
@@ -112,12 +166,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Hermesのプロファイル機能はマルチエージェント設計パターンの実装例</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — プログラマープロファイルでのサブエグゼキューターとして連携可能</li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — Claude Skillsと類似した「永続スキル」の概念</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openclaw.html">openclaw</a></li>
-<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../tools/dspy.html">dspy</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">https://x.com/i/web/status/2054564519280804028</a></li>
-<li><a href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">https://x.com/i/web/status/2057581065469055167</a></li></ul></section></article>
+<li><a href="../tools/openclaw.html">openclaw</a></li>
+<li><a href="../tools/dspy.html">dspy</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">https://x.com/i/web/status/2054564519280804028</a></li>
+<li><a href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">https://x.com/i/web/status/2057581065469055167</a></li>
+<li><a href="https://x.com/i/web/status/2062101068842975409" rel="noopener" target="_blank">https://x.com/i/web/status/2062101068842975409</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

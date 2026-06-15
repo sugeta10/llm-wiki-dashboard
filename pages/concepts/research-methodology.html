@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>research-methodology - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>research-methodology</h1>
+  <div class="meta">concepts/research-methodology · concepts · <span title="2026-06-16">今日</span></div>
+  <article><h1>リサーチ方法論（MLリサーチャー的思考法）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: リサーチ力は「問題選択・情報源の質・記録習慣・実験ループ速度・出力分析・横断的探索・人脈・複利の長期視点」という8つの個別スキルの束であり、天分ではなくいずれも意識的に鍛えられる。</p>
+<p>📌 X bookmark: 28,744（2026-06-15 時点）</p>
+</blockquote>
+<p>誰も「研究のやり方」を教えてくれない。机と問題と「何か新しいものを出せ」という曖昧な指示だけが与えられ、多くの人は論文・スレッド・発表などの表面から仕事を逆算する——「研究者らしく見えること」を学ぶ。実際のスキルは8つの小さな可訓練スキルの積層で構成される。</p>
+<h2>問題を自分で選ぶ</h2>
+<p>Hamming はベル研のランチで「あなたの分野の重要問題は何か？なぜそれをやっていないのか？」と尋ね続け嫌われた。多くの人は問題を選ばず「吸収」する——指導教官・大手ラボの方向発表・今週バズった論文から。借りた問題は結論を持ちながら推論を欠く状態であり、上流が方針転換してもすぐには気づけない。</p>
+<p>John Schulman は ML リサーチを「既存文献から改善点を探す」と「自分が本当に欲しい結果を設定し実験を逆算する」の2モードに分類し、後者を推す。後者は既存サーベイ論文が届かない領域へ自然に引き込まれ、原創性を構造的に生む。</p>
+<p><strong>テイスト</strong>は贈り物のように語られるが、筋肉に近い。実験前に結果を予測し、論文の結果節を隠してメソッドだけから数値を当てる訓練を繰り返す。今月のリリースで2年後も重要なものを選ぶ賭けを記録し的中率を追う——予測と修正の反復で磨かれる。</p>
+<h2>情報源のアップグレード</h2>
+<p>共有されたリーディングリストは共有されたアイデアを生む。全員が同じタイミングで同じ結論に達するような情報源は価値がほぼゼロだ。古い文献は著しく割安で、Mixture of Experts（1991）・LSTM（1997）・backpropのメインストリーム化（1986）など、この分野は自身の過去を時差つきで繰り返す。Rich Sutton の「The Bitter Lesson」（2019・約1000語）は多くの長大なサーベイより現在の分野を的確に予言し、Claude Shannon が1952年に述べた「問題を瑣末になるまで縮小→小版を解く→困難を一つずつ戻す」という技法は現代の生産性アドバイスより多くの壁を突破できる。</p>
+<p>横断性も深さと同じくらい重要になる。Interpretability は神経科学から借用し、Eval 設計はメカニズムデザインの衣をまとい、GPU のメモリ移動を理解すれば成立不可能なアーキテクチャ論文が見抜ける。ML で最も希少なスキルの一つは誠実な統計だ。スレッドのサマリーでなく論文本文を読み、付録に埋められた死体を確認し、Limitations 節——文書中で最も正直な段落——を見逃さない。</p>
+<h2>すべてを書き留める</h2>
+<p>Paul Graham は「アイデアは言語化しようとするまで完全に見えている気がする」と指摘する。ページは頭が飛ばしている前提・繋がっていない論理・矛盾する2つの主張を浮かび上がらせる。Feynman のルール：「自分自身を騙さないことが最優先。あなたが最も簡単なターゲットだから」——書くことは最安の防衛策だ。</p>
+<p>Darwin はさらに手続き化した。自分の理論を切る事実をその場で書き留めた。都合の悪い証拠を記憶が自動削除すると知っていたから。失敗した実験も同様で、仮説・セットアップ・期待値・結果・更新後の信念を記録したログは、先月分を読み直すだけで最高のレビュアー以上に厳しい。</p>
+<p>Olah と Carter の「Research Debt」は整理されていないアイデアが分野を窒息させると論じ、明快な説明は「サービス業」でなく「本物の貢献」だと主張した。Interpretability の多くの実践者は会議論文でなく読みやすいブログでその分野を見つけた。書き続けた記録はそのまま最強のポートフォリオになる——思考プロセスは偽れないから。</p>
+<h2>ループを締める</h2>
+<p>Alec Radford の話に一発の天才は登場しない。1日あたりの実験数・1週間あたりの棄却数・現実モデルの更新速度——これが実際のゲームだ。研究速度とは「自分が間違っていると気づく速度」と言い換えられる。</p>
+<p>ツール整備は一流の研究活動だ。1コマンドで実行・1コマンドで可視化・config から再現可能・2つの実験を数秒で比較できる状態でなければ速度は出ない。Karpathy の訓練レシピには「スケールアップ前に単一バッチを過学習させる」というステップがある。30秒、バグの半分が消える（<a href="../people/andrej-karpathy.html">andrej-karpathy</a>）。まず縮小して安く確認し、正しくなってからコンピュートを使う。</p>
+<p>フロントラインでは研究とエンジニアリングが融合している。ハーネス・Eval・データパイプラインを自分で構築できる研究者だけが仮説を実際に検証できる。他の全員はキューで待つ。</p>
+<h2>出力を凝視する</h2>
+<p>降下する Loss 曲線は分析ではなく安心感だ。実験は大量の情報を吐き出している——トランスクリプト・失敗事例・分布の奇妙な末尾——そのほとんどが logs フォルダで未読のまま死ぬ。</p>
+<p>Karpathy のレシピは訓練コードを書く前に生データを手動で数時間眺めることから始まる。ML バグの多くはデータの中に潜み、サイレントに失敗する。クラッシュしない——ただ凡庸なモデルと間違った原因説明が残る。</p>
+<p>Andrew Ng が10年以上同じ「退屈な」動作を教え続けるのは、それに勝るものがないから——100件の失敗を引き出して全部読み、山積みに分類し、最大の山を攻める。一度も読んだことのないトランスクリプトが存在するベンチマークは理解していないベンチマークだ（<a href="../concepts/eval-loop.html">eval-loop</a>）。</p>
+<h2>意図的に寄り道する</h2>
+<p>最初のサブフィールドはタイミングの偶然で決まる。Interpretability・Eval・RL・システムのそれぞれに本物の時間を払ってから、どこを本拠地にするかを決める。自分固有の奇妙さが「不公平な強み」になるコーナーがこの分野のどこかにある。その場所を見つけるには複数の場所で授業料を払う以外にない。</p>
+<p>最初にアイデアの粗削り版を動かして大半を若死にさせる。ベースラインを痛みを感じるまで調整する——ML の墓場は、ちゃんとチューニングされたベースラインに溶けた成果で満ちている。消去分析でどのコンポーネントが結果を担っているかを確認する。たいてい1つで、たいていタイトルに書いてないやつだ。</p>
+<h2>仲間を見つける</h2>
+<p>Hamming が気づいたパターン：ドアを閉めた同僚は1年の生産性が高く、ドアを開けた同僚は重要な仕事を成し遂げた。割り込みが「世界が何を必要としているか」という情報を運んできたから。今の「開いたドア」はおそらく受信箱だ。</p>
+<p>研究では寛大さが他の何より複利で働く。結果をレプリケートして発見を公開する。自分のために作ったツールをリリースする。難しいことを平明な言葉で説明する。リターンは数ヶ月後に斜めから届く——コラボレーション・引用・応募すらしていなかった機会として。半完成のアイデアをタイムラインに浮かべることも同様だ。3ヶ月かけて論文で間違えるより、タイムラインで間違える方がはるかに安い。</p>
+<h2>長いゲーム</h2>
+<p>Pasteur は「幸運は準備された精神に宿る」と言い、Hamming はそれを「知識と生産性は複利で積み上がる」というキャリア哲学に発展させた。毎日の差は単独では些細に見える——何を読むか・何を記録するか・ループの速度・誰と議論するか。数年与えると、外からは運に見えるキャリアを生む。必要より早く複利を始める。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-10: @itsreallyvivek による長文エッセイ。Richard Hamming・Claude Shannon・John Schulman・Alec Radford・Karpathy・Andrew Ng・Paul Graham・Darwin・Feynman・Rich Sutton への言及でML研究者倫理論を構築（個人発信・単一ソース）</li>
+<li>2026-06-10: 「研究速度＝自分が間違っていると気づく速度」という再定義（単一ソース・著者の主張）</li>
+<li>2026-06-10: Karpathy の「single batch overfit」技法——「30秒でバグの半分が消える」と著者が引用（Karpathy本人の既知の発言）</li>
+<li>2026-06-10: Andrew Ng の「100件の失敗を全部読む」手法——10年以上同じことを教え続けていると著者が指摘</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の調査・wiki ingestループで「仮説→期待値→結果→更新後の信念」の4フィールドを記録する習慣をどう起動するか</li>
+<li>Hamming 的な「なぜその問題に取り組んでいないのか」自問を、インプット選択基準に組み込めるか</li>
+<li>「問題を吸収する」vs「問題を選ぶ」の区別は、AIエンジニアとしての仕事選択にも直接適用できるか（<a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a>）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a> — 「single batch overfit」「raw data を手で見る」技法が本文で引用</li>
+<li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a> — ML研究者・AIエンジニアに必要なスキルセットとの接続</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 実験評価ループ・失敗事例の分析による改善の具体的実装</li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a> — 「書くことで思考を確認する」（Paul Graham / Darwin の原理）と交差</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a></li>
+<li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2064686372737454155" rel="noopener" target="_blank">https://x.com/i/web/status/2064686372737454155</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
