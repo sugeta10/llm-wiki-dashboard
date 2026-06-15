@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-W25 - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-W25</h1>
+  <div class="meta">weekly/2026-W25 · weekly · <span title="2026-06-16">今日</span></div>
+  <article><h1>Weekly Insights: 2026-W25（2026-06-15〜06-21）</h1>
+<h2>今週のホットトピック</h2>
+<ul>
+<li><strong><a href="../concepts/loop-engineering.html">loop-engineering</a> ループエンジニアリング</strong> — 人間がエージェントに指示する構造を「ループがエージェントに指示する」に転換する、2026年の開発スタイルの次層（X bookmark: 15,092）</li>
+<li><strong><a href="../tools/hermes-agent.html">hermes-agent</a> Hermes Agent</strong> — 3層メモリ・スキル自動整理・GEPA進化最適化で「使うほど賢くなる」自己進化エージェント基盤（X bookmark: 2,421）</li>
+<li><strong><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a> IdP共有CLI/MCP</strong> — APIキーを排し、AIが人間と同じIdP認証経路で社内基盤にアクセスする設計（X bookmark: 1,747）</li>
+</ul>
+<h3>深掘り</h3>
+<p><strong><a href="../concepts/loop-engineering.html">loop-engineering</a> ループエンジニアリング</strong><br>
+Boris Cherny（Claude Code責任者）が整理した「ループを書けば人間はループの外に出られる」という転換。4条件テスト（週次以上の繰り返し・自動ゲート・ツール・ハードストップ）をすべて満たす場合のみループはリターンを返し、1条件でも欠ければ良いプロンプトが勝つという厳格な条件付け。最小構成ループ（MVL）は自動化・スキル・状態ファイル・ゲートの4要素から始め、「手動→スキル化→ループ→スケジュール」の順を飛ばすと本番で壊れる。</p>
+<p><strong><a href="../tools/hermes-agent.html">hermes-agent</a> Hermes Agent</strong><br>
+Nous Researchのオープンソースエージェント基盤で、セッションをまたいで賢くならない従来エージェントの三つの弱点（メモリ容量・スキル増殖・自己評価バイアス）を構造的に解決する。Curator（スキルのガベージコレクション）とGEPA（外部からの進化的最適化・PR形式で提案、直接コミットしない）が人間なしで動き続ける自己改善ループを実装している。10ハック（Kanban・Event Triggers・cron・Sub-agents等）を積み重ねると24時間稼働の自動化システムに変わる。</p>
+<p><strong><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a> IdP共有CLI/MCP</strong><br>
+APIキーを一切配らず、API自体をCloudflare Access（エッジ層）で保護しIdP認証に統一する設計。CLIとMCPサーバを同一バイナリで提供し、AIは端末利用者のcloudflaredセッションをそのまま使う——AIは「それを動かす人間の身元」で動く。入退社の反映はIdPの操作だけで完結し、50人以下ならIdP以外ほぼ無料で運用できる。</p>
+<h2>今週の中心テーマ</h2>
+<p><strong>「AIを呼び出す」から「AIが自律で回り続ける」へ——ループ・自己進化・認証基盤の三角形が揃い始めた。</strong></p>
+<p><img alt="infographic.png" src="2026-W25/infographic.png"></p>
+<p>今週ingestしたページを横断すると、「AIをどう使うか」よりも「AIがいつでも・誰がいなくても・正しく動き続けるためにどう設計するか」という問いが共通して立ち現れた。ループエンジニアリングは人間をループの外に出す転換点を4条件で定義し、Hermes Agentはエージェント自身が使うほど最適化される自己進化インフラを実装し、IdP/CLI/MCP設計はAIが人間と同じ認証基盤を使えることで組織が初めて「AI-Ready」になると示す。三つはそれぞれ独立した文脈から来ているが、指している方向は同じ——AIを一回動かすことに投資するのではなく、AIが止まらず動き続ける基盤に投資する段階に来た。</p>
+<p>先週のテーマ「言語化された判断をループに配線する（資産を作る）」の一段先——その資産を乗せる自律インフラをどう設計するか、を問う週だった。</p>
+<h2>根拠ページ</h2>
+<ul>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a>（→ 今週のホットトピック#1）</li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a>（→ 今週のホットトピック#2）</li>
+<li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a>（→ 今週のホットトピック#3）</li>
+<li><a href="../business/claude-mcp-affiliate-automation.html">claude-mcp-affiliate-automation</a> — Claude Skills × MCPで案件選定・記事量産・cron自動運転を設計として一本化するアフィリエイト実践ガイド（bookmark: 1,024）</li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 上流に大モデル・下流に小モデルを当てる工程分解型コスト最適化。全工程に最強モデルを使うのが最弱の運用になる逆説</li>
+<li><a href="../business/google-calendar-ai-database.html">google-calendar-ai-database</a> — タイトルルール統一でGoogleカレンダーをAI業務DBに変え、MCP接続で経費精算・工数管理を自動化する起点になる</li>
+</ul>
+<h2>既存wikiとの接続</h2>
+<ul>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — Hermes AgentのGEPA最適化と直接つながる。エージェントが自作したスキルを外部評価器がオフラインで改善するという設計は、self-refining-skillsの「スキルが使われるたびに良くなる」コンセプトの工業的実装</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — ループエンジニアリングが成熟した先の実践形態。ループが鋭いスキルを呼び、スキルがコードを書き、コードがゲートを通るという構造の帰結がここに向かう</li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — IdP設計の「AIが人間の身元で動く」をさらに進め、書き込みや不可逆操作をエージェントに許すか禁じるかを外部ポリシーで制御する構想。認証の先にある認可設計</li>
+</ul>
+<h2>sugeta-san への問い</h2>
+<p><strong>自分のwikiシステムは「ループ・自己進化・認証基盤」の三角形のどこが欠けているか？</strong></p>
+<p>→ launchd + Claude Code で自動ingestとweekly生成が走っており「ループ」はある。しかし「自己進化」（出力品質の自動評価と改善）と「認証統一」（各スクリプトがAPIキーを個別に持つ構成）は未整備のまま。Hermes AgentのGEPAのように「外部評価者がPR形式で改善を提案する」仕組みをこのvaultに持ち込むとすれば、evolve-insightsスキルの自動化がその入口になりうる。</p>
+<h2>いますぐAIと一緒に（コピペ）</h2>
+<p>以下をそのままClaude / Claude Codeに貼って、自分のAI活用がループとして設計されているか診断してみてください:</p>
+<pre><code>自分が繰り返し行っているAI作業として [作業名] があります。
+ループエンジニアリングの4条件テストで評価してください:
+
+1. 週1回以上繰り返されるか？
+2. 「正しく完了した」を自動ゲート（テスト・ビルド・lint等）で検証できるか？
+3. エージェントがログ・コード実行・ファイル操作など必要なツールを持てるか？
+4. トークン予算・最大イテレーション数・ハードストップを設定できるか？
+
+すべてYesなら: 最小構成ループ（MVL）の4要素（自動化・スキル・状態ファイル・ゲート）の設計案を出してください。
+Noがあるなら: 今はプロンプトが勝る理由と、条件を整えるために何が必要かを説明してください。
+
+参考: wiki/concepts/loop-engineering.md
+</code></pre>
+<h2>さらに読むべきページ</h2>
+<ul>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — ループを走らせる静的な制約・フィードバック機構の設計。ループエンジニアリングの「動的な実行」に対して「静的な枠組み」を担う補完関係にある</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — Hermesのスキル・メモリ・cron・承認ゲートを使ったAI出力品質ゲートの構築例。GEPAの「外部オフライン評価」に対して、実行時の「インライン評価」を担う</li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — ループが鋭いスキルを呼ぶ設計の基礎概念。Hermesの自己改善ループと接続して読むと、スキルが「作られる→評価される→最適化される」全サイクルが見えてくる</li>
+</ul>
+<h2>今週の音声ニュース</h2>
+<audio controls style="width:100%;margin:1rem 0"><source src="2026-W25/audio.mp3" type="audio/mpeg"></audio><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
+<li><a href="../business/claude-mcp-affiliate-automation.html">claude-mcp-affiliate-automation</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>

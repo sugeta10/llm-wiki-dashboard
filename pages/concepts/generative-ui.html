@@ -84,6 +84,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-06-06: Wadaの「並べて初めてわかった」所感——①ストリーミング体験の差は想像以上に大きく、Static のスケルトンローダーは「あると便利」でなく「ないと不安」レベル（Declarative/Open-endedはデータ収集中にユーザーがただ待つ時間が生まれる）。②Declarativeの「制約された自由」は見た目以上に表現力があり、コンポーネントの並べ方と組み合わせだけでLLMは驚くほど多様なUIを生成する。③Zodスキーマは制約ではなく「契約」として機能する</li>
 <li>2026-06-06: Wadaのパターン比較表（観点別）——出力の再現性: Controlled◎/Declarative○（スキーマ制約）/Open-ended✗。HTMLスケルトンローダー: Controlled◎（ツール名で自動）/Declarative✗/Open-ended✗。レイアウト自由度: Controlled✗/Declarative○/Open-ended◎。トークン消費: Static小（ツール名＋引数）/Declarative中（JSON構造）/Open-ended大（HTML/CSS/JS全文）。@Saboo_Shubham_ のトークン税分析と同方向</li>
 <li>2026-06-06: @iwashi86 が同スライド（「AI時代のUIはどこへ行く？その2！」フロントエンド・PHPカンファレンス北海道2026）を「めちゃくちゃ面白い」と二次紹介（bookmark 245）。第三者の評価による補強だが新規の論点追加はなし</li>
+<li>2026-06-15（yusukebe / Cloudflare社員 Zenn記事）: 3パターンに加え「Dynamic」を4番目のアプローチとして提案。AIがReact JSXを書き、<a href="../companies/cloudflare.html">cloudflare</a> の Dynamic Workers上でSSRし、結果をiframeで表示する。Suspenseも使える。Cloudflareの実行環境があって初めて成立するアプローチで、Open-endedのSandboxed HTMLに比べてReactのフル機能（Suspense/Server Components等）が使える点が差別化</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -97,10 +98,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — A2A（エージェント間連携）の設計パターン</li>
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — Declarative/A2UIが体現する「GUIでなくスキーマを操作させる」設計思想</li>
 <li><a href="../design/fastview-design.html">fastview-design</a> — エージェント生成UIにも適用できるUI設計原則</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../design/fastview-design.html">fastview-design</a></li>
+<li><a href="../companies/cloudflare.html">cloudflare</a> — Dynamic Workers上でReact SSRするGenerativeUI第4アプローチ「Dynamic」の実行環境</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/cloudflare.html">cloudflare</a></li>
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062220865643982875" rel="noopener" target="_blank">https://x.com/i/web/status/2062220865643982875</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+<li><a href="../design/fastview-design.html">fastview-design</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062220865643982875" rel="noopener" target="_blank">https://x.com/i/web/status/2062220865643982875</a></li>
 <li><a href="https://speakerdeck.com/yusukebe/aishi-dai-nouihadokohexing-ku-sono2?slide=52" rel="noopener" target="_blank">https://speakerdeck.com/yusukebe/aishi-dai-nouihadokohexing-ku-sono2?slide=52</a></li>
 <li><a href="https://x.com/i/web/status/2063230906354241921" rel="noopener" target="_blank">https://x.com/i/web/status/2063230906354241921</a></li></ul></section></article>
 </main>

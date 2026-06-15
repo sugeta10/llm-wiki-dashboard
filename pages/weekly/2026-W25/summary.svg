@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="444" viewBox="0 0 800 444">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eef2ff"/>
+      <stop offset="100%" stop-color="#f0fdf4"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="444" rx="16" fill="url(#bg)" stroke="#e0e7ff" stroke-width="1.5"/>
+  <text x="40" y="52" font-size="13" fill="#6366f1" font-family="sans-serif" font-weight="600">2026-W25</text>
+  <text x="40" y="90" font-size="20" fill="#1e1b4b" font-family="sans-serif" font-weight="700">AIが実力を出す条件は、AIを動かす前に決まっている。</text>
+  
+  <line x1="40" y1="150" x2="760" y2="150" stroke="#c7d2fe" stroke-width="1"/>
+  <text x="40" y="182" font-size="12" fill="#6b7280" font-family="sans-serif">根拠ページ</text>
+  <text x="52" y="220" font-size="14" fill="#374151"><tspan fill="#6366f1">▸</tspan> [[concepts/loop-engineering]] — 「1条件でも欠けたら良いプロンプトが勝つ」と断言する4条件テスト（頻度・自動検証・ツール・トーク</text>
+  <text x="52" y="256" font-size="14" fill="#374151"><tspan fill="#6366f1">▸</tspan> [[concepts/llm-model-selection-strategy]] — 上流（設計・方針）には大モデルと濃いコンテキストを、下流（整形・量産）に</text>
+  <text x="52" y="292" font-size="14" fill="#374151"><tspan fill="#6366f1">▸</tspan> [[business/google-calendar-ai-database]] — 「AIツール導入より先にGoogleカレンダーのタイトルルールを決めた方が</text>
+  <text x="52" y="328" font-size="14" fill="#374151"><tspan fill="#6366f1">▸</tspan> [[concepts/idp-shared-cli-mcp]] — APIキーを配らずIdP認証（Cloudflare Access等）でCLIとMCPを統一す</text>
+</svg>
