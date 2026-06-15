@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>open-knowledge-format - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>open-knowledge-format</h1>
+  <div class="meta">concepts/open-knowledge-format · concepts · <span title="2026-06-15">今日</span></div>
+  <article><h1>Open Knowledge Format (OKF)</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Google CloudのSam McVeety/Amir Hormatiが提唱するMarkdown+YAMLベースの知識表現フォーマット。<a href="../concepts/llm-wiki.html">Karpathyの「LLM wiki」パターン</a>をベンダー中立の標準仕様に昇格させ、異なるチーム・エージェント・ツール間で知識を相互運用可能にする。</p>
+</blockquote>
+<p>知識管理の本質的な問題は「サービスの乱立」ではなく「フォーマットの不在」にある。チームごとにWiki・カタログ・コードコメントに散らばった知識を、任意のAIエージェントが読めるよう組み立て直すコストが毎回ゼロから発生している。OKFはこの問題をサービスでなく仕様で解く——SDKなしに誰でも作れ、integration なしに誰でも読め、gitの中で生き続けられる知識の形式を定義する。v0.1 は 2026-06-15 に公開された。</p>
+<pre><code class="language-mermaid">flowchart LR
+  A[&quot;知識ソース\n(BigQuery/Wiki/コード)&quot;] --&gt; B[&quot;Enrichment Agent\n(Google ADK + Gemini)&quot;]
+  B --&gt; C[&quot;OKFバンドル\n(markdown + YAML)&quot;]
+  C --&gt; D[&quot;LLMコンテキスト注入&quot;]
+  C --&gt; E[&quot;人間閲覧\n(Obsidian/MkDocs/GitHub)&quot;]
+  C --&gt; F[&quot;ナレッジビジュアライザー\n(viz.html)&quot;]
+</code></pre>
+<h2>仕様の核心</h2>
+<p>OKFバンドルはディレクトリ構造のmarkdownファイル群。1ファイル = 1「概念（concept）」で、ファイルパスがその概念のIDとなる。</p>
+<p><strong>フロントマター</strong>（クエリ・フィルタリング用の構造化フィールド）:
+- <code>type</code> — 概念の種別（table, dataset, metric, runbook 等）
+- <code>title</code> / <code>description</code> — 人間向けの要約
+- <code>resource</code> — 外部リソースへのリンク
+- <code>tags</code> / <code>timestamp</code></p>
+<p><strong>markdownボディ</strong>（LLMと人間が実際に読む部分）: スキーマ、サンプルクエリ、プロセ説明、他概念へのクロスリンク</p>
+<p>バンドルには自動生成された <code>index.md</code> が含まれ、エージェントや人間が階層を1レベルずつナビゲートできる。概念間のリンクはディレクトリ階層（木構造）を超えたグラフ構造を形成する。</p>
+<p>設計上の4つの「ただの〜」: <strong>ただのmarkdown</strong>（任意エディタで読める）、<strong>ただのファイル</strong>（tarballで配布可能）、<strong>ただのYAMLフロントマター</strong>（クエリ可能な最小フィールドのみ）。</p>
+<h2><a href="../concepts/llm-wiki.html">Karpathyパターン</a>との関係</h2>
+<p><a href="../people/andrej-karpathy.html">andrej-karpathy</a>が提唱した<a href="../concepts/llm-wiki.html">llm-wiki</a>パターン——「LLMは退屈しないし、相互参照の更新を忘れず、一度に15ファイルを処理できる」——と同じ発想を、複数チーム・複数エージェント間で共有できる仕様に昇格させたもの。Obsidianボルト、AGENTS.md/CLAUDE.mdファミリー、エージェントが参照するindex.md/log.mdなど、すでに多くの実装が「マークダウン+フロントマター+クロスリンク」に収束しているが、フィールド名の合意がなかった。OKFはその最小公分母を固定する。</p>
+<h2>Enrichment Agent（リファレンス実装）</h2>
+<p>Google Cloud Platformがリリースした公式のOKFプロデューサー実証（Google ADK + Gemini + BigQuery）:</p>
+<ol>
+<li><strong>BQパス</strong>: BigQueryメタデータから1概念=1OKFドキュメントを自動生成</li>
+<li><strong>Webパス</strong>: LLMがクローラーとして動き、seed URLから権威ある補足ドキュメントを選択して概念を豊かにする。<code>--web-max-pages</code> でクロール数をキャップ</li>
+</ol>
+<p>サンプルバンドルが3つ公開（GA4 eコマースデータセット・Stack Overflow・Bitcoin）。<code>visualize</code> サブコマンドでスタンドアローンの force-directed グラフHTML（<code>viz.html</code>）を生成できる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-15 (Sam McVeety &amp; Amir Hormati, Google Cloud): OKF v0.1として発表。「答えは別の知識サービスでなくフォーマット」と明言。Obsidian/Notion/Hugo/Jekyllなど既存ツールはMarkdown+YAMLフロントマターをすでに話せるため、追加UI不要でバンドルを閲覧・編集可能と説明</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このObsidian vaultはOKF v0.1準拠か？フロントマターのフィールド名（type/resource/timestamp 等）が異なる点は互換性を壊すか</li>
+<li>OKFが普及した場合、<a href="../concepts/llm-wiki.html">llm-wiki</a>のような独自規約を持つチームはどこを妥協して合わせるか</li>
+<li>Enrichment AgentのWebパスはクロールコストとしてどの程度のGeminiトークンを消費するか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a> — Karpathy提唱の元パターン。OKFはこれを標準仕様化したもの</li>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a> — LLM wikiパターンの提唱者として直接引用されている</li>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — ObsidianボルトはOKFの主要なコンシューマー候補</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — エージェントが共有知識層にアクセスする設計思想と連動</li>
+<li><a href="../companies/google.html">google</a> — OKFの発案・公開元</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
+<li><a href="../companies/google.html">google</a></li>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing?hl=en" rel="noopener" target="_blank">https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing?hl=en</a></li>
+<li><a href="https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf" rel="noopener" target="_blank">https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>

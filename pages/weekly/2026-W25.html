@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-W25 - LLM Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#7d8590;font-size:13px}
+.meta{color:#7d8590;font-size:12px;margin-bottom:22px;font-family:monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #30363d;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 4px}pre{position:relative;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top}th{background:#161b22;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #30363d;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d9a52c;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-W25</h1>
+  <div class="meta">weekly/2026-W25 · weekly · <span title="2026-06-15">今日</span></div>
+  <article><h1>Weekly Insights: 2026-W25（2026-06-15〜06-21）</h1>
+<h2>今週の中心テーマ</h2>
+<p><strong>AIが実力を出す条件は、AIを動かす前に決まっている。</strong></p>
+<p><img alt="infographic.png" src="2026-W25/infographic.png"></p>
+<p>今週ingested されたページを横断すると、「どう使うか」より「動かす前に何を整えるか」という問いが繰り返し現れた。ループには4つの前提条件がある（loop-engineering）。モデルは工程ごとに配分しないと最大の損失になる（llm-model-selection-strategy）。AIが業務を理解するにはデータが先に構造化されている必要がある（google-calendar-ai-database）。人間もAIも同じ認証経路で動ける基盤がなければ「AI-Ready」とは言えない（idp-shared-cli-mcp）。どのページも「実行」より「仕込み」を先においている。</p>
+<p>先週のテーマ（言語化された判断をループに配線する）が「何を資産化するか」を問うていたとすれば、今週のテーマはその一段手前——「その資産を活かせる構造が整っているか」を問う。</p>
+<h2>なぜそう見えるか（根拠ページ）</h2>
+<ul>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — 「1条件でも欠けたら良いプロンプトが勝つ」と断言する4条件テスト（頻度・自動検証・ツール・トークン予算）が、ループ導入の前にすべきことを明確化している。「まず手動で1回信頼できる実行を作る→スキル化→ループでラップ」という順序が設計の前置きを強制する</li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 上流（設計・方針）には大モデルと濃いコンテキストを、下流（整形・量産）には小モデルを当てる「サンドイッチ設計」。「全工程に最強モデルを使う」のが最弱の運用になる逆説。コンテキストエンジニアリング（冒頭で前提・制約・ゴール・評価基準を渡し切る）が上流の「仕込み」として決定的になる</li>
+<li><a href="../business/google-calendar-ai-database.html">google-calendar-ai-database</a> — 「AIツール導入より先にGoogleカレンダーのタイトルルールを決めた方が効果が出たりして」という問いかけが記事の核心。業務データが構造化されていなければAIは業務を理解できない。自動化の起点はツールではなくデータの整備</li>
+<li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a> — APIキーを配らずIdP認証（Cloudflare Access等）でCLIとMCPを統一する基盤設計。人間もAIも同じ認証経路を通ることで、AIは「それを動かす人間の身元」で動く。入退社管理まで一元化されて初めて「会社がAI-Readyになる」</li>
+</ul>
+<h2>既存wikiとの接続</h2>
+<ul>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 「走り出す前に決め切る」発想は仕様駆動開発と同根。上流に投資してから実行するモデル選択戦略は、スペックを先に固めてからAIに渡すspec-drivenの思想と構造が重なる</li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — loop-engineeringの「2回以上やることはスキル化し、ループがスキルを呼ぶ」設計と直接つながる。スキルが再利用単位として蓄積されることで、「仕込み」そのものが複利になる</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — ループエンジニアリングが成熟した先にある実践形態。エージェントがコードを書くためには動ける環境（ツール・メモリ・ゲート・スキル）が先に整っている必要があり、本週のテーマの帰結がここに向かう</li>
+</ul>
+<h2>sugeta-san への問い</h2>
+<p><strong>自分が毎週回しているwiki-ingest/insights生成ループを、loop-engineeringの4条件テストにかけると何点か？</strong></p>
+<p>→ 頻度（週次以上）と自動化（launchd）はクリアしている。ただし「自動ゲート」（不正出力を機械的に弾く仕組み）と「エスカレーション設計」（AIだけで判断できない場合の人間へのバックチャンネル）は今の構成に明示的に組み込まれていない。ループの品質は「動いている」だけでなく「正しく動いていることを確認する仕組みがあるか」で測られる。</p>
+<h2>今週の小アクション（5分）</h2>
+<p>自分がAIに繰り返させている作業を1つ選んで、4条件テストを紙に書き出す。「週次以上か・自動ゲートがあるか・ツールがあるか・ハードストップがあるか」——4つすべてにYesがつかなければ、まだループではなくプロンプトが正しい選択かもしれない。</p>
+<h2>いますぐAIと一緒に（コピペ）</h2>
+<p>以下をそのままClaude / Claude Codeに貼って、繰り返し行っているAI作業のループ適性を判定してみてください:</p>
+<pre><code>私が繰り返し行っているAI作業として [作業名をここに] があります。
+以下の4条件テストを使って、この作業をループ自動化すべきかを判定してください。
+
+1. タスクは週1回以上繰り返されるか？
+2. 「正しく完了した」を自動で検証できるゲート（テスト・ビルド・lint等）を設けられるか？
+3. エージェントがログ・コード実行・ファイル操作など必要なツールを持てるか？
+4. コスト上限・最大イテレーション数・タイムアウトのハードストップを設計できるか？
+
+すべてYesなら: 最小構成ループ（MVL）として必要な4要素（自動化・スキル・状態ファイル・ゲート）の設計案を出してください。
+Yesでない条件がある場合: なぜ今は「良いプロンプト」が勝るか、条件を整えるために何が必要かを説明してください。
+
+参考: wiki/concepts/loop-engineering.md
+</code></pre>
+<h2>さらに読むべきページ</h2>
+<ul>
+<li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a> — ReActループ＋5ブロック（脳・手・記憶・ループ・検証）のフレームワーク。「検証ゲートを1ステップ足すだけで信頼性が大きく変わる」という主張が、今週の「整える」テーマの具体的な実装例になっている</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — 「ループを走らせる静的な制約・フィードバック機構の設計」。ループエンジニアリングとセットで読むと、動的な実行（ループ）と静的な枠組み（ハーネス）の役割分担が見えてくる</li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> — 「環境フィードバックに応じて自己修正できるループを設計する方が性能を引き出せる」という設計含意。Fable 5の能力はプロンプト単体でなくループ設計によって引き出されることが実験で示されている</li>
+</ul>
+<h2>今週の音声ニュース</h2>
+<p><img alt="summary.svg" src="2026-W25/summary.svg"></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
