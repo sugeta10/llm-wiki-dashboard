@@ -203,6 +203,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-06-09 @0xCodez: Ralph Wiggumループ（Geoffrey Huntley命名）: 完了トークンの早期出力でループが中途半端な状態で静かに終了する失敗モード。命名の由来はSimpsonsのキャラクター</li>
 <li>2026-06-09 @0xCodez: コミュニティ監査で17,022スキル中520件が認証情報を漏洩する可能性があると指摘——コミュニティスキルの自動インストールは危険（未検証）</li>
 <li>2026-06-09 @0xCodez: 本記事の結論: 「多くの開発者はまだループを必要としていない」——4条件を満たさない間は良いプロンプトが勝つ。Chernyの言葉を引用: 「仕事が楽になったのではなく、レバレッジの点が移動した。ループを作れ。エンジニアであり続けろ」</li>
+<li>2026-06-09 @sairahul1: Peter Steinberger（OpenClaw創設者・現OpenAI）とBoris Cherny（Claude Code責任者）が独立して「プロンプトを書くな、ループを書け」という同一メッセージを発信。著者はこれを「地球上で最も重要な2つのAIラボのトップエンジニアが同一パターンに収束している」シグナルとして深掘り解説を公開</li>
+<li>2026-06-09 @sairahul1: トークンコスト試算（著者推定値）: シングルエージェントループ（中規模タスク）5万〜20万トークン、フリートループ（オーケストレーター+スペシャリスト3体）50万〜200万トークン、週次スケジュール実行で数百万トークン規模。DeepSeek V4の低価格で「$20で約1.7Bトークン」が利用でき経済的ブロッカーが解消するとの主張（著者試算・未検証）</li>
+<li>2026-06-11 @koutarou_furuno（@sairahul1記事の日本語二次まとめ）: ループ工学の本質を「指示を改善するレイヤー」から「指示を出す仕組みを設計するレイヤー」へのレイヤー上昇として整理。DeepSeek採用にはデータガバナンス・セキュリティの事前確認が必要と警告（ビジネス用途）</li>
 </ul>
 <h2>検証済み事実</h2>
 <ul>
@@ -228,15 +231,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/claude-fable-5.html">claude-fable-5</a> — Fable 5のParameter Golf・Continual Learning Benchでのループ有効性ベンチマーク（Anthropicリサーチャー実験）</li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — CMAのOutcomes機能がループの検証サブエージェントを自動生成する</li>
 <li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a> — ReActループを5構成要素の中核に据えたエージェント入門（@sairahul1）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
-<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
 <li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
 <li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a></li>
 <li><a href="../models/claude-fable-5.html">claude-fable-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063865685558903149" rel="noopener" target="_blank">https://x.com/i/web/status/2063865685558903149</a></li>
 <li><a href="https://x.com/i/web/status/2064127981161959567" rel="noopener" target="_blank">https://x.com/i/web/status/2064127981161959567</a></li>
 <li><a href="https://x.com/i/web/status/2064182475920908722" rel="noopener" target="_blank">https://x.com/i/web/status/2064182475920908722</a></li>
 <li><a href="https://x.com/i/web/status/2064374643729773029" rel="noopener" target="_blank">https://x.com/i/web/status/2064374643729773029</a></li>
-<li><a href="https://x.com/i/web/status/2064998499780084154" rel="noopener" target="_blank">https://x.com/i/web/status/2064998499780084154</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2064998499780084154" rel="noopener" target="_blank">https://x.com/i/web/status/2064998499780084154</a></li>
+<li><a href="https://x.com/i/web/status/2064277888216555684" rel="noopener" target="_blank">https://x.com/i/web/status/2064277888216555684</a></li>
+<li><a href="https://x.com/i/web/status/2065034757789073762" rel="noopener" target="_blank">https://x.com/i/web/status/2065034757789073762</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
