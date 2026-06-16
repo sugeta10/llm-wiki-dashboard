@@ -207,11 +207,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-03-15: コーディングでの特別な注意: 並列エージェントが同時にコードを書くと互いに矛盾する暗黙の前提を持ち込む。コーディング用サブエージェントは調査・探索に留め、コードの同時執筆はしない</li>
 <li>2026-03-15: <strong>マルチエージェントを使うべき3条件のみ</strong>: コンテキスト保護（サブタスク情報が親に不要）・真の並列化（独立した調査）・専門化（矛盾するシステムプロンプトが必要 or ツール過多でパフォーマンス劣化）</li>
 <li>2026-03-15: <strong>3つの典型失敗パターン</strong>: ①曖昧なタスク記述→複数エージェントが重複作業（明確な目標・出力フォーマット・スコープが必須）, ②検証エージェントが実際に検証せず完了宣言（明示的かつ具体的な検証基準が必須）, ③トークンコストの指数的増大（モデル階層化とバジェット制御が必要）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a></li>
-<li><a href="../tools/autohedge.html">autohedge</a></li>
-<li><a href="../concepts/llm-council.html">llm-council</a></li>
-<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
-<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">https://x.com/i/web/status/2055215784092401966</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-council.html">llm-council</a></li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a></li>
+<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055215784092401966" rel="noopener" target="_blank">https://x.com/i/web/status/2055215784092401966</a></li>
 <li><a href="https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/" rel="noopener" target="_blank">https://dev.classmethod.jp/articles/claude-code-multi-agent-design-patterns/</a></li>
 <li><a href="https://x.com/i/web/status/2055941714561613896" rel="noopener" target="_blank">https://x.com/i/web/status/2055941714561613896</a></li>
 <li><a href="https://x.com/i/web/status/2033167408463069526" rel="noopener" target="_blank">https://x.com/i/web/status/2033167408463069526</a></li></ul></section></article>
