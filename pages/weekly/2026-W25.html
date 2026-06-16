@@ -42,7 +42,7 @@ Nous Researchのオープンソースエージェント基盤で、セッショ�
 APIキーを一切配らず、API自体をCloudflare Access（エッジ層）で保護しIdP認証に統一する設計。CLIとMCPサーバを同一バイナリで提供し、AIは端末利用者のcloudflaredセッションをそのまま使う——AIは「それを動かす人間の身元」で動く。入退社の反映はIdPの操作だけで完結し、50人以下ならIdP以外ほぼ無料で運用できる。</p>
 <h2>今週の中心テーマ</h2>
 <p><strong>「AIを呼び出す」から「AIが自律で回り続ける」へ——ループ・自己進化・認証基盤の三角形が揃い始めた。</strong></p>
-<p><img alt="infographic.png" src="2026-W25/infographic.png"></p>
+<p><img alt="infographic-theme.png" src="2026-W25/infographic-theme.png"></p>
 <p>今週ingestしたページを横断すると、「AIをどう使うか」よりも「AIがいつでも・誰がいなくても・正しく動き続けるためにどう設計するか」という問いが共通して立ち現れた。ループエンジニアリングは人間をループの外に出す転換点を4条件で定義し、Hermes Agentはエージェント自身が使うほど最適化される自己進化インフラを実装し、IdP/CLI/MCP設計はAIが人間と同じ認証基盤を使えることで組織が初めて「AI-Ready」になると示す。三つはそれぞれ独立した文脈から来ているが、指している方向は同じ——AIを一回動かすことに投資するのではなく、AIが止まらず動き続ける基盤に投資する段階に来た。</p>
 <p>先週のテーマ「言語化された判断をループに配線する（資産を作る）」の一段先——その資産を乗せる自律インフラをどう設計するか、を問う週だった。</p>
 <h2>根拠ページ</h2>
@@ -85,11 +85,11 @@ Noがあるなら: 今はプロンプトが勝る理由と、条件を整える�
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — ループが鋭いスキルを呼ぶ設計の基礎概念。Hermesの自己改善ループと接続して読むと、スキルが「作られる→評価される→最適化される」全サイクルが見えてくる</li>
 </ul>
 <h2>今週の音声ニュース</h2>
-<audio controls style="width:100%;margin:1rem 0"><source src="2026-W25/audio.mp3" type="audio/mpeg"></audio><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
-<li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
+<audio controls style="width:100%;margin:1rem 0"><source src="2026-W25/audio.mp3" type="audio/mpeg"></audio><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
-<li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a></li></ul></section></article>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
