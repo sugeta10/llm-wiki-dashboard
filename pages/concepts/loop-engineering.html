@@ -27,7 +27,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>loop-engineering</h1>
-  <div class="meta">concepts/loop-engineering · concepts · <span title="2026-06-15">2日前</span></div>
+  <div class="meta">concepts/loop-engineering · concepts · <span title="2026-06-18">今日</span></div>
   <article><h1>ループエンジニアリング（Loop Engineering）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントをプロンプトする「人間」をやめ、エージェントをプロンプトする「ループ」を設計することで、自分がループの外に出る工学的転換。スケジューラー（cron）＋意思決定者（モデル）＋フィードバック機構の三つ組が本質。</p>
@@ -209,6 +209,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-06-09 @sairahul1: Peter Steinberger（OpenClaw創設者・現OpenAI）とBoris Cherny（Claude Code責任者）が独立して「プロンプトを書くな、ループを書け」という同一メッセージを発信。著者はこれを「地球上で最も重要な2つのAIラボのトップエンジニアが同一パターンに収束している」シグナルとして深掘り解説を公開</li>
 <li>2026-06-09 @sairahul1: トークンコスト試算（著者推定値）: シングルエージェントループ（中規模タスク）5万〜20万トークン、フリートループ（オーケストレーター+スペシャリスト3体）50万〜200万トークン、週次スケジュール実行で数百万トークン規模。DeepSeek V4の低価格で「$20で約1.7Bトークン」が利用でき経済的ブロッカーが解消するとの主張（著者試算・未検証）</li>
 <li>2026-06-11 @koutarou_furuno（@sairahul1記事の日本語二次まとめ）: ループ工学の本質を「指示を改善するレイヤー」から「指示を出す仕組みを設計するレイヤー」へのレイヤー上昇として整理。DeepSeek採用にはデータガバナンス・セキュリティの事前確認が必要と警告（ビジネス用途）</li>
+<li>2026-06-16 @sydneyrunkle（LangChain）: ループエンジニアリングの焦点を L1・L2（エージェント＋検証）から L3・L4（イベント駆動＋ヒルクライミング）へ移すべきと主張——価値が複利で積み上がるのは、エージェントをエコシステムに埋め込み基準に応じて継続改善させる外側の層だから。@swyx の「loopcraft（loopを積み重ねる技術）」を引用し、Steipete・Boris・Karpathy が独立に「エージェントの潜在力はその周りに作るループにある」という同一結論へ収斂していると指摘（LangChain公式ブログ・自社プリミティブ前提・単一ソース）</li>
+<li>2026-06-16 @sydneyrunkle（LangChain）: Satya Nadella のフレーミングを引用——「学習ループを早期に作り、人間の判断とトークン資本を複利させる企業が、模倣困難な優位を築く」。<a href="../business/frontier-ecosystem.html">frontier-ecosystem</a> と同一主張の別ルート裏付け</li>
 </ul>
 <h2>検証済み事実</h2>
 <ul>
@@ -221,6 +223,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a> の「ハーネス = フィードバックループ設計」とループエンジニアリングの境界はどこか。ハーネスは静的な枠組み、ループは動的な実行パターンという分け方で整合するか</li>
 <li>4条件テストで「トークン予算がある」は何を基準に判断するか。月額コスト全体の何%までループに使えると決めておくべきか</li>
 <li>Ralph Wiggumループの「静かな失敗」は自分の自動化（launchd ingest）で発生する可能性があるか。完了条件はどこで定義されているか</li>
+<li>LangChainの4レベルスタック（特にL4ヒルクライミング＝trace分析→ハーネス書き換え）を自分のwiki ingestループに入れるなら、何をトレースとして残すべきか。LESSONS.md追記は手動L4だが、これを分析エージェントで自動化できるか（<a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> のIssue→PR3段ループが参考になるか）</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -234,17 +237,21 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/claude-fable-5.html">claude-fable-5</a> — Fable 5のParameter Golf・Continual Learning Benchでのループ有効性ベンチマーク（Anthropicリサーチャー実験）</li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — CMAのOutcomes機能がループの検証サブエージェントを自動生成する</li>
 <li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a> — ReActループを5構成要素の中核に据えたエージェント入門（@sairahul1）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
+<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> — L4ヒルクライミングの具体実装パターン（会話履歴→Issue→Routines→PRの3段自己改善ループ）</li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> — L4の戻り矢印が訓練シグナルへ届く先（trace/eval→RLファインチューニング）の延長線</li>
+<li><a href="../business/frontier-ecosystem.html">frontier-ecosystem</a> — Satya「学習ループを早期に作り人的資本×トークン資本を複利させる」の元論</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
 <li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a></li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a></li>
-<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
-<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063865685558903149" rel="noopener" target="_blank">https://x.com/i/web/status/2063865685558903149</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063865685558903149" rel="noopener" target="_blank">https://x.com/i/web/status/2063865685558903149</a></li>
 <li><a href="https://x.com/i/web/status/2064127981161959567" rel="noopener" target="_blank">https://x.com/i/web/status/2064127981161959567</a></li>
 <li><a href="https://x.com/i/web/status/2064182475920908722" rel="noopener" target="_blank">https://x.com/i/web/status/2064182475920908722</a></li>
 <li><a href="https://x.com/i/web/status/2064374643729773029" rel="noopener" target="_blank">https://x.com/i/web/status/2064374643729773029</a></li>
 <li><a href="https://x.com/i/web/status/2064998499780084154" rel="noopener" target="_blank">https://x.com/i/web/status/2064998499780084154</a></li>
 <li><a href="https://x.com/i/web/status/2064277888216555684" rel="noopener" target="_blank">https://x.com/i/web/status/2064277888216555684</a></li>
-<li><a href="https://x.com/i/web/status/2065034757789073762" rel="noopener" target="_blank">https://x.com/i/web/status/2065034757789073762</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2065034757789073762" rel="noopener" target="_blank">https://x.com/i/web/status/2065034757789073762</a></li>
+<li><a href="https://x.com/i/web/status/2066928783534289358" rel="noopener" target="_blank">https://x.com/i/web/status/2066928783534289358</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
