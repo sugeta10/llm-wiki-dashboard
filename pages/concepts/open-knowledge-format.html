@@ -27,7 +27,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>open-knowledge-format</h1>
-  <div class="meta">concepts/open-knowledge-format · concepts · <span title="2026-06-15">3日前</span></div>
+  <div class="meta">concepts/open-knowledge-format · concepts · <span title="2026-06-18">今日</span></div>
   <article><h1>Open Knowledge Format (OKF)</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Google CloudのSam McVeety/Amir Hormatiが提唱するMarkdown+YAMLベースの知識表現フォーマット。<a href="../concepts/llm-wiki.html">Karpathyの「LLM wiki」パターン</a>をベンダー中立の標準仕様に昇格させ、異なるチーム・エージェント・ツール間で知識を相互運用可能にする。</p>
@@ -59,9 +59,44 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>Webパス</strong>: LLMがクローラーとして動き、seed URLから権威ある補足ドキュメントを選択して概念を豊かにする。<code>--web-max-pages</code> でクロール数をキャップ</li>
 </ol>
 <p>サンプルバンドルが3つ公開（GA4 eコマースデータセット・Stack Overflow・Bitcoin）。<code>visualize</code> サブコマンドでスタンドアローンの force-directed グラフHTML（<code>viz.html</code>）を生成できる。</p>
+<h2>既存標準との関係（競合でなくスタック）</h2>
+<p>OKFは既存の仕組みと競合せず「積み重なる（stack）」関係にある。OKFは「何を知っているか」をファイルで渡し、<a href="../tools/claude-mcp.html">claude-mcp</a> は「今何ができるか」をAPIで呼ぶ。役割が違うため代替ではなく並べて使う。</p>
+<table>
+<thead>
+<tr>
+<th>標準</th>
+<th>役割</th>
+<th>OKFとの関係</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OKF</strong></td>
+<td>キュレートされた静的な知識をファイルで表現するフォーマット</td>
+<td>本体</td>
+</tr>
+<tr>
+<td><strong>MCP</strong></td>
+<td>LLMが外部ツールを動的に呼ぶプロトコル</td>
+<td>OKF=静的知識、MCP=ライブなツールアクセスで補完</td>
+</tr>
+<tr>
+<td><strong>llms.txt</strong></td>
+<td>サイトに置く知識リソースへの「道しるべ」</td>
+<td>補完</td>
+</tr>
+<tr>
+<td><strong>AGENTS.md / CLAUDE.md</strong></td>
+<td>リポジトリに置く慣習ファイル</td>
+<td>OKFがこのアドホックな慣習を標準化（<a href="../concepts/agents-md-canonical.html">agents-md-canonical</a>）</td>
+</tr>
+</tbody>
+</table>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-06-15 (Sam McVeety &amp; Amir Hormati, Google Cloud): OKF v0.1として発表。「答えは別の知識サービスでなくフォーマット」と明言。Obsidian/Notion/Hugo/Jekyllなど既存ツールはMarkdown+YAMLフロントマターをすでに話せるため、追加UI不要でバンドルを閲覧・編集可能と説明</li>
+<li>2026-06-17 (せーの, classmethod / dev.classmethod.jp): 手書きの最小バンドル＋ビジュアライザで検証したハンズオン所見。リファレンス実装のビジュアライザ v0.1 は SPEC §5.1推奨の <code>/</code> 始まり絶対パスリンクを <code>viewer/generator.py</code> で明示的にスキップしており（<code>if "://" in target or target.startswith("/"): continue</code>）、絶対パスで書くとedgeが0になる。相対パス（<code>./customers.md</code> 等）に直すと正常にグラフ化された。SPEC推奨と実装のあいだにv0.1段階のギャップがある（単一ソースの実測）</li>
+<li>2026-06-17 (せーの): 自身のObsidian Vault 812ファイルを検査したところ25.4%（206件）が意図せずOKF v0.1準拠（frontmatter＋非空type）だった。既存のtype値（memo 55・knowledge 25・meeting 19件など）がそのままOKFのtype値として機能。残り606件はtypeを足すだけで準拠可能、との単一ソースの測定</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -76,12 +111,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — ObsidianボルトはOKFの主要なコンシューマー候補</li>
 <li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — エージェントが共有知識層にアクセスする設計思想と連動</li>
 <li><a href="../companies/google.html">google</a> — OKFの発案・公開元</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
-<li><a href="../companies/google.html">google</a></li>
-<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
-<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing?hl=en" rel="noopener" target="_blank">https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing?hl=en</a></li>
-<li><a href="https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf" rel="noopener" target="_blank">https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf</a></li></ul></section></article>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing?hl=en" rel="noopener" target="_blank">https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing?hl=en</a></li>
+<li><a href="https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf" rel="noopener" target="_blank">https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf</a></li>
+<li><a href="https://dev.classmethod.jp/articles/open-knowledge-format-okf-v01-guide/" rel="noopener" target="_blank">https://dev.classmethod.jp/articles/open-knowledge-format-okf-v01-guide/</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
