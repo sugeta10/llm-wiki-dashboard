@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-task-delegation - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-task-delegation</h1>
+  <div class="meta">concepts/claude-code-task-delegation · concepts · <span title="2026-06-19">今日</span></div>
+  <article><h1>Claude Codeに業務を渡す（環境設計発想）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Claude Codeを「賢い質問箱」でなく業務フローごと渡せる作業者として使うための活用法50個と、その根底にある「毎回うまく指示する」から「指示なしでも良い結果が出る環境を一度設計する」への発想転換。</p>
+</blockquote>
+<p>使いこなす人と持て余す人を分けるのはスキルや知識量ではなく、AIに毎回ゼロから頼むか／頼まなくても同じ品質が出る前提（CLAUDE.md・Skills・Hooks・カスタムコマンド）を一度作り込むかの差にある。単発で「要約して」「返信を書いて」と質問して出力をコピペする使い方は、AIを使い捨ての作業者のまま留める。対して「ファイル整理・メール分類・集計・資料作成といった業務フローそのものを渡す」運用は、一度の仕込みがその後ずっと効く資産になる。</p>
+<pre><code class="language-mermaid">flowchart LR
+  W1[&quot;第1週&lt;br/&gt;カテゴリ②ファイル整理&lt;br/&gt;で成功体験を1個&quot;] --&gt; W2[&quot;2〜3週目&lt;br/&gt;カテゴリ①③&lt;br/&gt;単発作業を渡す癖&quot;]
+  W2 --&gt; M1[&quot;1〜2ヶ月目&lt;br/&gt;カテゴリ④&lt;br/&gt;CLAUDE.md/Skills資産化&quot;]
+  M1 --&gt; M3[&quot;3ヶ月目以降&lt;br/&gt;カテゴリ⑤⑥&lt;br/&gt;上級ゾーン（環境設計）&quot;]
+</code></pre>
+<h2>50活用法の6カテゴリ</h2>
+<p>下に行くほど「作業を渡す」入口から「環境を設計する」応用へ移り、資産性が高まる。</p>
+<table>
+<thead>
+<tr>
+<th>カテゴリ</th>
+<th>数</th>
+<th>代表例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① 基本コマンド</td>
+<td>10</td>
+<td><code>/plan</code> で計画だけ先出し・Plan modeで承認待ち停止・<code>/rewind</code> で巻き戻し・<a href="../concepts/claude-md-rules.html">claude-md-rules</a> にルール記述・カスタムコマンド化・<code>/clear</code> で文脈リセット・<code>@ファイル名</code> で範囲限定・Hooksで危険削除をブロック</td>
+</tr>
+<tr>
+<td>② ファイル整理</td>
+<td>8</td>
+<td>Downloads自動分類・表記ゆれ一括リネーム・重複検出・古いファイルをArchive退避・PDF中身で分類。<strong>消さずに候補一覧→人が承認</strong>が事故防止の核</td>
+</tr>
+<tr>
+<td>③ メール・Slack連携</td>
+<td>8</td>
+<td>受信メールを重要度別に分類・返信要のみ抽出・自分の文体で下書き・長スレッド3行要約・議事録から自タスク抽出</td>
+</tr>
+<tr>
+<td>④ 文書・資料作成</td>
+<td>8</td>
+<td>メモから報告書を組み立て・CLAUDE.mdの文体ルールで統一・文字起こしから議事録・1ページ要約・上司向け/顧客向けに書き分け</td>
+</tr>
+<tr>
+<td>⑤ 定期作業の自動化</td>
+<td>6</td>
+<td>売上CSVから週次レポート・集計手順をSkills化・KPI集計をワンコマンド・ログから異常値抽出</td>
+</tr>
+<tr>
+<td>⑥ 上級者の使い方</td>
+<td>10</td>
+<td>サブエージェントで複数仮説を並列検証・役割分担させ結論を突き合わせ・<a href="../tools/claude-mcp.html">claude-mcp</a> で外部ツール連携・CLAUDE.md階層化・業務フロー全体を1ワークフロー化・作るAIと確認するAIを分離</td>
+</tr>
+</tbody>
+</table>
+<h2>事故れない仕組みを先に作る</h2>
+<p>「AIに自分のフォルダを触らせる」抵抗感への答えは根性論でなく仕組み化。<code>/plan</code> で触るファイル・手順・リスクを承認まで止め、Plan modeで停止、暴走しても <code>/rewind</code> で巻き戻し、重要ファイルはバックアップ前提、Hooksで危険な削除を実行前にブロックする。逃げ道があると分かると人は踏み出せる、という導入設計の論理になっている。この発想は <a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a> の「プロンプトより先に棚（作業フォルダ）を作る」と地続きで、<a href="../tools/claude-code.html">claude-code</a> を安全に任せるための前提整備にあたる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-16: 著者(@fuji_ai_)の効果数字 — 朝のメール整理は30分→約5分、Excel集計は3時間→約20分に短縮できる（単一ソース・未検証）</li>
+<li>2026-06-16: 「Claudeを使っている人の9割はその実力を持て余している。これは能力でなく使い方の発想の問題」という著者の主張</li>
+<li>2026-06-16: 記事全体の結論は50番「良い指示をしなくても良い結果が出る環境を作る」。①〜③は作業を渡す入口、④〜⑥は環境を設計する応用と位置づける</li>
+<li>2026-06-16: X bookmark 7,975 / impression 169万（2026-06-18 時点）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>この50個のうち、自分の業務（このwiki運用・ソース整理）に直接効くのはどれか。まず②のファイル整理で1個試せるか</li>
+<li>「環境を設計する」発想は、すでに <a href="../concepts/claude-md-rules.html">claude-md-rules</a> と本リポのCLAUDE.md/スキル群で実践済み。次に資産化すべき繰り返し作業は何か</li>
+<li>著者の効果数字（30分→5分等）は自分の作業で再現するか。Skills化前後で実測できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a> — 本記事が対象とするAIコーディングCLI本体</li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — 「環境を設計する」発想の中核。毎回の指示でなく永続ルールに前提を仕込む</li>
+<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a> — プロンプトより先に作業フォルダ（棚）を設計する初心者向け実践と同じ思想</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — 繰り返し作業をSkills化して資産にする（カテゴリ⑤⑥）</li>
+<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — サブエージェント並列・役割分担（カテゴリ⑥上級者の使い方）の設計</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066887630533357925" rel="noopener" target="_blank">https://x.com/i/web/status/2066887630533357925</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
