@@ -27,7 +27,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-fable-5</h1>
-  <div class="meta">models/claude-fable-5 · models · <span title="2026-06-17">2日前</span></div>
+  <div class="meta">models/claude-fable-5 · models · <span title="2026-06-19">今日</span></div>
   <article><h1>Claude Fable 5 / Mythos 5</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: <a href="../companies/anthropic.html">anthropic</a> が一般公開した初の <strong>Mythos クラス</strong>（Opusの上位ティア）モデル。中身は Fable 5 = Mythos 5 で同一、違いはセーフガードの有無だけ。</p>
@@ -88,6 +88,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </table>
 <p><strong>失敗→調査→検証→蒸留→参照</strong> の5段階メモリ活用プログレッション。Fable 5 は失敗から汎用ルールを導出し、後続セッションでそのルールを参照する。Sonnet/Opus は失敗ノートを蓄積するだけで蒸留・参照まで至らない。</p>
 <p><strong>設計の含意</strong>: Fable 5 は直接プロンプトして操作するより、<strong>環境フィードバックに応じて自己修正できるループを設計する</strong>（<code>/goal</code> や Outcomes 等）方が性能を引き出せる。</p>
+<h2>丸投げ自律開発の実証（水島宏太 / @kmizu）</h2>
+<p>上の「自己修正ループを設計して任せる」使い方の具体的な実証例。構文解析を専門とする水島宏太（ネクストビートのテクノロジー・エバンジェリスト、PEG研究者）が、仕様書も技術スタック指定もなく <a href="../tools/claude-code-goal.html">/goal</a> に「日本の教育業界がDXしないと壊れるほど素晴らしい無料教育サイトを作って。GitHub Pagesで公開、デザイン/UXも最高で」程度のゴールだけを与え、放置時間合計2時間足らずで全6コース・54レッスンの教材サイト「言語の庭」が完成したと報告している。深津貴之（<a href="../people/fladdict.html">fladdict</a>）のポストをもじったゴール設定で、進捗ごとに相槌を打った以外は設計にも実装にもほぼ口を出していない。</p>
+<p>指示されていないのに Fable 5 が自分で積み上げた設計判断の連鎖：</p>
+<ul>
+<li>教材専用の日本語キーワード言語「にわ語」を自作（タートルグラフィックス・日本語エラーメッセージ・「エラーは誠実な読み手からの返事」という設計思想つき）</li>
+<li>字句解析→構文解析→評価の3工程をブラウザ内の純TypeScriptで実装（バックエンドなし）。トークン列・構文木・評価値を同時表示する「MiniLangLab」、無限ループ対策の fuel 方式（実行ステップ上限）、ユーザーJSはWeb Workerに隔離してタイムアウトkill</li>
+<li>コース3で正規表現エンジン＋NFA可視化、コース5でチューリング機械シミュレータ、コース6で型検査器まで自前実装。停止性問題・対角線論法・チョムスキー階層まで扱う構成</li>
+</ul>
+<p>専門家の検証として、水島は「変数は箱とは教えない」と宣言した言語処理系のコースを重点的に読み「ごまかしも誤りも見つけられなかった」とし、左結合の説明や「評価器へのかけ算追加は1行、大変なのは文字列から木を組む側」といった処理系を書いた人間が頷く記述まで含まれていた点を「やさしさと正確さを両立している」と評価した。<strong>肌感程度の指示から設計判断の連鎖を自走させ完成品に到達する</strong>ことが、Fable 5 のループ型の使い方の到達点を示している。</p>
 <h2>セーフガード設計（一般公開を可能にした核心）</h2>
 <p>Fable 5 の分類器が<strong>サイバーセキュリティ・生物化学・蒸留</strong>に関わるリクエストを検知すると、応答は自動的に <a href="../models/claude-opus-4-8.html">Opus 4.8</a> に肩代わりされ、ユーザーに通知される（拒否でなくフォールバック）。</p>
 <ul>
@@ -104,13 +113,19 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-06-09 (@meta_alchemist): Fable 5入手後は各リポジトリに「Audit &amp; Project Improvement Prompt」を実行して一括改善するワークフローを提案（プロンプト詳細は画像リンクのみで非公開）</li>
 <li>2026-06-12 (@claudeai公式、bookmark 15,040): 「Fable 5登場から数日、すでに人々が構築したプロジェクト」と題したポストを公開。具体的なプロジェクト事例は本文テキストに含まれず（画像/スレッド添付想定、本ソースでは未取得）。公式アカウントが利用実例の発信を始めた段階のマーカーとして記録</li>
 <li>2026-06-12 (チャエン/茶圓が自身のXで報じた未確認情報): Fable 5 / Mythos 5 がローンチ約3日後に全世界・全顧客向けで一夜にして利用停止になったと報告。理由は性能や不具合でなく米政府の輸出規制ディレクティブ（発令省庁は未公表）による「外国籍ユーザーのアクセス禁止」指令で、居住地をリアルタイム判別できず Anthropic は全ユーザーを一律停止、AWS Bedrock 経由も取消、と説明。Opus / Sonnet / Haiku は無事で Claude Code はそれらで稼働継続、Anthropic は「誤解だ」と反論し早期復旧を目指す、とも。詳細は <a href="../tools/openai-codex.html">openai-codex</a> の「2本目のエンジン」戦略の動機として記録</li>
-<li>2026-06-13 (@nukonuko による詳細解説): 上記の経緯を独自にまとめた日本語解説。政府ディレクティブは現地時間午後5:21に受領。指令内容は「外国籍の人（Anthropic社員も含む）へのFable 5 / Mythos 5アクセス禁止」で、国籍リアルタイム判別が不可能なため全ユーザー一律停止となった。政府が示した懸念は<strong>特定のコードベースをモデルに読み込ませてソフトバグを修正させる</strong>というもので（口頭証拠のみ・汎用ではない限定的ジェイルブレイク）、Anthropicは「他モデル（GPT-5.5含む）でも得られる能力水準に過ぎず、防御側担当者が日常的に使うレベル」と反論。ユニバーサルジェイルブレイクは誰も発見していない状況。Anthropicは法的指示には従うが「特定ケースのジェイルブレイクを理由に数億人への提供を回収すべきという考えには同意しない」立場をとり、この基準を業界全体に当てはめるとフロンティアモデル公開がすべて止まると主張。24時間以内の続報を表明（@nukonuko はAI Safety文脈を踏まえた詳細解説として投稿）</li>
+<li>
+<p>2026-06-13 (@nukonuko による詳細解説): 上記の経緯を独自にまとめた日本語解説。政府ディレクティブは現地時間午後5:21に受領。指令内容は「外国籍の人（Anthropic社員も含む）へのFable 5 / Mythos 5アクセス禁止」で、国籍リアルタイム判別が不可能なため全ユーザー一律停止となった。政府が示した懸念は<strong>特定のコードベースをモデルに読み込ませてソフトバグを修正させる</strong>というもので（口頭証拠のみ・汎用ではない限定的ジェイルブレイク）、Anthropicは「他モデル（GPT-5.5含む）でも得られる能力水準に過ぎず、防御側担当者が日常的に使うレベル」と反論。ユニバーサルジェイルブレイクは誰も発見していない状況。Anthropicは法的指示には従うが「特定ケースのジェイルブレイクを理由に数億人への提供を回収すべきという考えには同意しない」立場をとり、この基準を業界全体に当てはめるとフロンティアモデル公開がすべて止まると主張。24時間以内の続報を表明（@nukonuko はAI Safety文脈を踏まえた詳細解説として投稿）</p>
+</li>
+<li>
+<p>2026-06-17 (水島宏太/@kmizu): 上記「言語の庭」生成の代償としてトークン消費が突出すると報告。Claude Max 20x でもこのサイト生成を含む数時間でその日の usage limit に到達。Fable 5 は1回のゴール設定から大量タスクを並列展開して自走するため消費が桁違い、という主張。推奨運用は「Fable 5 を計画と骨格（立ち上げ・全体設計・品質基準づくり）に使い、その後の細かい修正・機能追加・定型タスクは Opus/Sonnet に引き継ぐ」モデルスタッキング（<a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a>）。記事自体もネタ出し・編集・リテイク以外は Fable 5 が執筆したと明記（単一ソース・実体験）</p>
+</li>
 </ul>
 <h2>問い</h2>
 <ul>
 <li>5%未満の誤発火は実用上どの程度ストレスか。サイバー/生物に隣接する正当な作業（自分のセキュリティレビュー・<a href="../concepts/claude-code-security.html">claude-code-security</a>等）でフォールバックが頻発しないか</li>
 <li>フォールバック時に Opus 4.8 へ落ちる挙動を、コーディングワークフローでどう検知・設計するか（モデルスタッキングの観点）</li>
 <li>「数ヶ月を数日に圧縮」は自分の中規模コードベースでも再現するか、それとも大規模Rubyのような特定条件下の話か</li>
+<li>「計画と骨格は Fable 5、細部は Opus/Sonnet」の引き継ぎ点はどこで切るのが最適か。基盤完成後の追加作業を軽量モデルに渡すコスト最適化を自分のプロジェクトで設計できるか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -122,16 +137,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a> — Fable 5のパフォーマンスを最大化するループ設計手法（4条件テスト・MVL・失敗パターン）</li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — Fable 5のループ実験で使用したCMAプラットフォーム（Outcomes・セルフホストサンドボックス）</li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — Fable 5の「長い複雑タスクほど差が開く」特性を踏まえた工程分解型モデル選択戦略</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openai-codex.html">openai-codex</a></li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — 「言語の庭」を生成した <code>/goal</code> 自律ワークフロー機能。Fable 5のループ型の使い方の入口</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
-<li><a href="../models/claude-mythos.html">claude-mythos</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li>
-<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" rel="noopener" target="_blank">https://www.anthropic.com/news/claude-fable-5-mythos-5</a></li>
+<li><a href="../tools/openai-codex.html">openai-codex</a></li>
+<li><a href="../models/claude-mythos.html">claude-mythos</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" rel="noopener" target="_blank">https://www.anthropic.com/news/claude-fable-5-mythos-5</a></li>
 <li><a href="https://x.com/i/web/status/2064397389189071163" rel="noopener" target="_blank">https://x.com/i/web/status/2064397389189071163</a></li>
 <li><a href="https://x.com/i/web/status/2064409694761054332" rel="noopener" target="_blank">https://x.com/i/web/status/2064409694761054332</a></li>
 <li><a href="https://x.com/i/web/status/2064431279383433646" rel="noopener" target="_blank">https://x.com/i/web/status/2064431279383433646</a></li>
 <li><a href="https://x.com/i/web/status/2065456678909227064" rel="noopener" target="_blank">https://x.com/i/web/status/2065456678909227064</a></li>
-<li><a href="https://x.com/i/web/status/2065640176299516404" rel="noopener" target="_blank">https://x.com/i/web/status/2065640176299516404</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2065640176299516404" rel="noopener" target="_blank">https://x.com/i/web/status/2065640176299516404</a></li>
+<li><a href="https://zenn.dev/nextbeat/articles/2026-06-cs-edu-site-fable5" rel="noopener" target="_blank">https://zenn.dev/nextbeat/articles/2026-06-cs-edu-site-fable5</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

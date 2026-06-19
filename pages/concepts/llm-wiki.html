@@ -27,7 +27,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>llm-wiki</h1>
-  <div class="meta">concepts/llm-wiki · concepts · <span title="2026-05-09">1ヶ月前</span></div>
+  <div class="meta">concepts/llm-wiki · concepts · <span title="2026-06-19">今日</span></div>
   <article><h1>LLM Wiki</h1>
 <p><a href="../people/andrej-karpathy.html">andrej-karpathy</a> が提案した、LLM が継続的にメンテナンスする Markdown ベースの知識ベース。ベクトル DB を使わず、Markdown ファイルだけで運用する。</p>
 <h2>核心概念</h2>
@@ -134,6 +134,23 @@ Obsidian でグラフ可視化・検索
 <blockquote>
 <p>Karpathy: 「hacky なスクリプトの寄せ集めではなく、ここには素晴らしいプロダクトが生まれる余地がある」</p>
 </blockquote>
+<h2>運用1ヶ月の知見：要約より「繋げる力」（tsurubee）</h2>
+<p>LLM Wiki を1ヶ月運用した tsurubee は、LLM の真価は要約ではなく<strong>別々のタイミングで読んだソースを繋げる力</strong>にあると結論づけている。要約だけなら NotebookLM や ChatGPT のファイルアップロードで足りる。差を生むのは、複数ソースを横断して共通構造・分類・反例を抽出する<strong>概念ページ</strong>が、ingest のたびに LLM の手で自動更新され育っていく点である。</p>
+<p>なぜ人間がこれをできないかというと、退屈な部分が読むことでも考えることでもなく <strong>bookkeeping</strong>（クロスリファレンス更新・要約の最新化・新データと旧主張の矛盾記録・数十ページの一貫性維持）だからで、3本までは続いても10本50本で維持コストが価値を上回り更新を諦める。LLM は飽きず忘れず1パスで多数ファイルを書き換えるため維持コストがほぼゼロに落ち、wiki が "persistent, compounding artifact"（持続的に蓄積する成果物）として維持され続ける。tsurubee は ingest スキルに「横断的知見」（複数ソースを並べて初めて見える観察）と「未解決の問い」（次に調べるべき問い）のセクションを必須化しており、<strong>この箇条書きが時間とともに育つことが LLM Wiki の本体</strong>だとする。</p>
+<h3>「繋げる力」の2類型（tsurubee の実例）</h3>
+<ul>
+<li><strong>多数の同種ソースの統合</strong>（事例1）：Automated Scientific Discovery の論文を10本以上 ingest した結果、概念ページが(1)各論文に散らばる評価軸を「実行ベース／人間ピアレビュー／LLM-as-Judge／実wet-lab検証」の4カテゴリに整理し、(2) 別々の3論文の独立観察（自動レビューLLMは人間より2.3点甘い／人間執筆論文の9割をreject／評価LLMを変えると比較レートが約68点変動）を「LLM-as-Judge は誰が書いたか・どのLLMが評価者かに強く依存し中立な評価軸として扱えない」という1パターンの3観測面に統合した</li>
+<li><strong>少数の異なる視点の対比抽出</strong>（事例2）：Sam Altman と Dario Amodei のエッセイ計4本を別々に ingest しただけで、<code>agi</code> の概念ページに2人のAGI定義の対比（Altman=AGI→superintelligenceという方向性の語彙／Amodei=powerful AIの検証可能な5機能要件）が自動で立ち上がった。比較を意図せず投入したのに wiki 内で勝手に対立軸が再構成された</li>
+</ul>
+<p>いずれも、LLM が新ソースを ingest するたびに過去ページを読み返して整合性を取り直すから成立する。人間が3ヶ月前のノートに戻って書き換える行為はほぼ発生しない。</p>
+<h3>課題：繋げた先に「理解」のボトルネックがある</h3>
+<p>tsurubee が運用で感じた根本的な限界。LLM が概念ページを綺麗に整理しても、<strong>人間が読んで自分の理解として消化しないと「自分の知識」にはならない</strong>。Karpathy 流の「人間はほとんど直接編集しない」設計を徹底すると、人間側のドメイン理解が深まらない懸念がある。対策として tsurubee は、(1) ingest するソースを<strong>自分の手で選ぶ</strong>（arXiv 新着の自動 ingest はしない。勝手に育った概念ページは「いつの間にこんなページが」状態になり理解ボトルネックを悪化させる。量より質でまず wiki を溢れさせない）、(2) wiki を辞書的に消費するだけでなく概念ページを能動的に読み返して自分の理解として再構成する、の2点を挙げる。習慣化の方法は本人もまだ未解決としている。</p>
+<h2>問い</h2>
+<ul>
+<li>このwikiは launchd で自動 ingest している。tsurubee の「手動でソースを選ばないと理解ボトルネックが悪化する」という指摘と、自動 ingest（量）をどう両立させるか</li>
+<li>「横断的知見」「未解決の問い」の必須化は、このwikiの長文2セクション構造（本文＋観察ログ）や各ページの <code>## 問い</code> と機能的に同じか。概念ページが「繋がり」を実際に育てる構造になっているか点検する</li>
+<li>繋げてもらった概念ページを能動的に読み返して理解に落とす運用（<a href="../concepts/output-first-learning.html">output-first-learning</a> や weekly insights 等）を、どう習慣に組み込むか</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a>（提唱者）</li>
@@ -144,11 +161,14 @@ Obsidian でグラフ可視化・検索
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 <li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a>（知識ベースは「到達点の保存」に偏り、捨てた推論経路を取りこぼすという指摘）</li>
 <li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a> — このMarkdownベース知識ベースのパターンをベンダー中立な標準フォーマットに昇格させたGoogle Cloud発の仕様</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a> — 「理解のボトルネック」対策と通じる、読んだものを自分の理解に再構成する血肉化法</li>
+<li><a href="../tools/notebooklm.html">notebooklm</a> — 要約特化の代替。tsurubeeは「サマリーだけなら NotebookLM で足りる、差は概念ページの繋げる力」とする</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/output-first-learning.html">output-first-learning</a></li>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a></li>
-<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://dev.classmethod.jp/articles/karpathy-llm-knowledge-base/" rel="noopener" target="_blank">https://dev.classmethod.jp/articles/karpathy-llm-knowledge-base/</a></li>
+<li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://dev.classmethod.jp/articles/karpathy-llm-knowledge-base/" rel="noopener" target="_blank">https://dev.classmethod.jp/articles/karpathy-llm-knowledge-base/</a></li>
+<li><a href="https://zenn.dev/tsurubee/articles/llm-wiki-connecting-knowledge" rel="noopener" target="_blank">https://zenn.dev/tsurubee/articles/llm-wiki-connecting-knowledge</a></li>
 <li><a href="https://x.com/i/web/status/2052235121416188114" rel="noopener" target="_blank">https://x.com/i/web/status/2052235121416188114</a></li>
 <li><a href="https://x.com/i/web/status/2043873607731024164" rel="noopener" target="_blank">https://x.com/i/web/status/2043873607731024164</a></li>
 <li><a href="https://x.com/i/web/status/2045856830191243473" rel="noopener" target="_blank">https://x.com/i/web/status/2045856830191243473</a></li>
