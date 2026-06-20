@@ -27,7 +27,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>hermes-agent</h1>
-  <div class="meta">tools/hermes-agent · tools · <span title="2026-06-16">5日前</span></div>
+  <div class="meta">tools/hermes-agent · tools · <span title="2026-06-21">今日</span></div>
   <article><h1>Hermes Agent</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Nous ResearchのオープンソースAIエージェント基盤で、自己進化スキル・3層メモリ・GEPAオフライン最適化を1フレームワークに統合し「使うほど賢くなる」設計を実現する。</p>
@@ -90,6 +90,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-13: GEPA論文はICRL 2026 Oral、NousResearch/hermes-agent-self-evolution リポジトリで公開（MITライセンス）</li>
 <li>2026-05-13: 公式Skills Hubに687スキル（built-in 87 + optional 79 + Anthropic製16 + LobeHub製505）</li>
 <li>2026-05-13: エージェントループの上限は90ターン。サブエージェントもこのバジェットを共有</li>
+<li>2026-06-21（公式README）: 端末バックエンドは6種——local / Docker / SSH / Singularity / Modal / Daytona。Daytona と Modal はサーバーレス永続化に対応し、アイドル時は環境がハイバネートして使用時のみ課金される</li>
+<li>2026-06-21（公式README）: メッセージング窓口は Telegram / Discord / Slack / WhatsApp / Signal / Email / CLI を単一ゲートウェイプロセスで統合する。音声メモの文字起こしとプラットフォーム横断の会話継続に対応</li>
+<li>2026-06-21（公式README）: OpenClaw からの移行コマンド <code>hermes claw migrate</code> を提供。SOUL.md・MEMORY.md/USER.md・ユーザー作成スキル・コマンド許可リスト・メッセージング設定・APIキーをインポートする</li>
+<li>2026-06-21（公式README）: 外部ユーザーモデリングに Honcho（plastic-labs/honcho）の dialectic user modeling を採用。スキルは agentskills.io オープン標準に準拠</li>
+<li>2026-06-21（公式README）: Nous Portal は単一サブスクで300+モデルと Tool Gateway をまとめる。Tool Gateway は web検索（Firecrawl）・画像生成（FAL）・TTS（OpenAI）・クラウドブラウザ（Browser Use）を束ね、ツール単位でのBYOキー併用も可能</li>
+<li>2026-06-21（公式README）: ネイティブWindows対応。WSL不要で MinGit を同梱し、システムのGitに触れず独立動作する</li>
 </ul>
 <h2>観察ログ（未検証）</h2>
 <ul>
@@ -172,13 +178,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a> — 夜間9時間自動化ワークフローの詳細設計（SOUL.md制限・5層セキュリティ・段階的セットアップ）</li>
 <li><a href="../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a> — GEPAによるスキル/プロンプト/コードのオフライン進化を担う独立リポ（5フェーズ計画・ガードレール5項目）</li>
 <li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a> — プロファイル分離を使った3エージェント（Scout/Analyst/Briefer）リサーチ部門の具体的構築ガイド</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a></li>
-<li><a href="../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../tools/openclaw.html">openclaw</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">https://x.com/i/web/status/2054564519280804028</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a></li>
+<li><a href="../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">https://x.com/i/web/status/2054564519280804028</a></li>
 <li><a href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">https://x.com/i/web/status/2057581065469055167</a></li>
-<li><a href="https://x.com/i/web/status/2062101068842975409" rel="noopener" target="_blank">https://x.com/i/web/status/2062101068842975409</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2062101068842975409" rel="noopener" target="_blank">https://x.com/i/web/status/2062101068842975409</a></li>
+<li><a href="https://github.com/NousResearch/hermes-agent" rel="noopener" target="_blank">https://github.com/NousResearch/hermes-agent</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

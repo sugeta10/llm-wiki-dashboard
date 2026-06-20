@@ -27,13 +27,20 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>slack-time-at-work</h1>
-  <div class="meta">concepts/slack-time-at-work · concepts · <span title="2026-06-20">1日前</span></div>
+  <div class="meta">concepts/slack-time-at-work · concepts · <span title="2026-06-21">今日</span></div>
   <article><h1>仕事で「何もしない時間」を作る（稼働率80%設計）</h1>
-<p>ソフトウェアエンジニアは常に全力（稼働率100%）で走るのでなく、デフォルトの稼働率を<strong>80%程度に抑える</strong>べきだ、という働き方の考え方。プレッシャーの高いプロジェクトを抱えていない限り、労働時間や作業のペースをあえて落とす。エンジニア Sean Goedecke の記事「Doing nothing at work」が出どころ。</p>
-<p>余白（slack）を残すのは怠惰ではなく、突発作業の吸収・燃え尽き回避・考える時間の確保といった持続性に効く、という主張。「休む＝何もしない」を個人の回復の質として扱う <a href="../concepts/mental-conditioning.html">mental-conditioning</a> とは層が違い、こちらは<strong>働き方そのものの稼働率設計</strong>を問題にする点に注意する。</p>
+<blockquote>
+<p><strong>TL;DR</strong>: デフォルト稼働率を80%に抑え、残した余白で時間依存の高インパクト機会（大型契約の後押し・障害の初動鎮火・目玉機能の詰め）を掴むための働き方設計。</p>
+</blockquote>
+<p>なぜ稼働率を抑えるのか。テック企業での成果は平均的な努力の総和ではなく、少数の「外れ値イベント」に支配されるから。最もインパクトの大きい仕事ほど投じた労力は意外に小さいことが多い。大型契約を成立させる一機能、障害を早期に止めるフラグ一つ、目玉機能の成否を分ける地味な改修。これらに共通するのは<strong>時間依存</strong>であること。朝ログインして「契約を後押しするぞ」と決めてできるものではなく、機会が来た時に<strong>すでに手が空いている</strong>必要がある。</p>
+<p>低優先度の作業で常に稼働率100%だと、二重に機会を逃す。第一に、忙しすぎて機会に気づけない。他チームの動きや進行中の障害を眺める余裕がなくなる。第二に、いつも忙しそうに見えると、マネージャーが高インパクト案件にあなたを差し込まなくなる。何が高インパクトかを最もよく知るのはマネージャーやPMであり、彼らから声がかかる余地を残すこと自体に価値がある。</p>
+<p>余白の最小単位は「何もしない」でよい。ソフトウェアエンジニアリングの負荷は常時一定ではなく断続的に来るため、低圧の時間まで全力の緊張で過ごすと、本当に高圧な局面で既に疲弊している。障害対応ですら「何もしない」が効く。多くの障害は放置しても自然収束し、焦って打つ「効くかもしれない」変更はむしろ事態を悪化させやすい。一呼吸おいてスローモーションで考え、パニックを避けるだけで平均より上の初動になる。</p>
+<p>意図的に「やらない」判断も要る。第一に<strong>グルーワーク</strong>は避ける。人を繋ぐ・自分が主導しない仕事のドキュメント更新・技術的負債の自発回収などがこれにあたる。組織がそれを優先していないから自発が必要になっているのであり、肩代わりは組織に問題の痛みを感じさせず自分のキャリアと消耗だけを差し出す取引になりがち。第二に<strong>過剰な親切は搾取を招く</strong>。正規ルートでなくバックチャネルで来る無償労働には、断るか返信を数時間〜数日遅らせる「バックプレッシャー」をかける。第三に<strong>消える可能性の高い仕事に深入りしない</strong>。要望が1時間ごとに変わるデザイナーに毎回付き合わず午後に最新版で一度だけ作る、政治的後ろ盾の弱い思いつき案件は自然消滅を待つ、といった見送りである。</p>
+<p>ただし常に80%ではない。年に2〜3回、報酬が本当に大きい局面では全力で走る。残りの大半は意図的にペースを落とす方が、ストレス由来の凡ミスが減り、外れ値の高インパクト機会へ飛び込める状態を保てるため、結果的に「高パフォーマンスエンジニア」でいられるという主張。「休む＝何もしない」を個人の回復の質として扱う <a href="../concepts/mental-conditioning.html">mental-conditioning</a> とは層が違い、こちらは<strong>働き方そのものの稼働率設計</strong>を問題にする点に注意する。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-06-19（@harumak_11 紹介 / Sean Goedecke 記事）: 「エンジニアはデフォルトの稼働率を80%に抑え、プレッシャーの高いプロジェクトがない限り労働時間や作業のペースを落とすのがよい」。紹介ポストで捕捉できたのはこの1点で、記事本体の論拠・具体例は未取得（出典 seangoedecke.com/doing-nothing-at-work）。</li>
+<li>2026-06-21: 記事全文をingest（一次ソース＝著者本人ブログ）し、論拠・具体例を本文へ反映。Sean Goedecke の特に争点になりうる主張として——「障害は放置しても自然収束するものが多く、慌てた変更はむしろ悪化させる」「グルーワークの肩代わりは組織に問題の痛みを感じさせない悪い取引」「過剰な親切はバックチャネルで無償労働を引き出す“捕食者”に対し脆弱にする」。いずれも本人の経験則であり、組織や職種を超えて一般化できるかは別途検証が要る。なお本人は「全体的に生産的でさえあれば緩めても問題にならないが、マネージャーによる」と但し書きしている。</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -45,8 +52,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li><a href="../concepts/mental-conditioning.html">mental-conditioning</a> — 「何もしない」を個人の回復の質として扱う（層は違うが余白の扱いで隣接）</li>
 <li><a href="../concepts/performance-habits-40s.html">performance-habits-40s</a> — 足し算でなく引き算で活力を保つ自己管理論（持続性の発想が共通）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/mental-conditioning.html">mental-conditioning</a></li>
-<li><a href="../concepts/performance-habits-40s.html">performance-habits-40s</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2067818906987700719" rel="noopener" target="_blank">https://x.com/i/web/status/2067818906987700719</a></li></ul></section></article>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/performance-habits-40s.html">performance-habits-40s</a></li>
+<li><a href="../concepts/mental-conditioning.html">mental-conditioning</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2067818906987700719" rel="noopener" target="_blank">https://x.com/i/web/status/2067818906987700719</a></li>
+<li><a href="https://www.seangoedecke.com/doing-nothing-at-work" rel="noopener" target="_blank">https://www.seangoedecke.com/doing-nothing-at-work</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
