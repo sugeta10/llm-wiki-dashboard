@@ -27,7 +27,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-large-codebase</h1>
-  <div class="meta">concepts/claude-code-large-codebase · concepts · <span title="2026-05-20">1ヶ月前</span></div>
+  <div class="meta">concepts/claude-code-large-codebase · concepts · <span title="2026-06-21">今日</span></div>
   <article><h1>Claude Code 大規模コードベースのベストプラクティス</h1>
 <p>Anthropic公式ベストプラクティスに基づく、大規模コードベースでのClaude Code活用指針。<strong>精度はモデルよりハーネスの整備で決まる</strong>というのが根幹の主張。</p>
 <p>関連: <a href="../tools/claude-code.html">claude-code</a> | <a href="../concepts/claude-md-rules.html">claude-md-rules</a> | <a href="../concepts/agentic-coding.html">agentic-coding</a> | <a href="../tools/understand-anything.html">understand-anything</a></p>
@@ -89,6 +89,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 3. 土台が安定したらskills/plugins/MCPを追加</p>
 <h2>古い設定は能力を制限する</h2>
 <p>「リファクタは1ファイルずつ」といった古モデル向けの制約が、最新モデルではかえって能力を殺すことがある。設定の棚卸しは定期的に。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-23: Simon Last（Notion共同創業者）が、大規模プロジェクトでコーディングエージェントを運用して最近学んだことの多くが「6ヶ月前のアドバイスと矛盾する」とポスト（スレッド冒頭のみで具体的手法は本ページに未捕捉）。本ページの「古い設定は能力を制限する」「設定は定期的に棚卸しする」という主張が、別の実践者からも独立して裏付けられた格好。</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a> — Claude Code本体の概要</li>
@@ -96,11 +100,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> — Memory/Permissions/MCP/Slash commandsの4層階層設計</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIが自律的にコードを書くスタイル全般</li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — 自己改善ループの設計パターン</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/understand-anything.html">understand-anything</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/understand-anything.html">understand-anything</a></li>
-<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55</a></li></ul></section></article>
+<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55</a></li>
+<li><a href="https://x.com/i/web/status/2057978156183957995" rel="noopener" target="_blank">https://x.com/i/web/status/2057978156183957995</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

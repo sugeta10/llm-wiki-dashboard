@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>structuring-ability - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>structuring-ability</h1>
+  <div class="meta">concepts/structuring-ability · concepts · <span title="2026-06-21">今日</span></div>
+  <article><h1>構造化力を身につける方法</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 構造化力＝全体と部分（抽象と具体）の入れ子関係を整理し、自分と相手の「思考のブロック」を擦り合わせる力。座学でなく、ひとつの構造を自分の手で作り、別の構造と行き来し、他者と擦り合わせる経験の中でしか育たない。</p>
+</blockquote>
+<p>構造化力は「整理の技術」ではなく、全体像を把握したうえで部分と部分・部分と全体の関係を整理し、抽象と具体を行き来する思考力を指す。習得の出発点は「自分で構造をつくる感覚」に触れること——領域は問わず、まず一枚の構造を自分の手で描く経験が起点になる。そこから①ひとつの構造をつくる、②別の構造と行き来する、③他者と擦り合わせる、という3段で鍛えられていく。</p>
+<p>具体的な訓練の場として示されるのが<strong>採用活動</strong>。組織という構造を取り出して分解すると、内部は「目標 → 評価制度 → コンピテンシー → JD（求める人物像）→ 面接質問」という一本の流れでつながる。</p>
+<pre><code class="language-mermaid">flowchart LR
+  目標[&quot;目標&lt;br/&gt;(何を目指すか)&quot;] --&gt; 評価[&quot;評価制度&lt;br/&gt;(どう評価するか)&quot;]
+  評価 --&gt; 基準[&quot;コンピテンシー&lt;br/&gt;(何を見るか)&quot;]
+  基準 --&gt; 人物像[&quot;JD&lt;br/&gt;(求める人物像)&quot;]
+  人物像 --&gt; 確認[&quot;面接質問&lt;br/&gt;(能力をどう確認するか)&quot;]
+</code></pre>
+<p>この鎖がつながると「何を質問すればいいかは構造が教えてくれる」状態になる。面接前にコンピテンシーマップから確かめたいスキルを抽出し、それを確認する質問を事前に言語化しておけば、回答への判断を構造ごと関係者へ渡せる——属人的な感覚評価ではなく、なぜその評価かを他職種にも納得できる言葉で説明できるようになる。</p>
+<p>重要なのは、構造は単独では完結しない点。コンピテンシーはJD・面接の観点・組織体制・育成と相互に依存し、マップはそれら複数の構造の間を行き来する必要がある。構造化力とは、頭の中に思考のブロックを描き、自分の構造と相手の構造を同時に組み上げて照らし合わせる力であり、物事を考える・推進する・誰かと共有する・目的を前に進める、そのすべての場面で効いてくる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-19: @kenichiota0711（デザイン領域のマネージャー）は、構造化力を採用活動——マネージャーとしてコンピテンシーマップ（各グレードのラダーに必要スキルを言語化）を作った経験——を通じて学んだと述べる。</li>
+<li>2026-06-19: 著者固有の解釈として「採用チームと乖離が生じやすいのは"決断したとき"。なぜその評価かを構造とともに渡すと関係者の認識を揃えられる」。</li>
+<li>2026-06-19: 著者の関心領域は事業・顧客・デザイン業界・組織・AIといった複数ブロックから成り、採用はそのうち「組織」を取り出し分解したものという位置づけ（著者個人のメンタルモデル）。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>構造化力を自分のwiki運用（カテゴリ設計・知識グラフのリンク構造）に転用できるか。「全体と部分の入れ子を見渡し繋ぐ」はインデックス設計そのものに見える</li>
+<li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a> が言う「整理・文書化はAIが担い人間は決断に集中」と、ここで言う人間の構造化力の境界はどこか。AIに渡せる構造化と、人間が握り続けるべき構造化は分けられるか</li>
+<li>「ひとつの構造を作り別の構造と行き来する」訓練は採用以外（プロダクト設計・記事執筆）でも再現できるか。それとも具体ドメインの当事者経験が必須か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a> — 整理・構造化をAIが肩代わりし人間は決断へ、という転換。人間側に残る構造化力の輪郭を考える隣接概念</li>
+<li><a href="../business/org-design-intelligence.html">org-design-intelligence</a> — 組織を目標→評価→基準で設計し直す議論。本ページの「組織の内部構造の分解」と同じ対象を組織設計の側から扱う</li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a> — 学びを構造化して他者に届く形へ昇華する実践。構造化力の出力面と地続き</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/org-design-intelligence.html">org-design-intelligence</a></li>
+<li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a></li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2067943254486827269" rel="noopener" target="_blank">https://x.com/i/web/status/2067943254486827269</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
