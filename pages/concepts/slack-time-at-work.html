@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>autohedge - LLM Wiki</title>
+<title>slack-time-at-work - LLM Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -23,56 +23,30 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </style>
 </head>
 <body>
-<div class="cat-band" style="background:#58a6ff"></div>
+<div class="cat-band" style="background:#bc8cff"></div>
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
-  <h1>autohedge</h1>
-  <div class="meta">tools/autohedge · tools · <span title="2026-06-03">2週間前</span></div>
-  <article><h1>AutoHedge</h1>
-<blockquote>
-<p>孤立理由: 自律型ヘッジファンドという金融×マルチエージェントの具体OSSで、既存ページに該当が薄い（<a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> の Specialist Team 実装例として関連付け）</p>
-</blockquote>
-<p>Pythonで構築された<strong>自律型ヘッジファンド</strong>のOSS。役割分担した4つのAIエージェントで運用パイプラインを構成する点が特徴で、<a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> の Specialist Team（役割特化エージェントの分業）を金融領域に適用した実装例にあたる。</p>
-<p>4エージェントの役割分担:</p>
-<table>
-<thead>
-<tr>
-<th>エージェント</th>
-<th>役割</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Director</td>
-<td>投資テーゼ（投資仮説）を生成</td>
-</tr>
-<tr>
-<td>Quant</td>
-<td>テーゼを検証</td>
-</tr>
-<tr>
-<td>Risk Manager</td>
-<td>ポジションサイズを決定</td>
-</tr>
-<tr>
-<td>Execution</td>
-<td>注文を発注</td>
-</tr>
-</tbody>
-</table>
-<p>ライブ（実運用）で動作するとされる。</p>
+  <h1>slack-time-at-work</h1>
+  <div class="meta">concepts/slack-time-at-work · concepts · <span title="2026-06-20">今日</span></div>
+  <article><h1>仕事で「何もしない時間」を作る（稼働率80%設計）</h1>
+<p>ソフトウェアエンジニアは常に全力（稼働率100%）で走るのでなく、デフォルトの稼働率を<strong>80%程度に抑える</strong>べきだ、という働き方の考え方。プレッシャーの高いプロジェクトを抱えていない限り、労働時間や作業のペースをあえて落とす。エンジニア Sean Goedecke の記事「Doing nothing at work」が出どころ。</p>
+<p>余白（slack）を残すのは怠惰ではなく、突発作業の吸収・燃え尽き回避・考える時間の確保といった持続性に効く、という主張。「休む＝何もしない」を個人の回復の質として扱う <a href="../concepts/mental-conditioning.html">mental-conditioning</a> とは層が違い、こちらは<strong>働き方そのものの稼働率設計</strong>を問題にする点に注意する。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
-<li>2026-05-31: @itsharmanjot の「無料なのが信じられない優良GitHubリポジトリ10選」スレッドの1件目として紹介。ライブ運用を謳うが、実際の運用成績・バックテスト結果は提示されていない。</li>
+<li>2026-06-19（@harumak_11 紹介 / Sean Goedecke 記事）: 「エンジニアはデフォルトの稼働率を80%に抑え、プレッシャーの高いプロジェクトがない限り労働時間や作業のペースを落とすのがよい」。紹介ポストで捕捉できたのはこの1点で、記事本体の論拠・具体例は未取得（出典 seangoedecke.com/doing-nothing-at-work）。</li>
 </ul>
 <h2>問い</h2>
 <ul>
-<li>「ライブで動作する」の実態（実弾運用かペーパートレードか）と、4エージェント分業が単一エージェントより意思決定品質を上げているかは未検証。</li>
-<li><a href="../tools/claude-finance-agents.html">claude-finance-agents</a>（Anthropic公式の金融10エージェント）と役割設計を比較できるか。</li>
+<li>「稼働率80%」は個人の自衛として有効でも、チーム・組織のスループット目標とどう両立させるか。slack を制度として持つ組織はどう設計しているか</li>
+<li>自分のAI活用（並列エージェント運用）で生まれた余白を、80%設計の「考える時間」に再投資できているか。空いた分だけタスクを詰めていないか</li>
+<li><a href="../concepts/performance-habits-40s.html">performance-habits-40s</a> の「取り返そうと頑張らない」引き算思想と、この稼働率設計は同じ原理か</li>
 </ul>
 <h2>関連</h2>
-<p>関連: <a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> · <a href="../tools/claude-finance-agents.html">claude-finance-agents</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../tools/claude-finance-agents.html">claude-finance-agents</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061108656754851868" rel="noopener" target="_blank">https://x.com/i/web/status/2061108656754851868</a></li></ul></section></article>
+<ul>
+<li><a href="../concepts/mental-conditioning.html">mental-conditioning</a> — 「何もしない」を個人の回復の質として扱う（層は違うが余白の扱いで隣接）</li>
+<li><a href="../concepts/performance-habits-40s.html">performance-habits-40s</a> — 足し算でなく引き算で活力を保つ自己管理論（持続性の発想が共通）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/mental-conditioning.html">mental-conditioning</a></li>
+<li><a href="../concepts/performance-habits-40s.html">performance-habits-40s</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2067818906987700719" rel="noopener" target="_blank">https://x.com/i/web/status/2067818906987700719</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

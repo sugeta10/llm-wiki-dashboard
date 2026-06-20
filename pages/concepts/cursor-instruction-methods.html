@@ -27,7 +27,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>cursor-instruction-methods</h1>
-  <div class="meta">concepts/cursor-instruction-methods · concepts · <span title="2026-06-05">2週間前</span></div>
+  <div class="meta">concepts/cursor-instruction-methods · concepts · <span title="2026-06-20">今日</span></div>
   <article><h1>Cursorの5つのAI指示方法（AGENTS.md / Rules / Commands / Skills / Subagents）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: AIエージェントへの指示は「常時自動か手動起動か」「プロジェクト固有か再利用可能か」「コンテキストを共有するか分離するか」の3軸で5つの手段に整理でき、軸の組み合わせで使う道具が一意に決まる。</p>
@@ -96,6 +96,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-06-04: Anthropicが2025年10月にAgent Skillsをオープン標準として発表し、Claude Code・Cursor等複数ツールで導入された、という整理（記事は2026年1月時点情報を基にすると明記）</li>
 <li>2026-06-04: Subagentアンチパターンとして「汎用サブエージェントを50個以上作らない」「あいまいな説明（"一般的なタスクに使用"）を避け『OAuthプロバイダ認証実装時に使用』のように具体化」「2000語の長すぎるプロンプトは賢くせず遅く保守しづらくするだけ」「まず2〜3個から始める」を提示（著者の整理）</li>
 <li>2026-06-04: 実例として Vercel の React Best Practices スキル（40以上のルールを8カテゴリ・影響度CRITICAL〜LOWで優先度付け、<code>npx add-skill vercel-labs/agent-skills</code> で導入）を紹介</li>
+<li>2026-06-19: Claude Code版として、振る舞いカスタマイズの「7つの手段」を ①いつコンテキストに読み込まれるか ②長いセッションでどう振る舞うか ③どれくらい指示の従いやすさを持つか の3軸で整理した初心者向け記事が紹介された（@oikon48）。Cursorの5手段×3軸（適用タイミング／再利用範囲／コンテキスト分離）と並行する構図だが、軸の取り方が異なる（こちらはコンテキストの読込タイミング・長期セッションでの挙動・指示遵守度に重心）。具体的な7手段の中身は紹介ポストがteaserのため元記事未取得</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -111,11 +112,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Subagent並列処理の設計パターン全般</li>
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> — 設定の4層構造（別軸の整理）</li>
 <li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a> — AGENTS.md を正本に Claude Code/Codex で設定を共通化する具体パターン（指示文 vs 実行機構の線引き）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/cursor.html">cursor</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
+<li><a href="../tools/cursor.html">cursor</a></li>
 <li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
-<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/redamoon/articles/article38-cursor-skills-rules-commands" rel="noopener" target="_blank">https://zenn.dev/redamoon/articles/article38-cursor-skills-rules-commands</a></li></ul></section></article>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/redamoon/articles/article38-cursor-skills-rules-commands" rel="noopener" target="_blank">https://zenn.dev/redamoon/articles/article38-cursor-skills-rules-commands</a></li>
+<li><a href="https://x.com/i/web/status/2067986260803645898" rel="noopener" target="_blank">https://x.com/i/web/status/2067986260803645898</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与
