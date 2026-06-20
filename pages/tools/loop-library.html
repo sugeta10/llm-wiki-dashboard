@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>private-mcp-tunnels - LLM Wiki</title>
+<title>loop-library - LLM Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -23,36 +23,37 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </style>
 </head>
 <body>
-<div class="cat-band" style="background:#bc8cff"></div>
+<div class="cat-band" style="background:#58a6ff"></div>
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
-  <h1>private-mcp-tunnels</h1>
-  <div class="meta">concepts/private-mcp-tunnels · concepts · <span title="2026-05-28">3週間前</span></div>
-  <article><h1>Private MCP Tunnels（OpenAI）</h1>
-<p><strong>Private MCP Tunnels</strong> は、企業のネットワーク内に置いたプライベートMCPサーバーを、ChatGPT・Codex・Responses APIからアウトバウンドのみのHTTPS接続で利用できるようにするOpenAIのセキュアトンネル機能。</p>
-<p>公式ドキュメント: https://developers.openai.com/api/docs/guides/secure-mcp-tunnels</p>
-<h2>仕組み</h2>
-<pre><code>[社内ネットワーク内のMCPサーバー]
-         ↓ アウトバウンドHTTPS（外向きのみ）
-[OpenAIトンネルエンドポイント]
-         ↓
-[ChatGPT / Codex / Responses API]
-</code></pre>
+  <h1>loop-library</h1>
+  <div class="meta">tools/loop-library · tools · <span title="2026-06-20">今日</span></div>
+  <article><h1>Loop Library</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 今すぐ使えるエージェントループの厳選カタログ。ループを探す・自分のループを投稿する・"tokenmaxx"（トークンを惜しまず回す）を掲げる、Forward Future（Matthew Berman）発のリソース。</p>
+</blockquote>
+<p><strong>Loop Library</strong> は、すでに動くエージェントループ（スケジュールでエージェントを起動し自分に食わせる自動化パターン。<a href="../concepts/loop-engineering.html">loop-engineering</a> 参照）を集めた公開カタログ。利用者は登録済みのループを探して流用でき、自分が作ったループを投稿して共有もできる。ループエンジニアリングの「再利用単位」を、個人のリポジトリ内でなくコミュニティ規模で蓄積・配布する層にあたる。</p>
 <ul>
-<li>MCPサーバーはインターネットに直接公開しなくていい</li>
-<li>アウトバウンドのみのHTTPS接続 → ファイアウォールルール変更が最小限</li>
-<li>ChatGPT・Codex・Responses APIすべてから接続可能</li>
+<li>URL: https://signals.forwardfuture.ai/loop-library/</li>
+<li>提供: Forward Future（Matthew Berman / @MatthewBerman）</li>
 </ul>
-<h2>意義</h2>
-<p>既存のMCP設計では、MCPサーバーがパブリックに到達可能である必要があった（または社内クライアントのみに限定する必要があった）。Private MCPトンネルにより、機密性の高い社内データ（顧客DB・社内API・独自知識ベース等）を持つMCPサーバーを、セキュリティを保ちながらOpenAI製品に接続できるようになる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-18 @MatthewBerman: 「Loop Library をローンチした。今すぐ使える厳選ループのリスト。ループを見つけ、自分のを投稿し、tokenmaxx」と告知（X bookmark 6,734・impression 757K、2026-06-20時点）。カタログ収録ループの品質・件数は未確認。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>収録ループは <a href="../concepts/loop-engineering.html">loop-engineering</a> の4条件テスト（繰り返し性・自動検証・トークン予算・シニア相当ツール）を満たすものに絞られているか。流用前に自分で4条件チェックすべきか。</li>
+<li>自分のwiki ingestループ（launchd）をこのカタログ形式の雛形に落とし込めるか。投稿する価値のある汎用ループはどれか。</li>
+</ul>
 <h2>関連</h2>
 <ul>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a> — Anthropic側のMCPプロトコル実装・比較対象</li>
-<li><a href="../companies/openai.html">openai</a> — この機能の提供元</li>
-<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — MCPの認可・セキュリティ設計の概念</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
-<li><a href="../companies/openai.html">openai</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059703536825565499" rel="noopener" target="_blank">https://x.com/i/web/status/2059703536825565499</a></li></ul></section></article>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — エージェントループを設計する工学（5段階進化史・6構成要素・MVL・失敗パターン）</li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — ループの停止条件を担う <code>/goal</code>（収録ループの構成要素になりうる）</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — 複数ループ/エージェントを編成するパターン</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2067682870009925736" rel="noopener" target="_blank">https://x.com/i/web/status/2067682870009925736</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与

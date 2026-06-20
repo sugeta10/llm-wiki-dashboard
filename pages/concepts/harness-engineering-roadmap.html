@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>harness-engineering-roadmap - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>harness-engineering-roadmap</h1>
+  <div class="meta">concepts/harness-engineering-roadmap · concepts · <span title="2026-06-20">今日</span></div>
+  <article><h1>ハーネス工学の構築ロードマップ（14ステップ・3階層）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 1体のエージェントから自己改善システムまでを順序立てて積み上げるハーネス構築ロードマップ。ループは「タイマー付きのハーネス」にすぎず、出力が良いか屑かを決めるのは一階下——選んだモデル・許したツール・書いたコンテキスト・足したレビュア・残した記憶——で決まる。</p>
+</blockquote>
+<pre><code class="language-mermaid">flowchart TD
+  subgraph System[&quot;System（複利する）&quot;]
+    Mem[&quot;Memory\n状態ファイル/Linear&quot;]
+    Close[&quot;Close the loop\n出力→教訓→skill→次が鋭くなる&quot;]
+  end
+  subgraph Loop[&quot;Loop（タイマーで回る）&quot;]
+    LoopRun[&quot;/loop + /goal\n独立grader&quot;]
+    DynWF[&quot;Dynamic workflows\nagent()/parallel()/pipeline()&quot;]
+  end
+  subgraph Harness[&quot;Harness（静的な runtime）&quot;]
+    Ctx[&quot;CLAUDE.md\n事実≦500トークン&quot;]
+    Set[&quot;settings.json\n許可・モデル&quot;]
+    Sub[&quot;Subagents\n書き手/採点者の分離&quot;]
+    Skill[&quot;Skills\n再利用手順&quot;]
+    Hook[&quot;Hooks\n決定論的enforcement&quot;]
+  end
+  Harness --&gt; Loop --&gt; System
+</code></pre>
+<p>ハーネスとは1体のエージェントが動く環境そのもの——思考するモデル・届くツール・それらの許可・起動時に読むコンテキストの4つが全表面で、subagents・hooks・memoryはこの4つのどれかを形づくる手段にすぎない。エージェントは「ツールを選び、実行し、結果を見て次を決める」while True ループであり、同じモデルでもハーネスが違えば別物になる。</p>
+<p><strong>3階層を混同しないことが出発点</strong>。多くの「エージェント設定がぐちゃぐちゃ」問題は3つの階を取り違えることから来る。ハーネス＝1体が住む静的なランタイム（モデル・ツール・許可・コンテキスト）。ループ＝そのハーネスをタイマーで起動し補助エージェントを生成し自分に食わせるもの。システム＝ループに複利するメモリが付いて「毎ランが次のランを鋭くする」状態。実務版の役割分担は、不変の事実はコンテキストへ・強制はhooksへ・手順はskillsへ・隔離はsubagentsへ。enforcementをCLAUDE.mdに書く、手順でコンテキストを膨らませる、といった配置ミスが一貫性のない高コストなエージェントの根本原因。なお、ハーネス全体はプロジェクト直下の <code>.claude/</code> 一つに収まり、「なぜ各ファイルが存在するか説明できる」範囲に小さく保つのが整然さの分かれ目。説明できないルール・hook・subagentは消す。</p>
+<h2>順序が教訓——積み上げの順番</h2>
+<p>ロードマップの核心は個々の部品でなく<strong>積む順序</strong>にある。順序を飛ばすと本番で壊れる。</p>
+<ol>
+<li><strong>クリーンなハーネスで手動1回を信頼できるものにする</strong>。デフォルトハーネス（空）は一回限りのタスクには十分だが、繰り返すなら毎セッション「プロジェクトを一から再導出・安全な操作にも許可待ち・終了で全忘却」のコストを払い続ける。</li>
+<li><strong>コンテキストと許可を足す</strong>。<code>CLAUDE.md</code> は毎セッション読まれる「立っている事実」だけに絞り、500トークン以下に保つ（手順はskillへ、フォルダ固有のルールは <code>rules/</code> へ）。<code>settings.json</code> は「取り消しが安いものは自動承認、高いもの（force-push・ファイル削除・秘密情報）は拒否か確認」で一度だけ決める。</li>
+<li><strong>レビュアsubagentを足す</strong>。subagentの最大の価値は並列性でなく、メイン文脈にノイズを入れないこと。最も価値があるのは「メインの出力を別の新鮮な文脈でチェックするレビュア」——自分の出力を自分で採点すると甘くなる。この書き手vs採点者の分離が、上のループすべてを信頼に足るものにする。</li>
+<li><strong>hooksで決定論的enforcement</strong>。hookはエージェントのライフサイクルの固定点で発火するシェルコマンドで、exit code 2でアクションをブロックできる。CLAUDE.mdは「提案」、hookは「強制」でモデルは言い逃れできない。危険コマンドを止めるPreToolUseゲートと、編集後に必ず整形するPostToolUseフォーマッタの2つがほぼ全ハーネスで元を取る。鋭いhookを1〜2個、20個ではない。</li>
+<li><strong>memoryで複利にする</strong>。エージェントはラン間で全忘却するが、ハーネスは覚えていられる。<code>agent-memory/</code> のMarkdownやLinearボードに「何を試したか・効いたか・失敗したか」を記録し、ランの終わりに書いてから離れ・始まりに読む。一般化した教訓はskillへ昇格させ全プロジェクトに効かせる。</li>
+<li><strong>そのあとでループ</strong>。設定済みハーネスをタイマーで回すのが <code>/loop</code>、<code>/goal</code> と組めば独立graderが客観条件で停止判定する。ループは知能を足さない——ハーネス内のルール・レビュアsubagent・安全hookを再利用するだけ。良いハーネスはループを瑣末にする。さらに複雑なタスクには、Claudeがその場で <code>agent()</code>/<code>parallel()</code>/<code>pipeline()</code> のJavaScriptを書く動的ワークフローがあり、これはハーネスが定義したsubagentとskillを編成する指揮者にすぎない。</li>
+</ol>
+<h2>ループを閉じる——自己改善の正体</h2>
+<p>3階層がかみ合うのがこの段。各ランが出力を生み、レビュアsubagentがそれをチェックし、結果（合否・学び）がmemoryに書かれ、一般教訓がskillへ蒸留され、次のランが鋭いskillとリッチなmemoryを継承する。<strong>モデルは一度も変わらない、周りのハーネスが鋭くなる</strong>。これが正直な意味の「自己改善」——モデルが学ぶのでなく、ハーネスが蓄積する。これは <a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> の「会話履歴→Issue→PRの3段ループ」や <a href="../concepts/self-refining-skills.html">self-refining-skills</a> のLESSONS.mdアプローチと同じ骨格。</p>
+<h2>ハーネスを腐らせる8つの失敗</h2>
+<ul>
+<li><strong>デフォルトで走る</strong>: コンテキストもルールも記憶もなく、毎セッション再導出。</li>
+<li><strong>肥大したCLAUDE.md</strong>: 手順を立っている文脈に詰め込み毎ランを膨らませる。skillへ移す。</li>
+<li><strong>enforcementをhookでなくCLAUDE.mdに置く</strong>: モデルは提案を無視できる、exit 2のhookは無視できない。</li>
+<li><strong>1体が書いて自分で採点</strong>: 新鮮な文脈のレビュアsubagentを足す。</li>
+<li><strong>記憶がない</strong>: 毎ランがゼロから。状態ファイルが明日の再開を作る。</li>
+<li><strong>悪いハーネスにループを巻く</strong>: ループは屑を速く量産するだけ。土台を先に。</li>
+<li><strong>20個のhook</strong>: 鋭い1〜2個が、誰も理解できない山に勝つ。</li>
+<li><strong>スキャンせず共有</strong>: 漏れた秘密と過大な許可がインストールした全員に伝播する。</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-16 @0xCodez（二次まとめ・Substack）: 「10人中9人がデフォルトハーネス（ルール・subagent・hook・memoryなし）でClaude Codeを走らせ、なぜループが屑を生むのか不思議がる」と主張。ループに注目が集まる一方その土台が見られていないという問題提起。</li>
+<li>2026-06-16 @0xCodez: Addy Osmaniの長文ループ論を引用——「ループ工学はハーネスの一階上に座る。ハーネスは1体のエージェントが動く環境、ループはそのハーネスがタイマーで動き補助を生成し自分に食わせるもの」。本ロードマップの3階層モデルはこの引用を土台にしている。</li>
+<li>2026-06-16 @0xCodez: 「実務者が日々運用して得た経験則として、メインのメモリファイルは約500トークン以下に保て」と提示（単一ソースの推奨値）。</li>
+<li>2026-06-16 @0xCodez: 結論「ループが栄光を得る、ハーネスが仕事をする。自己改善はモデルの性質では決してなく、あなたが周りに作るハーネスの性質だった」。@0xCodezは <a href="../concepts/loop-engineering.html">loop-engineering</a> の4条件テストの整理者でもあり、本稿はそのループ論の土台＝ハーネス側を扱う対の記事。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このロードマップの「積む順序（手動1回→コンテキスト→レビュア→hook→memory→ループ）」と、自分のwiki ingestループの現状の積み方は一致しているか。飛ばした段はあるか。</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a>（理論：Agent=Model+Harness・5アーティファクト・3陣営）とこの構築ロードマップは、同じ概念の「理論層」と「実装手順層」の関係でよいか。重複と差分はどこか。</li>
+<li>「説明できない部品は消す」を自分の <code>.claude/</code>（skills/hooks/handovers）に適用すると、削除候補はどれか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — ハーネスの理論的全体論（Agent=Model+Harness・5アーティファクト・3陣営・5原則・Build to Delete）。本ページはその「構築手順」版</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — ハーネスの一階上＝ループ層。@0xCodez整理の4条件テスト・MVL・失敗パターン</li>
+<li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a> — 「ハーネスこそ仕事の本体」の6フェーズ17週ロードマップ（より長い学習計画版）</li>
+<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> — 「ループを閉じる」の具体実装（会話履歴→Issue→Routines→PRの3段）</li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — CLAUDE.mdを事実に絞り行動ルール化する具体例</li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — Step内の「動的ワークフロー（agent/parallel/pipeline）」の機能詳細</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — レビュアsubagent・fan-out等のオーケストレーションパターン</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066867539305459732" rel="noopener" target="_blank">https://x.com/i/web/status/2066867539305459732</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
