@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-instruction-methods - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-instruction-methods</h1>
+  <div class="meta">concepts/claude-code-instruction-methods · concepts · <span title="2026-06-20">今日</span></div>
+  <article><h1>Claude Code 指示の7手段（CLAUDE.md / rules / skills / subagents / hooks / output styles / append）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Claudeの振る舞いを制御する7手段を「いつコンテキストに読まれるか・コンパクションで生き残るか・どれだけ強い権威を持つか・トークンコスト」で並べた、Anthropic公式の格納先決定フレーム。同じ指示でもこの軸で要件が決まれば置き場所が一意になる。</p>
+</blockquote>
+<p>何でもCLAUDE.mdに書くと壊れる、という観察が出発点。共有リポのCLAUDE.mdは各チームが追記し誰も消さないため肥大し、全エンジニアの全セッションに無関係な行まで毎回ロードされてトークンを食い、本当に効かせたい指示への遵守を薄める。だから本質は7機能のスペック暗記ではなく、<strong>各指示を「ロードのタイミング・永続性・権威」が要件に合う手段へ振り分ける</strong>こと。下表が骨子で、コスト列はそのまま「肥大したCLAUDE.mdから何を逃がすべきか」の地図になる。</p>
+<pre><code class="language-mermaid">mindmap
+  root[&quot;指示をどこに置くか&quot;]
+    事実・規約（常時必要）
+      CLAUDE.md root
+      Rules path-scoped
+    手続き・チェックリスト
+      Skills
+    隔離したい副タスク
+      Subagents
+    決定論的に強制したい
+      Hooks
+      Permissions / Managed settings
+    トーン・役割
+      Output styles
+      append-system-prompt
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>手段</th>
+<th>いつロード</th>
+<th>コンパクション挙動</th>
+<th>コスト</th>
+<th>使いどころ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CLAUDE.md（root）</strong></td>
+<td>セッション開始、全期間常駐</td>
+<td>メモ化（圧縮後に再読込）</td>
+<td>高</td>
+<td>ビルドコマンド・構成・規約・チーム規範</td>
+</tr>
+<tr>
+<td><strong>CLAUDE.md（サブディレクトリ）</strong></td>
+<td>そのディレクトリ配下を読んだ時</td>
+<td>触り直すまで消える</td>
+<td>低</td>
+<td>サブディレクトリ固有の規約</td>
+</tr>
+<tr>
+<td><strong>Rules</strong>（<code>.claude/rules/</code>）</td>
+<td>開始時（非スコープ）/ ファイル一致時（path-scoped）</td>
+<td>圧縮時に再注入</td>
+<td>中</td>
+<td>横断的な制約（例: APIハンドラはZodで検証）</td>
+</tr>
+<tr>
+<td><strong>Skills</strong>（<code>.claude/skills/</code>）</td>
+<td>名前と説明は開始時、本体は起動時</td>
+<td>起動済みは共有予算まで再注入・古い順に脱落</td>
+<td>低</td>
+<td>手続きワークフロー（デプロイ/リリース手順）</td>
+</tr>
+<tr>
+<td><strong>Subagents</strong>（<code>.claude/agents/</code>）</td>
+<td>名前/説明/ツール一覧は開始時、本体は呼出時のみ</td>
+<td>最終メッセージ（要約）だけ親へ戻る</td>
+<td>低</td>
+<td>隔離した並列・副タスク（深い探索・ログ解析・依存監査）</td>
+</tr>
+<tr>
+<td><strong>Hooks</strong>（<code>settings.json</code>等）</td>
+<td>ライフサイクルイベントで発火</td>
+<td>コンパクションを完全にバイパス</td>
+<td>低</td>
+<td>決定論的自動化（lint・Slack通知・コマンドブロック）</td>
+</tr>
+<tr>
+<td><strong>Output styles</strong>（<code>.claude/output-styles/</code>）</td>
+<td>開始時、システムプロンプトへ注入</td>
+<td>圧縮されない</td>
+<td>高</td>
+<td>役割の大変更（コード assistant→汎用 assistant）</td>
+</tr>
+<tr>
+<td><strong>append-system-prompt</strong></td>
+<td>開始時、CLIフラグで該当起動のみ</td>
+<td>圧縮されない</td>
+<td>中</td>
+<td>トーン・応答長・整形の好み</td>
+</tr>
+</tbody>
+</table>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-06-20: 公式ブログ「Steering Claude Code」（claude.com/blog）が、振る舞い制御の手段を <strong>CLAUDE.md・rules・skills・subagents・hooks・output styles・append-system-prompt の7つ</strong>と整理。各手段は①コンテキストへのロード時点 ②圧縮（compaction）後の生存 ③権威の強さ で性質が決まる。</li>
+<li><strong>CLAUDE.md（root）はメモ化</strong>：セッション開始で読まれキャッシュされ、圧縮時にキャッシュ破棄→再読込で復元する。サブディレクトリのCLAUDE.mdはそのディレクトリ配下を読むまでロードされず、path-scopedルールと同じ圧縮挙動（触り直すまで消える）。Anthropic推奨は<strong>CLAUDE.mdを200行未満に保ち、オーナーを置きコードのようにレビュー</strong>する。</li>
+<li><strong>Skillsは名前と説明だけが開始時にロードされ、本体は起動時（スラッシュコマンドかタスク自動一致）のみ</strong>。圧縮時は起動済みSkillを全体共有予算まで再注入し、古いものから脱落する。</li>
+<li><strong>Subagentsの本体は親会話に一切入らない</strong>。独立コンテキストで走り、戻るのは最終メッセージ＋メタデータのみ。最大5階層までネスト可、dynamic workflowsで数百の背景エージェントを編成できる。隔離が要らず各ステップを見て操舵したいならSkill、中間結果で会話を汚したくないならSubagentを選ぶ。</li>
+<li><strong>Output stylesはデフォルトのシステムプロンプトを置き換える</strong>（<code>keep-coding-instructions: true</code> で回避可）。既定では「ソフトウェアエンジニア支援」という役割や変更スコープ・コメント方針・検証習慣などの重要指示まで落ちる。書く前に組込みスタイル（Proactive / Explanatory / Learning）の検討を推奨。</li>
+<li>決定論が要る場面の指針：「毎回XしたらY」は指示でなく<strong>hook</strong>、「絶対Xするな」というガードレールは指示でなく<strong>hook＋permissions</strong>（<code>PreToolUse</code> フックがexit code 2で呼び出しをブロック）。組織全体の強制は上書き不能な <strong>managed settings</strong> のみが担える。非スコープのRuleは「中身をCLAUDE.mdに書く」のと機構的に同一（常時ロード・常時課金）なので、<code>src/api/**</code> 限定なら必ず <code>paths:</code> でスコープする。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このwikiの CLAUDE.md は今どの行が「常時必要な事実」で、どの行が「手続き（Skill化すべき）」「決定論的強制（hook/permission化すべき）」か。7手段の地図で棚卸しすると何がCLAUDE.mdから逃がせるか。</li>
+<li>「200行未満・オーナー・コードレビュー」基準で見て、現状のCLAUDE.md（役割ルーター＋操作手順）は肥大の兆候があるか。操作手順は既に各スキルが正本なので、CLAUDE.md側は索引に徹せるか。</li>
+<li>launchd auto-sync の暴走（feedback_autosync_race）のような「絶対こうなってほしくない」案件は、CLAUDE.mdの注意書きでなくhook/permissionで決定論的に止めるべきではないか。</li>
+<li>output styles を入れると software-engineer 既定が落ちる、という指摘は重要。このリポでスタイル変更を避け append-system-prompt で足すだけにする線引きをルール化できるか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a> — Cursorの5手段を「適用タイミング×再利用範囲×コンテキスト分離」で整理した姉妹フレーム。本ページはClaude Code版で、軸が「ロード時点×圧縮生存×権威」に寄る（観察ログで既にこの記事の到来を予告していた）</li>
+<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> — Memory/Slash/Permissions/MCPの4層（Enterprise→Global→Project→local）。本ページの手段別軸と直交する別の整理軸</li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a> — CLAUDE.mdを「永続契約」と捉え5領域に整理するフレーム。本ページの「CLAUDE.mdは事実・索引に徹せ」と同方向</li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — CLAUDE.md行動ルール12条。常時ロードの指示として置くものの具体例</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — Skill＝永続的職務定義。7手段のうち「手続き」を担う機構の詳細</li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a> — 独立コンテキスト・フォーク起動の実装側</li>
+<li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a> — Hooksの非同期サブエージェント起動パターン（決定論的自動化の応用）</li>
+<li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a> — 指示文（CLAUDE.md等）と実行機構（skills/agents/hooks/MCP）は別物という線引き。本ページの振り分け判断の前提</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a></li>
+<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/steering-claude-code-skills-hooks-rules-subagents-and-more" rel="noopener" target="_blank">https://claude.com/blog/steering-claude-code-skills-hooks-rules-subagents-and-more</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与
+document.querySelectorAll('pre').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
