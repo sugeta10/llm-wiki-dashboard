@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,14 +28,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>papers-cli</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="papers-cli.md">Markdownで表示</a></div>
   <div class="meta">tools/papers-cli · tools · <span title="2026-06-18">3日前</span></div>
   <article><h1>papers-cli</h1>
 <p>arXiv・J-STAGE・IRDB（機関リポジトリ）から学術論文を検索・ダウンロード・管理する.NET製CLIツール（作者: supermomonga）。検索→PDF取得→ローカルでのメタデータ管理までを1本のコマンドで完結させる。</p>
-<pre><code class="language-mermaid">flowchart LR
+<pre class="mermaid">flowchart LR
   Search[&quot;検索（arxiv / jstage / irdb）&quot;] --&gt; Download[&quot;PDFダウンロード&quot;]
   Download --&gt; Store[&quot;SQLiteメタデータ + PDF保存&quot;]
-  Store --&gt; Manage[&quot;list / show / delete&quot;]
-</code></pre>
+  Store --&gt; Manage[&quot;list / show / delete&quot;]</pre>
 <h2>特徴</h2>
 <ul>
 <li><strong>単一ソース検索＋ページング</strong> — arXiv / J-STAGE / IRDB を <code>--source</code> で切り替え。<code>--category</code> <code>--author</code> <code>--from</code> <code>--to</code> <code>--sort-key</code> <code>--limit</code> <code>--page</code> で絞り込む。</li>
@@ -102,12 +103,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li><a href="../tools/notebooklm-py.html">notebooklm-py</a> — 論文・ソースのバッチ取得という近い用途。papers-cliでPDFを集め、notebooklm-pyで分析に流すパイプラインが組める</li>
 <li><a href="../concepts/research-methodology.html">research-methodology</a> — 「スレッド要約でなく論文本文を読む」という情報源の質の規範を、PDF取得の自動化で下支えする</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/research-methodology.html">research-methodology</a></li>
-<li><a href="../tools/notebooklm-py.html">notebooklm-py</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/supermomonga/papers-cli" rel="noopener" target="_blank">https://github.com/supermomonga/papers-cli</a></li></ul></section></article>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/notebooklm-py.html">notebooklm-py</a></li>
+<li><a href="../concepts/research-methodology.html">research-methodology</a></li>
+<li><a href="../public-site/pages/tools/notebooklm-py.html">notebooklm-py</a></li>
+<li><a href="../public-site/pages/public-site/pages/tools/notebooklm-py.html">notebooklm-py</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/supermomonga/papers-cli" rel="noopener" target="_blank">https://github.com/supermomonga/papers-cli</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -123,5 +127,62 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># papers-cli
+
+arXiv・J-STAGE・IRDB（機関リポジトリ）から学術論文を検索・ダウンロード・管理する.NET製CLIツール（作者: supermomonga）。検索→PDF取得→ローカルでのメタデータ管理までを1本のコマンドで完結させる。
+
+```mermaid
+flowchart LR
+  Search[&quot;検索（arxiv / jstage / irdb）&quot;] --&gt; Download[&quot;PDFダウンロード&quot;]
+  Download --&gt; Store[&quot;SQLiteメタデータ + PDF保存&quot;]
+  Store --&gt; Manage[&quot;list / show / delete&quot;]
+```
+
+## 特徴
+
+- **単一ソース検索＋ページング** — arXiv / J-STAGE / IRDB を `--source` で切り替え。`--category` `--author` `--from` `--to` `--sort-key` `--limit` `--page` で絞り込む。
+- **PDFダウンロード＋SQLiteメタデータ管理** — `source:id` 形式（`arxiv:2301.00001`）やURLで指定。複数同時・`--format pdf,source`・`--force` 再取得に対応。
+- **リッチなターミナルUI** — Spectre.Console による表・パネル・進捗バー表示。
+- **`--json` 出力** — スクリプト連携用。`search --json | download --stdin` で検索結果をそのままダウンロードにパイプできる。
+- **XDG Base Directory準拠** — 設定・DB・PDF保存先を環境変数で制御。
+
+## 対応ソース
+
+| ソース | 対象 | API |
+|---|---|---|
+| `arxiv` | arXivプレプリント | arXiv API（Atom Feed） |
+| `jstage` | J-STAGE論文 | J-STAGE WebAPI |
+| `irdb` | 機関リポジトリ | CiNii Research（IRDB） |
+
+## ストレージ
+
+| 種別 | パス |
+|---|---|
+| 設定ファイル | `$XDG_CONFIG_HOME/papers-cli/config.toml` |
+| データベース | `$XDG_DATA_HOME/papers-cli/papers.db` |
+| PDF保存先 | `~/papers/{source}/`（設定可能） |
+
+## 問い
+
+- `search --json | download --stdin` のパイプを起点に、arXiv論文を自動取得 → [[tools/notebooklm-py]] でNotebookLMに流す → 要約を `wiki/papers/` に落とす経路を組めるか。
+- J-STAGE・IRDB対応は日本語論文の収集に効く。本wikiの `papers/` カテゴリを日本語研究で厚くする供給ラインになるか。
+
+## 関連
+
+- [[tools/notebooklm-py]] — 論文・ソースのバッチ取得という近い用途。papers-cliでPDFを集め、notebooklm-pyで分析に流すパイプラインが組める
+- [[concepts/research-methodology]] — 「スレッド要約でなく論文本文を読む」という情報源の質の規範を、PDF取得の自動化で下支えする
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
 </body>
 </html>

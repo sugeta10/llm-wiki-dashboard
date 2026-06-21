@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-agent-governance</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-agent-governance.md">Markdownで表示</a></div>
   <div class="meta">concepts/ai-agent-governance · concepts · <span title="2026-05-09">1ヶ月前</span></div>
   <article><h1>AIエージェントガバナンス</h1>
 <p>本番環境でAIエージェントを運用する際の認可・実行制御の設計パターン。MCP認可と外部ポリシーを別レイヤーとして扱うことが重要。</p>
@@ -105,14 +107,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a>（エージェント活用の基盤）</li>
 <li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a>（IdP認証をCLI/MCPで共有し人間とAIを同一認可経路に乗せる設計）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
 <li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../tools/openai-mcp-tunnel.html">openai-mcp-tunnel</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/timakin/n/n4278aa561ff3?sub_rt=share_b" rel="noopener" target="_blank">https://note.com/timakin/n/n4278aa561ff3?sub_rt=share_b</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -128,5 +131,80 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># AIエージェントガバナンス
+
+本番環境でAIエージェントを運用する際の認可・実行制御の設計パターン。MCP認可と外部ポリシーを別レイヤーとして扱うことが重要。
+
+## MCP認可の位置づけ（ゲートウェイレイヤー）
+
+**MCP Authorization**（OAuth 2.1ベース）は「誰が、どのMCPサーバーに、どのトークンでアクセスできるか」を扱う。
+
+ただし、MCPサーバーへのアクセス認可と、エージェントが生成した個々の操作が業務上実行されてよいかは別問題：
+
+- Salesforce MCPに正しくOAuth接続できても → 「この顧客レコードを更新してよいか」は決まらない
+- GitHub MCPで認可されていても → 「main branchへの変更・リリースタグ打ちが許可されるか」は別
+
+MCP認可はゲートウェイの認可（誰がサーバーにアクセスできるか）。業務上の操作可否は、そのさらに内側で別のポリシーとして扱う必要がある。
+
+## 外部ポリシーによる実行制御
+
+AWS **Rex**（Trusted Remote Execution）が示す設計思想：
+
+- スクリプト（「何をしたいか」）と **Cedarポリシー**（「何を許可するか」）を分離
+- エージェントが生成した実行内容と、組織が定める許可ポリシーを同じ場所に置かない
+- callerはpolicyを変更できない（実行環境が隔離）
+
+&gt; エージェントにやりたいことを生成させる。ただし、実行できるかどうかは外部ポリシーで決める。
+
+**Cedar**はAWSがオープンソース公開した認可ポリシー言語。principal・action・resource・contextをもとにpermit/forbidを表現する（OPAのRegoに近い位置づけ）。
+
+## 外部ポリシーで扱う要素
+
+| 要素 | 内容 |
+|------|------|
+| 操作種別 | read / suggest / write / delete / spend / deploy |
+| 対象データ | 個人情報、顧客秘密、契約情報、社内機密、公開情報 |
+| 環境 | sandbox、staging、本番 |
+| 実行主体 | ユーザー権限、サービスアカウント、エージェント専用ID |
+| 承認要否 | 自動実行、事前承認、事後レビュー |
+| 監査ログ | 入力、判断、承認者、実行結果、失敗時の処理 |
+| 停止条件 | rate limit、異常検知、権限剥奪、rollback |
+
+## 推奨アーキテクチャ
+
+```
+MCP認可（ゲートウェイ） → 外部ポリシー（実行制御） → Human-in-the-loop（承認フロー）
+```
+
+Human-in-the-loopは「UIでOK？と聞く」だけでは不足。誰が承認すべきか、どの条件なら不要か、承認記録をどこに残すか、後から説明可能かまで設計が必要。
+
+## Rexの限界
+
+Rexが強制できるのはRex runtime内のRex SDK経由操作のみ。以下はカバー外：
+- MCPサーバー経由のSaaS操作
+- ブラウザを通じた管理画面操作
+- 複数ツールをまたぐ業務フロー（CRM読み込み → 契約書作成 → ワークフロー承認 → Slack通知）
+
+Rexは「外部ポリシーで実行を縛る」設計思想の参照例であって、導入すれば企業ガバナンス要件を満たせるわけではない。
+
+## 関連
+
+- [[tools/claude-mcp]]（MCP認可プロトコル）
+- [[concepts/claude-code-security]]（組織展開でのセキュリティ設定）
+- [[concepts/agentic-coding]]（エージェント活用の基盤）
+- [[concepts/idp-shared-cli-mcp]]（IdP認証をCLI/MCPで共有し人間とAIを同一認可経路に乗せる設計）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-managed-agents - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-managed-agents</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-managed-agents.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/tools/claude-managed-agents · other · <span title=""></span></div>
+  <article><h1>Claude Managed Agents</h1>
+<p><a href="../../../../../companies/anthropic.html">anthropic</a> が提供するエージェント管理プラットフォーム。長期実行エージェントのメモリ管理・自己改善・マルチエージェント協調を提供する。</p>
+<h2>主要機能</h2>
+<h3>Dreaming（自己改善型メモリ）</h3>
+<p>スケジュール実行されるプロセスで、過去のエージェントセッションを振り返り、パターンを抽出してメモリを再構成する。</p>
+<ul>
+<li>複数エージェント間で共有された学習内容を統合</li>
+<li>個々のエージェントが見逃すパターンを横断的に発見</li>
+<li>自動更新 or レビュー後更新の2モードを選択可能</li>
+<li>Harvey（法律文書生成）での実績：完了率 約6倍向上</li>
+</ul>
+<h3>Outcomes（評価ループ）</h3>
+<p>成功基準をルーブリック（採点基準）として定義し、別コンテキストの評価エージェントが採点してフィードバックループを形成する。</p>
+<ul>
+<li>エージェントの推論バイアスを排除した独立評価</li>
+<li>標準プロンプトループ比で最大 <strong>+10ポイント</strong> のタスク成功率向上、難問ほど効果大</li>
+<li>docx生成 <strong>+8.4%</strong>、pptx生成 <strong>+10.1%</strong> のファイル生成品質向上（内部ベンチマーク）</li>
+<li>Wisedocs での実績：レビュー速度 50% 向上</li>
+<li>Webhook 通知との組み合わせで非同期ジョブ型実行が可能</li>
+</ul>
+<h3>Multiagent Orchestration（マルチエージェント協調）</h3>
+<p>リードエージェントがタスクを分割し、専門エージェントに委譲する設計。</p>
+<ul>
+<li>各サブエージェントが独自のモデル・プロンプト・ツールを持つ</li>
+<li>共有ファイルシステムで並列作業</li>
+<li>イベントが永続化されるため、エージェント間での状態共有が可能</li>
+<li>Claude Console で全エージェントの行動をトレース可能</li>
+</ul>
+<p>活用事例：
+- <strong>Netflix</strong>: 数百ビルドのログを並列分析し、複数ビルドにまたがるパターンのみを抽出
+- <strong>Spiral by Every</strong>: Haiku がオーケストレーターとして受付・フォローアップを担当し、複数ドラフトは Opus サブエージェントが並列生成。Outcomes でブランドボイス評価ルーブリックをメモリから参照しスコアリング</p>
+<h3>Webhooks</h3>
+<p>エージェントの完了通知を任意のエンドポイントに送信。非同期ワークフローとの統合が容易。</p>
+<h2>Memory + Dreaming の組み合わせ</h2>
+<ul>
+<li><strong>Memory</strong>: 各エージェントが実行中に学習した内容をリアルタイムにキャプチャ</li>
+<li><strong>Dreaming</strong>: セッション間でメモリを精製、エージェント横断で共有知識を統合</li>
+</ul>
+<p>→ 長期稼働・マルチエージェント環境での「組織的学習」を実現する。</p>
+<h2>料金体系</h2>
+<p>「トークン料金 ＋ 稼働時間料金」の2軸。</p>
+<ul>
+<li>トークン料金: 通常の Messages API と同じ（Opus 4.7: 入力$5/出力$25 per 1M）</li>
+<li>稼働時間料金: <strong>$0.08 / session-hour</strong>（待機中は課金なし）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>モデル</th>
+<th>1時間あたりの概算コスト</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Opus 4.7</td>
+<td>約$0.71</td>
+</tr>
+<tr>
+<td>Sonnet 4.6</td>
+<td>約$0.46</td>
+</tr>
+<tr>
+<td>Haiku 4.5</td>
+<td>さらに安価</td>
+</tr>
+</tbody>
+</table>
+<p>ビジネスモデル上の意義: Anthropicが「質問1回ごとに課金するモデル」から「エージェントの稼働時間を売るモデル」へ転換。</p>
+<h2>公開状況（2026-05-09時点）</h2>
+<table>
+<thead>
+<tr>
+<th>機能</th>
+<th>状態</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dreaming</td>
+<td>Research Preview（アクセス申請制）</td>
+</tr>
+<tr>
+<td>Outcomes</td>
+<td>Public Beta</td>
+</tr>
+<tr>
+<td>Multiagent Orchestration</td>
+<td>Public Beta</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>Public Beta</td>
+</tr>
+<tr>
+<td>Webhooks</td>
+<td>利用可能</td>
+</tr>
+</tbody>
+</table>
+<h2>セキュリティ機能（2026-05-19 追加）</h2>
+<p>@ClaudeDevs（公式）が発表した2つのセキュリティ改善：</p>
+<h3>Self-hosted Sandboxes</h3>
+<p>エージェントの実行環境を <strong>自社インフラ</strong> または <strong>マネージドサンドボックスプロバイダー</strong> に置ける。Anthropicのクラウドを通さずに実行でき、データが自社セキュリティ境界内に留まる。</p>
+<h3>MCP Tunnels</h3>
+<p>エージェントがセキュリティ境界内のサービス（社内システム・DB等）に接続できるトンネル。<a href="../../../../../tools/claude-mcp.html">claude-mcp</a> ベースで、ファイアウォールを越えずに内部リソースに安全にアクセス。</p>
+<p>→ エンタープライズの「データを外に出したくない」という要件に直接応える機能。<a href="../../../../../concepts/claude-code-security.html">claude-code-security</a> と組み合わせることで、エンプラ向けClaude展開の完全なセキュリティスタックが構成できる。</p>
+<h2>新機能（2026-06-11 追加）</h2>
+<p>@ClaudeDevs（公式）が発表した2つの機能追加：</p>
+<h3>Scheduled Deployments（スケジュール実行）</h3>
+<p>タスクをスケジュールに従って自動実行する機能。エージェントを定期的に起動し、夜間バグトリアージ・週次レポート生成・日次データ処理などの反復ジョブを無人で回せる（Routines 機能の正式展開）。<a href="../../../../../concepts/loop-engineering.html">loop-engineering</a> のオートメーション要素に対応する。</p>
+<h3>Environment Variables（環境変数）</h3>
+<p>Vault に保存した認証情報をCLI向けに環境変数として公開する機能。エージェントが外部CLIやAPIにアクセスする際の認証情報を安全に注入できる。</p>
+<h2>公式仕様（2026-05-23 公式ドキュメントより）</h2>
+<h3>コアコンセプト</h3>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent</strong></td>
+<td>モデル・システムプロンプト・ツール・MCPサーバー・スキルの定義セット</td>
+</tr>
+<tr>
+<td><strong>Environment</strong></td>
+<td>セッション実行環境の設定（Anthropicマネージドクラウドコンテナ or 自社ホスト）</td>
+</tr>
+<tr>
+<td><strong>Session</strong></td>
+<td>特定タスクを実行しアウトプットを生成するエージェントの実行インスタンス</td>
+</tr>
+<tr>
+<td><strong>Events</strong></td>
+<td>アプリケーション↔エージェント間のメッセージ（ユーザーターン・ツール結果・ステータス更新）</td>
+</tr>
+</tbody>
+</table>
+<h3>組み込みツール</h3>
+<ul>
+<li><strong>Bash</strong>: コンテナ内シェルコマンド実行</li>
+<li><strong>File operations</strong>: Read / Write / Edit / Glob / Grep</li>
+<li><strong>Web search and fetch</strong>: Web検索・URL取得</li>
+<li><strong>MCP servers</strong>: 外部ツールプロバイダーとの接続（<a href="../../../../../tools/claude-mcp.html">claude-mcp</a>）</li>
+</ul>
+<h3>レートリミット（組織単位）</h3>
+<table>
+<thead>
+<tr>
+<th>エンドポイント種別</th>
+<th>上限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作成系（agents・sessions・environmentsなど）</td>
+<td>300 req/min</td>
+</tr>
+<tr>
+<td>読み取り系（retrieve・list・streamなど）</td>
+<td>600 req/min</td>
+</tr>
+</tbody>
+</table>
+<h3>データ保持・コンプライアンス注意事項</h3>
+<ul>
+<li>Managed Agents は<strong>ゼロデータリテンション（ZDR）対象外</strong>・<strong>HIPAA BAA対象外</strong></li>
+<li>セッション・ファイルはAPIから随時削除可能（ユーザー主導）</li>
+</ul>
+<h3>Dreaming（詳細）</h3>
+<p>Dreams のAPI仕様・ライフサイクル・エラー種別の詳細は <a href="../../../../../concepts/managed-agents-dreams.html">managed-agents-dreams</a> を参照。</p>
+<h2>エージェントシステムプロンプト設計フレームワーク</h2>
+<p>信頼性の高いエージェントのシステムプロンプトに含める4要素:</p>
+<ol>
+<li><strong>役割の明示</strong>: 汎用「helpful assistant」でなく具体的な職能を与える（例: 「競合インテリジェンス専門のリサーチアナリスト」）</li>
+<li><strong>成功基準の定義</strong>: 期待するアウトプットの形式・分量・必須の構成要素を明示（例: 「各競合について変更点をカテゴリ別にリストし、推奨セクションを末尾に付ける」）</li>
+<li><strong>禁止事項の明示</strong>: 「データを捏造しない・確認できない情報はflagする」等のバウンダリ</li>
+<li><strong>エッジケース対応</strong>: 「サイトがダウンしている場合はログに残して継続し、最終レポートに不完全性を明記。リトライは最大2回」等</li>
+</ol>
+<p>曖昧なプロンプト → 曖昧なエージェント。精密なプロンプト → 信頼性の高いエージェント。</p>
+<h2>よくある失敗と対策</h2>
+<table>
+<thead>
+<tr>
+<th>症状</th>
+<th>根本原因</th>
+<th>対策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>指示されていないことをやる（やりすぎ）</td>
+<td>プロンプトが曖昧</td>
+<td>「上記のステップのみ実行する」等の明示的制約を追加</td>
+</tr>
+<tr>
+<td>表面的な出力しか出ない（やらなすぎ）</td>
+<td>「完了」の定義が不明確</td>
+<td>期待する成果物の具体例・量・フォーマットを明示</td>
+</tr>
+<tr>
+<td>ハルシネーション</td>
+<td>検証ステップなし</td>
+<td>「データポイントを含める前にソース素材で確認する。確認できなければ除外し不足を明記」</td>
+</tr>
+<tr>
+<td>エッジケースでクラッシュ</td>
+<td>エラー処理未定義</td>
+<td>「〔特定シナリオ〕の場合は〔具体的行動〕」をプロンプトに追加</td>
+</tr>
+</tbody>
+</table>
+<p>→ 最初のエージェントが1度で完璧に動くことは稀。5〜10回のイテレーションでプロンプトを精錬するほど出力品質が上がる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-09 @eng_khairallah1（個人ブログ）: マルチエージェントオーケストレーションで最大20エージェントを並列実行できると主張（公式ドキュメントでの確認未実施）</li>
+<li>2026-06-09 @eng_khairallah1: 夜間バグトリアージ（Linearから取得→優先度付け→Slack投稿）・週次競合分析・日次コンテンツリサーチのようなユースケースで実際に稼働中のエージェントがあると主張</li>
+<li>2026-06-09 @eng_khairallah1: Routines機能で「ラップトップを開かなくてよい」自律型スケジュール実行が可能と主張（Research Preview）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../tools/claude-code.html">claude-code</a></li>
+<li><a href="../../../../../tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../../../../../tools/claude-finance-agents.html">claude-finance-agents</a></li>
+<li><a href="../../../../../companies/anthropic.html">anthropic</a></li>
+<li><a href="../../../../../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../../../../../concepts/claude-code-security.html">claude-code-security</a></li>
+<li><a href="../../../../../concepts/multi-agent-patterns.html">multi-agent-patterns</a>（Pipeline・Fan-Out・Specialist Teamパターンの設計ガイド）</li>
+<li><a href="../../../../../concepts/managed-agents-dreams.html">managed-agents-dreams</a>（Dreams APIの詳細仕様）</li>
+<li><a href="../../../../../tools/ant-cli.html">ant-cli</a> — ターミナルから Managed Agents を起動できる公式CLI</li>
+<li><a href="../../../../../business/dinii-ask-anything.html">dinii-ask-anything</a> — Managed Agentsで社内問い合わせ代行botを構築した実運用事例（KPI付き・自前orchestration7割削減）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../concepts/claude-code-security.html">claude-code-security</a></li>
+<li><a href="../../../../../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li>
+<li><a href="../../../../../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../../../../../business/dinii-ask-anything.html">dinii-ask-anything</a></li>
+<li><a href="../../../../../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Managed Agents
+
+[[companies/anthropic]] が提供するエージェント管理プラットフォーム。長期実行エージェントのメモリ管理・自己改善・マルチエージェント協調を提供する。
+
+## 主要機能
+
+### Dreaming（自己改善型メモリ）
+
+スケジュール実行されるプロセスで、過去のエージェントセッションを振り返り、パターンを抽出してメモリを再構成する。
+
+- 複数エージェント間で共有された学習内容を統合
+- 個々のエージェントが見逃すパターンを横断的に発見
+- 自動更新 or レビュー後更新の2モードを選択可能
+- Harvey（法律文書生成）での実績：完了率 約6倍向上
+
+### Outcomes（評価ループ）
+
+成功基準をルーブリック（採点基準）として定義し、別コンテキストの評価エージェントが採点してフィードバックループを形成する。
+
+- エージェントの推論バイアスを排除した独立評価
+- 標準プロンプトループ比で最大 **+10ポイント** のタスク成功率向上、難問ほど効果大
+- docx生成 **+8.4%**、pptx生成 **+10.1%** のファイル生成品質向上（内部ベンチマーク）
+- Wisedocs での実績：レビュー速度 50% 向上
+- Webhook 通知との組み合わせで非同期ジョブ型実行が可能
+
+### Multiagent Orchestration（マルチエージェント協調）
+
+リードエージェントがタスクを分割し、専門エージェントに委譲する設計。
+
+- 各サブエージェントが独自のモデル・プロンプト・ツールを持つ
+- 共有ファイルシステムで並列作業
+- イベントが永続化されるため、エージェント間での状態共有が可能
+- Claude Console で全エージェントの行動をトレース可能
+
+活用事例：
+- **Netflix**: 数百ビルドのログを並列分析し、複数ビルドにまたがるパターンのみを抽出
+- **Spiral by Every**: Haiku がオーケストレーターとして受付・フォローアップを担当し、複数ドラフトは Opus サブエージェントが並列生成。Outcomes でブランドボイス評価ルーブリックをメモリから参照しスコアリング
+
+### Webhooks
+
+エージェントの完了通知を任意のエンドポイントに送信。非同期ワークフローとの統合が容易。
+
+## Memory + Dreaming の組み合わせ
+
+- **Memory**: 各エージェントが実行中に学習した内容をリアルタイムにキャプチャ
+- **Dreaming**: セッション間でメモリを精製、エージェント横断で共有知識を統合
+
+→ 長期稼働・マルチエージェント環境での「組織的学習」を実現する。
+
+## 料金体系
+
+「トークン料金 ＋ 稼働時間料金」の2軸。
+
+- トークン料金: 通常の Messages API と同じ（Opus 4.7: 入力$5/出力$25 per 1M）
+- 稼働時間料金: **$0.08 / session-hour**（待機中は課金なし）
+
+| モデル | 1時間あたりの概算コスト |
+|-------|----------------------|
+| Opus 4.7 | 約$0.71 |
+| Sonnet 4.6 | 約$0.46 |
+| Haiku 4.5 | さらに安価 |
+
+ビジネスモデル上の意義: Anthropicが「質問1回ごとに課金するモデル」から「エージェントの稼働時間を売るモデル」へ転換。
+
+## 公開状況（2026-05-09時点）
+
+| 機能 | 状態 |
+|------|------|
+| Dreaming | Research Preview（アクセス申請制） |
+| Outcomes | Public Beta |
+| Multiagent Orchestration | Public Beta |
+| Memory | Public Beta |
+| Webhooks | 利用可能 |
+
+## セキュリティ機能（2026-05-19 追加）
+
+@ClaudeDevs（公式）が発表した2つのセキュリティ改善：
+
+### Self-hosted Sandboxes
+エージェントの実行環境を **自社インフラ** または **マネージドサンドボックスプロバイダー** に置ける。Anthropicのクラウドを通さずに実行でき、データが自社セキュリティ境界内に留まる。
+
+### MCP Tunnels
+エージェントがセキュリティ境界内のサービス（社内システム・DB等）に接続できるトンネル。[[tools/claude-mcp]] ベースで、ファイアウォールを越えずに内部リソースに安全にアクセス。
+
+→ エンタープライズの「データを外に出したくない」という要件に直接応える機能。[[concepts/claude-code-security]] と組み合わせることで、エンプラ向けClaude展開の完全なセキュリティスタックが構成できる。
+
+## 新機能（2026-06-11 追加）
+
+@ClaudeDevs（公式）が発表した2つの機能追加：
+
+### Scheduled Deployments（スケジュール実行）
+
+タスクをスケジュールに従って自動実行する機能。エージェントを定期的に起動し、夜間バグトリアージ・週次レポート生成・日次データ処理などの反復ジョブを無人で回せる（Routines 機能の正式展開）。[[concepts/loop-engineering]] のオートメーション要素に対応する。
+
+### Environment Variables（環境変数）
+
+Vault に保存した認証情報をCLI向けに環境変数として公開する機能。エージェントが外部CLIやAPIにアクセスする際の認証情報を安全に注入できる。
+
+## 公式仕様（2026-05-23 公式ドキュメントより）
+
+### コアコンセプト
+
+| 概念 | 説明 |
+|------|------|
+| **Agent** | モデル・システムプロンプト・ツール・MCPサーバー・スキルの定義セット |
+| **Environment** | セッション実行環境の設定（Anthropicマネージドクラウドコンテナ or 自社ホスト） |
+| **Session** | 特定タスクを実行しアウトプットを生成するエージェントの実行インスタンス |
+| **Events** | アプリケーション↔エージェント間のメッセージ（ユーザーターン・ツール結果・ステータス更新） |
+
+### 組み込みツール
+
+- **Bash**: コンテナ内シェルコマンド実行
+- **File operations**: Read / Write / Edit / Glob / Grep
+- **Web search and fetch**: Web検索・URL取得
+- **MCP servers**: 外部ツールプロバイダーとの接続（[[tools/claude-mcp]]）
+
+### レートリミット（組織単位）
+
+| エンドポイント種別 | 上限 |
+|---------|------|
+| 作成系（agents・sessions・environmentsなど） | 300 req/min |
+| 読み取り系（retrieve・list・streamなど） | 600 req/min |
+
+### データ保持・コンプライアンス注意事項
+
+- Managed Agents は**ゼロデータリテンション（ZDR）対象外**・**HIPAA BAA対象外**
+- セッション・ファイルはAPIから随時削除可能（ユーザー主導）
+
+### Dreaming（詳細）
+
+Dreams のAPI仕様・ライフサイクル・エラー種別の詳細は [[concepts/managed-agents-dreams]] を参照。
+
+## エージェントシステムプロンプト設計フレームワーク
+
+信頼性の高いエージェントのシステムプロンプトに含める4要素:
+
+1. **役割の明示**: 汎用「helpful assistant」でなく具体的な職能を与える（例: 「競合インテリジェンス専門のリサーチアナリスト」）
+2. **成功基準の定義**: 期待するアウトプットの形式・分量・必須の構成要素を明示（例: 「各競合について変更点をカテゴリ別にリストし、推奨セクションを末尾に付ける」）
+3. **禁止事項の明示**: 「データを捏造しない・確認できない情報はflagする」等のバウンダリ
+4. **エッジケース対応**: 「サイトがダウンしている場合はログに残して継続し、最終レポートに不完全性を明記。リトライは最大2回」等
+
+曖昧なプロンプト → 曖昧なエージェント。精密なプロンプト → 信頼性の高いエージェント。
+
+## よくある失敗と対策
+
+| 症状 | 根本原因 | 対策 |
+|------|---------|------|
+| 指示されていないことをやる（やりすぎ） | プロンプトが曖昧 | 「上記のステップのみ実行する」等の明示的制約を追加 |
+| 表面的な出力しか出ない（やらなすぎ） | 「完了」の定義が不明確 | 期待する成果物の具体例・量・フォーマットを明示 |
+| ハルシネーション | 検証ステップなし | 「データポイントを含める前にソース素材で確認する。確認できなければ除外し不足を明記」 |
+| エッジケースでクラッシュ | エラー処理未定義 | 「〔特定シナリオ〕の場合は〔具体的行動〕」をプロンプトに追加 |
+
+→ 最初のエージェントが1度で完璧に動くことは稀。5〜10回のイテレーションでプロンプトを精錬するほど出力品質が上がる。
+
+## 観察ログ（未検証）
+
+- 2026-06-09 @eng_khairallah1（個人ブログ）: マルチエージェントオーケストレーションで最大20エージェントを並列実行できると主張（公式ドキュメントでの確認未実施）
+- 2026-06-09 @eng_khairallah1: 夜間バグトリアージ（Linearから取得→優先度付け→Slack投稿）・週次競合分析・日次コンテンツリサーチのようなユースケースで実際に稼働中のエージェントがあると主張
+- 2026-06-09 @eng_khairallah1: Routines機能で「ラップトップを開かなくてよい」自律型スケジュール実行が可能と主張（Research Preview）
+
+## 関連
+
+- [[tools/claude-code]]
+- [[tools/claude-mcp]]
+- [[tools/claude-finance-agents]]
+- [[companies/anthropic]]
+- [[concepts/agentic-coding]]
+- [[concepts/claude-code-security]]
+- [[concepts/multi-agent-patterns]]（Pipeline・Fan-Out・Specialist Teamパターンの設計ガイド）
+- [[concepts/managed-agents-dreams]]（Dreams APIの詳細仕様）
+- [[tools/ant-cli]] — ターミナルから Managed Agents を起動できる公式CLI
+- [[business/dinii-ask-anything]] — Managed Agentsで社内問い合わせ代行botを構築した実運用事例（KPI付き・自前orchestration7割削減）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

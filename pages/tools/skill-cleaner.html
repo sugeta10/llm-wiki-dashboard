@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>skill-cleaner</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="skill-cleaner.md">Markdownで表示</a></div>
   <div class="meta">tools/skill-cleaner · tools · <span title="2026-05-27">3週間前</span></div>
   <article><h1>skill-cleaner</h1>
 <p><strong>skill-cleaner</strong>は、Codex/OpenClawのスキルを監査するNode.js製CLIツール。プロンプトバジェット超過・重複スキル・未使用スキルを検出し、整理を促す。steipete（Peter Steinberger）の <a href="https://github.com/steipete/agent-scripts">agent-scripts</a> リポジトリ内のスキルとして公開。</p>
@@ -65,14 +67,15 @@ node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --
 <li><a href="../tools/obsidian-skills.html">obsidian-skills</a> — kepano製 Obsidian向けAgent Skills集（agentskills.io仕様準拠）</li>
 <li><a href="../tools/gstack.html">gstack</a> — Garry Tan製AIソフトウェアファクトリー（Claude Code拡張・23スキル収録）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/gstack.html">gstack</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 <li><a href="../tools/obsidian-skills.html">obsidian-skills</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 <li><a href="../tools/autoreview.html">autoreview</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/steipete/agent-scripts/blob/main/skills/skill-cleaner/SKILL.md" rel="noopener" target="_blank">https://github.com/steipete/agent-scripts/blob/main/skills/skill-cleaner/SKILL.md</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -88,5 +91,59 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># skill-cleaner
+
+**skill-cleaner**は、Codex/OpenClawのスキルを監査するNode.js製CLIツール。プロンプトバジェット超過・重複スキル・未使用スキルを検出し、整理を促す。steipete（Peter Steinberger）の [agent-scripts](https://github.com/steipete/agent-scripts) リポジトリ内のスキルとして公開。
+
+## 主な機能
+
+- **Skill Budget分析**: GPT-5.5コンテキストサイズの2%をスキル予算として、どのスキルが何トークン消費しているか可視化
+- **重複検出**: 同名スキルや内容が近似したスキルをCodex本体・プラグインキャッシュ・リポジトリ・個人スキルルート横断で検出
+- **未使用候補の検出**: 最近のCodex/OpenClawログを解析し、一定期間使われていないスキルを特定
+- **説明文の最適化候補**: 長すぎる description を検出し、文法緩和でバジェット削減できる箇所を提案
+- **ルートサマリー**: スキルの出所（Codexシステム/プラグイン/個人）と有効/無効状態の一覧
+
+## 実行方法
+
+```bash
+# 基本実行（3ヶ月のログを対象）
+node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --months 3
+
+# ログなし・深掘りなし
+node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --no-logs
+
+# カスタムトークン予算指定
+node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --context-tokens 272000 --budget-percent 2 --no-logs
+
+# 任意のスキルルートを指定
+node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --root ~/Dropbox/boxd/skills --no-logs
+```
+
+## 削除・編集ポリシー
+
+- **提案ファースト**: 変更はユーザーが明示的に求めるまで実行しない
+- **削除候補の優先度**: Codexシステムスキル &gt; プラグインスキル &gt; 個人/リポジトリコピー（上位が残す対象）
+- **保護すべきスキル**: リポジトリポリシーや運用手順をエンコードしたOpenClawメンテナー向けスキルは削除しない
+- **説明文のトリガー名詞を保持**: 製品名・ツール名・アクション名・対象名はバジェット削減でも除去しない
+
+## 関連
+
+- [[concepts/self-refining-skills]] — LLMスキルに自己改善ループを組み込む設計パターン（LESSONS.mdアプローチ）
+- [[concepts/claude-skills]] — Claudeスキルの概念（永続的職務定義ファイル・Claude.ai/Claude Code両対応）
+- [[tools/obsidian-skills]] — kepano製 Obsidian向けAgent Skills集（agentskills.io仕様準拠）
+- [[tools/gstack]] — Garry Tan製AIソフトウェアファクトリー（Claude Code拡張・23スキル収録）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,10 +28,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>codegraph</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="codegraph.md">Markdownで表示</a></div>
   <div class="meta">tools/codegraph · tools · <span title="2026-05-26">3週間前</span></div>
   <article><h1>CodeGraph</h1>
-<p>AIコーディングエージェント（<a href="../tools/claude-code.html">claude-code</a>・<a href="../tools/cursor.html">cursor</a>・<a href="../tools/openai-codex.html">openai-codex</a>・<a href="../tools/hermes-agent.html">hermes-agent</a>）向けの<strong>セマンティックコード知識グラフ</strong>ツール。コードベースを事前インデックス化してSQLiteに保存し、エージェントがgrep/Read探索を省いてグラフに直接クエリできるようにする。<strong>100%ローカル動作・APIキー不要</strong>。</p>
-<p>関連: <a href="../tools/claude-code.html">claude-code</a> / <a href="../tools/cursor.html">cursor</a> / <a href="../tools/openai-codex.html">openai-codex</a> / <a href="../tools/hermes-agent.html">hermes-agent</a></p>
+<p>AIコーディングエージェント（<a href="../tools/claude-code.html">claude-code</a>・<a href="../tools/cursor.html">cursor</a>・openai-codex・<a href="../tools/hermes-agent.html">hermes-agent</a>）向けの<strong>セマンティックコード知識グラフ</strong>ツール。コードベースを事前インデックス化してSQLiteに保存し、エージェントがgrep/Read探索を省いてグラフに直接クエリできるようにする。<strong>100%ローカル動作・APIキー不要</strong>。</p>
+<p>関連: <a href="../tools/claude-code.html">claude-code</a> / <a href="../tools/cursor.html">cursor</a> / openai-codex / <a href="../tools/hermes-agent.html">hermes-agent</a></p>
 <h2>検証済み事実</h2>
 <ul>
 <li>2026-05-24: <strong>平均コスト35%削減・トークン57%削減・速度46%向上・ツール呼び出し71%削減</strong>（7つのOSSリポジトリ・Claude Opus 4.7ヘッドレスで4回実行中央値）</li>
@@ -57,15 +59,15 @@ npx @colbymchenry/codegraph
 cd your-project
 codegraph init -i
 </code></pre>
-<p>インストーラーが対象エージェントを自動検出し、<code>CLAUDE.md</code> / <code>.cursor/rules/</code> / <code>~/.codex/AGENTS.md</code> 等に設定を書き込む。</p><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/openai-codex.html">openai-codex</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
+<p>インストーラーが対象エージェントを自動検出し、<code>CLAUDE.md</code> / <code>.cursor/rules/</code> / <code>~/.codex/AGENTS.md</code> 等に設定を書き込む。</p><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
 <li><a href="../tools/cursor.html">cursor</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2058518896907538932" rel="noopener" target="_blank">https://x.com/i/web/status/2058518896907538932</a></li>
 <li><a href="https://github.com/colbymchenry/codegraph" rel="noopener" target="_blank">https://github.com/colbymchenry/codegraph</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -81,5 +83,54 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># CodeGraph
+
+AIコーディングエージェント（[[tools/claude-code]]・[[tools/cursor]]・[[tools/openai-codex]]・[[tools/hermes-agent]]）向けの**セマンティックコード知識グラフ**ツール。コードベースを事前インデックス化してSQLiteに保存し、エージェントがgrep/Read探索を省いてグラフに直接クエリできるようにする。**100%ローカル動作・APIキー不要**。
+
+関連: [[tools/claude-code]] / [[tools/cursor]] / [[tools/openai-codex]] / [[tools/hermes-agent]]
+
+## 検証済み事実
+
+- 2026-05-24: **平均コスト35%削減・トークン57%削減・速度46%向上・ツール呼び出し71%削減**（7つのOSSリポジトリ・Claude Opus 4.7ヘッドレスで4回実行中央値）
+- 2026-05-24: ベンチマーク対象: VS Code（TS・約1万ファイル）・Excalidraw・Django・Tokio・OkHttp・Gin・Alamofire の7コードベース
+- 2026-05-24: Tokioでの結果: $0.42 vs $2.41（WITH/WITHOUT）、4回呼び出し vs 53回呼び出し
+- 2026-05-24: 19言語以上対応: TypeScript・JavaScript・Python・Go・Rust・Java・C#・PHP・Ruby・C・C++・Swift・Kotlin・Dart・Lua・Luau・Svelte等
+- 2026-05-24: Webフレームワーク14種のルーティング認識: Django・Flask・FastAPI・Express・NestJS・Laravel・Rails・Spring・Gin・Axum・actix・ASP.NET・React Router・SvelteKit等
+- 2026-05-24: MCPサーバーとして動作。提供ツール: `codegraph_context`・`codegraph_trace`・`codegraph_explore`・`codegraph_search`・`codegraph_callers`・`codegraph_callees`・`codegraph_impact`・`codegraph_node`
+- 2026-05-24: ファイルウォッチャー（FSEvents/inotify/ReadDirectoryChangesW）でグラフをリアルタイム同期。設定不要
+
+## 観察ログ（未検証）
+
+- 2026-05-24: 著者による説明: エージェントはgrep/find/Readの探索ループを繰り返す代わりに、`codegraph_context`で領域マップ→`codegraph_explore`で関連ソース取得の2〜3呼び出しで完結する
+- 2026-05-24: 効果の大きさはコードベース規模に比例。小規模リポジトリ（Gin・約150ファイル）では効果が縮小
+
+## インストール
+
+```bash
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh
+
+# npm（Node.js不要バンドル版）
+npx @colbymchenry/codegraph
+
+# プロジェクト初期化
+cd your-project
+codegraph init -i
+```
+
+インストーラーが対象エージェントを自動検出し、`CLAUDE.md` / `.cursor/rules/` / `~/.codex/AGENTS.md` 等に設定を書き込む。
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

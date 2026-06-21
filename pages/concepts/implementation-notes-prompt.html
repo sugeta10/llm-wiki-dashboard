@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>implementation-notes-prompt</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="implementation-notes-prompt.md">Markdownで表示</a></div>
   <div class="meta">concepts/implementation-notes-prompt · concepts · <span title="2026-05-19">1ヶ月前</span></div>
   <article><h1>実装ノート並走プロンプト（Implementation Notes Prompt）</h1>
 <p>LLMに仕様実装を依頼する際、<strong>実装ノートファイルを同時に書き続けさせる</strong>プロンプト手法。Anthropicエンジニアが実践し広まった。</p>
@@ -63,8 +65,8 @@ or interprets the spec, including:
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計全般</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントによるコード生成</li>
 <li><a href="../concepts/ai-teacher-prompt.html">ai-teacher-prompt</a> — 作業後に教師役で理解を補完する姉妹手法（同じ@trq212発・人間をループに残す）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
-<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
 <li><a href="../concepts/ai-teacher-prompt.html">ai-teacher-prompt</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2056415973125796184" rel="noopener" target="_blank">https://x.com/i/web/status/2056415973125796184</a></li>
@@ -72,8 +74,9 @@ or interprets the spec, including:
 <li><a href="https://x.com/i/web/status/2056419378154139656" rel="noopener" target="_blank">https://x.com/i/web/status/2056419378154139656</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -89,5 +92,60 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># 実装ノート並走プロンプト（Implementation Notes Prompt）
+
+LLMに仕様実装を依頼する際、**実装ノートファイルを同時に書き続けさせる**プロンプト手法。Anthropicエンジニアが実践し広まった。
+
+## プロンプト（英語原文）
+
+```
+Implement &lt;SPEC&gt;. As you work, maintain a running implementation-notes.html file
+that captures anything I should know about how the implementation deviates from
+or interprets the spec, including:
+- Decisions you had to make that weren&#x27;t in the spec
+- Things you had to change
+- Tradeoffs you made
+- Anything else I should know
+```
+
+## なぜ有効か
+
+仕様書があっても**曖昧さ・未知の未知（unknown unknowns）**は必ず残る。LLMが実装中に判断した内容を記録させることで：
+
+- 人間がレビュー時に「なぜこうなったか」を追跡できる
+- AIが独断で進む部分を可視化し、人間をループに残す
+- 振り返り・次スプリントの仕様改善に使える
+
+&gt; 「specがあっても必ず曖昧さと未知の未知が出てくる。これでモデルに判断の逃げ道を与えつつ、人間をループに残せる」— @trq212（Anthropicエンジニア）
+
+## 形式
+
+- `implementation-notes.html` が推奨（構造化しやすい）
+- Markdownでも可
+- 実装と**並走**させる点が重要（事後ではなくリアルタイム更新）
+
+## [[concepts/spec-driven-development]] との関係
+
+**Spec-anchored**（実装と並走して書き直す生きたドキュメント）の具体的な実践形。仕様書とは逆方向のドキュメント——「AIが何をどう判断したか」を捕捉する。
+
+## 関連
+
+- [[concepts/spec-driven-development]] — 仕様駆動開発・Spec-anchoredアプローチ
+- [[concepts/prompt-engineering]] — プロンプト設計全般
+- [[concepts/agentic-coding]] — AIエージェントによるコード生成
+- [[concepts/ai-teacher-prompt]] — 作業後に教師役で理解を補完する姉妹手法（同じ@trq212発・人間をループに残す）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

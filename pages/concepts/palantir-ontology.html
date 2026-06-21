@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>palantir-ontology</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="palantir-ontology.md">Markdownで表示</a></div>
   <div class="meta">concepts/palantir-ontology · concepts · <span title="2026-06-04">2週間前</span></div>
   <article><h1>Palantirのオントロジー（動的オントロジー）</h1>
 <blockquote>
@@ -102,15 +104,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a> — リンクグラフによる知識構造化</li>
 <li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a> — データとAIの間に文脈を保持する中間層という同型の発想（6層構造で表現）</li>
 <li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a> — 役割を名詞でなく動詞単位に分解して人とAIへ割り当てる発想が同型</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li>
+<li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a></li>
 <li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li>
-<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li>
-<li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li>
-<li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061460782844694831" rel="noopener" target="_blank">https://x.com/i/web/status/2061460782844694831</a></li></ul></section></article>
+<li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li>
+<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061460782844694831" rel="noopener" target="_blank">https://x.com/i/web/status/2061460782844694831</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -126,5 +129,74 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Palantirのオントロジー（動的オントロジー）
+
+&gt; **TL;DR**: Palantirが企業全体を「世界モデル」として写し取る中間層。名詞（存在）＋動詞（実行）＋動的化（状態遷移・権限・書き戻し）で、データとAIの間に業務文脈を保持する。
+
+AI時代のエンタープライズ競争は「企業固有の文脈（コンテキスト）を誰が握るか」に移りつつある。Salesforce・Microsoft・ServiceNow・Databricksらが既存アプリ（CRM/Office/ITSM/データ基盤）を起点にコンテキストレイヤーを拡張するのに対し、Palantirは**順番が逆**で、最初に「企業全体をどう表現するか」から出発し、その上にアプリが生まれた。データは意味を剥ぎ取られて散らばるため、データとAIの間に業務文脈を保持する層を一枚挟む必要がある——それがオントロジーであり、Palantirはこれを単なる意味づけ（セマンティックレイヤー）ではなく「組織のためのオペレーショナルレイヤー」と定義する。
+
+## オントロジーの2層＋動的化
+
+| 層 | 内容 | 問い |
+|---|---|---|
+| **意味層（名詞）** | エンティティ（Customer/Aircraft/Contract）・関係・属性。散らばった呼称（user/client/individual）を統一エンティティに調停 | 我々の世界に存在するモノは何か？ |
+| **実行層（動詞）** | Renew・Approve・Assign・Schedule Maintenance 等の業務行為をオントロジーの一部としてモデル化 | 何ができるか？ |
+| **動的化（性質）** | 状態遷移（Prospect→Active→Renewal→Churn）・権限・ポリシー・ライフサイクルを織り込む | どう変化し、誰が何を実行できるか？ |
+
+BIのセマンティックレイヤーは名詞（指標定義）で止まり「見る」ためのもの。Palantirは名詞に動詞を組み合わせ「文（sentence）＝意思決定」を表現し、さらに2層に「動き」を与えた点が真の差別化。
+
+## 動的化を支える4要素（四位一体）
+
+- **データ**: あらゆるソースを統一されたオブジェクト・属性・リンクにする（＝名詞）
+- **アクション**: 権限・条件・記録とセットの業務動詞。複雑なものは関数バックドアクションで記述
+- **書き戻し（write-back）**: webhookで外部システムへ反映。「分析して終わり」でなく現実の業務システムを動かすまでを一つのループに含める＝kinetic
+- **アクションログ**: 「いつ・誰が・どんな世界の状態で・何を判断したか」を構造化して残し、次の意思決定の入力に再利用
+
+LLMが見るのはデータベースではなくオントロジー。データ→オントロジー→文脈→より賢い意思決定というフライホイールが回り、各判断が新たなシグナルを生んで還流する。
+
+## 観察ログ（未検証）
+
+- 2026-06-04: Airbus A350（約500万部品・数百チーム・4か国・8工場超）にFoundry/オントロジーを導入し、ボトルネック可視化と優先順位付けで**納入を33%加速**させたとされる（Palantir/Airbus公式資料の二次引用）。後にSkywiseとして業界プラットフォーム化、100社以上が参加・年間8.5億ドル超の収益機会試算。
+- 2026-06-04: Palantirの競争優位の核心は「AIPが優れているから」ではなく「AIが理解できる企業全体のコンテキスト構造を20年以上かけて既に持っていたから」という解釈（@zakiryo1533）。
+- 2026-06-04: オントロジー構築は安くない。組織全体を正確に表現するオントロジーの構築・維持は極めて複雑で継続的更新を要する（批判的論者の指摘）。手厚いコンサル（[[concepts/forward-deployed-engineer]]）を伴うのはこのコストの裏返し。
+
+&gt; 📝 出典は一次情報（Palantir公式ドキュメント・Airbus公開情報）を丁寧に引用したVC（@zakiryo1533）の解説記事。数値は公表値・第三者試算を含み未検証。
+
+## AIスタートアップへの示唆（著者の主張）
+
+1. 「データ統合」ではなく「意思決定」から設計を始める（誰が・どんな制約で・何を判断しているか）
+2. 名詞だけでなく動詞（何を実行できるか）を設計に含める
+3. 「読むだけ」で終わらせず、書き戻しとアクションログで実行・記録までを一つの流れにする
+4. AIエージェントに人間と同じ権限・ガバナンスを継承させる（本番投入の前提条件）
+
+&gt; 競争優位はモデルの賢さでなく「顧客の世界をどれだけ深く、動的に、現実と同期した形でモデル化できるか」という文脈の深さに移る——という結論。
+
+## 問い
+
+- このオントロジー＝中間層の発想は、自分のLLM wiki（[[concepts/llm-wiki]]）にも適用できるか。wikiの `[[リンク]]` グラフは「名詞＋関係」に相当するが、「動詞（アクション）」「状態遷移」をどこまで持たせるべきか。
+- [[concepts/agent-memory-layer]] の「ユーザー所有の単一メモリ層」とオントロジーの「企業の世界モデル」は同じ問題の別表現か、層の粒度が違うのか。
+
+## 関連
+
+- [[concepts/forward-deployed-engineer]] — 顧客現場で世界モデルを組み上げる職種。オントロジーの前提
+- [[concepts/agi-knowledge-moat]] — 競争優位が「知識の占有」から「文脈の深さ」へ移る
+- [[concepts/agent-memory-layer]] — エージェントに渡すコンテキスト層の設計
+- [[business/ai-vertical-integration]] — FDE常駐による垂直統合
+- [[concepts/llm-wiki]] — リンクグラフによる知識構造化
+- [[concepts/openai-data-agent-context-layers]] — データとAIの間に文脈を保持する中間層という同型の発想（6層構造で表現）
+- [[business/talent-to-value-ai]] — 役割を名詞でなく動詞単位に分解して人とAIへ割り当てる発想が同型
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

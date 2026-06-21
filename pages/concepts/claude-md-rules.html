@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-md-rules</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-md-rules.md">Markdownで表示</a></div>
   <div class="meta">concepts/claude-md-rules · concepts · <span title="2026-06-15">6日前</span></div>
   <article><h1>CLAUDE.md 行動ルール設計</h1>
 <p><strong>CLAUDE.md</strong> は <a href="../tools/claude-code.html">claude-code</a> の動作を規定する行動契約ファイル。ウィッシュリストではなく、「この命令でどの失敗モードを閉じるか」を根拠に記述する。</p>
@@ -206,18 +208,19 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a> — 同じKarpathy素材を「永続契約」フレームで非エンジニア向けに5領域21指示へ再構成したもの</li>
 <li><a href="../concepts/ai-session-handover.html">ai-session-handover</a> — AGENTS.md/カスタム指示に「引き継ぎ」エクスポート指示を仕込むパターン</li>
 <li><a href="../concepts/claude-code-task-delegation.html">claude-code-task-delegation</a> — CLAUDE.mdへのルール記述を「環境を設計する」発想の中核に位置づけた活用法50選</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
-<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
 <li><a href="../tools/ccmd.html">ccmd</a></li>
-<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">https://x.com/i/web/status/2053116311132155938</a></li>
+<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
+<li><a href="../concepts/claude-code-task-delegation.html">claude-code-task-delegation</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">https://x.com/i/web/status/2053116311132155938</a></li>
 <li><a href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">https://x.com/i/web/status/2055999112470839383</a></li>
 <li><a href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">https://x.com/i/web/status/2057643942980751527</a></li>
 <li><a href="https://x.com/i/web/status/2065026899861229870" rel="noopener" target="_blank">https://x.com/i/web/status/2065026899861229870</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -233,5 +236,124 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># CLAUDE.md 行動ルール設計
+
+**CLAUDE.md** は [[tools/claude-code]] の動作を規定する行動契約ファイル。ウィッシュリストではなく、「この命令でどの失敗モードを閉じるか」を根拠に記述する。
+
+## Karpathy 発端
+
+2026年1月末、[[people/andrej-karpathy]] が Claude のコーディング問題を3点指摘するスレッドを投稿：
+- **サイレントな誤った前提**: 聞かずに推測して進む
+- **過剰複雑化**: 不要な抽象化・スペキュレーティブ機能の追加
+- **直交的破壊**: 触れる必要のないコードまで変更する
+
+Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → 初日 5,828 stars、2週間で 60,000 ブックマーク、2026年最速成長シングルファイルリポジトリ（120,000 stars）。
+
+## 基本4ルール（Karpathy/Chang）
+
+| ルール | 内容 |
+|------|-----|
+| **Rule 1: Think Before Coding** | 仮定を明示。トレードオフを表面化。推測前に質問。シンプルな代替案を提案する |
+| **Rule 2: Simplicity First** | 問題を解く最小限のコード。不要な抽象化禁止。シニアエンジニアが複雑と呼ぶなら簡略化 |
+| **Rule 3: Surgical Changes** | 必要な部分のみ触れる。隣接コード・コメント・フォーマットを「改善」しない |
+| **Rule 4: Goal-Driven Execution** | 成功基準を定義し達成まで繰り返す。手順指示ではなく成功形を与える |
+
+→ 未管理セッションの失敗モードの約40%を閉じる効果。
+
+## 追加8ルール（May 2026 対応）
+
+30コードベース × 6週間のテストから導出。Karpathy の4ルールが対象としなかった **エージェント運用・マルチステップ問題** に対応。
+
+| ルール | 閉じる失敗モード |
+|------|------------|
+| **Rule 5: 言語タスク以外をモデルに委ねない** | 非確定的な判断（リトライ可否等）にLLMを使うと毎回結果が変わる。決定論的処理はコードで実装する |
+| **Rule 6: ハードトークン予算** | 無制限ループで50,000トークン消費も発生する。セッション・タスク単位でトークン上限を明示する |
+| **Rule 7: 競合は平均化せず表面化** | コードベース内に矛盾するパターンが2つある場合、両方を混ぜた不整合コードを生成する。競合検知時は確認を取る |
+| **Rule 8: 書く前に読む** | 隣接コードを理解せず類似コードを重複作成することがある。新規コード作成前に周辺を必ず読む |
+| **Rule 9: テストは目的ではない** | 「テスト通過」を目標にすると意味のないテスト（定数を返すだけ等）を書く。動作の正しさを検証する目的で書く |
+| **Rule 10: 長時間操作にチェックポイント** | 多ステップリファクタで途中失敗が後工程まで伝播する。Nステップごとに進捗を確認・コミットする |
+| **Rule 11: 慣習はノベルティより優先** | 既存パターンがあるのに独自パターンを導入する。コードベースの既存スタイル・パターンに従う |
+| **Rule 12: 失敗は可視化して隠さない** | 「正常完了」しながら実は失敗（スキップ・定数返却等）していることがある。エラー・スキップは必ず表面化する |
+
+## 測定効果
+
+| 設定 | ミス率 | CLAUDE.md コンプライアンス |
+|-----|-------|----------------------|
+| ルールなし | 41% | — |
+| 基本4ルール | 11% | 78% |
+| 12ルール | 3% | 76% |
+
+コンプライアンスをほぼ維持しながらミス率を追加削減 → 8ルールは4ルールと競合しない。
+
+## 制約・注意事項
+
+- **200行上限**: CLAUDE.md が200行を超えると重要ルールが埋もれコンプライアンスが急落
+- **14ルール上限**: 18ルールでテストするとコンプライアンスが76% → 52%に低下
+- **ルール &gt; 例**: 例はコンテキストを重く消費し過学習を招く。抽象的な命令形ルールの方が効果的
+- **「シニアに」は無意味**: Claude はすでに自己をシニアと評価している。命令形の具体的ルールが有効
+- **capability-agnostic**: ツール依存のルール（「eslintを使え」等）はツール非存在時に無言で失敗する。「コードベースの強制スタイルに従え」のように記述する
+
+## Karpathy 4ルールの限界（May 2026 時点）
+
+| 課題 | 内容 |
+|-----|-----|
+| 長期エージェントタスク | ルールがコード生成の瞬間を対象としており、マルチステップパイプラインを対象外とする |
+| マルチコードベース一貫性 | 「既存スタイルに合わせる」はスタイルが一つであることを前提とする |
+| テスト品質 | 「テスト通過」を成功基準にするため、意味のないテストを書いても合格する |
+| Production vs Prototype | 「シンプリシティファースト」がプロトタイプで必要な探索的コードも制限する |
+
+## ROI試算（2026-05-17時点の推計）
+
+### 観察ログ（未検証）
+
+- 2026-05-17: @0xDepressionn がCLAUDE.md未設定時のコスト試算を公開。開発者1人あたり週$975の無駄（コンテキスト再説明$375/週 + 不要変更リバート$225/週 + 忘却による誤提案$375/週）。5人チームで年$253,500
+- 2026-05-17: GitHub Trendingで #1 を記録（82,000スター・7,800フォーク時点）。セットアップ時間は合計2時間と試算
+- 2026-05-22: 日本語圏にも波及。累計10万スター超えでGitHub Trending #1が継続中（@nobel_824 報告）。「65行のテキストファイルが最速成長シングルファイルリポジトリ」との評価
+- 2026-05-17: CLAUDE.md の3セクション構造を提案: **DEFAULTS**（コンテキスト・スタック・口調）/ **BEHAVIOR**（スコープ・変更確認・プロダクション制限）/ **MEMORY+STACK**（技術選定経緯・MEMORY.md決定ログ・ERRORS.md失敗ログ）
+
+### 検証済み事実
+
+（なし — 上記は個人アカウントの試算。スター数は取得時点の観測値）
+
+## 自律運用での実践知（観察ログ・未検証）
+
+長時間の自律タスクを回す現場では、ミス防止より「捏造とスコープ逸脱を止める」定型文が効くという報告が出ている。
+
+- 2026-06-11 @AI_masaou: [[models/claude-fable-5]] を数時間ぶん回す自律タスクで効く定型文が結局4つに集約されたと投稿。記事への導線つきteaserで本文では2つのみ可視:
+  1. **報告の前に各主張をツールの実行結果と突き合わせて監査させる** → 捏造された進捗報告がほぼ消えると主張。Rule 12（失敗を可視化して隠さない・正常完了を装う問題）を自律ランで強化した形
+  2. **頼んでないことはするな／相談されただけなら直す前に見立てを返せ、と境界を引く** → Rule 3（Surgical Changes）と [[concepts/claude-md-persistent-contract]] の②暴走止め（勝手なアクション禁止・スコープ厳守）に対応
+- 自律実行が長くなるほどコード生成の瞬間を縛る基本ルールより、報告の正直さと境界の維持が支配的になる、という [[concepts/loop-engineering]] のEscalation/Verification設計とも整合する観点。残り2つの定型文は元記事未取得のため捏造せず保留。
+
+## MEMORY.md + ERRORS.md 補助ファイル
+
+[[concepts/claude-md-rules]] の記憶補完として、同リポジトリルートに以下を併置する実践が広がっている：
+
+- **MEMORY.md**: セッション間で持ち越したい意思決定ログ（「PrismaではなくDrizzleを選んだ理由」等）
+- **ERRORS.md**: 過去の失敗パターン記録（Claudeが再度同じ誤提案をするのを防ぐ）
+
+## 関連
+
+- [[people/andrej-karpathy]]
+- [[tools/claude-code]]
+- [[tools/ccmd]] — CLAUDE.md / AGENTS.md / .cursorrules をKarpathy 12ルールで静的採点するブラウザツール
+- [[concepts/prompt-engineering]]
+- [[concepts/agentic-coding]]
+- [[concepts/claude-code-context-hierarchy]] — CLAUDE.mdを含む4種設定の4層階層設計
+- [[concepts/claude-md-persistent-contract]] — 同じKarpathy素材を「永続契約」フレームで非エンジニア向けに5領域21指示へ再構成したもの
+- [[concepts/ai-session-handover]] — AGENTS.md/カスタム指示に「引き継ぎ」エクスポート指示を仕込むパターン
+- [[concepts/claude-code-task-delegation]] — CLAUDE.mdへのルール記述を「環境を設計する」発想の中核に位置づけた活用法50選
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

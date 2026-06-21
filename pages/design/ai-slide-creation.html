@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-slide-creation</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-slide-creation.md">Markdownで表示</a></div>
   <div class="meta">design/ai-slide-creation · design · <span title="2026-06-17">4日前</span></div>
   <article><h1>AIで「刺さる」スライドを作る方法論</h1>
 <blockquote>
@@ -113,14 +115,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — 制約を明示するプロンプト設計の一般形</li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a> — 出力を基準に採点し直す自己検証ループ</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/ai-slide-to-pptx.html">ai-slide-to-pptx</a></li>
-<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-<li><a href="../design/fastview-design.html">fastview-design</a></li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../design/fastview-design.html">fastview-design</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 <li><a href="../design/lt-preparation-guide.html">lt-preparation-guide</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2065745668539650494" rel="noopener" target="_blank">https://x.com/i/web/status/2065745668539650494</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -136,5 +139,69 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># AIで「刺さる」スライドを作る方法論
+
+&gt; **TL;DR**: AIで「刺さるスライド」を作る核心は「主張」と「構造」の先決——「何を言い切るか」を1スライド1文で固めてから6つの構造型に載せ、最後に見た目を磨く手順を守ることで、AIは強力な実現手段になる。
+
+AIにスライド作成を丸投げすると「綺麗なだけで刺さらない」資料が出るのは、AIの能力不足ではなく人間側が**主張と構造を事前に決めていない**からだ。BCGなどのコンサル現場でも言われる「事実やグラフだけのスライドは死にスライド」と同じ原理で、AIは主張のない素材を「それらしい形」に並べるだけになる。1スライド1メッセージ原則と6つの構造型を人間側が決め、AIをその実現手段として使うことでスライドの伝達力が根本から変わる。
+
+## 主張から始める10の急所
+
+スライド作成の順番は「見た目→構造→主張」ではなく「**主張→構造→見た目**」。この逆順が「刺さる資料」と「綺麗なだけの資料」の分水嶺になる。
+
+| 急所 | 核心 |
+|---|---|
+| **1. 主張を決める** | 「この1枚で何を言い切るか」1文のみ。資料作りは考える時間が7割で、ここが決まれば後は一気に楽になる |
+| **2. 基本ルール** | 2軸で並べる・同じ言葉を二度書かない・軸は2つまで・数の大小は図形の大きさで・事実/根拠/解釈を置き場所で分ける |
+| **3. 構造（6型）** | 順番・対比・仕分け・問題と打ち手・原因と結果・結論先出し。主張に合う型を1つ選ぶだけで伝わり方が変わる |
+| **4. グラフ（12選）** | 「差」→棒・「推移」→折れ線・「割合」→棒（円は5項目以下かつ過半判定だけ）・「3軸」→バブル。目的先行で選ぶ |
+| **5. 鉄板パターン** | ビフォーアフター（破線）・ツリー・業界地図・面積で2量を同時表示など繰り返し使える「勝ちパターン」 |
+| **6. 仕上げ** | 主役1点に絞る・視線を左上→右下へ・色は3色まで。足すより削ることで差がつく |
+| **7. 言葉** | 見出しは「〜について」でなく「言い切る・短い・1枚に1つ」。見出しを変えるだけで同じ中身が刺さる |
+| **8. リメイク** | 既存資料の修正は基本ルール照合→AIに直させる。ゼロから作るより実務では多い |
+| **9. 見た目** | 白黒で構造を成立させてから色を足す順番がプロの手順 |
+| **10. 配布** | 経営層のツッコミを先回り・1枚要約を添付・PDF→編集可能PPTに変換まで完了させて武器になる |
+
+## AIへの頼み方（プロンプト設計の原則）
+
+100プロンプトのうち特に重要な「目玉プロンプト」のパターン：
+
+- **生情報→設計図**: 生データを渡して「スライド全体の設計図（主張・根拠・構造）を出して」から着手する。いきなり清書を頼まない
+- **主張を30字で言い切らせる**: 「言いたいことを30字以内・体言止めか断定で言い切る見出しに」。「〜について」では止めないよう制約を明示
+- **メッセージから構造型を選ばせる**: 主張を1文で渡して「6つの構造型（順番/対比/仕分け/問題打ち手/原因結果/結論先出し）のどれに載せるか選んで」
+- **データから最適グラフを選ばせる**: データを渡して「見せたいのが差/推移/割合/3軸のどれかを判断してグラフ型を選んで」
+- **読後ゴールを1文に定義**: 「読んだ相手に最終的にどう動いてほしいかを1文で定義」。目的なしでスライドを作らない
+
+## 観察ログ（未検証）
+
+- 2026-06-13: @uchita_success が元BCGコンサルの「死にスライド」批評をきっかけにこの方法論をまとめたと説明。「資料作成に効く100のプロンプト」を公開（X article）
+- 2026-06-13: @uchita_success による主張「AIスライドが刺さらない原因はAIでなく人間側の主張不在」——この逆順の徹底で15分でたたき台が出来る、と主張（単一ソース）
+
+## 問い
+
+- 「主張→構造→見た目」の手順は自分のwikiページ作成にも応用できるか（TL;DR先決と同じ発想）
+- 6つの構造型のうち「問題と打ち手」「結論先出し」以外をAIに選ばせた場合の精度は実際どうか
+- AIで作った主張が「1文言い切り」の精度を満たすかを[[concepts/eval-loop]]で自動採点できるか
+
+## 関連
+
+- [[design/ai-slide-to-pptx]] — AI生成スライドを編集可能PPTXに変換する手法（完成後の変換、こちらは設計段階の方法論）
+- [[design/fastview-design]] — ファーストビュー設計原則（視線の流れ・情報の優先順位）
+- [[design/lt-preparation-guide]] — LT発表のツール・素材・手順ガイド
+- [[concepts/prompt-engineering]] — 制約を明示するプロンプト設計の一般形
+- [[concepts/eval-loop]] — 出力を基準に採点し直す自己検証ループ
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

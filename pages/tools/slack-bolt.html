@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>slack-bolt</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="slack-bolt.md">Markdownで表示</a></div>
   <div class="meta">tools/slack-bolt · tools · <span title="2026-05-17">1ヶ月前</span></div>
   <article><h1>Slack Bolt</h1>
 <p>Slack Appを構築するための公式フレームワーク。JavaScript（TypeScript）・Java・Pythonの3言語で提供。</p>
@@ -72,11 +74,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a> — 類似のフレームワーク設計（CLI Appのミドルウェア構造）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/claude-harness.html">claude-harness</a></li>
-<li><a href="../business/dinii-ask-anything.html">dinii-ask-anything</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://buildersbox.corp-sansan.com/entry/2024/12/13/000000" rel="noopener" target="_blank">https://buildersbox.corp-sansan.com/entry/2024/12/13/000000</a></li></ul></section></article>
+<li><a href="../business/dinii-ask-anything.html">dinii-ask-anything</a></li>
+<li><a href="../public-site/pages/tools/claude-harness.html">claude-harness</a></li>
+<li><a href="../public-site/pages/business/dinii-ask-anything.html">dinii-ask-anything</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://buildersbox.corp-sansan.com/entry/2024/12/13/000000" rel="noopener" target="_blank">https://buildersbox.corp-sansan.com/entry/2024/12/13/000000</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -92,5 +97,72 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Slack Bolt
+
+Slack Appを構築するための公式フレームワーク。JavaScript（TypeScript）・Java・Pythonの3言語で提供。
+
+## 概要
+
+Slack APIのラッパーで、インタラクティブなSlackアプリ開発を大幅に簡略化する。Incoming Webhookより高度な操作（スレッド返信・ボタン応答・モーダル表示・スラッシュコマンド受信）を型安全に実装できる。
+
+## 主な特徴
+
+### Socket Mode対応
+
+- 公開URLなしで開発環境からSlackと疎通できる
+- `socketMode: true` の1設定のみで有効化
+
+```typescript
+const app = new App({
+  token: process.env.BOT_TOKEN,
+  appToken: process.env.SLACK_APP_TOKEN,
+  socketMode: true,
+});
+```
+
+- Cloud Run / AWS Lambda等での本番運用時はSocket ModeをオフにしてHTTP受信に切り替える（環境変数で切り替え可能）
+
+### TypeScript型定義
+
+- `ViewSubmitAction`・`InputBlock` 等、Slack APIのJSONに対応した型が用意されている
+- 複雑なBlock KitのペイロードをJSON文字列なしで型安全に扱える
+- 単体テストでSlackのリクエスト型を再現してロジックをテスト可能
+
+### グローバルミドルウェア
+
+リクエスト処理の前後に横断的な処理を挟める。OpenTelemetry計装の実装例：
+
+```typescript
+app.use(async ({ payload, next, logger }) =&gt; {
+  await initializeSpan(rootSpanName, async () =&gt; {
+    await next();
+  });
+});
+```
+
+### 日本語ドキュメント
+
+3言語すべてで日本語ドキュメントが用意されている。
+
+## 関連ライブラリ
+
+- `node-slack-sdk` — Slack Web APIを単純に呼び出すだけならこちら。Bolt（App構築フレームワーク）とは用途が異なる
+
+## 関連
+
+- [[tools/claude-code]] — 類似のフレームワーク設計（CLI Appのミドルウェア構造）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

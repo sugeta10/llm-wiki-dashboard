@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-work-folder</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-work-folder.md">Markdownで表示</a></div>
   <div class="meta">concepts/claude-code-work-folder · concepts · <span title="2026-06-01">2週間前</span></div>
   <article><h1>Claude Code 作業フォルダ設計</h1>
 <p>Claude CodeはチャットAIではなく「作業フォルダの中でファイルを読み・編集・保存するAI」であるため、最初に整えるべきはプロンプトより作業場（ディレクトリ構成）だという初心者向けの設計原則（@kawai_design）。素材・参考資料・下書き・完成物が同じ場所に混在すると「何を読み、何を保存するか」が曖昧になり出力も散らかる。先に役割別の「棚」を作ることで、Claudeの参照先・保存先が一意に定まる。</p>
@@ -97,14 +99,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-md-rules.html">claude-md-rules</a>（CLAUDE.mdへの行動ルール記述）</li>
 <li><a href="../concepts/claude-code-task-delegation.html">claude-code-task-delegation</a>（同じ「環境を先に設計する」発想で業務フローを渡す活用法50選）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
 <li><a href="../concepts/claude-code-task-delegation.html">claude-code-task-delegation</a></li>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
 <li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
-<li><a href="../tools/openai-codex.html">openai-codex</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060907716378517739" rel="noopener" target="_blank">https://x.com/i/web/status/2060907716378517739</a></li></ul></section></article>
+<li><a href="../public-site/pages/tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060907716378517739" rel="noopener" target="_blank">https://x.com/i/web/status/2060907716378517739</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -120,5 +123,54 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Claude Code 作業フォルダ設計
+
+Claude CodeはチャットAIではなく「作業フォルダの中でファイルを読み・編集・保存するAI」であるため、最初に整えるべきはプロンプトより作業場（ディレクトリ構成）だという初心者向けの設計原則（@kawai_design）。素材・参考資料・下書き・完成物が同じ場所に混在すると「何を読み、何を保存するか」が曖昧になり出力も散らかる。先に役割別の「棚」を作ることで、Claudeの参照先・保存先が一意に定まる。
+
+これは [[concepts/obsidian-personal-os]] の8フォルダ固定構造（`00-CAPTURE`〜`07-ARCHIVE`）と同じ思想を、Claude Code単体・初心者向けに最小化したもの。両者とも「未整理の受け口」「参照ライブラリ」「生成物の隔離」「削除せずアーカイブへ退避」という原則を共有する。
+
+## 最小構成（`claude-work/`）
+
+| フォルダ | 役割 | Claudeへの指示の例 |
+|---------|------|------|
+| `inbox/` | 未整理の素材（文字起こし・メモ・URL一覧・思いつき）。使うか未定でも全部ここ | — |
+| `reference/` | 参照してほしい情報（読者ペルソナ・タイトル候補・過去記事・ブランドルール・参考リンク）。出力の質は参照素材で変わる | 「reference/ を参照して」 |
+| `draft/` | 下書き（記事案・構成案・確認前の出力）。完成物と混ぜない | — |
+| `output/` | 完成物（note本文・投稿文・提案書）。使える状態のものだけ | 「完成物はoutputへ保存」 |
+| `archive/` | 使い終わったものを削除せず移動。初心者は削除運用をしない方が安全 | 「不要素材はarchiveへ」 |
+| `.claude/skills/` | プロジェクト用の設定・skills | — |
+| `CLAUDE.md` | プロジェクトのルール定義 | — |
+
+## 設計原則
+
+- **役割の分離**: 未整理（inbox）・参照（reference）・途中（draft）・完成（output）を物理的に分け、Claudeの入出力先を明示する。
+- **削除ではなく移動**: 完成・陳腐化したものは`archive/`へ退避。日常操作では参照しない。初心者ほど削除運用を避ける。
+- **増やしすぎない**: 仕事別（note記事・議事録・調査など）にフォルダを足してよいが、最初は最小構成から。
+- **プロンプトより先に棚**: 「作業場が整うほど使いやすくなる」——プロンプト最適化はその後。
+
+## 問い
+
+- この`claude-work/`最小構成と [[concepts/obsidian-personal-os]] の8フォルダ構成のどちらが自分の運用粒度に合うか。inbox/reference/draft/output/archive の5分割で足りるか。
+- `output/`への保存・`archive/`への退避をCLAUDE.mdの運用ルールとして書くと、Claudeが指示なしで守れるか。
+
+## 関連
+
+- [[concepts/obsidian-personal-os]]（8フォルダ固定構造・崩壊しないパーソナルOSの上位版）
+- [[tools/claude-code]]（このフォルダ設計が前提とするツール・`~/.claude/`の実構造）
+- [[concepts/claude-md-rules]]（CLAUDE.mdへの行動ルール記述）
+- [[concepts/claude-code-task-delegation]]（同じ「環境を先に設計する」発想で業務フローを渡す活用法50選）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

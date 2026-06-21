@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-opus-4-7</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-opus-4-7.md">Markdownで表示</a></div>
   <div class="meta">models/claude-opus-4-7 · models · <span title="2026-05-22">1ヶ月前</span></div>
   <article><h1>Claude Opus 4.7</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> の最上位モデル。2026年4月16日リリース。コーディング・画像認識・エージェント系ベンチマークで首位を奪還。</p>
@@ -159,17 +161,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 <li><a href="../tools/hyperframes.html">hyperframes</a>（HTML→動画OSS。実用化の土台となったコード生成モデル世代）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/claude-mythos.html">claude-mythos</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 <li><a href="../tools/hyperframes.html">hyperframes</a></li>
-<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
+<li><a href="../models/claude-mythos.html">claude-mythos</a></li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/n06f6b192ae68" rel="noopener" target="_blank">https://note.com/kajiken0630/n/n06f6b192ae68</a></li>
 <li><a href="https://www.anthropic.com/news/claude-opus-4-7" rel="noopener" target="_blank">https://www.anthropic.com/news/claude-opus-4-7</a></li>
 <li><a href="https://x.com/i/web/status/2057383695557021765" rel="noopener" target="_blank">https://x.com/i/web/status/2057383695557021765</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -185,5 +188,116 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Claude Opus 4.7
+
+[[companies/anthropic]] の最上位モデル。2026年4月16日リリース。コーディング・画像認識・エージェント系ベンチマークで首位を奪還。
+
+## 主要ベンチマーク
+
+| ベンチマーク | スコア | 変化 |
+|------------|-------|------|
+| SWE-bench Verified | 87.6% | +6.8pt |
+| CursorBench | 70% | +12pt |
+| MCP-Atlas | 77.3% | GPT-5.4比 +9pt |
+| Finance Agent v1.1 | 64.4% | — |
+| 画像認識（XBOW UI click） | 98.5% | +44pt（ほぼ人間レベル） |
+| Rakuten-SWE-Bench | 解決数3倍、品質二桁改善 | — |
+
+## 料金（1Mトークンあたり）
+
+- 入力: $5.00 / 出力: $25.00（Opus 4.6から据え置き）
+- **実質値上げ注意**: 新tokenizerにより同じ文でも消費トークンが最大 **1.35倍** に増加
+- 英語・コード中心のワークロードほど影響大。日本語中心は誤差レベル
+- プロンプトキャッシュ読み取り: 入力の10%
+- バッチAPI: 入出力ともに50%オフ
+
+## 画像認識の大幅向上
+
+XBOWベンチで 54.5% → 98.5%（+44pt）。最大画像解像度は長辺2,576px（従来比3倍超、A4相当の画面を丸ごと読める）。スクリーンショットベースのUI操作自動化が実用レベルに到達。
+
+## Opus 4.7向けプロンプト変更点
+
+Opus 4.7は「指示されたことを忠実にやる」方向に調整されており、以前のプロンプトがそのまま使えない場合がある：
+
+1. **指示は「書き切り」が前提**: 「全体的に」「いい感じに」は伝わりにくい。適用範囲を明示する
+2. **トーン・口調は明示で再現**: warmな応答に依存したプロンプトは「親しみやすく共感的な口調で」のように明示が必要
+3. **知能要求の高い用途は `effort` を上げる**: コーディング・エージェント用途は `xhigh`、それ以外の高度な用途は `high` 以上推奨
+
+## 2026-05-13 GA発表：追加情報
+
+### Mythos Previewとの位置づけ
+
+[[models/claude-mythos]]（Mythos Preview）が最高能力・最高安全性のモデルだが、サイバー能力の懸念から一般公開を限定。Opus 4.7は新しいサイバーセーフガードを試験した最初のモデルとして先に一般公開された。
+
+### 新機能・API変更
+
+- **xhigh effort**: `high` と `max` の間の新effortレベル。Claude Codeではデフォルトを `xhigh` に変更
+- **task budgets**（public beta）: 長時間実行でのトークン消費をコントロール
+- **`/ultrareview`**: Claude Codeの新スラッシュコマンド。変更をレビューしてバグ・設計問題をフラグ。Pro/Maxユーザーに3回無料トライアル
+- **auto mode**: Max ユーザーに拡張。Claudeが自律的にパーミッション判断して長時間タスクを実行
+
+### 追加ベンチマーク（GA版）
+
+| ベンチマーク | スコア |
+|------------|-------|
+| GDPval-AA（法律・財務等の経済価値知識業務） | SOTA |
+| CyberGym | 73.8%（Opus 4.6から更新） |
+| SWE-bench Multilingual | Opus 4.6比改善 |
+
+### ファイルシステムベースメモリ
+
+長期・マルチセッション作業でのメモリ運用が改善。重要メモを複数セッションをまたいで記憶し、次タスクで参照できる。
+
+### サイバーセキュリティ用途
+
+セキュリティ専門家向けに **Cyber Verification Program** を設置。申請すると脆弱性リサーチ・ペネトレーションテスト・レッドチーム用途でOpus 4.7を利用可能。
+
+### 安全性評価
+
+- 欺瞞・追従・誤用への協力は低率（Opus 4.6と同等）
+- 誠実性・プロンプトインジェクション耐性はOpus 4.6より改善
+- Mythos Previewが依然として最も低い誤整合行動率
+
+## 提供プラットフォーム
+
+- Claude.ai 全プロダクト・API（`claude-opus-4-7`）
+- Amazon Bedrock
+- Google Cloud Vertex AI
+- Microsoft Foundry
+
+## 推奨用途
+
+- コーディング × 長時間エージェント × PC操作
+- 画像・スクリーンショットベースの操作自動化
+- 法律・財務など経済価値の高い知識業務（GDPval-AA SOTA）
+
+コスト最優先の定常タスクは **Sonnet 4.6**（約40%安）が現時点の推奨。
+
+## Claude Code × Opus 4.7 ベストプラクティス（追加情報）
+
+- 2026-05-21: Algomatic AILabがAnthropicの公式ベストプラクティスを解説。要点: ① tokenizerが更新されており旧Opusとトークン数が異なる ② より深く思考するよう設計されているため、プロンプト構造や `effort` 設定の見直しが必要 ③ Claude Codeでの利用時は上記「Opus 4.7向けプロンプト変更点」セクションの3点が特に重要
+
+## 関連
+
+- [[companies/anthropic]]
+- [[tools/claude-code]]
+- [[tools/claude-managed-agents]]
+- [[models/claude-mythos]]
+- [[models/claude-opus-4-8]]
+- [[concepts/prompt-engineering]]
+- [[tools/hyperframes]]（HTML→動画OSS。実用化の土台となったコード生成モデル世代）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

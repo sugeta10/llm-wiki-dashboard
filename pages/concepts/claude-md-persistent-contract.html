@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-md-persistent-contract</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-md-persistent-contract.md">Markdownで表示</a></div>
   <div class="meta">concepts/claude-md-persistent-contract · concepts · <span title="2026-06-06">2週間前</span></div>
   <article><h1>CLAUDE.md ＝ 永続契約</h1>
 <blockquote>
@@ -92,15 +94,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/ccmd.html">ccmd</a> — CLAUDE.md をKarpathy 12ルールで静的採点するツール</li>
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
 <li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a> — Identity/Rulesを「永続契約」として設計するClaude Projects版の応用</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a></li>
-<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a></li>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
 <li><a href="../tools/ccmd.html">ccmd</a></li>
-<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054691480728674326" rel="noopener" target="_blank">https://x.com/i/web/status/2054691480728674326</a></li></ul></section></article>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054691480728674326" rel="noopener" target="_blank">https://x.com/i/web/status/2054691480728674326</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -116,5 +119,57 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># CLAUDE.md ＝ 永続契約
+
+&gt; **TL;DR**: CLAUDE.md を「AIへの自己紹介」でなく「同じ修正指示を二度言わないための永続契約」と捉え直し、会話の癖・暴走止め・文脈・記憶・開発業務の5領域に分けて宣言を書く設計フレーム。
+
+自己プロフィール（私は誰か／何を作るか／どう書くか）は出力の**内容**を合わせるだけだが、永続契約は Claude の**振る舞いそのもの**を変える。「毎回 Great question! で始めるな」「確証のない数字を断定するな」「頼んでいない箇所を触るな」は自分の情報ではなく、挙動への宣言であり、会話のたびに言い直す代わりに一度書けばそのプロジェクト内で再発しなくなる。この「自己紹介」と「契約」の分離が出発点になる。指示を増やす方向でなく、何を書き何を書かないかを**選ぶ**方向に頭を使うのが要点で、永続契約は短いほど効く（[[concepts/claude-md-rules]] の200行・14ルール上限と同じ警告）。
+
+5領域の分類（合計21指示）:
+
+| 領域 | 指示 | 狙い |
+|------|------|------|
+| ① 会話の癖 | フィラー禁止／選択肢を提示させる／不確実なら不確実と言わせる／質問の重さに長さを合わせる | おもてなし芸・同意バイアスを消す |
+| ② 暴走止め | 大きな変更前に止める／スコープ厳守／変更箇所を毎回報告／勝手なアクション禁止 | 頼んでいない範囲への波及・不可逆操作を封じる |
+| ③ 文脈 | あなたが誰か／今の作業文脈／自分の文体（過去文を2-3段落貼る） | 毎セッションの自己紹介を1回で固定 |
+| ④ 記憶 | MEMORY.md（決定ログ）／引き継ぎ／ERRORS.md（失敗ログ）／不変ファクト宣言 | セッションをまたいで学ぶ存在にする |
+| ⑤ 開発業務 | スコープ厳守／破壊操作前の確認／ハードストップ／道具の固定／変更点の可視化／[[people/andrej-karpathy]] の4ルール | コードに限らず議事録・広告・報告書編集にも展開 |
+
+非エンジニア（経営企画・編集・マーケ等）の業務文書にもそのまま効くのが特徴で、「ファイル・関数・行」を「段落・セクション・文」に読み替えれば編集業務の宣言になる。④の記憶領域は「Claude はファイルを書ける→ファイルは残る→ファイルを記憶に使える」という発想で、この vault の MEMORY.md / handover 運用と同じ思想。
+
+## 観察ログ（未検証）
+
+- 2026-05-13: 東大 Claude Code 研究所（@ClaudeCode_UT）が海外記事 &quot;You&#x27;ve been using Claude wrong this whole time. CLAUDE.md fixes everything&quot; を日本のビジネス現場向けに再構成。元ポストは @TheAIWorld22。CLAUDE.md を「永続契約」と呼び替え、5領域21指示に整理した
+- 2026-05-13: 著者の CLAUDE.md は放置すると700行まで膨れ、Claude 自身が指示中に勝手に追記した結果だったと報告。書きすぎは判断を縛り目の前のタスクへの集中を落とすと主張（個人の体験談）
+- 2026-05-13: 「[[people/andrej-karpathy]] の4ルールだけでコーディング正答率が65%→94%（約1.45倍）」「整理した70行 CLAUDE.md が GitHub Trending 28日連続1位・3ヶ月で11万stars」と紹介。数字は単一ソースの伝聞で未検証（[[concepts/claude-md-rules]] では同リポを「最速成長シングルファイルリポジトリ」として別途記録）
+- 2026-05-13: 始め方の推奨は「ストレスの大きい指示を5領域から3つ選んで貼る→翌日また3つ、1週間で21揃う」。おすすめ初手は指示1（フィラー禁止）・指示6（スコープ厳守）・指示12（MEMORY.md）
+
+## 問い
+
+- この21指示と [[concepts/claude-md-rules]] の12条はどこまで重複し、どこが固有か。両ページを統合すべきか、フレーム（永続契約／行動ルール）の違いで分けたままが良いか
+- 「永続契約は短いほど効く」と「5領域21指示を全部書く」は緊張関係にある。実際に貼るべき最小セットは何指示か（自分の vault の CLAUDE.md で検証できる）
+- 非エンジニア業務（議事録・広告・報告書）での効果という主張は、コーディング正答率のような測定値があるのか、それとも体験談のみか
+
+## 関連
+
+- [[concepts/claude-md-rules]] — Karpathy4ルール+8ルールの12条体系（測定値ベース）。本ページは同じ素材を「永続契約」フレームで非エンジニア向けに再構成したもの
+- [[people/andrej-karpathy]]
+- [[tools/claude-code]]
+- [[tools/ccmd]] — CLAUDE.md をKarpathy 12ルールで静的採点するツール
+- [[concepts/claude-code-context-hierarchy]]
+- [[concepts/claude-projects-blueprint]] — Identity/Rulesを「永続契約」として設計するClaude Projects版の応用
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

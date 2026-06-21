@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>cursor</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cursor.md">Markdownで表示</a></div>
   <div class="meta">tools/cursor · tools · <span title="2026-05-06">1ヶ月前</span></div>
   <article><h1>Cursor</h1>
 <p><strong>Cursor</strong> はAI統合開発環境（IDE）。コード補完・生成・リファクタリングをインラインで実行できる。</p>
@@ -54,18 +56,19 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../tools/understand-anything.html">understand-anything</a>（コードベースを対話型ナレッジグラフ化する補助ツール・Cursor対応）</li>
 <li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a>（AGENTS.md/Rules/Commands/Skills/Subagentsの使い分けフレーム）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/understand-anything.html">understand-anything</a></li>
 <li><a href="../tools/browser-use.html">browser-use</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
-<li><a href="../tools/understand-anything.html">understand-anything</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/1875524676325404764" rel="noopener" target="_blank">https://x.com/i/web/status/1875524676325404764</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/vibe-coding.html">vibe-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/1875524676325404764" rel="noopener" target="_blank">https://x.com/i/web/status/1875524676325404764</a></li>
 <li><a href="https://x.com/i/web/status/1892615770040877494" rel="noopener" target="_blank">https://x.com/i/web/status/1892615770040877494</a></li>
 <li><a href="https://x.com/i/web/status/1923072219908809004" rel="noopener" target="_blank">https://x.com/i/web/status/1923072219908809004</a></li>
 <li><a href="https://x.com/i/web/status/2049499866217185492" rel="noopener" target="_blank">https://x.com/i/web/status/2049499866217185492</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -81,5 +84,50 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Cursor
+
+**Cursor** はAI統合開発環境（IDE）。コード補完・生成・リファクタリングをインラインで実行できる。
+
+## 主な機能
+
+- AIによるコード生成・補完
+- **Cursor SDK**: エージェントをCI/CDパイプラインや外部製品に組み込める
+  - 同じランタイム・ハーネス・モデルで動作
+  - エンドツーエンドのオートメーション構築が可能
+
+## ベストプラクティス
+
+プロジェクトの詳細コンテキストをシステムプロンプトに記述することで、AIのハルシネーションを85%削減できるとされる。
+
+## 組み合わせワークフロー
+
+- **Cursor × Roo-Cline × DeepSeek V3**: API コスト1円以下で [[tools/browser-use]] を自動導入
+- **Cursor × CodeRabbit**: Cursor がコードを書き、CodeRabbit がレビュー、Cursor が修正という自律ループ（[[concepts/vibe-coding]] の実践例）
+
+## Windsurf との比較
+
+Cursor に似たAI IDE として **Windsurf** がある。どちらも詳細なコンテキスト提供によるハルシネーション削減が重要。
+
+## 関連
+
+- [[tools/claude-code]]
+- [[tools/browser-use]]
+- [[concepts/vibe-coding]]
+- [[concepts/agentic-coding]]
+- [[tools/understand-anything]]（コードベースを対話型ナレッジグラフ化する補助ツール・Cursor対応）
+- [[concepts/cursor-instruction-methods]]（AGENTS.md/Rules/Commands/Skills/Subagentsの使い分けフレーム）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

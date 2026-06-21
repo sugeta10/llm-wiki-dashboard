@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>kanary</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="kanary.md">Markdownで表示</a></div>
   <div class="meta">tools/kanary · tools · <span title="2026-06-02">2週間前</span></div>
   <article><h1>Kanary</h1>
 <blockquote>
@@ -55,8 +57,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="https://kanary.download/voice" rel="noopener" target="_blank">https://kanary.download/voice</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -72,5 +75,41 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Kanary
+
+&gt; 孤立理由: 完全ローカル動作のMac会議録音ツールという領域で、現状wiki内に近接する既存ページがない
+
+Macで聞こえる音声を録音し、文字起こし・要約までを**完全オンデバイス**で完結させるmacOSアプリ。会議に参加するボット型ノートテイカー（Granola / Otter / クラウドサービス）と異なり、ミーティングにゲストを招き入れず、音声をクラウドに送らない点が設計上の核になっている。2026-05-26に @kenn が v2 の音声対応を発表した。
+
+## 仕組み
+
+- **録音**: Google Meet / Zoom / Teams など、Macで鳴る音なら何でも録音できる（アプリ固有の連携セットアップ不要）。マイクとスピーカーを別チャンネルで取得し、「自分」と「相手」を構造的に分離する（話者ダイアライゼーションの推測に頼らない）
+- **文字起こし**: オンデバイスの SpeechAnalyzer がタイムスタンプ付きトランスクリプトを生成。複数言語対応・アップロードなし
+- **要約**: overview / decisions / action items / open questions / review items を含む構造化された議事メモを生成。再生成も可能
+- **要件**: macOS 26 Tahoe 以降・Apple Silicon。基本無料
+
+&gt; 録音の合法性は地域により異なる。全当事者の同意が必要な地域では録音前に周知する旨が公式に明記されている。
+
+## 問い
+
+- 完全ローカルの文字起こし・要約品質は、クラウド型（Granola等）と実用上どこまで差があるか
+- 自分の会議ワークフロー（議事録→wiki ingest）の入口として使えるか。出力Markdownをsources/notesに流し込めるか
+
+## 関連
+
+- まだ強い関連ページなし（オンデバイスAI・プライバシー優先ツールが増えたらリンクを張る）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

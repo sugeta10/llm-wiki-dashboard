@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>coachability</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="coachability.md">Markdownで表示</a></div>
   <div class="meta">concepts/coachability · concepts · <span title="2026-06-12">1週間前</span></div>
   <article><h1>コーチャビリティ（Coachability）</h1>
 <blockquote>
@@ -54,13 +56,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a>（自己評価の乖離・自己改善ループを止める構造）</li>
 <li><a href="../concepts/output-first-learning.html">output-first-learning</a>（素直に学ぶ人が取る具体的学習法）</li>
 <li><a href="../concepts/mental-conditioning.html">mental-conditioning</a>（恐れを扱うメンタルコンディショニング）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/mental-conditioning.html">mental-conditioning</a></li>
-<li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a></li>
-<li><a href="../concepts/output-first-learning.html">output-first-learning</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063820983082094999" rel="noopener" target="_blank">https://x.com/i/web/status/2063820983082094999</a></li></ul></section></article>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a></li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a></li>
+<li><a href="../concepts/mental-conditioning.html">mental-conditioning</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063820983082094999" rel="noopener" target="_blank">https://x.com/i/web/status/2063820983082094999</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -76,5 +79,55 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># コーチャビリティ（Coachability）
+
+&gt; **TL;DR**: 世界最高のコーチ（ビル・キャンベル）でさえコーチ可能な人だけを選んだ。成長の鍵はコーチの質よりも、受け手の「正直さと謙虚さ」——素直に受け入れられる人にとってのみ、あらゆる経験が師となる。
+
+コーチングが機能するかどうかはコーチの技術より受け手の謙虚さで決まる、というのが核心だ。コーチャビリティ（coachability）とは「自分が間違っているかもしれない」という前提を持ち、フィードバックを防衛なく受け取れる能力。松下幸之助が「素直さ」と呼んだものと同義であり、「受け入れるなら万物は師となる。受け入れなければコーチすら敵になる」。
+
+コーチャビリティを阻害する最大の感情は**恐れ**だ。自分の現状が明らかになることへの恐れが、事実の解釈を変えてしまう自己防衛として機能する。このため「何を言っても無駄な人」は知的に見えても改善しない——ビル・キャンベルの言う「利口ぶるやつ」は嘘つきかつ傲慢であり、コーチングを受け入れる気がない。
+
+## コーチャブルでない人の特徴
+
+「4ない」パターン：何を言っても「時間がない/権限がない/わからない/やりたくない」で話が終わる。一見謙虚に見えるが、その実は上司・同僚を見下している。
+
+行動が変わらないことがコーチャブルでない証拠だ。返答はその場しのぎで、翌日には何事もなかったように振る舞う。
+
+## ビル・キャンベルの選別基準
+
+シリコンバレーのスティーブ・ジョブズ・ラリー・ペイジ・エリック・シュミット等をコーチしたビル・キャンベルは、コーチを引き受ける前に「あなたはコーチングを受け入れられるか？」と問い、「コーチによりますね」と答えた人物をその場で断った。
+
+コーチングを条件付きで受け入れようとする——それ自体が「利口ぶるやつ」の兆候と見なされた。コーチャビリティは条件交渉の余地がない、二値的な資質として扱われた。
+
+## 割り切りの実践
+
+コーチャブルでない人を変えようとすることは徒労だ。「世界一のコーチが放っておけ」と言い切っている以上、変わることを望んでいない人への介入は迷惑行為にすらなりうる。
+
+エネルギーを自分とコーチャブルな人の成長に向けることが合理的な選択だ。コーチャブルな人は稀少なため、見つけた時に集中的に投資する価値がある。
+
+## 問い
+
+- [[concepts/self-evaluation-gap]] の「高過ぎさん」（自己評価が高すぎて成長しない人）は、コーチャビリティが低い状態の一形態と言える。共通の構造があるか？
+- コーチャビリティは後天的に育てられるか？「恐れ」を減らす訓練としてどんなアプローチが有効か？
+- [[concepts/output-first-learning]] の「出力を通じた学習」はコーチャブルな人が実践する具体的メソッドと捉えられるか？
+
+## 関連
+
+- [[concepts/self-evaluation-gap]]（自己評価の乖離・自己改善ループを止める構造）
+- [[concepts/output-first-learning]]（素直に学ぶ人が取る具体的学習法）
+- [[concepts/mental-conditioning]]（恐れを扱うメンタルコンディショニング）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

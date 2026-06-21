@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,13 +28,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>hermes-agent-self-evolution</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="hermes-agent-self-evolution.md">Markdownで表示</a></div>
   <div class="meta">tools/hermes-agent-self-evolution · tools · <span title="2026-06-19">2日前</span></div>
   <article><h1>Hermes Agent Self-Evolution</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: <a href="../tools/hermes-agent.html">hermes-agent</a> のスキル・ツール記述・システムプロンプト・コードを、実行トレースを読んで「なぜ失敗したか」を理解させながら自動進化させる NousResearch 製の独立リポジトリ。GPU 学習は不要で、1回の最適化は API 呼び出しのみ・約 $2〜10。</p>
 </blockquote>
 <p>エージェントの改善を「人間が手で書き直す」から「実行ログを根拠に自動で書き換える」へ移すための最適化パイプライン。中核は <strong>DSPy + GEPA（Genetic-Pareto Prompt Evolution）</strong> で、テキスト（スキル・プロンプト・ツール記述）を変異させ、結果を評価し、最良の変種だけを選抜する反省的な進化的探索を回す。GPU 訓練を一切伴わずすべて API 経由で動くため、重みの再学習なしに「測定可能に良くなった版」を生成できる点が特徴。GEPA は ICLR 2026 Oral 採択、MIT ライセンス。</p>
-<pre><code class="language-mermaid">flowchart LR
+<pre class="mermaid">flowchart LR
   Read[&quot;現行スキル/プロンプト/ツールを読む&quot;] --&gt; Eval[&quot;評価データ生成&lt;br/&gt;(synthetic / sessiondb)&quot;]
   Traces[&quot;実行トレース&quot;] --&gt; GEPA[&quot;GEPA Optimizer&quot;]
   Eval --&gt; GEPA
@@ -42,8 +44,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   Score --&gt; GEPA
   Cand --&gt; Gate[&quot;制約ゲート&lt;br/&gt;(テスト/サイズ/ベンチ)&quot;]
   Gate --&gt; Best[&quot;最良変種&quot;]
-  Best --&gt; PR[&quot;hermes-agent への PR&quot;]
-</code></pre>
+  Best --&gt; PR[&quot;hermes-agent への PR&quot;]</pre>
 <h2>GEPA が「なぜ失敗したか」を読む</h2>
 <p>通常のプロンプト最適化は「失敗した／成功した」のスコアだけを見るが、GEPA は <strong>実行トレースを読んで失敗の原因（why）まで遡り</strong>、そこを狙った変異を提案する。これにより総当たり的な探索より少ない試行で改善に到達する。評価データは2系統から作れる：完全な合成データ（synthetic）と、Claude Code・Copilot・Hermes の<strong>実セッション履歴</strong>（sessiondb）。後者を使えば、実際に自分が遭遇した失敗パターンを教師信号にして最適化できる。</p>
 <p>これは <a href="../concepts/self-refining-skills.html">self-refining-skills</a>（LESSONS.md 方式の自己改善ループ）を、人手の振り返りでなく進化的探索で機械化したものに相当する。また「エージェントは自分のタスク結果を過大評価しがち」という <a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a> の問題を、当人の自己批評ではなく外部の最適化器で補う設計でもある（<a href="../tools/hermes-agent.html">hermes-agent</a> 本体の GEPA 解説と同じ思想）。</p>
@@ -126,13 +127,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a> — プロファイル分離による3エージェント構築ガイド</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
 <li><a href="../tools/dspy.html">dspy</a></li>
-<li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a></li>
-<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li>
-<li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/NousResearch/hermes-agent-self-evolution" rel="noopener" target="_blank">https://github.com/NousResearch/hermes-agent-self-evolution</a></li></ul></section></article>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/NousResearch/hermes-agent-self-evolution" rel="noopener" target="_blank">https://github.com/NousResearch/hermes-agent-self-evolution</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -148,5 +150,89 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Hermes Agent Self-Evolution
+
+&gt; **TL;DR**: [[tools/hermes-agent]] のスキル・ツール記述・システムプロンプト・コードを、実行トレースを読んで「なぜ失敗したか」を理解させながら自動進化させる NousResearch 製の独立リポジトリ。GPU 学習は不要で、1回の最適化は API 呼び出しのみ・約 $2〜10。
+
+エージェントの改善を「人間が手で書き直す」から「実行ログを根拠に自動で書き換える」へ移すための最適化パイプライン。中核は **DSPy + GEPA（Genetic-Pareto Prompt Evolution）** で、テキスト（スキル・プロンプト・ツール記述）を変異させ、結果を評価し、最良の変種だけを選抜する反省的な進化的探索を回す。GPU 訓練を一切伴わずすべて API 経由で動くため、重みの再学習なしに「測定可能に良くなった版」を生成できる点が特徴。GEPA は ICLR 2026 Oral 採択、MIT ライセンス。
+
+```mermaid
+flowchart LR
+  Read[&quot;現行スキル/プロンプト/ツールを読む&quot;] --&gt; Eval[&quot;評価データ生成&lt;br/&gt;(synthetic / sessiondb)&quot;]
+  Traces[&quot;実行トレース&quot;] --&gt; GEPA[&quot;GEPA Optimizer&quot;]
+  Eval --&gt; GEPA
+  GEPA --&gt; Cand[&quot;候補変種&quot;]
+  Cand --&gt; Score[&quot;評価&quot;]
+  Score --&gt; GEPA
+  Cand --&gt; Gate[&quot;制約ゲート&lt;br/&gt;(テスト/サイズ/ベンチ)&quot;]
+  Gate --&gt; Best[&quot;最良変種&quot;]
+  Best --&gt; PR[&quot;hermes-agent への PR&quot;]
+```
+
+## GEPA が「なぜ失敗したか」を読む
+
+通常のプロンプト最適化は「失敗した／成功した」のスコアだけを見るが、GEPA は **実行トレースを読んで失敗の原因（why）まで遡り**、そこを狙った変異を提案する。これにより総当たり的な探索より少ない試行で改善に到達する。評価データは2系統から作れる：完全な合成データ（synthetic）と、Claude Code・Copilot・Hermes の**実セッション履歴**（sessiondb）。後者を使えば、実際に自分が遭遇した失敗パターンを教師信号にして最適化できる。
+
+これは [[concepts/self-refining-skills]]（LESSONS.md 方式の自己改善ループ）を、人手の振り返りでなく進化的探索で機械化したものに相当する。また「エージェントは自分のタスク結果を過大評価しがち」という [[concepts/self-evaluation-gap]] の問題を、当人の自己批評ではなく外部の最適化器で補う設計でもある（[[tools/hermes-agent]] 本体の GEPA 解説と同じ思想）。
+
+## 最適化対象の5フェーズ
+
+| Phase | 対象 | エンジン | 状態 |
+|---|---|---|---|
+| **Phase 1** | スキルファイル（SKILL.md） | DSPy + GEPA | ✅ 実装済み |
+| **Phase 2** | ツール記述 | DSPy + GEPA | 🔲 計画 |
+| **Phase 3** | システムプロンプトの各セクション | DSPy + GEPA | 🔲 計画 |
+| **Phase 4** | ツール実装コード | Darwinian Evolver | 🔲 計画 |
+| **Phase 5** | 継続的改善ループ | 自動パイプライン | 🔲 計画 |
+
+現時点で動くのは Phase 1（スキルファイルの進化）のみ。Phase 4 のコード進化は **Darwinian Evolver**（Git ベースの「個体」としてコードを進化させる別エンジン、AGPL v3・外部 CLI としてのみ利用）を使う想定で、テキスト最適化（MIT の DSPy+GEPA）とライセンス境界を分けている。
+
+## ガードレール（全変種が通過必須）
+
+進化した変種は人間に届く前に5つの関門をすべて通る。自動進化が品質や目的を壊さないための安全柵にあたる（[[concepts/eval-loop]] の出荷前品質ゲートの一実装）。
+
+1. **全テストスイート** — `pytest tests/ -q` が100%パス
+2. **サイズ制限** — スキルは ≤15KB、ツール記述は ≤500文字
+3. **キャッシュ互換性** — 会話途中での変更を入れない（プロンプトキャッシュを壊さない）
+4. **意味の保存** — 元の目的からドリフトしてはならない
+5. **PRレビュー** — 全変更は人間レビューを経由し、直接コミットしない
+
+## 検証済み事実
+
+- 2026-06-18: NousResearch が `NousResearch/hermes-agent-self-evolution` を公開。MIT ライセンス、© 2026 Nous Research
+- GPU 訓練不要。テキストの変異・結果評価・最良変種の選抜をすべて API 呼び出しで実施し、1回の最適化コストは約 $2〜10
+- 利用例: `python -m evolution.skills.evolve_skill --skill github-code-review --iterations 10 --eval-source synthetic`（`--eval-source sessiondb` で実セッション履歴を使用）
+- GEPA は ICLR 2026 Oral、MIT。Darwinian Evolver は AGPL v3（外部 CLI としてのみ利用）
+- 詳細なアーキテクチャ・評価データ戦略・ベンチ統合・段階的タイムラインは同リポの PLAN.md に記載
+
+## 問い
+
+- 「sessiondb（実セッション履歴）を教師信号にスキルを最適化する」発想は、このwikiの wiki-ingest スキルや LESSONS.md 自己改善ループにそのまま移植できるか
+- ガードレールの「意味の保存（元の目的からドリフトさせない）」を、どう機械的に判定しているのか（diff の意味的同一性チェック方法）
+- Phase 1 のスキル進化は、人手で LESSONS.md に追記する現行方式と比べて改善幅・コストでどちらが優位か
+
+## 関連
+
+- [[tools/hermes-agent]] — 進化対象となる本体エージェント基盤。この自己進化は別リポとして切り出されている
+- [[tools/dspy]] — GEPA を含むプロンプト最適化フレームワーク。本リポの中核エンジン
+- [[concepts/self-refining-skills]] — LESSONS.md 方式の自己改善ループ。これを進化的探索で機械化したのが本リポ
+- [[concepts/self-evaluation-gap]] — 自己評価バイアス。当人でなく外部最適化器で補う設計の動機
+- [[concepts/eval-loop]] — 出荷前の品質ゲート。ガードレール5項目がその実装にあたる
+- [[concepts/recursive-self-improvement]] — AIがAIを改善するループの一形態
+- [[tools/hermes-agent-overnight]] — 夜間自動化ワークフロー（同じ Hermes 系の運用設計）
+- [[tools/hermes-agent-research-department]] — プロファイル分離による3エージェント構築ガイド
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
 </body>
 </html>

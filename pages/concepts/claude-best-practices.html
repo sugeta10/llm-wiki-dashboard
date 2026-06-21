@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-best-practices</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-best-practices.md">Markdownで表示</a></div>
   <div class="meta">concepts/claude-best-practices · concepts · <span title="2026-05-22">1ヶ月前</span></div>
   <article><h1>Claude効果的活用ガイド（18ステップ）</h1>
 <blockquote>
@@ -79,13 +81,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a> — Anthropic製AIコーディングCLI（同じClaudeエコシステム）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 <li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
 <li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a></li>
-<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054568935274549597" rel="noopener" target="_blank">https://x.com/i/web/status/2054568935274549597</a></li></ul></section></article>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054568935274549597" rel="noopener" target="_blank">https://x.com/i/web/status/2054568935274549597</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -101,5 +104,69 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Claude効果的活用ガイド（18ステップ）
+
+&gt; **TL;DR**: Projects・Custom Instructions・Extended Thinking・出力長指定などを組み合わせ、Claudeを検索エンジンではなく永続コンテキスト付きの思考パートナーとして使い倒すための実践テクニック集。
+
+Claudeを日常的に使っていても多くのユーザーはその能力の一部しか引き出せていない。以下は、永続コンテキストの活用・プロンプト設計・トークン最適化という3つの軸で出力品質と効率を高める実践手法をまとめたもの。
+
+## 永続コンテキストの活用
+
+- **Projects**：会話をまたいでコンテキストを保持する永続ワークスペース（サイドバーから作成）。毎回コンテキストを入力し直す必要がなくなり、継続的なタスクの起点になる。
+- **Custom Instructions**：ユーザー自身のプロフィール（役割・目標・好みのコミュニケーションスタイル等）をProjectsに保存し、全チャットへ自動適用する仕組み。既存プロフィールをClaudeに渡して「Custom Instructionsに変換して」と依頼すると効率的に設定できる。
+- **コンテキスト汚染を防ぐ**：無関係な前コンテキストが残っていると処理が遅くなり、コンテキストブリード（過去の文脈の意図しない混入）が起きる。Projectsのメモリは保持したまま、関係のない話題は新しいチャットで開始する。
+
+## 思考パートナーとしての使い方
+
+- **質問の立て方を変える**：「Xとは何か？」ではなく「この文脈でXがどう役立つか一緒に考えて」と問う。Claudeは推論・合成・議論ができる思考パートナーであり、検索エンジンではない。
+- **先に質問させる**：複雑なタスクの前に「始める前に必要な情報を収集して（質問して）」と指示すると、前提を揃えてから実行でき、いきなり着手するより出力品質が上がる。
+- **スパーリングパートナー**：アイデアを「批評（critique）」させると同意しながら膨らませる方向に偏る。「攻撃（attack）」させると本質的な弱点が浮かび上がる。
+- **ビジネスアイデアのストレステスト**：アイデアに入れ込む前に「厳しいベンチャーキャピタリストとして攻撃して」と依頼すると、コストをかける前に本質的な問題を発見できる。
+- **フェインマン法プロンプト**：「アナロジーを使って5歳にも分かるように説明して、その後専門用語に戻して」と依頼する。専門用語が飛び交うデフォルト説明より深い理解が得られる。
+
+## プロンプト設計
+
+- **Extended Thinking**（脳アイコン）：パターンマッチではなく実際に推論させるモード。複雑な意思決定・分析タスクに向く。プロンプトに `Think through this step by step before responding` を加えても同様の効果が得られる。
+- **Claudeにプロンプトを書かせる**：最適なプロンプトが不明なときは「このタスク用の最適なプロンプトを書いて」と依頼する。Claudeは何が良い指示になるかを理解している。
+- **スタイルクローニング**：自分の文章サンプルを3〜5個渡して「スタイルを分析して」と依頼する。サンプルなしだと「AIらしい文章」になるが、パターン分析後は自分の声に近づけられる。
+
+## トークン最適化
+
+- **出力長の指定**：「3文以内で」「箇条書き5点で」と事前指定するとトークン使用量を抑えられる。
+- **前置き除去**：Custom Instructionsに「要約・前置き・結論の繰り返しを省く」を追加し、不要なトークンを削減する。
+
+これらはClaudeに限らず、永続コンテキストとカスタム指示を持つLLMチャット製品に広く応用できる。技術的なプロンプト設計の体系は [[concepts/prompt-engineering]]、使用制限の回避は [[concepts/claude-usage-optimization]] を参照。
+
+## 観察ログ（未検証）
+
+- 2026-05-13: 「多くの人は毎日使っていても10%のポテンシャルしか活かせていない」（@AnatoliKopadzeの問題意識）
+- 2026-05-13: Extended Thinking は複雑な意思決定・分析タスクで出力品質が「顕著に向上する」とのこと（単一ソースの主張）
+- 2026-05-13: 出力長の事前指定でトークン使用量を「40〜60%削減できる」とのこと（単一ソースの未検証数字）
+
+## 問い
+
+- 出力長指定によるトークン削減率（40〜60%）は自分の典型的なタスクで再現するか、実測してみる。
+- Extended Thinking と `Think step by step` 追記の効果差を、同一プロンプトで比較する。
+
+## 関連
+
+- [[concepts/prompt-engineering]] — 同著者(@AnatoliKopadze)によるClaudeサブスク活用20選を含む技術的プロンプト設計ガイド
+- [[concepts/claude-usage-optimization]] — Claude使用制限回避の5ステップ（計画優先・モデルスタッキング・チャット長管理）
+- [[concepts/chatgpt-custom-instructions]] — ChatGPT版のカスタム指示活用法（同様の概念）
+- [[concepts/claude-projects-blueprint]] — Claude Projectsを6パートで「AI社員化」する設計図（Projects活用の深掘り）
+- [[tools/claude-code]] — Anthropic製AIコーディングCLI（同じClaudeエコシステム）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

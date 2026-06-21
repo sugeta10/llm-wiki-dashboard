@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-usage-optimization</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-usage-optimization.md">Markdownで表示</a></div>
   <div class="meta">concepts/claude-usage-optimization · concepts · <span title="2026-05-20">1ヶ月前</span></div>
   <article><p>Claudeのトークン使用制限（レートリミット）を回避するための実践的フレームワーク。計画優先・チャット長管理・モデルスタッキング・記憶管理・ツール分割の5ステップで構成。関連: <a href="../tools/claude-code.html">claude-code</a>・<a href="../concepts/prompt-engineering.html">prompt-engineering</a></p>
 <h2>観察ログ（未検証）</h2>
@@ -55,15 +57,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a>（大規模コードベースでのコンテキスト管理）</li>
 <li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a>（Effort Control・Fast Modeによるコスト最適化）</li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a>（工程分解型モデル選択：上流大モデル・下流小モデルのサンドイッチ戦略）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 <li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2049618781841031551" rel="noopener" target="_blank">https://x.com/i/web/status/2049618781841031551</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -79,5 +82,46 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain">Claudeのトークン使用制限（レートリミット）を回避するための実践的フレームワーク。計画優先・チャット長管理・モデルスタッキング・記憶管理・ツール分割の5ステップで構成。関連: [[tools/claude-code]]・[[concepts/prompt-engineering]]
+
+## 観察ログ（未検証）
+
+- 2026-04-29: @milesdeutscher が $200/月プランでも使用上限に達していたと報告。5ステップを導入して以降3週間ゼロ上限達成と主張
+- 2026-04-29: Claudeのトークン消費はテキストチャットより、描画・コーディング・実装作業が圧倒的に多いという観察
+- 2026-04-29: 計画フェーズを Haiku で行い実装フェーズのみ Opus に切り替えることで最大67%コスト削減できるとの試算（vibe-coding アプリ例）
+- 2026-04-29: 長いチャットは「古いコンテキストを毎回再読み込みさせる」ためトークン浪費かつ品質低下。3つの独立チャットの方が1つの長いチャットより効率的という主張
+- 2026-04-29: Projects機能で複数サブチャットを整理し、新タスクでは必ず新チャットを開く運用を推奨
+- 2026-04-29: 「Mega Prompt」手法：再利用チャットを切り替える際に「このセッションをコンテキストを失わずに再起動できるプロンプトを出力して」と依頼してチャット引き継ぎ
+- 2026-04-29: メモリ管理として Instructions.md（ルール・指示）+ Memory.md（継続更新ブレイン）の2ファイルをClaude Code/Coworkにアタッチするシステムを推奨
+- 2026-04-29: モデルスタッキング戦略: Haiku（軽タスク）→ Sonnet（中タスク）→ Opus（重タスク・最終仕上げ）のエスカレーション方式
+- 2026-04-29: Extended/Adaptive Thinking は大半のタスクでOFF推奨。Conciseスタイル設定でトークン節約可
+- 2026-04-29: プラン更新（$20→$100→$200）より追加クレジット購入の方がコスパ良いケースがあるという主張
+
+## 検証済み事実
+
+- 2026-04-29: Claude Code に Plan Mode（Shift+Tab×2 または `/Plan`）が存在し、計画フェーズ専用モードとして機能する
+- 2026-04-29: Claude Code に `/Usage` コマンドが存在し、現在の使用量確認が可能（Overview セクション追加済み）
+- 2026-04-29: Claude Code/Chat と Claude Design はトークン使用量が別カウント（異なる利用枠）
+
+## 関連
+
+- [[tools/claude-code]]（Plan Mode・モデル切替・設定詳細）
+- [[concepts/prompt-engineering]]（プロンプト設計・最適化）
+- [[concepts/claude-code-large-codebase]]（大規模コードベースでのコンテキスト管理）
+- [[models/claude-opus-4-8]]（Effort Control・Fast Modeによるコスト最適化）
+- [[concepts/llm-model-selection-strategy]]（工程分解型モデル選択：上流大モデル・下流小モデルのサンドイッチ戦略）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

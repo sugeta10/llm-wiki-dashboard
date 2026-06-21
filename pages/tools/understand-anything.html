@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>understand-anything</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="understand-anything.md">Markdownで表示</a></div>
   <div class="meta">tools/understand-anything · tools · <span title="2026-06-01">2週間前</span></div>
   <article><h1>Understand-Anything</h1>
 <p>コードベース全体を<strong>対話型のナレッジグラフ</strong>に変換するツール。未知の大規模コードでも、構造・依存関係・業務ロジックを地図のように可視化し、検索や自然言語での質問ができる。Claude Code・<a href="../tools/cursor.html">cursor</a>・GitHub Copilot・Gemini CLI に対応。</p>
@@ -47,13 +49,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/cursor.html">cursor</a></li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/cursor.html">cursor</a></li>
 <li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li>
-<li><a href="../weekly/2026-W23.html">2026-W23</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060921724443791580" rel="noopener" target="_blank">https://x.com/i/web/status/2060921724443791580</a></li></ul></section></article>
+<li><a href="../tools/cursor.html">cursor</a></li>
+<li><a href="../public-site/pages/tools/claude-code.html">claude-code</a></li>
+<li><a href="../public-site/pages/tools/cursor.html">cursor</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060921724443791580" rel="noopener" target="_blank">https://x.com/i/web/status/2060921724443791580</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -69,5 +73,40 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Understand-Anything
+
+コードベース全体を**対話型のナレッジグラフ**に変換するツール。未知の大規模コードでも、構造・依存関係・業務ロジックを地図のように可視化し、検索や自然言語での質問ができる。Claude Code・[[tools/cursor]]・GitHub Copilot・Gemini CLI に対応。
+
+## 位置づけ
+
+[[concepts/claude-code-large-codebase]] が示す通り、[[tools/claude-code]] 自体はコードベースをベクトル化せず、ファイルツリーをたどり grep で必要箇所を探す（=ライブのコードベースを見る）方式を取る。Understand-Anything はこれと対照的に、コードベースを事前にナレッジグラフ化して構造・依存・業務ロジックを俯瞰できるようにするアプローチ。AIコーディングエージェントの「全体像把握」の弱点を補う補助レイヤーとして使える。
+
+## 観察ログ（未検証）
+
+- 2026-05-31: @so_ainsight の「今週GitHubで急上昇したAI関連リポジトリ10選」の第1位として紹介（二次まとめ、Tier 3）。具体的なスター数・実装精度・対応規模の上限などは未確認。
+
+## 問い
+
+- 事前グラフ化方式は grep ベースのライブ探索（[[concepts/claude-code-large-codebase]]）に対して、大規模コードでの精度・鮮度でどちらが優位か？
+- 自分のwiki/コードベースで「依存関係の地図」として使えるか。グラフの更新頻度（コード変更への追従）はどうなっているか。
+
+## 関連
+
+- [[concepts/claude-code-large-codebase]]
+- [[tools/claude-code]]
+- [[tools/cursor]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

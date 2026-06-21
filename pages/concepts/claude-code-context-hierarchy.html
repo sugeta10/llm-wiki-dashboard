@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-context-hierarchy</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-context-hierarchy.md">Markdownで表示</a></div>
   <div class="meta">concepts/claude-code-context-hierarchy · concepts · <span title="2026-05-21">1ヶ月前</span></div>
   <article><h1>Claude Code コンテキスト階層設計</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> の設定・コンテキスト管理は、<strong>Memory / Slash commands / Permissions / MCP servers の4種類すべてが同一の4層階層</strong>に従う。"Build once, use everywhere"（一度作れば、どこでも使える）が設計思想。</p>
@@ -142,14 +144,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a> — Claude Code 全体リファレンス</li>
 <li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a> — スコープ軸でコンテキストを層分けする発想の別実装（OpenAIデータエージェントの6層設計）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li>
-<li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li>
 <li><a href="../concepts/claude-code-security.html">claude-code-security</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b" rel="noopener" target="_blank">https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -165,5 +168,87 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Claude Code コンテキスト階層設計
+
+[[tools/claude-code]] の設定・コンテキスト管理は、**Memory / Slash commands / Permissions / MCP servers の4種類すべてが同一の4層階層**に従う。&quot;Build once, use everywhere&quot;（一度作れば、どこでも使える）が設計思想。
+
+## 4層の定義
+
+| 層 | スコープ | 管理者 |
+|----|---------|-------|
+| **Enterprise policy** | 組織全員に自動適用 | IT管理者・MDM |
+| **Global (just me)** | 自分のすべてのプロジェクト | 個人 |
+| **Project (shared)** | チームで共有（Gitコミット） | チーム |
+| **Project (just me)** | 自分だけのプロジェクト設定 | 個人（.gitignore推奨） |
+
+## 4種類の設定と対応パス
+
+| 設定種別 | Enterprise policy | Global | Project (shared) | Project (just me) |
+|--------|-----------------|--------|-----------------|------------------|
+| **Memory** (CLAUDE.md) | `/Library/Application Support/ClaudeCode/CLAUDE.md` | `~/.claude/CLAUDE.md` | `CLAUDE.md` | `CLAUDE.local.md` |
+| **Slash commands** | — | `~/.claude/commands/` | `.claude/commands/` | — |
+| **Permissions** | `/Library/Application Support/ClaudeCode/policies.json` | `~/.claude/settings.json` | `.claude/settings.json` | `.claude/settings.local.json` |
+| **MCP servers** | — | `claude mcp` (global) | `.mcp.json` | `claude mcp` (local) |
+
+加えて `vendor/CLAUDE.md`（ベンダー提供設定）が存在する。`/memory` コマンドで現在読み込み中のファイルを全一覧できる。
+
+## 各層に何を置くか
+
+**Enterprise policy**（会社全体）
+- セキュリティ制約（`.env` 読み取り禁止・`sudo` 禁止）
+- 承認済みコマンドの自動許可
+- 禁止URLパターン
+
+**Global（自分の全プロジェクト共通）**
+- 個人の作業スタイル・口調設定
+- 個人がよく使うスラッシュコマンド
+- 個人のMCPサーバー接続
+
+**Project (shared)（チーム共有・Gitコミット）**
+- プロジェクト固有のコマンド（`lint`・`test`・`build`）
+- チーム共通のMCPサーバー（`.mcp.json`）
+- チームのコーディング規約・アーキテクチャ文脈
+
+**Project (just me)（個人のプロジェクト設定・.gitignore）**
+- 自分だけの実験的設定
+- ローカル環境固有のパス設定
+
+## 操作ショートカット
+
+- `/memory` — 現在読み込まれているすべての記憶ファイルを表示・選択編集
+- `#` — その場で記憶を追加（どの層のファイルに保存するか選択できる）
+
+## Enterprise policy の実用例
+
+```
+# policies.json で危険コマンドを全社員に禁止
+{
+  &quot;denyTools&quot;: [&quot;Bash(rm -rf:*)&quot;],
+  &quot;denyUrls&quot;: [&quot;s3.amazonaws.com&quot;]
+}
+```
+
+チーム全員が使うMCPサーバーを`.mcp.json`にコミットしておくと、誰かがそのリポジトリでClaude Codeを起動した際に自動でインストールを促す。
+
+## 関連
+
+- [[concepts/claude-md-rules]] — CLAUDE.md の12ルール設計・200行制限
+- [[concepts/claude-code-large-codebase]] — ルートは薄く・サブディレクトリ分割の設計原則
+- [[concepts/claude-code-security]] — MDMによる組織展開・ロール別設定分離
+- [[tools/claude-code]] — Claude Code 全体リファレンス
+- [[concepts/openai-data-agent-context-layers]] — スコープ軸でコンテキストを層分けする発想の別実装（OpenAIデータエージェントの6層設計）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

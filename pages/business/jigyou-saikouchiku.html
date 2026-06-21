@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>jigyou-saikouchiku</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="jigyou-saikouchiku.md">Markdownで表示</a></div>
   <div class="meta">business/jigyou-saikouchiku · business · <span title="2026-05-10">1ヶ月前</span></div>
   <article><h1>事業再構築補助金</h1>
 <p>中小企業庁が運営する補助金制度。新分野展開・事業転換・業種転換・事業再編を支援する。AI時代の新規事業立ち上げ・副業事業化のリソースとして参照価値がある。</p>
@@ -72,11 +74,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>関連リンク</h2>
 <ul>
 <li>採択結果: https://jigyou-saikouchiku.go.jp/result.html</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/keidanren-hr-ai-2026.html">keidanren-hr-ai-2026</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://jigyou-saikouchiku.go.jp/result.html" rel="noopener" target="_blank">https://jigyou-saikouchiku.go.jp/result.html</a></li></ul></section></article>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/keidanren-hr-ai-2026.html">keidanren-hr-ai-2026</a></li>
+<li><a href="../public-site/pages/business/keidanren-hr-ai-2026.html">keidanren-hr-ai-2026</a></li>
+<li><a href="../public-site/pages/public-site/pages/business/keidanren-hr-ai-2026.html">keidanren-hr-ai-2026</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://jigyou-saikouchiku.go.jp/result.html" rel="noopener" target="_blank">https://jigyou-saikouchiku.go.jp/result.html</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -92,5 +97,43 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># 事業再構築補助金
+
+中小企業庁が運営する補助金制度。新分野展開・事業転換・業種転換・事業再編を支援する。AI時代の新規事業立ち上げ・副業事業化のリソースとして参照価値がある。
+
+## 採択実績（最新）
+
+| 回 | 応募数 | 採択数 | 採択率 |
+|----|--------|--------|--------|
+| 第13回（令和7年3月締切） | 3,100者 | 1,101者 | 約35% |
+| 第12回（令和6年7月締切） | 7,664者 | 2,031者 | 約26% |
+| 第11回（令和5年10月締切） | 9,207者 | 2,437者 | 約26% |
+
+## 産業別採択状況
+
+製造業・情報通信業・学術研究・専門技術サービスなど幅広い業種で採択実績あり。各回の採択結果は産業分類別PDFで公開。
+
+## AI時代の活用文脈
+
+- **新規事業のビジネスタネ**: 採択された事業計画の概要（公開PDFあり）はAI時代のビジネスアイデア収集に有効
+- **補助金活用**: AI活用による業務改善・新サービス開発が採択対象になりやすい
+- **フリーランス・個人事業主**: 法人化・事業拡大フェーズで活用可能
+
+## 関連リンク
+
+- 採択結果: https://jigyou-saikouchiku.go.jp/result.html
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

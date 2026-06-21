@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-slide-to-pptx</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-slide-to-pptx.md">Markdownで表示</a></div>
   <div class="meta">design/ai-slide-to-pptx · design · <span title="2026-06-09">1週間前</span></div>
   <article><h1>AI生成スライドを編集可能なPPTXに変換する</h1>
 <blockquote>
@@ -98,15 +100,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../design/lt-preparation-guide.html">lt-preparation-guide</a> — LT発表のツール・素材・手順ガイド（Marp/Slidevなどスライド制作ツール情報あり）</li>
 <li><a href="../design/ai-slide-creation.html">ai-slide-creation</a> — AIで「刺さるスライド」を作る方法論（主張・構造・100プロンプト）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/fastview-design.html">fastview-design</a></li>
+<li><a href="../design/image2-brand-slides.html">image2-brand-slides</a></li>
 <li><a href="../design/ai-slide-creation.html">ai-slide-creation</a></li>
 <li><a href="../design/lt-preparation-guide.html">lt-preparation-guide</a></li>
-<li><a href="../design/image2-brand-slides.html">image2-brand-slides</a></li>
-<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060657166714060970" rel="noopener" target="_blank">https://x.com/i/web/status/2060657166714060970</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060657166714060970" rel="noopener" target="_blank">https://x.com/i/web/status/2060657166714060970</a></li>
 <li><a href="https://x.com/i/web/status/2063063407818064176" rel="noopener" target="_blank">https://x.com/i/web/status/2063063407818064176</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -122,5 +125,73 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># AI生成スライドを編集可能なPPTXに変換する
+
+&gt; **TL;DR**: AI（や他社資料）が出力する「1枚画像のスライド」は中身を編集できないが、コード実行可能なLLMに「文字を画像化させず・破線をprstDashで描かせ・出力を自己レンダリングで答え合わせさせる」プロンプトを渡すと、見た目を保ったまま編集可能な.pptxに組み直せる。
+
+AI製スライドやPDF資料が編集できないのは、スライドの形をしているだけで実体が**1枚のラスタ画像**だから。変換ツールで機械的にPPT化するとレイアウトが崩れる。解決の核心は「画像を再現する」のではなく、座標・テキスト・図形を持つ**ネイティブなPPTXオブジェクトとしてLLMに組み直させる**こと。文章生成型ではなく、裏でPythonコード（python-pptx等）を書いて.pptxを生成・実行できるタイプのLLM（ChatGPT Code Interpreter系・Claude）を使うのが前提。
+
+## 変換手順
+
+1. **資料をAIに渡す** — 画像かPDFで添付。1スライド=1枚が最もきれいに出る。複数ページPDFは1枚ずつ試す
+2. **変換プロンプトを貼る** — `&lt;input&gt;`に資料を入れて送信。色を変えたいときだけColor Paletteを触る
+3. **.pptxが生成される** — AIが裏でコードを組み、ダウンロード可能なpptxを書き出す（生成は数分）
+4. **編集できるか確認** — PowerPointで開き Ctrl+A（⌘+A）で全選択。文字・図形が個別に選択枠付きで選べれば成功
+5. **数字・固有名詞を差し替える** — 以降は通常のPowerPoint作業
+
+## プロンプトが効く3つのポイント
+
+変換成否を分けるのは、プロンプトに以下の制約を明示的に埋め込んでいるかどうか：
+
+- **① 文字を画像化させない** — 後から1文字ずつ打ち替えられるようにする。変換失敗の最大原因なので最優先で禁止する
+- **② 点線/破線を「破線アウトライン」で描かせる** — AIは点線を「小さな点を等間隔に並べる」方式で再現しがちで、間隔がガタついたり角が潰れる。塗りなし図形に破線の線を1本引く（**prstDashで指定**）方式にすると崩れない
+- **③ AIに自己検証させる** — 出力後に一度レンダリングして原画と並べ、ズレをAI自身が見つけて直すサイクルを数周回す。一発出力で終わらせず「答え合わせ」しながら仕上げる
+
+③は[[concepts/eval-loop]]（生成→採点→修正のループ）をスライド変換タスクに適用した実例にあたる。出力をそのまま信じず、原画という基準（ground truth）に対してスコアリングし、閾値に届くまで回す構造になっている。
+
+## つまずき対処
+
+| 症状 | 対処 |
+|------|------|
+| 文字が編集できない/画像になる | 「文字の画像化は禁止、全テキスト編集可に」を追記して再生成 |
+| 日本語と英数字の間に変な隙間 | 「フォントはeastAsiaとlatin両方に同じ指定」と一言 |
+| 破線枠がガタつく/角が潰れる | 「prstDashで指定、点並べ禁止」。PNGだけ崩れて見える時あり、最終判定はPowerPointで |
+| 要素がズレる/句点が切れる | 「座標を原画比率で正規化」「右マージン広め」で再生成 |
+
+仕上げのコツ：再プロンプト実行は1〜2周で打ち切る（それ以降は誤差の追いかけ）。Boldは見出し・英語ラベル・アクセント色だけに当て、本文の単語を勝手に太字にしない。
+
+## 観察ログ（未検証）
+
+- 2026-05-30: @uchita_success による資料作成ハウツー（X article）。「手を動かす時間は5分、提案資料のたたき台を15分で用意できる」と主張（単一ソース・効果は未検証）
+- 2026-05-30: prstDash（PowerPoint OOXMLの破線指定属性）を明示させると破線の角潰れが防げる、という具体的Tipsは経験則ベース
+- 2026-06-06: @hiroki_daichi が「『スライドを作って』と頼めばそれらしいものは出るが、登壇で使える品質にはならない。最初は何度かつまずいた」と指摘（スレッド冒頭teaser・具体手法は未記載）。AI生成スライドは「もっともらしい出力」と「実用品質」の間に明確なギャップがあるという品質観察。本ページの変換・自己検証アプローチや[[concepts/eval-loop]]はこのギャップを埋める実践にあたる
+
+## 問い
+
+- python-pptxベースの変換は、表・グラフ・SmartArtを含む複雑なスライドでも破綻しないか（単純なテキスト＋図形が前提に見える）
+- ③の自己レンダリング検証は[[concepts/eval-loop]]の閾値設計に落とせるか（「原画との一致度0.7未満は再生成」など定量化できるか）
+- 自分のwiki/outputs/のHTML生成にも「自己レンダリングで答え合わせ」の発想を適用できるか
+
+## 関連
+
+- [[concepts/eval-loop]] — 「出力を基準に対して採点し直す」自己検証ループの一般形
+- [[concepts/prompt-engineering]] — 制約を明示的に埋め込むプロンプト設計
+- [[design/fastview-design]] — スライド・資料のビジュアル設計原則
+- [[design/image2-brand-slides]] — ロゴ起点でスライド画像を生成するCodexスキル（こちらは画像→編集可能化、あちらは原稿→画像生成）
+- [[design/lt-preparation-guide]] — LT発表のツール・素材・手順ガイド（Marp/Slidevなどスライド制作ツール情報あり）
+- [[design/ai-slide-creation]] — AIで「刺さるスライド」を作る方法論（主張・構造・100プロンプト）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-harness</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-harness.md">Markdownで表示</a></div>
   <div class="meta">tools/claude-harness · tools · <span title="2026-05-10">1ヶ月前</span></div>
   <article><h1>Claude Harness</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> の上に構築される品質保証レイヤー。LLM単体では保証できないループ制御・評価・引き継ぎを担う。</p>
@@ -113,17 +115,18 @@ watch -n 2 'wc -l &lt; .claude/.evidence-reads'# 証拠読み込みカウント
 <li><a href="../tools/slack-bolt.html">slack-bolt</a> — SlackをAIエージェントのUI/トリガーとして使う場合の実装フレームワーク（Claude CodeやWorkatoへの接続起点）</li>
 <li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a> — 「ハーネスが仕事の本体」とし、自前ミニハーネス1,500行を作る学習段階を置く2026ロードマップ</li>
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a> — ハーネスの概念定義・5アーティファクト・3陣営・ハーネス崩壊（Build to Delete）の全体論</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
 <li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2043981770371276971" rel="noopener" target="_blank">https://x.com/i/web/status/2043981770371276971</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2043981770371276971" rel="noopener" target="_blank">https://x.com/i/web/status/2043981770371276971</a></li>
 <li><a href="https://x.com/i/web/status/2052088740496146652" rel="noopener" target="_blank">https://x.com/i/web/status/2052088740496146652</a></li>
 <li><a href="https://github.com/anthropics/cwc-long-running-agents" rel="noopener" target="_blank">https://github.com/anthropics/cwc-long-running-agents</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -139,5 +142,80 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Claude Harness
+
+[[tools/claude-code]] の上に構築される品質保証レイヤー。LLM単体では保証できないループ制御・評価・引き継ぎを担う。
+
+## Hokage（vibecoder_japan 実装）
+
+「Claude Harness - Hokage v4.0.0」は日本の開発者が公開した Claude ハーネスフレームワーク。
+
+- Claude を「Hokage（火影）」として位置づけ、複数サブエージェントを指揮する構成
+- Default-FAIL contract・Fresh-context evaluator・Agent-maintained handoff の3プリミティブを実装
+- v4.0.0 時点でループ品質の大幅改善
+
+## Anthropic 公式: cwc-long-running-agents
+
+Anthropic が公開した長時間実行エージェント向けのハーネス設計パターン（GitHub: `anthropics/cwc-long-running-agents`）。
+
+3つのコアプリミティブ：
+1. **Default-FAIL contract** — `test-results.json` の全criterionは `false` 始まり。`track-read.sh` + `verify-gate.sh` フックがReadツールで証拠ファイルを開くまで書き込みをブロック
+2. **Fresh-context evaluator** — `agents/evaluator.md` をWrite/Editなしで起動し、ビルドを見ていない新コンテキストで diff + スクリーンショットをレビュー。PASS/NEEDS_WORK を返す
+3. **Agent-maintained handoff** — `PROGRESS.md` に進捗を記録し `commit-on-stop.sh` がセッション終了時にコミット。次セッションはgit logと PROGRESS.md から再開
+
+### オペレーター制御フック
+
+| フック | 役割 |
+|--------|------|
+| `kill-switch.sh` | プロジェクトルートに `AGENT_STOP` ファイルがある間、全ツール呼び出しを停止 |
+| `steer.sh` | `STEER.md` の内容をエージェントに一度だけ渡してクリア（再起動不要の方向転換） |
+
+### ループの観察（ターミナル）
+
+```bash
+watch -n 2 &#x27;tail -20 PROGRESS.md&#x27;          # エージェント自身のメモ
+watch -n 5 &#x27;git log --oneline -8&#x27;           # コミット履歴
+watch -n 5 &#x27;find screenshots -name &quot;*.png&quot;&#x27; # キャプチャ
+watch -n 2 &#x27;wc -l &lt; .claude/.evidence-reads&#x27;# 証拠読み込みカウント
+```
+
+### 発展パターン
+
+| パターン | 概要 |
+|----------|------|
+| Unattended loop | セッション上限を設け、外部スクリプトが次セッションを起動（ralph-loop プラグイン） |
+| Planner agent | 1行の要求を `BUILD_PLAN.md` に展開してからループ実行 |
+| Sprint contracts | ビルダーと evaluator が feature ごとの「完了条件」をファイルに合意 |
+| Grading rubrics | 機能・デザイン・クラフトに few-shot 採点基準を渡して二値判定を脱する |
+| Browser-verified evaluator | evaluator が Playwright MCP でアプリを直接開いてスクリーンショットに依存しない |
+
+&gt; 各モデルリリース後は harness の各ピースをコメントアウトして「まだ必要か」を再評価する（Re-simplify on model upgrades）
+
+## [[tools/claude-code]] との関係
+
+Claude Code の5層アーキテクチャにおける **Harness layer**（第4層）に相当。プロンプトレベルの工夫ではなく、ループ制御の構造的な設計。
+
+## 関連
+
+- [[tools/claude-code]]
+- [[concepts/agentic-coding]]
+- [[concepts/self-refining-skills]]
+- [[companies/anthropic]]
+- [[tools/slack-bolt]] — SlackをAIエージェントのUI/トリガーとして使う場合の実装フレームワーク（Claude CodeやWorkatoへの接続起点）
+- [[concepts/ai-engineer-roadmap]] — 「ハーネスが仕事の本体」とし、自前ミニハーネス1,500行を作る学習段階を置く2026ロードマップ
+- [[concepts/harness-engineering]] — ハーネスの概念定義・5アーティファクト・3陣営・ハーネス崩壊（Build to Delete）の全体論
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

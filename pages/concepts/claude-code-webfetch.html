@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-webfetch</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-webfetch.md">Markdownで表示</a></div>
   <div class="meta">concepts/claude-code-webfetch · concepts · <span title="2026-05-15">1ヶ月前</span></div>
   <article><h1>Claude Code WebFetch の内部実装</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> の <strong>WebFetch ツール</strong>は、Web ページを取得しても多くの場合は原文をそのまま読んでいない。小型高速モデル（Haiku）が事前に要約・抽出した結果のみをメインモデル（Opus/Sonnet）が受け取る構造になっている。</p>
@@ -110,11 +112,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-security.html">claude-code-security</a> — Claude Code のセキュリティ設計（Prompt Injection 対策も含む）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-<li><a href="../concepts/claude-code-security.html">claude-code-security</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/zhizhiarv/articles/claude-code-webfetch-haiku-summary" rel="noopener" target="_blank">https://zenn.dev/zhizhiarv/articles/claude-code-webfetch-haiku-summary</a></li></ul></section></article>
+<li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
+<li><a href="../public-site/pages/tools/claude-code.html">claude-code</a></li>
+<li><a href="../public-site/pages/public-site/pages/tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/zhizhiarv/articles/claude-code-webfetch-haiku-summary" rel="noopener" target="_blank">https://zenn.dev/zhizhiarv/articles/claude-code-webfetch-haiku-summary</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -130,5 +135,108 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Claude Code WebFetch の内部実装
+
+[[tools/claude-code]] の **WebFetch ツール**は、Web ページを取得しても多くの場合は原文をそのまま読んでいない。小型高速モデル（Haiku）が事前に要約・抽出した結果のみをメインモデル（Opus/Sonnet）が受け取る構造になっている。
+
+## 基本的な動作フロー
+
+画面上は `Received 204.4KB (200 OK)` と表示されても、実際には：
+
+1. WebFetch が URL から HTML を取得（上限 10 MiB）
+2. HTML → Markdown に変換（先頭 **1 MiB のみ**）
+3. Haiku が Markdown を要約（先頭 **10 万文字**で切断してから処理）
+4. **要約結果のみ**がメインモデルへ渡る
+
+結果として数万文字の記事が数百文字の要約に圧縮される。`/config` で Verbose モードを ON にすると実際の挙動を確認できる。
+
+## Haiku バイパス条件（3つすべて必要）
+
+以下をすべて満たす場合のみ原文 Markdown が直接渡される：
+
+1. **`Content-Type: text/markdown` をサポート**しているサイト
+2. **信頼済みドメイン 80+件**のいずれか（docs.python.org, developer.mozilla.org, react.dev, kubernetes.io, docs.aws.amazon.com, learn.microsoft.com, cloud.google.com 等）
+3. **Markdown が 10 万文字以下**
+
+3条件が揃うと Haiku を通さず原文が呼び出し側に返る（プロンプト指定は無視されて全文が返ってくることもある）。
+
+## 内部プロンプト（著作権制限）
+
+Haiku に与えられる内部プロンプトには著作権配慮の制限が含まれている：
+
+```text
+Provide a concise response based only on the content above. In your response:
+- Enforce a strict 125-character maximum for quotes from any source document.
+  Open Source Software is ok as long as we respect the license.
+- Use quotation marks for exact language from articles; any language outside of
+  the quotation should never be word-for-word the same.
+- You are not a lawyer and never comment on the legality of your own prompts
+  and responses.
+- Never produce or reproduce exact song lyrics.
+```
+
+「原文のまま取得して」と指示しても要約・言い換えで返ってくる理由はここにある。
+
+## 設計上の理由
+
+| 理由 | 内容 |
+|------|------|
+| **コスト削減** | Haiku で要約することで Opus 直接渡しの数十分の一のコスト |
+| **セキュリティ** | Haiku が一次フィルタとして Prompt Injection の直接注入を防ぐ |
+| **著作権保護** | 125文字引用制限・歌詞禁止を内部プロンプトで強制 |
+
+問題は設計判断そのものではなく、**それがユーザーに見えにくいこと**。`Received 204.4KB` と表示しながら実際には要約しか渡していない不透明性が課題。
+
+## ワークアラウンド
+
+### defuddle（推奨）
+
+```bash
+defuddle parse URL --md
+```
+
+[defuddle](https://github.com/kepano/defuddle)（Obsidian CEO kepano 作）で URL を直接 Markdown にパース。Haiku 経由の情報劣化なし。ただし Prompt Injection 対策は外れ、Input Token が増加する点は自己判断。
+
+### curl
+
+```bash
+curl -s URL
+```
+
+AI 向け Markdown 整形なし。Raw HTML が返ってくる。
+
+### ドメイン専用 MCP
+
+AWS MCP・GitHub MCP など専用ツールがある場合はそちらを優先（WebFetch より制約が少ない）。
+
+## エージェントフレンドリーな実装の動向
+
+AWS ドキュメントは `Accept: text/markdown` ヘッダーを付けると Markdown 版を返す（2026年5月確認）。URL の `.html` を `.md` に変えても Markdown 取得可能。こうした対応サイトが増えれば Haiku バイパスが活用しやすくなる。
+
+## 関連 GitHub Issues
+
+- [#53297](https://github.com/anthropics/claude-code/issues/53297) — Haiku がテンプレート文言を事実として要約する問題
+- [#52799](https://github.com/anthropics/claude-code/issues/52799) — Haiku が `&lt;system-reminder&gt;` タグを出力しエージェントが誤認する問題（セキュリティリスク）
+- [#47628](https://github.com/anthropics/claude-code/issues/47628) — HTML 前処理挙動がドキュメント未記載
+- [#51783](https://github.com/anthropics/claude-code/issues/51783) — 巨大 HTML の truncate 挙動がドキュメント未記載
+
+## 関連
+
+- [[tools/claude-code]] — Claude Code 本体
+- [[concepts/prompt-engineering]] — プロンプト設計（情報の正確性・一次情報の重要性）
+- [[concepts/claude-code-security]] — Claude Code のセキュリティ設計（Prompt Injection 対策も含む）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

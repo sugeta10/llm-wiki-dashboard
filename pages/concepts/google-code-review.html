@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>google-code-review</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="google-code-review.md">Markdownで表示</a></div>
   <div class="meta">concepts/google-code-review · concepts · <span title="2026-05-23">4週間前</span></div>
   <article><h1>Google コードレビュー指針</h1>
 <blockquote>
@@ -71,15 +73,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul>
 <h2>関連</h2>
 <p>関連: <a href="../concepts/spec-driven-development.html">spec-driven-development</a>, <a href="../concepts/agentic-coding.html">agentic-coding</a>, <a href="../tools/claude-code.html">claude-code</a>, <a href="../concepts/claude-skills.html">claude-skills</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../tools/autoreview.html">autoreview</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/google/eng-practices" rel="noopener" target="_blank">https://github.com/google/eng-practices</a></li>
 <li><a href="https://x.com/i/web/status/2057657923753697286" rel="noopener" target="_blank">https://x.com/i/web/status/2057657923753697286</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -95,5 +98,54 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Google コードレビュー指針
+
+&gt; **TL;DR**: Google が CC-By 3.0 で公開するコードレビュー指針（レビュアー視点と作成者視点の2文書）は、人間のレビュー基準をドキュメント化したものであり、AIエージェントへの「レビュー仕様」としても再利用できる。
+
+指針は「コードを読む側」と「コードを出す側」という非対称な2つの立場に分けて記述されており、同じレビューという行為を双方向から規定しているのが特徴である。具体的には次の2文書に分かれる。
+
+- **The Code Reviewer&#x27;s Guide** — レビュアー視点: 何を見るか・どう指摘するか・LGTM基準
+- **The Change Author&#x27;s Guide** — 作成者視点: CLをどう設計するか・レビュアーとどうやり取りするか
+
+両ガイドは Google 内部語で記述される。
+
+| 用語 | 意味 |
+|------|------|
+| **CL**（Changelist） | バージョン管理に提出された1つの自己完結した変更。他組織での PR / patch / pull-request に相当 |
+| **LGTM** | &quot;Looks Good to Me&quot; — レビュアーが CL を承認するときのサイン |
+
+## AI時代との接点
+
+AIエージェントがコードを自律生成・レビューする [[concepts/agentic-coding]] の文脈で、人間のコードレビュー基準をドキュメント化したこの指針は「AIへの指示仕様」としても再利用できる。[[concepts/spec-driven-development]] の観点からは、レビュー基準を機械可読な形式で保持することがエージェント品質管理に直結する。
+
+## Claude Codeスキルとしての活用
+
+このリポジトリ全体を [[tools/claude-code]] の **スキル** として投入すると、エージェントが書く PR の品質管理にレビュー基準を直接参照させられる。指針には「レビュアー視点（何をチェックされるか）」と「作成者視点（PR をどう小分けにして説明文を書くか）」の両技術基準がまとまっているため、PR の粒度や説明文の質を改善する仕様として機能する。スキル化すれば、必要な部分だけをエージェントに読ませる効率化も可能になる。
+
+## 観察ログ（未検証）
+
+- 2026-05-22: @commte が Google Engineering Practices リポジトリ全体を [[tools/claude-code]] のスキルとして投入し、PR の質を改善する手法を公開。スキルとして参照させることで Claude Code が書く PR の粒度・説明文の質が向上するとされる（単一ソースの主張、効果測定は未確認）。
+
+## 問い
+
+- このレビュー指針をスキル化したとき、[[tools/claude-code]] の PR 粒度・説明文は定量的にどれだけ改善するか測れるか？
+- レビュー基準のどの部分をエージェントに読ませると効果が高いか（全文 vs 抜粋）？
+
+## 関連
+
+関連: [[concepts/spec-driven-development]], [[concepts/agentic-coding]], [[tools/claude-code]], [[concepts/claude-skills]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agmsg</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agmsg.md">Markdownで表示</a></div>
   <div class="meta">tools/agmsg · tools · <span title="2026-05-28">3週間前</span></div>
   <article><h1>agmsg</h1>
 <p><strong>agmsg</strong> は、CLI AIエージェント同士（Claude Code・Codex・Gemini CLI等）が<strong>共有SQLiteを介して直接メッセージを送り合える</strong>OSSツール。Agent Skills（agentskills.io）ベースで実装されており、エージェント本体を改変せずスキルとして導入できる。依存は <code>bash</code> と <code>sqlite3</code> のみ。</p>
@@ -75,17 +77,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/openai-codex.html">openai-codex</a></li>
+<li>openai-codex</li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../tools/openclaw.html">openclaw</a> — agmsgはagentskills.io（OpenClaw系スキル仕様）ベースで実装</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../tools/openai-codex.html">openai-codex</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../tools/openclaw.html">openclaw</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059357190725783892" rel="noopener" target="_blank">https://x.com/i/web/status/2059357190725783892</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -101,5 +103,56 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># agmsg
+
+**agmsg** は、CLI AIエージェント同士（Claude Code・Codex・Gemini CLI等）が**共有SQLiteを介して直接メッセージを送り合える**OSSツール。Agent Skills（agentskills.io）ベースで実装されており、エージェント本体を改変せずスキルとして導入できる。依存は `bash` と `sqlite3` のみ。
+
+作者: @fujibee（元ビジネス側の経営者、Claude CodeとCodexで毎日プロダクションコードを書く生活に戻った）
+
+→ https://github.com/fujibee/agmsg
+
+## 観察ログ（未検証）
+
+- 2026-05-26: Claude Code（Opus 4.6）が思考ループにハマった場面でCodex（GPT-5.3）に同じ要件を渡すとほぼ一瞬で正しい出力が返った体験が開発動機
+- 2026-05-26: Claude CodeとCodexで「役割分担」が自然に発生 — Claude Codeは日々の実装ドライバー（手数が多くテンポがいい）、Codexはレビューと難所の相談役（正しさに強い）
+- 2026-05-26: monitor モードでは SQLite をリアルタイム購読し、メッセージが届いた瞬間に会話に割り込む。これにより2台のエージェントが人間の介入なしでマルバツゲームを完走した
+- 2026-05-26: 設計上の最大の課題はClaude Code（Monitor/SessionStart hookあり）とCodex（これらなし）の機能差を吸収すること
+
+## 検証済み事実
+
+- 2026-05-26: 受信モードは手動取得・hook（Turn終了タイミング）・monitor（SQLiteブロッキング読み取り）の3方式。Codexのデフォルトはhook、Claude CodeのデフォルトはmonitorまたはbothモードまたはSQLite WALモード（マルチリーダー+1ライター）
+
+## アーキテクチャ
+
+| 方式 | 仕組み |
+|-----|------|
+| **手動取得** | `/agmsg` または自然言語で手動確認 |
+| **hook** | Stopフックでターン終了時に自動チェック（Codexのデフォルト） |
+| **monitor** | SQLiteをリアルタイム購読・メッセージ到着で即会話に割り込み（Claude Codeのデフォルト） |
+| **both** | monitor主体 + hookを保険として併用 |
+
+## チーム設定
+
+同じ「チーム名」に参加したエージェントは互いにメッセージを送受信できる。初回起動時にチーム名とエージェント名を入力するだけ。
+
+## 関連
+
+- [[tools/claude-code]]
+- [[tools/openai-codex]]
+- [[concepts/multi-agent-patterns]]
+- [[tools/openclaw]] — agmsgはagentskills.io（OpenClaw系スキル仕様）ベースで実装
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

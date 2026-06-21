@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>andrej-karpathy</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="andrej-karpathy.md">Markdownで表示</a></div>
   <div class="meta">people/andrej-karpathy · people · <span title="2026-05-09">1ヶ月前</span></div>
   <article><h1>Andrej Karpathy</h1>
 <p>AI研究者。元 OpenAI 共同創業者・Tesla AI 責任者。現在は独立して教育・研究活動を続ける。</p>
@@ -60,16 +62,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-council.html">llm-council</a> — Karpathy が考案した LLM Council（複数モデルのポーリング＋匿名ピアレビュー）パターン</li>
 <li><a href="../concepts/attention.html">attention</a> — Transformer中核機構。Karpathyのコンテンツが追加学習先として推奨される</li>
 <li><a href="../concepts/research-methodology.html">research-methodology</a> — Karpathyの「single batch overfit」「raw data を手で見る」技法が引用</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-council.html">llm-council</a></li>
-<li><a href="../concepts/attention.html">attention</a></li>
-<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../concepts/llm-council.html">llm-council</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
 <li><a href="../tools/gstack.html">gstack</a></li>
-<li><a href="../concepts/vibe-coding.html">vibe-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">https://x.com/i/web/status/2050230239700152633</a></li>
+<li><a href="../concepts/research-methodology.html">research-methodology</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2050230239700152633" rel="noopener" target="_blank">https://x.com/i/web/status/2050230239700152633</a></li>
 <li><a href="https://x.com/i/web/status/2040448463540830705" rel="noopener" target="_blank">https://x.com/i/web/status/2040448463540830705</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -85,5 +88,60 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Andrej Karpathy
+
+AI研究者。元 OpenAI 共同創業者・Tesla AI 責任者。現在は独立して教育・研究活動を続ける。
+
+## 主な貢献
+
+- **「vibe coding」** という概念の提唱者（[[concepts/vibe-coding]]）
+- **「LLM Wiki」** の提唱者 — LLM が継続的にメンテナンスする Markdown 知識ベース（[[concepts/llm-wiki]]）
+- LLMと教育を結びつける活動（YouTube での深い解説動画シリーズ）
+- Sequoia での講演でAIコーディングツールの現状を解説
+
+## Vibe Coding に関する発言
+
+vibe coding を提唱した本人が「今まで感じたことがないほど自分がプログラマーとして遅れを感じている」と発言。AIコーディングの進化速度の速さを示唆している。
+
+## Sequoia 講演
+
+30分の講演で [[tools/claude-code]]・[[tools/cursor]]・Codex について解説。vibe coding チュートリアル100本分以上の情報量と評される。
+
+## Second Brain 実装
+
+Karpathy の LLM Wiki 実装について NickSpisak_ が詳細解説（41,000件ブックマーク）：
+- **3フォルダ**: `raw/`・`wiki/`・`outputs/`
+- CLAUDE.md（AGENTS.md）でAIへの指示書を定義
+- 「super simple and flat」— Obsidianも不要、フラットな .md ディレクトリで十分
+
+## CLAUDE.md ルール設計への影響
+
+2026年1月のスレッドでClaude のコーディング問題（サイレントな誤った前提・過剰複雑化・直交的破壊）を指摘。Forrest Chang がそれを4ルールに変換し120,000 stars を獲得。さらに8ルールが追加されて[[concepts/claude-md-rules]]として体系化された。
+
+## 関連
+
+- [[concepts/vibe-coding]]
+- [[concepts/llm-wiki]]
+- [[tools/claude-code]]
+- [[tools/cursor]]
+- [[companies/anthropic]]
+- [[concepts/claude-md-rules]]
+- [[tools/gstack]]（Karpathy の「コードをほぼ書いていない」発言が gstack 開発の直接的動機）
+- [[concepts/llm-council]] — Karpathy が考案した LLM Council（複数モデルのポーリング＋匿名ピアレビュー）パターン
+- [[concepts/attention]] — Transformer中核機構。Karpathyのコンテンツが追加学習先として推奨される
+- [[concepts/research-methodology]] — Karpathyの「single batch overfit」「raw data を手で見る」技法が引用
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

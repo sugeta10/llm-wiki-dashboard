@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,12 +28,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>hermes-agent-overnight</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="hermes-agent-overnight.md">Markdownで表示</a></div>
   <div class="meta">tools/hermes-agent-overnight · tools · <span title="2026-06-17">4日前</span></div>
   <article><h1>Hermes Agent 夜間自動化ワークフロー</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Hermes Agentは夜間9時間のcronサイクルで自己進化・知識取り込み・Kanban処理を自律実行し、朝に5箇条のTelegramブリーフィングを届ける「眠っている間に育つエージェント」インフラ（月額$7〜30）。</p>
 </blockquote>
-<pre><code class="language-mermaid">flowchart TD
+<pre class="mermaid">flowchart TD
   A[&quot;23:00 Session Close&lt;br/&gt;SessionDB永続化・メモリループ&quot;] --&gt; B[&quot;23:30 Self-improvement Loop&lt;br/&gt;完了タスクからスキル自動生成&quot;]
   B --&gt; C[&quot;00:00 Curator Check&lt;br/&gt;staleスキルをarchive（7日毎）&quot;]
   C --&gt; D[&quot;02:00 Competitive Intel Cron&lt;br/&gt;差分なし→wakeAgent:false（LLMコスト0）&quot;]
@@ -40,8 +42,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   E --&gt; F[&quot;04:00 Scheduled Reports&lt;br/&gt;no_agentモード（Python直接・LLMコスト0）&quot;]
   F --&gt; G[&quot;06:00 Morning Briefing Prep&lt;br/&gt;cron結果+Kanban+wiki+カレンダー集約&quot;]
   G --&gt; H[&quot;07:00 Kanban Dispatcher&lt;br/&gt;60秒tick・ゾンビ検知・Ready自動割当&quot;]
-  H --&gt; I[&quot;08:00 Briefing Lands&lt;br/&gt;Telegram・5箇条・7〜10分レビュー&quot;]
-</code></pre>
+  H --&gt; I[&quot;08:00 Briefing Lands&lt;br/&gt;Telegram・5箇条・7〜10分レビュー&quot;]</pre>
 <p>大半のAIエージェントはユーザーが入力するまで待機する「reactive」設計だが、Hermesは3つの仕組みで夜間自律稼働を実現する。①常時起動のGatewayプロセス（systemd/launchd管理）、②60秒ティックのcronデーモン、③バックグラウンドフォークで走る自己改善ループ。これによりユーザーが寝ている間に「競合監視→知識更新→スキル改善→タスク処理」が複合的に進行し、Day 30のエージェントはDay 1より明確に出力品質が向上する。</p>
 <h2>24時間タイムライン</h2>
 <table>
@@ -255,15 +256,16 @@ Week 3以降: 実績ベースで拡張
 <li><a href="../concepts/eval-loop.html">eval-loop</a> — wakeAgentゲートは「スクリプトが採点→閾値超えのみLLM起動」のeval-loopパターン</li>
 <li><a href="../concepts/agent-skill-management-system.html">agent-skill-management-system</a> — Curatorが担う「スキルのライフサイクル管理」の一般概念</li>
 <li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a> — 同じwakeAgentゲート原理を3エージェント・リサーチ部門に適用した構成</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a></li>
-<li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
+<li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a></li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
-<li><a href="../concepts/agent-skill-management-system.html">agent-skill-management-system</a></li>
-<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066145326780518736" rel="noopener" target="_blank">https://x.com/i/web/status/2066145326780518736</a></li></ul></section></article>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066145326780518736" rel="noopener" target="_blank">https://x.com/i/web/status/2066145326780518736</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -279,5 +281,129 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Hermes Agent 夜間自動化ワークフロー
+
+&gt; **TL;DR**: Hermes Agentは夜間9時間のcronサイクルで自己進化・知識取り込み・Kanban処理を自律実行し、朝に5箇条のTelegramブリーフィングを届ける「眠っている間に育つエージェント」インフラ（月額$7〜30）。
+
+```mermaid
+flowchart TD
+  A[&quot;23:00 Session Close&lt;br/&gt;SessionDB永続化・メモリループ&quot;] --&gt; B[&quot;23:30 Self-improvement Loop&lt;br/&gt;完了タスクからスキル自動生成&quot;]
+  B --&gt; C[&quot;00:00 Curator Check&lt;br/&gt;staleスキルをarchive（7日毎）&quot;]
+  C --&gt; D[&quot;02:00 Competitive Intel Cron&lt;br/&gt;差分なし→wakeAgent:false（LLMコスト0）&quot;]
+  D --&gt; E[&quot;03:00 Knowledge Ingestion&lt;br/&gt;Watchフォルダ→wikiページ自動インデックス&quot;]
+  E --&gt; F[&quot;04:00 Scheduled Reports&lt;br/&gt;no_agentモード（Python直接・LLMコスト0）&quot;]
+  F --&gt; G[&quot;06:00 Morning Briefing Prep&lt;br/&gt;cron結果+Kanban+wiki+カレンダー集約&quot;]
+  G --&gt; H[&quot;07:00 Kanban Dispatcher&lt;br/&gt;60秒tick・ゾンビ検知・Ready自動割当&quot;]
+  H --&gt; I[&quot;08:00 Briefing Lands&lt;br/&gt;Telegram・5箇条・7〜10分レビュー&quot;]
+```
+
+大半のAIエージェントはユーザーが入力するまで待機する「reactive」設計だが、Hermesは3つの仕組みで夜間自律稼働を実現する。①常時起動のGatewayプロセス（systemd/launchd管理）、②60秒ティックのcronデーモン、③バックグラウンドフォークで走る自己改善ループ。これによりユーザーが寝ている間に「競合監視→知識更新→スキル改善→タスク処理」が複合的に進行し、Day 30のエージェントはDay 1より明確に出力品質が向上する。
+
+## 24時間タイムライン
+
+| 時刻 | イベント | 詳細 |
+|------|----------|------|
+| **23:00** | Session Close | 最後の会話が終了。SessionDBに会話状態を永続化。メモリループが1日の交換から耐久ファクトを抽出しMEMORY.md/USER.mdに書き込み（それぞれ〜800/〜500トークン上限） |
+| **23:30** | Self-improvement Loop | 当日の完了タスクをバックグラウンドフォークでレビュー。有効パターンを `~/.hermes/skills/` にスキルとして保存。翌朝には新しい手順書がスキルライブラリに追加されている |
+| **00:00** | Curator Check | 7日毎にCuratorが起動。`~/.hermes/skills/` をスキャンし、冗長・staleなスキルを `.archive/` に移動（復元可能）。Hub製スキルは対象外 |
+| **02:00** | Competitive Intel Cron | Pythonスクリプトが競合サイトをスクレイプし先週のスナップショットとdiff。変化なし→ `{&quot;wakeAgent&quot;: false}` でLLMトークンゼロ。変化あり→エージェントが起動してwikiに要約・Telegramアラートを下書き |
+| **03:00** | Knowledge Ingestion | [[concepts/llm-wiki]] パターンに基づくwikiインジェストcronが起動。Watchフォルダに保存した記事を[[wiki/]]にインデックス化し既存エントリとクロスリファレンス。朝には知識ベースが更新されている |
+| **04:00** | Scheduled Reports | 週次パフォーマンスレビュー・月次請求・稼働サマリー。`no_agent` モード（Python直接実行）でLLMコストゼロ。出力はTelegram/SlackのGateway RESTエンドポイント経由 |
+| **06:00** | Morning Briefing Prep | cronが夜間cron結果・Kanban状態・新wiki項目・当日カレンダー・緊急フラグを集約。ブリーフィング草案をエージェントが作成（この工程だけ推論が必要） |
+| **07:00** | Kanban Dispatcher | 60秒毎に稼働。ゾンビタスク検知・ハートビート追跡・リトライ上限管理。「Ready」状態のタスクを利用可能ワーカーに自動割当 |
+| **08:00** | Briefing Lands | Telegramに5箇条のモーニングブリーフ到着。緊急事項・要決断事項・カレンダー・今月のトークン消費が含まれる |
+
+## 朝の5つのレビュー（7〜10分）
+
+| 優先順 | 確認先 | 時間 | 確認内容 |
+|--------|--------|------|----------|
+| 1 | Telegramブリーフ | 2分 | 緊急3件・要決断変更・カレンダー・トークン消費・wakeAgent発動の有無 |
+| 2 | Kanban Board | 2分 | Blocked（要判断）優先→In Progress確認→Doneをアーカイブ |
+| 3 | 新スキルレビュー | 1〜2分 | `hermes skills --new` で24時間以内生成スキルを確認。精度チェックと承認モード設定 |
+| 4 | Wiki追記 | 1〜2分 | 新エントリ・矛盾フラグ・親ページ化の必要なトピックをスキャン |
+| 5 | /usage確認 | 30秒 | 今日/今週/今月のトークン消費。異常なcronがあれば設定見直し |
+
+`/morning` カスタムコマンドをSOUL.mdに定義すると5レビューが1コマンドに集約される。
+
+## セキュリティ：5層の防御
+
+自律夜間稼働のリスクはSOUL.md設計で制御する。
+
+| 層 | 仕組み | 設定ポイント |
+|---|---|---|
+| **1. SOUL.md制限** | ハードルール定義。プロンプトインジェクション検査済み | 「本番デプロイは承認なし禁止」「rm -rfコマンド禁止」等を具体的に記述。「データに気をつけて」はスキップされる |
+| **2. Approval Gates** | Smart modeで補助モデルがリスク分類。Telegram/Discordに承認ボタン | センシティブアクションをTelegramのApprove/Rejectで制御 |
+| **3. Checkpoints** | ファイル変更前にディレクトリをスナップショット | `/rollback 3` で3つ前の状態に即時復元 |
+| **4. Token Budget Cap** | config.yamlで上限設定。超えたらエージェント停止 | cronジョブ作成前に必ず設定。あとから設定しても取り返せない |
+| **5. Docker/VPS分離** | コンテナまたは別VPSで稼働 | ローカルファイル・ブラウザ・認証情報はマウントされた範囲外に保護 |
+
+## セットアップ順序（ミスを防ぐ手順）
+
+**Day 0〜1週間の段階的展開が最重要**。10個のcronを初日に一気に作るのが高額エラーの最大原因。
+
+```
+Day 0: Hermes インストール → SOUL.md制限記述 → config.yamlでトークン上限設定 → Checkpoint有効化
+Day 1: Telegram接続 → 手動タスクでテスト（cronなし）
+Day 2: cron1本追加（モーニングブリーフのみ）
+Day 3〜7: 1週間クリーン稼働を確認
+Week 2: wakeAgentゲート付きの監視cronを追加
+Week 3以降: 実績ベースで拡張
+```
+
+wakeAgentゲートの原則：**1時間に複数回実行するcronは必ずwakeAgent=falseゲートを設ける**。スクリプトが「変化あり」を判定したときだけLLMが起動する設計が月$7〜30のコストを実現する前提条件。
+
+## 現実的なコストと成長曲線
+
+**夜間トークン消費**（典型的セットアップ）:
+- wakeAgentゲートcron 5本 → 変化なし=LLMコストゼロ
+- 変化ありで起動 1〜2回 → 5K〜15Kトークン/回
+- モーニングブリーフ生成 → 10K〜20Kトークン
+- 合計: 30K〜60Kトークン/夜 ≒ Claude Sonnet換算で$0.20〜$0.40/夜
+
+**インフラコスト**: Hetzner CX22（$7/月）または同等VPS（MacミニはAC障害リスクあり）
+
+**成長曲線**:
+- Day 1: 基本ブリーフ。スキルライブラリほぼ空
+- Week 2: 8〜12の自動生成スキル。MEMORY.mdに1,500〜2,000文字の蓄積。ブリーフが自分のプロジェクトを参照し始める
+- Month 1: 20〜30スキル。wikiに100〜200エントリ。Curatorが4回稼働し不要スキルを5〜10件pruning。ブリーフが気づいていなかったパターンを提示し始める
+
+## トラブルシューティング
+
+| 症状 | 確認コマンド | 典型的原因 |
+|------|-------------|-----------|
+| ブリーフが届かない | `hermes gateway status` | Gatewayがクラッシュ→systemd/launchd自動再起動の設定漏れ |
+| cronが発火したが何も起きない | `hermes cron list` + `hermes logs --since 12h` | スクリプトタイムアウト(120秒)/wakeAgentゲートのfalse誤判定/APIキー期限切れ |
+| 意図しない操作をされた | `/rollback` または `/rollback 3` | Checkpoint未設定→SOUL.md制限に追記して再発防止 |
+| トークン消費が異常 | `/usage` + `hermes prompt-size` | SOUL.md肥大化/wakeAgent設定誤り/サブエージェント多段委任 |
+| Kanbanタスクがずっと「Running」 | `hermes kanban reclaim &lt;task_id&gt;` | ゾンビワーカー → dispatcher一時停止して調査 |
+
+## 問い
+
+- `wakeAgent` ゲートのfalse誤判定率を下げるスクリプト設計の指針はあるか
+- このwikiのlaunchd+claude -pによる自動ingestと、Hermes Agent夜間ingestは構造的に同じパターンか（差分は何か）
+- Week 2以降の「ブリーフが自分プロジェクトを参照し始める」体験は、MEMORY.mdの容量上限（800トークン）に達した後どう劣化するか
+
+## 関連
+
+- [[tools/hermes-agent]] — Hermes Agent本体の全体アーキテクチャ（3層メモリ・GEPA・Curator・マルチプロファイル）
+- [[concepts/llm-wiki]] — Knowledge Ingestionステップで採用されているKarpathyのwikiパターン
+- [[concepts/self-refining-skills]] — Self-improvement Loopで生成されるスキルの設計概念
+- [[concepts/loop-engineering]] — 夜間cronを「人間がループ外に出る」エンジニアリングとして捉える視点
+- [[concepts/eval-loop]] — wakeAgentゲートは「スクリプトが採点→閾値超えのみLLM起動」のeval-loopパターン
+- [[concepts/agent-skill-management-system]] — Curatorが担う「スキルのライフサイクル管理」の一般概念
+- [[tools/hermes-agent-research-department]] — 同じwakeAgentゲート原理を3エージェント・リサーチ部門に適用した構成
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
 </body>
 </html>

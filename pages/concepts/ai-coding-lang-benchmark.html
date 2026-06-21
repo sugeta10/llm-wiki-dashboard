@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-coding-lang-benchmark</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-coding-lang-benchmark.md">Markdownで表示</a></div>
   <div class="meta">concepts/ai-coding-lang-benchmark · concepts · <span title="2026-05-20">1ヶ月前</span></div>
   <article><h1>AIコーディング言語ベンチマーク（Claude Code版）</h1>
 <p><a href="../tools/claude-code.html">claude-code</a> に13言語で簡易 git を実装させ、時間・コスト・成功率を定量比較した実験（mametter/Zenn、2026-03 実施）。Ruby・Python・JavaScript が最速・最安で、静的型付け言語は 1.4〜2.6 倍コスト増の傾向。</p>
@@ -50,14 +52,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-20: 静的型付け言語の倍率（対 Ruby）: Go 1.4倍、Java 1.6倍、Rust 1.5倍、TypeScript 1.9倍、C 2.1倍、Haskell 2.4倍、Ruby/Steep 2.6倍</li>
 <li>2026-05-20: v1（新規作成）では言語差が大きく出る。プロジェクト設定ファイル（Cargo.toml等）の生成コストが影響している可能性</li>
 <li>2026-05-20: 実験コード・結果は GitHub (mame/ai-coding-lang-bench) で公開。実行ごとの生成コードも data ブランチに公開</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
-<li><a href="../concepts/token-management.html">token-management</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/mametter/articles/3e8580ec034201" rel="noopener" target="_blank">https://zenn.dev/mametter/articles/3e8580ec034201</a></li></ul></section></article>
+<li><a href="../public-site/pages/tools/claude-code.html">claude-code</a></li>
+<li><a href="../public-site/pages/public-site/pages/tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/mametter/articles/3e8580ec034201" rel="noopener" target="_blank">https://zenn.dev/mametter/articles/3e8580ec034201</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -73,5 +77,43 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># AIコーディング言語ベンチマーク（Claude Code版）
+
+[[tools/claude-code]] に13言語で簡易 git を実装させ、時間・コスト・成功率を定量比較した実験（mametter/Zenn、2026-03 実施）。Ruby・Python・JavaScript が最速・最安で、静的型付け言語は 1.4〜2.6 倍コスト増の傾向。
+
+関連: [[tools/claude-code]] / [[concepts/agentic-coding]] / [[concepts/vibe-coding]]
+
+## 観察ログ（未検証）
+
+- 2026-05-20: 速さの原因として著者が挙げた仮説（複合的と推測）: ①型システムの有無（動的型付けが有利）、②短く簡潔に書けること、③AIの習熟度（Python/Ruby/JS はトレーニングデータが豊富）、④言語固有の難しさ（C のメモリ管理・Rust の所有権）
+- 2026-05-20: LOC が少なくても速いとは限らない。OCaml・Haskell は行数最少クラスだが時間・コストは中位以下。思考トークン消費が多い可能性
+- 2026-05-20: 時間 ≒ コストの散布図が示す通り、所要時間とコストはほぼ比例する
+- 2026-05-20: 型なし動的型付けでもテスト外パスの型エラーリスクはある。ただし型エラーは検出しやすいバグで、検出しにくいロジックバグが同程度に混入するなら型検査の有無以前の問題では、という著者の見解
+- 2026-05-20: 差は最大2倍程度だが、プロンプト→待ち→次タスクのサイクルを高頻度で繰り返す実開発では体感差・集中力的に大きい、との著者主張
+- 2026-05-20: 将来的に「初期は動的型付けでスピーディーに開発 → 仕様が固まったら静的型付けに移行」戦略がより現実的になる可能性。コーディングエージェントは言語移植に強い印象があるため
+
+## 検証済み事実
+
+- 2026-05-20: 実験条件: Claude Opus 4.6 (high effort)、各言語20回試行、タスクは2段階（v1=新規作成、v2=機能拡張）
+- 2026-05-20: 600回実行中テスト失敗は3回のみ（Rust 2回・Haskell 1回）
+- 2026-05-20: 平均コスト上位3言語: Ruby $0.36、Python $0.38、JavaScript $0.39（v1+v2合算）
+- 2026-05-20: 平均コスト下位3言語: Ruby/Steep $0.84、Haskell $0.74、C $0.74
+- 2026-05-20: 所要時間上位3言語: Ruby 73.1s±4.2s、Python 74.6s±4.5s、JavaScript 81.1s±5.0s（標準偏差も最小）
+- 2026-05-20: 静的型付け言語の倍率（対 Ruby）: Go 1.4倍、Java 1.6倍、Rust 1.5倍、TypeScript 1.9倍、C 2.1倍、Haskell 2.4倍、Ruby/Steep 2.6倍
+- 2026-05-20: v1（新規作成）では言語差が大きく出る。プロジェクト設定ファイル（Cargo.toml等）の生成コストが影響している可能性
+- 2026-05-20: 実験コード・結果は GitHub (mame/ai-coding-lang-bench) で公開。実行ごとの生成コードも data ブランチに公開
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

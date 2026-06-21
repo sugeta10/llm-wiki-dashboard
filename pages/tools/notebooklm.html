@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>notebooklm</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="notebooklm.md">Markdownで表示</a></div>
   <div class="meta">tools/notebooklm · tools · <span title="2026-06-09">1週間前</span></div>
   <article><h1>NotebookLM</h1>
 <p>Googleが提供するAI搭載のノートブックツール。PDFやWebページをソースとして取り込み、Q&amp;A・要約・ポッドキャスト生成などを行える。</p>
@@ -63,11 +65,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/notebooklm-business-workflows.html">notebooklm-business-workflows</a> — 業務時短9ワークフロー（会議・資料・申請書・改善ループ）</li>
 <li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — Obsidian+Claude Code+N8NによるパーソナルOS設計</li>
 <li><a href="../companies/google.html">google</a> — NotebookLMを含むGoogle OneのAIサブスクバンドル</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/notebooklm-py.html">notebooklm-py</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/notebooklm-business-workflows.html">notebooklm-business-workflows</a></li>
+<li><a href="../tools/notebooklm-py.html">notebooklm-py</a></li>
 <li><a href="../companies/google.html">google</a></li>
-<li><a href="../tools/notebooklm-business-workflows.html">notebooklm-business-workflows</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055768828626588109" rel="noopener" target="_blank">https://x.com/i/web/status/2055768828626588109</a></li>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055768828626588109" rel="noopener" target="_blank">https://x.com/i/web/status/2055768828626588109</a></li>
 <li><a href="https://x.com/i/web/status/2055032973758775581" rel="noopener" target="_blank">https://x.com/i/web/status/2055032973758775581</a></li>
 <li><a href="https://x.com/i/web/status/2054147963719495893" rel="noopener" target="_blank">https://x.com/i/web/status/2054147963719495893</a></li>
 <li><a href="https://x.com/i/web/status/2062847427242238047" rel="noopener" target="_blank">https://x.com/i/web/status/2062847427242238047</a></li>
@@ -76,8 +78,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="https://x.com/i/web/status/2057137586028888504" rel="noopener" target="_blank">https://x.com/i/web/status/2057137586028888504</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -93,5 +96,71 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># NotebookLM
+
+Googleが提供するAI搭載のノートブックツール。PDFやWebページをソースとして取り込み、Q&amp;A・要約・ポッドキャスト生成などを行える。
+
+## カスタムプロンプト
+
+`@ai_jitan`（2026-05-16）による記事「NotebookLMカスタムプロンプトの全てを、本気で全部書く。」— NotebookLMのカスタムプロンプト機能を徹底解説。標準的なQ&amp;Aを超えた高度な活用が可能になる。
+
+## 隠し機能・裏技10選
+
+`@ai_jitan`（2026-05-14）による記事「NotebookLMの隠し機能と裏技10選を完全解説」— Web UIから見えにくい機能を10個厳選紹介。
+
+## Obsidian × Claude × NotebookLM 読書自動化
+
+@leopardracer による実践（2026-05-12）。「1ヶ月で本を1冊も開かずに34冊分の知識を吸収した」と報告：
+
+1. Obsidianにvaultを構築し、書籍PDF等を投入
+2. Claudeと連携してコンテンツを処理
+3. NotebookLMを追加接続
+
+**自動生成されるもの**: フラッシュカード・マインドマップ・自分のノートからのみ回答するAI
+
+[[concepts/obsidian-personal-os]] の実践事例の一つ。
+
+## カスタムプロンプトの応用：本と対話する読書術
+
+`@ai_jitan`（2026-06-05）が「本と対話する読書術」をプロンプトごと全公開。カスタムプロンプト次第で NotebookLM を Q&amp;A ツールの枠を超えて使える、という実例:
+
+- **本を擬人化して対話させる** — ソースの書籍を「話し相手」として振る舞わせ、内容を引き出す
+- **推理小説をゲーム化** — ストーリーをインタラクティブに「遊べる」体験に変換
+
+ポイントは、NotebookLM の価値はソース投入の量ではなく**カスタムプロンプトの設計次第で何でもできる**こと。上の「カスタムプロンプト」節の徹底解説に続く、具体的な応用パターン。
+
+## Web Clipper for NotebookLM 拡張（Docs/Sheets/Slides対応）
+
+ブラウザ拡張「Web Clipper for NotebookLM」が v1.19.0 で **Google Docs・スプレッドシート・スライドのツールバーから1クリックでソース追加**できるようになった（@Majin_AppSheet 経由・2026-06-05）。従来はNotebookLM側からDriveピッカーを掘ってソースを探す必要があったが、逆に**ソース側からどのノートブックに追加するか選べる**動線になった。
+
+ポイントは、MarkdownやテキストへのHTML変換でなく**Googleソースとしてそのまま入る**こと。そのため AutoSync が効き、元ドキュメントの更新が**live source として追従**する（静的コピーにならない）。
+
+## Google Antigravity 経由での操作自動化
+
+@tetumemo（2026-05-20）が、Google Antigravity から NotebookLM操作の Skill を呼び出し「本日分をお願い」と依頼するだけで、Manus で調査済みの日刊AI系ニュースまとめファイルを取得して NotebookLM に反映する自動化を報告。Antigravity は Gemini 3.5 ベースのため、Codex / [[tools/claude-code]] より応答が速いと評価している。
+
+ポイントは、NotebookLM を **AIコーディングIDE側のスキルから操作する**ことで、日次の調査→ソース投入のルーチンを「一言の指示」に畳める点。[[tools/notebooklm-py]] の Python CLI が API 直叩きの自動化なのに対し、こちらは IDE のエージェント＋Skill 経由で同じことをノーコードで回す動線。
+
+**補足（@m13v_, 2026-05-20）**: 出力がテキスト Q&amp;A で止まる点を指摘。通勤・散歩で聞き流せる **audio まで自動化**（podlog.io 等）すると、リポジトリ／情報の追跡が習慣として定着しやすい、と提案している。
+
+## 関連
+
+- [[tools/notebooklm-py]] — NotebookLM非公式Python API/CLI（Web UI非公開機能をバッチ操作）
+- [[tools/notebooklm-business-workflows]] — 業務時短9ワークフロー（会議・資料・申請書・改善ループ）
+- [[concepts/obsidian-personal-os]] — Obsidian+Claude Code+N8NによるパーソナルOS設計
+- [[companies/google]] — NotebookLMを含むGoogle OneのAIサブスクバンドル
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

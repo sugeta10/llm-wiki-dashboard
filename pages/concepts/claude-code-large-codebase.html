@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-large-codebase</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-large-codebase.md">Markdownで表示</a></div>
   <div class="meta">concepts/claude-code-large-codebase · concepts · <span title="2026-06-21">今日</span></div>
   <article><h1>Claude Code 大規模コードベースのベストプラクティス</h1>
 <p>Anthropic公式ベストプラクティスに基づく、大規模コードベースでのClaude Code活用指針。<strong>精度はモデルよりハーネスの整備で決まる</strong>というのが根幹の主張。</p>
@@ -100,16 +102,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> — Memory/Permissions/MCP/Slash commandsの4層階層設計</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIが自律的にコードを書くスタイル全般</li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — 自己改善ループの設計パターン</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/understand-anything.html">understand-anything</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/understand-anything.html">understand-anything</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55</a></li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55" rel="noopener" target="_blank">https://izanami.dev/post/af045ef8-eff9-4317-b05a-abce17e14f55</a></li>
 <li><a href="https://x.com/i/web/status/2057978156183957995" rel="noopener" target="_blank">https://x.com/i/web/status/2057978156183957995</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -125,5 +128,84 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Claude Code 大規模コードベースのベストプラクティス
+
+Anthropic公式ベストプラクティスに基づく、大規模コードベースでのClaude Code活用指針。**精度はモデルよりハーネスの整備で決まる**というのが根幹の主張。
+
+関連: [[tools/claude-code]] | [[concepts/claude-md-rules]] | [[concepts/agentic-coding]] | [[tools/understand-anything]]
+
+## Claude Codeはインデックスを作らない
+
+RAGツールと異なり、Claude Codeはコードベース全体をベクトル化しない。代わりにファイルツリーをたどり、grepで必要箇所を探す（= 常に**ライブのコードベース**を見る）。
+
+これは古いインデックスを参照するリスクを排除する一方、「どこを見ればいいか」の手がかりがないと探索でコンテキストを使い切るリスクがある。CLAUDE.mdとハーネス整備がその手がかりを与える。
+
+## ハーネスの5層
+
+| 層 | 役割 |
+|----|------|
+| CLAUDE.md | 文脈 |
+| hooks | 自動化 |
+| skills | 専門知識 |
+| plugins | 配布 |
+| MCP | 外部ツール接続 |
+
+**積む順番が重要**: 土台（CLAUDE.md → hooks）が固まってから skills/plugins/MCPを足す。いきなりMCPを生やすと不安定になる。
+
+## CLAUDE.md の設計原則
+
+- **ルートは薄く**: 全体像と「ここを踏むと事故る」ハマりどころだけ
+- **ローカル規約はサブディレクトリに**: Claude はディレクトリを下りながらCLAUDE.mdを順に積み上げるため、深い階層の文脈もちゃんと届く
+- **定期的な棚卸し**: モデルが進化すると古いルールが足かせになる。3〜6ヶ月ごと、または大きなモデルアップデート後に見直す
+
+## 起動位置: ルートではなくサブディレクトリ
+
+タスクに関係するサブディレクトリでClaude Codeを起動すると精度が出る。親ディレクトリのCLAUDE.mdは自動で読まれるため、コンテキストは失われない。サブディレクトリのCLAUDE.mdにはそのサービス固有のテスト・リントコマンドを書く（全スイート実行のタイムアウトとコンテキスト汚染を防ぐ）。
+
+## hooks の真価: 自己改善ループ
+
+hooks の主な用途は「止めるスクリプト」ではなく**セットアップを育てる**こと:
+
+- **stop hook**: セッション終了時にその回の学びをCLAUDE.mdの更新案として出力。文脈が新しいうちに反映できる
+- **start hook**: セッション開始時にチーム固有の文脈を動的に注入
+- リント・フォーマットは hooks で機械的に実行 → 「覚えといてね」より安定
+
+## 個人開発者向けの絞り込み
+
+エンタープライズ向けの「専任チーム・DRI・エージェントマネージャー」は不要。
+
+やることのシンプルな順序:
+1. CLAUDE.mdをルートとサブディレクトリに分けて薄く整える
+2. stop hookを1つ入れて自己改善を回す
+3. 土台が安定したらskills/plugins/MCPを追加
+
+## 古い設定は能力を制限する
+
+「リファクタは1ファイルずつ」といった古モデル向けの制約が、最新モデルではかえって能力を殺すことがある。設定の棚卸しは定期的に。
+
+## 観察ログ（未検証）
+
+- 2026-05-23: Simon Last（Notion共同創業者）が、大規模プロジェクトでコーディングエージェントを運用して最近学んだことの多くが「6ヶ月前のアドバイスと矛盾する」とポスト（スレッド冒頭のみで具体的手法は本ページに未捕捉）。本ページの「古い設定は能力を制限する」「設定は定期的に棚卸しする」という主張が、別の実践者からも独立して裏付けられた格好。
+
+## 関連
+
+- [[tools/claude-code]] — Claude Code本体の概要
+- [[concepts/claude-md-rules]] — CLAUDE.md行動ルール体系
+- [[concepts/claude-code-context-hierarchy]] — Memory/Permissions/MCP/Slash commandsの4層階層設計
+- [[concepts/agentic-coding]] — AIが自律的にコードを書くスタイル全般
+- [[concepts/self-refining-skills]] — 自己改善ループの設計パターン
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

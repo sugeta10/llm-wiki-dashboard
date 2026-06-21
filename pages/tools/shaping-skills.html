@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>shaping-skills</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="shaping-skills.md">Markdownで表示</a></div>
   <div class="meta">tools/shaping-skills · tools · <span title="2026-05-28">3週間前</span></div>
   <article><p>Ryan Singer（Shape Up著者、元Basecamp）が作成したClaude Code向けスキル集。<a href="https://basecamp.com/shapeup">Shape Up手法</a>のShaping（問題と解決策の反復）とBreadboarding（UI/コード/配線のマッピング）をLLMとの協働に適応させた4スキル。</p>
 <h2>スキル一覧</h2>
@@ -57,15 +59,16 @@ ln -s ~/.local/share/shaping-skills/shaping ~/.claude/skills/shaping
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様先行開発の広い文脈</li>
 <li><a href="../tools/grill-me.html">grill-me</a> — 実装前の要件深掘り対話スキル</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/compound-engineering.html">compound-engineering</a></li>
-<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
-<li><a href="../tools/grill-me.html">grill-me</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/grill-me.html">grill-me</a></li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
 <li><a href="../tools/matt-pocock-skills.html">matt-pocock-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059319662597611914" rel="noopener" target="_blank">https://x.com/i/web/status/2059319662597611914</a></li>
 <li><a href="https://github.com/rjs/shaping-skills" rel="noopener" target="_blank">https://github.com/rjs/shaping-skills</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -81,5 +84,52 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain">Ryan Singer（Shape Up著者、元Basecamp）が作成したClaude Code向けスキル集。[Shape Up手法](https://basecamp.com/shapeup)のShaping（問題と解決策の反復）とBreadboarding（UI/コード/配線のマッピング）をLLMとの協働に適応させた4スキル。
+
+## スキル一覧
+
+**ドキュメントスキル（実プロジェクト向け）**
+
+- **`/framing-doc`** — 会話のトランスクリプトを「解くべき問題とその選択理由」を捉えたFraming Documentに変換
+- **`/kickoff-doc`** — Shaped projectのキックオフ議事を実装担当者向け参照ドキュメントに変換
+
+&gt; これらはGIGO（Garbage In, Garbage Out）。良い入力があって初めて時間を節約できる。
+
+**ソロスキル（より実験的）**
+
+- **`/shaping`** — 要件（What）と解決策（How）を分離しながら反復。フィットチェックで解決済み・未解決を追跡
+- **`/breadboarding`** — システムをUIアフォーダンス・コードアフォーダンス・配線に分解して1つのビューで可視化。垂直スコープへの分割に有効
+
+## Ripple Checkフック
+
+`shaping: true` のfrontmatterを持つMarkdownを編集すると、Claudeがアフォーダンステーブル・フィットチェック・ワークストリームの更新を促すフックが自動起動する。
+
+## インストール
+
+```bash
+git clone https://github.com/rjs/shaping-skills.git ~/.local/share/shaping-skills
+ln -s ~/.local/share/shaping-skills/shaping ~/.claude/skills/shaping
+# 他スキルも同様にシンボリックリンク
+```
+
+## 関連
+
+- [[tools/claude-code]] — 実行プラットフォーム
+- [[tools/compound-engineering]] — 同様の計画先行開発哲学を持つプラグイン
+- [[concepts/spec-driven-development]] — 仕様先行開発の広い文脈
+- [[tools/grill-me]] — 実装前の要件深掘り対話スキル
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

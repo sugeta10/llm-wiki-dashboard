@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agentic-engineering-workflow</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agentic-engineering-workflow.md">Markdownで表示</a></div>
   <div class="meta">concepts/agentic-engineering-workflow · concepts · <span title="2026-06-07">2週間前</span></div>
   <article><h1>Agentic Engineering ワークフロー（plan.md＋人間シグナル）</h1>
 <blockquote>
@@ -68,19 +70,20 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — エージェントが自律的にコードを書く開発スタイルの上位概念</li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — 「2回以上やる作業はスキル化」の対象概念</li>
 <li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a> — 人間が品質・判断を供給しAIが量を担う構図と通底</li>
-<li><a href="../tools/openai-codex.html">openai-codex</a> — Claudeから委譲する実行エンジン側</li>
+<li>openai-codex — Claudeから委譲する実行エンジン側</li>
 <li><a href="../tools/hyperframes.html">hyperframes</a> — 動画をHTMLとして書きエージェントにレンダリングさせる（本記事の「video as HTML」）</li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a> — 同著者が分析した「ループエンジニアリング」概念（ループ進化5段階・コスト・スキル）</li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 計画先行・仕様を起点にする思想の重なり</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
 <li><a href="../tools/compound-engineering.html">compound-engineering</a></li>
 <li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061877533885473181" rel="noopener" target="_blank">https://x.com/i/web/status/2061877533885473181</a></li></ul></section></article>
+<li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
+<li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061877533885473181" rel="noopener" target="_blank">https://x.com/i/web/status/2061877533885473181</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -96,5 +99,64 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Agentic Engineering ワークフロー（plan.md＋人間シグナル）
+
+&gt; **TL;DR**: 「自分はキーボードを叩く手ではなく、複数エージェントを束ねる判断（taste/direction）の供給源になる」という前提で、計画ファイル先行・音声入力・大量並列セッション・自作スキルを積み上げる実践者の総合スタック。
+
+vibe coding がモデルの性能向上で「おもちゃ」から「唯一の出荷手段」へ変わった先にある運用形態。中核の発想は**労働の重心を実行から計画へ移し、人間は「手」をやめて「シグナル」になる**ことにある。エージェントが量（volume）を供給し、人間は味（taste）・方向・「やり直して」のリアクトループだけを担う。従来の開発が80%コーディング・20%計画なのに対し、これを反転させて思考を計画に集約し実行を機械的にする。[[tools/compound-engineering]] がこのループ（`/ce-plan`→`/ce-work`）を実装したプラグインとして中核に据えられている。
+
+主要な構成要素（著者帰属なしの知識として）:
+
+- **アイデアの瞬間に plan.md を作る**: コーディング前にまず計画ファイル化。画像・GitHub issue URL・端末エラーのスクショ・Slackスレッドなど、捕捉できるものは何でも起点にできる。計画作成時はリサーチエージェントを並列展開し（コードベースのパターン、過去の解決、外部ドキュメント）、構造化された plan.md（問題・アプローチ・触るファイル・チェックボックス付き受け入れ基準）に統合する。
+- **plan.md は読まない**: 計画はエージェント向けの宿題であり、人間はタイトルだけ眺めて実行に回す。計画を強制的に存在させること自体がエージェントの手抜き（早期終了・コーナーカット）を防ぐ「リーシュ（鎖）」として機能する。疑問はインラインで「なぜこのアプローチ？」「eli5で」と聞く。
+- **「計画のための計画」（plan for the plan）**: 非コードの深い知識労働（戦略文書・製品仕様・競合分析）でも同じループを使う。成果物を直接頼むとLLMは手を抜くが、「まず成果物の作り方を計画し、それを実行せよ」と二段にすると毎回深掘り版を出す。これがLLMを怠けさせない最良のトリックとされる。
+- **音声入力（voice-pilled）**: 聞き手がLLMなので転写が不完全でも文脈で補完される。口ごもり・言い直しが許容され、人間相手より雑な入力で通る。
+- **大量タブ・並列セッション**: 4〜6セッションを同時進行（一つは計画、一つは実行、一つはバグ修正…）。待ち時間に別ウィンドウへ切り替えることでアイドルを消す。
+- **端末をシェルでなくエージェントに直結**: 新規タブが直接 Claude/Codex に入る設定にし、セッション開始コストを1キーストロークに下げて起動回数を増やす。
+- **権限スキップ（YOLO）とリモート制御**: 複数セッションを監視しきれないため権限確認を切る。リモート制御常時ONやエージェント宛メールアドレス（AgentMail）で、どこからでもセッションを起動・操縦する。
+- **計画前のリサーチ**: ライブラリ選定や機能着手の前に直近情報を並列検索（Reddit/X/YouTube/HN等）して、6ヶ月前の訓練データでなくコミュニティの今の知見に計画を接地させる。
+- **生トランスクリプトをそのまま投入**: 会議の生ログを要約せず丸ごとLLMに渡し、コードベースと過去計画に対して抽出させる。要約による情報損失を避ける。
+- **自作スキル**: 2回以上やる作業はスキル化する。ゼロからでなく「既存の良いスキルを見せて同じ形でコピーさせる」のがコツ。[[concepts/claude-skills]]・[[concepts/skill-building-best-practices]] 参照。
+
+「研究→計画→実行」が本当のループであり、エージェントはコードだけでなく実生活のエラー（車の予熱・買い物・観戦通知・航空券戦略）までこなす方向（Printing Press 等の実世界CLI群）へ広がっている。一方で著者は「エージェントが仕事を肩代わりするはずが、皆かつてなく働いている」「ビルドは史上最高のビデオゲームで中毒性がある」という正直な警告（AI psychosis）も添えている。
+
+## 観察ログ（未検証）
+
+- 2026-06-02: 著者 @mvanhorn は前作「Every Claude Code Hack I Know」が913K view、本作で last30days（27K stars）・Printing Press（4K+ stars）・Agent Cookie をリリースと主張（単一ソースの数字、未確認）
+- 2026-06-02: 「plan.md はリーシュ。計画のあるコーディングエージェントは完成品を出し、ないものはコーナーを切って早期に止まる」という著者の経験則
+- 2026-06-02: Claude Code は reasoning xhigh・fast mode off（fast modeは$200 Maxプランに加えてトークン課金されるため）、Codex は xhigh・fast mode on、の二刀流が著者の設定（個人設定）
+- 2026-06-02: 「最も価値ある希少物はタイピングでなく判断（judgment）。人間シグナルに振り切るほど出荷量が増えた」という主張
+- 2026-06-02: AI psychosis への警告 ——「空の launch が罠なのではなく、ビルドに消えて周囲の人を失うことが罠」
+
+## 問い
+
+- plan.md を「読まない」運用は自分のwikiメンテナンス（ingest/lint）にも適用できるか、それともレビュー必須の工程では危険か
+- 「計画のための計画」二段プロンプトは [[concepts/implementation-notes-prompt]] や [[concepts/eval-loop]] とどう組み合わせられるか
+- 自分にとっての「人間シグナル」の最小単位は何か（どこまで委譲し、どこで taste を入れるか）
+- 権限スキップ（YOLO）は [[concepts/claude-code-security]] の組織展開方針と明確に矛盾する。個人と組織で線引きはどう変わるか
+
+## 関連
+
+- [[tools/compound-engineering]] — このワークフローの中核ループ（ce-plan/ce-work）を実装したプラグイン
+- [[concepts/agentic-coding]] — エージェントが自律的にコードを書く開発スタイルの上位概念
+- [[concepts/claude-skills]] — 「2回以上やる作業はスキル化」の対象概念
+- [[concepts/ai-quality-amplification]] — 人間が品質・判断を供給しAIが量を担う構図と通底
+- [[tools/openai-codex]] — Claudeから委譲する実行エンジン側
+- [[tools/hyperframes]] — 動画をHTMLとして書きエージェントにレンダリングさせる（本記事の「video as HTML」）
+- [[concepts/loop-engineering]] — 同著者が分析した「ループエンジニアリング」概念（ループ進化5段階・コスト・スキル）
+- [[concepts/spec-driven-development]] — 計画先行・仕様を起点にする思想の重なり
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,19 +28,19 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>cloudflare</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cloudflare.md">Markdownで表示</a></div>
   <div class="meta">companies/cloudflare · companies · <span title="2026-06-16">5日前</span></div>
   <article><blockquote>
 <p><strong>TL;DR</strong>: CloudflareはV8 Isolate技術を基盤に、AIエージェントに必要な「推論モデル・サンドボックス・実行環境」を一気通貫で提供するプラットフォームとして2026年に整備された。</p>
 </blockquote>
 <p>従来のクラウドは「1対多」（1アプリ→多クライアント）をコンテナで捌くモデルで設計されたが、AIエージェント時代は「1対1」（1エージェント→1ユーザー）のパーソナル実行環境が必要になる。Cloudflare WorkersはV8 Isolate技術（もとはChromeのJSエンジン）をサーバーサイドに転用したもので、高速起動・メモリ効率・無限スケール・環境隔離という特性がAIエージェントのユーザーごとインスタンス起動に合致する。</p>
-<pre><code class="language-mermaid">flowchart TD
+<pre class="mermaid">flowchart TD
   A[&quot;Cloudflare AIエージェント\n3要素&quot;] --&gt; B[&quot;推論モデル\nWorkers AI / AI Gateway&quot;]
   A --&gt; C[&quot;サンドボックス（実行ラダー）&quot;]
   A --&gt; D[&quot;実行環境\nWorkers / Durable Objects / Workflows&quot;]
   C --&gt; C1[&quot;Dynamic Workers\n(JS実行・最速)&quot;]
   C --&gt; C2[&quot;Browser Run\n(ブラウザ操作)&quot;]
-  C --&gt; C3[&quot;Sandboxes\n(Dockerコンテナ・最強)&quot;]
-</code></pre>
+  C --&gt; C3[&quot;Sandboxes\n(Dockerコンテナ・最強)&quot;]</pre>
 <h2>推論モデル層</h2>
 <p><strong>Workers AI</strong> はCloudflareネットワーク上でオープンモデル80+を提供し、<strong>Binding</strong>経由でAPIキー不要のメソッド呼び出しが可能（SDKインポートや認証情報入力が不要）。<strong>AI Gateway</strong>をプロキシとして外部プロバイダー（OpenAI/Anthropic等）含む180+モデルに接続でき、ログ・キャッシュ・レート制限を一括管理できる。他に<strong>Vectorize</strong>（ベクトルDB）・<strong>AI Search</strong>（自動RAG生成）がある。</p>
 <h2>サンドボックス層（実行ラダー）</h2>
@@ -86,15 +87,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — Code Modeは型定義ファイル（.d.ts）を中間記法として使う設計の実例</li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Agents SDKのチャンネル設計・状態管理はマルチエージェントパターンと交差する</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/generative-ui.html">generative-ui</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../companies/openai.html">openai</a></li>
-<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/yusukebe/articles/ccb1f953e48ee1" rel="noopener" target="_blank">https://zenn.dev/yusukebe/articles/ccb1f953e48ee1</a></li>
+<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/yusukebe/articles/ccb1f953e48ee1" rel="noopener" target="_blank">https://zenn.dev/yusukebe/articles/ccb1f953e48ee1</a></li>
 <li><a href="https://x.com/i/web/status/2066347872115933526" rel="noopener" target="_blank">https://x.com/i/web/status/2066347872115933526</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -110,5 +112,84 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain">&gt; **TL;DR**: CloudflareはV8 Isolate技術を基盤に、AIエージェントに必要な「推論モデル・サンドボックス・実行環境」を一気通貫で提供するプラットフォームとして2026年に整備された。
+
+従来のクラウドは「1対多」（1アプリ→多クライアント）をコンテナで捌くモデルで設計されたが、AIエージェント時代は「1対1」（1エージェント→1ユーザー）のパーソナル実行環境が必要になる。Cloudflare WorkersはV8 Isolate技術（もとはChromeのJSエンジン）をサーバーサイドに転用したもので、高速起動・メモリ効率・無限スケール・環境隔離という特性がAIエージェントのユーザーごとインスタンス起動に合致する。
+
+```mermaid
+flowchart TD
+  A[&quot;Cloudflare AIエージェント\n3要素&quot;] --&gt; B[&quot;推論モデル\nWorkers AI / AI Gateway&quot;]
+  A --&gt; C[&quot;サンドボックス（実行ラダー）&quot;]
+  A --&gt; D[&quot;実行環境\nWorkers / Durable Objects / Workflows&quot;]
+  C --&gt; C1[&quot;Dynamic Workers\n(JS実行・最速)&quot;]
+  C --&gt; C2[&quot;Browser Run\n(ブラウザ操作)&quot;]
+  C --&gt; C3[&quot;Sandboxes\n(Dockerコンテナ・最強)&quot;]
+```
+
+## 推論モデル層
+
+**Workers AI** はCloudflareネットワーク上でオープンモデル80+を提供し、**Binding**経由でAPIキー不要のメソッド呼び出しが可能（SDKインポートや認証情報入力が不要）。**AI Gateway**をプロキシとして外部プロバイダー（OpenAI/Anthropic等）含む180+モデルに接続でき、ログ・キャッシュ・レート制限を一括管理できる。他に**Vectorize**（ベクトルDB）・**AI Search**（自動RAG生成）がある。
+
+## サンドボックス層（実行ラダー）
+
+3種のサンドボックスを用途別に使い分ける「実行ラダー」設計:
+
+1. **Dynamic Workers** — WorkersがWorkersをコードの文字列として起動する。V8 Isolateなので高速起動。JavaScriptの実行・軽量計算に使う
+2. **Browser Run** — ヘッドレスブラウザ（Puppeteer/Playwright互換）。APIのないサイト操作・スクリーンショット・PDF生成・スクレイピング。ステートフルなBrowser Sessions とステートレスなQuick Actionsの2モードがある
+3. **Sandboxes** — ContainersベースのDockerコンテナ環境。Gitチェックアウト・テスト実行・プレビュー公開など、コンテナが必要なフル機能作業に使う
+
+「JavaScriptで済む → Dynamic Workers / ブラウザ操作 → Browser Run / 特殊コマンド・コンパイル → Sandboxes」という段階的エスカレーション構造になっている。
+
+## 実行環境層
+
+- **Workers** — V8 Isolateベースのエッジ実行環境（基盤）
+- **Durable Objects** — 状態永続化・長時間WebSocketセッション・ハイバネーション対応。エージェントのメモリ層として機能する
+- **Workflows** — マルチステップ処理・自動リトライ・エラー処理・人間承認ステップ
+
+## Code Mode（ツール呼び出し vs コード生成）
+
+従来のAIエージェントは外部APIを「ツール呼び出し」で叩く。Code Modeでは代わりにAIがTypeScriptを書き、Dynamic Workers上で直接実行する。LLMは大量のツール定義を読む代わりに、既によく知っているTypeScriptの`.d.ts`型定義だけを読んでコードを書ける。Cloudflare MCP（2,500エンドポイント）を`search()`と`execute()`の2ツールに圧縮した実例がある。[[concepts/intermediate-notation-pattern]]（中間記法パターン）の一実装形態とも言える。
+
+## Agents SDK
+
+WorkersとDurable Objectsを隠蔽してAIエージェント開発をシンプルにするSDK:
+
+- **Agentクラス** — `initialState`でSQLite永続ストア、`@callable()`デコレータで外部公開メソッド
+- **useAgent()** — ReactフックでWebSocket経由のリアルタイム状態同期
+- **ハイバネーション** — アイドル時に休止・再リクエストで起動（使った時のみ課金）
+- **チャンネル** — チャット/Eメール/音声/Slack/Webhookで入力・出力を受け取る
+
+## 観察ログ（未検証）
+
+- 2026-06-15（yusukebe / Cloudflare社員 Zenn記事）: V8 IsolateがコンテナよりAIエージェントに向いているというCloudflareの立場
+- 2026-06-15（yusukebe）: Dynamic Workersはコンテナより「100倍速い」とCloudflareのブログが主張
+- 2026-06-15（yusukebe）: Cloudflare MCPサーバーで2,500エンドポイントをCode Modeにより`search()`と`execute()`の2ツールに圧縮
+- 2026-06-15（yusukebe）: 社内ツール「Let It Slide」（AIスライド生成）がCloudflareフルスタック（Workers/Sandboxes/DO/R2/Browser Run/AI Gateway）で稼働し、社内WikiやGitリポジトリとMCP連携
+- 2026-06-15（yusukebe）: [[concepts/generative-ui]]の「4番目のアプローチ（Dynamic）」として、AIがReact JSXを書きDynamic Workersで実行・SSRしiframeで表示するパターンを発表・デモ
+
+## 問い
+
+- Code ModeはMCPのツール呼び出しモデルと競合するか、それとも異なるユースケースを補完するか？
+- Dynamic WorkersのV8 Isolate単体でフルサンドボックスとして機能するか（JavaScriptのみで完結しない場合のセキュリティ境界はどこか）？
+- Workers AIのオープンモデルは[[companies/anthropic]]・[[companies/openai]]の最新モデルと品質でどこまで比較できるか？
+
+## 関連
+
+- [[concepts/generative-ui]] — Dynamic WorkersによるGenerativeUI「4番目のアプローチ（Dynamic）」がyusukebeにより提案
+- [[concepts/intermediate-notation-pattern]] — Code Modeは型定義ファイル（.d.ts）を中間記法として使う設計の実例
+- [[concepts/multi-agent-patterns]] — Agents SDKのチャンネル設計・状態管理はマルチエージェントパターンと交差する
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
 </body>
 </html>

@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>generative-ui</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="generative-ui.md">Markdownで表示</a></div>
   <div class="meta">concepts/generative-ui · concepts · <span title="2026-06-10">1週間前</span></div>
   <article><h1>Generative UI</h1>
 <blockquote>
@@ -103,16 +105,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../design/fastview-design.html">fastview-design</a> — エージェント生成UIにも適用できるUI設計原則</li>
 <li><a href="../companies/cloudflare.html">cloudflare</a> — Dynamic Workers上でReact SSRするGenerativeUI第4アプローチ「Dynamic」の実行環境</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/cloudflare.html">cloudflare</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
 <li><a href="../design/fastview-design.html">fastview-design</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
-<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062220865643982875" rel="noopener" target="_blank">https://x.com/i/web/status/2062220865643982875</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062220865643982875" rel="noopener" target="_blank">https://x.com/i/web/status/2062220865643982875</a></li>
 <li><a href="https://speakerdeck.com/yusukebe/aishi-dai-nouihadokohexing-ku-sono2?slide=52" rel="noopener" target="_blank">https://speakerdeck.com/yusukebe/aishi-dai-nouihadokohexing-ku-sono2?slide=52</a></li>
 <li><a href="https://x.com/i/web/status/2063230906354241921" rel="noopener" target="_blank">https://x.com/i/web/status/2063230906354241921</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -128,5 +131,99 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Generative UI
+
+&gt; **TL;DR**: エージェントがユーザーの要求からUIをリアルタイムに「描画」する新しいフロントエンド層。実装は Controlled / Declarative / Open-ended の3パターンに分かれ、制御 vs 柔軟性のトレードオフで選ぶ。
+
+従来のフロントエンドは「デザイナーが描き、エンジニアが作り、ユーザーは出荷されたものを受け取る」固定物だった。Generative UI は、エージェントが「説明する（describe）」のをやめて「見せる（show）」ようにする層である。「テーブルが欲しい」と言えば、テーブルを説明する段落ではなく、実際のテーブルが返る。重要なのは「どう作るか」に唯一解がなく、3つのパターンが存在し、その差が**化粧的ではなくアーキテクチャ的**である点。多くのチームは自分がどれを選んだか自覚しないまま1つを選び、スケール時に各パターン固有の壁にぶつかる。
+
+## プロトコルスタック（3つの役割分担）
+
+3つのプロトコルがそれぞれ1つの仕事をする：
+
+- **MCP** — エージェントとツールをつなぐ（[[tools/claude-mcp]]）
+- **A2A** — エージェント同士をつなぐ（agent-to-agent）
+- **AG-UI** — エージェントとユーザーをつなぐ。ストリーミング層で、tool call / A2UIスキーマ / MCP Appイベント / state delta をすべて運ぶ。SSE上を双方向に状態が流れる（ユーザー編集→エージェントが見る、エージェント変更→ユーザーが見る）
+- **A2UI** — Googleの仕様。エージェントがUIをスキーマとして発行する。AG-UIの上に乗る
+
+CopilotKit は AG-UI クライアントとしてこのストリームをデコードし、3パターンすべてを同一ランタイムで扱える。
+
+## 3つのパターン（制御⇔柔軟性のスペクトラム）
+
+### Pattern 1: Controlled（フロントエンドがUIを所有）
+
+コンポーネントを事前に作り、ツール名にバインドする。エージェントがそのツールを選ぶと、引数をpropsとしてコンポーネントがチャット内にインライン描画される。フロントエンドのフック1つ、エージェント側コードはゼロ。デザインシステムが主導権を保つ。
+
+- **トークン税**: 登録した全コンポーネントがユーザー発話前からコンテキストに乗る。ツール記述＋JSONスキーマで約400トークン/個 → 25個で毎ターン10,000トークン。リクエストごとに課金される
+- **誤選択**: 似たコンポーネントが増えるとエージェントが間違える（円グラフとドーナツグラフはどちらも「割合を示す」）
+- **適: 10個以下の高価値フロー・ピクセル精度が要る・必要なUIが確定している場合**。コンポーネント数がユースケースと線形に増えるのが弱点
+- **壊れ方の対策**: ツール記述を「視覚（pie chart）」でなく「ユーザー意図（割合の比較を求めたとき）」で書く
+
+### Pattern 2: Declarative / A2UI（エージェントがスキーマを発行）
+
+エージェントがUIを記述するJSONスキーマを発行し、アプリ側のコンポーネントカタログがスキーマノードをReact等にマップする。ツール1つで多数のUI。これは[[concepts/intermediate-notation-pattern]]（中間記法パターン）の一種——エージェントにGUIでなくスキーマ（DSL）を操作させることで、コンポーネントライブラリが増えてもトークンは横ばい（50種でも500種でもエージェントが見る関数は1つ）。
+
+- **カタログが契約**: 許可コンポーネントとprops（Zodスキーマ）を定義。typoがビルドエラーになり空白画面を防ぐ
+- **fixed schema vs dynamic schema**: コンポーネントツリーを人間が書きエージェントはデータだけ埋める（fixed）か、二次LLMが会話文脈から毎ターンツリーを生成する（dynamic）
+- **インタラクション**: ボタン等はスキーマにactionを持ち、クリックがAG-UI経由でイベントを返す。クリックハンドラ不要
+- **トレードオフ**: レイアウトをLLMが所有し、実行ごとに出力がカタログ内で揺れる。法的開示・マーケ面などピクセル配置が厳密に要る場面には不向き
+- **適: 作る時間より多くのユースケースがある・トークン経済を気にする段階**。ロングテール（ダッシュボード・結果・フォーム・カード）向け
+
+### Pattern 3: Open-ended（カタログもスキーマもなし）
+
+2つのサブパターン。**MCP Apps**: MCPサーバーがUIサーフェスを公開しエージェントが駆動（Excalidrawの例ではキャンバスの全ピクセルをエージェントが制御）。**Sandboxed HTML**: エージェントが生HTMLを書き、アプリがサンドボックス化iframe内で描画。
+
+MCP Appsの具体的な仕組み（[[tools/claude-mcp]] 公式拡張、Anthropic・OpenAIらが協力して標準化）：MCPツールがUIのURI（`ui://...`）を返す → エージェントがアクセスし、ツールがフルHTML文字列を返却 → エージェントがそのHTMLをチャット内に **iframe** で読み込み描画。チャットとUI間は **`postMessage`** で双方向通信し、UIは **CSPで指定したリソースのみ**にアクセス可能。これは「Sandboxed HTML」をプロトコル化したものに等しく、Open-endedパターンの標準実装と言える。ユーザー向けにも ChatGPT/Claude の地図・写真表示、Apps in ChatGPT（ZOZO/Canva/Spotify等を会話画面から呼び出し）として展開が始まっている。
+
+- **ブランド不整合問題**: スタイル指示はエージェントを自社ブランドに寄せるが保証しない。「火曜はネオブルータリズム、水曜はiOS 4クローン」のように毎回変わり、プロダクトが「真剣に見えない」。著者は主UIとして投入したが1週間で撤退
+- **適: 一発限り・使い捨ての可視化（ユーザーが二度と見ない）**。「電子の動きを見せて」等。主サーフェスには絶対に使わない
+- **対策**: iframe sandboxは `allow-scripts` と `allow-forms` のみ。`allow-same-origin` は絶対付けない
+
+## 選び方（決定木）
+
+- デザイナーがピクセル精度のモックを持つフロー → **Controlled**
+- 多数のカード型・ウィジェットを出荷 → **Declarative**
+- 一発・使い捨ての可視化 → **Open-ended**
+- 決められない → **Declarative をデフォルト**にし、上位3フローだけ Controlled に格上げ。Open-ended をデフォルトにはしない
+
+&gt; 既に出荷中で迷子なら render tool の数を数える。15を超えていれば Controlled の壁が近い → A2UI 配線を今週始める
+
+## 観察ログ（未検証）
+
+- 2026-06-03: @Saboo_Shubham_ の主張「2026年に出荷されるインターフェースは一部エージェント自身がリアルタイムに描く」「ほとんどのチームはフレームワークの既定（Controlled）に流され、25コンポーネントで壁にぶつかり、デモ映えする Open-ended に手を伸ばす——どちらも決定ではなくドリフト」
+- 著者は CopilotKit を「3パターンを同一ランタイムで AG-UI 上に扱える」として選択（単一スタックでの検証であり比較の網羅性は不明）。3パターンの参照実装は `awesome-llm-apps` の Generative UI Agents セクションにあると主張
+- トークン税の具体値（400トークン/コンポーネント、25個で10,000トークン/ターン）は著者提示の見積もりで、独立検証は未確認
+- 2026-06-06: Yusuke Wada（@yusukebe, Hono作者/Cloudflare DevAdvocate）が同一題材（旅行プランナーAIエージェント）で Static/Declarative/Open-ended の3パターンを実装比較し登壇発表（「AI時代のUIはどこへ行く？ その2」フロントエンドカンファレンス北海道）。@Saboo_Shubham_ とは独立した発信だが、3パターン分類（コントロール⇔オープンのスペクトラム）がほぼ一致——枠組みの収斂を示唆。実装記事は zenn.dev/peintango の記事を参照とのこと
+- 2026-06-06: Wadaの「並べて初めてわかった」所感——①ストリーミング体験の差は想像以上に大きく、Static のスケルトンローダーは「あると便利」でなく「ないと不安」レベル（Declarative/Open-endedはデータ収集中にユーザーがただ待つ時間が生まれる）。②Declarativeの「制約された自由」は見た目以上に表現力があり、コンポーネントの並べ方と組み合わせだけでLLMは驚くほど多様なUIを生成する。③Zodスキーマは制約ではなく「契約」として機能する
+- 2026-06-06: Wadaのパターン比較表（観点別）——出力の再現性: Controlled◎/Declarative○（スキーマ制約）/Open-ended✗。HTMLスケルトンローダー: Controlled◎（ツール名で自動）/Declarative✗/Open-ended✗。レイアウト自由度: Controlled✗/Declarative○/Open-ended◎。トークン消費: Static小（ツール名＋引数）/Declarative中（JSON構造）/Open-ended大（HTML/CSS/JS全文）。@Saboo_Shubham_ のトークン税分析と同方向
+- 2026-06-06: @iwashi86 が同スライド（「AI時代のUIはどこへ行く？その2！」フロントエンド・PHPカンファレンス北海道2026）を「めちゃくちゃ面白い」と二次紹介（bookmark 245）。第三者の評価による補強だが新規の論点追加はなし
+- 2026-06-15（yusukebe / Cloudflare社員 Zenn記事）: 3パターンに加え「Dynamic」を4番目のアプローチとして提案。AIがReact JSXを書き、[[companies/cloudflare]] の Dynamic Workers上でSSRし、結果をiframeで表示する。Suspenseも使える。Cloudflareの実行環境があって初めて成立するアプローチで、Open-endedのSandboxed HTMLに比べてReactのフル機能（Suspense/Server Components等）が使える点が差別化
+
+## 問い
+
+- 自分のwikiシステムの HTML出力（UC-2）は事実上 Open-ended パターン。使い捨て可視化に限定すべきという指針と整合しているか
+- Declarative/A2UI の「スキーマが契約」という発想は [[concepts/intermediate-notation-pattern]] と同型。wiki の構造化出力にカタログ＝契約の考え方を持ち込めるか
+- AG-UI / A2UI / MCP / A2A の4プロトコル分担は本当に普及するか、それともベンダー固有仕様に留まるか
+
+## 関連
+
+- [[tools/claude-mcp]] — Generative UIスタックの「エージェント⇔ツール」層
+- [[concepts/multi-agent-patterns]] — A2A（エージェント間連携）の設計パターン
+- [[concepts/intermediate-notation-pattern]] — Declarative/A2UIが体現する「GUIでなくスキーマを操作させる」設計思想
+- [[design/fastview-design]] — エージェント生成UIにも適用できるUI設計原則
+- [[companies/cloudflare]] — Dynamic Workers上でReact SSRするGenerativeUI第4アプローチ「Dynamic」の実行環境
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

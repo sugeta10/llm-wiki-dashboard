@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>self-refining-skills</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="self-refining-skills.md">Markdownで表示</a></div>
   <div class="meta">concepts/self-refining-skills · concepts · <span title="2026-05-08">1ヶ月前</span></div>
   <article><h1>Self-Refining Skills（自己改善スキルループ）</h1>
 <p>LLM スキル（プロンプトテンプレート）に <strong>自己改善ループ</strong> を組み込む設計パターン。スキル実行のたびに学習記録を蓄積し、次回実行前に参照することで自動的に品質が向上する。</p>
@@ -59,15 +61,16 @@ before next run, read the last 10
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — Claude Skills（永続的職務定義ファイル）の概念</li>
 <li><a href="../design/ai-skills-design.html">ai-skills-design</a> — AIエージェントのスキル概念とデザイン職のスキルが交差する現状考察</li>
 <li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> — 本パターンを別セッション・別スキルに外部化した3段ループ（会話履歴→Issue→Routines→triage→PR）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a></li>
-<li><a href="../design/ai-skills-design.html">ai-skills-design</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2052131046645510583" rel="noopener" target="_blank">https://x.com/i/web/status/2052131046645510583</a></li></ul></section></article>
+<li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a></li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2052131046645510583" rel="noopener" target="_blank">https://x.com/i/web/status/2052131046645510583</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -83,5 +86,55 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Self-Refining Skills（自己改善スキルループ）
+
+LLM スキル（プロンプトテンプレート）に **自己改善ループ** を組み込む設計パターン。スキル実行のたびに学習記録を蓄積し、次回実行前に参照することで自動的に品質が向上する。
+
+## パターン実装
+
+スキルの末尾に以下の4行を追加する：
+
+```
+after every invocation, append a 2-line entry to LESSONS.md
+field 1: input pattern that triggered this skill
+field 2: what worked or what failed and the fix
+before next run, read the last 10
+```
+
+## 仕組み
+
+1. スキル実行後に `LESSONS.md` へ2行追記（入力パターン + 成否と対処）
+2. 次回実行前に直近10件の記録を読み込む
+3. 蓄積された事例から判断精度が徐々に向上
+
+## 効果
+
+- **ハルシネーション対策**: 過去の失敗パターンを記憶し同じ誤りを繰り返さない
+- **文脈適応**: プロジェクト固有の慣習・命名規則を自動学習
+- **知識の持続**: モデルのコンテキストウィンドウ外にも学習履歴を保持
+
+## 関連
+
+- [[papers/2026-peng-llm-memory-faulty]] — 継続更新によるLLMメモリ劣化の実証研究（このパターンの設計的リスクを示す）
+- [[concepts/prompt-engineering]]
+- [[tools/claude-code]]
+- [[concepts/llm-wiki]]
+- [[tools/hermes-agent]] — Hermesのスキル自己改善（Curator + GEPA）は同コンセプトを大規模に実装した事例
+- [[concepts/claude-skills]] — Claude Skills（永続的職務定義ファイル）の概念
+- [[design/ai-skills-design]] — AIエージェントのスキル概念とデザイン職のスキルが交差する現状考察
+- [[concepts/skill-self-improving-loop]] — 本パターンを別セッション・別スキルに外部化した3段ループ（会話履歴→Issue→Routines→triage→PR）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

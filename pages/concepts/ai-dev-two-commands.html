@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,18 +28,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-dev-two-commands</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-dev-two-commands.md">Markdownで表示</a></div>
   <div class="meta">concepts/ai-dev-two-commands · concepts · <span title="2026-06-11">1週間前</span></div>
   <article><blockquote>
 <p><strong>TL;DR</strong>: ZOZOが全エンジニアに展開した「/dev-init + /dev-resume」2コマンド標準で、Claude Code × Codexを使って設計からテスト・画面確認まで再現可能なAI駆動開発フローを組織に定着させた実践報告。</p>
 </blockquote>
 <p>AIの本質を「確率的予測変換機」と捉え、「同一レベル変換（Jira→設計書、設計書→タスク）」と「具体→抽象変換（矛盾検出・レビュー観点抽出）」はAIに任せ、「抽象→具体変換（企画・優先順位・最終責任）」は人間が主導する線引きが設計の中核にある。<a href="../concepts/agentic-coding.html">agentic-coding</a>が「AIに自律実装させる」ことに焦点を当てるのに対し、こちらは「AIと人間の判断境界を組織として定義し再現可能にする」ことが核心。</p>
-<pre><code class="language-mermaid">flowchart LR
+<pre class="mermaid">flowchart LR
     Jira --&gt; |&quot;/dev-init&quot;| Init[&quot;設計書\n+進捗管理表&quot;]
     Init --&gt; |&quot;並列コードベース調査\n+Codexレビュー&quot;| Review1[&quot;設計・タスク\n分解レビュー&quot;]
     Review1 --&gt; |&quot;/dev-resume&quot;| Resume[&quot;作業再開\n+並列実装&quot;]
     Resume --&gt; |&quot;Codex批判的対話\n最大3サイクル&quot;| Review2[&quot;コード\nレビュー収束&quot;]
-    Review2 --&gt; Playwright[&quot;Playwright MCP\n画面確認（任意）&quot;]
-</code></pre>
+    Review2 --&gt; Playwright[&quot;Playwright MCP\n画面確認（任意）&quot;]</pre>
 <h2>2コマンドの役割分担</h2>
 <table>
 <thead>
@@ -66,7 +67,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>単一モデルのセルフレビューでは観点の独立性が弱い。役割を分担することで盲点を炙り出す：</p>
 <ul>
 <li><strong><a href="../tools/claude-code.html">claude-code</a>（オーケストレーター）</strong>: 設計書生成・コード実装・採否判断・修正実行</li>
-<li><strong><a href="../tools/openai-codex.html">openai-codex</a>（批判者）</strong>: リポジトリ独自調査→批判的レビュー→再批判</li>
+<li><strong>openai-codex（批判者）</strong>: リポジトリ独自調査→批判的レビュー→再批判</li>
 </ul>
 <p>3ラウンドを最小単位とし、同一指摘が2サイクル連続で解消しない場合は対話型に切り替え。これは<a href="../concepts/llm-council.html">llm-council</a>の「複数AIが独立視点で疑う」パターンの実装例とも見なせる。</p>
 <h2>なぜ2コマンドなのか</h2>
@@ -96,17 +97,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
 <li><a href="../concepts/llm-council.html">llm-council</a></li>
-<li><a href="../tools/openai-codex.html">openai-codex</a></li>
+<li>openai-codex</li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
 <li><a href="../concepts/llm-council.html">llm-council</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/openai-codex.html">openai-codex</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://techblog.zozo.com/entry/ai-development-two-commands" rel="noopener" target="_blank">https://techblog.zozo.com/entry/ai-development-two-commands</a></li></ul></section></article>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://techblog.zozo.com/entry/ai-development-two-commands" rel="noopener" target="_blank">https://techblog.zozo.com/entry/ai-development-two-commands</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -122,5 +124,79 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain">&gt; **TL;DR**: ZOZOが全エンジニアに展開した「/dev-init + /dev-resume」2コマンド標準で、Claude Code × Codexを使って設計からテスト・画面確認まで再現可能なAI駆動開発フローを組織に定着させた実践報告。
+
+AIの本質を「確率的予測変換機」と捉え、「同一レベル変換（Jira→設計書、設計書→タスク）」と「具体→抽象変換（矛盾検出・レビュー観点抽出）」はAIに任せ、「抽象→具体変換（企画・優先順位・最終責任）」は人間が主導する線引きが設計の中核にある。[[concepts/agentic-coding]]が「AIに自律実装させる」ことに焦点を当てるのに対し、こちらは「AIと人間の判断境界を組織として定義し再現可能にする」ことが核心。
+
+```mermaid
+flowchart LR
+    Jira --&gt; |&quot;/dev-init&quot;| Init[&quot;設計書\n+進捗管理表&quot;]
+    Init --&gt; |&quot;並列コードベース調査\n+Codexレビュー&quot;| Review1[&quot;設計・タスク\n分解レビュー&quot;]
+    Review1 --&gt; |&quot;/dev-resume&quot;| Resume[&quot;作業再開\n+並列実装&quot;]
+    Resume --&gt; |&quot;Codex批判的対話\n最大3サイクル&quot;| Review2[&quot;コード\nレビュー収束&quot;]
+    Review2 --&gt; Playwright[&quot;Playwright MCP\n画面確認（任意）&quot;]
+```
+
+## 2コマンドの役割分担
+
+| コマンド | 用途 | 主な処理 |
+|---------|------|---------|
+| `/dev-init` | 開発開始時（1回） | Jira解析→並列コードベース調査→設計書＋進捗管理表＋テストパターン生成 |
+| `/dev-resume` | 開発中・再開時（繰り返し） | 進捗管理表＋git status/diff読み込み→次アクション提示→並列実装→Codexレビュー |
+
+設計書と進捗管理表をGit管理可能なMarkdownで持つことで、AIと人間が同じ状態を参照できる。会話履歴ではなくファイルに文脈を持たせるのが「/dev-resume の本質」。中断・翌日再開・別メンバーへの引き継ぎでも文脈が失われない。
+
+## Claude Code × Codex 批判的対話レビュー
+
+単一モデルのセルフレビューでは観点の独立性が弱い。役割を分担することで盲点を炙り出す：
+
+- **[[tools/claude-code]]（オーケストレーター）**: 設計書生成・コード実装・採否判断・修正実行
+- **[[tools/openai-codex]]（批判者）**: リポジトリ独自調査→批判的レビュー→再批判
+
+3ラウンドを最小単位とし、同一指摘が2サイクル連続で解消しない場合は対話型に切り替え。これは[[concepts/llm-council]]の「複数AIが独立視点で疑う」パターンの実装例とも見なせる。
+
+## なぜ2コマンドなのか
+
+- **工程別細分化（不採用）**: 入口が増えて初心者の学習コストが上がる
+- **完全1コマンド化（不採用）**: 初回は設計書・進捗管理表がなくAIが現在位置を特定できない
+- **初回/再開の2分割（採用）**: 技術的な初回の差異のみを分離し、以後は同じ入口に寄せる
+
+UIを2コマンドに固定し、内部のプロンプト・Skills・MCP連携を継続更新することで、ツールやモデルが変わっても組織全体をまとめてアップデートできる。
+
+## 観察ログ（未検証）
+
+- 2026-06-10: ZOZO基幹システム本部の田中秀明氏発表。全エンジニアに月額200ドル基準でClaude Code等を導入（2025年7月発表）済みの組織での実践
+- 2026-06-10: AZARSという「AI Readiness Score」指標を定義。個人活用度と組織プロセス化の両面を測定
+- 2026-06-10: Codexレビューはコスト・時間増加の副作用あり。重要機能/高リスク変更向けとして使い分ける設計
+- 2026-06-10: Playwright MCPによる画面確認は環境整備に依存。未設定時は自動スキップする設計
+- 2026-06-10: 効果測定（設計書作成時間・リードタイム・手戻り件数等）は今後の課題として挙げられている
+
+## 問い
+
+- `/dev-init`・`/dev-resume` の実装はGitHubで公開されているか？Claude Code marketplace経由で入手可能か？
+- Codex批判的対話の「最大3サイクル」はどの根拠から来ているか？収束しない指摘の人間への判断移譲基準は？
+- AZARSスコアの測定方法は公開されているか？組織のAI成熟度をスコア化するアプローチは汎用化できるか？
+
+## 関連
+
+- [[concepts/agentic-coding]]
+- [[concepts/spec-driven-development]]
+- [[concepts/harness-engineering]]
+- [[concepts/llm-council]]
+- [[tools/openai-codex]]
+- [[tools/claude-code]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
 </body>
 </html>

@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>apple</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="apple.md">Markdownで表示</a></div>
   <div class="meta">companies/apple · companies · <span title="2026-06-09">1週間前</span></div>
   <article><h1>Apple</h1>
 <blockquote>
@@ -71,8 +73,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://k-tai.watch.impress.co.jp/docs/review/iphonetips/2115454.html" rel="noopener" target="_blank">https://k-tai.watch.impress.co.jp/docs/review/iphonetips/2115454.html</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -88,5 +91,56 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Apple
+
+&gt; **TL;DR**: 自社モデル単独路線を捨て、次世代Apple IntelligenceをGoogleのGemini技術ベース「Apple Foundation Model」に置き換えるのがWWDC26の核心。Siriは「Siri AI」へ再設計される。
+
+Appleの生成AI戦略は、2026年2月に発表したGoogleとの提携を土台に「自前モデル＋外部基盤モデル」のハイブリッドへ転換した。AI推論を**オンデバイス**（プライバシー完全保護・無料・低能力）と**Private Cloud Compute**（高能力・サーバー側・利用上限あり）の2層に分け、後者もGemini技術で刷新する。これは「プライバシーは端末で、賢さはクラウドで」という役割分担を製品全体の設計原則に据えたことを意味する。差別化の軸は素のモデル性能ではなく、写真・メモ・メッセージ等の**パーソナルコンテクスト**をOSレベルで握っている点に置かれている。
+
+## 検証済み事実
+
+- 2026-06-09: WWDC26基調講演を開催。今秋配信予定のOS次期バージョン群（**iOS 27** 等）を発表。OS別でなくSiri等プラットフォーム横断の共通機能としてAIアップデートを提示。
+- 2026-06-09: 次世代Apple Intelligenceは、Gemini技術ベースの自社AI「**Apple Foundation Model**」をベースとする（2026年2月のGoogle提携の具体化）。
+- 2026-06-09: Geminiの技術はオンデバイスAIに加え、Appleがホストするサーバー側AI「**Private Cloud Compute**」にも採用。Web検索を伴う応答生成・画像生成等に利用。
+- 2026-06-09: Siriを生成AI中心に再設計し名称を「**Siri AI**」に変更。過去の写真・メモから「パーソナルコンテクスト」を理解しアクション可能に。パーソナルコンテクスト処理は主にオンデバイス実行（プライバシー保護・無料）。
+- 2026-06-09: Siri AIは英語ベータを2026年後半提供予定。やり取りをチャットスレッドとして保存し、iCloud経由でiPad/Mac/Apple Watchと同期。チャット履歴はローカルと同期iCloudのみ保持。
+- 2026-06-09: 標準アプリとして「Siriアプリ」を追加（履歴参照・会話継続が主目的）。
+- 2026-06-09: 画像生成（Image Playground）はフォトリアル生成に対応。写真アプリにクリーンアップ強化・背景補完の拡張ツール・空間リフレームを追加。
+- 2026-06-09: AIエージェント的機能 — Safariのページ更新監視通知、パスワードアプリのワンタップ自動パスワード変更（バックグラウンド実行）、ショートカットの自然言語生成、ホームアプリの通知集約。
+- 2026-06-09: 開発者向けにApp Intents/Foundation Modelフレームワーク、Core AIフレームワークを強化。Core AIはApple Foundation Model以外のAIモデルもAppleシリコンでローカル実行可能に。
+- 2026-06-09: Xcodeのコード生成にOpenAIのChatGPT・AnthropicのClaudeに加え**Geminiを追加**。
+- 2026-06-09: システム最適化 — アプリ起動最大30%高速化、写真ライブラリ読み込み最大70%高速化、AirDrop最大80%高速化。iOS 27はiOS 26同様iPhone 11以降に対応。
+
+## 観察ログ（未検証）
+
+- 2026-06-09: 記者観測 — Siri AIのチャットログはモデル学習に使われないと見られる（他社生成AIと差別化、iCloud暗号化が適用される可能性が高い）。
+- 2026-06-09: 記者観測 — パスワード自動変更はオンデバイスAI/Private Cloud Computeが各サイトにアクセスし手続きを自動実行するエージェント機能と推測。
+- 2026-06-09: 記者観測 — 最もパワフルなオンデバイスモデルや高度な音声機能は「最も高性能なiPhone/iPad/Mac」（iPhone 17 Air/17 Pro以降のProチップ世代）限定。日本語での音声認識精度向上の挙動は不明。
+- 2026-06-09: 記者観測 — Mac mini/Mac Studioが大規模LLMローカル実行需要で伸びている背景があり、Core AIのローカル実行強化はその動きへの対応の一環と見られる。
+
+## 問い
+
+- AppleがGeminiに基盤を委ねたことで、Apple独自モデルの位置づけ（差別化の源泉）はオンデバイス＋パーソナルコンテクストだけに収斂するのか。[[companies/google]] への依存リスクは。
+- 「プライバシーは端末・賢さはクラウド」の2層分担は、ユーザー体験として一貫性を保てるか（どの処理がどちらに行くかの不透明さ）。
+- Xcodeへのモデル選択肢拡大（ChatGPT/Claude/Gemini）は、[[tools/claude-code]] 等の外部エージェント利用とどう棲み分かれるか。
+
+## 関連
+
+- [[companies/google]] — 次世代Apple IntelligenceとPrivate Cloud Computeに採用されるGemini技術の提供元
+- [[companies/openai]] — Xcodeのコード生成で選択可能なChatGPTの提供元
+- [[companies/anthropic]] — Xcodeのコード生成で選択可能なClaudeの提供元
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

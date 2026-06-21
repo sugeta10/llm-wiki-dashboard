@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>prompt-cache-prewarm</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="prompt-cache-prewarm.md">Markdownで表示</a></div>
   <div class="meta">concepts/prompt-cache-prewarm · concepts · <span title="2026-05-15">1ヶ月前</span></div>
   <article><h1>プロンプトキャッシュ事前ウォームアップ</h1>
 <p>Claude APIで <strong>time-to-first-token（初回トークン生成までの時間）</strong> を短縮するテクニック。システムプロンプトを実際のユーザーリクエストより先に送信してキャッシュに書き込んでおく手法。</p>
@@ -60,13 +62,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — プロンプトキャッシングの仕組み・価格・ベストプラクティス詳細</li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計全般の最適化テクニック</li>
 <li><a href="../companies/anthropic.html">anthropic</a> — Claude API提供元（公式ドキュメントでキャッシュ仕様を参照）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
-<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055069548672631218" rel="noopener" target="_blank">https://x.com/i/web/status/2055069548672631218</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -82,5 +85,55 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># プロンプトキャッシュ事前ウォームアップ
+
+Claude APIで **time-to-first-token（初回トークン生成までの時間）** を短縮するテクニック。システムプロンプトを実際のユーザーリクエストより先に送信してキャッシュに書き込んでおく手法。
+
+## 仕組み
+
+通常のフロー:
+1. ユーザーリクエスト到着
+2. APIへ（システムプロンプト + ユーザーメッセージ）を送信
+3. キャッシュミス → システムプロンプトをキャッシュに書き込み
+4. 推論実行 → 応答生成
+
+**事前ウォームアップ後のフロー:**
+1. アプリ起動時（またはシステムプロンプト変更時）にシステムプロンプトのみを事前送信
+   - この時点でClaudeはキャッシュへ書き込むが、出力は生成しない
+2. ユーザーリクエスト到着
+3. APIへ（システムプロンプト + ユーザーメッセージ）を送信
+4. **キャッシュヒット** → システムプロンプト処理をスキップ
+5. 推論実行 → 応答生成（高速）
+
+## 実装ポイント
+
+- システムプロンプトのみを送信し、`max_tokens=1` 等で出力を最小化することでキャッシュ書き込みのみを実行できる
+- キャッシュの有効期限（TTL）を考慮してウォームアップのタイミングを設定する
+- 長いシステムプロンプト（ドキュメント、ツール定義、コンテキスト）ほど効果が大きい
+
+## 効果が出やすいケース
+
+- システムプロンプトが長い（数千トークン以上）
+- 同一システムプロンプトで多数のリクエストを処理するサービス
+- レイテンシ要件が厳しいリアルタイムチャット・音声アプリ
+
+## 関連
+
+- [[concepts/prompt-caching]] — プロンプトキャッシングの仕組み・価格・ベストプラクティス詳細
+- [[concepts/prompt-engineering]] — プロンプト設計全般の最適化テクニック
+- [[companies/anthropic]] — Claude API提供元（公式ドキュメントでキャッシュ仕様を参照）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

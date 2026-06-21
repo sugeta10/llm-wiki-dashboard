@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-premium-website-build</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-premium-website-build.md">Markdownで表示</a></div>
   <div class="meta">design/claude-premium-website-build · design · <span title="2026-06-18">3日前</span></div>
   <article><h1>Claude Code で「高額に見える」Webサイトを作る</h1>
 <blockquote>
@@ -90,16 +92,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — frontend-design / UI/UX Pro Max の基盤概念</li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/fastview-design.html">fastview-design</a></li>
-<li><a href="../design/design-md.html">design-md</a></li>
-<li><a href="../design/ai-ux-methods.html">ai-ux-methods</a></li>
-<li><a href="../tools/grill-me.html">grill-me</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/design-md.html">design-md</a></li>
+<li><a href="../design/fastview-design.html">fastview-design</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062248524486492308" rel="noopener" target="_blank">https://x.com/i/web/status/2062248524486492308</a></li>
 <li><a href="https://x.com/i/web/status/2066836495240171543" rel="noopener" target="_blank">https://x.com/i/web/status/2066836495240171543</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -115,5 +118,82 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Claude Code で「高額に見える」Webサイトを作る
+
+&gt; **TL;DR**: テンプレを使わずClaude Codeにフルコードを書かせ、デザイン品質チェックリストで自己採点しながら反復することで、エージェンシーが$5K〜$15Kで請ける水準の一枚もの高級サイトを一日で作る制作ワークフロー。
+
+差別化の源泉はコーディング能力ではなく**ディレクション**——「高そう」とは何かを言語化し、的確にブリーフィングし、平坦な箇所に妥協せず押し返す力にある。Claudeが実行を担い、出力の質は与えるブリーフ・参照・反復回数に比例する。テンプレート（Wix/Squarespace）はどれも似た見た目になるが、ゼロからコードを書かせると独自性が出せる。これが「プレミアムバー」に届く核心理由。
+
+## 「高額に見えるサイト」を構成する8要素（3グループ）
+
+制作前にこの基準を決めておき、最後に自分のサイトを採点する。**この自己採点パスこそが、洗練された結果と凡庸な結果を分ける唯一の動き**。
+
+- **Taste（趣味・方向性）**
+  1. Point of view — ムードボードでなく明確なデザイン方向性
+  2. Typography — 意図あるフォント選択（使い古された定番を避ける。特に **Inter** は「AI製」を即座に露呈させる）
+  3. Color — 抑制。4〜5色まで、虹色にしない
+- **Substance（実質）**
+  4. Hierarchy — サイズで「1番目・2番目・3番目に読むもの」を示す
+  5. Imagery — カスタムまたは説得力あるAI生成画像。ストック素材の安っぽさを避ける
+  6. Copy — 抑制的で感覚的、人間が書いたような文章（形容詞の羅列でない）
+- **Felt quality（体感品質）**
+  7. Motion — カーソルエフェクト・マイクロインタラクションで「生きている」感じ
+  8. Mobile — 縮小デスクトップでなくスマホ専用に設計
+
+## ワークフロー（要点）
+
+1. **Claude Code セットアップ** — 専用の空フォルダをワークスペースにする（Claudeは自分専用フォルダで最も良く動く）
+2. **2つのスキルで底上げ** — [[concepts/claude-skills]] を2本入れる。Anthropic製 **frontend-design**（バックグラウンドで動き、使い古されたAIフォント/レイアウトを禁止）と、コミュニティ製 **UI/UX Pro Max**（多数のUIスタイル・配色・フォントペアをオンデマンド呼び出し）
+3. **auto mode** をオンにし、逐一の確認なしに作業させる
+4. **参照を集める** — Dribbble / Awwwards / Pinterest から好みのサイト3〜5枚をスクショ。趣味は言葉で説明するより見せる方が速い。**品質の8割はこの参照集めと次の明確化質問から生まれる**
+5. **1プロンプトで構築** — デザインスキルを呼び、ブリーフと参照画像を添え、最後に「**ask me clarifying questions**（明確化の質問をして）」で締める。Claudeは名前・スタイル方向・セクション・コピー担当・技術スタック・アニメ強度などを質問し、**3つのスタイル方向をメニュー提示**する。ここでの回答がサイト全体になる——最重要の瞬間
+6. **8項目で自己採点** — チェックリストを貼って採点させ、残課題を特定
+7. **意図でバッチ指示** — 個別修正でなく「どう感じさせたいか」を伝えて一括変更を依頼（トークン節約＆一体感）。Claudeは意図を具体に落とすのが人間より上手い。その後セクションごとにモーション/カーソル演出を1つずつ
+8. **画像** — カスタム写真が最良。なければAI生成（プロンプトはClaude自身に書かせる＝プロジェクト文脈を持つため一発で的中）。[[tools/claude-code]] にプロジェクト文脈があるのを活かす
+9. **21st.dev** から実開発者製コンポーネントを Copy Prompt で取り込む。**Claudeはアーキテクチャを守る**——静的サイトにReact版を無断で入れず平HTMLで再実装する（本当にReactが必要なら受け入れる）
+10. **コピー・フォント・モバイル** の仕上げ。レスポンシブ≠スマホ設計。専用パスを依頼
+11. **公開** — 初年度ドメイン無料の格安ホスト（静的なら最安shared枠で十分、年$43程度）。zipはプロジェクトフォルダ「の中身」を固める（フォルダごと固めると一階層深くなり空白ページになる）
+
+## 使われたツール
+
+- [[concepts/claude-skills]] frontend-design（Anthropic公式・無料）/ UI/UX Pro Max（コミュニティ製）
+- ElevenLabs — GPT Image生成→Google Veo 3.1でアニメ化→Topazアップスケールを1タブで（2025末に画像/動画へピボット）
+- 21st.dev — 無料コンポーネントライブラリ
+- [[design/design-md]] — 同じ「AIデザインがダサくなる問題」への別アプローチ（有名サービスのデザイン仕様mdを参照させる）
+
+## 観察ログ（未検証）
+
+- 2026-06-03: 著者(@thegreatest_sv)いわく「$10,000」は成果物の価値（エージェンシー相場$5K〜$15K）であって保証収入ではない。実際に稼ぐかは営業次第——「ビルドはもうボトルネックでない、営業がボトルネック」
+- 2026-06-03: 収益化パスの主張——ローカルビジネス(飲食/歯科/ジム/不動産)への一枚もの販売が$1,000〜$5,000で最速、月2件×$2,000=月$4,000の副業。生産化サービス「5日で$1,500の一枚もの」パッケージ等。いずれも著者の例示で保証なし（本人もディスクレーマー明記）
+- 2026-06-03: Claude Pro($20/月)にClaude Code同梱、Maxプラン不要との主張（2026年6月時点）
+- 2026-06-16 @suna_gaku: Anthropic製 frontend-design スキルが更新され（2026-06-09頃）、AIにアイデアを出させる際のコツが多数追加されたとシェア。鍵はテーマに「デザインの理由（なぜこの選択をするか）」を持たせること——根拠のない装飾でなく意図に紐づけることで、AIが量産しがちな&quot;それっぽいUI&quot;を回避できると説く。本ページの「Point of view＝ムードボードでなく明確なデザイン方向性」と同じ前提（teaser・手法の詳細は未捕捉 / X bookmark 3,339・2026-06-17時点）
+
+## 問い
+
+- 8項目チェックリストの「自己採点パス」は、自分のwikiのoutputs/ HTML生成（[[concepts/eval-loop]]）にも転用できるか
+- frontend-design スキルと [[design/design-md]] を併用すると相乗効果があるか、それとも指示が衝突するか
+- 「ask me clarifying questions」で締める一発プロンプトは [[tools/grill-me]] の要件掘り下げと何が違うか
+
+## 関連
+
+- [[design/design-md]] — AIデザインの凡庸さ回避の別解（デザイン仕様md参照）
+- [[design/fastview-design]] — ファーストビュー/視覚的階層の設計原則
+- [[design/ai-ux-methods]] — AI時代のUX設計メソッド
+- [[concepts/claude-skills]] — frontend-design / UI/UX Pro Max の基盤概念
+- [[tools/claude-code]]
+- [[concepts/vibe-coding]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

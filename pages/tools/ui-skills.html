@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ui-skills</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ui-skills.md">Markdownで表示</a></div>
   <div class="meta">tools/ui-skills · tools · <span title="2026-06-11">1週間前</span></div>
   <article><blockquote>
 <p>孤立理由: UIエンジニア/デザインエンジニア特化のスキルカタログサイト。<a href="../tools/claude-code-plugins.html">claude-code-plugins</a>（汎用マーケットプレイス）との棲み分けが確立されていないため、独立ページとして登録。</p>
@@ -129,13 +131,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code-plugins.html">claude-code-plugins</a></li>
 <li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a></li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../tools/claude-code-plugins.html">claude-code-plugins</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -151,5 +154,52 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain">&gt; 孤立理由: UIエンジニア/デザインエンジニア特化のスキルカタログサイト。[[tools/claude-code-plugins]]（汎用マーケットプレイス）との棲み分けが確立されていないため、独立ページとして登録。
+
+UIエンジニア・デザインエンジニア向けのClaude Codeスキル専門カタログサイト（ui-skills.com）。アクセシビリティ・アニメーション・コンポーネント設計等のデザインエンジニアリングに特化したスキルを複数の著者が公開・検索できる。[[concepts/claude-skills]]のエコシステムが専門ドメインごとのカタログサイトに分化しつつある事例。
+
+## 掲載スキル一覧（2026-06-10時点）
+
+| スキル名 | 著者 | 概要 |
+|---------|------|------|
+| `baseline-ui` | Ibelick | アニメーション時間・タイポグラフィ・アクセシビリティ・Tailwind CSSのアンチパターン検出 |
+| `fixing-accessibility` | Ibelick | ARIA・キーボード操作・フォーカス管理・コントラスト・WCAG準拠の監査と修正 |
+| `fixing-motion-performance` | Ibelick | レイアウトスラッシング・コンポジタープロパティ・スクロールモーション・ブラーのパフォーマンス監査 |
+| `frontend-design` | anthropics | 高品質・プロダクショングレードのUIを生成するAnthropics公式スキル |
+| `wcag-audit-patterns` | wshobson | WCAG 2.2監査・自動テスト・手動検証・修正ガイダンス |
+| `emil-design-eng` | emilkowalski | Emil KowalskiのUIポリッシュ・コンポーネント・アニメーション哲学 |
+| `react-doctor` | millionco | セキュリティ・パフォーマンス・正確性・アーキテクチャの品質スコアチェック |
+| `shadcn` | shadcn-ui | shadcn/uiのプロジェクト対応ワークフロー（検索・追加・修正） |
+| `make-interfaces-feel-better` | jakubkrehel | マイクロインタラクション・タイポグラフィ・視覚的細部のポリッシュ原則 |
+| `design-lab` | 0xdesign | インタビュー→バリアント生成→UI改善のインタラクティブ探索ワークフロー |
+| `ui-ux-pro-max` | nextlevelbuilder | 50+スタイル・97パレット・9技術スタック対応の総合UI/UX設計スキル |
+| `12-principles-of-animation` | raphaelsalaja | Disneyの12アニメーション原則をWebインターフェースに適用 |
+| `impeccable` | pbakaus | プロダクショングレード・反AI-generic UIのフラッグシップスキル |
+| `frontend-slides` | zarazhangrui | HTMLプレゼンテーション作成・PPT/PPTX変換スキル |
+| `swiftui-ui-patterns` | dimillian | SwiftUIビュー・コンポーネントのベストプラクティス |
+
+## 問い
+
+- agentskills.io や[[tools/claude-code-plugins]]との棲み分けは？ui-skills は「デザインエンジニア特化」がコンセプトか？
+- `baseline-ui` のTailwind検証ルールはプロジェクト固有のデザインシステムにカスタマイズ可能か？
+
+## 関連
+
+- [[tools/claude-code-plugins]]
+- [[concepts/skill-building-best-practices]]
+- [[concepts/claude-skills]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

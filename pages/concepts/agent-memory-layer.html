@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agent-memory-layer</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-memory-layer.md">Markdownで表示</a></div>
   <div class="meta">concepts/agent-memory-layer · concepts · <span title="2026-06-03">2週間前</span></div>
   <article><h1>共有エージェントメモリ層（One Memory Layer）</h1>
 <blockquote>
@@ -48,15 +50,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>共有メモリ層は <a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> が示すメモリ劣化を増幅しないか（全エージェントが汚染された記憶を共有するリスク）。</li>
 </ul>
 <h2>関連</h2>
-<p>関連: <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> · <a href="../concepts/llm-wiki.html">llm-wiki</a> · <a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> · <a href="../tools/openclaw.html">openclaw</a> · <a href="../people/garry-tan.html">garry-tan</a> · <a href="../concepts/ai-session-handover.html">ai-session-handover</a> · <a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
-<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li>
-<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<p>関連: <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> · <a href="../concepts/llm-wiki.html">llm-wiki</a> · <a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> · <a href="../tools/openclaw.html">openclaw</a> · <a href="../people/garry-tan.html">garry-tan</a> · <a href="../concepts/ai-session-handover.html">ai-session-handover</a> · <a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li>
 <li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li>
-<li><a href="../tools/openclaw.html">openclaw</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061091767030825003" rel="noopener" target="_blank">https://x.com/i/web/status/2061091767030825003</a></li></ul></section></article>
+<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
+<li><a href="../tools/openclaw.html">openclaw</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061091767030825003" rel="noopener" target="_blank">https://x.com/i/web/status/2061091767030825003</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -72,5 +75,43 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># 共有エージェントメモリ層（One Memory Layer）
+
+&gt; **TL;DR**: 各AIエージェントに独立した記憶を持たせるのではなく、ユーザーが所有する単一のメモリ層を全エージェントの下に敷く設計思想。あるエージェントが学んだことを即座に他のエージェントも使えるようにする。
+
+複数のAIエージェントを使い分けると、それぞれが「自分専用の脳」を持ち、ユーザーや作業についての断片的な像しか持たなくなる。新しい人に会うたびに自己紹介をやり直す人間の「知識は頭蓋骨の中にあり、頭蓋骨は同期しない」という制約を、わざわざソフトウェアの中に再現してしまっている状態である。エージェントは本来この制約を持つ必要がないため、共有メモリ層を敷けば、ある場で得た知見が部屋を越えて即座に他のエージェントへ波及する「ハイブマインド」的な振る舞いが可能になる。
+
+核心は「リポジトリはメモリではない」という指摘にある。Markdownや計画書、決定ログをリポジトリに残すのは**到達点（destination）の保存**であり、そこに至る**過程（journey）= セッションそのもの**——試行錯誤、捨てた分岐、後で蘇る半端なアイデア——は失われる。計画を文章に固めた時点で会話は圧縮され、結論だけ残して経路の大半が捨てられる。数日後にその経路が再び必要になったとき、リポジトリ同期では解決できない。残すべき単位は「保持する価値のあるもの（the thing worth keeping）」だけであり、全トランスクリプトのばら撒きではない（ノイズ・機密・誤り・期限切れを含むため）。
+
+断片化は概念的なだけでなく物理的でもある。エージェントは異なるマシン・ファイルシステム・ローカル状態・クラウドサービスに分散し、リポジトリはGitHub経由で同期できてもプロジェクトの記憶は同期しない。これは今後1年の重要な開発領域とされ、既存の取り組みが問題を異なる角度から攻めている。
+
+## 観察ログ（未検証）
+
+- 2026-05-31: @pejmanjohn のエッセイ &quot;Stop Giving Every Agent Its Own Skull&quot;。自身は OpenClaw（個人アシスタント・アイデア発展）/ Codex（実装）/ Claude Code（デザイン・執筆）を役割分担で使い分けるが、アイデアを生んだ推論が OpenClaw に取り残され、他エージェントは「有能だが文脈盲目（competent and context-blind）」な出力を返すと指摘。
+- 2026-05-31: 関連プロジェクトとして @garrytan の **GBrain**（MCPの背後に共有ナレッジグラフを置き、各エージェントが自前メモリを持たず共有グラフをクエリする）と、@doodlestein の **CASS**（Codex/Claude Code/OpenClaw/Cursor/Aider 等のローカルセッション履歴を横断検索可能にし、リポジトリが取りこぼす推論を拾う）を「答えの重要なピースが見え始めた兆候」として挙げる。
+- 2026-05-31: 企業版の例えとして「10の会議に同時出席するAI版リーダー」を提示。価格への顧客の混乱・製品チームの価格議論・営業の失注理由が、人間なら数日〜数週かかる点の接続を会議進行中に衝突させられる、と主張。
+
+## 問い
+
+- 「保持する価値のあるもの」を会話から自動抽出する基準をどう設計するか。[[concepts/managed-agents-dreams]] の重複削除・矛盾解消パイプラインがこの選別を担えるか。
+- 自分の [[concepts/llm-wiki]]（Markdownベース知識ベース）は「到達点の保存」に偏っていないか。捨てた分岐・推論経路を残す仕組みが必要か。
+- 共有メモリ層は [[papers/2026-peng-llm-memory-faulty]] が示すメモリ劣化を増幅しないか（全エージェントが汚染された記憶を共有するリスク）。
+
+## 関連
+
+関連: [[concepts/managed-agents-dreams]] · [[concepts/llm-wiki]] · [[papers/2026-peng-llm-memory-faulty]] · [[tools/openclaw]] · [[people/garry-tan]] · [[concepts/ai-session-handover]] · [[concepts/openai-data-agent-context-layers]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

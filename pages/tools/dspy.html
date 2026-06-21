@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>dspy</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="dspy.md">Markdownで表示</a></div>
   <div class="meta">tools/dspy · tools · <span title="2026-06-02">2週間前</span></div>
   <article><h1>DSPy</h1>
 <p><strong>DSPy</strong>は、手動のプロンプトエンジニアリングを排除し、プロンプト最適化を機械学習問題として扱うPythonフレームワーク。スタンフォード大学NLPグループが開発。</p>
@@ -110,16 +112,17 @@ gepa_compiled = gepa.compile(model, trainset=trainset, valset=valset)
 <li><a href="../concepts/eval-loop.html">eval-loop</a> — 評価指標で出力を採点するループ。DSPyはそのスコアを最適化の目的関数に使う</li>
 <li><a href="../tools/hermes-agent.html">hermes-agent</a> — GEPAオフライン最適化を実装するエージェント基盤</li>
 <li><a href="../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a> — DSPy+GEPAでスキル/プロンプト/コードを自動進化させる専用リポ（GEPAはICLR 2026 Oral）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a></li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a></li>
 <li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
-<li><a href="../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/cybernetics/articles/39fb763aca746c" rel="noopener" target="_blank">https://zenn.dev/cybernetics/articles/39fb763aca746c</a></li>
 <li><a href="https://x.com/i/web/status/2061027265274843378" rel="noopener" target="_blank">https://x.com/i/web/status/2061027265274843378</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -135,5 +138,113 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># DSPy
+
+**DSPy**は、手動のプロンプトエンジニアリングを排除し、プロンプト最適化を機械学習問題として扱うPythonフレームワーク。スタンフォード大学NLPグループが開発。
+
+## 核心思想
+
+| 領域 | 人手での作業 | DSPyが置き換えるもの |
+|------|------------|-----------------|
+| ディープラーニング | 特徴量エンジニアリング | 中間層として学習 |
+| DSPy | プロンプトエンジニアリング | 調整可能プロンプトとして学習 |
+
+プロンプトを頑張って作る作業を**最適化問題**に落とし込む。目的関数は微分不可能なブラックボックスでも構わない（勾配フリー最適化を使う）。
+
+## 主要概念
+
+### Signature
+
+入力・出力の型シグネチャをクラスで定義する。明示的なプロンプト文を書く必要がない。
+
+```python
+class NarutoSignature(dspy.Signature):
+    polite_sentence = dspy.InputField(desc=&quot;です・ます調の一文&quot;)
+    rationale = dspy.OutputField(desc=&quot;変換の推論過程&quot;)
+    transformed = dspy.OutputField(desc=&quot;ナルト口調に変換した文&quot;)
+```
+
+### Module
+
+SignatureをラップしてエージェントのForwardパスを定義する。`dspy.ChainOfThought`等のビルトインModuleが使える。
+
+### Optimizer（最適化器）
+
+訓練データ（`dspy.Example`リスト）と評価指標（スカラー値を返す関数）を与えて、Signatureに最適なプロンプトを自動生成する。
+
+## 主要Optimizer
+
+### COPRO
+
+勾配フリーで候補プロンプトを反復改善する基本的なOptimizer。
+
+```python
+from dspy.teleprompt import COPRO
+prompt_optimizer = COPRO(metric=metric, verbose=True)
+prompt_tuned = prompt_optimizer.compile(model, trainset=trainset, eval_kwargs=kwargs)
+```
+
+### GEPA（進化計算系）
+
+評価スコアに加えて**フィードバックテキスト**を利用する進化計算系Optimizer。リフレクション用LLMが改善提案を生成し、それをプロンプト改善に活用する。
+
+```python
+reflection_lm = dspy.LM(&#x27;openai/gpt-4o-mini&#x27;, temperature=1.0, max_tokens=2048)
+gepa = dspy.GEPA(
+    metric=metric_with_feedback,
+    auto=&#x27;light&#x27;,
+    reflection_lm=reflection_lm
+)
+gepa_compiled = gepa.compile(model, trainset=trainset, valset=valset)
+```
+
+COPROよりはるかに詳細なプロンプトを生成する傾向がある。
+
+## 評価指標の設計
+
+外部LLMに評価させるパターンが「モダン」とされる（安価なLLMを訓練するために高価なLLMで評価）。
+
+```python
+class Assess(dspy.Signature):
+    &quot;&quot;&quot;評価観点をチェックし改善ヒントを返す&quot;&quot;&quot;
+    assessment_transformed = dspy.InputField(desc=&quot;生成されたテキスト&quot;)
+    assessment_question = dspy.InputField(desc=&quot;評価観点の質問&quot;)
+    assessment_answer = dspy.OutputField(desc=&quot;yes / no 判定&quot;)
+    assessment_feedback = dspy.OutputField(desc=&quot;改善ヒント&quot;)
+```
+
+## PyTorchとの比較
+
+PyTorchよりもKerasに近い使い心地（高度に抽象化された訓練ループ）。「Define by Run」ではなく宣言的なDefine and Run的な設計に近い。データ・モデル・オプティマイザーの責務分離という思想はPyTorchから影響を受けている。
+
+## 観察ログ（未検証）
+
+- 2026-05-31: @MakeAI_CEO が「海外のAI研究者界隈で『日本人のプロンプトはDSPyすら知らない化石レベル』と煽る人物がいる」と紹介（出典記事は未取得）。手書きプロンプト文化に対し、DSPyのような**プロンプト最適化を機械化する設計**が先端標準として位置づけられている、という言説の温度感を示す事例。煽り文脈であり技術的主張の中身は未検証
+
+## 問い
+
+- 手書きプロンプト（[[concepts/prompt-engineering]]）からDSPyへ移る損益分岐点はどこか——訓練データ・評価指標を用意するコストが、手チューニングを上回る出力量・タスク数は
+- DSPyのOptimizer（COPRO/GEPA）と[[concepts/eval-loop]]の関係：eval loopが「人が回す品質ゲート」なら、DSPyは「その採点を目的関数にしてプロンプトを自動探索する」自動化版と捉えてよいか
+
+## 関連
+
+- [[concepts/prompt-engineering]] — DSPyが自動化しようとしているプロンプト設計技術
+- [[concepts/spec-driven-development]] — プロンプト自動化と仕様駆動の関係
+- [[concepts/eval-loop]] — 評価指標で出力を採点するループ。DSPyはそのスコアを最適化の目的関数に使う
+- [[tools/hermes-agent]] — GEPAオフライン最適化を実装するエージェント基盤
+- [[tools/hermes-agent-self-evolution]] — DSPy+GEPAでスキル/プロンプト/コードを自動進化させる専用リポ（GEPAはICLR 2026 Oral）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

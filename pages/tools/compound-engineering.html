@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>compound-engineering</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="compound-engineering.md">Markdownで表示</a></div>
   <div class="meta">tools/compound-engineering · tools · <span title="2026-05-28">3週間前</span></div>
   <article><blockquote>
 <p><strong>TL;DR</strong>: 「各エンジニアリング作業が次の作業をより楽にする」複利的発想を、計画80%・実行20%のワークフローを9種のコアスキル＋多数のエージェントで実装したEveryInc製のClaude Code・Codex・Cursor対応プラグイン。</p>
@@ -109,14 +111,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a> — このプラグインを中核に据える実践者の総合ワークフロー</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
 <li><a href="../tools/shaping-skills.html">shaping-skills</a></li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../tools/grill-me.html">grill-me</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059319662597611914" rel="noopener" target="_blank">https://x.com/i/web/status/2059319662597611914</a></li>
 <li><a href="https://github.com/EveryInc/compound-engineering-plugin" rel="noopener" target="_blank">https://github.com/EveryInc/compound-engineering-plugin</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -132,5 +135,66 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain">&gt; **TL;DR**: 「各エンジニアリング作業が次の作業をより楽にする」複利的発想を、計画80%・実行20%のワークフローを9種のコアスキル＋多数のエージェントで実装したEveryInc製のClaude Code・Codex・Cursor対応プラグイン。
+
+中核となる発想は**技術的負債の逆転**である。従来の開発では機能を追加するたびにコードベースが複雑化し後続作業のコストが増えるが、Compound Engineeringはレビューと**Compound Note（学習の文書化）**を各サイクルに組み込むことで、次のエージェントが同じ教訓を再学習せずに済む構造を作り、作業を重ねるほど後続が楽になることを狙う。重心は実行よりも計画側（計画80%・実行20%）に置かれる。インストールは `/plugin marketplace add EveryInc/compound-engineering-plugin`、Claude Code・Codex・Cursorに対応する。
+
+コアループは `/ce-brainstorm`（要件のQ&amp;A）→ `/ce-plan`（実装計画）→ `/ce-work`（ワークツリーで実行）→ `/ce-code-review`（マージ前のマルチエージェントレビュー）→ `/ce-compound`（学習の文書化）。上流に `/ce-strategy` があり、問題・アプローチ・ペルソナ・メトリクス・トラックを `STRATEGY.md` として記録、後続スキルがこれを参照することで戦略が各作業に流れ込む。`/ce-product-pulse` は実際のユーザー体験・エラー・パフォーマンスの時系列レポートを `docs/pulse-reports/` に保存し、過去のパルスが次のbrainstormとstrategyへのシグナルになる。
+
+主要スキルの役割:
+
+| スキル | 目的 |
+|--------|------|
+| `/ce-strategy` | STRATEGY.md作成・維持（問題・アプローチ・ペルソナ・指標） |
+| `/ce-ideate` | 大局的アイデア生成・評価（brainstormの前段） |
+| `/ce-brainstorm` | 要件ドキュメント作成のためのインタラクティブQ&amp;A |
+| `/ce-plan` | 要件から詳細実装計画へ変換 |
+| `/ce-work` | ワークツリーとタスクトラッキングで計画を実行 |
+| `/ce-debug` | 障害の再現→根本原因特定→修正→回帰テスト |
+| `/ce-code-review` | マージ前のマルチエージェントコードレビュー |
+| `/ce-compound` | 学習を文書化し将来作業を楽にする |
+| `/ce-product-pulse` | 時系列ユーザー体験・パフォーマンスレポート |
+
+`/ce-code-review` をはじめ複数スキルが [[concepts/multi-agent-patterns]] を活用する。目的の面では [[concepts/spec-driven-development]] と重なり、仕様→計画→実行→レビュー→知識化のループを自動的に積み上げていく設計といえる。
+
+## 検証済み事実
+
+- 2026-05-27: コアループは `/ce-brainstorm` → `/ce-plan` → `/ce-work` → `/ce-code-review` → `/ce-compound`（公式README）
+- 2026-05-27: 上流スキル `/ce-strategy` がSTRATEGY.mdとして問題・アプローチ・ペルソナ・メトリクス・トラックを記録。後続スキルがこれを参照することで戦略が各作業に流れ込む（公式README）
+- 2026-05-27: `/ce-product-pulse` で実際のユーザー体験・エラー・パフォーマンスの時系列レポートを `docs/pulse-reports/` に保存。過去パルスが次のbrainstormとstrategyにシグナルを提供（公式README）
+
+## 観察ログ（未検証）
+
+- 2026-05-27: 現在37スキル・51エージェント収録（単一ソースの数字、未確認）
+- 2026-05-27: @nurijananianがSuperpowersから乗り換えたと推薦
+- 2026-05-27: 設計思想「技術的負債の逆転」 — 従来開発は機能追加のたびに複雑化するが、Compound EngineeringはレビューとCompound Note（学習の文書化）により次のエージェントが同じ教訓を再学習しなくて済むという主張
+
+## 問い
+
+- 計画80%・実行20%の比率は自分のワークフローでも有効か、それともプロジェクト規模に依存するか
+- Compound Note（`/ce-compound`）の学習蓄積は、自分のLLM Wikiの知識化ループと統合できるか
+- [[tools/shaping-skills]]・[[tools/grill-me]]と機能が重複する部分はどれで、併用する意味はあるか
+
+## 関連
+
+- [[tools/claude-code]] — メイン対応プラットフォーム
+- [[concepts/spec-driven-development]] — 仕様先行開発との思想的重複
+- [[tools/shaping-skills]] — Shape Up由来のcomplementary計画スキル群
+- [[tools/grill-me]] — 類似の「実装前深掘り対話」スキル
+- [[concepts/multi-agent-patterns]] — `/ce-code-review`等がマルチエージェントを活用
+- [[concepts/agentic-engineering-workflow]] — このプラグインを中核に据える実践者の総合ワークフロー
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

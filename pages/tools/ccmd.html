@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ccmd</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ccmd.md">Markdownで表示</a></div>
   <div class="meta">tools/ccmd · tools · <span title="2026-05-22">1ヶ月前</span></div>
   <article><h1>ccmd</h1>
 <p><strong>ccmd</strong> は CLAUDE.md・AGENTS.md・.cursorrules・.grokrules を <a href="../concepts/claude-md-rules.html">Karpathy 12ルール</a>ルーブリックで採点するブラウザ内静的解析ツール。ファイルをどこにもアップロードせずブラウザ内で完結し、各行のトークンコストとフィンディングを可視化する。</p>
@@ -54,8 +56,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://ccmd.dev/" rel="noopener" target="_blank">https://ccmd.dev/</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -71,5 +74,44 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># ccmd
+
+**ccmd** は CLAUDE.md・AGENTS.md・.cursorrules・.grokrules を [[concepts/claude-md-rules|Karpathy 12ルール]]ルーブリックで採点するブラウザ内静的解析ツール。ファイルをどこにもアップロードせずブラウザ内で完結し、各行のトークンコストとフィンディングを可視化する。
+
+関連: [[concepts/claude-md-rules]], [[tools/claude-code]]
+
+## 主要機能
+
+- **12ルール採点**: Think-Before-Coding, Simplicity-First, Surgical-Changes, Goal-Driven-Execution, Avoid-Silent-Assumptions, No-Orthogonal-Damage, Tests-as-Truth, Concise-Output, Stack-Awareness, Tool-Preference, Failure-Mode-Coverage, Self-Improvement-Loop
+- **問題タイプ分類**: aspirational（&quot;always&quot;等の絶対命令）/ vague（&quot;good&quot;等の測定不能語）/ missing_why（禁止理由なし）
+- **トークンコスト試算**: Opus 4.7レートでの30ターンセッションあたりコスト
+- **4エコシステム対応**: CLAUDE.md（Claude Code）/ AGENTS.md（OpenAI Codex）/ .cursorrules（Cursor IDE）/ .grokrules（xAI Grok Build）
+
+## 背景・差別化
+
+既存ツールは「生成系（テンプレート生成）」か「コストメーター（消費量把握）」に二分される。ccmd はすでに書いたファイルを **過去の失敗モードに紐づいたルーブリックで採点する** 点が異なる。
+
+&gt; every single API call to Claude sends the whole context, including prompts, meaning that all this extra text in CLAUDE.md is sent over and over.
+&gt; — caymanjim, HN 47581701
+
+Anthropic が 2026-06-15 から Claude Code エージェント利用を別クレジットプールに移行したことで、肥大化した CLAUDE.md は文字通り課金明細の一行になる。
+
+## 制限・注意
+
+- Free tier: ブラウザ内静的解析のみ（ルールが実際にどのターンで発火するかは分からない）
+- Paid tier（未リリース）: GitHub webhook + 継続ドリフト監視 + チーム単位コスト集計
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

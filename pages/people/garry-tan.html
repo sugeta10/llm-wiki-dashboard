@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>garry-tan</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="garry-tan.md">Markdownで表示</a></div>
   <div class="meta">people/garry-tan · people · <span title="2026-05-11">1ヶ月前</span></div>
   <article><h1>Garry Tan</h1>
 <p>Y Combinator President &amp; CEO。技術的バックグラウンドを持つ起業家・投資家。</p>
@@ -57,14 +59,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/gstack.html">gstack</a></li>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
-<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/garrytan/gstack" rel="noopener" target="_blank">https://github.com/garrytan/gstack</a></li></ul></section></article>
+<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/garrytan/gstack" rel="noopener" target="_blank">https://github.com/garrytan/gstack</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -80,5 +83,54 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Garry Tan
+
+Y Combinator President &amp; CEO。技術的バックグラウンドを持つ起業家・投資家。
+
+## 経歴
+
+- Palantir 初期メンバー（Eng/PM/Design 兼任）
+- Posterous（マイクロブログ）共同創業 → Twitter へ売却
+- YC 内部 SNS「Bookface」の設計・開発
+- Initialized Capital 共同創業（Coinbase、Instacart、Rippling等に投資）
+- Y Combinator President &amp; CEO 就任
+
+## AI時代の生産性
+
+2026年時点で、AI支援により **2013年比~810倍**の論理コード変更速度を達成。2026年YTD（4月18日時点）で2013年年間総量の240倍を出力。
+
+- 過去60日で本番サービス3件・40+機能をリリース（YC フルタイム運営と並行）
+- 「誰がタイプしたかではなく、何がリリースされたかが重要」
+
+この実績を元に作成したオープンソースツール: [[tools/gstack]]
+
+## gstack
+
+[[tools/gstack]] は Garry Tan による Claude Code スキル集・オープンソースのソフトウェアファクトリー。23種以上のスラッシュコマンドで Claude Code をバーチャルエンジニアリングチームとして機能させる。MIT ライセンス・無料。
+
+## YC でのAI活用
+
+YC は AI 時代の起業家支援として、単独の技術創業者が数十名規模のチームと同等の成果を出せる時代を前提にした投資・支援スタイルへ移行している。
+
+## 関連
+
+- [[tools/gstack]]
+- [[concepts/agentic-coding]]
+- [[concepts/vibe-coding]]
+- [[people/andrej-karpathy]]
+- [[companies/anthropic]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

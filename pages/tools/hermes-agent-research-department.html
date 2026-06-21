@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,13 +28,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>hermes-agent-research-department</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="hermes-agent-research-department.md">Markdownで表示</a></div>
   <div class="meta">tools/hermes-agent-research-department · tools · <span title="2026-06-19">2日前</span></div>
   <article><h1>Hermes Agent 3エージェント・リサーチ部門</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: <a href="../tools/hermes-agent.html">hermes-agent</a> で探索・統合・報告を Scout / Analyst / Briefer の3つの独立プロファイルに分け、共有Obsidian vaultで疎結合連携させる「毎朝賢くなるリサーチ部門」の構築ガイド（月$19-27）。</p>
 </blockquote>
 <p>単一エージェントに探索・分析・報告を兼ねさせるとコンテキストが汚染される。何を探すか・何を分析するか・何を報告するかが混ざり、優先順位がぼやけ、責任を1つ足すごとに質が落ちる。これを役割分離で解く構成で、各プロファイルが独自のSOUL.md・モデル・メモリ・スキルを持ち、既定では何も共有しない。意図的に共有するのは1つのディレクトリ（Obsidian vault）だけ——Scoutが生findingsを置き、Analystが統合ノートを書き、Brieferが毎朝読む。3役を1本の直線パイプラインにすることで、責務が増えるほど質が落ちる単一エージェントと逆に、成果が複利で積み上がる。</p>
-<pre><code class="language-mermaid">flowchart LR
+<pre class="mermaid">flowchart LR
   subgraph Scout[&quot;SCOUT（3hごと・GPT-5.5）&quot;]
     S[&quot;X/arXiv/競合URL/Product Huntを検索&quot;]
   end
@@ -47,8 +49,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   INBOX --&gt;|&quot;wakeAgentゲート&quot;| A
   A --&gt;|&quot;構造化ノート&quot;| WIKI[&quot;Obsidian vault&lt;br/&gt;synthesis/&quot;]
   WIKI --&gt; B
-  B --&gt;|&quot;Telegram&quot;| USER[&quot;朝の5箇条ブリーフ&quot;]
-</code></pre>
+  B --&gt;|&quot;Telegram&quot;| USER[&quot;朝の5箇条ブリーフ&quot;]</pre>
 <h2>3つの役割</h2>
 <table>
 <thead>
@@ -133,15 +134,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a> — Analystが書き込みBrieferが読む共有知識ベースの基盤パターン（Hermes同梱のLLM Wikiスキル）</li>
 <li><a href="../tools/notebooklm.html">notebooklm</a> — Analystの統合エンジン。consumer版は公式APIがなくブラウザ自動化依存</li>
 <li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — Obsidianを複数エージェントの共有メモリ層に据える設計と地続き</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
-<li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a></li>
-<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
-<li><a href="../tools/notebooklm-py.html">notebooklm-py</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2067313826492547483" rel="noopener" target="_blank">https://x.com/i/web/status/2067313826492547483</a></li></ul></section></article>
+<li><a href="../tools/notebooklm.html">notebooklm</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2067313826492547483" rel="noopener" target="_blank">https://x.com/i/web/status/2067313826492547483</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -157,5 +159,94 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Hermes Agent 3エージェント・リサーチ部門
+
+&gt; **TL;DR**: [[tools/hermes-agent]] で探索・統合・報告を Scout / Analyst / Briefer の3つの独立プロファイルに分け、共有Obsidian vaultで疎結合連携させる「毎朝賢くなるリサーチ部門」の構築ガイド（月$19-27）。
+
+単一エージェントに探索・分析・報告を兼ねさせるとコンテキストが汚染される。何を探すか・何を分析するか・何を報告するかが混ざり、優先順位がぼやけ、責任を1つ足すごとに質が落ちる。これを役割分離で解く構成で、各プロファイルが独自のSOUL.md・モデル・メモリ・スキルを持ち、既定では何も共有しない。意図的に共有するのは1つのディレクトリ（Obsidian vault）だけ——Scoutが生findingsを置き、Analystが統合ノートを書き、Brieferが毎朝読む。3役を1本の直線パイプラインにすることで、責務が増えるほど質が落ちる単一エージェントと逆に、成果が複利で積み上がる。
+
+```mermaid
+flowchart LR
+  subgraph Scout[&quot;SCOUT（3hごと・GPT-5.5）&quot;]
+    S[&quot;X/arXiv/競合URL/Product Huntを検索&quot;]
+  end
+  subgraph Analyst[&quot;ANALYST（毎日10am・Claude Sonnet）&quot;]
+    A[&quot;NotebookLMで統合→確信度タグ・矛盾フラグ&quot;]
+  end
+  subgraph Briefer[&quot;BRIEFER（毎朝8am・GPT-5.5）&quot;]
+    B[&quot;wikiを読みプロジェクト/カレンダーと突合→5箇条&quot;]
+  end
+  S --&gt;|&quot;raw findings&quot;| INBOX[&quot;~/research/inbox/&quot;]
+  INBOX --&gt;|&quot;wakeAgentゲート&quot;| A
+  A --&gt;|&quot;構造化ノート&quot;| WIKI[&quot;Obsidian vault&lt;br/&gt;synthesis/&quot;]
+  WIKI --&gt; B
+  B --&gt;|&quot;Telegram&quot;| USER[&quot;朝の5箇条ブリーフ&quot;]
+```
+
+## 3つの役割
+
+| 役割 | モデル | 仕事 | ツール |
+|---|---|---|---|
+| **Scout（探索）** | GPT-5.5（安価・大量検索） | スケジュールでソースを巡回し生findingsをinboxに投下。分析・統合・意見は一切しない | web検索・X検索（xurlスキル or Grok）・RSS・arXiv API |
+| **Analyst（統合）** | Claude Sonnet 4（強い推論） | inboxの生findingsをNotebookLMに通して統合し、Obsidian wikiに構造化ノート＋確信度タグ＋矛盾フラグを書く | NotebookLM MCP・[[concepts/llm-wiki]] スキル・web検索（検証）・ファイル操作 |
+| **Briefer（報告）** | GPT-5.5（簡潔・低トークン） | 毎朝wikiの直近24時間分を読み、自分のプロジェクト・今週の目標と突き合わせて優先順位付き5箇条をTelegramに届ける | Obsidianスキル（読取）・セッションrecall・ファイル操作 |
+
+確信度タグは `verified / likely / unverified / conflicting` の4段階で、矛盾は専用フォルダにフラグされる。X検索はGPT-5.5がネイティブにできないため、xurlスキル（X API・任意モデルで動くが開発者アプリ認証が必要）かGrokへの切替（ネイティブX検索）の二択になる。
+
+## ファイルベース調整（Kanban不要）
+
+3役は Scout→Analyst→Briefer の直線パイプラインなので、Kanbanのようなディスパッチ機構は過剰。inboxフォルダ＋wakeAgentゲートのほうが単純・安価（ディスパッチャのオーバーヘッドゼロ）・デバッグ容易（inboxを見るだけ）になる。役割を増やす（Code Reviewer・Content Writer等）段階で初めてKanbanの価値が出る。wakeAgentゲートは「inboxが空ならスリープ＝トークン0、新ファイルがあれば起動」という、変化検知でLLM起動を絞る仕組み（[[tools/hermes-agent-overnight]] と同じ原理）。
+
+## NotebookLM接続とfallback
+
+Analystの「深さ」はNotebookLMが担う。自分の推論だけで統合する（コンテキスト窓に制限される）のでなく、全ソースを取り込んで横断合成させる。接続には jacob-bd 製 `notebooklm-mcp-cli`（35 MCPツール）を使う。ただし**consumer版NotebookLMには公式APIが2026年6月時点で存在せず**（Enterprise版にはある）、このCLIはPlaywrightベースのブラウザ自動化ラッパーで動くため、Googleが内部エンドポイントを変えると壊れうる。著者はこれを「正直な限界」として明記し、AnalystのSOUL.mdに「NotebookLM接続が失敗したら `/goal` で直接合成する」fallbackを書くことを推奨する。
+
+## 3段階セットアップ
+
+| ティア | 構成 |
+|---|---|
+| **BASIC** | Scout + Briefer のみ。Analyst・NotebookLM・Obsidianなし。inbox→朝ブリーフの最小ループ |
+| **STANDARD** | 3役すべて + Obsidian wiki。NotebookLMなし（Analystは `/goal` で合成） |
+| **ADVANCED** | 3役 + Obsidian + NotebookLM接続 + 競合分析cron（競合URL差分・Product Huntスキャン・週次deep synthesis） |
+
+Hermes Desktop app（v0.16.0）のProfile Builder（Identity→Model→Skills→MCPs→Reviewの5ステップ）で3プロファイルを15分で作れる。Telegramは1ボットで3役すべてが同じチャットに配信する。
+
+## 観察ログ（未検証）
+
+- 2026-06-17: コスト月$19-27（モデル選択次第）、セットアップは1晩、典型使用で約1.3Mトークン/月（3プロファイル合計）という著者(@IBuzovskyi)の数字
+- 2026-06-17: 成長曲線 — Day1は汎用的で寒い／Week2でScoutが50-100ソース・Analystが30-40 wikiエントリ／Month1で200+エントリ・矛盾追跡・「頼んでいないインサイト」が出始める（複利の核）と主張
+- 2026-06-17: 比較対象としてパートタイムのリサーチアシスタントは月$1,500-3,000とする
+- 2026-06-17: 全技術詳細はHermes Agent v0.16.0公式ドキュメントに照合済みと明記
+- 2026-06-17: 限界として、Scoutは有料/非公開コンテンツを取りこぼす・Analystの確信度分類は誤りうる（Hermesは独立にファクトチェックしない）・「自動操縦でなくリサーチ部門。決断は人間」と釘を刺す
+- 2026-06-17: X bookmark 678（2026-06-18 時点）
+
+## 問い
+
+- このwikiのlaunchd+`claude -p`自動ingestはAnalystの役割に相当する。自分の構成にScout（収集）とBriefer（朝の要約配信）に当たる仕組みはあるか／作るべきか
+- wakeAgentゲート（変化なし＝トークン0）は本リポのauto-syncや週次生成に応用できるか。[[tools/hermes-agent-overnight]] の`no_agent`/wakeAgentと同じ設計を流用できるか
+- ファイルベース調整 vs Kanban の分岐点は「役割数」。自分のwiki自動化は何役で、どちらが適切か
+- NotebookLM接続のブラウザ自動化依存（公式APIなし）は [[tools/notebooklm-py]] でも同じ脆弱性か。fallback設計はどうあるべきか
+
+## 関連
+
+- [[tools/hermes-agent]] — Hermes Agent本体（3層メモリ・GEPA・Curator・マルチプロファイル）。本構成はそのプロファイル分離機能の具体的活用例
+- [[tools/hermes-agent-overnight]] — 夜間9時間自動化ワークフロー。wakeAgentゲート・段階的セットアップの原理を共有
+- [[concepts/multi-agent-patterns]] — Scout→Analyst→BrieferはPipelineパターンの実装例
+- [[concepts/llm-wiki]] — Analystが書き込みBrieferが読む共有知識ベースの基盤パターン（Hermes同梱のLLM Wikiスキル）
+- [[tools/notebooklm]] — Analystの統合エンジン。consumer版は公式APIがなくブラウザ自動化依存
+- [[concepts/obsidian-personal-os]] — Obsidianを複数エージェントの共有メモリ層に据える設計と地続き
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
 </body>
 </html>

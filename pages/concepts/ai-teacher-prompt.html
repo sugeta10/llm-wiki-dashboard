@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-teacher-prompt</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-teacher-prompt.md">Markdownで表示</a></div>
   <div class="meta">concepts/ai-teacher-prompt · concepts · <span title="2026-06-04">2週間前</span></div>
   <article><h1>AI教師プロンプト（Stay in the Loop / 学習用プロンプト）</h1>
 <blockquote>
@@ -59,13 +61,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計全般</li>
 <li><a href="../concepts/developer-ai-collaboration.html">developer-ai-collaboration</a> — 開発者とAIエージェントの役割分担</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a></li>
-<li><a href="../concepts/developer-ai-collaboration.html">developer-ai-collaboration</a></li>
-<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061545633560010826" rel="noopener" target="_blank">https://x.com/i/web/status/2061545633560010826</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../concepts/developer-ai-collaboration.html">developer-ai-collaboration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061545633560010826" rel="noopener" target="_blank">https://x.com/i/web/status/2061545633560010826</a></li>
 <li><a href="https://x.com/i/web/status/2061549233900331424" rel="noopener" target="_blank">https://x.com/i/web/status/2061549233900331424</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -81,5 +84,53 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># AI教師プロンプト（Stay in the Loop / 学習用プロンプト）
+
+&gt; 📌 X bookmark: 10,435（2026-06-02 時点・@trq212 原ポスト）
+
+エージェントに作業を任せきりにすると、人間は**何が行われたかを理解しないまま成果物だけを受け取る**状態に陥る。これを防ぐため、Anthropic社内では「Claudeとの作業ループの中に居続け、行われた仕事を完全に理解する」ための個人プラクティスが共有されている。AI教師プロンプトはその一つで、セッション終盤にAIへ**教師役**を割り当て、こなした作業内容を学習者である自分に解説させる手法。
+
+## プロンプト
+
+Suzanne（Anthropic）が共有し、@trq212 がお気に入りとして紹介したもの。日本語訳（@oikon48 による）：
+
+&gt; あなたは賢く、非常に効果的な教師です。あなたの目標は、ユーザーがこのセッションの内容を深く理解することです。
+
+短い指示だが、AIの出力姿勢を「タスク実行者」から「理解の伴走者」へ切り替える点が核心。コードを書く・調査するといった作業の後に同じセッションへ投げることで、AIが何を・なぜそうしたかを噛み砕いて説明し直す。
+
+## なぜ有効か
+
+- **人間をループに残す**: エージェントが自律的に進めた判断を、事後に自分の言葉で理解できる状態へ引き戻す
+- **学習機会への転換**: 単なる成果物受け取りを、ドメイン知識・実装意図を吸収する機会に変える
+- **属人化の緩和**: AIが暗黙に行った設計判断を言語化させることで、レビュー・引き継ぎが容易になる
+
+## 関連手法との位置づけ
+
+同じ @trq212 が広めた [[concepts/implementation-notes-prompt]] は「作業**中**に並走ノートを書かせて判断を可視化する」アプローチ。本手法は「作業**後**に教師役で理解を補完する」アプローチで、両者は「人間をループに残す」という同一目的の前後ペアとして組み合わせられる。
+
+## 問い
+
+- 自分のwiki ingest作業の後にこの教師プロンプトを投げると、判断基準の再利用（LESSONS.md への蓄積）に使えるか
+- [[concepts/implementation-notes-prompt]] と併用したとき、並走ノート＋事後解説で理解の重複・抜けはどう変わるか
+- 「教師役」指定だけで出力姿勢が十分変わるか、それとも具体的な観点指定（決定・トレードオフ）まで足すべきか
+
+## 関連
+
+- [[concepts/implementation-notes-prompt]] — 作業中に判断を並走ノート化する姉妹手法（同じ@trq212発）
+- [[concepts/prompt-engineering]] — プロンプト設計全般
+- [[concepts/developer-ai-collaboration]] — 開発者とAIエージェントの役割分担
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

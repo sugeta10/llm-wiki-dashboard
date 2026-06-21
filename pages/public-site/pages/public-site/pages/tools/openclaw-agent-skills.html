@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>openclaw-agent-skills - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>openclaw-agent-skills</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="openclaw-agent-skills.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/tools/openclaw-agent-skills · other · <span title=""></span></div>
+  <article><h1>OpenClaw agent-skills</h1>
+<p><strong><a href="../../../../../tools/openclaw.html">OpenClaw</a>プロジェクト向けの共有スキルリポジトリ</strong>。「ワークフローを1度書けばどこでも再利用でき、長い<code>SKILL.md</code>を全リポジトリに手コピーしなくて済む」ことを目的とした公開正本（canonical source）。レビュークローズアウトやリモート検証など共通ワークフローを集約する。</p>
+<h2>同梱スキル</h2>
+<table>
+<thead>
+<tr>
+<th>スキル</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agent-transcript</code></td>
+<td>ローカル限定・秘匿化されたPR/issueトランスクリプトのprovenance管理</td>
+</tr>
+<tr>
+<td><code>autoreview</code></td>
+<td>構造化されたクローズアウト/コードレビューワークフロー＋ヘルパースクリプト（→<a href="../../../../../tools/autoreview-skill.html">autoreview-skill</a>）</td>
+</tr>
+<tr>
+<td><code>crabbox</code></td>
+<td><a href="../../../../../tools/crabbox.html">Crabbox</a>/Testboxでのリモート検証ワークフロー（広域・CIパリティの証明）</td>
+</tr>
+<tr>
+<td><code>handoff</code></td>
+<td>パス非依存のプロンプトハンドオフ。別エージェントへのタスク委譲</td>
+</tr>
+<tr>
+<td><code>session-viewer</code></td>
+<td>エージェントセッションJSONLのローカル検索可能HTMLビューア</td>
+</tr>
+</tbody>
+</table>
+<p><strong>製品固有スキルはそのリポジトリに留める</strong>設計思想（例: <code>acpx</code>の使い方スキルは<code>openclaw/acpx</code>に、汎用レビューヘルパーはここに）。</p>
+<h2>インストール方式（symlink vs copy）</h2>
+<p><code>scripts/install-skills</code> で導入。<code>--list</code> / <code>--dry-run</code> / 個別指定 / <code>--target</code> / <code>--mode copy</code> / <code>--force</code> をサポート。</p>
+<ul>
+<li><strong>symlink</strong>: チェックアウトの変更が即反映。ローカル開発向き</li>
+<li><strong>copy</strong>: ポータブル・ロックダウン環境向き</li>
+<li>Codex: <code>~/.codex/skills</code> に、Claude Code: <code>~/.claude/skills</code> にsymlink。既に別の共有フォルダを指している場合はそのフォルダ内に個別symlinkを追加</li>
+</ul>
+<h2>Zero-Setupリポジトリとvendoring</h2>
+<p>クローンしただけで共有スキル未インストールの貢献者でも動くべき重要リポジトリは、生成済みスナップショットを<code>.agents/skills/&lt;name&gt;</code>に<strong>vendor</strong>できる。ただしスナップショットは「配布アーティファクトであって正本ではない」：</p>
+<ul>
+<li>正本スキルはここで先に編集 → レビュー後に下流スナップショットへ同期</li>
+<li>下流コピーは数を絞る／provenance・driftチェックを付ける</li>
+<li><strong>手作業で下流スナップショットを更新しない</strong>（このリポを更新してから同期する）</li>
+<li><code>autoreview</code>はレビュークローズアウトが貢献ワークフローの一部なので、フラッグシップリポのzero-setpスナップショット候補として良い</li>
+</ul>
+<blockquote>
+<p>設計の核: 共有スキルの「正本は1箇所・配布はsymlink/vendorで多重化」という二層構造。<a href="../../../../../concepts/skill-building-best-practices.html">skill-building-best-practices</a>の「マーケットプレイスで配布」を、軽量なgit symlink方式で実現した実装と言える。</p>
+</blockquote>
+<h2>編集ルール</h2>
+<ul>
+<li>descriptionはルーティング用に短く有用に保つ（<a href="../../../../../concepts/skill-building-best-practices.html">description＝トリガー定義</a>と同じ思想）</li>
+<li>スキル本文はエッセイ調でなくオペレーショナルに</li>
+<li>secret・プライベートホスト名/アカウントID/URLを含めない</li>
+<li>反復コマンドはヘルパースクリプトに切り出す</li>
+<li><code>session-viewer</code>のHTML出力は秘匿化・レビュー前提でローカル/プライベート扱い</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-05: バリデータ<code>scripts/validate-skills</code>は各<code>skills/*/SKILL.md</code>のYAML frontmatterと必須の<code>name</code>/<code>description</code>を検査する（複数言語のスクリプトをRuby/Python/Node/bashでcheck）</li>
+<li>2026-06-05: @hungv47 が「このリポがスター400未満なのは犯罪的」と推薦し、<code>/autoreview</code> と <code>/handoff</code> を「これまで使った中で最高のagent skill 2つ」と評価（@steipete・@openclaw への謝辞）。当時の注目度は実利用者からの評価に対し相対的に低かったとの観察</li>
+<li>2026-06-11: @steipete（OpenClaw作者）が <code>maintainer-orchestrator</code> スキルをGitHubに公開。steipeteのGitHubには合計49個以上のスキルが存在し、<code>triage</code> + <code>autoreview</code> + <code>computer use</code> と組み合わせた「5分ごとに起動してリポをメンテし並列スレッドに作業を振る<a href="../../../../../concepts/loop-engineering.html">ループ</a>」の骨格が提示された（@masa_okamura108 経由）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このwikiの<code>.claude/skills</code>も同じ「正本1箇所＋symlink配布」パターンを取れるか。現状はリポ直チェックインだが、複数vault/環境で再利用するならsymlink正本化が効くか</li>
+<li>vendoringのdriftチェック（正本とスナップショットの差分検出）を自分のスキル運用に取り入れる価値はあるか</li>
+<li><a href="../../../../../tools/skill-cleaner.html">skill-cleaner</a>（OpenClaw系の監査CLI）と組み合わせると正本リポの品質ゲートを自動化できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../tools/openclaw.html">openclaw</a> — 親プロジェクト（OSS AIエージェント基盤）</li>
+<li><a href="../../../../../tools/autoreview-skill.html">autoreview-skill</a> — 同梱の主力スキル（コードレビュー自動化）</li>
+<li><a href="../../../../../tools/crabbox.html">crabbox</a> — 同梱のリモート検証ワークスペース制御</li>
+<li><a href="../../../../../tools/skill-cleaner.html">skill-cleaner</a> — Codex/OpenClawスキルの監査CLI（重複・未使用検出）</li>
+<li><a href="../../../../../concepts/skill-building-best-practices.html">skill-building-best-practices</a> — スキル構築・配布の一般原則（本リポはその配布層の実装例）</li>
+<li><a href="../../../../../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a> — AGENTS.mdでの共有スキル参照を含む指示手段の使い分け</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../tools/crabbox.html">crabbox</a></li>
+<li><a href="../../../../../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../../../../../tools/skill-cleaner.html">skill-cleaner</a></li>
+<li><a href="../../../../../tools/openclaw.html">openclaw</a></li>
+<li><a href="../../../../../tools/autoreview-skill.html">autoreview-skill</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># OpenClaw agent-skills
+
+**[[tools/openclaw|OpenClaw]]プロジェクト向けの共有スキルリポジトリ**。「ワークフローを1度書けばどこでも再利用でき、長い`SKILL.md`を全リポジトリに手コピーしなくて済む」ことを目的とした公開正本（canonical source）。レビュークローズアウトやリモート検証など共通ワークフローを集約する。
+
+## 同梱スキル
+
+| スキル | 用途 |
+|--------|------|
+| `agent-transcript` | ローカル限定・秘匿化されたPR/issueトランスクリプトのprovenance管理 |
+| `autoreview` | 構造化されたクローズアウト/コードレビューワークフロー＋ヘルパースクリプト（→[[tools/autoreview-skill]]） |
+| `crabbox` | [[tools/crabbox|Crabbox]]/Testboxでのリモート検証ワークフロー（広域・CIパリティの証明） |
+| `handoff` | パス非依存のプロンプトハンドオフ。別エージェントへのタスク委譲 |
+| `session-viewer` | エージェントセッションJSONLのローカル検索可能HTMLビューア |
+
+**製品固有スキルはそのリポジトリに留める**設計思想（例: `acpx`の使い方スキルは`openclaw/acpx`に、汎用レビューヘルパーはここに）。
+
+## インストール方式（symlink vs copy）
+
+`scripts/install-skills` で導入。`--list` / `--dry-run` / 個別指定 / `--target` / `--mode copy` / `--force` をサポート。
+
+- **symlink**: チェックアウトの変更が即反映。ローカル開発向き
+- **copy**: ポータブル・ロックダウン環境向き
+- Codex: `~/.codex/skills` に、Claude Code: `~/.claude/skills` にsymlink。既に別の共有フォルダを指している場合はそのフォルダ内に個別symlinkを追加
+
+## Zero-Setupリポジトリとvendoring
+
+クローンしただけで共有スキル未インストールの貢献者でも動くべき重要リポジトリは、生成済みスナップショットを`.agents/skills/&lt;name&gt;`に**vendor**できる。ただしスナップショットは「配布アーティファクトであって正本ではない」：
+
+- 正本スキルはここで先に編集 → レビュー後に下流スナップショットへ同期
+- 下流コピーは数を絞る／provenance・driftチェックを付ける
+- **手作業で下流スナップショットを更新しない**（このリポを更新してから同期する）
+- `autoreview`はレビュークローズアウトが貢献ワークフローの一部なので、フラッグシップリポのzero-setpスナップショット候補として良い
+
+&gt; 設計の核: 共有スキルの「正本は1箇所・配布はsymlink/vendorで多重化」という二層構造。[[concepts/skill-building-best-practices]]の「マーケットプレイスで配布」を、軽量なgit symlink方式で実現した実装と言える。
+
+## 編集ルール
+
+- descriptionはルーティング用に短く有用に保つ（[[concepts/skill-building-best-practices|description＝トリガー定義]]と同じ思想）
+- スキル本文はエッセイ調でなくオペレーショナルに
+- secret・プライベートホスト名/アカウントID/URLを含めない
+- 反復コマンドはヘルパースクリプトに切り出す
+- `session-viewer`のHTML出力は秘匿化・レビュー前提でローカル/プライベート扱い
+
+## 観察ログ（未検証）
+
+- 2026-06-05: バリデータ`scripts/validate-skills`は各`skills/*/SKILL.md`のYAML frontmatterと必須の`name`/`description`を検査する（複数言語のスクリプトをRuby/Python/Node/bashでcheck）
+- 2026-06-05: @hungv47 が「このリポがスター400未満なのは犯罪的」と推薦し、`/autoreview` と `/handoff` を「これまで使った中で最高のagent skill 2つ」と評価（@steipete・@openclaw への謝辞）。当時の注目度は実利用者からの評価に対し相対的に低かったとの観察
+- 2026-06-11: @steipete（OpenClaw作者）が `maintainer-orchestrator` スキルをGitHubに公開。steipeteのGitHubには合計49個以上のスキルが存在し、`triage` + `autoreview` + `computer use` と組み合わせた「5分ごとに起動してリポをメンテし並列スレッドに作業を振る[[concepts/loop-engineering|ループ]]」の骨格が提示された（@masa_okamura108 経由）
+
+## 問い
+
+- このwikiの`.claude/skills`も同じ「正本1箇所＋symlink配布」パターンを取れるか。現状はリポ直チェックインだが、複数vault/環境で再利用するならsymlink正本化が効くか
+- vendoringのdriftチェック（正本とスナップショットの差分検出）を自分のスキル運用に取り入れる価値はあるか
+- [[tools/skill-cleaner]]（OpenClaw系の監査CLI）と組み合わせると正本リポの品質ゲートを自動化できるか
+
+## 関連
+
+- [[tools/openclaw]] — 親プロジェクト（OSS AIエージェント基盤）
+- [[tools/autoreview-skill]] — 同梱の主力スキル（コードレビュー自動化）
+- [[tools/crabbox]] — 同梱のリモート検証ワークスペース制御
+- [[tools/skill-cleaner]] — Codex/OpenClawスキルの監査CLI（重複・未使用検出）
+- [[concepts/skill-building-best-practices]] — スキル構築・配布の一般原則（本リポはその配布層の実装例）
+- [[concepts/cursor-instruction-methods]] — AGENTS.mdでの共有スキル参照を含む指示手段の使い分け
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

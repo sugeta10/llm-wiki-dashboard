@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>spec-driven-development</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="spec-driven-development.md">Markdownで表示</a></div>
   <div class="meta">concepts/spec-driven-development · concepts · <span title="2026-05-19">1ヶ月前</span></div>
   <article><h1>仕様駆動開発（Spec-driven Development）</h1>
 <p><strong>仕様駆動開発</strong>とは、AIエージェントにコードを書かせる際に、曖昧な指示のまま渡さず、事前に仕様・要件を整理してから渡すアプローチ。<a href="../concepts/vibe-coding.html">vibe-coding</a> の反省から生まれた。</p>
@@ -158,15 +160,16 @@ specify init . --integration claude
 <li><a href="../tools/grill-me.html">grill-me</a> — 対話型要件掘り下げの実践的実装（プランモード代替）</li>
 <li><a href="../concepts/ai-dev-two-commands.html">ai-dev-two-commands</a> — ZOZO実践：AI×人間の判断境界を2コマンドで組織標準化した具体例</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a></li>
+<li><a href="../concepts/behavioral-specification.html">behavioral-specification</a></li>
 <li><a href="../concepts/ai-dev-two-commands.html">ai-dev-two-commands</a></li>
 <li><a href="../tools/grill-me.html">grill-me</a></li>
-<li><a href="../concepts/vibe-coding.html">vibe-coding</a></li>
-<li><a href="../concepts/behavioral-specification.html">behavioral-specification</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501</a></li>
+<li><a href="../concepts/vibe-coding.html">vibe-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501" rel="noopener" target="_blank">https://syu-m-5151.hatenablog.com/entry/2026/05/05/172501</a></li>
 <li><a href="https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/" rel="noopener" target="_blank">https://towardsdatascience.com/from-vibe-coding-to-spec-driven-development/</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -182,5 +185,136 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># 仕様駆動開発（Spec-driven Development）
+
+**仕様駆動開発**とは、AIエージェントにコードを書かせる際に、曖昧な指示のまま渡さず、事前に仕様・要件を整理してから渡すアプローチ。[[concepts/vibe-coding]] の反省から生まれた。
+
+## Vibe Codingの限界
+
+[[concepts/vibe-coding]] スタイルは最初の生産性は高いが、機能を数個追加した段階でコードベース全体が崩壊し始める傾向がある。
+
+&gt; 「Vibe Codingは『動くもの』は作れるが、『育つもの』は作れない」
+
+この反省から、**上流で意図を固めてから下流（AIエージェント）に渡す**スタイルが主流になった。
+
+## 仕様の3種類
+
+| 種類 | 別名 | 内容 |
+|------|------|------|
+| 踏み台としての仕様 | Spec-first | 実装に入る前の準備で、マージと同時に捨てる。Planモードと同義に近い |
+| 地図としての仕様 | Spec-anchored | 実装と並走して書き直す生きたドキュメント |
+| 金型としての仕様 | Spec-as-source | 仕様を変えるとコードが変わる。型・テスト・スキーマで実現 |
+
+**Planモード**はSpec-firstとして振る舞う。真に差別化するにはSpec-anchoredかSpec-as-sourceへ踏み込む必要がある。
+
+## 要件・仕様・契約の区別
+
+| 用語 | 意味 | 例 |
+|------|------|-----|
+| 要件 | 業務として何を達成したいか | 「在庫がある商品だけを検索できる」 |
+| 仕様 | システムが何をするか | 「検索APIはstock_count &gt; 0のフィルタを適用し最大20件を返す」 |
+| 契約 | 呼び出し側と提供側の約束 | 「200を返すならbody.itemsが存在し各itemはid/name/priceを持つ」 |
+
+3つを混同すると議論が壊れる。仕様駆動の「仕様」が実際にどれを指すかで書き方・精度・書き手が全く異なる。
+
+## AIが書いたコードを信じにくい理由
+
+人間が書いたコードのレビューでは、**書き手との共有知**（チームの癖・過去の議論・ドメイン常識）が直感的な判断を支える。AIが書いたコードにはその共有知がなく、1行ずつ明示的に「これは合っているか」を判定する必要がある。
+
+&gt; 人間のPRなら15分で終わるレビューが、AIのPRだと45分かかった（差は3倍）
+
+対策として有効な4方向:
+1. **ドメイン知識の構造化** — エンティティ・関係・状態遷移をAIが参照できる形で置く
+2. **責務の分離** — Bounded Contextを明示することでAIへの命令の解像度を上げる
+3. **プロセスの再設計** — 実装前に合意を取る（「とりあえず作らせて考える」は試作のみ）
+4. **チーム展開** — 指示を個人の暗黙知からチームの共有資産（リポジトリ）へ移す
+
+## コンテキストエンジニアリング
+
+仕様の量を増やすだけでは逆効果になる場合がある。
+
+- **Context Rot** — 長すぎるコンテキストは精度を下げる
+- **Lost in the Middle** — 先頭・末尾に比べ中間の情報の認識精度が大幅に下がる
+
+対策: 仕様書に書くべきは「人間にしか判断できない業務文脈」のみ。残りはテスト・型・CI等の決定論的ゲートに任せる。
+
+## プロンプトの共有資産化
+
+AIへの指示をリポジトリで管理する（`.claude/skills/`・`.cursor/rules/`・`AGENTS.md`等）。「3回繰り返したらリポジトリに引っ越す」というルールが実践的。
+
+個人のチャット履歴に書いた指示は、その人が辞めた瞬間に消える。
+
+## SDDワークフローの実践（JetBrains / DeepLearning.AI コース）
+
+Karpathy自身が2026年に「Vibe Codingの時代は終わり、エージェンティックエンジニアリングへ移行している」と認めた。典型的なSDD実践フローは以下の3フェーズ：
+
+### Phase 1: コンスティテューション（憲法）の作成
+プロジェクト全体の合意文書。3つのコアドキュメントで構成：
+- `mission.md` — なぜ作るか・主要目標
+- `tech-stack.md` — 技術スタックと開発・デプロイ方針
+- `roadmap.md` — フェーズ分けされた実装計画
+
+**重要**: コンスティテューションの作成はエージェントに手伝わせてよいが、**最終確認は人間が行う**。ここで使った1時間が、実装フェーズで節約する数日になる。
+
+### Phase 2: フィーチャーフェーズ（plan → implement → validate のループ）
+
+各機能に対して専用ディレクトリを作成（例: `specs/YYYY-MM-DD-feature-name/`）：
+- `plan.md` — 番号付きタスクグループのリスト
+- `requirements.md` — スコープ・主要決定・コンテキスト
+- `validation.md` — 成功の定義と確認方法
+
+**実装の進め方**: タスクグループ単位で実装し、都度 `plan.md` と `validation.md` のステータスを更新する。一括実装は避ける。
+
+&gt; 誘惑：仕様を更新せず直接エージェントに「修正して」と伝えたくなる。しかし**仕様を真実の源として維持することがSDDの堅牢性の根拠**。
+
+### Phase 3: リプランニング（方向性の再確認）
+
+最初の機能実装後に**必ず立ち止まり**、以下を行う：
+- コンスティテューションと実際の進捗の整合性確認
+- ロードマップの優先順位の見直し
+- CHANGELOGの作成・更新
+
+&gt; 「現在のAI時代において、人間の価値はコードを書くことではなく**思考とアーキテクチャ**にある」
+
+## ツールサポート：Spec Kit（GitHub製）
+
+```bash
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+specify init . --integration claude
+```
+
+30以上のエージェント統合に対応。JetBrainsのアプローチと違い、コンスティテューションをコード品質・テスト標準・UX一貫性等の高レベル基準に重点を置く。
+
+## エンジニアの役割の変化
+
+SDDによって開発者の役割は：
+- **旧**: コードを直接書く
+- **新**: アーキテクチャ決定・レビュー・方向性のステアリング
+
+「いずれ英語が主要なプログラミング言語インターフェースになる」方向への移行が進んでいる。
+
+## 関連
+
+- [[concepts/vibe-coding]] — 仕様駆動が反省として生まれたスタイル
+- [[concepts/agentic-coding]] — AIエージェントによる自律的なコード生成
+- [[concepts/prompt-engineering]] — プロンプト設計全般
+- [[concepts/implementation-notes-prompt]] — Spec-anchoredの具体的実践：AIに実装ノートを並走させるプロンプト
+- [[concepts/behavioral-specification]] — 振る舞い仕様の形式的表現（変換システム・リアクティブシステム・状態遷移図・τ）
+- [[tools/claude-code]] — Planモードを持つAIコーディングCLI
+- [[tools/grill-me]] — 対話型要件掘り下げの実践的実装（プランモード代替）
+- [[concepts/ai-dev-two-commands]] — ZOZO実践：AI×人間の判断境界を2コマンドで組織標準化した具体例
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

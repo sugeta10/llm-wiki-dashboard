@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>papers-cli - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>papers-cli</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="papers-cli.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/tools/papers-cli · other · <span title=""></span></div>
+  <article><h1>papers-cli</h1>
+<p>arXiv・J-STAGE・IRDB（機関リポジトリ）から学術論文を検索・ダウンロード・管理する.NET製CLIツール（作者: supermomonga）。検索→PDF取得→ローカルでのメタデータ管理までを1本のコマンドで完結させる。</p>
+<pre class="mermaid">flowchart LR
+  Search[&quot;検索（arxiv / jstage / irdb）&quot;] --&gt; Download[&quot;PDFダウンロード&quot;]
+  Download --&gt; Store[&quot;SQLiteメタデータ + PDF保存&quot;]
+  Store --&gt; Manage[&quot;list / show / delete&quot;]</pre>
+<h2>特徴</h2>
+<ul>
+<li><strong>単一ソース検索＋ページング</strong> — arXiv / J-STAGE / IRDB を <code>--source</code> で切り替え。<code>--category</code> <code>--author</code> <code>--from</code> <code>--to</code> <code>--sort-key</code> <code>--limit</code> <code>--page</code> で絞り込む。</li>
+<li><strong>PDFダウンロード＋SQLiteメタデータ管理</strong> — <code>source:id</code> 形式（<code>arxiv:2301.00001</code>）やURLで指定。複数同時・<code>--format pdf,source</code>・<code>--force</code> 再取得に対応。</li>
+<li><strong>リッチなターミナルUI</strong> — Spectre.Console による表・パネル・進捗バー表示。</li>
+<li><strong><code>--json</code> 出力</strong> — スクリプト連携用。<code>search --json | download --stdin</code> で検索結果をそのままダウンロードにパイプできる。</li>
+<li><strong>XDG Base Directory準拠</strong> — 設定・DB・PDF保存先を環境変数で制御。</li>
+</ul>
+<h2>対応ソース</h2>
+<table>
+<thead>
+<tr>
+<th>ソース</th>
+<th>対象</th>
+<th>API</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>arxiv</code></td>
+<td>arXivプレプリント</td>
+<td>arXiv API（Atom Feed）</td>
+</tr>
+<tr>
+<td><code>jstage</code></td>
+<td>J-STAGE論文</td>
+<td>J-STAGE WebAPI</td>
+</tr>
+<tr>
+<td><code>irdb</code></td>
+<td>機関リポジトリ</td>
+<td>CiNii Research（IRDB）</td>
+</tr>
+</tbody>
+</table>
+<h2>ストレージ</h2>
+<table>
+<thead>
+<tr>
+<th>種別</th>
+<th>パス</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>設定ファイル</td>
+<td><code>$XDG_CONFIG_HOME/papers-cli/config.toml</code></td>
+</tr>
+<tr>
+<td>データベース</td>
+<td><code>$XDG_DATA_HOME/papers-cli/papers.db</code></td>
+</tr>
+<tr>
+<td>PDF保存先</td>
+<td><code>~/papers/{source}/</code>（設定可能）</td>
+</tr>
+</tbody>
+</table>
+<h2>問い</h2>
+<ul>
+<li><code>search --json | download --stdin</code> のパイプを起点に、arXiv論文を自動取得 → <a href="../../../tools/notebooklm-py.html">notebooklm-py</a> でNotebookLMに流す → 要約を <code>wiki/papers/</code> に落とす経路を組めるか。</li>
+<li>J-STAGE・IRDB対応は日本語論文の収集に効く。本wikiの <code>papers/</code> カテゴリを日本語研究で厚くする供給ラインになるか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../tools/notebooklm-py.html">notebooklm-py</a> — 論文・ソースのバッチ取得という近い用途。papers-cliでPDFを集め、notebooklm-pyで分析に流すパイプラインが組める</li>
+<li><a href="../../../concepts/research-methodology.html">research-methodology</a> — 「スレッド要約でなく論文本文を読む」という情報源の質の規範を、PDF取得の自動化で下支えする</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../tools/notebooklm-py.html">notebooklm-py</a></li>
+<li><a href="../../../concepts/research-methodology.html">research-methodology</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># papers-cli
+
+arXiv・J-STAGE・IRDB（機関リポジトリ）から学術論文を検索・ダウンロード・管理する.NET製CLIツール（作者: supermomonga）。検索→PDF取得→ローカルでのメタデータ管理までを1本のコマンドで完結させる。
+
+```mermaid
+flowchart LR
+  Search[&quot;検索（arxiv / jstage / irdb）&quot;] --&gt; Download[&quot;PDFダウンロード&quot;]
+  Download --&gt; Store[&quot;SQLiteメタデータ + PDF保存&quot;]
+  Store --&gt; Manage[&quot;list / show / delete&quot;]
+```
+
+## 特徴
+
+- **単一ソース検索＋ページング** — arXiv / J-STAGE / IRDB を `--source` で切り替え。`--category` `--author` `--from` `--to` `--sort-key` `--limit` `--page` で絞り込む。
+- **PDFダウンロード＋SQLiteメタデータ管理** — `source:id` 形式（`arxiv:2301.00001`）やURLで指定。複数同時・`--format pdf,source`・`--force` 再取得に対応。
+- **リッチなターミナルUI** — Spectre.Console による表・パネル・進捗バー表示。
+- **`--json` 出力** — スクリプト連携用。`search --json | download --stdin` で検索結果をそのままダウンロードにパイプできる。
+- **XDG Base Directory準拠** — 設定・DB・PDF保存先を環境変数で制御。
+
+## 対応ソース
+
+| ソース | 対象 | API |
+|---|---|---|
+| `arxiv` | arXivプレプリント | arXiv API（Atom Feed） |
+| `jstage` | J-STAGE論文 | J-STAGE WebAPI |
+| `irdb` | 機関リポジトリ | CiNii Research（IRDB） |
+
+## ストレージ
+
+| 種別 | パス |
+|---|---|
+| 設定ファイル | `$XDG_CONFIG_HOME/papers-cli/config.toml` |
+| データベース | `$XDG_DATA_HOME/papers-cli/papers.db` |
+| PDF保存先 | `~/papers/{source}/`（設定可能） |
+
+## 問い
+
+- `search --json | download --stdin` のパイプを起点に、arXiv論文を自動取得 → [[tools/notebooklm-py]] でNotebookLMに流す → 要約を `wiki/papers/` に落とす経路を組めるか。
+- J-STAGE・IRDB対応は日本語論文の収集に効く。本wikiの `papers/` カテゴリを日本語研究で厚くする供給ラインになるか。
+
+## 関連
+
+- [[tools/notebooklm-py]] — 論文・ソースのバッチ取得という近い用途。papers-cliでPDFを集め、notebooklm-pyで分析に流すパイプラインが組める
+- [[concepts/research-methodology]] — 「スレッド要約でなく論文本文を読む」という情報源の質の規範を、PDF取得の自動化で下支えする
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

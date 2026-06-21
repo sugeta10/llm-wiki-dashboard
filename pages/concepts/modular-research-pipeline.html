@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>modular-research-pipeline</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="modular-research-pipeline.md">Markdownで表示</a></div>
   <div class="meta">concepts/modular-research-pipeline · concepts · <span title="2026-06-03">2週間前</span></div>
   <article><h1>モジュラー研究パイプライン（Research Monster）</h1>
 <blockquote>
@@ -91,13 +93,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
 <li><a href="../tools/notebooklm-py.html">notebooklm-py</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061044198418031017" rel="noopener" target="_blank">https://x.com/i/web/status/2061044198418031017</a></li></ul></section></article>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061044198418031017" rel="noopener" target="_blank">https://x.com/i/web/status/2061044198418031017</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -113,5 +116,62 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># モジュラー研究パイプライン（Research Monster）
+
+&gt; **TL;DR**: 実行エンジン（Claude Code）・分析エンジン（NotebookLM）・記憶層（Obsidian）を役割分担させ、ソースを差し替えるだけで任意トピックを調査できる研究ワークフロー。使うほど自分の思考スタイルを学習して精度が上がる。
+
+調査を「タブを10個開いて手で読んでメモする」手作業から、単一コマンドで回るパイプラインに変える設計。要点は個別ツールの選択ではなく**層の分離**にある。各層が問題の別レイヤーを担当し、入力ソースだけを交換すれば構造はそのまま再利用できる。@monokern が提唱（セットアップ30分）。
+
+## 4層の役割分担
+
+| 層 | ツール | 担当 |
+|---|---|---|
+| 実行エンジン | [[tools/claude-code]] | コマンド実行・スキル呼び出し・ファイル管理・パイプライン全体のオーケストレーション |
+| カスタマイズ層 | Skill Creator（CCプラグイン） | 自然言語でスキルを生成・インストール（プログラミング不要） |
+| 分析エンジン | [[tools/notebooklm]] / [[tools/notebooklm-py]] | ソースを読み込み要約・インフォグラフィック・フラッシュカード・ポッドキャスト等を生成 |
+| 記憶層 | Obsidian | 生成物をMarkdownで蓄積し、CCが読んで好み・思考様式を学習 |
+
+**コスト構造上の利点**: 重い分析処理をNotebookLMにオフロードすると、計算はGoogleのインフラ側で走りClaudeトークンを消費しない。本文中の実例では10本のYouTube動画の調査が約6分、その大半がGoogleサーバー側の処理時間。
+
+## モジュラー性が本質（差し替え可能なのはソースだけ）
+
+YouTube検索はあくまで一例。Claude Codeがアクセスできるデータソース（PDF・Webページ・ローカルファイル・Google Drive等）に差し替えても、**パイプライン・分析層・記憶層の構造は不変**。クリプトエコシステムをホワイトペーパーで、新技術をカンファレンス動画で、市場動向を公開レポートで——用途が変わってもテンプレートは同じ。これは [[concepts/intermediate-notation-pattern]] や [[concepts/multi-agent-patterns]] の「構造を固定し中身を流す」発想と同じ系譜。
+
+## Obsidianが「複利」を生む仕組み
+
+単発の調査なら上記だけで完結するが、Obsidianに生成物を貯め続けると質的に別物になる。CCがvault内の蓄積を横断的に読み、リンク構造・繰り返し戻るトピック・好む出力形式を把握していく。vault内の `claude.md` がこの学習を明示化する設定ファイルで、「直近セッションから自分のパターンを抽出して更新して」と週1で頼むと、1ヶ月で過剰なプロンプトなしに望む出力が返るようになる、と主張される。記憶層としてObsidianを使う点は [[concepts/obsidian-personal-os]]・[[concepts/llm-wiki]] と同思想。
+
+## 観察ログ（未検証）
+
+- 2026-05-31: セットアップ時間「30分未満」・YouTube調査10本で「約6分」はいずれも著者の自己申告値
+- 2026-05-31: 「1年継続すれば数百セッションを吸収した訓練済みアシスタントになる」は著者の予測（効果測定なし）
+- 2026-05-31: notebooklm-pyはGoogle非公開APIを使う非公式ライブラリで予告なく壊れうる（[[tools/notebooklm-py]] 参照）
+
+## 問い
+
+- 自分の llm-wiki（このvault）の wiki-ingest フローは既にCC＋Obsidianの2層を持つ。NotebookLM分析層を足す価値はあるか、それともトークン節約のオフロード目的に限るか
+- 「使うほど賢くなる」の核は週次の `claude.md` 自己更新ループ。これは [[concepts/self-refining-skills]] の LESSONS.md アプローチと何が違うか
+
+## 関連
+
+- [[tools/claude-code]]
+- [[tools/notebooklm]]
+- [[tools/notebooklm-py]]
+- [[concepts/obsidian-personal-os]]
+- [[concepts/llm-wiki]]
+- [[concepts/self-refining-skills]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

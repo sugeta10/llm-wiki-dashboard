@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>prompt-engineering-playbook</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="prompt-engineering-playbook.md">Markdownで表示</a></div>
   <div class="meta">concepts/prompt-engineering-playbook · concepts · <span title="2026-05-26">3週間前</span></div>
   <article><h1>プロンプトエンジニアリング・プレイブック（40技術）</h1>
 <blockquote>
@@ -231,14 +233,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/dspy.html">dspy</a> — プロンプトを機械学習問題に変換して自動最適化するフレームワーク</li>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a> — MCP（Model Context Protocol）仕様</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
-<li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li>
-<li><a href="../tools/dspy.html">dspy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2058839596826612188" rel="noopener" target="_blank">https://x.com/i/web/status/2058839596826612188</a></li></ul></section></article>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+<li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li>
+<li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2058839596826612188" rel="noopener" target="_blank">https://x.com/i/web/status/2058839596826612188</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -254,5 +257,146 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># プロンプトエンジニアリング・プレイブック（40技術）
+
+&gt; **TL;DR**: 「指示を与える」から「思考プロセス・ゴール・設計図を渡す」へ発想を切り替えるための、10章・約40のプロンプト設計技術カタログ。[[concepts/prompt-engineering]] の実践的拡張。
+
+## 概念説明
+
+命令文だけを渡すとモデルは推論手順や完成形を自前で補完するため、出力品質が安定せず再現性も落ちる。設計図を明示的に渡すことでこの揺れを抑えるのが狙いだ。以下は目的別に整理した約40の技術。各章は独立しており、必要なものだけ組み合わせて使える。
+
+### 第1章：思考プロセスを渡す
+
+モデルに最終回答だけでなく、そこに至る推論手順を踏ませる技術群。
+
+| 手法 | 概要 |
+|------|------|
+| **Chain-of-Verification (CoVe)** | 叩き台→自己検証質問5つ→エビデンスで回答→矛盾修正。ハルシネーション削減 |
+| **Self-Refine** | 生成→辛口採点（説得力・独自性・論理性・読みやすさ・抜け漏れ）→改稿の3ロールを1回で |
+| **Tree of Thoughts (ToT)** | 3本の枝を展開→強弱評価→最善枝を深掘り。アイデア・戦略立案向け |
+| **Skeleton-of-Thought (SoT)** | 骨組み（見出し5つ）を先に並列作成→各見出しを独立肉付け→統合 |
+| **Meta-Prompting** | プロンプト自体の改良版5案を生成させ自己進化させる。月1メンテで資産育成 |
+
+### 第2章：出口から逆算（Outcome-First設計）
+
+完成形を先に固定し、AIに穴埋めさせる技術群。
+
+| 手法 | 概要 |
+|------|------|
+| **Output-First Specification** | 完成形テンプレ（タイトル字数・導入構成・本論H2数・CTA）を先に固定してAIに穴埋めさせる |
+| **Prefilling** | AIの応答の書き出し一文を先に指定してロック。前置き・余計な枕詞を消去 |
+| **Negative Constraints** | 禁止事項を具体的箇条書きで列挙。曖昧な禁止は守られにくい |
+| **XML Structured Tagging** | `&lt;goal&gt;` `&lt;context&gt;` `&lt;constraints&gt;` `&lt;examples&gt;` `&lt;output_format&gt;` タグで情報を分離 |
+| **Persona Stack** | 執筆役・添削役・想定読者の3人格を同時に持たせて1レスポンスで実行 |
+
+### 第3章：マルチエージェント運用
+
+役割を分けて並列・協調させる技術群。詳細パターンは [[concepts/multi-agent-patterns]]。
+
+| 手法 | 概要 |
+|------|------|
+| **Routing Pattern** | 振り分け役が入力を①リサーチ②執筆③分析④コード系に分類→専門プロンプト生成→実行 |
+| **Parallelization** | 同一タスクを5人の独立専門家視点で並列回答→多数決で最終回答 |
+| **Evaluator-Optimizer** | 生成役と評価役を「人格完全切り替え」で分離。Self-Refineより採点が辛口になる |
+| **Multi-Agent Debate** | 肯定派×否定派が3往復論戦→中立裁定役が統合。意思決定タスクに有効 |
+| **Self-Verifying Output** | 出力前に海外競合・ターゲット読者・辛口上司の3視点で取り調べ→改善版提示 |
+
+### 第4章：コンテキスト4階層設計
+
+長文コンテキストでの情報配置を設計する技術群。
+
+- **Bookend Placement**: 重要制約を冒頭と末尾の両方に配置。長文プロンプトの中盤盲点対策
+- **Goldilocks Altitude**: システムプロンプトの高度を①不変原則②状況判断枠組み③個別自由度の3層で設計
+- **JIT Context Injection**: 大資料は目次・サマリー・索引のみ先行投入し、必要な章だけ都度取得
+- **Intent Encoding**: 優先順位・絶対NG・デフォルト判断基準を冒頭に明文化。AIを代理人化
+- **Specification Layer**: 品質基準・業務ルールを仕様書として固定し毎セッションの起点に
+
+### 第5章：KVキャッシュ前提の構造設計
+
+KVキャッシュを効かせてコスト・レイテンシを下げる配置技術群。
+
+- **Stable Prefix First**: 動かないもの（前提・資料・ルール）を冒頭固定、変わるもの（質問）を末尾に
+- **Anchor Document Pattern**: 参考資料は最初に1回だけ投入してアンカー化。以降は再提示不要
+- **Session Continuity**: 関連作業は1スレッドで継続。新規チャット乱発が制限引っかかりの原因
+- **Differential Edit Pattern**: 修正時は差分のみ指示。全文再投稿はキャッシュ破壊になる
+- **Cache-Aware Sub-agent Design**: マルチエージェント時、全エージェントのシステムプロンプト冒頭を揃えてキャッシュを効かせる
+
+### 第6章：ハーネスとエージェント
+
+エージェントは Model + **Harness**（指示+ガードレール）+ Tools + Environment + Agent Loop の5要素で構成される。ハーネス設計の実例は [[concepts/claude-code-large-codebase]]、ループ内部実装は [[concepts/codex-agent-loop]]。
+
+| 手法 | 概要 |
+|------|------|
+| **Execution Loop** | 毎ステップで観察→思考→自己批判→行動の4段階を明示的に踏む |
+| **Context Compaction** | 10往復ごとに「確定事実3+保留タスク2+次の最重要アクション1」に強制圧縮 |
+| **Playbook Memory** | タスク後に「汎用ルール3つ」を出力して蓄積。次回プレイブックとして投入 |
+| **Self-Modification Loop** | タスク後にAI自身が「次回のための改良版指示テンプレ」を書き換える |
+| **Auto-Harness Optimization** | プロンプト構造全体の改善案5つ→狙い・効果・リスク評価→最強案採用 |
+
+### 第7章：裏プロンプト5選
+
+バイアス除去・多様性確保のための応用技術群。
+
+- **Question Reframing**: AIの媚び（同調バイアス）を防ぐため、こちらの発言をまず中立疑問文に変換させてから回答させる
+- **Verbalized Sampling**: 回答案を「選ばれるべき確率%」付きで5案出力→分布に従って1案選択。出力多様性向上
+- **反事実アンカリング**: 直感答えの「完全反対案」を先出し→根拠5つ→検証後に最終回答。慣性破壊
+- **自己Pre-Mortem**: 実行前に「最低品質に終わった場合の原因5つ」を列挙→回避策→タスク実行
+- **Calibrated Confidence Prompting**: 各主張に確信度0-100%・推測/事実ラベルを必ず付ける。ハルシネーション可視化
+
+### 第8章：推奨MCP 4選
+
+外部データ・記憶を補うMCPサーバの例。MCP仕様は [[tools/claude-mcp]]。
+
+- **Supadata MCP**: YouTube/TikTok/X動画から文字起こし一発抽出
+- **Firecrawl MCP**: WebサイトをクリーンなMarkdownに変換（JS描画対応）
+- **Google Knowledge Graph MCP**: Googleの情報パネル元データに直接アクセス。ファクトチェック用
+- **Memory MCP**: セッション跨ぎの永続記憶。決定事項・好み・ルールを蓄積
+
+### 第9章：Claude Code &amp; Codex自動化の5ポイントと落とし穴
+
+1. **Plan Modeを必ず挟む**: ファイル名・関数名・手順まで確認してから承認。落とし穴: スキップして並列実行すると誤成果物を高速量産
+2. **耐久ルールは設定ファイルに**: CLAUDE.md / AGENTS.mdに書き、プロンプトには今回だけの指示のみ。落とし穴: ファイルを大きくしすぎると内容カット
+3. **サブエージェントは専門特化＋権限絞り**: 1機能=1専門役割・最小ツール権限。落とし穴: 親の全権限を引き継いでしまう
+4. **MCPは盛らない**: 使うMCPは3-5個に絞る。落とし穴: 10-20個刺すとコンテキスト圧迫+セキュリティリスク
+5. **繰り返し作業はSkill化**: 2-3個の使用例があるワークフローはすぐSkill化。Claude Code/Codex共通形式で書く
+
+### 第10章：やめたほうがいい習慣
+
+1. **ペルソナ乱用**: 「あなたは○○の専門家」は安全・倫理判断系には有効だが、事実調査・推論・コード生成では精度が下がるとする研究がある
+2. **「ステップバイステップで」を機械的付与**: 最新モデルは思考深度を自律判断するため、代わりに目的・制約・期待形式を明示しモデルのthinking機能に任せる
+3. **プロンプトを手書き直感調整**: プロンプトをコードとして管理・バージョン管理・eval採点で最適化する。手書き直感では「9割動くが残り1割で壊滅」を検知できない（自動最適化フレームワークは [[tools/dspy]]）
+
+## 観察ログ（未検証）
+
+- 2026-05-25: 日本のプロンプトは「指示」（命令文）止まりで、海外プロは1行目から「思考プロセス」「ゴール」「設計図」を渡す（著者 @MakeAI_CEO の主張、単一ソース）
+- 2026-05-25: CoVe・Self-Refine・Tree of Thoughts・Skeleton-of-Thought はいずれも実在の学術論文から派生した手法（著者が出典に言及。ただし本ページ内に具体的出典リンクは未掲載）
+
+## 問い
+
+- 各技術を実際に試し、自分のタスクで効果が出たものだけを残して「個人版プレイブック」に絞り込む
+- 第10章「ペルソナ乱用で精度が下がる研究」の具体的な論文を特定し、[[concepts/prompt-engineering]] と突き合わせる
+- eval採点でのプロンプト最適化を [[tools/dspy]] で1ワークフロー試作する
+
+## 関連
+
+- [[concepts/prompt-engineering]] — プロンプトエンジニアリング基礎・Claude/GPT公式ガイド
+- [[concepts/multi-agent-patterns]] — マルチエージェント設計パターン（Anthropic公式5パターン）
+- [[concepts/codex-agent-loop]] — Codexエージェントループ内部実装
+- [[concepts/claude-code-large-codebase]] — 大規模コードベースでのClaude Code活用とハーネス設計
+- [[tools/dspy]] — プロンプトを機械学習問題に変換して自動最適化するフレームワーク
+- [[tools/claude-mcp]] — MCP（Model Context Protocol）仕様
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

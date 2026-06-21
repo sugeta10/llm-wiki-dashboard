@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>fastview-design</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="fastview-design.md">Markdownで表示</a></div>
   <div class="meta">design/fastview-design · design · <span title="2026-05-10">1ヶ月前</span></div>
   <article><h1>ファーストビュー設計</h1>
 <p>Webページを開いてスクロールせずに見える範囲。ユーザーが「読み進めるか」を判断する入口。AIがUI・ランディングページを設計する際にも適用できる原則を含む。</p>
@@ -83,8 +85,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../design/ai-slide-creation.html">ai-slide-creation</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://cone-c-slide.com/see-sla/blog/fastview-design/" rel="noopener" target="_blank">https://cone-c-slide.com/see-sla/blog/fastview-design/</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -100,5 +103,57 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># ファーストビュー設計
+
+Webページを開いてスクロールせずに見える範囲。ユーザーが「読み進めるか」を判断する入口。AIがUI・ランディングページを設計する際にも適用できる原則を含む。
+
+## 1秒・3秒・5秒の壁
+
+ユーザーはページ表示後、わずか数秒で判断する：
+
+| 時間 | 判断内容 |
+|------|---------|
+| 1秒 | 自分に関係があるか（ターゲット合致） |
+| 3秒 | 何を提供しているか（価値の特定） |
+| 5秒 | 次に何をすべきか（行動導線） |
+
+## 設計原則
+
+**「見た目の良さ」より「瞬時の理解」が優先される。**
+
+- ヘッドコピーにユーザーの状況・悩みを具体的に入れる（「未来を変える」より「月末残業を半分に」）
+- メインビジュアルはコピーと一致させる（抽象的な風景写真より実際の利用シーン）
+- 行動導線（CTA）を1秒で迷わず見つけられる配置にする
+
+## 参考デザインをそのまま真似しても成果が出ない理由
+
+1. おしゃれ ≠ 成果（ユーザーが求めるのは美しさより納得感）
+2. 自社と参考サイトの前提条件（ブランド認知・競合環境）が異なる
+3. 判断軸（誰に・何を・どう行動させるか）なしに感覚で選んでいる
+
+## AIへの応用
+
+AIがWebページやダッシュボードUIを生成する際、この原則を制約として与えると精度が上がる：
+- 「1秒で価値が伝わるキャッチコピー」
+- 「ターゲットが自分ごとと感じるビジュアル選択」
+- 「CTAまでのスクロール距離を最小化」
+
+## 関連
+
+- [[design/ai-slide-to-pptx]] — スライド資料のビジュアルを保ったまま編集可能化する手法（資料制作の周辺）
+- [[design/claude-premium-website-build]] — 視覚的階層・趣味の言語化をClaude Code制作ワークフローに組み込む実例
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

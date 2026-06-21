@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agi-knowledge-moat</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agi-knowledge-moat.md">Markdownで表示</a></div>
   <div class="meta">concepts/agi-knowledge-moat · concepts · <span title="2026-06-04">2週間前</span></div>
   <article><h1>AGI時代の知識MOAT</h1>
 <p>AGIの到来によって競争優位性（MOAT）の源泉がどのように変わるかについての考察。</p>
@@ -58,15 +60,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a> — 顧客の世界を深く知るポジション</li>
 <li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a> — AGI時代の競争優位の変容（同じ問い）</li>
 <li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> — capabilityが汗かき作業から自動化され research taste に優位が集約される論考</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li>
-<li><a href="../concepts/palantir-ontology.html">palantir-ontology</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/palantir-ontology.html">palantir-ontology</a></li>
 <li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li>
+<li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li>
 <li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2044075469126152425" rel="noopener" target="_blank">https://x.com/i/web/status/2044075469126152425</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -82,5 +85,44 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># AGI時代の知識MOAT
+
+AGIの到来によって競争優位性（MOAT）の源泉がどのように変わるかについての考察。
+
+## 従来のMOAT → AGI後のMOAT
+
+| 従来 | AGI後 |
+|------|-------|
+| **知識の占有**（特定分野の専門知識） | **知識生成ループの占有**（良質な情報→洞察→実装→フィードバックのサイクル） |
+
+AGIは**知識の希少性**を壊す一方、以下の希少性はむしろ際立たせる：
+- **源泉**: どんな良質な情報・思想に触れるか
+- **循環**: インプット→アウトプット→フィードバックをどう回すか
+- **実装**: 洞察を実際の価値に変える能力
+
+## 示唆
+
+「良いものに触れ良い思想に触れ、美学とセンスを磨く」ことがAGI時代の競争力につながる。情報収集・整理・活用のサイクル（PKM）の価値が相対的に高まる。
+
+## 関連
+
+- [[concepts/agentic-coding]]
+- [[concepts/palantir-ontology]] — 競争優位が「文脈の深さ」に移る具体例
+- [[concepts/forward-deployed-engineer]] — 顧客の世界を深く知るポジション
+- [[business/ai-vertical-integration]] — AGI時代の競争優位の変容（同じ問い）
+- [[concepts/recursive-self-improvement]] — capabilityが汗かき作業から自動化され research taste に優位が集約される論考
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

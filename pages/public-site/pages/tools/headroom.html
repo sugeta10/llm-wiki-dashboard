@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>headroom - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>headroom</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="headroom.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/tools/headroom · other · <span title=""></span></div>
+  <article><h1>headroom</h1>
+<p>AIエージェントがLLMへ送るデータを<strong>送信前に圧縮</strong>してトークンを削減するライブラリ（<a href="https://github.com/chopratejas/headroom">github.com/chopratejas/headroom</a>）。Claude Code でも利用できると紹介されている。</p>
+<h2>何を圧縮するか</h2>
+<p>エージェントがLLMに渡す各種コンテキストを対象とする：</p>
+<ul>
+<li>ツール出力</li>
+<li>ログ</li>
+<li>RAGチャンク</li>
+<li>ファイル</li>
+<li>会話履歴</li>
+</ul>
+<p>これらを送信前段で圧縮し、<strong>トークンを60〜95%削減しつつ同等の回答精度を維持する</strong>と主張されている。</p>
+<h2>なぜ重要か</h2>
+<p>コンテキストウィンドウへ投入するデータ量がそのままコストと遅延に跳ね返るエージェント運用において、入力側の圧縮はモデル選択や <a href="../../../concepts/prompt-caching.html">prompt-caching</a> とは別軸の最適化レバー。<a href="../../../concepts/token-management.html">token-management</a> が説く「タスクとモデルのミスマッチ検出」が<em>どのモデルを使うか</em>の最適化なら、headroomは<em>同じモデルへ何をどれだけ送るか</em>の最適化にあたる。</p>
+<h2>導入形態（4通り）</h2>
+<p>コードを変えずに既存スタックへ挿し込めるよう、複数の接続点を持つ。</p>
+<ul>
+<li><strong>ライブラリ</strong> — <code>compress(messages)</code> を Python / TypeScript でインライン呼び出し</li>
+<li><strong>プロキシ</strong> — <code>headroom proxy --port 8787</code>、コード変更ゼロ・任意の言語（OpenAI互換クライアントが通る）</li>
+<li><strong>エージェントwrap</strong> — <code>headroom wrap claude|codex|cursor|aider|copilot</code> の1コマンド</li>
+<li><strong>MCPサーバー</strong> — <code>headroom_compress</code> / <code>headroom_retrieve</code> / <code>headroom_stats</code> を任意のMCPクライアントに提供</li>
+</ul>
+<p>ローカル実行（local-first）でデータが外部に出ない点を、ホスト型API圧縮サービス（Compresr等）やプロバイダ純正コンパクション（OpenAI Compaction）との差別化点として挙げている。</p>
+<h2>内部構成（コンテンツ種別ごとに圧縮器を切替）</h2>
+<p><code>ContentRouter</code> がコンテンツ種別を検出し、最適な圧縮器へ振り分けるのが中核設計。</p>
+<ul>
+<li><strong>SmartCrusher</strong> — JSON（配列・ネスト・混在型）の汎用圧縮</li>
+<li><strong>CodeCompressor</strong> — AST認識。Python/JS/Go/Rust/Java/C++対応</li>
+<li><strong>Kompress-base</strong> — agenticトレースで学習した自社HuggingFaceモデル（プローズ＝自然文の圧縮）</li>
+<li><strong>CacheAligner</strong> — プレフィックスを安定化させ Anthropic/OpenAI の KVキャッシュをヒットさせる（<a href="../../../concepts/prompt-caching.html">prompt-caching</a> と相補的）</li>
+<li><strong>CCR（reversible compression）</strong> — 原文はローカルに保持し削除しない。LLMが必要時に <code>headroom_retrieve</code> で復元する可逆圧縮</li>
+<li><strong>Cross-agent memory</strong> — Claude/Codex/Gemini 間で共有するメモリストア（出所付き・自動重複排除）</li>
+</ul>
+<p><code>headroom learn</code> は失敗セッションをマイニングし、修正を <code>CLAUDE.md</code> / <code>AGENTS.md</code> / <code>GEMINI.md</code> に書き戻す機能。これは <a href="../../../concepts/self-refining-skills.html">self-refining-skills</a> と同じ「失敗から学習ルールを蓄積する」発想を、ツール側で自動化したもの。</p>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-06-02: 公式READMEが提示する<strong>自己公表ベンチマーク</strong>（独立検証ではない）。実エージェント負荷での削減率: Code search 17,765→1,408トークン（92%）、SRE incident debugging 65,694→5,118（92%）、GitHub issue triage 54,174→14,761（73%）、Codebase exploration 78,502→41,254（47%）</li>
+<li>2026-06-02: 精度保持ベンチ（N=100）: GSM8K 0.870→0.870（±0.000）、TruthfulQA 0.530→0.560（+0.030）、SQuAD v2 97%（19%圧縮時）、BFCL 97%（32%圧縮時）</li>
+<li>ライセンス Apache 2.0。Python 3.10+。シェル出力書き換えに <a href="https://github.com/rtk-ai/rtk">RTK</a> バイナリを同梱</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「60〜95%削減・精度維持」は実タスクで再現するか。圧縮で欠落する情報が回答品質に効くケースはどこか</li>
+<li>このwikiのingest/Query作業（ファイル全文読み込み）に組み込めるか。<a href="../../../concepts/prompt-caching.html">prompt-caching</a> と併用したときの効果の重複・相乗はどうか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../concepts/token-management.html">token-management</a> — トークン消費を経営イシューとして可視化・最適化する考え方</li>
+<li><a href="../../../concepts/prompt-caching.html">prompt-caching</a> — Claude APIのプロンプトキャッシング（送信データ再利用によるコスト削減）。CacheAlignerが狙うKVキャッシュヒットと同じレバー</li>
+<li><a href="../../../concepts/self-refining-skills.html">self-refining-skills</a> — <code>headroom learn</code> が CLAUDE.md/AGENTS.md に修正を書き戻す失敗学習ループの発想</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../concepts/token-management.html">token-management</a></li>
+<li><a href="../../../concepts/prompt-caching.html">prompt-caching</a></li>
+<li><a href="../../../concepts/self-refining-skills.html">self-refining-skills</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># headroom
+
+AIエージェントがLLMへ送るデータを**送信前に圧縮**してトークンを削減するライブラリ（[github.com/chopratejas/headroom](https://github.com/chopratejas/headroom)）。Claude Code でも利用できると紹介されている。
+
+## 何を圧縮するか
+
+エージェントがLLMに渡す各種コンテキストを対象とする：
+
+- ツール出力
+- ログ
+- RAGチャンク
+- ファイル
+- 会話履歴
+
+これらを送信前段で圧縮し、**トークンを60〜95%削減しつつ同等の回答精度を維持する**と主張されている。
+
+## なぜ重要か
+
+コンテキストウィンドウへ投入するデータ量がそのままコストと遅延に跳ね返るエージェント運用において、入力側の圧縮はモデル選択や [[concepts/prompt-caching]] とは別軸の最適化レバー。[[concepts/token-management]] が説く「タスクとモデルのミスマッチ検出」が*どのモデルを使うか*の最適化なら、headroomは*同じモデルへ何をどれだけ送るか*の最適化にあたる。
+
+## 導入形態（4通り）
+
+コードを変えずに既存スタックへ挿し込めるよう、複数の接続点を持つ。
+
+- **ライブラリ** — `compress(messages)` を Python / TypeScript でインライン呼び出し
+- **プロキシ** — `headroom proxy --port 8787`、コード変更ゼロ・任意の言語（OpenAI互換クライアントが通る）
+- **エージェントwrap** — `headroom wrap claude|codex|cursor|aider|copilot` の1コマンド
+- **MCPサーバー** — `headroom_compress` / `headroom_retrieve` / `headroom_stats` を任意のMCPクライアントに提供
+
+ローカル実行（local-first）でデータが外部に出ない点を、ホスト型API圧縮サービス（Compresr等）やプロバイダ純正コンパクション（OpenAI Compaction）との差別化点として挙げている。
+
+## 内部構成（コンテンツ種別ごとに圧縮器を切替）
+
+`ContentRouter` がコンテンツ種別を検出し、最適な圧縮器へ振り分けるのが中核設計。
+
+- **SmartCrusher** — JSON（配列・ネスト・混在型）の汎用圧縮
+- **CodeCompressor** — AST認識。Python/JS/Go/Rust/Java/C++対応
+- **Kompress-base** — agenticトレースで学習した自社HuggingFaceモデル（プローズ＝自然文の圧縮）
+- **CacheAligner** — プレフィックスを安定化させ Anthropic/OpenAI の KVキャッシュをヒットさせる（[[concepts/prompt-caching]] と相補的）
+- **CCR（reversible compression）** — 原文はローカルに保持し削除しない。LLMが必要時に `headroom_retrieve` で復元する可逆圧縮
+- **Cross-agent memory** — Claude/Codex/Gemini 間で共有するメモリストア（出所付き・自動重複排除）
+
+`headroom learn` は失敗セッションをマイニングし、修正を `CLAUDE.md` / `AGENTS.md` / `GEMINI.md` に書き戻す機能。これは [[concepts/self-refining-skills]] と同じ「失敗から学習ルールを蓄積する」発想を、ツール側で自動化したもの。
+
+## 検証済み事実
+
+- 2026-06-02: 公式READMEが提示する**自己公表ベンチマーク**（独立検証ではない）。実エージェント負荷での削減率: Code search 17,765→1,408トークン（92%）、SRE incident debugging 65,694→5,118（92%）、GitHub issue triage 54,174→14,761（73%）、Codebase exploration 78,502→41,254（47%）
+- 2026-06-02: 精度保持ベンチ（N=100）: GSM8K 0.870→0.870（±0.000）、TruthfulQA 0.530→0.560（+0.030）、SQuAD v2 97%（19%圧縮時）、BFCL 97%（32%圧縮時）
+- ライセンス Apache 2.0。Python 3.10+。シェル出力書き換えに [RTK](https://github.com/rtk-ai/rtk) バイナリを同梱
+
+## 問い
+
+- 「60〜95%削減・精度維持」は実タスクで再現するか。圧縮で欠落する情報が回答品質に効くケースはどこか
+- このwikiのingest/Query作業（ファイル全文読み込み）に組み込めるか。[[concepts/prompt-caching]] と併用したときの効果の重複・相乗はどうか
+
+## 関連
+
+- [[concepts/token-management]] — トークン消費を経営イシューとして可視化・最適化する考え方
+- [[concepts/prompt-caching]] — Claude APIのプロンプトキャッシング（送信データ再利用によるコスト削減）。CacheAlignerが狙うKVキャッシュヒットと同じレバー
+- [[concepts/self-refining-skills]] — `headroom learn` が CLAUDE.md/AGENTS.md に修正を書き戻す失敗学習ループの発想
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

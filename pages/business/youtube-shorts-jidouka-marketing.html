@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>youtube-shorts-jidouka-marketing</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="youtube-shorts-jidouka-marketing.md">Markdownで表示</a></div>
   <div class="meta">business/youtube-shorts-jidouka-marketing · business · <span title="2026-06-06">2週間前</span></div>
   <article><h1>YouTube Shorts 自動化マーケティング</h1>
 <blockquote>
@@ -64,12 +66,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hyperframes.html">hyperframes</a></li>
 <li><a href="../tools/remotion.html">remotion</a></li>
 <li><a href="../business/ai-income-retirement-strategy.html">ai-income-retirement-strategy</a></li>
-<li><a href="../concepts/x-algorithm-phoenix.html">x-algorithm-phoenix</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2049185564503744535" rel="noopener" target="_blank">https://x.com/i/web/status/2049185564503744535</a></li>
+<li><a href="../concepts/x-algorithm-phoenix.html">x-algorithm-phoenix</a></li>
+<li><a href="../public-site/pages/tools/hyperframes.html">hyperframes</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2049185564503744535" rel="noopener" target="_blank">https://x.com/i/web/status/2049185564503744535</a></li>
 <li><a href="https://x.com/i/web/status/2059204809220374643" rel="noopener" target="_blank">https://x.com/i/web/status/2059204809220374643</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -85,5 +89,54 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># YouTube Shorts 自動化マーケティング
+
+&gt; **TL;DR**: 反応実績のある「フック」を大量スクレイプ→感情カテゴリ別CTAと機械的に結合→固定台本テンプレに流し込み→自動生成・API投稿、を回し、当たりフックだけ増やすPDCAでアプリ/プロダクトを宣伝する完全自動化ショート運用。
+
+このパイプラインが効くのは、ショート動画の成否がほぼ**冒頭1〜2秒のフック**で決まり、かつ「どのフックが当たるか」は事前に当てられないという2点による。だから最初から正解を作るのではなく、大量に出して反応を見て当たりだけ残す＝AIで量産する価値はこの試行回数にある。人間がゼロから毎本考える前提だと量が出せず、このループが回らない。
+
+パイプラインの構成要素は6つ:
+1. **フック収集** — 「自分で考える」のではなく、すでに反応が出ているフックを大量に集める（Pythonでスクレイプ）。フックは機能説明（例:「〜を習慣化できるアプリです」）ではなく、視聴者の中にすでにある痛み・願望を先に触る言葉。
+2. **CTA結合ルール** — フックを感情カテゴリ（依存/習慣化/信仰/朝ルーティン等）に分け、各カテゴリの悩み→自然にプロダクトへつながるCTAを対応表化する。毎回同じCTAを末尾に貼るだけだと「自動生成感」が出て弱い。`フックカテゴリ → 台本テンプレ → CTAテンプレ` の順で機械的に組む。
+3. **固定台本テンプレ** — 2000本規模では構成を毎回変えず固定。問題提起型(A)/Before-After型(B)/リスト型(C) を5〜10個用意し、フックとCTAを差し替えるだけにする。
+4. **動画生成の半自動化** — 完全自動を狙いすぎず最初は半自動でよい。テロップ挿入など最も面倒な工程から自動化する。レンダリング層は [[tools/remotion]]・[[tools/hyperframes]]（HeyGen）・Video-use 等の Skills を利用。
+5. **API/予約投稿** — YouTube API（基本無料）で投稿を自動化。毎日複数本を予約で積む。
+6. **計測と当たり増幅** — 再生数/平均視聴維持率/App Store流入を最低限見る。「伸びた動画」と「アプリに興味を持たれた動画（コメントで&quot;このアプリ何？&quot;が出る）」を分けて評価し、当たったフックカテゴリだけ次の量産で増やす。
+
+**BANリスク管理が前提条件**: 同一動画の大量投下・CTA過剰・コメント欄での過剰誘導・著作権グレー素材は、伸びる前にアカウント停止を招く。量産と規約遵守の両立がこの手法の生命線。手法はアプリに限らずAIインフルエンサー等にも転用可能。
+
+## 観察ログ（未検証）
+
+- 2026-04-28: @ErnestoSOFTWARE が、自社アプリ宣伝用の**100%自動化YouTube Shortsチャンネルで10万人登録に到達**し「世界初かもしれない」と投稿。本人申告のマーケ成果で第三者検証なし
+- 2026-05-26: @L_go_mrk が Ernesto Lopez 氏の事例を再現するフローを note 記事化（AIとの競作と明記）。本人いわく**未検証**で「100%真似できるとは言えないが、これをもとにブラッシュアップすれば再現できそう」という段階の予測手法
+- L_go_mrk まとめによる Ernesto 氏の自己申告値: 約8ヶ月前に2000本以上の Shorts をスケジュール／毎日4本投稿／対象アプリ **Prayer Lock**（祈り時間中にスマホをロックする習慣化アプリ）／App Store #40・レビュー16,000件に到達。ただし Ernesto 氏自身「YouTubeがアプリ成長にどれだけ寄与したかは不明」と述べており、順位/レビューには他要因（アプリ改善・ASO・口コミ・広告・季節性等）も混在する
+- フック設計の具体例（習慣化/スマホ依存系）: 「スマホを開く前にこれをやって」「この習慣をやめたら人生が変わった」のように痛み・願望を先出しし、商品説明は後段CTAに回す
+
+## 問い
+
+- フック収集スクレイプは具体的にどのプラットフォーム・どのAPIで合法的に回せるか（YouTube/TikTok のスクレイピング規約との整合）
+- 10万登録という登録者数は虚栄指標で、実際のアプリDL/課金への寄与は本人も不明と認めている。マーケ媒体としての価値はコメントの質（&quot;使ってみたい&quot;）で測るべきという主張は自分の計測設計にどう落とせるか
+- [[tools/remotion]] / [[tools/hyperframes]] でフック差し替え型のテンプレ動画を量産する最小構成を自分で組めるか（テロップ自動挿入が起点）
+- このループは [[business/ai-income-retirement-strategy]] の「自動収益化」とどう接続するか。BANリスクと量産のトレードオフをどこで線引きするか
+
+## 関連
+
+- [[tools/remotion]]
+- [[tools/hyperframes]]
+- [[business/ai-income-retirement-strategy]]
+- [[concepts/x-algorithm-phoenix]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

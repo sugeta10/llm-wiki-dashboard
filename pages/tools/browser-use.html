@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>browser-use</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="browser-use.md">Markdownで表示</a></div>
   <div class="meta">tools/browser-use · tools · <span title="2026-05-06">1ヶ月前</span></div>
   <article><h1>Browser-use</h1>
 <p>WebブラウザをAIエージェントが操作するためのライブラリ。LLMがブラウザを直接制御してウェブスクレイピング・フォーム入力・情報収集などを自動化する。</p>
@@ -47,14 +49,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/cursor.html">cursor</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../tools/claude-computer-use.html">claude-computer-use</a>（AnthropicによるデスクトップUI操作エージェント機能）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-computer-use.html">claude-computer-use</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../tools/cursor.html">cursor</a></li>
-<li><a href="../tools/claude-computer-use.html">claude-computer-use</a></li>
-<li><a href="../papers/2026-hao-skill-mining.html">2026-hao-skill-mining</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/1875524676325404764" rel="noopener" target="_blank">https://x.com/i/web/status/1875524676325404764</a></li></ul></section></article>
+<li><a href="../papers/2026-hao-skill-mining.html">2026-hao-skill-mining</a></li>
+<li><a href="../public-site/pages/tools/claude-computer-use.html">claude-computer-use</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/1875524676325404764" rel="noopener" target="_blank">https://x.com/i/web/status/1875524676325404764</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -70,5 +74,39 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Browser-use
+
+WebブラウザをAIエージェントが操作するためのライブラリ。LLMがブラウザを直接制御してウェブスクレイピング・フォーム入力・情報収集などを自動化する。
+
+## 特徴
+
+- [[tools/cursor]] の Roo-Cline 拡張から自動導入が可能
+- DeepSeek V3 と組み合わせると API コストが1円以下
+- 依存関係含めて自動インストールが完了する
+
+## 導入方法（Roo-Cline 経由）
+
+1. Roo-Cline を起動
+2. API に DeepSeek V3 を設定
+3. リポジトリのURLを渡して「導入して」と指示するだけ
+
+## 関連
+
+- [[tools/cursor]]
+- [[concepts/agentic-coding]]
+- [[tools/claude-computer-use]]（AnthropicによるデスクトップUI操作エージェント機能）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

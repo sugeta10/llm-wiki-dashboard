@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>openai-mcp-tunnel</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="openai-mcp-tunnel.md">Markdownで表示</a></div>
   <div class="meta">tools/openai-mcp-tunnel · tools · <span title="2026-05-29">3週間前</span></div>
   <article><h1>OpenAI Secure MCP Tunnel</h1>
 <blockquote>
@@ -119,16 +121,17 @@ tunnel-client run --profile local-stdio
 <li><a href="../tools/claude-mcp.html">claude-mcp</a> — MCPプロトコル全般・MCP仕様</li>
 <li><a href="../companies/openai.html">openai</a> — OpenAI製品群・ChatGPT・Codex</li>
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — プライベートMCPとエージェントアクセス制御設計</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/openai.html">openai</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../companies/openai.html">openai</a></li>
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
-<li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a></li>
-<li><a href="../weekly/2026-W22.html">2026-W22</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://developers.openai.com/api/docs/guides/secure-mcp-tunnels" rel="noopener" target="_blank">https://developers.openai.com/api/docs/guides/secure-mcp-tunnels</a></li>
+<li><a href="../public-site/pages/tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../public-site/pages/public-site/pages/tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://developers.openai.com/api/docs/guides/secure-mcp-tunnels" rel="noopener" target="_blank">https://developers.openai.com/api/docs/guides/secure-mcp-tunnels</a></li>
 <li><a href="https://x.com/i/web/status/2059783181759557962" rel="noopener" target="_blank">https://x.com/i/web/status/2059783181759557962</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -144,5 +147,107 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># OpenAI Secure MCP Tunnel
+
+&gt; **TL;DR**: プライベートネットワーク内のMCPサーバーを、ファイアウォールのインバウンドポートを一切開けずにアウトバウンドHTTPSだけでChatGPT/Codex/Responses APIから接続させる、OpenAI公式の `tunnel-client` トンネル機能。
+
+従来、社内MCPサーバーをChatGPT/Codexに繋ぐには何らかのインバウンド経路（パブリックリスナーやポート開放）が必要で、ここがセキュリティ部門の承認を阻む最大の障壁になっていた。本機能はこの方向を反転させ、`tunnel-client` をプライベートネットワーク内で実行してOpenAI側へアウトバウンドHTTPS接続のみで通信させる。MCPサーバーはインターネットに露出せず、インバウンドポートを一切開けないまま外部AIから到達できる。
+
+対応製品: ChatGPT・Codex・Responses API・その他サポート済みOpenAIサービス。MCPプロトコル全般については [[tools/claude-mcp]] を参照。
+
+## アーキテクチャ
+
+```
+OpenAI products → OpenAI-hosted tunnel endpoint
+                          ↕ long-poll (outbound HTTPS only)
+                    tunnel-client (inside private network)
+                          ↓
+                    private MCP server (no public listener required)
+```
+
+`tunnel-client` がOpenAI側のトンネルエンドポイントに対してアウトバウンドHTTPSでロングポーリングし、OpenAI製品からのリクエストを受け取ってプライベートMCPサーバーへ中継する。MCPサーバー自体はインターネットに露出しない。
+
+接続先・パスの仕様:
+
+- デフォルト接続先は `api.openai.com:443`。制御プレーンでmTLSを設定した場合は `mtls.api.openai.com:443`（いずれも `/v1/tunnel/*` パス）。
+- ストリーミング結果（server-sent events）もトンネル経由で転送できる。
+- OAuth発見（OAuth discovery）はトンネルパスを通過できる。ただし認可サーバー自体は自動的にはトンネル化されないため、認可サーバーがパブリックに到達できない構成ではOAuthフローが失敗しうる。
+
+## tunnel-client の構成要素
+
+- `tunnel-client` はOpenAI公式リリース（`openai/tunnel-client`）として公開されている。
+- Harpoon（`tunnel-client` 組み込みのMCPサーバー）を使うと、設定済みのHTTPターゲットのみに絞った狭いスコープのHTTP呼び出しができる。汎用プロキシではなく、許可したターゲットだけに限定される点が特徴。
+- 提供エンドポイント: `/healthz` / `/readyz` / `/metrics` / `/ui`（`/ui` はループバック限定のローカル管理UI）。
+- 運用パターン: Kubernetesサイドカー / 専用Deployment / VMのsystemdサービス。
+
+## セキュリティモデル
+
+- MCPサーバーはインターネットへの公開不要（パブリックリスナー不要）。
+- `tunnel-client` はアウトバウンドHTTPSのみ（インバウンドポート開放不要）。
+- APIキーによる認証 + オプションで制御プレーンmTLS。
+- アウトバウンドプロキシ・カスタムCAバンドル・MCP側mTLSをサポート。
+- rawHTTPロギングはデフォルト無効・サポートエクスポートはリダクション済み。
+
+このモデルにより、社内MCPサーバーを外部に露出させずにAI連携を実現できる。プライベートMCPとエージェントアクセス制御の設計観点は [[concepts/ai-agent-governance]] を参照。
+
+## セットアップ
+
+```bash
+export CONTROL_PLANE_API_KEY=&quot;sk-...&quot;
+
+# stdio型MCPサーバーの場合
+tunnel-client init \
+  --sample sample_mcp_stdio_local \
+  --profile local-stdio \
+  --tunnel-id tunnel_0123456789abcdef0123456789abcdef \
+  --mcp-command &quot;python /path/to/server.py&quot;
+
+tunnel-client doctor --profile local-stdio --explain
+tunnel-client run --profile local-stdio
+
+# HTTP型MCPサーバーの場合
+# --mcp-server-url https://mcp.internal.example.com/mcp を使用
+```
+
+## 必要な権限
+
+| 役割 | 必要な権限 |
+|------|----------|
+| Runtime API Key（`tunnel-client`実行） | Tunnels Read + Use |
+| Tunnel Manager（作成・編集） | Tunnels Read + Manage |
+
+## 観察ログ（未検証）
+
+- 2026-05-29: エンタープライズ展開における意義：「社内MCPサーバーを外に晒さずにChatGPT/Codexと繋げる」ことで、セキュリティ部門が「絶対ダメ」と言い続けてきたAI連携の障壁を解消する発表として受け止められている（@tetumemo 解説）
+
+## 検証済み事実
+
+- 2026-05-28: `tunnel-client` はOpenAI公式リリース（`openai/tunnel-client`）として公開（公式APIドキュメント記載）。
+- 2026-05-28: デフォルト接続先 `api.openai.com:443`、制御プレーンmTLS設定時は `mtls.api.openai.com:443`（`/v1/tunnel/*` パス）。
+- 2026-05-28: `/healthz` / `/readyz` / `/metrics` / `/ui`（ループバック限定のローカル管理UI）エンドポイントを提供。
+
+## 問い
+
+- 自分のユースケースで認可サーバーがパブリック到達不可の場合、OAuthフロー失敗をどう回避するか（認可サーバーも別途公開する/トンネル化する余地はあるか）を確認する。
+- Cloudflare Tunnel や ngrok などの既存トンネルソリューションと比べ、MCP特化スコープ（Harpoon）がどこまで攻撃面を削減できるか試す。
+
+## 関連
+
+- [[tools/claude-mcp]] — MCPプロトコル全般・MCP仕様
+- [[companies/openai]] — OpenAI製品群・ChatGPT・Codex
+- [[concepts/ai-agent-governance]] — プライベートMCPとエージェントアクセス制御設計
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

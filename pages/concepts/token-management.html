@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>token-management</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="token-management.md">Markdownで表示</a></div>
   <div class="meta">concepts/token-management · concepts · <span title="2026-06-04">2週間前</span></div>
   <article><h1>トークンマネジメント</h1>
 <blockquote>
@@ -68,13 +70,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-security.html">claude-code-security</a> — OTel可視化を「削減の種」発見につなげる組織展開playbook</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
 <li><a href="../tools/headroom.html">headroom</a></li>
-<li><a href="../people/fladdict.html">fladdict</a></li>
-<li><a href="../models/gpt-5-5.html">gpt-5-5</a></li>
-<li><a href="../concepts/ai-coding-lang-benchmark.html">ai-coding-lang-benchmark</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061285149774663814" rel="noopener" target="_blank">https://x.com/i/web/status/2061285149774663814</a></li></ul></section></article>
+<li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
+<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
+<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061285149774663814" rel="noopener" target="_blank">https://x.com/i/web/status/2061285149774663814</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -90,5 +93,57 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># トークンマネジメント
+
+&gt; **TL;DR**: AIのトークン消費を人件費・マーケ費と並ぶ経営イシューとして可視化・最適化する考え方。「とにかく使う」トークンマキシングの次に来るフェーズ。
+
+トークンマキシング（最強モデルを浴びせ続け、利用量そのものを成功指標にする段階）を経た企業が直面するのは「そのトークンが何を生み、次にどこへ振り分けるか」という資源配分問題である。海外では **トークンオプティマイゼーション** と同義で語られる。出発点は極めて基本的で、「誰が・どのモデルに・どんなタスクで・何トークン使ったか」を可視化すること。人事評価やCAC管理に相当するマネジメント基盤が、AIコストにはまだ存在しないという空白を埋める。
+
+## 観察ログ（未検証）
+
+- 2026-06-04: トークンマキシングへの反動が2026年に顕在化。象徴例としてUberが社内にClaude Codeのリーダーボードを置き利用を競わせた結果、2026年のAIコーディング予算を**わずか4ヶ月で使い切った**（COO Andrew Macdonald のPodcast発言）とされる（@fukkyy 紹介）。
+- 2026-06-04: Microsoft の Satya Nadella が2026年3月Morgan Stanley TMTで「なぜこれほど多くのトークンを使っているのか。トークン効率としてはむしろ最悪のことをやっているケースが少なくない」と発言、社内のClaude Code直接ライセンスを大幅縮小したとの言及。
+- 2026-06-04: エンジニアが消費するトークンコストが「給与の数十パーセント〜半分相当」に達するケースも珍しくないとの主張。「給与＋AIトークン費」のセットで人件費を考える新コスト科目という見立て。
+- 2026-06-04: 現在のAIサブスクは基盤モデル各社にとって赤字提供が常態化しており、API従量課金で計算し直すとコストは桁違いに跳ね上がる、という「時限爆弾」論。定額→従量シフト・値上げで補助分が顧客に転嫁され始めた瞬間に跳ね上がるという予測（単一ソースの主張）。
+- 2026-06-04: 一方で「ある一定以上の大規模トークン利用は競争の必要条件」とも主張。LayerX社内で最適化したが利用トークン数はマキシング期と大きく変わらなかったとの自社事例。
+- 2026-06-04: コーディングエージェントは「最初にこの構図に到達した先行事例」にすぎず、営業・CS・経費精算・法務・マーケ・人事採用など自律実行型エージェント化が進むと全業務が同じトークン消費プロファイルに収束する、という見立て。
+
+&gt; 📝 出典は [[people/fladdict]] とは別のLayerX経営者（@fukkyy）の個人発信であり、自社プロダクト（AIトークンアドバイザー）のポジショントークを含む。数字は二次引用で未検証。
+
+## 最適化の論点：タスクとモデルのミスマッチ
+
+可視化の次に立ち上がる問いは「そのタスクは、本当にそのモデルを使うべきだったのか」。
+
+- 「今日の天気は？」のような問いに最上位推論モデル（[[models/claude-opus-4-8]] や [[models/gpt-5-5]] 等）を使うのは過剰。定型メール作成など枯れたタスクへの高価モデル利用が社内に大量に存在。
+- AIに不慣れな人ほど「とりあえず一番強いモデル」を選ぶ傾向があり、使いこなす人はタスクの性質でモデルを使い分ける。この差はコスト・品質両面で組織的に無視できない。
+- 入力は最終的にすべて「プロンプト」に変換されるため、プロンプトを見ればタスクとモデルのミスマッチを検出できる。最終的には人が都度選ぶのでなく、システムが自動でモデルを割り当てる方向へ。
+- エージェント時代は「いまOpusは贅沢かな」と都度考える余地がないため、最適モデル選択をシステム側に任せる以外の選択肢がなくなる。
+
+## 問い
+
+- 「給与＋AIトークン費」でエンジニアコストを捉える視点は、自分の作業（このwikiのingest含む）にも適用できるか。タスク別にモデルを使い分ける運用ルールを作れるか。
+- サブスク赤字提供→従量転嫁の「時限爆弾」は本当に起きるか、それともモデルの効率化が先行してコストが下がるか。[[concepts/ai-coding-lang-benchmark]] のようなコスト実測と突き合わせて検証したい。
+
+## 関連
+
+- [[business/ai-vertical-integration]] — AI企業の垂直統合・経営戦略
+- [[concepts/claude-usage-optimization]] — Claude使用制限回避・モデルスタッキング（個人レベルのトークン最適化）
+- [[concepts/ai-coding-lang-benchmark]] — 言語別のトークンコスト実測
+- [[concepts/agi-knowledge-moat]] — AGI時代の競争優位の変容
+- [[tools/headroom]] — 送信前のデータ圧縮でトークンを削減するライブラリ（入力側の最適化レバー）
+- [[concepts/claude-code-security]] — OTel可視化を「削減の種」発見につなげる組織展開playbook
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

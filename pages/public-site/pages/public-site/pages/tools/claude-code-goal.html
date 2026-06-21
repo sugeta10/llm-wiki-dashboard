@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-goal - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-goal</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-goal.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/tools/claude-code-goal · other · <span title=""></span></div>
+  <article><h1>Claude Code /goal コマンド</h1>
+<p><strong><code>/goal</code></strong> は <a href="../../../../../tools/claude-code.html">claude-code</a> のセッションスコープ自律ワークフロー機能。完了条件を設定すると、Claude が条件を満たすまで自動でターンを繰り返す。</p>
+<h2>概要</h2>
+<p><code>/goal</code> の後に満たしたい条件を記述する：</p>
+<pre><code class="language-text">/goal all tests in test/auth pass and the lint step is clean
+</code></pre>
+<p>設定後は即座にターンが開始され、各ターン終了後に小さく高速なモデル（デフォルト: Haiku）が条件を評価する。条件が満たされるとゴールは自動でクリアされる。</p>
+<h2>他の自律ワークフローとの比較</h2>
+<table>
+<thead>
+<tr>
+<th>アプローチ</th>
+<th>次のターン開始タイミング</th>
+<th>停止条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/goal</code></td>
+<td>前のターン終了後</td>
+<td>モデルが条件充足を確認</td>
+</tr>
+<tr>
+<td><code>/loop</code></td>
+<td>時間間隔経過後</td>
+<td>手動停止 or Claude判断</td>
+</tr>
+<tr>
+<td>Stop hook</td>
+<td>前のターン終了後</td>
+<td>独自スクリプト/プロンプト</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>/goal</code> と Stop hook は相互補完：<code>/goal</code> はセッション限定のショートカット、Stop hook は全セッション適用</li>
+<li><strong>自動モード</strong>（auto-mode）との組み合わせが強力：自動モードはツール呼び出しごとのプロンプトを削除、<code>/goal</code> はターンごとのプロンプトを削除</li>
+</ul>
+<h2>効果的な条件の書き方</h2>
+<p>条件は最大 4,000 文字。評価器は Claude の出力から判断するため、Claude が実証できる形で書く：</p>
+<ul>
+<li><strong>1つの測定可能な終了状態</strong>：テスト結果、ビルド終了コード、空のキュー</li>
+<li><strong>述べられたチェック</strong>：「<code>npm test</code> が 0 で終了する」「<code>git status</code> がクリーン」</li>
+<li><strong>重要な制約</strong>：変更してはならないものを明示</li>
+</ul>
+<p>ターン・時間の上限も設定可能：</p>
+<pre><code class="language-text">/goal all tests pass or stop after 20 turns
+</code></pre>
+<h2>主要コマンド</h2>
+<pre><code class="language-text">/goal &lt;条件&gt;          # ゴール設定（既存は上書き）
+/goal                 # ステータス確認（ターン数・トークン消費・理由）
+/goal clear           # 手動クリア（stop/off/reset/cancel も可）
+</code></pre>
+<h2>非対話的実行</h2>
+<p><code>-p</code> フラグと組み合わせて非対話的モードで動作する：</p>
+<pre><code class="language-bash">claude -p &quot;/goal CHANGELOG.md has an entry for every PR merged this week&quot;
+</code></pre>
+<p>ループが完了条件を満たすまで単一の呼び出しで継続実行される。Ctrl+C で中断可能。</p>
+<h2>評価の仕組み</h2>
+<p>セッションスコープの<strong>プロンプトベース Stop hook</strong> のラッパー。ターン終了ごとに条件と会話履歴を評価モデルへ送信：</p>
+<ul>
+<li><strong>Yes</strong> → ゴールクリア、トランスクリプトに記録</li>
+<li><strong>No</strong> → 理由を次ターンのガイダンスとして Claude へ渡す</li>
+</ul>
+<p>評価トークンはメインターンと比べて無視できる程度。</p>
+<h2>セッション復元</h2>
+<p><code>--resume</code> / <code>--continue</code> でセッション再開時、アクティブなゴールが復元される。ターン数・タイマー・トークン支出ベースラインはリセットされる。</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../tools/claude-code.html">claude-code</a> — Claude Code 本体</li>
+<li><a href="../../../../../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントの自律実行スタイル</li>
+<li><a href="../../../../../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — <code>/goal</code>（ハード完了要件）・<code>/loop</code> と組み合わせてworkflowを強化する</li>
+<li><a href="../../../../../concepts/loop-engineering.html">loop-engineering</a> — /goal がループエンジニアリング Stage 4 の具体実装として位置づけられる</li>
+<li><a href="../../../../../models/claude-fable-5.html">claude-fable-5</a> — <code>/goal</code> にゴールだけ与えて放置し、全6コース54レッスンの教材サイト「言語の庭」が自走で完成した実証事例（水島宏太）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../../../../../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../../../../../tools/claude-code.html">claude-code</a></li>
+<li><a href="../../../../../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../../../../../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Code /goal コマンド
+
+**`/goal`** は [[tools/claude-code]] のセッションスコープ自律ワークフロー機能。完了条件を設定すると、Claude が条件を満たすまで自動でターンを繰り返す。
+
+## 概要
+
+`/goal` の後に満たしたい条件を記述する：
+
+```text
+/goal all tests in test/auth pass and the lint step is clean
+```
+
+設定後は即座にターンが開始され、各ターン終了後に小さく高速なモデル（デフォルト: Haiku）が条件を評価する。条件が満たされるとゴールは自動でクリアされる。
+
+## 他の自律ワークフローとの比較
+
+| アプローチ | 次のターン開始タイミング | 停止条件 |
+|-----------|----------------------|---------|
+| `/goal` | 前のターン終了後 | モデルが条件充足を確認 |
+| `/loop` | 時間間隔経過後 | 手動停止 or Claude判断 |
+| Stop hook | 前のターン終了後 | 独自スクリプト/プロンプト |
+
+- `/goal` と Stop hook は相互補完：`/goal` はセッション限定のショートカット、Stop hook は全セッション適用
+- **自動モード**（auto-mode）との組み合わせが強力：自動モードはツール呼び出しごとのプロンプトを削除、`/goal` はターンごとのプロンプトを削除
+
+## 効果的な条件の書き方
+
+条件は最大 4,000 文字。評価器は Claude の出力から判断するため、Claude が実証できる形で書く：
+
+- **1つの測定可能な終了状態**：テスト結果、ビルド終了コード、空のキュー
+- **述べられたチェック**：「`npm test` が 0 で終了する」「`git status` がクリーン」
+- **重要な制約**：変更してはならないものを明示
+
+ターン・時間の上限も設定可能：
+
+```text
+/goal all tests pass or stop after 20 turns
+```
+
+## 主要コマンド
+
+```text
+/goal &lt;条件&gt;          # ゴール設定（既存は上書き）
+/goal                 # ステータス確認（ターン数・トークン消費・理由）
+/goal clear           # 手動クリア（stop/off/reset/cancel も可）
+```
+
+## 非対話的実行
+
+`-p` フラグと組み合わせて非対話的モードで動作する：
+
+```bash
+claude -p &quot;/goal CHANGELOG.md has an entry for every PR merged this week&quot;
+```
+
+ループが完了条件を満たすまで単一の呼び出しで継続実行される。Ctrl+C で中断可能。
+
+## 評価の仕組み
+
+セッションスコープの**プロンプトベース Stop hook** のラッパー。ターン終了ごとに条件と会話履歴を評価モデルへ送信：
+
+- **Yes** → ゴールクリア、トランスクリプトに記録
+- **No** → 理由を次ターンのガイダンスとして Claude へ渡す
+
+評価トークンはメインターンと比べて無視できる程度。
+
+## セッション復元
+
+`--resume` / `--continue` でセッション再開時、アクティブなゴールが復元される。ターン数・タイマー・トークン支出ベースラインはリセットされる。
+
+## 関連
+
+- [[tools/claude-code]] — Claude Code 本体
+- [[concepts/agentic-coding]] — AIエージェントの自律実行スタイル
+- [[concepts/claude-code-dynamic-workflows]] — `/goal`（ハード完了要件）・`/loop` と組み合わせてworkflowを強化する
+- [[concepts/loop-engineering]] — /goal がループエンジニアリング Stage 4 の具体実装として位置づけられる
+- [[models/claude-fable-5]] — `/goal` にゴールだけ与えて放置し、全6コース54レッスンの教材サイト「言語の庭」が自走で完成した実証事例（水島宏太）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

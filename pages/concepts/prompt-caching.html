@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>prompt-caching</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="prompt-caching.md">Markdownで表示</a></div>
   <div class="meta">concepts/prompt-caching · concepts · <span title="2026-05-20">1ヶ月前</span></div>
   <article><h1>プロンプトキャッシング（Prompt Caching）</h1>
 <p>Anthropic Claude APIが提供する<strong>プロンプトの前処理結果を再利用する機能</strong>。同一のプレフィックスを含むリクエストで、処理時間とコストを大幅に削減できる。</p>
@@ -145,8 +147,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -162,5 +165,112 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># プロンプトキャッシング（Prompt Caching）
+
+Anthropic Claude APIが提供する**プロンプトの前処理結果を再利用する機能**。同一のプレフィックスを含むリクエストで、処理時間とコストを大幅に削減できる。
+
+関連: [[concepts/prompt-cache-prewarm]] | [[concepts/prompt-engineering]] | [[companies/anthropic]]
+
+## キャッシュの有効化方法
+
+### 自動キャッシュ（推奨）
+
+リクエストのトップレベルに `cache_control` を1つ追加するだけ。マルチターン会話で最後のキャッシュ可能ブロックに自動でキャッシュブレークポイントを適用し、会話が伸びるにつれて自動で前に進む。
+
+```python
+response = client.messages.create(
+    model=&quot;claude-opus-4-7&quot;,
+    max_tokens=1024,
+    cache_control={&quot;type&quot;: &quot;ephemeral&quot;},
+    system=&quot;...&quot;,
+    messages=[...]
+)
+```
+
+### 明示的キャッシュブレークポイント
+
+個別のコンテンツブロックに `cache_control` を直接配置する方法。変更頻度が異なる複数セクションをキャッシュしたい場合や、精密な制御が必要な場合に使う。最大4箇所まで設定可能。
+
+キャッシュ参照の順序: `tools` → `system` → `messages`
+
+## 仕組み
+
+1. リクエスト送信時、指定されたキャッシュブレークポイントまでのプレフィックスがキャッシュに存在するかチェック
+2. キャッシュヒット → 前処理をスキップして応答生成
+3. キャッシュミス → フルプロンプトを処理し、キャッシュに書き込んでから応答生成
+
+デフォルトTTL: **5分**（リクエストのたびに無料で更新される）。1時間TTLも別料金で利用可能。
+
+## 価格（Claudeモデル共通の倍率）
+
+| 種別 | 倍率（ベース入力トークン比） |
+|------|--------------------------|
+| 5分キャッシュ書き込み | 1.25倍 |
+| 1時間キャッシュ書き込み | 2倍 |
+| キャッシュ読み込み | **0.1倍** |
+| 通常入力 | 1.0倍 |
+
+## ルックバックの仕組み（明示的ブレークポイント）
+
+- キャッシュ書き込みはブレークポイントの位置のみ
+- キャッシュ読み込みはブレークポイントから最大**20ブロック**さかのぼって検索
+- **よくある誤り**: タイムスタンプや毎回変わる内容のブロックにブレークポイントを置くとヒットしない。静的プレフィックスの末尾に置くのが正しい
+
+## キャッシュが無効化されるトリガー
+
+| 変更内容 | 影響範囲 |
+|---------|---------|
+| ツール定義の変更 | tools + system + messages 全無効 |
+| web search / citations ON/OFF | system + messages 無効 |
+| tool_choice の変更 | messages のみ無効 |
+| 画像の追加・削除 | messages のみ無効 |
+
+## キャッシュ対象・非対象
+
+**キャッシュ可能**: tools定義、system、テキスト/画像/ドキュメント/tool use/tool results
+
+**キャッシュ不可**: thinking ブロック（直接指定不可。ただし前のターンとして渡すと間接的にキャッシュされる）、サブコンテンツブロック（citations等）、空テキストブロック
+
+## パフォーマンスの追跡
+
+レスポンスの `usage` フィールドで確認:
+- `cache_read_input_tokens`: キャッシュから読み込んだトークン数
+- `cache_creation_input_tokens`: 新たにキャッシュに書き込んだトークン数
+- `input_tokens`: 最後のブレークポイント以降のトークン数（これだけでは全体ではない）
+
+総入力トークン = `cache_read` + `cache_creation` + `input_tokens`
+
+## ベストプラクティス
+
+- マルチターン会話 → **自動キャッシュから始める**
+- 変更頻度の異なる複数セクション → 明示的ブレークポイントを使い分ける
+- 静的コンテンツ（システムプロンプト・ツール定義・大量コンテキスト）をプロンプトの先頭に配置
+- 会話が20ブロック以上伸びる見込みなら2つ目のブレークポイントを事前に設定しておく
+- 1時間キャッシュは「5分以上間隔が空くが1時間以内に再利用する」用途に最適
+
+## キャッシュ分離
+
+2026-02-05以降、Claude APIはワークスペース単位でキャッシュ分離（従来は組織単位）。Bedrock/Vertex AIは引き続き組織単位。
+
+## 関連
+
+- [[concepts/prompt-cache-prewarm]] — キャッシュを事前ウォームアップして初回レイテンシを削減するテクニック
+- [[concepts/prompt-engineering]] — プロンプト設計全般
+- [[companies/anthropic]] — Claude API提供元
+- [[tools/claude-code]] — Claude Code内でもキャッシュ戦略が関連
+- [[concepts/attention]] — キャッシュ対象となる Key/Value はアテンション機構が計算するベクトル
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

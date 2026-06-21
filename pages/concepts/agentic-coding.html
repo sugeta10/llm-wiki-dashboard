@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agentic-coding</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agentic-coding.md">Markdownで表示</a></div>
   <div class="meta">concepts/agentic-coding · concepts · <span title="2026-05-09">1ヶ月前</span></div>
   <article><h1>Agentic Coding</h1>
 <p>コードを書くAIエージェントが自律的にタスクを遂行する開発スタイル。<a href="../concepts/vibe-coding.html">vibe-coding</a> の発展形で、人間の介在なしにコードの生成・テスト・デプロイまでを行う。言語別の生成コスト・速度比較については <a href="../concepts/ai-coding-lang-benchmark.html">ai-coding-lang-benchmark</a> を参照。</p>
@@ -74,16 +76,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a>（AIがAI開発を加速し後継機を建造する流れ・Claudeが80%のコードを書く内部データ）</li>
 <li><a href="../concepts/ai-dev-two-commands.html">ai-dev-two-commands</a>（ZOZOによる/dev-init+/dev-resumeの組織標準化・Claude Code×Codex批判的対話レビュー）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
-<li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a></li>
-<li><a href="../tools/browser-use.html">browser-use</a></li>
+<li><a href="../tools/claude-harness.html">claude-harness</a></li>
 <li><a href="../concepts/google-code-review.html">google-code-review</a></li>
-<li><a href="../concepts/ai-coding-lang-benchmark.html">ai-coding-lang-benchmark</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/1924256361569038452" rel="noopener" target="_blank">https://x.com/i/web/status/1924256361569038452</a></li>
+<li><a href="../tools/browser-use.html">browser-use</a></li>
+<li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/1924256361569038452" rel="noopener" target="_blank">https://x.com/i/web/status/1924256361569038452</a></li>
 <li><a href="https://x.com/i/web/status/2052088740496146652" rel="noopener" target="_blank">https://x.com/i/web/status/2052088740496146652</a></li>
 <li><a href="https://x.com/i/web/status/2052342511721721945" rel="noopener" target="_blank">https://x.com/i/web/status/2052342511721721945</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -99,5 +102,71 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Agentic Coding
+
+コードを書くAIエージェントが自律的にタスクを遂行する開発スタイル。[[concepts/vibe-coding]] の発展形で、人間の介在なしにコードの生成・テスト・デプロイまでを行う。言語別の生成コスト・速度比較については [[concepts/ai-coding-lang-benchmark]] を参照。
+
+## 特徴
+
+- AIエージェントが計画・実装・検証を自律的にループ
+- CI/CDパイプラインへの統合が可能
+- 複数エージェントが並列で作業する構成も普及中
+
+## 主要ツール
+
+- [[tools/claude-code]] : [[companies/anthropic]] 製のエージェントCLI
+- [[tools/cursor]] / Cursor SDK: エージェントをCI/CDや製品に組み込み可能
+- [[tools/browser-use]] : WebブラウザをAIが操作するエージェントライブラリ
+
+## 技術選定への影響
+
+Agentic Coding の普及は技術選定の基準を変えつつある。AIエージェントが扱いやすい技術（ドキュメントが豊富・コード例が多い）が優位になる傾向がある。
+
+## 長時間実行エージェントのハーネス設計
+
+Anthropic 公式リポジトリ「cwc-long-running-agents」が提示する3つのプリミティブ：
+
+1. **Default-FAIL contract**: エージェントは「成功を証明できなければ失敗」として動作する。曖昧な完了を防ぐ
+2. **Fresh-context evaluator**: 各ループ反復ごとに新しいコンテキストで評価する。前の試行バイアスを排除
+3. **Agent-maintained handoff**: エージェント自身が次のエージェントへの引き継ぎ情報を生成する
+
+関連実装: [[tools/claude-harness]]
+
+## 自己改善ループ（Codex 活用例）
+
+「Codex に自律的な自己改善ループをさせる」プロンプトパターン：
+
+&gt; 「その出力に100%の自信がありますか？もしそうでなければ、全ての抜け漏れ（要改善点）をチェックして、新しい出力に100%の自信を持てるようになるまで改善のループを続けてください」
+
+このパターンは [[concepts/self-refining-skills]] のスキルレベルの実装と組み合わせることで特に効果的。
+
+## 関連
+
+- [[concepts/vibe-coding]]
+- [[concepts/self-refining-skills]]
+- [[concepts/12-factor-agents]]
+- [[tools/claude-code]]
+- [[tools/claude-harness]]
+- [[tools/claude-managed-agents]]（Managed Agents：Dreaming・Outcomes・マルチエージェント協調）
+- [[concepts/developer-ai-collaboration]]（開発者×AIの役割分担哲学）
+- [[tools/cursor]]
+- [[companies/anthropic]]
+- [[concepts/google-code-review]]（Google公開のコードレビュー指針・AIエージェントへの指示仕様としても活用可）
+- [[concepts/ai-engineer-roadmap]]（2026年AIエンジニアが学ぶ・作る・スキップすべきことの整理）
+- [[concepts/recursive-self-improvement]]（AIがAI開発を加速し後継機を建造する流れ・Claudeが80%のコードを書く内部データ）
+- [[concepts/ai-dev-two-commands]]（ZOZOによる/dev-init+/dev-resumeの組織標準化・Claude Code×Codex批判的対話レビュー）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

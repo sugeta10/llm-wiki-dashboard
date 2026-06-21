@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>hensu-kyokushouka</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="hensu-kyokushouka.md">Markdownで表示</a></div>
   <div class="meta">business/hensu-kyokushouka · business · <span title="2026-06-16">5日前</span></div>
   <article><h1>変数の極小化（一人高収益ビジネス設計）</h1>
 <p>「得意分野への過剰な特化」と「変数の極小化」——この2軸が、マネジメント能力を持たない個人が高収益を実現するための設計思想だ。多くの変数（人員・在庫・設備など）を同時に操ることが難しい場合、手元から切り離せる変数を徹底的に削ぎ落とすことで、完全にコントロール可能な自分一人で最大の果実を得るシステムが立ち上がる。</p>
@@ -50,8 +52,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../business/ai-income-retirement-strategy.html">ai-income-retirement-strategy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2065268715294466548" rel="noopener" target="_blank">https://x.com/i/web/status/2065268715294466548</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -67,5 +70,40 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># 変数の極小化（一人高収益ビジネス設計）
+
+「得意分野への過剰な特化」と「変数の極小化」——この2軸が、マネジメント能力を持たない個人が高収益を実現するための設計思想だ。多くの変数（人員・在庫・設備など）を同時に操ることが難しい場合、手元から切り離せる変数を徹底的に削ぎ落とすことで、完全にコントロール可能な自分一人で最大の果実を得るシステムが立ち上がる。
+
+例として挙げられるのがサービス業における「ファブレス化」。製造業のファブレス（工場を持たない）と同様に、外部化・切り離しによってリスクと管理負荷を手元から排除する。結果として「マネジメント不要・リスク極小・高粗利」という構造が実現する。
+
+俳句の17音という制限が余白と想像力を生むように、ビジネスの制約そのものが創造力と独自解を強化する——この逆説が設計の核心にある。
+
+## 観察ログ（未検証）
+
+- 2026-06-12: @shinkaron（規格外）の主張。長年マネジメント経験ゼロを自認し、それを制約と捉えず「逆転の一打」の起点とした個人体験（単一ソース）
+- 2026-06-12: 「得意分野への過剰特化」と「変数の極小化」の2軸は、汎用的な方法論として提示されているが、著者本人の特性に最適化された実践の一例（一般化の検証なし）
+
+## 問い
+
+- サービス業以外でファブレス化に相当する「変数切り離し」手法は何か（情報販売・SaaS・コンサルなど）
+- 「変数の極小化」と「スケールアップ」はどこかで矛盾するか。スケール不可能な高収益構造の限界はどこか
+
+## 関連
+
+- [[concepts/output-first-learning]] — 同作者（@shinkaron）の学習・発信戦略と設計哲学が共鳴
+- [[business/ai-income-retirement-strategy]] — 一人・自動収益化でのFIを目指す文脈との接続
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

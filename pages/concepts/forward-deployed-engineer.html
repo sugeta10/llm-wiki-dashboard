@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>forward-deployed-engineer</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="forward-deployed-engineer.md">Markdownで表示</a></div>
   <div class="meta">concepts/forward-deployed-engineer · concepts · <span title="2026-06-08">1週間前</span></div>
   <article><h1>FDE（Forward Deployed Engineer）</h1>
 <blockquote>
@@ -66,17 +68,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a> — 競争優位が「文脈の深さ」へ移る</li>
 <li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a> — 「整理から決断へ」の能力転換がFDE像に収斂するという論考</li>
 <li><a href="../business/google-calendar-ai-database.html">google-calendar-ai-database</a> — FDEが顧客組織に入ってまず行う業務データ構造化の具体例（GoogleカレンダーDB化）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/palantir-ontology.html">palantir-ontology</a></li>
+<li><a href="../business/google-calendar-ai-database.html">google-calendar-ai-database</a></li>
+<li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a></li>
 <li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li>
-<li><a href="../concepts/palantir-ontology.html">palantir-ontology</a></li>
-<li><a href="../companies/openai.html">openai</a></li>
-<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061477558693384395" rel="noopener" target="_blank">https://x.com/i/web/status/2061477558693384395</a></li>
+<li><a href="../companies/openai.html">openai</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061477558693384395" rel="noopener" target="_blank">https://x.com/i/web/status/2061477558693384395</a></li>
 <li><a href="https://x.com/i/web/status/2061460782844694831" rel="noopener" target="_blank">https://x.com/i/web/status/2061460782844694831</a></li>
 <li><a href="https://note.com/yfujihara/n/n792f30cf7997" rel="noopener" target="_blank">https://note.com/yfujihara/n/n792f30cf7997</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -92,5 +95,61 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># FDE（Forward Deployed Engineer）
+
+&gt; **TL;DR**: 顧客組織の中に物理的に常駐し、その企業の業務を理解してAIソリューションを作り込むエンジニア。エージェント時代に「バズる新職種」として再注目されている。
+
+顧客の現場（工場ライン・金融機関・軍事拠点など）に張り付いて業務を理解し、その企業固有のニーズに合わせてソリューション——特にエージェンティックワークフローの構築・チューニング——をカスタマイズする役割。汎用プロダクトを渡すだけでは埋まらない「企業ごとに違う業務世界」を、現場で組み上げるのが核心。Palantir が [[concepts/palantir-ontology]] の中間層（顧客の世界モデル）を組み上げる役割として確立し、AI導入の文脈で各社に広がった。
+
+## 観察ログ（未検証）
+
+- 2026-06-04: 「AI Forward Deployed Engineer」がシリコンバレーの新しいバズワード的職種になっている、と Andrew Ng（@AndrewYNg）が言及。顧客組織に組み込まれ、クライアント固有のagenticワークフローを構築・チューニングするエンジニアと定義（ポストは途中で途切れ、媒体は画像1枚のみ）。
+- 2026-06-04: Palantirにおいては、オントロジー（顧客の業務世界モデル）を設計・構築する中核を担うのがFDE。オンボーディング・データ統合・アプリ開発・顧客折衝まで多岐にわたる（@zakiryo1533 解説）。プロダクト（オントロジー）と組織（FDE）が互いの前提という両輪構造。
+- 2026-06-05: FDEは「働き方」ではなく「収益モデルそのもの」だ、と藤原義昭（@yfujihara, BXアドバイザー）が論考（連載第2回）。AI企業がFDEに投下した額として OpenAI Deployment Company $4B（約6,000億円）、Anthropic×Blackstone合弁 $1.5B（約2,300億円）、合計 $5.5B超を挙げる。Anthropicの売上80%超がビジネス顧客、というデータも提示（いずれも単一ソースの数字）。
+- 2026-06-05: 同論考によるAI企業FDEとPalantir FDEの対比（著者の整理）——プロダクト出発点：AI企業は既存モデルを当てはめる／Palantirはゼロからコーディング。役割：AI企業は導入支援＋トークン消費拡大／Palantirは個別解決＋抽象化＋プロダクト還元。ルーツ：AI企業はエンタープライズ営業の延長／Palantirは軍特殊部隊「デルタ」になぞらえた命名。競争優位：AI企業はモデル性能／PalantirはFDEが集積したプラットフォーム。
+- 2026-06-05: Palantirの値付けは「ケースバイケース」（成果＋人的リソース＋システムリソースの3要素複合評価）で、シートベース課金を意図的に採らない。著者はこれを「事業成果を共同で作る関係」と表現。NRR 145%・トップ顧客年間$55M超・従業員1人あたり売上$1.5Mを根拠に挙げる（単一ソースの数字）。納得される理由として Land &amp; Expand／意思決定者がCFOでなく事業責任者／ROIで割り切れる／代替不能 の4点を整理。
+- 2026-06-05: 著者は「日本企業こそFDEが最も構造的に効く市場」と主張する一方、「相対的コスト比較文化のまま輸入すれば最初の関門で止まる（外資はROI判断文化が前提）」と両面を指摘。検証は連載第3回（予告）に持ち越し。
+
+## なぜ今FDEか
+
+- AIエージェントを本番業務に乗せるには、データ・知識だけでなく「この会社には何が存在し、誰が何を担当し、何が起きると次に何が起きるか」という業務文脈が必要。それを現場で写し取る人間が要る。
+- モデルの賢さがコモディティ化するほど、競争優位は「顧客の世界をどれだけ深く知っているか」に移り、その深さを作るのがFDE。
+- ビッグテックの垂直統合（[[business/ai-vertical-integration]]）の実行部隊でもある。[[companies/openai]] は DeployCo（FDE常駐・$40億超投資・Tomoro買収で約150名のFDE獲得）を設立。
+
+## FDEの収益モデルとしての側面
+
+FDEは単なる職種ではなく、エンタープライズAI時代の収益モデルの中核装置でもある。共通戦略は「モデル＋実行責任」をパッケージで売り、自社プロダクトを顧客業務の「心臓部（止めると事業が止まる領域）」に埋め込むこと。これにより「使い続けるほど価値が増え、抜けることが経営判断として非現実的になる」構造的ロックインが生まれる。OpenAI Deployment Company設立時の「モデルを売る会社から、成果を売る会社に変わる」という言葉がこの転換を象徴する。
+
+労働集約型のコンサル／SIerとの決定的な差は「抽象化」。Palantir型FDEは現場の個別課題を解くだけでなく、それを汎用化してプラットフォーム機能に還元する（「100の現場を回るとプロダクトが100倍進化する」設計）。一方AI企業型FDEは導入支援とトークン消費拡大が主眼で、現場知見を自社モデルにフィードバックする。出自が違うため「どちらのFDEと組むか」で得られる戦闘力の源泉が変わる——これが [[business/ai-vertical-integration]] の垂直統合とも連動する。
+
+課金面では、シートベース（モノを買う関係＝ベンダー）から、成果・人的リソース・システムリソースを複合評価する価値ベース（事業成果を共同で作る関係＝パートナー）へと移行する。この値付けが成立するのはROI判断文化が前提のときであり、コスト比較文化の市場にそのまま持ち込むと初期段階で止まる。
+
+## 問い
+
+- FDEの仕事は本当にスケールするのか、それとも一人ひとりが現場に張り付くコスト構造ゆえに買収・コンサル前提のままか。
+- 価値ベース課金（成果報酬＋工数＋計算資源）は、ROI判断文化が薄いとされる日本市場で本当に成立するか。「日本こそFDEが効く」という主張は検証可能か。
+- 個人（受託・SI側）がFDE的ポジションに立つには何が必要か。[[business/ai-vertical-integration]] の「システム全体の責任に近づく」と同じ方向か。
+
+## 関連
+
+- [[concepts/palantir-ontology]] — FDEが現場で組み上げる中間層
+- [[companies/openai]] — DeployCoがFDEを企業内常駐派遣
+- [[business/ai-vertical-integration]] — FDEによる垂直統合と受託業界への影響
+- [[concepts/agi-knowledge-moat]] — 競争優位が「文脈の深さ」へ移る
+- [[concepts/ai-requirements-definition]] — 「整理から決断へ」の能力転換がFDE像に収斂するという論考
+- [[business/google-calendar-ai-database]] — FDEが顧客組織に入ってまず行う業務データ構造化の具体例（GoogleカレンダーDB化）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>2026-W23</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="2026-W23.md">Markdownで表示</a></div>
   <div class="meta">weekly/2026-W23 · weekly · <span title="2026-06-05">2週間前</span></div>
   <article><h1>Weekly Insights: 2026-W23（2026-06-01〜06-07）</h1>
 <h2>今週の中心テーマ</h2>
@@ -65,15 +67,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-council.html">llm-council</a> — 中間記法とは別軸だが今週のもう一つの伏流。AI出力を鵜呑みにせず匿名相互レビューという <em>構造</em> で同意バイアスを潰す。「記法で入力を整える」の出力版＝「構造で出力を検証する」として対になる</li>
 <li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a> — そのモデル基盤。高精度・低再現／自己進捗の正直な報告という性質は、中間記法で渡した意図を素直に実行させる前提になる</li>
 <li><a href="../tools/autoreview-skill.html">autoreview-skill</a> — 「自動レビュー出力は信用できない」前提で実コード検証を必須にする実装。出力側の構造的検証の具体例</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-council.html">llm-council</a></li>
-<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-<li><a href="../tools/hyperframes.html">hyperframes</a></li>
-<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
-<li><a href="../concepts/claude-skills.html">claude-skills</a></li></ul></section></article>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../tools/understand-anything.html">understand-anything</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../concepts/llm-council.html">llm-council</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -89,5 +92,68 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Weekly Insights: 2026-W23（2026-06-01〜06-07）
+
+## 今週の中心テーマ
+
+**今週の隠れた主役は「中間記法」——AIにGUIやバイナリを直接触らせず、LLMが大量に学習したテキスト/Web表現を界面に挟むと、精度とトークン効率が同時に上がる。勝負どころは「どこで働かせるか」ではなく「どの記法で渡すか」に移った。**
+
+先週（W22）が「AIエージェントが&quot;働く場所&quot;になった」という *場所* の話だったのに対し、今週は同じ素材を *界面＝AIに渡す記法の設計* という別の次元で切る。
+
+## なぜそう見えるか（根拠ページ）
+
+- [[concepts/intermediate-notation-pattern]] — 今週の通奏低音。AIにGUIを直接生成させずDSL（中間記法）を操作させ、GUIはそのレンダラに徹する。出力トークンが減り再生成のブレも消える、という原理そのもの
+- [[tools/hyperframes]] — その実例。動画編集のXML/バイナリ（人間の視覚操作前提でLLMには外国語）を捨て、HTML+`data-*`属性という「LLMの母語」に状態を載せ替えてMP4を決定論生成する。ページ自身が「MNPの実例」と明言している
+- [[concepts/claude-skills]] — 記法を *持続させる* 版。職務定義をMarkdownで書き自動ロードさせ、毎回の文脈再構築をなくす。「中間表現をテキストで固定し再利用する」という同じ動きを時間軸でやっている
+- [[tools/understand-anything]] — 逆向きの中間表現。コードベースを事前に *ナレッジグラフ* という中間構造へ変換して俯瞰させる。grepライブ探索（[[concepts/claude-code-large-codebase]]）との対比が「どの中間表現を選ぶか」の問いを際立たせる
+
+## 既存wikiとの接続
+
+- [[concepts/self-refining-skills]] — wiki地図で被参照16の主要ハブ。中間記法（特に[[concepts/claude-skills]]）は「一度書いて使いながら育てる」資産であり、このハブの具体的な実装手段として接続する
+- [[concepts/spec-driven-development]] — 被参照14のハブ。MNPの「記法で意図を固定し、実装＝レンダリングをAIに委ねる」構図は、specでwhatを固定しhowを委ねる発想の界面設計版として地続き
+- [[concepts/prompt-engineering]] — 被参照26のハブ。今週の含意は「プロンプトを磨くより、AIに渡す記法そのものを設計し直すほうが効く局面がある」——プロンプト最適化の一段上のレイヤーとして接続する
+
+## sugeta-san への問い
+
+**あなたの LLM Wiki 自体が、すでに中間記法パターンの実装になっていないか？**
+
+→ `[[links]]` という軽量テキスト記法でAIと人間が同じ知識を読み書きし、dashboard がそのレンダラに徹している——これはまさに [[concepts/intermediate-notation-pattern]] の4要素（DSL／パーサー／シリアライザー／レンダラ）と同型。次の一手は新しいツールを足すことより、この「記法↔レンダラ」の双方向性を意識的に強くする（例: 機械可読なfrontmatterを増やし、生成側がそれを当てにできるようにする）方向が効きそう。
+
+## 今週の小アクション（5分）
+
+自分のwikiで「中間記法→レンダラ」が効いている実例を1つ確認する: 任意の1ページの被リンク数を dashboard で見て、`[[links]]`（記法）が被参照ランキング（レンダリング結果）に正しく反映されているかを目視する。ズレていれば、それが記法側で直すべき箇所。
+
+## いますぐAIと一緒に（コピペ）
+
+以下をそのまま Claude / Claude Code に貼って、今週のテーマを自分のwikiに引き寄せる:
+
+```
+私のLLM Wiki（Obsidian vault）について相談したい。今週の中心テーマは「中間記法パターン（AIにGUIを直接触らせず、LLMの母語＝テキスト記法を界面に挟む）」。
+
+1. このwiki自体を「中間記法パターンの実装」として捉えたとき、DSL/パーサー/シリアライザー/レンダラの4要素は今それぞれ何が担っているか整理して。
+2. frontmatter を「もっと機械可読な中間記法」にして生成側（dashboard/gen_*.py）が当てにできるようにするなら、追加すべきフィールドを3つ、理由つきで提案して。
+3. 提案のうち最も低コストで効果が高い1つだけを、今日試せる最小ステップに落として。
+
+参照: wiki/concepts/intermediate-notation-pattern.md, wiki/concepts/self-refining-skills.md
+```
+
+## さらに読むべきページ
+
+- [[concepts/llm-council]] — 中間記法とは別軸だが今週のもう一つの伏流。AI出力を鵜呑みにせず匿名相互レビューという *構造* で同意バイアスを潰す。「記法で入力を整える」の出力版＝「構造で出力を検証する」として対になる
+- [[models/claude-opus-4-8]] — そのモデル基盤。高精度・低再現／自己進捗の正直な報告という性質は、中間記法で渡した意図を素直に実行させる前提になる
+- [[tools/autoreview-skill]] — 「自動レビュー出力は信用できない」前提で実コード検証を必須にする実装。出力側の構造的検証の具体例
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

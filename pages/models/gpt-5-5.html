@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>gpt-5-5</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="gpt-5-5.md">Markdownで表示</a></div>
   <div class="meta">models/gpt-5-5 · models · <span title="2026-05-09">1ヶ月前</span></div>
   <article><h1>GPT-5.5</h1>
 <p>OpenAIの大規模言語モデル（2026年）。アウトカム重視のプロンプト設計が推奨されており、過剰な手順指定よりも「良い結果の定義」を渡す方が効果的。</p>
@@ -65,17 +67,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-<li><a href="../tools/openai-codex.html">openai-codex</a></li>
+<li>openai-codex</li>
 <li><a href="../tools/codex-review-skill.html">codex-review-skill</a> — GPT-5.5のアウトカム重視指針に合わせ、手順テンプレートを削りレビュールールを強くした自作レビュースキル</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/codex-review-skill.html">codex-review-skill</a></li>
-<li><a href="../tools/openai-codex.html">openai-codex</a></li>
-<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../tools/codex-review-skill.html">codex-review-skill</a></li>
 <li><a href="../tools/openai-prompt-optimizer.html">openai-prompt-optimizer</a></li>
-<li><a href="../concepts/token-management.html">token-management</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://developers.openai.com/api/docs/guides/prompt-guidance" rel="noopener" target="_blank">https://developers.openai.com/api/docs/guides/prompt-guidance</a></li></ul></section></article>
+<li><a href="../public-site/pages/tools/codex-review-skill.html">codex-review-skill</a></li>
+<li><a href="../public-site/pages/tools/openai-prompt-optimizer.html">openai-prompt-optimizer</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://developers.openai.com/api/docs/guides/prompt-guidance" rel="noopener" target="_blank">https://developers.openai.com/api/docs/guides/prompt-guidance</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -91,5 +94,73 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># GPT-5.5
+
+OpenAIの大規模言語モデル（2026年）。アウトカム重視のプロンプト設計が推奨されており、過剰な手順指定よりも「良い結果の定義」を渡す方が効果的。
+
+## プロンプト設計のパラダイムシフト
+
+旧来モデルとの最大の違い：
+
+- **旧**: 手順を細かく指定（「まずAを確認し、次にBと比較し、次にすべての例外を検討し…」）
+- **新**: 目的・成功条件・制約を渡す（「問題を解決せよ。成功条件はX、制約はY、利用可能情報はZ」）
+
+旧プロンプトをそのまま使い回すと「指定過剰」でモデルの探索空間を狭め、機械的な回答を招く。GPT-5.5に移行する際は旧プロンプトの手順指定を整理することが推奨。
+
+## 推奨プロンプトパターン
+
+### アウトカムファースト ＋ 停止条件
+
+目的と成功条件を定義し、停止条件を明示することでループ効率が上がる：
+
+```
+顧客の問題をエンドツーエンドで解決せよ。
+成功条件:
+- 利用可能なポリシーとアカウントデータから適格性判断が完了
+- 許可されたアクションはすべて回答前に実行済み
+- 最終回答にcompleted_actions / customer_message / blockersが含まれる
+```
+
+### 検索バジェット（Retrieval Budget）
+
+RAGシステムでの検索回数を明示的に制御する停止ルール：
+
+&gt; 「最小限の証拠で正確に答え、正確に引用し、停止する」
+
+追加検索が許可されるのは「回答に必要な事実が欠けている場合のみ」。文言改善・例示追加のための再検索は不要。
+
+### ペルソナとコラボレーションスタイルの分離
+
+- **Personality**: トーン・親しみやすさ・直接性（ブランドボイスの定義）
+- **Collaboration style**: いつ質問するか、前提を置くタイミング、積極度（タスク挙動の定義）
+
+2つは別のインストラクションブロックで短く定義する。
+
+## Codexによる自動移行
+
+```
+$openai-docs migrate this project to gpt-5.5
+```
+
+Codexがこのガイドに基づき旧プロンプトをGPT-5.5向けに自動移行。OpenAI skills repositoryから他エージェントでも利用可能。
+
+## 関連
+
+- [[concepts/prompt-engineering]]
+- [[tools/openai-codex]]
+- [[tools/codex-review-skill]] — GPT-5.5のアウトカム重視指針に合わせ、手順テンプレートを削りレビュールールを強くした自作レビュースキル
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

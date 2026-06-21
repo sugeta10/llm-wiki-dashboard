@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>google-agent-skills</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="google-agent-skills.md">Markdownで表示</a></div>
   <div class="meta">tools/google-agent-skills · tools · <span title="2026-05-16">1ヶ月前</span></div>
   <article><h1>Google Agent Skills</h1>
 <p>Googleが公開するAIコーディングエージェント向けの<strong>Agent Skills</strong>集（GitHub: google/skills）。<a href="../tools/claude-code.html">claude-code</a>・OpenAI Codex CLIなど<a href="https://agentskills.io">agentskills.io</a>仕様に準拠したエージェントに対して、Google Cloud製品のドキュメントとベストプラクティスをスキルとして提供する。</p>
@@ -109,8 +111,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../business/skill-library-strategy.html">skill-library-strategy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/google/skills" rel="noopener" target="_blank">https://github.com/google/skills</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -126,5 +129,53 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Google Agent Skills
+
+Googleが公開するAIコーディングエージェント向けの**Agent Skills**集（GitHub: google/skills）。[[tools/claude-code]]・OpenAI Codex CLIなど[agentskills.io](https://agentskills.io)仕様に準拠したエージェントに対して、Google Cloud製品のドキュメントとベストプラクティスをスキルとして提供する。
+
+## インストール
+
+```bash
+npx skills add google/skills
+```
+
+インストール時に必要なスキルのみ選択して追加できる。
+
+## 利用可能なスキル（2026-05時点）
+
+| スキル | 内容 |
+|-------|------|
+| Gemini API in Agent Platform | Gemini API統合・エージェントプラットフォーム |
+| AlloyDB Basics | AlloyDB（PostgreSQL互換マネージドDB）の基礎 |
+| BigQuery Basics | 大規模データ分析サービス |
+| Cloud Run Basics | サーバーレスコンテナ実行環境 |
+| Cloud SQL Basics | マネージドRDBMS |
+| Firebase Basics | モバイル/Webアプリバックエンド |
+| GKE Basics | Kubernetes Engine |
+| Recipe: GCP Onboarding | Google Cloudのオンボーディング手順 |
+| Recipe: GCP Auth | GCP認証設定 |
+| Recipe: Network Observability | ネットワーク可観測性設定 |
+| WAF: Security | Well-Architected Framework セキュリティ設計 |
+| WAF: Reliability | Well-Architected Framework 信頼性設計 |
+| WAF: Cost Optimization | Well-Architected Framework コスト最適化 |
+
+## 関連
+
+- [[tools/obsidian-skills]] — kepano製Obsidian向けAgent Skills（同じagentskills.io仕様・参考実装）
+- [[tools/claude-code]] — Claude Code（Agent Skillsの主要インストール先）
+- [[concepts/claude-code-google-cloud]] — これらGCPスキルをE2E開発デモで活用するパターン
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

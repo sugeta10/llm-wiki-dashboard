@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>book-to-skill</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="book-to-skill.md">Markdownで表示</a></div>
   <div class="meta">tools/book-to-skill · tools · <span title="2026-06-03">2週間前</span></div>
   <article><h1>book-to-skill</h1>
 <blockquote>
@@ -130,8 +132,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="https://x.com/i/web/status/2061102910264811937" rel="noopener" target="_blank">https://x.com/i/web/status/2061102910264811937</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -147,5 +150,80 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># book-to-skill
+
+&gt; **TL;DR**: 技術書・ドキュメントを `/book-to-skill &lt;path&gt;` 一発で [[concepts/claude-skills|Claude Code スキル]] に変換し、「一度読んで忘れた本」を必要な時にオンデマンド参照できるようにするOSSツール。
+
+本一冊をそのままコンテキストに載せるとトークンが膨れ、必要のない章まで常時抱え込むことになる。book-to-skill はこれを、コアメンタルモデルと章インデックスだけを起点に置き、本文は質問が来た章だけを引き込むオンデマンドロード構成へ変換することで回避する。`/book-to-skill &lt;path&gt;` 一発で、この分割済みスキルセットが自動生成される。
+
+変換時には書籍を複数ファイルに分解し、トークン効率を最適化したスキル構成を生成する。`SKILL.md` がコアメンタルモデルと章インデックスを担い、本文の各章は `chapters/ch*.md` に分割される。この章ファイルは**オンデマンドロード**方式で、そのトピックを質問するまでトークンを消費しない。これにより本全体を常時コンテキストに載せることなく、必要な章だけを引き込める。
+
+| ファイル | 役割 | トークン目安 |
+|--------|------|------------|
+| `SKILL.md` | コアメンタルモデル＋章インデックス | 〜4,000 |
+| `chapters/ch*.md` | 章ごとのファイル（オンデマンドロード） | 〜1,000/章 |
+| `glossary.md` | 全キーワード・章参照付きアルファベット順 | 〜1,500 |
+| `patterns.md` | 全テクニック・アルゴリズム・設計パターン | 〜2,000 |
+| `cheatsheet.md` | 意思決定表・クイックリファレンス | 〜1,000 |
+
+入力フォーマットは幅広く、PDF・EPUB・DOCX・TXT・Markdown・reStructuredText・AsciiDoc・HTML・RTF・MOBI/AZW/AZW3 に対応する。
+
+## 使い方
+
+```
+/book-to-skill &lt;path-to-document&gt; [skill-name-slug]
+
+# 例
+/book-to-skill ~/Downloads/designing-data-intensive-applications.pdf
+/book-to-skill ~/books/clean-code.epub clean-code
+```
+
+インストール後はスキルとして呼び出す:
+
+```
+/designing-data-intensive-apps                  # コアメンタルモデルをロード
+/designing-data-intensive-apps replication      # トピック検索
+/designing-data-intensive-apps ch05             # 第5章を詳読
+```
+
+## PDF抽出ツールの選択基準
+
+入力PDFの中身によって抽出ツールを使い分ける。散文中心で数式やコードが少ない書籍なら軽量・高速な `pdftotext`（poppler）で十分だが、コード・表・数式を含む技術書では Markdown の表やコードブロックを保持できる `docling`（〜1.5秒/ページ）が適する。
+
+| 書籍種別 | 推奨ツール | 理由 |
+|--------|----------|------|
+| 文章中心（散文・数式少） | `pdftotext`（poppler） | 高速・軽量 |
+| **技術書（コード・表・数式含む）** | **`docling`** | Markdown表・コードブロック保持、〜1.5秒/ページ |
+
+## 観察ログ（未検証）
+
+- 2026-05-22: @tom_doerr が「技術書をClaude Codeスキルに変換する」ツールとして紹介。
+- 2026-05-31: @so_ainsight が「読書家必見」として再紹介。この時点で GitHub 2,700スター超え。「PDF/EPUBを放り込むだけで章構成・主要概念・パターンを抽出」と要約。
+
+## 検証済み事実
+
+- 2026-05-24: GitHub（virgiliojr94/book-to-skill）に公開。MIT License。
+
+## 問い
+
+- 数百ページの技術書を実際に変換し、章インデックス＋オンデマンドロードで本全体を読むより安くトピック検索できるか自分で計測する。
+- [[concepts/self-refining-skills]] と組み合わせ、変換後のスキルを使用ログから自動改善できるか試す。
+
+## 関連
+
+関連: [[tools/claude-code]] · [[concepts/claude-skills]] · [[concepts/self-refining-skills]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

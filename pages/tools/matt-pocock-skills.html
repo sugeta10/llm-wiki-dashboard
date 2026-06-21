@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>matt-pocock-skills</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="matt-pocock-skills.md">Markdownで表示</a></div>
   <div class="meta">tools/matt-pocock-skills · tools · <span title="2026-05-28">3週間前</span></div>
   <article><p>Matt Pocock（Total TypeScript作者・~60,000人ニュースレター読者）が公開するClaude Code・Codex等対応のエンジニアリングスキルコレクション。「<strong>Vibe Codingではなく実際のエンジニアリング</strong>」を標榜し、小規模・適応可能・コンポーザブルな設計が特徴。GSD/BMAD/Spec-Kitのようなプロセス全体を掌握するフレームワークと異なり、ユーザーのコントロールを奪わない。</p>
 <p><code>npx skills@latest add mattpocock/skills</code> で初期インストール、<code>/setup-matt-pocock-skills</code> で各リポジトリ設定（イシュートラッカー・ラベル・ドキュメント先）を構成する。</p>
@@ -120,13 +122,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/grill-me.html">grill-me</a></li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/compound-engineering.html">compound-engineering</a></li>
-<li><a href="../tools/shaping-skills.html">shaping-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059319662597611914" rel="noopener" target="_blank">https://x.com/i/web/status/2059319662597611914</a></li>
+<li><a href="../tools/shaping-skills.html">shaping-skills</a></li>
+<li><a href="../tools/compound-engineering.html">compound-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059319662597611914" rel="noopener" target="_blank">https://x.com/i/web/status/2059319662597611914</a></li>
 <li><a href="https://github.com/mattpocock/skills" rel="noopener" target="_blank">https://github.com/mattpocock/skills</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -142,5 +145,61 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain">Matt Pocock（Total TypeScript作者・~60,000人ニュースレター読者）が公開するClaude Code・Codex等対応のエンジニアリングスキルコレクション。「**Vibe Codingではなく実際のエンジニアリング**」を標榜し、小規模・適応可能・コンポーザブルな設計が特徴。GSD/BMAD/Spec-Kitのようなプロセス全体を掌握するフレームワークと異なり、ユーザーのコントロールを奪わない。
+
+`npx skills@latest add mattpocock/skills` で初期インストール、`/setup-matt-pocock-skills` で各リポジトリ設定（イシュートラッカー・ラベル・ドキュメント先）を構成する。
+
+## スキル一覧
+
+### Engineering（日常的コード作業）
+
+| スキル | 目的 |
+|--------|------|
+| `/grill-with-docs` | 要件深掘り対話 + CONTEXT.md（共有語彙）+ ADR（アーキテクチャ決定記録）の更新 |
+| `/tdd` | Red-Green-Refactorループ。失敗テスト先行でフィードバックループを担保 |
+| `/diagnose` | 難バグ・性能劣化の規律ある診断ループ（再現→最小化→仮説→計装→修正→回帰テスト） |
+| `/triage` | ステートマシン形式のイシュートリアージ |
+| `/to-prd` | 会話コンテキストからPRDを生成しGitHubイシューに投稿 |
+| `/to-issues` | 計画・仕様・PRDを垂直スライス形式のGitHubイシューに分解 |
+| `/zoom-out` | コードの広いコンテキストや高レベル視点を要求 |
+| `/improve-codebase-architecture` | Ball of Mud救済。CONTEXT.mdとADRを参照しDeepening機会を特定 |
+| `/prototype` | 状態/ビジネスロジック問題にはターミナルアプリ、UI設計には複数バリエーション |
+
+### Productivity（コード以外の汎用ワークフロー）
+
+| スキル | 目的 |
+|--------|------|
+| `/grill-me` | あらゆる計画・設計の徹底的要件掘り下げ対話（→[[tools/grill-me]]） |
+| `/caveman` | Ultra圧縮コミュニケーションモード。フィラーを削除してトークン約75%削減 |
+| `/handoff` | 会話を引き継ぎドキュメントに圧縮して別エージェントへバトン |
+| `/write-a-skill` | 適切な構造・プログレッシブ開示・バンドルリソースを持つスキルを新規作成 |
+
+## 設計哲学
+
+Pragmatic ProgrammerやDomain-Driven Designの古典的知見をAIエージェント時代に移植：
+- **整合（Alignment）**: `/grill-with-docs`でエージェントとユーザーの共通語彙を構築
+- **フィードバックループ**: `/tdd`でテストが赤→緑の変化でエージェントに一貫したシグナルを提供
+- **設計への投資**: エージェントは開発速度を上げると同時にソフトウェアエントロピーも加速させる。設計スキルで相殺
+
+## 関連
+
+- [[tools/grill-me]] — このコレクションの最人気スキル（詳細ページ）
+- [[tools/claude-code]] — 主要実行プラットフォーム
+- [[tools/compound-engineering]] — 同様の計画先行思想を持つプラグイン
+- [[tools/shaping-skills]] — Shape Up由来の補完的計画スキル群
+- [[concepts/spec-driven-development]] — 仕様先行開発との接続
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

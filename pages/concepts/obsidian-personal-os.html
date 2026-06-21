@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>obsidian-personal-os</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="obsidian-personal-os.md">Markdownで表示</a></div>
   <div class="meta">concepts/obsidian-personal-os · concepts · <span title="2026-05-22">1ヶ月前</span></div>
   <article><h1>Obsidian パーソナルOS設計</h1>
 <p>ObsidianをAI自動化による「崩壊しないパーソナルオペレーティングシステム」として設計するアーキテクチャパターン（@cyrilXBT 提唱）。<strong>Storage（Obsidian）→ Intelligence（Claude Code + MCP）→ Automation（N8N）</strong>の3層構造で、生産性システムが壊れる3要因（手動メンテ負担・複雑化・知性ゼロ）を解決する。</p>
@@ -45,16 +47,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-21: <strong>崩壊防止メカニズム3点</strong> — ① 00-CAPTUREキャプチャ安全網（忙しい日も「とりあえず全部CAPTURE」でOK、processor夜間処理）② ARCHIVE削除禁止ルール（完了物は削除せず07-ARCHIVEへ移動、日常操作では参照しない）③ CLAUDE.md単一真実（5分更新で全ワークフローに反映）</li>
 <li>2026-05-21: <strong>HTMLをiframeでObsidian上に表示</strong> — Markdown形式の制約を超えて、HTMLをiframeとして埋め込むことでリッチな視覚表現をvault内で確認できる手法（@shotovim）。「HTMLは書きづらいがiframeで埋め込むと閲覧体験が良い」という評価。CLAUDE.md等のルールで <code>wiki/outputs/YYYY-MM-DD-{topic}.html</code> に保存したファイルをObsidianで確認する際にも応用可能</li>
 <li>2026-05-21: <strong>1ウィークエンド構築ロードマップ</strong> — 土曜AM(2h): 8フォルダ作成+CLAUDE.md自分情報で記入+最初のプロジェクトoverview作成 → 土曜PM(1h): Claude Desktop + Filesystem MCP設定+Morning Briefing手動実行で動作確認 → 土曜夜(30m): QUEUEに実タスク投入してアウトプット体感 → 日曜AM(2h): N8N構築+Morning Briefing cron化 → 日曜PM(2h): 残り4ワークフロー追加</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code-obsidian-project.html">claude-code-obsidian-project</a></li>
-<li><a href="../concepts/modular-research-pipeline.html">modular-research-pipeline</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li>
+<li><a href="../tools/claude-code-obsidian-project.html">claude-code-obsidian-project</a></li>
 <li><a href="../tools/obsidian-skills.html">obsidian-skills</a></li>
-<li><a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a></li>
-<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2056924424838815824" rel="noopener" target="_blank">https://x.com/i/web/status/2056924424838815824</a></li>
+<li><a href="../concepts/modular-research-pipeline.html">modular-research-pipeline</a></li>
+<li><a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2056924424838815824" rel="noopener" target="_blank">https://x.com/i/web/status/2056924424838815824</a></li>
 <li><a href="https://x.com/i/web/status/2057469209308004764" rel="noopener" target="_blank">https://x.com/i/web/status/2057469209308004764</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -70,5 +73,38 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Obsidian パーソナルOS設計
+
+ObsidianをAI自動化による「崩壊しないパーソナルオペレーティングシステム」として設計するアーキテクチャパターン（@cyrilXBT 提唱）。**Storage（Obsidian）→ Intelligence（Claude Code + MCP）→ Automation（N8N）**の3層構造で、生産性システムが壊れる3要因（手動メンテ負担・複雑化・知性ゼロ）を解決する。
+
+関連: [[tools/claude-code-obsidian-project]] / [[tools/obsidian-skills]] / [[concepts/llm-wiki]] / [[concepts/claude-code-work-folder]]（Claude Code単体・初心者向けに最小化した同思想） / [[concepts/modular-research-pipeline]]（Obsidianを記憶層に使う研究ワークフローの具体例） / [[concepts/obsidian-claude-second-brain]]（プラグイン/ワークフロー網羅型のlisticle視点）
+
+## 観察ログ（未検証）
+
+- 2026-05-21: **3層アーキテクチャ** — Layer 1: Storage（Obsidian本体・プレーンテキスト、人間/機械可読・永続）/ Layer 2: Intelligence（Claude Code + Filesystem MCP でvaultを読み・横断接続し・更新）/ Layer 3: Automation（N8N on $5サーバー、スケジューリング・API呼び出し・システム間データ転送）。「ツールを使う」から「システムが動く」への転換は3層すべてが揃うことで起きる
+- 2026-05-21: **8フォルダ固定構造** — `00-CAPTURE`（未処理の一次受け・判断不要）/ `01-ACTIVE`（projects/areas/daily）/ `02-RESOURCES`（参照ライブラリ）/ `03-SYSTEM`（CLAUDE.md・skills/・workflows/・logs/）/ `04-GENERATED`（Claude出力専用・手動編集禁止）/ `05-QUEUE`（Claudeへのタスク投入口）/ `06-CALENDAR`（時系列情報）/ `07-ARCHIVE`（完了・陳腐化、削除せずここへ）。フォルダ数は固定・相互排他・重複なし
+- 2026-05-21: **CLAUDE.md単一ソース原則** — Identity・Life Areas（Health/Finance/Relationships/Learning/Career）・Active Projects・Current Priorities・Standards・Operating Rules を1ファイルに集約。優先度変更時はCLAUDE.md 1ファイルだけ更新すれば以降の全ワークフローに伝播。毎週月曜にCurrent Prioritiesのみ5分更新が唯一の必須メンテ習慣
+- 2026-05-21: **5つの自動ワークフロー**（N8N cron）
+  - ① Morning Briefing（毎朝6時）: CLAUDE.md読んで「今日の最優先1件・当日イベント・オープンループ・プロジェクトパルス」を300語以内で生成 → `GENERATED/briefings/[DATE]-morning.md`
+  - ② Capture Processor（毎晩20時）: 当日の00-CAPTUREファイルをTASK/IDEA/REFERENCE/NOTE/EVENTに分類して自動配置・アーカイブ
+  - ③ Weekly Review Generator（毎週日曜19時）: 過去7日のデイリーノート+プロジェクト変更を分析しレビュー生成・CLAUDE.md Current Priorities自動更新
+  - ④ Queue Processor（2時間毎）: `05-QUEUE` のファイル名（動詞+トピック形式: `RESEARCH-xxx.md`、`DRAFT-yyy.md` 等）を解析してタスク実行・`GENERATED` に出力
+  - ⑤ Project Health Monitor（毎週月曜7時）: 全アクティブプロジェクトのSTATUS/EVIDENCE/NEXT ACTIONを評価。7日無活動はQUEUEに `REVIEW-[project].md` を自動生成
+- 2026-05-21: **崩壊防止メカニズム3点** — ① 00-CAPTUREキャプチャ安全網（忙しい日も「とりあえず全部CAPTURE」でOK、processor夜間処理）② ARCHIVE削除禁止ルール（完了物は削除せず07-ARCHIVEへ移動、日常操作では参照しない）③ CLAUDE.md単一真実（5分更新で全ワークフローに反映）
+- 2026-05-21: **HTMLをiframeでObsidian上に表示** — Markdown形式の制約を超えて、HTMLをiframeとして埋め込むことでリッチな視覚表現をvault内で確認できる手法（@shotovim）。「HTMLは書きづらいがiframeで埋め込むと閲覧体験が良い」という評価。CLAUDE.md等のルールで `wiki/outputs/YYYY-MM-DD-{topic}.html` に保存したファイルをObsidianで確認する際にも応用可能
+- 2026-05-21: **1ウィークエンド構築ロードマップ** — 土曜AM(2h): 8フォルダ作成+CLAUDE.md自分情報で記入+最初のプロジェクトoverview作成 → 土曜PM(1h): Claude Desktop + Filesystem MCP設定+Morning Briefing手動実行で動作確認 → 土曜夜(30m): QUEUEに実タスク投入してアウトプット体感 → 日曜AM(2h): N8N構築+Morning Briefing cron化 → 日曜PM(2h): 残り4ワークフロー追加
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

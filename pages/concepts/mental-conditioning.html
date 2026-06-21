@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>mental-conditioning</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="mental-conditioning.md">Markdownで表示</a></div>
   <div class="meta">concepts/mental-conditioning · concepts · <span title="2026-06-05">2週間前</span></div>
   <article><h1>メンタルコンディショニング（戦略的休息）</h1>
 <blockquote>
@@ -59,14 +61,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/performance-habits-40s.html">performance-habits-40s</a> — 「紙に書き出す」＝認知的アンローディングを8習慣の1つとして実装する自己管理論</li>
 <li><a href="../concepts/slack-time-at-work.html">slack-time-at-work</a> — 「何もしない」を個人の回復でなく働き方の稼働率設計（80%）として扱う隣接概念</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/slack-time-at-work.html">slack-time-at-work</a></li>
-<li><a href="../tools/taskmd-shelf.html">taskmd-shelf</a></li>
-<li><a href="../concepts/performance-habits-40s.html">performance-habits-40s</a></li>
 <li><a href="../concepts/coachability.html">coachability</a></li>
-<li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2058472868632019279" rel="noopener" target="_blank">https://x.com/i/web/status/2058472868632019279</a></li></ul></section></article>
+<li><a href="../concepts/performance-habits-40s.html">performance-habits-40s</a></li>
+<li><a href="../tools/taskmd-shelf.html">taskmd-shelf</a></li>
+<li><a href="../public-site/pages/tools/taskmd-shelf.html">taskmd-shelf</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2058472868632019279" rel="noopener" target="_blank">https://x.com/i/web/status/2058472868632019279</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -82,5 +85,51 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># メンタルコンディショニング（戦略的休息）
+
+&gt; **TL;DR**: 「何もしない休息」は脳のデフォルトモードネットワークを過活動させ不安を反芻させる罠であり、真の回復は脳を別の対象で埋め・役割を物理的に切り替え・不安を外部化することで不安の侵入する隙間を構造的に潰す設計だ、という考え方。
+
+意志力で「リラックスしよう」と念じるのではなく、環境・スケジュール・物理アイテムを使って脳を自動的に切り替えるのが共通原理。真面目な人ほど予定の空白で脳の**デフォルトモードネットワーク（DMN）**が過活動し、仕事の不安やネガティブ思考を無限に反芻してしまう。そこで「休む＝何もしない」を捨て、不安が入り込む余地を物理的に排除する3つの技術が知識労働者のセルフケアとして機能する。
+
+## 3つの技術
+
+- **予定を詰める（行動活性化療法＋決断疲れの回避）** — 休日もあえてスケジュールを分刻みで埋め、脳に別タスクを与え続けることで不安の反芻を遮断する。「何をするか」を都度決めない（決断疲れ回避）ことと、行動そのもので気分を上向ける（行動活性化）ことを兼ねる。
+- **香りで役割を切り替える（アンカリング）** — 場面ごとに香水を変え、特定の香りを「その役割のスイッチ」として脳に紐づける。嗅覚は五感で唯一、本能・感情を司る大脳辺縁系に直接届くため、意志ではなく物理的トリガーでオン/オフを切り替えられる。
+- **不安を書き出す（認知的アンローディング＝脳の外部化）** — 頭の中だけで不安を抱えず、ノートという外部の物理的な場所にすべて書き出す。ワーキングメモリを解放し、不確実なものを可視化してコントロール感を回復する。やるべきことを自分の管理下に置くことでプレッシャーから心を守る。
+
+## なぜ効くか
+
+3技術はいずれも「意志力に頼らず、脳の仕組みを逆手に取って自動化する」点で一貫している。不安は「空白」と「不確実性」から生まれるため、(1) 空白を別タスクで埋め、(2) 役割境界を物理トリガーで明確化し、(3) 不確実性を外部化して可視化する、という3方向から不安の発生源を断つ構造になっている。**認知的アンローディング**は頭の負荷を外部ストレージに退避する発想で、タスクを頭の外＝ファイルに出す [[tools/taskmd-shelf]] の「積極的な棚上げ」と同じ系譜にある。
+
+## 観察ログ（未検証）
+
+- 2026-05-24: 著者(@kaigoyametai1)は櫻井翔の行動（分刻みスケジュール／場面別の香水使い分け／手書きノートでの徹底準備）を3つの心理学技術として分解・帰属している。本人の発言・科学的効果測定に基づく一次検証ではなく、二次的な解釈である点に注意。
+- 2026-05-24: 「何もしない休息は脳を逆に疲労させる最悪の罠」という主張は強い断定だが、休息の質には個人差・タスク依存があり、受動的休息（睡眠・ぼんやり）が回復に有効な局面も知られる。万人・全状況に当てはまる主張としては未検証。
+
+## 問い
+
+- 「予定を詰める休息」は不安反芻型の人には効くが、慢性疲労・燃え尽き状態では逆に回復を妨げないか。自分はどちらのモードにいるかを見分ける基準は？
+- 認知的アンローディングを [[tools/taskmd-shelf]] や自分のwiki（外部脳）に落とし込むと、不安の外部化＋AIによる再構成まで一気通貫でできるのではないか
+- アンカリング（香り）のような物理トリガーを、在宅・デスクワークの役割切替（仕事↔プライベート）にどう実装するか
+
+## 関連
+
+- [[tools/taskmd-shelf]] — タスクを頭の外（Markdown）に出す「積極的棚上げ」＝認知的アンローディングの実装例
+- [[concepts/coachability]] — コーチャビリティを阻害する「恐れ」はメンタルコンディショニングで扱える感情と同一
+- [[concepts/performance-habits-40s]] — 「紙に書き出す」＝認知的アンローディングを8習慣の1つとして実装する自己管理論
+- [[concepts/slack-time-at-work]] — 「何もしない」を個人の回復でなく働き方の稼働率設計（80%）として扱う隣接概念
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

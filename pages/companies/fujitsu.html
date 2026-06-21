@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>fujitsu</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="fujitsu.md">Markdownで表示</a></div>
   <div class="meta">companies/fujitsu · companies · <span title="2026-05-10">1ヶ月前</span></div>
   <article><h1>富士通（Fujitsu）</h1>
 <p><strong>富士通</strong>（Fujitsu）は日本の大手ITサービス・製造企業。AIとデジタル技術を活用した社会課題解決を経営の中心に据えている。</p>
@@ -47,13 +49,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li>
-<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://www.fujitsu.com/downloads/JP/about/businesspolicy/tech/design/article/document/transformationbydesign-jp.pdf" rel="noopener" target="_blank">https://www.fujitsu.com/downloads/JP/about/businesspolicy/tech/design/article/document/transformationbydesign-jp.pdf</a></li></ul></section></article>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li>
+<li><a href="../public-site/pages/business/ai-vertical-integration.html">ai-vertical-integration</a></li>
+<li><a href="../public-site/pages/public-site/pages/business/ai-vertical-integration.html">ai-vertical-integration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://www.fujitsu.com/downloads/JP/about/businesspolicy/tech/design/article/document/transformationbydesign-jp.pdf" rel="noopener" target="_blank">https://www.fujitsu.com/downloads/JP/about/businesspolicy/tech/design/article/document/transformationbydesign-jp.pdf</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -69,5 +74,52 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># 富士通（Fujitsu）
+
+**富士通**（Fujitsu）は日本の大手ITサービス・製造企業。AIとデジタル技術を活用した社会課題解決を経営の中心に据えている。
+
+## AI活用方針
+
+### ソフトウェア開発の100倍生産性向上
+
+富士通のAI技術は複雑なシステム改修を**完全自動化**し、従来比**約100倍の生産性向上**を実現するとしている。この技術はシステム開発のあり方を根本から再定義し、AIエラの新たな開発モデルとして位置づけられている。
+
+### Trustworthy AI（信頼できるAI）
+
+富士通は「**Trustworthy AI**」を重要テーマとして掲げ、組織が初日からAIに対して責任ある行動をとることを訴える。AI導入における倫理・安全性・透明性を企業の最優先事項として位置づけている。
+
+## 主要ブランド・ソリューション
+
+### Uvance
+
+**Uvance**は富士通のビジネス変革ソリューションブランド。データ・AI・変革技術を活用して、ビジネス課題の解決と社会課題の解決の両立を目指す。
+
+**Uvance Wayfinders**はそのコンサルティングブランドで、実質的なインパクトの創出を主眼としている。
+
+### Sovereign Platform（ソブリンプラットフォーム）
+
+ネットワーキングからコンピューティング、ソフトウェアスタック全体にわたり顧客が**完全なコントロール**を持てる「Sovereign Platform」の実現を目標に掲げている。
+
+## AI時代の雇用・スキル観
+
+富士通は「AI時代において、雇用・収入の安定は機関や企業が受動的に守れるものではなくなる」との立場をとる。AI時代の根本的な能力は「**役割を継続的に再定義し、スキルをアップグレードし続ける能力**」であるとしている。
+
+## 関連
+
+- [[companies/anthropic]]
+- [[concepts/agentic-coding]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

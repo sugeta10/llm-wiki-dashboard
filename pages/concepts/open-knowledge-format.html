@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,19 +28,19 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>open-knowledge-format</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="open-knowledge-format.md">Markdownで表示</a></div>
   <div class="meta">concepts/open-knowledge-format · concepts · <span title="2026-06-18">3日前</span></div>
   <article><h1>Open Knowledge Format (OKF)</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Google CloudのSam McVeety/Amir Hormatiが提唱するMarkdown+YAMLベースの知識表現フォーマット。<a href="../concepts/llm-wiki.html">Karpathyの「LLM wiki」パターン</a>をベンダー中立の標準仕様に昇格させ、異なるチーム・エージェント・ツール間で知識を相互運用可能にする。</p>
 </blockquote>
 <p>知識管理の本質的な問題は「サービスの乱立」ではなく「フォーマットの不在」にある。チームごとにWiki・カタログ・コードコメントに散らばった知識を、任意のAIエージェントが読めるよう組み立て直すコストが毎回ゼロから発生している。OKFはこの問題をサービスでなく仕様で解く——SDKなしに誰でも作れ、integration なしに誰でも読め、gitの中で生き続けられる知識の形式を定義する。v0.1 は 2026-06-15 に公開された。</p>
-<pre><code class="language-mermaid">flowchart LR
+<pre class="mermaid">flowchart LR
   A[&quot;知識ソース\n(BigQuery/Wiki/コード)&quot;] --&gt; B[&quot;Enrichment Agent\n(Google ADK + Gemini)&quot;]
   B --&gt; C[&quot;OKFバンドル\n(markdown + YAML)&quot;]
   C --&gt; D[&quot;LLMコンテキスト注入&quot;]
   C --&gt; E[&quot;人間閲覧\n(Obsidian/MkDocs/GitHub)&quot;]
-  C --&gt; F[&quot;ナレッジビジュアライザー\n(viz.html)&quot;]
-</code></pre>
+  C --&gt; F[&quot;ナレッジビジュアライザー\n(viz.html)&quot;]</pre>
 <h2>仕様の核心</h2>
 <p>OKFバンドルはディレクトリ構造のmarkdownファイル群。1ファイル = 1「概念（concept）」で、ファイルパスがその概念のIDとなる。</p>
 <p><strong>フロントマター</strong>（クエリ・フィルタリング用の構造化フィールド）:
@@ -111,17 +112,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — ObsidianボルトはOKFの主要なコンシューマー候補</li>
 <li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — エージェントが共有知識層にアクセスする設計思想と連動</li>
 <li><a href="../companies/google.html">google</a> — OKFの発案・公開元</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
-<li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
-<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
-<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing?hl=en" rel="noopener" target="_blank">https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing?hl=en</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
+<li><a href="../companies/google.html">google</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing?hl=en" rel="noopener" target="_blank">https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing?hl=en</a></li>
 <li><a href="https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf" rel="noopener" target="_blank">https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf</a></li>
 <li><a href="https://dev.classmethod.jp/articles/open-knowledge-format-okf-v01-guide/" rel="noopener" target="_blank">https://dev.classmethod.jp/articles/open-knowledge-format-okf-v01-guide/</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -137,5 +139,92 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Open Knowledge Format (OKF)
+
+&gt; **TL;DR**: Google CloudのSam McVeety/Amir Hormatiが提唱するMarkdown+YAMLベースの知識表現フォーマット。[[concepts/llm-wiki|Karpathyの「LLM wiki」パターン]]をベンダー中立の標準仕様に昇格させ、異なるチーム・エージェント・ツール間で知識を相互運用可能にする。
+
+知識管理の本質的な問題は「サービスの乱立」ではなく「フォーマットの不在」にある。チームごとにWiki・カタログ・コードコメントに散らばった知識を、任意のAIエージェントが読めるよう組み立て直すコストが毎回ゼロから発生している。OKFはこの問題をサービスでなく仕様で解く——SDKなしに誰でも作れ、integration なしに誰でも読め、gitの中で生き続けられる知識の形式を定義する。v0.1 は 2026-06-15 に公開された。
+
+```mermaid
+flowchart LR
+  A[&quot;知識ソース\n(BigQuery/Wiki/コード)&quot;] --&gt; B[&quot;Enrichment Agent\n(Google ADK + Gemini)&quot;]
+  B --&gt; C[&quot;OKFバンドル\n(markdown + YAML)&quot;]
+  C --&gt; D[&quot;LLMコンテキスト注入&quot;]
+  C --&gt; E[&quot;人間閲覧\n(Obsidian/MkDocs/GitHub)&quot;]
+  C --&gt; F[&quot;ナレッジビジュアライザー\n(viz.html)&quot;]
+```
+
+## 仕様の核心
+
+OKFバンドルはディレクトリ構造のmarkdownファイル群。1ファイル = 1「概念（concept）」で、ファイルパスがその概念のIDとなる。
+
+**フロントマター**（クエリ・フィルタリング用の構造化フィールド）:
+- `type` — 概念の種別（table, dataset, metric, runbook 等）
+- `title` / `description` — 人間向けの要約
+- `resource` — 外部リソースへのリンク
+- `tags` / `timestamp`
+
+**markdownボディ**（LLMと人間が実際に読む部分）: スキーマ、サンプルクエリ、プロセ説明、他概念へのクロスリンク
+
+バンドルには自動生成された `index.md` が含まれ、エージェントや人間が階層を1レベルずつナビゲートできる。概念間のリンクはディレクトリ階層（木構造）を超えたグラフ構造を形成する。
+
+設計上の4つの「ただの〜」: **ただのmarkdown**（任意エディタで読める）、**ただのファイル**（tarballで配布可能）、**ただのYAMLフロントマター**（クエリ可能な最小フィールドのみ）。
+
+## [[concepts/llm-wiki|Karpathyパターン]]との関係
+
+[[people/andrej-karpathy]]が提唱した[[concepts/llm-wiki]]パターン——「LLMは退屈しないし、相互参照の更新を忘れず、一度に15ファイルを処理できる」——と同じ発想を、複数チーム・複数エージェント間で共有できる仕様に昇格させたもの。Obsidianボルト、AGENTS.md/CLAUDE.mdファミリー、エージェントが参照するindex.md/log.mdなど、すでに多くの実装が「マークダウン+フロントマター+クロスリンク」に収束しているが、フィールド名の合意がなかった。OKFはその最小公分母を固定する。
+
+## Enrichment Agent（リファレンス実装）
+
+Google Cloud Platformがリリースした公式のOKFプロデューサー実証（Google ADK + Gemini + BigQuery）:
+
+1. **BQパス**: BigQueryメタデータから1概念=1OKFドキュメントを自動生成
+2. **Webパス**: LLMがクローラーとして動き、seed URLから権威ある補足ドキュメントを選択して概念を豊かにする。`--web-max-pages` でクロール数をキャップ
+
+サンプルバンドルが3つ公開（GA4 eコマースデータセット・Stack Overflow・Bitcoin）。`visualize` サブコマンドでスタンドアローンの force-directed グラフHTML（`viz.html`）を生成できる。
+
+## 既存標準との関係（競合でなくスタック）
+
+OKFは既存の仕組みと競合せず「積み重なる（stack）」関係にある。OKFは「何を知っているか」をファイルで渡し、[[tools/claude-mcp]] は「今何ができるか」をAPIで呼ぶ。役割が違うため代替ではなく並べて使う。
+
+| 標準 | 役割 | OKFとの関係 |
+|---|---|---|
+| **OKF** | キュレートされた静的な知識をファイルで表現するフォーマット | 本体 |
+| **MCP** | LLMが外部ツールを動的に呼ぶプロトコル | OKF=静的知識、MCP=ライブなツールアクセスで補完 |
+| **llms.txt** | サイトに置く知識リソースへの「道しるべ」 | 補完 |
+| **AGENTS.md / CLAUDE.md** | リポジトリに置く慣習ファイル | OKFがこのアドホックな慣習を標準化（[[concepts/agents-md-canonical]]） |
+
+## 観察ログ（未検証）
+
+- 2026-06-15 (Sam McVeety &amp; Amir Hormati, Google Cloud): OKF v0.1として発表。「答えは別の知識サービスでなくフォーマット」と明言。Obsidian/Notion/Hugo/Jekyllなど既存ツールはMarkdown+YAMLフロントマターをすでに話せるため、追加UI不要でバンドルを閲覧・編集可能と説明
+- 2026-06-17 (せーの, classmethod / dev.classmethod.jp): 手書きの最小バンドル＋ビジュアライザで検証したハンズオン所見。リファレンス実装のビジュアライザ v0.1 は SPEC §5.1推奨の `/` 始まり絶対パスリンクを `viewer/generator.py` で明示的にスキップしており（`if &quot;://&quot; in target or target.startswith(&quot;/&quot;): continue`）、絶対パスで書くとedgeが0になる。相対パス（`./customers.md` 等）に直すと正常にグラフ化された。SPEC推奨と実装のあいだにv0.1段階のギャップがある（単一ソースの実測）
+- 2026-06-17 (せーの): 自身のObsidian Vault 812ファイルを検査したところ25.4%（206件）が意図せずOKF v0.1準拠（frontmatter＋非空type）だった。既存のtype値（memo 55・knowledge 25・meeting 19件など）がそのままOKFのtype値として機能。残り606件はtypeを足すだけで準拠可能、との単一ソースの測定
+
+## 問い
+
+- このObsidian vaultはOKF v0.1準拠か？フロントマターのフィールド名（type/resource/timestamp 等）が異なる点は互換性を壊すか
+- OKFが普及した場合、[[concepts/llm-wiki]]のような独自規約を持つチームはどこを妥協して合わせるか
+- Enrichment AgentのWebパスはクロールコストとしてどの程度のGeminiトークンを消費するか
+
+## 関連
+
+- [[concepts/llm-wiki]] — Karpathy提唱の元パターン。OKFはこれを標準仕様化したもの
+- [[people/andrej-karpathy]] — LLM wikiパターンの提唱者として直接引用されている
+- [[concepts/obsidian-personal-os]] — ObsidianボルトはOKFの主要なコンシューマー候補
+- [[concepts/agent-memory-layer]] — エージェントが共有知識層にアクセスする設計思想と連動
+- [[companies/google]] — OKFの発案・公開元
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
 </body>
 </html>

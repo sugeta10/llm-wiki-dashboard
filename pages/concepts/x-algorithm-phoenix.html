@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>x-algorithm-phoenix</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="x-algorithm-phoenix.md">Markdownで表示</a></div>
   <div class="meta">concepts/x-algorithm-phoenix · concepts · <span title="2026-05-17">1ヶ月前</span></div>
   <article><h1>X アルゴリズム Phoenix（2026年5月改変）</h1>
 <p>2026年5月15日、X（Twitter）のアルゴリズムが大規模に改変された。ソースコードは GitHub の公開リポジトリ <strong>xai-org/x-algorithm</strong> で確認できる。</p>
@@ -66,11 +68,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — X上でのAIプロンプト共有・マーケティング戦略にも関連</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/xurl.html">xurl</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
-<li><a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055462762873323677" rel="noopener" target="_blank">https://x.com/i/web/status/2055462762873323677</a></li></ul></section></article>
+<li><a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a></li>
+<li><a href="../public-site/pages/tools/xurl.html">xurl</a></li>
+<li><a href="../public-site/pages/business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2055462762873323677" rel="noopener" target="_blank">https://x.com/i/web/status/2055462762873323677</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -86,5 +91,42 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># X アルゴリズム Phoenix（2026年5月改変）
+
+2026年5月15日、X（Twitter）のアルゴリズムが大規模に改変された。ソースコードは GitHub の公開リポジトリ **xai-org/x-algorithm** で確認できる。
+
+## 変更の概要
+
+- **Grokベースの新システム「Phoenix」** が導入された
+- 従来の「いいね集め」や「量産投稿」によるバズは機能しなくなった
+- アルゴリズムの評価軸が根本的に変化している
+
+## 実務的含意
+
+| 旧戦略（非推奨） | 新戦略 |
+|----------------|--------|
+| いいね数の最大化 | エンゲージメント品質重視 |
+| 量産投稿 | 少数・高品質投稿 |
+| リアクション狙いの投稿 | ユーザーに価値をもたらす投稿 |
+
+アルゴリズムが公開リポジトリで読めるため、仕組みを直接確認してコンテンツ戦略に反映することが可能になった。
+
+## 関連
+
+- [[tools/xurl]] — X API v2 CLI（投稿・検索・インプレッション取得）
+- [[concepts/prompt-engineering]] — X上でのAIプロンプト共有・マーケティング戦略にも関連
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

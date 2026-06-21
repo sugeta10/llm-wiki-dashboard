@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>backoffice-ai-implementation</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="backoffice-ai-implementation.md">Markdownで表示</a></div>
   <div class="meta">business/backoffice-ai-implementation · business · <span title="2026-05-14">1ヶ月前</span></div>
   <article><h1>バックオフィスAI実装（グッドパッチ事例）</h1>
 <p>上場会社グッドパッチの管理部20名が1ヶ月で <a href="../tools/claude-code.html">claude-code</a> を含む30件のAIツールを実装した記録（2026年4月）。執行役員・坂口友紀氏による報告。</p>
@@ -136,14 +138,15 @@ Step 5: 効果測定・横展開
 <li><a href="../business/keidanren-hr-ai-2026.html">keidanren-hr-ai-2026</a></li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/keidanren-hr-ai-2026.html">keidanren-hr-ai-2026</a></li>
-<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
 <li><a href="../tools/claude-finance-agents.html">claude-finance-agents</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/19831112/n/n5be18a115b2b" rel="noopener" target="_blank">https://note.com/19831112/n/n5be18a115b2b</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -159,5 +162,103 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># バックオフィスAI実装（グッドパッチ事例）
+
+上場会社グッドパッチの管理部20名が1ヶ月で [[tools/claude-code]] を含む30件のAIツールを実装した記録（2026年4月）。執行役員・坂口友紀氏による報告。
+
+## 背景とハードル
+
+管理部（経営企画・経理財務・法務・総務・情報システム）でのAI活用は3つのハードルがあった：
+
+1. **規制の重さ** — 個人情報・金融商品取引法・内部統制
+2. **属人化の根深さ** — 前任者しか分からない業務の散在
+3. **ツールへの距離** — 日常業務がコード中心ではない
+
+## 主な成果（業務インパクト）
+
+### 定型業務の自動化
+
+| 業務 | Before | After | 削減率 |
+|------|--------|-------|-------|
+| インシデント影響調査（情シス） | 3〜4時間 | 10分 | 約95% |
+| 認証基盤アクセスログ確認 | 1〜1.5時間 | 10〜15分 | 約83% |
+| ヘルプデスク一次対応 | 30〜40分/件 | 5〜10分/件 | 約80% |
+| メール仕分け・対応（総務） | 30〜60分/日 | 確認のみ | 月10〜20h削減 |
+| 反社チェック照合（法務） | 手動シート検索 | ボタン1クリック | — |
+
+### 上場会社特有の業務
+
+- **IR決算説明資料（80p）品質チェック**: 8人時 → 0.5人時（約94%減）
+  - 前回資料との226件バーラベル機械照合 + Excelとの21項目クロスチェック
+- **英文決算短信ドラフト**: 6時間 → 1.5時間（約75%減）
+- **週次法務ニュース発信**: 3〜4時間/週 → 1.5時間/週（約60%減）
+
+### FP&amp;A・経営企画
+
+- 重要案件モニタリング: 3〜4時間/週・精度低 → 20〜30分/週・精度高
+- 中期戦略資料ドラフト: 1〜2週間 → 1日
+
+## 分業モデル
+
+全事例に共通する構造：
+
+&gt; **AI = 一次担当、人間 = 最終判断**
+
+IRチェック・反社チェック・法務ニュース・ヘルプデスクすべてに適用。「AIが要確認と判定した項目のみ人間が見る」設計。
+
+## 管理部AI化 6ステップロードマップ
+
+```
+Step 0: ガバナンス整備（AIガイドライン・申請フロー・監査対応）
+Step 1: 業務の可視化・棚卸し
+Step 2: AI適用可能性の評価
+Step 3: AI適用の仮説立て
+Step 4: 実装・運用  ← 2026年5月現在
+Step 5: 効果測定・横展開
+```
+
+4月はStep 0〜1を完了し、Step 3〜4への移行中。
+
+## ガバナンスの考え方
+
+- **AIガイドライン＋ホワイトリスト**: 何を入れて良いか・ダメかを明文化
+- **AI利用申請フロー**: 申請→ガイドライン照合→承認
+- 「完璧なガバナンスを先に置くのではなく、走りながら整える」実態
+
+## 5つの成功パターン
+
+1. **業務の再設計思考** — 今の仕事を早くするではなく、Claude前提で業務フロー自体を組み直す
+2. **業務の標準化・言語化が前提** — 属人化業務はAI化の前に整理が必要
+3. **AI=一次担当、人間=判断** — 全領域共通の分業構造
+4. **まず触るが突破口** — 「やる前のハードルより、触ってみた後の方が小さい」
+5. **AIは仕様を引き出すパートナー** — 丸投げ失敗が業務言語化スキルの訓練になる
+
+## 組織知化への移行課題
+
+個人の実装を組織資産に変える3つの取り組み：
+
+1. **Skill化** — 個人スクリプトを他部署で再利用できる構造に変換
+2. **ナレッジ集約** — Notion「Claude活用状況DB」で部門横断管理
+3. **失敗ナレッジ共有** — 先行者の失敗を後続者の成功率向上に
+
+## 関連
+
+- [[tools/claude-code]]
+- [[companies/anthropic]]
+- [[business/keidanren-hr-ai-2026]]
+- [[tools/claude-managed-agents]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

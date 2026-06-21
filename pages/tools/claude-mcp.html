@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-mcp</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-mcp.md">Markdownで表示</a></div>
   <div class="meta">tools/claude-mcp · tools · <span title="2026-06-19">2日前</span></div>
   <article><h1>Claude MCP（Model Context Protocol）</h1>
 <p><strong>MCP（Model Context Protocol）</strong> は <a href="../companies/anthropic.html">anthropic</a> が策定した、LLMと外部ツール・データソースを接続するためのオープンプロトコル。</p>
@@ -59,16 +61,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a>（MCP認可の限界と外部ポリシーレイヤリング）</li>
 <li><a href="../tools/openai-mcp-tunnel.html">openai-mcp-tunnel</a> — OpenAIのSecure MCP Tunnel（プライベートMCPサーバーをトンネル経由でOpenAI製品に接続）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
-<li><a href="../tools/openai-mcp-tunnel.html">openai-mcp-tunnel</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/1872590573934399550" rel="noopener" target="_blank">https://x.com/i/web/status/1872590573934399550</a></li>
+<li><a href="../tools/openai-mcp-tunnel.html">openai-mcp-tunnel</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/1872590573934399550" rel="noopener" target="_blank">https://x.com/i/web/status/1872590573934399550</a></li>
 <li><a href="https://x.com/i/web/status/2049456963042557994" rel="noopener" target="_blank">https://x.com/i/web/status/2049456963042557994</a></li>
 <li><a href="https://x.com/i/web/status/2067655887662272723" rel="noopener" target="_blank">https://x.com/i/web/status/2067655887662272723</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -84,5 +87,58 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Claude MCP（Model Context Protocol）
+
+**MCP（Model Context Protocol）** は [[companies/anthropic]] が策定した、LLMと外部ツール・データソースを接続するためのオープンプロトコル。
+
+## 主な用途
+
+- Claude に外部データベース・API・ファイルシステムへのアクセスを付与
+- Notion・GitHub・Slack などのサービスとの統合
+- カスタムツールの呼び出し
+
+## Notion連携ワークフロー例
+
+1. XのブックマークをダウンロードしCSV分析してリスト化
+2. Claude MCPでリスト化した情報をNotionのDBへ保存
+3. 蓄積した情報を元に簡易ブログ記事を生成
+
+→ 死蔵したブックマークを活きた情報として再活用できる
+
+## add-mcp（一括インストールツール）
+
+`add-mcp` は Claude Code・Codex などの AI エージェントに MCP サーバーを一括インストールするCLIツール。各エージェントの設定ファイルを自動検出・更新する。
+
+```bash
+npx add-mcp &lt;server-name&gt;
+# 例: npx add-mcp @modelcontextprotocol/server-filesystem
+```
+
+対応エージェント: Claude Code / Codex / Cursor / Windsurf 等
+
+## Enterprise-Managed Auth（組織管理認証）
+
+MCPの **Enterprise-Managed Auth 拡張**に対応した（[[companies/anthropic]] 公式 @ClaudeDevs 発表、2026-06-18）。管理者が組織全体のMCPコネクタを中央で認可でき、ユーザーは初回ログイン時に必要なツールとデータがすべて接続済みの状態で使い始められる。個々のユーザーが手動でコネクタを設定する必要がなくなり、組織展開時の接続漏れや設定のばらつきを防ぐ。これは [[concepts/ai-agent-governance]] が扱う「MCP認可をどこで・誰が制御するか」という論点に対し、Anthropic公式が組織アドミン主導の中央認可レイヤーを提供する動きにあたる。
+
+## 関連
+
+- [[companies/anthropic]]
+- [[tools/claude-code]]
+- [[concepts/agentic-coding]]
+- [[concepts/ai-agent-governance]]（MCP認可の限界と外部ポリシーレイヤリング）
+- [[tools/openai-mcp-tunnel]] — OpenAIのSecure MCP Tunnel（プライベートMCPサーバーをトンネル経由でOpenAI製品に接続）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

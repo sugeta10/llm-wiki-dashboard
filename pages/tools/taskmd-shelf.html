@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>taskmd-shelf</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="taskmd-shelf.md">Markdownで表示</a></div>
   <div class="meta">tools/taskmd-shelf · tools · <span title="2026-05-10">1ヶ月前</span></div>
   <article><h1>TaskMD Shelf</h1>
 <p><strong>1タスク = 1Markdownファイル</strong> で管理するタスク管理手法・仕様。Songmu（松木雅幸）がフリーランス転向を機に設計した。</p>
@@ -52,15 +54,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li><a href="../tools/wbs-skills.html">wbs-skills</a> — Excelベース・AI自然言語操作のWBS管理スキル群（タスク管理の別アプローチ）</li>
 <li><a href="../concepts/mental-conditioning.html">mental-conditioning</a> — タスクを頭の外に出す「棚上げ」は認知的アンローディング（脳の外部化）の実装にあたる</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/mental-conditioning.html">mental-conditioning</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/wbs-skills.html">wbs-skills</a></li>
+<li><a href="../concepts/mental-conditioning.html">mental-conditioning</a></li>
 <li><a href="../tools/obsidian-skills.html">obsidian-skills</a></li>
-<li><a href="../tools/wbs-skills.html">wbs-skills</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/performance-habits-40s.html">performance-habits-40s</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://songmu.jp/riji/entry/2025-06-22-taskmd-shelf.html" rel="noopener" target="_blank">https://songmu.jp/riji/entry/2025-06-22-taskmd-shelf.html</a></li></ul></section></article>
+<li><a href="../public-site/pages/tools/wbs-skills.html">wbs-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://songmu.jp/riji/entry/2025-06-22-taskmd-shelf.html" rel="noopener" target="_blank">https://songmu.jp/riji/entry/2025-06-22-taskmd-shelf.html</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -76,5 +79,50 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># TaskMD Shelf
+
+**1タスク = 1Markdownファイル** で管理するタスク管理手法・仕様。Songmu（松木雅幸）がフリーランス転向を機に設計した。
+
+## コア思想
+
+**積極的棚上げ**：今日やらないと決めたことは「棚上げ」し、必ず**見直し日**を設定する。これによって自然なWIP制限を実現する。強すぎる制約（週次レビュー必須のGTD等）は継続しにくいという反省から、怠惰でも続けられるシンプルさを優先。
+
+## 仕様
+
+- 各タスクをTaskMDと呼ぶ：最小限のセマンティックプロパティを持つMarkdownファイル
+- ステータスのみ必須。タスク名はファイル名で表現
+- Obsidian + Dataviewプラグインで進行中・棚上げ・完了のビューを構築
+- [[tools/obsidian-skills]] との親和性が高い
+
+## GTDとの違い
+
+GTDの哲学（全てを記録・定期レビュー）を継承しつつ、**週次レビュー不要**を実現。フィルタ・ビューで複数リストのメンテナンスを代替する。
+
+## AI連携
+
+[[tools/claude-code]] でTaskMD Shelf操作CLI・MCPを実装。将来的にはAIが次にやるべきタスクを提案したり、滞留タスクを検出する構想。
+
+## 参考実装
+
+- GitHub: https://github.com/Songmu/TaskMD-Shelf
+- プレーンテキスト指向（File over app哲学）
+
+## 関連
+
+- [[tools/wbs-skills]] — Excelベース・AI自然言語操作のWBS管理スキル群（タスク管理の別アプローチ）
+- [[concepts/mental-conditioning]] — タスクを頭の外に出す「棚上げ」は認知的アンローディング（脳の外部化）の実装にあたる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

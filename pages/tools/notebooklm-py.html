@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>notebooklm-py</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="notebooklm-py.md">Markdownで表示</a></div>
   <div class="meta">tools/notebooklm-py · tools · <span title="2026-05-09">1ヶ月前</span></div>
   <article><h1>notebooklm-py</h1>
 <p><a href="../tools/notebooklm.html">notebooklm</a> の非公式Pythonライブラリ。WebインターフェースのAPIに未公開機能を含む完全なプログラムアクセスを提供し、Claude Code・Codex・OpenClaw等のAIエージェントと統合可能。</p>
@@ -133,15 +135,16 @@ async with await NotebookLMClient.from_storage() as client:
 <li><a href="../concepts/modular-research-pipeline.html">modular-research-pipeline</a> — 本ライブラリを「分析エンジン」層として組み込む研究ワークフロー</li>
 <li><a href="../companies/google.html">google</a> — NotebookLM本体を含むGoogle OneのAIサブスクバンドル</li>
 <li><a href="../tools/papers-cli.html">papers-cli</a> — arXiv/J-STAGE/IRDBから論文PDFを集めるCLI。取得したPDFを本ライブラリでNotebookLMに流すパイプラインが組める</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/modular-research-pipeline.html">modular-research-pipeline</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/notebooklm.html">notebooklm</a></li>
+<li><a href="../tools/openclaw.html">openclaw</a></li>
 <li><a href="../tools/papers-cli.html">papers-cli</a></li>
-<li><a href="../tools/notebooklm.html">notebooklm</a></li>
 <li><a href="../companies/google.html">google</a></li>
-<li><a href="../tools/openclaw.html">openclaw</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/teng-lin/notebooklm-py" rel="noopener" target="_blank">https://github.com/teng-lin/notebooklm-py</a></li></ul></section></article>
+<li><a href="../concepts/modular-research-pipeline.html">modular-research-pipeline</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/teng-lin/notebooklm-py" rel="noopener" target="_blank">https://github.com/teng-lin/notebooklm-py</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -157,5 +160,94 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># notebooklm-py
+
+[[tools/notebooklm]] の非公式Pythonライブラリ。WebインターフェースのAPIに未公開機能を含む完全なプログラムアクセスを提供し、Claude Code・Codex・OpenClaw等のAIエージェントと統合可能。
+
+&gt; ⚠️ **非公式ライブラリ**: Googleの非公開内部APIを使用しており、予告なく変更される可能性がある。プロトタイプ・研究・個人プロジェクト向け推奨。
+
+## インストール
+
+```bash
+pip install notebooklm-py
+# ブラウザログイン対応版
+pip install &quot;notebooklm-py[browser]&quot;
+playwright install chromium
+```
+
+## 主な機能
+
+### 研究自動化
+- URLs・PDFs・YouTube・Google Drive からソースを一括インポート
+- Web/Drive リサーチクエリ（fast/deep モード）+ 自動インポート
+- 再現可能なリサーチパイプライン構築
+
+### コンテンツ生成
+
+| 生成タイプ | オプション | ダウンロード形式 |
+|-----------|-----------|----------------|
+| Audio Overview（ポッドキャスト） | 4形式・3長さ・50+言語 | MP3/MP4 |
+| Video Overview | 3形式・9スタイル + Cinematic | MP4 |
+| Slide Deck | 詳細/プレゼン形式・スライド個別改訂 | PDF/PPTX |
+| Infographic | 3方向・3詳細度 | PNG |
+| Quiz・Flashcards | 量・難易度設定 | JSON/Markdown/HTML |
+| Report | briefing/study guide/blog/カスタム | Markdown |
+| Mind Map | 階層可視化 | JSON |
+| Data Table | 自然言語でカスタム構造 | CSV |
+
+### Web UIでは非公開の機能
+- **バッチダウンロード**: 同タイプの全アーティファクトを一括取得
+- **Quiz/Flashcard エクスポート**: JSON・Markdown・HTML（Web UIはインタラクティブ表示のみ）
+- **Mind Map JSONエクスポート**: 可視化ツール向け階層JSON
+- **Data Table CSV**: スプレッドシートとして保存
+- **Slide Deck as PPTX**: PowerPoint形式（Web UIはPDFのみ）
+- **スライド個別改訂**: 自然言語プロンプトで特定スライドを修正
+- **プログラム共有**: UIを介さず権限管理
+
+## AIエージェント統合
+
+```bash
+# Claude Codeスキルとしてインストール
+notebooklm skill install
+# ~/.claude/skills/notebooklm に展開される
+
+# npx経由でインストール（Superpowers skills ecosystem対応）
+npx skills add teng-lin/notebooklm-py
+```
+
+Claude Code・Codex・OpenClaw（[[tools/openclaw]]）等のLLMエージェントから自然言語でNotebookLMを操作できる。
+
+## Python API（非同期）
+
+```python
+from notebooklm import NotebookLMClient
+async with await NotebookLMClient.from_storage() as client:
+    nb = await client.notebooks.create(&quot;Research&quot;)
+    await client.sources.add_url(nb.id, &quot;https://example.com&quot;, wait=True)
+    result = await client.chat.ask(nb.id, &quot;Summarize this&quot;)
+    await client.artifacts.generate_audio(nb.id)
+```
+
+## 関連
+
+- [[tools/claude-code]]
+- [[tools/openclaw]]
+- [[concepts/llm-wiki]]
+- [[concepts/modular-research-pipeline]] — 本ライブラリを「分析エンジン」層として組み込む研究ワークフロー
+- [[companies/google]] — NotebookLM本体を含むGoogle OneのAIサブスクバンドル
+- [[tools/papers-cli]] — arXiv/J-STAGE/IRDBから論文PDFを集めるCLI。取得したPDFを本ライブラリでNotebookLMに流すパイプラインが組める
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

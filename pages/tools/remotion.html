@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>remotion</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="remotion.md">Markdownで表示</a></div>
   <div class="meta">tools/remotion · tools · <span title="2026-06-06">2週間前</span></div>
   <article><h1>Remotion</h1>
 <p><strong>Remotion</strong> は React コンポーネントとして動画を定義し、プログラムで MP4 等にレンダリングする動画生成フレームワーク。タイムライン・トランジション・テロップ・データ連動を JSX とコードで記述するため、テンプレートへのデータ流し込みやバッチ生成といった<strong>動画制作の自動化・量産</strong>に向く。</p>
@@ -56,14 +58,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a></li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hyperframes.html">hyperframes</a></li>
 <li><a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a></li>
+<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
-<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2015025201034277199" rel="noopener" target="_blank">https://x.com/i/web/status/2015025201034277199</a></li>
+<li><a href="../public-site/pages/tools/hyperframes.html">hyperframes</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2015025201034277199" rel="noopener" target="_blank">https://x.com/i/web/status/2015025201034277199</a></li>
 <li><a href="https://x.com/i/web/status/2061952065476424019" rel="noopener" target="_blank">https://x.com/i/web/status/2061952065476424019</a></li>
 <li><a href="https://www.remotion.dev/" rel="noopener" target="_blank">https://www.remotion.dev/</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -79,5 +83,48 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Remotion
+
+**Remotion** は React コンポーネントとして動画を定義し、プログラムで MP4 等にレンダリングする動画生成フレームワーク。タイムライン・トランジション・テロップ・データ連動を JSX とコードで記述するため、テンプレートへのデータ流し込みやバッチ生成といった**動画制作の自動化・量産**に向く。
+
+GUI の動画編集ソフトと違い、構成がコード（＝中間記法）で表現されるため、AIエージェントに「このドキュメントを読んで動画を構築して」と指示すると、エージェントがコンポーネントを書き起こして動画を立ち上げられる。手作業で面倒なテロップ挿入や同一フォーマットの大量生産を、人間がゼロから組まずに回せるのが要点。GUIでなくDSL/コードを操作させると精度が上がる[[concepts/intermediate-notation-pattern]]の動画版といえる。
+
+同種の「コード/マークアップから決定論的に動画を生成」する系統に [[tools/hyperframes]]（HeyGen製OSS、HTML+data-*属性でMP4生成）がある。[[business/youtube-shorts-jidouka-marketing]] のような動画量産マーケのレンダリング層として、Remotion・HeyGen・Video-use 等の Skills が使われる。
+
+## 検証済み事実
+
+- 2026-06-05（公式サイト）: 標準ワークフローは3段階——(1) **Remotion Studio** で再利用可能なコンポジション（テンプレート）を設計、(2) text/images/colors/timing/layouts を **props** として外部公開しアプリ・ジェネレータ・自動化から制御（parameterized rendering）、(3) **Player** で対話プレビュー後、ローカル/サーバ/サーバーレス/ブラウザ内でレンダリング
+- ライセンスは用途別の2系統。**Remotion for Automators**（動画生成ツール・prompt-to-video アプリ等を作る用途）は $0.01/render・月額最低 $100（10,000 renders で $100）。**Remotion for Creators**（自分用に少量制作）は $25/月・シート。4人以上の企業向けに Company License あり
+- 公式が「coding agents を使って apps を作りバルクレンダリングする」用途を前面に打ち出しており、AIエージェント前提の自動動画生成を主要ターゲットにしている
+
+## 観察ログ（未検証）
+
+- 2026-01-24: @ronginooth が AIコーディングエージェント **Antigravity** に「Remotion公式サイト(remotion.dev)をくまなく読んで Remotion を構築して」と投げただけで、約5分で動画を作り始められたと報告。動画編集の面倒さがエージェント＋Remotionで大幅に下がるという体験談（個人ポスト、再現性・前提環境は未検証）
+- 2026-06-02: @akira_papa_IT が [[models/claude-opus-4-8]] × Remotion で**子供向けの Git/GitHub 解説動画**を生成。ナレーション・解説スライド・字幕・コマンド実況・ブラウザ再現シーンまで含めて「わかりやすすぎる」と評価。教育系の解説コンテンツを丸ごと自動生成できた事例（個人ポスト、制作工程の詳細は未検証）
+
+## 問い
+
+- AIエージェントにRemotionを構築させる場合、公式ドキュメントを読ませるだけで十分か、それとも作りたい動画の仕様（尺・構成・データソース）をどこまで与える必要があるか
+- 動画量産マーケにおいて Remotion（コードベース）と [[tools/hyperframes]]（HTML+属性）はどちらがエージェント運用に向くか
+- 自分のwikiコンテンツ（Weekly Insights等）を Remotion で動画化して配信に回せるか
+
+## 関連
+
+- [[tools/hyperframes]]
+- [[concepts/intermediate-notation-pattern]]
+- [[business/youtube-shorts-jidouka-marketing]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

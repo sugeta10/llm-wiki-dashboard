@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-era-good-engineer</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-era-good-engineer.md">Markdownで表示</a></div>
   <div class="meta">concepts/ai-era-good-engineer · concepts · <span title="2026-06-07">2週間前</span></div>
   <article><h1>AI時代のよいエンジニア像（LayerX）</h1>
 <p>AIがコード生成を担うようになった環境で、エンジニアの価値は「速く実装できること」から<strong>何を作るべきかを見極め、AIの出力を批判的に評価できること</strong>へ移る。コードを書く工程がコモディティ化するほど、ドメイン理解・論点発見・品質判断といった上流の能力が差別化要因になる。</p>
@@ -56,14 +58,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a> — 「人間は手でなくシグナル」になる実践者の総合スタック</li>
 <li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a> — 課題設定・ドメイン理解を価値の中心に置くエンジニア像</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a></li>
-<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
-<li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
 <li><a href="../concepts/token-management.html">token-management</a></li>
-<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062740849377910908" rel="noopener" target="_blank">https://x.com/i/web/status/2062740849377910908</a></li></ul></section></article>
+<li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2062740849377910908" rel="noopener" target="_blank">https://x.com/i/web/status/2062740849377910908</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -79,5 +82,48 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># AI時代のよいエンジニア像（LayerX）
+
+AIがコード生成を担うようになった環境で、エンジニアの価値は「速く実装できること」から**何を作るべきかを見極め、AIの出力を批判的に評価できること**へ移る。コードを書く工程がコモディティ化するほど、ドメイン理解・論点発見・品質判断といった上流の能力が差別化要因になる。
+
+LayerXが挙げる「よいエンジニア」の条件:
+
+- **ドメインを深く理解し、何を作るべきかを徹底的に考えられる** —— 実装手段でなく課題設定そのものに価値が移る
+- **AIのアウトプットを鵜呑みにせず論点に気づける／仕事に魂を込められる** —— 生成物を検証し、見落とされた論点を拾える批判的判断力
+- **30%の改善ではなく、できなかったことをできるようにする** —— 既存業務の漸進改善でなく不連続な可能性の獲得を狙う
+- **AIは能力増強装置（amplifier）であり、シニアエンジニアの出力は飛躍的に高まる** —— AIは判断力のある人の能力を増幅するが、判断力そのものは代替しない
+
+最後の点は「AIは増幅器」という原則（[[concepts/ai-quality-amplification]]）と通底する。増幅されるのは能力だけでなく弱点も同じであり、ドメイン理解と品質判断を欠いたままAIを使えば低品質な成果物が速く量産されるだけになる。だからこそ上流スキルへの投資が、AI時代にむしろ重要性を増す。
+
+## 観察ログ（未検証）
+
+- 2026-06-05: @applism118 がLayerX社内の「AI時代のよいエンジニア」定義として要約した投稿。LayerXは[[concepts/token-management]]でもトークン消費を経営イシュー化する先進例として登場する企業
+
+## 問い
+
+- 「30%改善でなくできなかったことをできるように」は、自分のwiki/自動化でも漸進改善に閉じていないか。不連続な能力獲得を狙えているか
+- 「論点に気づける」批判的判断はどう鍛えるか。[[concepts/eval-loop]]のような品質ゲートで一部を仕組み化できるか
+- この像は[[concepts/forward-deployed-engineer]]（顧客現場で課題を作り込むFDE）とどこで重なり、どこで異なるか
+
+## 関連
+
+- [[concepts/ai-quality-amplification]] — 「AIは増幅器・弱点も増幅される」という同根の原則
+- [[concepts/token-management]] — 同じLayerX発のAI経営観（トークンを経営イシュー化）
+- [[concepts/developer-ai-collaboration]] — 開発者とAIの役割分担哲学
+- [[concepts/agentic-engineering-workflow]] — 「人間は手でなくシグナル」になる実践者の総合スタック
+- [[concepts/forward-deployed-engineer]] — 課題設定・ドメイン理解を価値の中心に置くエンジニア像
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

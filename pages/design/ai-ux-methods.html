@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-ux-methods</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-ux-methods.md">Markdownで表示</a></div>
   <div class="meta">design/ai-ux-methods · design · <span title="2026-05-20">1ヶ月前</span></div>
   <article><h1>AI時代のUXデザイン5メソッド</h1>
 <p>梶谷健人（POSTS代表/プロダクト戦略アドバイザー）がまとめた、AIでサービスを作る時代に必須のUX設計フレームワーク。「AIで作れること」と「求められるものを作れること」は別という問題意識から出発する。</p>
@@ -163,15 +165,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../design/fastview-design.html">fastview-design</a> — ファーストビュー設計原則（UXフリクション削減に関連）</li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — AI時代の仕様駆動設計（設計から実装への接続）</li>
 <li><a href="../people/fladdict.html">fladdict</a> — UX設計者・深津貴之（AI産業のUX分析）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/fastview-design.html">fastview-design</a></li>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
 <li><a href="../people/fladdict.html">fladdict</a></li>
-<li><a href="../design/fastview-design.html">fastview-design</a></li>
 <li><a href="../design/claude-premium-website-build.html">claude-premium-website-build</a></li>
 <li><a href="../design/ai-skills-design.html">ai-skills-design</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/ndfbaec3f9479" rel="noopener" target="_blank">https://note.com/kajiken0630/n/ndfbaec3f9479</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -187,5 +190,111 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># AI時代のUXデザイン5メソッド
+
+梶谷健人（POSTS代表/プロダクト戦略アドバイザー）がまとめた、AIでサービスを作る時代に必須のUX設計フレームワーク。「AIで作れること」と「求められるものを作れること」は別という問題意識から出発する。
+
+関連: [[design/fastview-design]] | [[concepts/spec-driven-development]] | [[people/fladdict]]
+
+## 1. UXの構成式
+
+**UX = (u × e) / f** で捉える:
+
+| 変数 | 意味 | 例 |
+|------|------|-----|
+| **u（便益）** | ユーザーが得る具体的利益 | レポート作成が30分短縮される |
+| **e（情緒価値）** | 感情へのプラス影響 | 親しみやすいメッセージ・ビジュアルの洗練 |
+| **f（フリクション）** | 障壁・困難の総和 | ステップ数・エラー率・認知負荷 |
+
+**優先順位**: まずu最大化とf最小化 → その後eを磨く。「この画面はダサい」ではなく「fが大きい」「uが弱い」と分解して考えられるようになることが目的。
+
+## 2. GarrettのUX 5レイヤー
+
+下の層から順に詰めてからAIに実装させる:
+
+| レイヤー | 問い |
+|---------|------|
+| **Strategy** | 誰のため？なぜ求められる？ |
+| **Scope** | どの機能・コンテンツが必要か |
+| **Structure** | 情報構造と画面遷移の流れ |
+| **Skeleton** | 画面上の配置 |
+| **Surface** | 見た目・感覚的側面 |
+
+AIでサービスを作るほど、土台が固まらないまま実装に進みやすい。Strategyが曖昧なまま作ると「誰のためか」がぼやけ、Structureが雑なまま作ると導線がカオスになる。
+
+**AIへの指示例:**
+```
+「UX5レイヤーのStrategyレイヤーの粒度で、このサービスのターゲットユーザーとゴールを整理して」
+「Scopeレイヤーとして、機能要件や仕様を設計して」
+```
+
+レイヤーを分けてAIに指示すると出力クオリティが上がる（AIが「今どの粒度の話か」を明確に認識できるため）。
+
+## 3. Information Architecture（IA）
+
+GarrettのStructureレイヤーに相当。「情報をどう分類し、どんな導線でユーザーに届けるか」。飛ばされやすいが、機能が増えると後でツケを払う。
+
+**User Flow** の設計が核心: ユーザーが目的達成までどの画面を通り、どのアクションをするかを図式化。現状フローを書き出すと「絡まり」（複雑・冗長な導線）が見つかる。
+
+```
+「Strategyレイヤーの内容を踏まえて、User FlowをMermaid記法で設計して。
+  初期バージョンとフルバージョンの2パターンで」
+```
+
+## 4. Pre-Mortem（事前検視）
+
+「このサービスが失敗した未来」を先に書き出す手法。自分たちのアイデアへの都合の良い見方を防ぐ。
+
+```
+「このサービス案が1年後に失敗したと仮定して、考えられる失敗理由を10個出して」
+```
+
+**重要**: 失敗理由を出して終わりにしない。「コア価値の体感が遅い」→「初回体験で擬似コア価値を体感させる工夫は？」と逆算して設計に組み込む。
+
+AIはこのブレインストーミングの相手として相性が良い（人間が見落とすリスクを多角的に出せる）。
+
+## 5. Problem Solution Fit（PSF）
+
+**サービスアイデアの3要素**:
+- 顧客（誰が困っているか）
+- 課題（何に困っているか）
+- 解決法（どう解決するか）
+
+AIはこの3要素を整理するのは得意だが、「その課題で本当に困っている人がいるか」は知らない。**PSFは必ず人間が検証する**:
+- ターゲットに10人インタビュー
+- お金を払うか確認
+- LPだけ作って反応を見る
+- コア機能のみでクイックにリリース
+
+AIで早く作れる時代だからこそ、「何を作るか」「何を検証するか」の判断力の重要性が増す。
+
+## AI活用との対応
+
+| メソッド | AIの役割 | 人間の役割 |
+|---------|---------|---------|
+| UX構成式 | 分析フレームの適用 | uとfの優先順位判断 |
+| 5レイヤー | 各レイヤーの設計出力 | レイヤーを分けて指示 |
+| IA/User Flow | Mermaid図の生成 | 「絡まり」の発見・解消 |
+| Pre-Mortem | 失敗シナリオの列挙 | 設計への組み込み判断 |
+| PSF | 仮説整理 | 現実の検証（必須） |
+
+## 関連
+
+- [[design/fastview-design]] — ファーストビュー設計原則（UXフリクション削減に関連）
+- [[concepts/spec-driven-development]] — AI時代の仕様駆動設計（設計から実装への接続）
+- [[people/fladdict]] — UX設計者・深津貴之（AI産業のUX分析）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

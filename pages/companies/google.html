@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>google</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="google.md">Markdownで表示</a></div>
   <div class="meta">companies/google · companies · <span title="2026-06-09">1週間前</span></div>
   <article><h1>Google</h1>
 <blockquote>
@@ -52,7 +54,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li>「利用上限の倍率」を価格軸にするバンドルは、単機能の専用ツール（<a href="../tools/notebooklm-py.html">notebooklm-py</a> 等の非公式クライアントや単体課金SaaS）に対してどこまで優位か。</li>
 <li>Geminiを <a href="../companies/apple.html">apple</a> にも供給する両面戦略は、自社デバイス/OSを持たないGoogleの基盤モデル流通戦略としてどう機能するか。</li>
-<li>Jules・Antigravityというエージェント製品をサブスクに内包する構えは、<a href="../tools/claude-code.html">claude-code</a> / <a href="../tools/openai-codex.html">openai-codex</a> のエージェント市場とどう競合するか。</li>
+<li>Jules・Antigravityというエージェント製品をサブスクに内包する構えは、<a href="../tools/claude-code.html">claude-code</a> / openai-codex のエージェント市場とどう競合するか。</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -62,12 +64,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/notebooklm-py.html">notebooklm-py</a></li>
 <li><a href="../companies/apple.html">apple</a></li>
 <li><a href="../tools/notebooklm.html">notebooklm</a></li>
-<li><a href="../tools/openai-codex.html">openai-codex</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://one.google.com/about/" rel="noopener" target="_blank">https://one.google.com/about/</a></li></ul></section></article>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/notebooklm-business-workflows.html">notebooklm-business-workflows</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://one.google.com/about/" rel="noopener" target="_blank">https://one.google.com/about/</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -83,5 +86,50 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Google
+
+&gt; **TL;DR**: Google OneをストレージサブスクからAI製品の統合バンドルへ再定義。Gemini・NotebookLM・Flow・Jules・Antigravityなど多数のAI製品を3階層（AI Plus / Pro / Ultra）の利用上限で束ねて売る。
+
+Googleの消費者向けAI戦略は、個別プロダクト課金ではなく**単一サブスクリプションで全AI製品の利用枠をまとめて配る**バンドル方式に集約されている。同じ製品（Gemini、NotebookLM、画像/動画/音楽生成、エージェント）を、ストレージ容量と「利用上限の倍率」で Plus &lt; Pro &lt; Ultra(5x/20x) と段階化する。AIの差別化を「どのモデルが使えるか」だけでなく「**どれだけ使えるか（rate limit）**」の軸でも価格設計している点が特徴で、ヘビーユーザーほど上位プランに引き上げる構造になっている。Geminiは [[companies/apple]] の次世代Apple Intelligenceにも技術提供されており、自社配布と他社OSへの基盤供給の両面を持つ。
+
+## 検証済み事実
+
+- 2026-06-09: Google Oneは無料15GB／Basic 100GB／Standard 200GBのストレージ階層に加え、AI統合プラン **Google AI Plus（400GB）/ Pro（5TB）/ Ultra（20TB〜30TB）** を提供。
+- 2026-06-09: Gemini利用上限は Plus=2x、Pro=4x、Ultra=Proの5x／20x。Proプラン以上で「Proモデル」へのアクセス、Ultraで Deep Think へのアクセス。
+- 2026-06-09: バンドルされるAI製品群 — **Gemini**（Live／カスタムAIエキスパート）、画像生成 **Nano Banana Pro**、音楽生成 **Lyria 3**、動画生成 **Omni Flash**、**Deep Research**、**NotebookLM**、**Google Flow**（動画生成・クレジット制）、**Jules**（エージェントタスク）、**Google Antigravity**（エージェントリクエスト）、**Project Genie**（インタラクティブ世界モデル、Ultra限定）。
+- 2026-06-09: Gemini in Gmail/Docs（受信トレイへの質問・AI Overview＝米国のみ、Proofread、Vidsの動画生成）。Google検索のAI Mode（エージェント機能・Deep Search＝米国のみ）も上位プランで拡張。
+- 2026-06-09: 開発者向け特典 — Google Cloudクレジット（Pro $10／Ultra 5x $40／Ultra 20x $100 月額）、Android StudioのエージェントAI支援、Jules/Antigravityの上限拡張。
+- 2026-06-09: コンテキストウィンドウは有料プランで100万トークンに拡張。家族最大5人とプラン共有可能（コンテンツは各自プライベート）。
+- 2026-06-09: Google Flowクレジットは Free 100/月+50/日、Pro 1,000/月、Ultra 5x 10,000/月、Ultra 20x 25,000/月。
+
+## 観察ログ（未検証）
+
+- 2026-06-09: 当ページは価格（&quot;/mo&quot;）が空欄でレンダリングされており、各プランの具体的な金額は本ソースからは取得できていない。
+- 2026-06-09: AI Inbox in Gmail は &quot;rolling out&quot;、Gmail受信トレイへの質問・AI Overviewは「US only」表記。地域差のあるロールアウト段階の機能が混在。
+
+## 問い
+
+- 「利用上限の倍率」を価格軸にするバンドルは、単機能の専用ツール（[[tools/notebooklm-py]] 等の非公式クライアントや単体課金SaaS）に対してどこまで優位か。
+- Geminiを [[companies/apple]] にも供給する両面戦略は、自社デバイス/OSを持たないGoogleの基盤モデル流通戦略としてどう機能するか。
+- Jules・Antigravityというエージェント製品をサブスクに内包する構えは、[[tools/claude-code]] / [[tools/openai-codex]] のエージェント市場とどう競合するか。
+
+## 関連
+
+- [[companies/apple]] — 次世代Apple IntelligenceにGemini技術を供給（基盤モデルの他社OSへの供給先）
+- [[tools/notebooklm]] — 本バンドルに含まれるNotebookLMの活用ガイド
+- [[tools/notebooklm-py]] — NotebookLMの非公式Python API/CLI（Web UI非公開機能対応）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

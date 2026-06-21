@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-github-repos</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-github-repos.md">Markdownで表示</a></div>
   <div class="meta">tools/claude-code-github-repos · tools · <span title="2026-05-20">1ヶ月前</span></div>
   <article><p>Claude Codeを「チャットボットからエンジニアリングチーム」に変えるGitHubリポジトリ10選（@heynavtoor選定）。ツイート本文はテキスト1件のみで残り9件は画像内。関連: <a href="../tools/claude-code.html">claude-code</a></p>
 <h2>観察ログ（未検証）</h2>
@@ -41,13 +43,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/gstack.html">gstack</a>（Garry Tan製Claude Code拡張スキル集）</li>
 <li><a href="../tools/google-agent-skills.html">google-agent-skills</a>（Google製Agent Skills集）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/gstack.html">gstack</a></li>
 <li><a href="../tools/google-agent-skills.html">google-agent-skills</a></li>
-<li><a href="../tools/obsidian-skills.html">obsidian-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2056990575707189531" rel="noopener" target="_blank">https://x.com/i/web/status/2056990575707189531</a></li></ul></section></article>
+<li><a href="../tools/gstack.html">gstack</a></li>
+<li><a href="../tools/obsidian-skills.html">obsidian-skills</a></li>
+<li><a href="../public-site/pages/tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2056990575707189531" rel="noopener" target="_blank">https://x.com/i/web/status/2056990575707189531</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -63,5 +67,31 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain">Claude Codeを「チャットボットからエンジニアリングチーム」に変えるGitHubリポジトリ10選（@heynavtoor選定）。ツイート本文はテキスト1件のみで残り9件は画像内。関連: [[tools/claude-code]]
+
+## 観察ログ（未検証）
+
+- 2026-05-20: @heynavtoor が「Claude Codeを変えた10リポジトリ」としてリスト公開。「開発者のキャリア年数より多くの時間を節約できる」と主張
+- 2026-05-20: **1位: anthropics/skills** — Anthropic公式スキルテンプレート集（135K stars）。Anthropicが使うパターンが公開されている
+
+## 関連
+
+- [[tools/claude-code]]
+- [[tools/obsidian-skills]]（kepano製 Obsidian向けAgent Skills集）
+- [[tools/gstack]]（Garry Tan製Claude Code拡張スキル集）
+- [[tools/google-agent-skills]]（Google製Agent Skills集）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

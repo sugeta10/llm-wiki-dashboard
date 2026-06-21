@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>12-factor-agents</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="12-factor-agents.md">Markdownで表示</a></div>
   <div class="meta">concepts/12-factor-agents · concepts · <span title="2026-05-16">1ヶ月前</span></div>
   <article><h1>12-Factor Agents</h1>
 <p>HumanLayerのDex Horthy（@dexhorthy）が提唱する、<strong>信頼性の高いLLMアプリケーション</strong>を構築するための12の設計原則。<a href="https://12factor.net/">12 Factor Apps</a>の思想をAIエージェント開発に応用。AI Engineer World's Fairでのトーク（2025）が起点。</p>
@@ -149,14 +151,15 @@ while True:
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a> — 仕様駆動開発：AIの信頼性への別アプローチ</li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — Factor 2・3の基盤となるプロンプト設計技術</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/humanlayer/12-factor-agents" rel="noopener" target="_blank">https://github.com/humanlayer/12-factor-agents</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -172,5 +175,91 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># 12-Factor Agents
+
+HumanLayerのDex Horthy（@dexhorthy）が提唱する、**信頼性の高いLLMアプリケーション**を構築するための12の設計原則。[12 Factor Apps](https://12factor.net/)の思想をAIエージェント開発に応用。AI Engineer World&#x27;s Fairでのトーク（2025）が起点。
+
+## 背景・モチベーション
+
+プロダクション対応AIエージェント構築の典型的な失敗パターン：
+
+1. エージェントを作ろうと決める
+2. フレームワークを使って素早く開発開始
+3. 品質70〜80%に到達
+4. **80%では顧客向け機能として不十分**と気づく
+5. フレームワークを逆エンジニアリングする必要が生じる
+6. 最初からやり直す
+
+&gt; **「プロダクション対応の良いAIソフトウェアを顧客の手に届ける最速の方法は、エージェント構築のモジュール式概念を既存プロダクトに取り込むこと」**
+
+## 重要な洞察：エージェントは「mostly just software」
+
+- 実際に市場で動いている「AIエージェント」は実態としてほぼ決定論的コード
+- LLMステップは適切な箇所に**少量だけ**組み込まれている
+- 「プロンプト＋ツール袋でゴールまでループ」パターンはプロダクションでは機能しない
+- 優れたエージェントはソフトウェアエンジニアリングが主体
+
+## エージェントの基本ループ
+
+```python
+context = [initial_event]
+while True:
+    next_step = llm.determine_next_step(context)
+    context.append(next_step)
+    if next_step.intent == &quot;done&quot;:
+        return next_step.final_answer
+    result = execute_step(next_step)
+    context.append(result)
+```
+
+この単純なループに12のファクターを適用して信頼性を高める。
+
+## 12のファクター
+
+| # | ファクター | 要点 |
+|---|-----------|------|
+| 1 | Natural Language to Tool Calls | 自然言語入力を構造化されたツール呼び出しに変換 |
+| 2 | Own your prompts | プロンプトをフレームワークに隠蔽させず自分で管理 |
+| 3 | Own your context window | コンテキストウィンドウの内容を自分でコントロール（**Context Engineering**） |
+| 4 | Tools are just structured outputs | ツールは構造化出力に過ぎない（特別扱い不要） |
+| 5 | Unify execution state and business state | 実行状態とビジネス状態を分離しない |
+| 6 | Launch/Pause/Resume with simple APIs | シンプルなAPIで起動・一時停止・再開を実現 |
+| 7 | Contact humans with tool calls | 人間への確認もツール呼び出しとして実装 |
+| 8 | Own your control flow | 制御フローをフレームワークに委ねず自分で持つ |
+| 9 | Compact Errors into Context Window | エラーをコンテキストにコンパクトに収めて継続 |
+| 10 | Small, Focused Agents | 小さく焦点の絞られた単機能エージェント |
+| 11 | Trigger from anywhere | Webhook・Cron・UI等どこからでもトリガー可能に |
+| 12 | Make your agent a stateless reducer | エージェントをステートレスReducerとして実装（スケール容易） |
+
+## Factor 3（Context Engineering）が特に重要
+
+Context Engineeringはプロンプトエンジニアリングの上位概念。コンテキストウィンドウに**何を入れるか・何を入れないか**をエンジニアが直接制御することで、LLMの判断精度が劇的に変わる。フレームワークに任せると不要情報が混入し品質が低下する。
+
+## Factor 10：フレームワークを使うべきか
+
+- ほとんどのプロダクション対応エージェントは**フレームワーク不使用**でゼロから書かれている
+- フレームワーク（LangChain・LangGraph・CrewAI等）は開発初期の加速には有用
+- しかし80%品質の壁を超えるためにはフレームワークを逆エンジニアリングすることになる
+- 最初からモジュール式に書く方が長期的に高品質・保守しやすい
+
+## 関連
+
+- [[concepts/agentic-coding]] — AIが自律的にコードを書く開発スタイル（本稿の背景）
+- [[concepts/multi-agent-patterns]] — マルチエージェント協調の設計パターン
+- [[concepts/spec-driven-development]] — 仕様駆動開発：AIの信頼性への別アプローチ
+- [[concepts/prompt-engineering]] — Factor 2・3の基盤となるプロンプト設計技術
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

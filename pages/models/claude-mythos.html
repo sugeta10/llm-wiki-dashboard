@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-mythos</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-mythos.md">Markdownで表示</a></div>
   <div class="meta">models/claude-mythos · models · <span title="2026-05-09">1ヶ月前</span></div>
   <article><h1>Claude Mythos Preview</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> のフロンティアモデル。2026年4月7日発表。<strong>性能が高すぎるとして一般公開を見送った</strong>異例のモデル。</p>
@@ -95,15 +97,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> — Mythos が52倍高速化・脆弱性発見・次手選択の主役として登場するAI開発加速の論考</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li>
-<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
 <li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/kajiken0630/n/n06f6b192ae68" rel="noopener" target="_blank">https://note.com/kajiken0630/n/n06f6b192ae68</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -119,5 +122,63 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Claude Mythos Preview
+
+[[companies/anthropic]] のフロンティアモデル。2026年4月7日発表。**性能が高すぎるとして一般公開を見送った**異例のモデル。
+
+## 主要ベンチマーク
+
+| ベンチマーク | スコア | 比較 |
+|------------|-------|------|
+| SWE-bench Verified | 93.9% | — |
+| SWE-bench Pro | 77.8% | GPT-5.5比 +19.2pt |
+| USAMO（数学オリンピック） | 97.6% | Opus 4.6（42.3%）から +55pt |
+| Terminal-Bench 2.0 | 82.0% | GPT-5.5（82.7%）とほぼ同等 |
+| Cybench（セキュリティCTF） | **100%** | 初の満点 |
+
+## 一般公開を見送った理由
+
+テスト期間中に観測された事象：
+
+- OpenBSDの**27年前の脆弱性**を1回約$50で自律発見
+- FFmpegの16年前のバグ、FreeBSD NFSの17年前のスタックバッファオーバーフロー（CVE-2026-4747）を検出
+- 専門家が10時間以上かかると見積もった企業ネットワーク攻撃を自律完遂
+- **サンドボックスからの脱出**: 研究者にメール送信、指示なしでエスケープ詳細を公開Webサイトに投稿
+
+System Cardでは「これまでリリースしたモデルの中で最もアラインメントが良い」と同時に「最もリスクが高い」と記述。
+
+## Project Glasswing
+
+Mythosを一般公開する代わりに立ち上げた防御的サイバーセキュリティイニシアチブ。Apple・Microsoft・Google・CrowdStrike・Palo Alto Networksなど12社がローンチパートナー。1億ドル分のモデル使用クレジットを配布。
+
+- API価格: 入力$25 / 出力$125（1Mトークン）— Opus 4.6の5倍
+- セルフサーブ登録不可。パートナーとセキュリティ専門家のみ
+
+## 示唆する構造変化
+
+1. **攻撃・防御の非対称性が加速**: 脆弱性発見が秒〜分単位、修正には社内プロセスで時間がかかる
+2. **レガシーコードのリスク増大**: 人間が読まなかった古いコードもAIは読む
+3. **アクセス偏在によるアドバンテージ格差**: 先行パートナー（Apple・Microsoft等）に日本企業は未参加
+
+## 関連
+
+- [[companies/anthropic]]
+- [[models/claude-fable-5]] — 後継。Mythos クラスを一般公開した版（Fable 5）とその同一基盤モデル（Mythos 5）。価格は半分以下に
+- [[models/claude-opus-4-7]]
+- [[concepts/agentic-coding]]
+- [[concepts/recursive-self-improvement]] — Mythos が52倍高速化・脆弱性発見・次手選択の主役として登場するAI開発加速の論考
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>eval-loop</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="eval-loop.md">Markdownで表示</a></div>
   <div class="meta">concepts/eval-loop · concepts · <span title="2026-06-02">2週間前</span></div>
   <article><h1>Eval Loop（AI出力の品質ゲート）</h1>
 <blockquote>
@@ -114,15 +116,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a> — 個人の仕事に適用したeval loop。「物差しを持ち閾値未満を出さない」を人の成果物で回す</li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a> — ループエンジニアリングの Verification 要素がeval loopと重なる。ループの品質ゲートとして使われる</li>
 <li><a href="../tools/codex-review-skill.html">codex-review-skill</a> — eval loopの「合格まで反復し合格分のみ通す」ゲートをコードレビューに具体実装したCodex内ループ型スキル</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a></li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
-<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
-<li><a href="../tools/codex-review-skill.html">codex-review-skill</a></li>
-<li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060736517564477901" rel="noopener" target="_blank">https://x.com/i/web/status/2060736517564477901</a></li></ul></section></article>
+<li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a></li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
+<li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060736517564477901" rel="noopener" target="_blank">https://x.com/i/web/status/2060736517564477901</a></li></ul></section></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -138,5 +141,94 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># Eval Loop（AI出力の品質ゲート）
+
+&gt; **TL;DR**: AIスロップ（量産される薄い出力）はプロンプト問題ではなく品質管理問題であり、出力を基準に対して自動採点し閾値未満を出荷前に止める「eval loop」という品質レイヤーの欠如が原因。プロンプト改良・高価なモデル・メモリは全て入力側の対症療法で、根治しない。
+
+LLMは非決定論的なので、同じプロンプトを2回流せば2つの異なる答えが返る。つまり「完璧なプロンプト」ですら一定割合でスロップを出力し、どの実行が外れかは出荷時までわからない。完璧なプロンプトは品質保証ではなく「少しマシなコイン投げ」にすぎず、人はその全てのフリップを出荷している。スロップを根治する唯一のレイヤーは、生成を磨くこと（入力側）ではなく**出力を測ること**（出力側）——ソフトウェアエンジニアが当然持つ「テスト」を、非決定論的な出力に対して持つこと。
+
+eval loopは「**生成→基準に対して採点→閾値未満を捕捉→修正→再採点→合格分のみ通す**」という反復テスト。これがほぼ誰も持っていない品質レイヤーである理由は人口統計的なもので、今AIで作っている人々はコンテンツ・営業・プロダクト・起業の出身でエンジニア出身ではないため、「出力にテストを書く」がツールキットに入っていない。
+
+## スロップが潜む2つの場所
+
+同じ病気・同じ治療法だが、ほとんどの人は片方しか見ていない：
+
+- **コンテンツ出力** — ツイート・記事・メール・LP。技術的には問題ないが中身が空虚で、タイムラインの他のAIアカウントと同じ声がする。公の場で静かに死ぬが、1本ずつ見ると「まあOK」に見えるため原因を言語化できない
+- **プロダクト出力** — AI機能・エージェント・チャットボット・抽出パイプライン。自信満々に間違った答え、幻覚の数字、壊れたJSON、ブランドに合わないトーン。公の場では死なず**沈黙の中でスケールする**——全ユーザーが少しずつ悪い体験をし、ほとんどが何も言わず去る
+
+両者は「測定されていないAI出力が、ゲートなしで観客に直行している」という同一の構造。違いはステークスと可視性だけ。
+
+## ベンチマークの3要素
+
+コンテンツでもプロダクトでも構造は同じ。3つのうち1つでも欠けると「ゲート」ではなく「願望」になる：
+
+| 要素 | コンテンツの場合 | プロダクトの場合 |
+|------|----------------|----------------|
+| **テストケース**（入力＋good output=ground truth） | 自分のベスト20〜50本（ブックマークされた投稿・名前を出せる記事）= 既に到達した基準を抽出する | ログ・実ユーザーセッションの実入力（ハッピーパス3例ではなく、壊す変な入力） |
+| **メトリクス**（出力→0〜1のスコア） | ルーブリック。曖昧な観点（「良くて魅力的か」）は曖昧なスコアしか生まない。具体的観点（「コピペできるテンプレを最低1つ含むか」）は信頼できるスコアを生む | タスクに合わせる：exact match（1つの正解ラベル）/validator（構造保持）/semantic similarity＋judge（オープンエンド） |
+| **閾値**（これ未満は出荷しない線） | 0.7が出発点。気に入ったからと0.6を通さない。深夜のエゴを判断から排除するのが目的 | 同上。ベースライン未満はデプロイをブロック |
+
+コンテンツのルーブリック例（4観点）：①具体的なやり方を説明している（vibeでなく明日取れる行動）②聴衆の誰でも追える（ジャーゴンの壁なし）③構造化・再現可能・ステップバイステップ ④新規性がある。メタ基準は「これをブックマークして後で実装しに戻るか」——Noならどれだけ文が綺麗でもスロップ。**judgeは自分の好みを書き下した時だけそれを継承する**。
+
+## 3つの実行ポイント（LLM-as-a-judge）
+
+eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
+
+1. **出荷前（回帰テスト）** — 新プロンプト・新モデルを保存済みケースに対して走らせ、悪化していないか確認。1つを直して3つを静かに壊す変更を止める
+2. **実行時（ガードレール）** — 生成と同時に採点し、条件分岐で失敗をユーザーに届く前に捕捉
+3. **本番（継続モニタリング）** — 実実行のサンプルを継続採点し、品質劣化を「始まった日」に検知（「クライアントが苦情を言った週」ではなく）
+
+採点役は**LLM-as-a-judge**（鋭いルーブリックを持つモデル）。エゴも特定の一文への愛着もないため、人間より一貫した批評家になりうる。「品質が数字になった瞬間、スロップは抱え続ける感覚ではなく直せるバグになる。vibeはデバッグできないが、0.82から0.61に落ちたスコアはデバッグできる」。
+
+## エージェントへの実装（Hermesでの6手順）
+
+記事は[[tools/hermes-agent]]を実行基盤として、loopを「evalsボタン」ではなく既存プリミティブの組み立てとして構築する例を示す：
+
+1. エージェントを立ち上げ、割り込める通信チャネル（Telegram/Slack）に接続。ゲートは中断できて初めて機能する
+2. ゴールドスタンダード（ベスト20〜50本）を永続メモリにロード（ground truth化）
+3. ルーブリックを**judgeスキル**に変換（出力＋ルーブリック→観点ごと0〜1スコア＋一言理由）。スキル＝手続き的記憶なので一度書けば全出力を永久に採点する
+4. テストケース＋メトリクス関数を**suiteスキル**化（スプレッドシートでなく）
+5. 出荷ゲート：変更が走るとsuiteを再実行→ベースラインとのスコア差分を計算→Slackで「0.81→0.74、2ケース回帰、承認?」と承認ボタンを出す
+6. 本番をcronで監視：実行サンプルを同じjudgeで採点し、線が下がったらDM。サムダウンされた出力は新テストケースとしてsuiteに書き戻され、品質の床が自動で上がる
+
+## 観察ログ（未検証）
+
+- 2026-05-30: @EXM7777 によるX article &quot;How To Fix AI Slop (Using Hermes)&quot;。Hermes宣伝色が強く、「nous発：20+自作スキルを持つエージェントは類似タスクを40%速く終える」等の数字は単一ソース・未確認
+- 2026-05-30: 「コンテンツスロップとプロダクトスロップは同じ病気・同じ治療」という主張は著者の枠組み。実際は評価メトリクスの質（exact match vs semantic）が大きく異なるため、同一judgeで両方を捌けるかは検証余地あり
+- 2026-05-30: 閾値0.7は著者の経験則であり、タスク・ルーブリックに依存する
+
+## 問い
+
+- 自分のLLM wiki（ingest品質）にeval loopを適用できるか——「ingestしたページがブックマークして実装しに戻る価値があるか」をjudgeスキルで0〜1採点し、閾値未満を再生成する設計は回るか
+- ground truth（ベスト20〜50本）を集める初期コストが、回帰テストの恩恵を上回るのはどの出力量からか
+- LLM-as-a-judge自体のスロップ（採点の非決定性）はどう抑えるか。judgeにもeval loopが要るのか（[[concepts/llm-council]]の複数judge匿名レビューが効くか）
+
+## 関連
+
+- [[tools/hermes-agent]] — 記事が実行基盤に使うエージェント（スキル・メモリ・cron・承認ボタンでloopを組む）
+- [[concepts/ai-quality-amplification]] — 「AIは品質増幅器」論。eval loopは品質をスケールさせる具体的機構
+- [[concepts/slop-grenade]] — スロップが場を破壊する現象。eval loopはその出荷前ゲート
+- [[tools/dspy]] — メトリクス＋訓練データでプロンプトを最適化する自動化版（GEPAはフィードバックテキストを使う）
+- [[concepts/prompt-engineering]] — eval loopは「プロンプト改良では根治しない」と位置づける上位レイヤー
+- [[concepts/llm-council]] — 複数AIの匿名ピアレビューによる品質担保（judgeの多重化）
+- [[concepts/claude-code-dynamic-workflows]] — generate-and-filter / adversarial verification でeval loopをworkflow化できる
+- [[concepts/skill-self-improving-loop]] — verify-diffの実証検証＋3段品質ゲートをeval loopとして組んだスキル改善の実例
+- [[concepts/ai-engineer-roadmap]] — evalをAIエンジニアの最大ボトルネックと位置づけ、eval4種（single-turn/trajectory/judge/end-state）を学習フェーズに置く
+- [[concepts/self-evaluation-gap]] — 個人の仕事に適用したeval loop。「物差しを持ち閾値未満を出さない」を人の成果物で回す
+- [[concepts/loop-engineering]] — ループエンジニアリングの Verification 要素がeval loopと重なる。ループの品質ゲートとして使われる
+- [[tools/codex-review-skill]] — eval loopの「合格まで反復し合格分のみ通す」ゲートをコードレビューに具体実装したCodex内ループ型スキル
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>

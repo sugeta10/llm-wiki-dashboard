@@ -20,6 +20,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 .related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
 .stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
 .cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
 </style>
 </head>
 <body>
@@ -27,6 +28,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>NORTH-STAR</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="NORTH-STAR.md">Markdownで表示</a></div>
   <div class="meta">weekly/NORTH-STAR · meta · <span title="2026-05-30">3週間前</span></div>
   <article><h1>North Star Metric</h1>
 <blockquote>
@@ -124,8 +126,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </table></article>
 </main>
 <script>
-// コードブロック（スニペット）にコピーボタンを付与
-document.querySelectorAll('pre').forEach(function(pre){
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   var code = pre.querySelector('code') || pre;
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
@@ -141,5 +144,55 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
+<script id="page-markdown" type="text/plain"># North Star Metric
+
+&gt; **「週に1回以上、過去のwiki知識が新しい問い・判断・行動に接続された回数」**
+
+pages数・links数はサロゲートメトリクスに過ぎない。
+
+## 計測イベント（手動check-inから開始）
+
+| イベント | 記録方法 |
+|---|---|
+| weekly insight generated | wiki/weekly/ にファイルが存在する |
+| weekly insight opened | （主観）読んだら ✅ |
+| related page clicked | （主観）リンクを辿ったら ✅ |
+| action accepted | 小アクションを実行したら ✅ |
+| source revived (14d+) | 古いページに戻れたら ✅ |
+| unconnected seed connected | Unconnected Seedsにリンクを貼ったら ✅ |
+| query led to wiki update | クエリ後にページを更新したら ✅ |
+
+## Weekly Check-in（毎週月曜・3分）
+
+1. 先週のInsightsを読んだか？ (Y/N)
+2. wikiの知識が行動・判断に繋がった瞬間があったか？ (Y/N + メモ1行)
+3. 今週のNorth Starスコア（上のイベント合計数）: ___
+
+## 目標
+
+| 時期 | 目標スコア | 意味 |
+|---|---|---|
+| Month 1 | ≥ 1 | 週1回は知識が行動に接続される |
+| Month 3 | ≥ 3 | 習慣として定着。wikiが「使われている」 |
+| Month 6 | ≥ 5 | 知識が複利化し始めている |
+
+## 記録ログ
+
+| 週 | スコア | メモ |
+|---|---|---|
+| 2026-W22 | — | check-in開始週 |
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
 </body>
 </html>
