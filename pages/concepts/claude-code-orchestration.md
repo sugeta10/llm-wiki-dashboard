@@ -55,3 +55,4 @@
 - [[concepts/claude-md-rules]] — CLAUDE.md行動ルール（強制でなく強めの推奨という位置づけ）
 - [[tools/claude-code]] — Claude Code本体
 - [[tools/claude-code-remote-control]] — 複数セッションを常駐窓口から立ち上げて出先から操舵するリモート運用（「仮想社員」運用の入口）
+- [[concepts/coding-agent-workflow-styles]] — 並列運用は高速制御／委譲低速の2類型のうち委譲側に寄る選択肢

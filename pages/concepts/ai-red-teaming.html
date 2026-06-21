@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-red-teaming - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-red-teaming</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-red-teaming.md">Markdownで表示</a></div>
+  <div class="meta">concepts/ai-red-teaming · concepts · <span title="2026-06-22">今日</span></div>
+  <article><h1>AIによる敵対的レビュー（レッドチーミング）</h1>
+<p>自分の事業・プロダクト・計画を、AIに<strong>敵対ペルソナ</strong>（競合・投資家・怒れる顧客など）を演じさせて攻撃させ、弱点を実害が出る前に洗い出す使い方。軍事・セキュリティの「レッドチーム」（味方をわざと攻撃する仮想敵役）を、ビジネス検証にプロンプトで持ち込む発想。</p>
+<p>自分や自社で検証すると、無意識に都合のよい前提を置いて弱点を見落としやすい。AIに明確な敵役と攻撃目的を与えると、その立場なら必ず突く穴（価格・参入障壁・解約理由・反証データ）を機械的に列挙させられる。出てきた弱点を事前に潰せば、実際の競合や顧客に突かれる前に手を打てる。</p>
+<p><a href="../concepts/llm-council.html">llm-council</a> が複数アドバイザーの匿名ピアレビューで「全員が見落とす盲点」を浮かせる意思決定支援なのに対し、こちらは<strong>単一の敵役を立てて自分の弱点を攻撃させる</strong>点が異なる。協議による盲点解消ではなく、敵対視点による弱点発見が狙い。AIに心理状態次元を与えて具体回答を引き出す手法は <a href="../concepts/ai-persona-interview.html">ai-persona-interview</a> と共通し、敵対ペルソナをどれだけ解像度高く作れるかが出力の質を左右する。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-20: @selinaai_ が「Claude には Red Team Mode という機能がある」として、競合・投資家・怒れる顧客の視点で自社を攻撃させ弱点を直す使い方を紹介。ただし「Red Team Mode」は Claude の正式な機能名ではなく、プロンプトでこの役割を演じさせる手法を機能のように表現したもの。投稿は「アクセスする7プロンプト」を予告するスレッド冒頭の teaser で、7プロンプト本体はこのソースには含まれていない（未取得）。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>敵対ペルソナ（競合・投資家・顧客）ごとに有効な攻撃プロンプトの型は何か。実際の7プロンプトを別ソースから確認したい</li>
+<li>敵対視点による自己批判は、人間のレビューが見落とす弱点を本当に追加で見つけられるのか。ペルソナの解像度が低いと一般論しか返らないのではないか</li>
+<li>自分の wiki システムや成果物の検証に、敵対ペルソナによる自己批判プロンプトを組み込めるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/llm-council.html">llm-council</a> — 複数AIの匿名協議で盲点を炙り出す意思決定支援。弱点発見という目的を共有しつつ機構が異なる</li>
+<li><a href="../concepts/ai-persona-interview.html">ai-persona-interview</a> — AIにペルソナと心理状態次元を与えて具体回答を引き出す手法。敵対ペルソナ設計の土台</li>
+<li>ai-agent-era-strategy — 意思決定の速度と質を競争条件に据えるAI時代の企業戦略</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-council.html">llm-council</a></li>
+<li><a href="../concepts/ai-persona-interview.html">ai-persona-interview</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2068151348118552674" rel="noopener" target="_blank">https://x.com/i/web/status/2068151348118552674</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AIによる敵対的レビュー（レッドチーミング）
+
+自分の事業・プロダクト・計画を、AIに**敵対ペルソナ**（競合・投資家・怒れる顧客など）を演じさせて攻撃させ、弱点を実害が出る前に洗い出す使い方。軍事・セキュリティの「レッドチーム」（味方をわざと攻撃する仮想敵役）を、ビジネス検証にプロンプトで持ち込む発想。
+
+自分や自社で検証すると、無意識に都合のよい前提を置いて弱点を見落としやすい。AIに明確な敵役と攻撃目的を与えると、その立場なら必ず突く穴（価格・参入障壁・解約理由・反証データ）を機械的に列挙させられる。出てきた弱点を事前に潰せば、実際の競合や顧客に突かれる前に手を打てる。
+
+[[llm-council]] が複数アドバイザーの匿名ピアレビューで「全員が見落とす盲点」を浮かせる意思決定支援なのに対し、こちらは**単一の敵役を立てて自分の弱点を攻撃させる**点が異なる。協議による盲点解消ではなく、敵対視点による弱点発見が狙い。AIに心理状態次元を与えて具体回答を引き出す手法は [[ai-persona-interview]] と共通し、敵対ペルソナをどれだけ解像度高く作れるかが出力の質を左右する。
+
+## 観察ログ（未検証）
+
+- 2026-06-20: @selinaai_ が「Claude には Red Team Mode という機能がある」として、競合・投資家・怒れる顧客の視点で自社を攻撃させ弱点を直す使い方を紹介。ただし「Red Team Mode」は Claude の正式な機能名ではなく、プロンプトでこの役割を演じさせる手法を機能のように表現したもの。投稿は「アクセスする7プロンプト」を予告するスレッド冒頭の teaser で、7プロンプト本体はこのソースには含まれていない（未取得）。
+
+## 問い
+
+- 敵対ペルソナ（競合・投資家・顧客）ごとに有効な攻撃プロンプトの型は何か。実際の7プロンプトを別ソースから確認したい
+- 敵対視点による自己批判は、人間のレビューが見落とす弱点を本当に追加で見つけられるのか。ペルソナの解像度が低いと一般論しか返らないのではないか
+- 自分の wiki システムや成果物の検証に、敵対ペルソナによる自己批判プロンプトを組み込めるか
+
+## 関連
+
+- [[llm-council]] — 複数AIの匿名協議で盲点を炙り出す意思決定支援。弱点発見という目的を共有しつつ機構が異なる
+- [[ai-persona-interview]] — AIにペルソナと心理状態次元を与えて具体回答を引き出す手法。敵対ペルソナ設計の土台
+- [[ai-agent-era-strategy]] — 意思決定の速度と質を競争条件に据えるAI時代の企業戦略
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>google-calendar-ai-database - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>google-calendar-ai-database</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="google-calendar-ai-database.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/public-site/pages/public-site/pages/business/google-calendar-ai-database · other · <span title=""></span></div>
+  <article><h1>GoogleカレンダーをAI業務データベースとして活用する</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIに仕事を任せたいなら、AIツール導入より先にGoogleカレンダーを業務DBとして整備する方が効果が出る。「仕事が発生する瞬間の情報」が詰まったカレンダーは、MCPと組み合わせることで経費精算・工数管理・顧客対応を自動化する起点になる。</p>
+</blockquote>
+<p>AIツール導入→業務自動化→生産性向上、という順番で考える組織が多いが、実際はデータ基盤の整備が先にあって初めてAIが業務を理解できる。AIに「何をすべきか」を理解させるには、業務情報が構造化されたデータとして存在している必要があるためだ。</p>
+<pre class="mermaid">flowchart LR
+  A[&quot;カレンダーDB整備\n（タイトル/場所/説明欄ルール）&quot;] --&gt; B[&quot;AIが業務を理解\n（MCP経由でアクセス）&quot;] --&gt; C[&quot;業務自動化\n（経費精算・工数・議事録）&quot;]</pre>
+<p>Googleカレンダーには「誰と/いつ/どこで/何時間/何のために/誰が参加」という情報が詰まっており、API経由で構造的に取得できる。<a href="../../../../../../../../../tools/claude-code.html">claude-code</a> のMCPコネクタでCalendar接続すれば、このデータを起点にした自動化パイプラインを組める。</p>
+<h2>5つの活用案</h2>
+<h3>① 経費精算の自動化</h3>
+<p>予定の <code>location</code> に訪問先を登録し、MCP経由で取得。Google Maps・経費精算システム・会計システムと組み合わせて交通費精算を自動生成する。</p>
+<h3>② 工数管理</h3>
+<p>開始・終了時刻がタイムトラッキングの代替になる。CRMの顧客IDを <code>extendedProperties</code> に持たせると売上・案件情報と紐づけられる。</p>
+<h3>③ 議事録との連携</h3>
+<p>Google Meet付き予定なら会議URL→録画→文字起こし→議事録を起点で連鎖的に処理できる。</p>
+<h3>④ 顧客対応履歴</h3>
+<p>カレンダーを「顧客との接点DB」として使い、「この顧客との直近3ヶ月の接点まとめて」と問い合わせると面談履歴・議題・未対応事項を整理できる。</p>
+<h3>⑤ オートマネジメント</h3>
+<p>カレンダーを起点に管理業務をClaudeが補助する。外部勤怠管理システム（みえるクラウド等）との統合で活用範囲がさらに広がる。</p>
+<h2>入力ルールの標準化</h2>
+<p>データベースとして機能させるには入力ルールの統一が必須だ。</p>
+<p><strong>タイトルルール</strong>: <code>【顧客名】業務区分</code> の形式で統一
+- NG: 「面談」「打合せ」「A社」（後から分析できない）
+- OK: 「【A社】月次面談」「【B社】決算報告」「【社内】月次会議」</p>
+<p><strong>場所ルール</strong>: Google Mapsが解析できる住所形式で登録</p>
+<p><strong>説明欄ルール</strong>: テンプレート化（目的/議題/確認事項/宿題/次回予定）</p>
+<p><strong>色ルール</strong>: 業務区分を色で分類し視認性を高める</p>
+<p><strong>運用上の課題</strong>: マニュアルで徹底させようとしてもやる人とやらない人が出る。AppSheet等で「カレンダー入力専用フォーム」を作り、正しいフォーマットでしか入力できない仕組みにするのが現実的。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-08: @miyagawadaisuke（企業DX・AI活用支援系アカウント）の note 記事より。定量データなし、著者の実践経験ベースの論考。Google Workspace を業務プラットフォームとして使う組織向けの提言。</li>
+<li>2026-06-08: 「AI導入プロジェクトより先に、Googleカレンダーのタイトルルールを決めた方が効果が出たりして」という問いかけが記事の結論。スモールスタートの示唆として有効。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このアプローチは <a href="../../../../../../../../../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a> のFDEが顧客組織に入ってまず行う「業務データ構造化」と同じ本質ではないか？</li>
+<li>Googleカレンダー以外のデータ（Slack/メール/CRM）との組み合わせで何が変わるか？</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../../../../../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a>（AIが業務を理解するためのデータ基盤整備・FDE的役割）</li>
+<li><a href="../../../../../../../../../tools/claude-code.html">claude-code</a>（MCPでGoogleCalendar接続・6種コネクタ）</li>
+<li><a href="../../../../../../../../../business/backoffice-ai-implementation.html">backoffice-ai-implementation</a>（AI活用実践の類似事例・バックオフィス自動化）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../../../../../tools/claude-code.html">claude-code</a></li>
+<li><a href="../../../../../../../../../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li>
+<li><a href="../../../../../../../../../business/backoffice-ai-implementation.html">backoffice-ai-implementation</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># GoogleカレンダーをAI業務データベースとして活用する
+
+&gt; **TL;DR**: AIに仕事を任せたいなら、AIツール導入より先にGoogleカレンダーを業務DBとして整備する方が効果が出る。「仕事が発生する瞬間の情報」が詰まったカレンダーは、MCPと組み合わせることで経費精算・工数管理・顧客対応を自動化する起点になる。
+
+AIツール導入→業務自動化→生産性向上、という順番で考える組織が多いが、実際はデータ基盤の整備が先にあって初めてAIが業務を理解できる。AIに「何をすべきか」を理解させるには、業務情報が構造化されたデータとして存在している必要があるためだ。
+
+```mermaid
+flowchart LR
+  A[&quot;カレンダーDB整備\n（タイトル/場所/説明欄ルール）&quot;] --&gt; B[&quot;AIが業務を理解\n（MCP経由でアクセス）&quot;] --&gt; C[&quot;業務自動化\n（経費精算・工数・議事録）&quot;]
+```
+
+Googleカレンダーには「誰と/いつ/どこで/何時間/何のために/誰が参加」という情報が詰まっており、API経由で構造的に取得できる。[[tools/claude-code]] のMCPコネクタでCalendar接続すれば、このデータを起点にした自動化パイプラインを組める。
+
+## 5つの活用案
+
+### ① 経費精算の自動化
+予定の `location` に訪問先を登録し、MCP経由で取得。Google Maps・経費精算システム・会計システムと組み合わせて交通費精算を自動生成する。
+
+### ② 工数管理
+開始・終了時刻がタイムトラッキングの代替になる。CRMの顧客IDを `extendedProperties` に持たせると売上・案件情報と紐づけられる。
+
+### ③ 議事録との連携
+Google Meet付き予定なら会議URL→録画→文字起こし→議事録を起点で連鎖的に処理できる。
+
+### ④ 顧客対応履歴
+カレンダーを「顧客との接点DB」として使い、「この顧客との直近3ヶ月の接点まとめて」と問い合わせると面談履歴・議題・未対応事項を整理できる。
+
+### ⑤ オートマネジメント
+カレンダーを起点に管理業務をClaudeが補助する。外部勤怠管理システム（みえるクラウド等）との統合で活用範囲がさらに広がる。
+
+## 入力ルールの標準化
+
+データベースとして機能させるには入力ルールの統一が必須だ。
+
+**タイトルルール**: `【顧客名】業務区分` の形式で統一
+- NG: 「面談」「打合せ」「A社」（後から分析できない）
+- OK: 「【A社】月次面談」「【B社】決算報告」「【社内】月次会議」
+
+**場所ルール**: Google Mapsが解析できる住所形式で登録
+
+**説明欄ルール**: テンプレート化（目的/議題/確認事項/宿題/次回予定）
+
+**色ルール**: 業務区分を色で分類し視認性を高める
+
+**運用上の課題**: マニュアルで徹底させようとしてもやる人とやらない人が出る。AppSheet等で「カレンダー入力専用フォーム」を作り、正しいフォーマットでしか入力できない仕組みにするのが現実的。
+
+## 観察ログ（未検証）
+
+- 2026-06-08: @miyagawadaisuke（企業DX・AI活用支援系アカウント）の note 記事より。定量データなし、著者の実践経験ベースの論考。Google Workspace を業務プラットフォームとして使う組織向けの提言。
+- 2026-06-08: 「AI導入プロジェクトより先に、Googleカレンダーのタイトルルールを決めた方が効果が出たりして」という問いかけが記事の結論。スモールスタートの示唆として有効。
+
+## 問い
+
+- このアプローチは [[concepts/forward-deployed-engineer]] のFDEが顧客組織に入ってまず行う「業務データ構造化」と同じ本質ではないか？
+- Googleカレンダー以外のデータ（Slack/メール/CRM）との組み合わせで何が変わるか？
+
+## 関連
+
+- [[concepts/forward-deployed-engineer]]（AIが業務を理解するためのデータ基盤整備・FDE的役割）
+- [[tools/claude-code]]（MCPでGoogleCalendar接続・6種コネクタ）
+- [[business/backoffice-ai-implementation]]（AI活用実践の類似事例・バックオフィス自動化）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

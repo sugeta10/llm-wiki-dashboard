@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>loop-engineering</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="loop-engineering.md">Markdownで表示</a></div>
-  <div class="meta">concepts/loop-engineering · concepts · <span title="2026-06-18">3日前</span></div>
+  <div class="meta">concepts/loop-engineering · concepts · <span title="2026-06-21">1日前</span></div>
   <article><h1>ループエンジニアリング（Loop Engineering）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントをプロンプトする「人間」をやめ、エージェントをプロンプトする「ループ」を設計することで、自分がループの外に出る工学的転換。スケジューラー（cron）＋意思決定者（モデル）＋フィードバック機構の三つ組が本質。</p>
@@ -212,6 +212,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-06-11 @koutarou_furuno（@sairahul1記事の日本語二次まとめ）: ループ工学の本質を「指示を改善するレイヤー」から「指示を出す仕組みを設計するレイヤー」へのレイヤー上昇として整理。DeepSeek採用にはデータガバナンス・セキュリティの事前確認が必要と警告（ビジネス用途）</li>
 <li>2026-06-16 @sydneyrunkle（LangChain）: ループエンジニアリングの焦点を L1・L2（エージェント＋検証）から L3・L4（イベント駆動＋ヒルクライミング）へ移すべきと主張——価値が複利で積み上がるのは、エージェントをエコシステムに埋め込み基準に応じて継続改善させる外側の層だから。@swyx の「loopcraft（loopを積み重ねる技術）」を引用し、Steipete・Boris・Karpathy が独立に「エージェントの潜在力はその周りに作るループにある」という同一結論へ収斂していると指摘（LangChain公式ブログ・自社プリミティブ前提・単一ソース）</li>
 <li>2026-06-16 @sydneyrunkle（LangChain）: Satya Nadella のフレーミングを引用——「学習ループを早期に作り、人間の判断とトークン資本を複利させる企業が、模倣困難な優位を築く」。<a href="../business/frontier-ecosystem.html">frontier-ecosystem</a> と同一主張の別ルート裏付け</li>
+<li>2026-06-19 @omarsar0（Elvis Saravia/DAIR.AI・本記事はClaude併用で執筆）: 良い <code>/goal</code> は「プロンプトより契約に近い」——終了状態・到達を証明する根拠・破ってはならない制約・許される作業予算の4点を明示すべきと整理。どれか1つでも曖昧だとモデルが最も楽な解釈で埋め、早期停止・ショートカット・成功の再定義が起きると指摘（著者の整理）</li>
+<li>2026-06-19 @omarsar0: Cherny の「Opusを数時間自律運用する」設定を5ステップに整理——①権限の自動承認 ②動的ワークフロー（プロンプトにUltracode投入）で多エージェントへfan-out ③/goal or /loopで継続（両者とも状態を持ち越す）④クラウド（デスクトップ/モバイルアプリ）実行でラップトップを閉じてもセッションを生存させる ⑤エンドツーエンドの自己検証手段を与える（Web=Claude in Chrome / モバイル=シミュレータMCP / バックエンド=ライブサーバー）。⑤が他4つを安全にする鍵だと述べる（著者によるCherny発言の整理）</li>
+<li>2026-06-19 @omarsar0: コストの所在が「どのモデル・何トークン」から「ループが何周回るか」へ移ったと指摘。①最適化対象はトークンでなくイテレーション数（cost per finished task=完了タスクあたりコストで測れ）②弱い検証器は最も高価なバグ（緩いと早期停止か無駄な周回でイテレーションを丸ごと浪費）③fail fast はコスト管理（連続失敗の上限がないループは成功でなく口座を空にする）（著者の整理）</li>
+<li>2026-06-19 @omarsar0: 具体ループ例「PRお守り（PR babysitter）」——15分ごとに起動し agent-watch ラベルのPRを対象、CI赤が決定論的原因なら修正1回・mainがズレたら1回rebase、予算は1PRあたり修正1回/5分/10ファイル、CI緑か予算切れで停止して人間にping。同形がCIヘルス監視・デプロイ検証・フィードバッククラスタリングにも適用できると例示（著者の実例）</li>
+<li>2026-06-19 @omarsar0: Steinberger の crabfleet（OpenClawプロジェクト・「エージェント実行のミッションコントロール」）をオーケストレーションの製品化例として紹介——タスクをカード化しtodo/running/human review/doneのボードで動かす、各runはハートビート付きの耐久実行、runが子セッションを生成しサンドボックス内で自分の要約を更新できる。使い捨てクラウドサンドボックス上で走るため無人runから離席しても安全と述べる（<a href="../tools/openclaw.html">openclaw</a> 関連・単一記事の言及）</li>
 </ul>
 <h2>検証済み事実</h2>
 <ul>
@@ -243,18 +248,20 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../business/frontier-ecosystem.html">frontier-ecosystem</a> — Satya「学習ループを早期に作り人的資本×トークン資本を複利させる」の元論</li>
 <li><a href="../concepts/harness-engineering-roadmap.html">harness-engineering-roadmap</a> — ループの一階下＝ハーネスを14ステップで積む構築ロードマップ（同じ@0xCodezによる対の記事）</li>
 <li><a href="../tools/loop-library.html">loop-library</a> — 再利用可能なエージェントループの公開カタログ（Forward Future）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
-<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
-<li><a href="../business/frontier-ecosystem.html">frontier-ecosystem</a></li>
-<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
-<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063865685558903149" rel="noopener" target="_blank">https://x.com/i/web/status/2063865685558903149</a></li>
+<li><a href="../concepts/coding-agent-workflow-styles.html">coding-agent-workflow-styles</a> — 委譲低速ループ／高速制御ループの2類型。本ページはその委譲側の極北</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/loop-library.html">loop-library</a></li>
+<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a></li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
+<li><a href="../business/frontier-ecosystem.html">frontier-ecosystem</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2063865685558903149" rel="noopener" target="_blank">https://x.com/i/web/status/2063865685558903149</a></li>
 <li><a href="https://x.com/i/web/status/2064127981161959567" rel="noopener" target="_blank">https://x.com/i/web/status/2064127981161959567</a></li>
 <li><a href="https://x.com/i/web/status/2064182475920908722" rel="noopener" target="_blank">https://x.com/i/web/status/2064182475920908722</a></li>
 <li><a href="https://x.com/i/web/status/2064374643729773029" rel="noopener" target="_blank">https://x.com/i/web/status/2064374643729773029</a></li>
 <li><a href="https://x.com/i/web/status/2064998499780084154" rel="noopener" target="_blank">https://x.com/i/web/status/2064998499780084154</a></li>
 <li><a href="https://x.com/i/web/status/2064277888216555684" rel="noopener" target="_blank">https://x.com/i/web/status/2064277888216555684</a></li>
 <li><a href="https://x.com/i/web/status/2065034757789073762" rel="noopener" target="_blank">https://x.com/i/web/status/2065034757789073762</a></li>
-<li><a href="https://x.com/i/web/status/2066928783534289358" rel="noopener" target="_blank">https://x.com/i/web/status/2066928783534289358</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2066928783534289358" rel="noopener" target="_blank">https://x.com/i/web/status/2066928783534289358</a></li>
+<li><a href="https://x.com/i/web/status/2068008743153832264" rel="noopener" target="_blank">https://x.com/i/web/status/2068008743153832264</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -398,6 +405,11 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - 2026-06-11 @koutarou_furuno（@sairahul1記事の日本語二次まとめ）: ループ工学の本質を「指示を改善するレイヤー」から「指示を出す仕組みを設計するレイヤー」へのレイヤー上昇として整理。DeepSeek採用にはデータガバナンス・セキュリティの事前確認が必要と警告（ビジネス用途）
 - 2026-06-16 @sydneyrunkle（LangChain）: ループエンジニアリングの焦点を L1・L2（エージェント＋検証）から L3・L4（イベント駆動＋ヒルクライミング）へ移すべきと主張——価値が複利で積み上がるのは、エージェントをエコシステムに埋め込み基準に応じて継続改善させる外側の層だから。@swyx の「loopcraft（loopを積み重ねる技術）」を引用し、Steipete・Boris・Karpathy が独立に「エージェントの潜在力はその周りに作るループにある」という同一結論へ収斂していると指摘（LangChain公式ブログ・自社プリミティブ前提・単一ソース）
 - 2026-06-16 @sydneyrunkle（LangChain）: Satya Nadella のフレーミングを引用——「学習ループを早期に作り、人間の判断とトークン資本を複利させる企業が、模倣困難な優位を築く」。[[business/frontier-ecosystem]] と同一主張の別ルート裏付け
+- 2026-06-19 @omarsar0（Elvis Saravia/DAIR.AI・本記事はClaude併用で執筆）: 良い `/goal` は「プロンプトより契約に近い」——終了状態・到達を証明する根拠・破ってはならない制約・許される作業予算の4点を明示すべきと整理。どれか1つでも曖昧だとモデルが最も楽な解釈で埋め、早期停止・ショートカット・成功の再定義が起きると指摘（著者の整理）
+- 2026-06-19 @omarsar0: Cherny の「Opusを数時間自律運用する」設定を5ステップに整理——①権限の自動承認 ②動的ワークフロー（プロンプトにUltracode投入）で多エージェントへfan-out ③/goal or /loopで継続（両者とも状態を持ち越す）④クラウド（デスクトップ/モバイルアプリ）実行でラップトップを閉じてもセッションを生存させる ⑤エンドツーエンドの自己検証手段を与える（Web=Claude in Chrome / モバイル=シミュレータMCP / バックエンド=ライブサーバー）。⑤が他4つを安全にする鍵だと述べる（著者によるCherny発言の整理）
+- 2026-06-19 @omarsar0: コストの所在が「どのモデル・何トークン」から「ループが何周回るか」へ移ったと指摘。①最適化対象はトークンでなくイテレーション数（cost per finished task=完了タスクあたりコストで測れ）②弱い検証器は最も高価なバグ（緩いと早期停止か無駄な周回でイテレーションを丸ごと浪費）③fail fast はコスト管理（連続失敗の上限がないループは成功でなく口座を空にする）（著者の整理）
+- 2026-06-19 @omarsar0: 具体ループ例「PRお守り（PR babysitter）」——15分ごとに起動し agent-watch ラベルのPRを対象、CI赤が決定論的原因なら修正1回・mainがズレたら1回rebase、予算は1PRあたり修正1回/5分/10ファイル、CI緑か予算切れで停止して人間にping。同形がCIヘルス監視・デプロイ検証・フィードバッククラスタリングにも適用できると例示（著者の実例）
+- 2026-06-19 @omarsar0: Steinberger の crabfleet（OpenClawプロジェクト・「エージェント実行のミッションコントロール」）をオーケストレーションの製品化例として紹介——タスクをカード化しtodo/running/human review/doneのボードで動かす、各runはハートビート付きの耐久実行、runが子セッションを生成しサンドボックス内で自分の要約を更新できる。使い捨てクラウドサンドボックス上で走るため無人runから離席しても安全と述べる（[[tools/openclaw]] 関連・単一記事の言及）
 
 ## 検証済み事実
 
@@ -429,6 +441,7 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[business/frontier-ecosystem]] — Satya「学習ループを早期に作り人的資本×トークン資本を複利させる」の元論
 - [[concepts/harness-engineering-roadmap]] — ループの一階下＝ハーネスを14ステップで積む構築ロードマップ（同じ@0xCodezによる対の記事）
 - [[tools/loop-library]] — 再利用可能なエージェントループの公開カタログ（Forward Future）
+- [[concepts/coding-agent-workflow-styles]] — 委譲低速ループ／高速制御ループの2類型。本ページはその委譲側の極北
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

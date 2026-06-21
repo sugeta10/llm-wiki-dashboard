@@ -41,3 +41,4 @@ flowchart LR
 - [[tools/buy-or-bounce]] — 複数バイヤーペルソナを並行シミュレーションしコンバージョン障壁を特定するスキル。本ページの「発見」に対する「検証」側
 - [[concepts/ai-requirements-definition]] — 「何を作るか・何を捨てるか」を決断する工程への転換。ペルソナ収束は決断の入力になる
 - [[concepts/llm-personality-injection]] — 性格モデルをプロンプトに注入してLLMの振る舞いを変える手法。心理的状態次元の付与と同系統
+- [[concepts/ai-red-teaming]] — 敵対ペルソナ（競合・投資家・怒れる顧客）を演じさせ自社の弱点を攻撃させる応用

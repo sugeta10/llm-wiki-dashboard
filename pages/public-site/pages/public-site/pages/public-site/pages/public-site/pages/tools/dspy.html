@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dspy - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>dspy</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="dspy.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/public-site/pages/public-site/pages/tools/dspy · other · <span title=""></span></div>
+  <article><h1>DSPy</h1>
+<p><strong>DSPy</strong>は、手動のプロンプトエンジニアリングを排除し、プロンプト最適化を機械学習問題として扱うPythonフレームワーク。スタンフォード大学NLPグループが開発。</p>
+<h2>核心思想</h2>
+<table>
+<thead>
+<tr>
+<th>領域</th>
+<th>人手での作業</th>
+<th>DSPyが置き換えるもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ディープラーニング</td>
+<td>特徴量エンジニアリング</td>
+<td>中間層として学習</td>
+</tr>
+<tr>
+<td>DSPy</td>
+<td>プロンプトエンジニアリング</td>
+<td>調整可能プロンプトとして学習</td>
+</tr>
+</tbody>
+</table>
+<p>プロンプトを頑張って作る作業を<strong>最適化問題</strong>に落とし込む。目的関数は微分不可能なブラックボックスでも構わない（勾配フリー最適化を使う）。</p>
+<h2>主要概念</h2>
+<h3>Signature</h3>
+<p>入力・出力の型シグネチャをクラスで定義する。明示的なプロンプト文を書く必要がない。</p>
+<pre><code class="language-python">class NarutoSignature(dspy.Signature):
+    polite_sentence = dspy.InputField(desc=&quot;です・ます調の一文&quot;)
+    rationale = dspy.OutputField(desc=&quot;変換の推論過程&quot;)
+    transformed = dspy.OutputField(desc=&quot;ナルト口調に変換した文&quot;)
+</code></pre>
+<h3>Module</h3>
+<p>SignatureをラップしてエージェントのForwardパスを定義する。<code>dspy.ChainOfThought</code>等のビルトインModuleが使える。</p>
+<h3>Optimizer（最適化器）</h3>
+<p>訓練データ（<code>dspy.Example</code>リスト）と評価指標（スカラー値を返す関数）を与えて、Signatureに最適なプロンプトを自動生成する。</p>
+<h2>主要Optimizer</h2>
+<h3>COPRO</h3>
+<p>勾配フリーで候補プロンプトを反復改善する基本的なOptimizer。</p>
+<pre><code class="language-python">from dspy.teleprompt import COPRO
+prompt_optimizer = COPRO(metric=metric, verbose=True)
+prompt_tuned = prompt_optimizer.compile(model, trainset=trainset, eval_kwargs=kwargs)
+</code></pre>
+<h3>GEPA（進化計算系）</h3>
+<p>評価スコアに加えて<strong>フィードバックテキスト</strong>を利用する進化計算系Optimizer。リフレクション用LLMが改善提案を生成し、それをプロンプト改善に活用する。</p>
+<pre><code class="language-python">reflection_lm = dspy.LM('openai/gpt-4o-mini', temperature=1.0, max_tokens=2048)
+gepa = dspy.GEPA(
+    metric=metric_with_feedback,
+    auto='light',
+    reflection_lm=reflection_lm
+)
+gepa_compiled = gepa.compile(model, trainset=trainset, valset=valset)
+</code></pre>
+<p>COPROよりはるかに詳細なプロンプトを生成する傾向がある。</p>
+<h2>評価指標の設計</h2>
+<p>外部LLMに評価させるパターンが「モダン」とされる（安価なLLMを訓練するために高価なLLMで評価）。</p>
+<pre><code class="language-python">class Assess(dspy.Signature):
+    &quot;&quot;&quot;評価観点をチェックし改善ヒントを返す&quot;&quot;&quot;
+    assessment_transformed = dspy.InputField(desc=&quot;生成されたテキスト&quot;)
+    assessment_question = dspy.InputField(desc=&quot;評価観点の質問&quot;)
+    assessment_answer = dspy.OutputField(desc=&quot;yes / no 判定&quot;)
+    assessment_feedback = dspy.OutputField(desc=&quot;改善ヒント&quot;)
+</code></pre>
+<h2>PyTorchとの比較</h2>
+<p>PyTorchよりもKerasに近い使い心地（高度に抽象化された訓練ループ）。「Define by Run」ではなく宣言的なDefine and Run的な設計に近い。データ・モデル・オプティマイザーの責務分離という思想はPyTorchから影響を受けている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-31: @MakeAI_CEO が「海外のAI研究者界隈で『日本人のプロンプトはDSPyすら知らない化石レベル』と煽る人物がいる」と紹介（出典記事は未取得）。手書きプロンプト文化に対し、DSPyのような<strong>プロンプト最適化を機械化する設計</strong>が先端標準として位置づけられている、という言説の温度感を示す事例。煽り文脈であり技術的主張の中身は未検証</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>手書きプロンプト（<a href="../../../../../../../../../concepts/prompt-engineering.html">prompt-engineering</a>）からDSPyへ移る損益分岐点はどこか——訓練データ・評価指標を用意するコストが、手チューニングを上回る出力量・タスク数は</li>
+<li>DSPyのOptimizer（COPRO/GEPA）と<a href="../../../../../../../../../concepts/eval-loop.html">eval-loop</a>の関係：eval loopが「人が回す品質ゲート」なら、DSPyは「その採点を目的関数にしてプロンプトを自動探索する」自動化版と捉えてよいか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../../../../../concepts/prompt-engineering.html">prompt-engineering</a> — DSPyが自動化しようとしているプロンプト設計技術</li>
+<li><a href="../../../../../../../../../concepts/spec-driven-development.html">spec-driven-development</a> — プロンプト自動化と仕様駆動の関係</li>
+<li><a href="../../../../../../../../../concepts/eval-loop.html">eval-loop</a> — 評価指標で出力を採点するループ。DSPyはそのスコアを最適化の目的関数に使う</li>
+<li><a href="../../../../../../../../../tools/hermes-agent.html">hermes-agent</a> — GEPAオフライン最適化を実装するエージェント基盤</li>
+<li><a href="../../../../../../../../../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a> — DSPy+GEPAでスキル/プロンプト/コードを自動進化させる専用リポ（GEPAはICLR 2026 Oral）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../../../../../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a></li>
+<li><a href="../../../../../../../../../tools/hermes-agent.html">hermes-agent</a></li>
+<li><a href="../../../../../../../../../concepts/spec-driven-development.html">spec-driven-development</a></li>
+<li><a href="../../../../../../../../../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../../../../../../../../../concepts/eval-loop.html">eval-loop</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># DSPy
+
+**DSPy**は、手動のプロンプトエンジニアリングを排除し、プロンプト最適化を機械学習問題として扱うPythonフレームワーク。スタンフォード大学NLPグループが開発。
+
+## 核心思想
+
+| 領域 | 人手での作業 | DSPyが置き換えるもの |
+|------|------------|-----------------|
+| ディープラーニング | 特徴量エンジニアリング | 中間層として学習 |
+| DSPy | プロンプトエンジニアリング | 調整可能プロンプトとして学習 |
+
+プロンプトを頑張って作る作業を**最適化問題**に落とし込む。目的関数は微分不可能なブラックボックスでも構わない（勾配フリー最適化を使う）。
+
+## 主要概念
+
+### Signature
+
+入力・出力の型シグネチャをクラスで定義する。明示的なプロンプト文を書く必要がない。
+
+```python
+class NarutoSignature(dspy.Signature):
+    polite_sentence = dspy.InputField(desc=&quot;です・ます調の一文&quot;)
+    rationale = dspy.OutputField(desc=&quot;変換の推論過程&quot;)
+    transformed = dspy.OutputField(desc=&quot;ナルト口調に変換した文&quot;)
+```
+
+### Module
+
+SignatureをラップしてエージェントのForwardパスを定義する。`dspy.ChainOfThought`等のビルトインModuleが使える。
+
+### Optimizer（最適化器）
+
+訓練データ（`dspy.Example`リスト）と評価指標（スカラー値を返す関数）を与えて、Signatureに最適なプロンプトを自動生成する。
+
+## 主要Optimizer
+
+### COPRO
+
+勾配フリーで候補プロンプトを反復改善する基本的なOptimizer。
+
+```python
+from dspy.teleprompt import COPRO
+prompt_optimizer = COPRO(metric=metric, verbose=True)
+prompt_tuned = prompt_optimizer.compile(model, trainset=trainset, eval_kwargs=kwargs)
+```
+
+### GEPA（進化計算系）
+
+評価スコアに加えて**フィードバックテキスト**を利用する進化計算系Optimizer。リフレクション用LLMが改善提案を生成し、それをプロンプト改善に活用する。
+
+```python
+reflection_lm = dspy.LM(&#x27;openai/gpt-4o-mini&#x27;, temperature=1.0, max_tokens=2048)
+gepa = dspy.GEPA(
+    metric=metric_with_feedback,
+    auto=&#x27;light&#x27;,
+    reflection_lm=reflection_lm
+)
+gepa_compiled = gepa.compile(model, trainset=trainset, valset=valset)
+```
+
+COPROよりはるかに詳細なプロンプトを生成する傾向がある。
+
+## 評価指標の設計
+
+外部LLMに評価させるパターンが「モダン」とされる（安価なLLMを訓練するために高価なLLMで評価）。
+
+```python
+class Assess(dspy.Signature):
+    &quot;&quot;&quot;評価観点をチェックし改善ヒントを返す&quot;&quot;&quot;
+    assessment_transformed = dspy.InputField(desc=&quot;生成されたテキスト&quot;)
+    assessment_question = dspy.InputField(desc=&quot;評価観点の質問&quot;)
+    assessment_answer = dspy.OutputField(desc=&quot;yes / no 判定&quot;)
+    assessment_feedback = dspy.OutputField(desc=&quot;改善ヒント&quot;)
+```
+
+## PyTorchとの比較
+
+PyTorchよりもKerasに近い使い心地（高度に抽象化された訓練ループ）。「Define by Run」ではなく宣言的なDefine and Run的な設計に近い。データ・モデル・オプティマイザーの責務分離という思想はPyTorchから影響を受けている。
+
+## 観察ログ（未検証）
+
+- 2026-05-31: @MakeAI_CEO が「海外のAI研究者界隈で『日本人のプロンプトはDSPyすら知らない化石レベル』と煽る人物がいる」と紹介（出典記事は未取得）。手書きプロンプト文化に対し、DSPyのような**プロンプト最適化を機械化する設計**が先端標準として位置づけられている、という言説の温度感を示す事例。煽り文脈であり技術的主張の中身は未検証
+
+## 問い
+
+- 手書きプロンプト（[[concepts/prompt-engineering]]）からDSPyへ移る損益分岐点はどこか——訓練データ・評価指標を用意するコストが、手チューニングを上回る出力量・タスク数は
+- DSPyのOptimizer（COPRO/GEPA）と[[concepts/eval-loop]]の関係：eval loopが「人が回す品質ゲート」なら、DSPyは「その採点を目的関数にしてプロンプトを自動探索する」自動化版と捉えてよいか
+
+## 関連
+
+- [[concepts/prompt-engineering]] — DSPyが自動化しようとしているプロンプト設計技術
+- [[concepts/spec-driven-development]] — プロンプト自動化と仕様駆動の関係
+- [[concepts/eval-loop]] — 評価指標で出力を採点するループ。DSPyはそのスコアを最適化の目的関数に使う
+- [[tools/hermes-agent]] — GEPAオフライン最適化を実装するエージェント基盤
+- [[tools/hermes-agent-self-evolution]] — DSPy+GEPAでスキル/プロンプト/コードを自動進化させる専用リポ（GEPAはICLR 2026 Oral）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

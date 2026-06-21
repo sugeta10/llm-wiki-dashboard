@@ -42,3 +42,4 @@
 - [[tools/claude-code-subagents]] — Council 実装基盤（並列サブエージェント）
 - [[concepts/multi-agent-patterns]] — より広いマルチエージェント設計パターン（Orchestrator-Worker等）
 - [[concepts/claude-skills]] — Claude Code スキルとして実装可能な形式
+- [[concepts/ai-red-teaming]] — 単一の敵役を立てて弱点を攻撃させる手法。協議でなく敵対視点で盲点を突く対の発想

@@ -44,3 +44,4 @@ vibe coding がモデルの性能向上で「おもちゃ」から「唯一の�
 - [[tools/hyperframes]] — 動画をHTMLとして書きエージェントにレンダリングさせる（本記事の「video as HTML」）
 - [[concepts/loop-engineering]] — 同著者が分析した「ループエンジニアリング」概念（ループ進化5段階・コスト・スキル）
 - [[concepts/spec-driven-development]] — 計画先行・仕様を起点にする思想の重なり
+- [[concepts/coding-agent-workflow-styles]] — 「手をやめてシグナルになる」は委譲低速ループ側。両極を俯瞰する2類型の見取り図

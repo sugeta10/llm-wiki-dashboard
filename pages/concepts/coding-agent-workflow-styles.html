@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>coding-agent-workflow-styles - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>coding-agent-workflow-styles</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="coding-agent-workflow-styles.md">Markdownで表示</a></div>
+  <div class="meta">concepts/coding-agent-workflow-styles · concepts · <span title="2026-06-22">今日</span></div>
+  <article><h1>コーディングエージェント運用の2類型（高速制御 vs 委譲低速）</h1>
+<p>コーディングエージェントをヘビーに使って満足度が高い人は、両極の2つの型に分かれるという観察。中間（部分的に委譲しつつコードも掌握しようとする）よりも、どちらかの極に振り切ったほうが快適に回るという経験則。軸は「人間がコードをどれだけ掌握するか × ループの速さ」。</p>
+<ul>
+<li><strong>高速制御ループ（Controlled fast loops）</strong>: 1〜2分の短いサイクルで、ほぼシングルスレッド。コードは人間が完全に掌握し、エージェントは「速くタイプする道具」として使う。レビュー負荷を増やさず、人間が常に流れの中にいる。</li>
+<li><strong>委譲低速ループ（Delegated slow loops）</strong>: エージェントに任せて軽く誘導（nudge）しながら進める。人間はループの外に出て、量はエージェントが供給する。</li>
+</ul>
+<p>委譲低速ループの極北が <a href="../concepts/loop-engineering.html">loop-engineering</a> で、スケジューラー＋モデル＋フィードバックの三つ組で人間がループの外に出る。<a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a> の「人間は手をやめてシグナルになる」も委譲側に位置づく。一方の高速制御ループは、エージェントを並列構成する <a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> とは逆に、シングルスレッドで掌握し続けるスタイル。この2類型は、どの運用スタックを選ぶかを「自分がどちらの極で快適か」から逆算する見取り図になる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-20: @andy_matuschak が、コーディングエージェントをヘビーに使う友人のうち満足度が高い層は (a) 高速制御ループ と (b) 委譲低速ループ の「distant な2陣営」に分かれると観察。(b) の説明は元投稿のリンクで途切れており「Nudging along」までしか取得できていない（詳細未取得）。Notion の Simon Last（@simonlast）による「大規模プロジェクトでコーディングエージェントを運用して学んだこと。半年前のアドバイスの多くと矛盾する」という連投への返信として投稿された。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>中間（部分委譲しつつ掌握）が本当に最も不満を生むのか。それとも単に2つの成功パターンが目立つだけで中間も成立するのか</li>
+<li>自分はどちらの極で快適か。タスクの性質（探索的か定型か）で使い分けるべきか</li>
+<li>(b) 委譲低速ループの具体的な進め方（nudge の頻度・粒度）を、元スレッドや <a href="../concepts/loop-engineering.html">loop-engineering</a> から補完したい</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — 委譲低速ループの極北。人間がループの外に出る工学的転換</li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a> — 人間が手をやめてシグナルになる委譲側の総合スタック</li>
+<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — 複数エージェントの並列運用フレーム。高速制御ループとは逆方向のスタイル</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — エージェントが計画・実装・検証を自律ループする開発スタイル</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2068374510332477469" rel="noopener" target="_blank">https://x.com/i/web/status/2068374510332477469</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># コーディングエージェント運用の2類型（高速制御 vs 委譲低速）
+
+コーディングエージェントをヘビーに使って満足度が高い人は、両極の2つの型に分かれるという観察。中間（部分的に委譲しつつコードも掌握しようとする）よりも、どちらかの極に振り切ったほうが快適に回るという経験則。軸は「人間がコードをどれだけ掌握するか × ループの速さ」。
+
+- **高速制御ループ（Controlled fast loops）**: 1〜2分の短いサイクルで、ほぼシングルスレッド。コードは人間が完全に掌握し、エージェントは「速くタイプする道具」として使う。レビュー負荷を増やさず、人間が常に流れの中にいる。
+- **委譲低速ループ（Delegated slow loops）**: エージェントに任せて軽く誘導（nudge）しながら進める。人間はループの外に出て、量はエージェントが供給する。
+
+委譲低速ループの極北が [[loop-engineering]] で、スケジューラー＋モデル＋フィードバックの三つ組で人間がループの外に出る。[[agentic-engineering-workflow]] の「人間は手をやめてシグナルになる」も委譲側に位置づく。一方の高速制御ループは、エージェントを並列構成する [[claude-code-orchestration]] とは逆に、シングルスレッドで掌握し続けるスタイル。この2類型は、どの運用スタックを選ぶかを「自分がどちらの極で快適か」から逆算する見取り図になる。
+
+## 観察ログ（未検証）
+
+- 2026-06-20: @andy_matuschak が、コーディングエージェントをヘビーに使う友人のうち満足度が高い層は (a) 高速制御ループ と (b) 委譲低速ループ の「distant な2陣営」に分かれると観察。(b) の説明は元投稿のリンクで途切れており「Nudging along」までしか取得できていない（詳細未取得）。Notion の Simon Last（@simonlast）による「大規模プロジェクトでコーディングエージェントを運用して学んだこと。半年前のアドバイスの多くと矛盾する」という連投への返信として投稿された。
+
+## 問い
+
+- 中間（部分委譲しつつ掌握）が本当に最も不満を生むのか。それとも単に2つの成功パターンが目立つだけで中間も成立するのか
+- 自分はどちらの極で快適か。タスクの性質（探索的か定型か）で使い分けるべきか
+- (b) 委譲低速ループの具体的な進め方（nudge の頻度・粒度）を、元スレッドや [[loop-engineering]] から補完したい
+
+## 関連
+
+- [[loop-engineering]] — 委譲低速ループの極北。人間がループの外に出る工学的転換
+- [[agentic-engineering-workflow]] — 人間が手をやめてシグナルになる委譲側の総合スタック
+- [[claude-code-orchestration]] — 複数エージェントの並列運用フレーム。高速制御ループとは逆方向のスタイル
+- [[agentic-coding]] — エージェントが計画・実装・検証を自律ループする開発スタイル
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
