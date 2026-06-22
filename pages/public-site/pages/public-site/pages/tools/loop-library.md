@@ -37,3 +37,4 @@
 - [[concepts/loop-engineering]] — エージェントループを設計する工学（5段階進化史・6構成要素・MVL・失敗パターン）
 - [[tools/claude-code-goal]] — ループの停止条件を担う `/goal`（収録ループの構成要素になりうる）
 - [[concepts/multi-agent-patterns]] — 複数ループ/エージェントを編成するパターン
+- [[concepts/goal-loop-routine]] — goal/loop/routine の動詞分類。本カタログの一部ループ（⑫〜⑮）は@mvanhornが本ライブラリから抜いて紹介している

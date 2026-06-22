@@ -74,4 +74,5 @@ claude -p "/goal CHANGELOG.md has an entry for every PR merged this week"
 - [[concepts/agentic-coding]] — AIエージェントの自律実行スタイル
 - [[concepts/claude-code-dynamic-workflows]] — `/goal`（ハード完了要件）・`/loop` と組み合わせてworkflowを強化する
 - [[concepts/loop-engineering]] — /goal がループエンジニアリング Stage 4 の具体実装として位置づけられる
+- [[concepts/goal-loop-routine]] — goal/loop/routine の動詞の使い分け。/goal は「条件を満たすまで走って止まる」動詞
 - [[models/claude-fable-5]] — `/goal` にゴールだけ与えて放置し、全6コース54レッスンの教材サイト「言語の庭」が自走で完成した実証事例（水島宏太）

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>goal-loop-routine - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>goal-loop-routine</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="goal-loop-routine.md">Markdownで表示</a></div>
+  <div class="meta">concepts/goal-loop-routine · concepts · <span title="2026-06-22">今日</span></div>
+  <article><h1>goal / loop / routine の使い分け（3つの動詞）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: エージェント自動化の正体は3つの動詞に分かれる——<code>goal</code>=条件を満たすまで走って止まる、<code>loop</code>=自分がいる間タイマーで繰り返す、<code>routine</code>=自分がいない間クラウドで走る。動詞を取り違えるとコマンドが空振りするので、まず「いつ止まるか」で選ぶ。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  S[&quot;状態を読む&quot;] --&gt; A[&quot;行動する&quot;]
+  A --&gt; V{&quot;検証器: 良い出力か?&quot;}
+  V --&gt;|&quot;不合格&quot;| B{&quot;予算/上限が残っているか?&quot;}
+  V --&gt;|&quot;合格&quot;| Stop{&quot;どの動詞か&quot;}
+  B --&gt;|&quot;残あり&quot;| S
+  B --&gt;|&quot;残なし&quot;| Kill[&quot;強制停止（請求書が来る前に）&quot;]
+  Stop --&gt;|&quot;goal: 条件達成&quot;| Done[&quot;停止&quot;]
+  Stop --&gt;|&quot;loop: セッション中&quot;| S
+  Stop --&gt;|&quot;routine: 次のスケジュール&quot;| Wait[&quot;待機→再起動&quot;]</pre>
+<p>ループ自動化を始めるときの最初のつまずきは、機能の理解でなく<strong>呼び方（動詞）の取り違え</strong>にある。判断軸は「いつ止まるか／自分はその場にいるか」の2点で、ここを外すと存在しないコマンドを叩いて空振りする。区別の最も平易な言い回しは TikTok の inyourhandmedia 発で「Goal=成果が出るまで働き続ける／Loop=自分がここにいる間タスクを繰り返す／Routine=自分がいない間も働き続ける」。</p>
+<table>
+<thead>
+<tr>
+<th>動詞</th>
+<th>止まる条件</th>
+<th>自分の立ち位置</th>
+<th>Claude Code</th>
+<th>Codex</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>/goal &lt;condition&gt;</code></strong></td>
+<td>検証可能な条件がtrueになったら停止</td>
+<td>その場にいてもいなくてもよい</td>
+<td>v2.1.139 で実装。毎ターン後に別の高速モデルが「本当に完了か」を判定</td>
+<td>CLI v0.128.0 で実装（set/pause/resume/clear 操作付き）</td>
+</tr>
+<tr>
+<td><strong><code>/loop &lt;interval&gt; &lt;prompt&gt;</code></strong></td>
+<td>セッションを開いている間タイマーで反復</td>
+<td><strong>その場にいて手で見ている</strong></td>
+<td>例: <code>/loop 5m check the deploy</code></td>
+<td><code>/loop</code> は未実装。<code>codex exec</code> をシェルループで包むか、分間隔の Thread Automation</td>
+</tr>
+<tr>
+<td><strong><code>/schedule &lt;description&gt;</code></strong></td>
+<td>クラウドの Routine としてスケジュール起動</td>
+<td><strong>いない（ラップトップを閉じてよい）</strong></td>
+<td>例: <code>/schedule daily PR review at 9am</code></td>
+<td>アプリの Automations（standalone/project/thread・daily/weekly/cron・結果は Triage inbox）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>最大の罠: どちらのツールにも <code>/routine</code> コマンドは無い。</strong> スケジューラは Claude Code では <code>/schedule</code>、Codex ではアプリの Automations。動詞さえ合えば、後述のどのループも素直に動く。</p>
+<p><strong>cron と何が違うのか</strong>: スケジュール実行（cron）は1975年からある。新しいのは<strong>ループ本体に入った意思決定者</strong>——現在の状態を読み、行動し、効いたか確かめ、続けるか決める層。この「決める」だけが新規で、残り（起動・配線）は全部 plumbing にすぎない。</p>
+<p><strong>検証器がゲーム全体</strong>: 良い出力と悪い出力を区別できないループは、間違いを速く量産するだけで仕事を肩代わりしない。だから <code>/goal</code> はワーカー自身に採点させず別モデルを審判に立てる。自分の宿題を採点するエージェントは、落ちるテストを消して「完了」と言う。</p>
+<p><strong>今夜から始める3手</strong>: 全部を揃える必要はなく、各種1つずつで十分。①build-test-fix を <code>/loop</code> で回し、見ている前で何かを測定可能に改善させる ②5分巡回メンテナを <code>/loop</code> で作業中に回す ③write-loops PR ルーティンを <code>/schedule</code> で夜通し回し、朝に仕上がりを受け取る。それぞれに<strong>予算と検証器</strong>を必ず付ける。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-20 @mvanhorn: Part 2 として「人々が実際に走らせている15のループ」を X/TikTok/Reddit/YouTube/GitHub 横断8検索で収集。前作 Part 1（Peter Steinberger vs Boris Cherny、3.6M views）の続編（X bookmark 4,135・impression 399K、2026-06-22時点）</li>
+<li>2026-06-20 @mvanhorn: 収集された頻出ループ形（一部は <a href="../tools/loop-library.html">loop-library</a> と重複）——①build-test-fix ペア（builderとcheckerが綺麗になるまで往復）②Boris の verifier ループ（CC+上位モデル+検証器を回す・@bcherny本人の言葉で781 likes）③loop-engineer スターターテンプレ（AI Jason・15,436 views）④5分リポジトリメンテナ（Peter Steinberger・直近30日で859 PRマージ・受理率95%）⑤plan-generate-verify-fix の有界版（5回上限で暴走を止める）</li>
+<li>2026-06-20 @mvanhorn: ⑥roborev=コミット毎に背景レビューを起動するOSS（Go・1,410 stars）⑦goal-meta-skill=曖昧な依頼を「結果・検証法・触るな・いつ止まるか」を備えた厳密なgoalへ変換するスキル（数日で600+ stars）。「エージェントが馬鹿なのでなく指示が曖昧なだけ」⑧1日15,000通のホテルメール処理ループ（r/LangChain）⑨anti-spinループ（no-progress検出・retry上限・flip-flop検出・予算を明示）</li>
+<li>2026-06-20 @mvanhorn: catalog から抜いた4本——⑫production error sweep（ログを読み実エラーとノイズを分離しテスト付きで修正→PR）⑬quality streak（初回グリーンで止めずN連続成功で初めて勝利宣言・「1回はまぐれ、連勝が信頼性」）⑭Clodex=CodexにClaudeのPRを反証レビューさせ2モデルファミリーの合意を要求（<code>--max-iter 5</code> <code>--threshold medium</code>）⑮completion-contract=作業前に「完了の定義と各要件の証拠」を契約として書かせ証拠なしの成功宣言を拒否</li>
+<li>2026-06-20 @mvanhorn: コスト警告——Uber は1ツール月$1,500で上限を設定（年間AI予算を4ヶ月で枯渇後）。あるRedditユーザーは1コマンドで一晩$6,000を焼いた（1,273 upvotes）。YouTubeコメント「while (you have tokens): Burn them in a loop!」（TrMarwane・196 likes）。だから全 goal に予算、全 loop に上限を付ける（<a href="../concepts/loop-engineering.html">loop-engineering</a> のハードストップと同型）</li>
+<li>2026-06-20 @mvanhorn: 検証器について「良い出力と悪い出力を区別できないループは、ただ間違うのを速く自動化するだけ。ループを書くのは簡単、中の検証器が難しい部分」（@ahmetbilicanxyz 引用）。最強のループ（Boris の verifier・build-test-fix・Clodex）はいずれも独立した第二の目をループ内に置いている</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このwikiの launchd ingest は3動詞のどれか（セッション外で走る＝routine相当）。停止条件と予算上限は <a href="../concepts/loop-engineering.html">loop-engineering</a> の4条件テストを満たして設計されているか</li>
+<li><code>/goal</code> の別モデル審判（Haiku評価器・<a href="../tools/claude-code-goal.html">claude-code-goal</a>）と、このwikiの ingest 検証ゲート（具体例/数字/出典/一文結論の4条件）は同じ「ワーカーに自己採点させない」思想か。審判を別モデルにする価値はあるか</li>
+<li>15ループのうち自分の運用に移植する価値があるのはどれか（特に⑫production error sweep ＝ログトリアージ、⑭Clodex ＝二モデル合意レビュー）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — ループ設計の工学（5段階史・4条件テスト・6構成要素・失敗パターン）。本ページはその「動詞の取り違え」だけを切り出した実務分類</li>
+<li><a href="../tools/loop-library.html">loop-library</a> — Forward Future（Matthew Berman）の公開ループカタログ。本ページの⑫〜⑮はここから抜かれている</li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — <code>/goal</code> の具体実装（Haiku評価器付き停止条件コマンド）</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 「生成→採点→閾値未満で止める」検証器の一般形。3動詞すべてに必須の中身</li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a> — 同著者(@mvanhorn)の上位ワークフロー論（plan.md先行・人間はシグナルに徹する）</li>
+<li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a> — Codex 側のエージェントループ内部実装</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/loop-library.html">loop-library</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
+<li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2068426104088748331" rel="noopener" target="_blank">https://x.com/i/web/status/2068426104088748331</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># goal / loop / routine の使い分け（3つの動詞）
+
+&gt; **TL;DR**: エージェント自動化の正体は3つの動詞に分かれる——`goal`=条件を満たすまで走って止まる、`loop`=自分がいる間タイマーで繰り返す、`routine`=自分がいない間クラウドで走る。動詞を取り違えるとコマンドが空振りするので、まず「いつ止まるか」で選ぶ。
+
+```mermaid
+flowchart TD
+  S[&quot;状態を読む&quot;] --&gt; A[&quot;行動する&quot;]
+  A --&gt; V{&quot;検証器: 良い出力か?&quot;}
+  V --&gt;|&quot;不合格&quot;| B{&quot;予算/上限が残っているか?&quot;}
+  V --&gt;|&quot;合格&quot;| Stop{&quot;どの動詞か&quot;}
+  B --&gt;|&quot;残あり&quot;| S
+  B --&gt;|&quot;残なし&quot;| Kill[&quot;強制停止（請求書が来る前に）&quot;]
+  Stop --&gt;|&quot;goal: 条件達成&quot;| Done[&quot;停止&quot;]
+  Stop --&gt;|&quot;loop: セッション中&quot;| S
+  Stop --&gt;|&quot;routine: 次のスケジュール&quot;| Wait[&quot;待機→再起動&quot;]
+```
+
+ループ自動化を始めるときの最初のつまずきは、機能の理解でなく**呼び方（動詞）の取り違え**にある。判断軸は「いつ止まるか／自分はその場にいるか」の2点で、ここを外すと存在しないコマンドを叩いて空振りする。区別の最も平易な言い回しは TikTok の inyourhandmedia 発で「Goal=成果が出るまで働き続ける／Loop=自分がここにいる間タスクを繰り返す／Routine=自分がいない間も働き続ける」。
+
+| 動詞 | 止まる条件 | 自分の立ち位置 | Claude Code | Codex |
+|------|----------|------------|-------------|-------|
+| **`/goal &lt;condition&gt;`** | 検証可能な条件がtrueになったら停止 | その場にいてもいなくてもよい | v2.1.139 で実装。毎ターン後に別の高速モデルが「本当に完了か」を判定 | CLI v0.128.0 で実装（set/pause/resume/clear 操作付き） |
+| **`/loop &lt;interval&gt; &lt;prompt&gt;`** | セッションを開いている間タイマーで反復 | **その場にいて手で見ている** | 例: `/loop 5m check the deploy` | `/loop` は未実装。`codex exec` をシェルループで包むか、分間隔の Thread Automation |
+| **`/schedule &lt;description&gt;`** | クラウドの Routine としてスケジュール起動 | **いない（ラップトップを閉じてよい）** | 例: `/schedule daily PR review at 9am` | アプリの Automations（standalone/project/thread・daily/weekly/cron・結果は Triage inbox） |
+
+**最大の罠: どちらのツールにも `/routine` コマンドは無い。** スケジューラは Claude Code では `/schedule`、Codex ではアプリの Automations。動詞さえ合えば、後述のどのループも素直に動く。
+
+**cron と何が違うのか**: スケジュール実行（cron）は1975年からある。新しいのは**ループ本体に入った意思決定者**——現在の状態を読み、行動し、効いたか確かめ、続けるか決める層。この「決める」だけが新規で、残り（起動・配線）は全部 plumbing にすぎない。
+
+**検証器がゲーム全体**: 良い出力と悪い出力を区別できないループは、間違いを速く量産するだけで仕事を肩代わりしない。だから `/goal` はワーカー自身に採点させず別モデルを審判に立てる。自分の宿題を採点するエージェントは、落ちるテストを消して「完了」と言う。
+
+**今夜から始める3手**: 全部を揃える必要はなく、各種1つずつで十分。①build-test-fix を `/loop` で回し、見ている前で何かを測定可能に改善させる ②5分巡回メンテナを `/loop` で作業中に回す ③write-loops PR ルーティンを `/schedule` で夜通し回し、朝に仕上がりを受け取る。それぞれに**予算と検証器**を必ず付ける。
+
+## 観察ログ（未検証）
+
+- 2026-06-20 @mvanhorn: Part 2 として「人々が実際に走らせている15のループ」を X/TikTok/Reddit/YouTube/GitHub 横断8検索で収集。前作 Part 1（Peter Steinberger vs Boris Cherny、3.6M views）の続編（X bookmark 4,135・impression 399K、2026-06-22時点）
+- 2026-06-20 @mvanhorn: 収集された頻出ループ形（一部は [[tools/loop-library]] と重複）——①build-test-fix ペア（builderとcheckerが綺麗になるまで往復）②Boris の verifier ループ（CC+上位モデル+検証器を回す・@bcherny本人の言葉で781 likes）③loop-engineer スターターテンプレ（AI Jason・15,436 views）④5分リポジトリメンテナ（Peter Steinberger・直近30日で859 PRマージ・受理率95%）⑤plan-generate-verify-fix の有界版（5回上限で暴走を止める）
+- 2026-06-20 @mvanhorn: ⑥roborev=コミット毎に背景レビューを起動するOSS（Go・1,410 stars）⑦goal-meta-skill=曖昧な依頼を「結果・検証法・触るな・いつ止まるか」を備えた厳密なgoalへ変換するスキル（数日で600+ stars）。「エージェントが馬鹿なのでなく指示が曖昧なだけ」⑧1日15,000通のホテルメール処理ループ（r/LangChain）⑨anti-spinループ（no-progress検出・retry上限・flip-flop検出・予算を明示）
+- 2026-06-20 @mvanhorn: catalog から抜いた4本——⑫production error sweep（ログを読み実エラーとノイズを分離しテスト付きで修正→PR）⑬quality streak（初回グリーンで止めずN連続成功で初めて勝利宣言・「1回はまぐれ、連勝が信頼性」）⑭Clodex=CodexにClaudeのPRを反証レビューさせ2モデルファミリーの合意を要求（`--max-iter 5` `--threshold medium`）⑮completion-contract=作業前に「完了の定義と各要件の証拠」を契約として書かせ証拠なしの成功宣言を拒否
+- 2026-06-20 @mvanhorn: コスト警告——Uber は1ツール月$1,500で上限を設定（年間AI予算を4ヶ月で枯渇後）。あるRedditユーザーは1コマンドで一晩$6,000を焼いた（1,273 upvotes）。YouTubeコメント「while (you have tokens): Burn them in a loop!」（TrMarwane・196 likes）。だから全 goal に予算、全 loop に上限を付ける（[[concepts/loop-engineering]] のハードストップと同型）
+- 2026-06-20 @mvanhorn: 検証器について「良い出力と悪い出力を区別できないループは、ただ間違うのを速く自動化するだけ。ループを書くのは簡単、中の検証器が難しい部分」（@ahmetbilicanxyz 引用）。最強のループ（Boris の verifier・build-test-fix・Clodex）はいずれも独立した第二の目をループ内に置いている
+
+## 問い
+
+- このwikiの launchd ingest は3動詞のどれか（セッション外で走る＝routine相当）。停止条件と予算上限は [[concepts/loop-engineering]] の4条件テストを満たして設計されているか
+- `/goal` の別モデル審判（Haiku評価器・[[tools/claude-code-goal]]）と、このwikiの ingest 検証ゲート（具体例/数字/出典/一文結論の4条件）は同じ「ワーカーに自己採点させない」思想か。審判を別モデルにする価値はあるか
+- 15ループのうち自分の運用に移植する価値があるのはどれか（特に⑫production error sweep ＝ログトリアージ、⑭Clodex ＝二モデル合意レビュー）
+
+## 関連
+
+- [[concepts/loop-engineering]] — ループ設計の工学（5段階史・4条件テスト・6構成要素・失敗パターン）。本ページはその「動詞の取り違え」だけを切り出した実務分類
+- [[tools/loop-library]] — Forward Future（Matthew Berman）の公開ループカタログ。本ページの⑫〜⑮はここから抜かれている
+- [[tools/claude-code-goal]] — `/goal` の具体実装（Haiku評価器付き停止条件コマンド）
+- [[concepts/eval-loop]] — 「生成→採点→閾値未満で止める」検証器の一般形。3動詞すべてに必須の中身
+- [[concepts/agentic-engineering-workflow]] — 同著者(@mvanhorn)の上位ワークフロー論（plan.md先行・人間はシグナルに徹する）
+- [[concepts/codex-agent-loop]] — Codex 側のエージェントループ内部実装
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

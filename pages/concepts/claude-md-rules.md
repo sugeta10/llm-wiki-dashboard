@@ -104,3 +104,4 @@ Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → �
 - [[concepts/claude-md-persistent-contract]] — 同じKarpathy素材を「永続契約」フレームで非エンジニア向けに5領域21指示へ再構成したもの
 - [[concepts/ai-session-handover]] — AGENTS.md/カスタム指示に「引き継ぎ」エクスポート指示を仕込むパターン
 - [[concepts/claude-code-task-delegation]] — CLAUDE.mdへのルール記述を「環境を設計する」発想の中核に位置づけた活用法50選
+- [[concepts/agent-reflection-layer]] — 確信度の自己申告（モニタリング）と失敗の可視化（Rule 12）を省察層としてCLAUDE.mdに組み込む設計

@@ -35,3 +35,4 @@ flowchart LR
 - [[concepts/ai-requirements-definition]] — 整理・構造化をAIが肩代わりし人間は決断へ、という転換。人間側に残る構造化力の輪郭を考える隣接概念
 - [[business/org-design-intelligence]] — 組織を目標→評価→基準で設計し直す議論。本ページの「組織の内部構造の分解」と同じ対象を組織設計の側から扱う
 - [[concepts/output-first-learning]] — 学びを構造化して他者に届く形へ昇華する実践。構造化力の出力面と地続き
+- [[concepts/agent-reflection-layer]] — 同著者(@kenichiota0711)のメタ認知連載。判断を言語化し構造（垂直の層）として外に出す設計論

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hyperframes - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>hyperframes</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="hyperframes.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/tools/hyperframes · other · <span title=""></span></div>
+  <article><h1>Hyperframes</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: HTMLに<code>data-*</code>属性でタイミング情報を付けるだけで決定論的にMP4を出力する、HeyGen製OSS（Apache 2.0）の動画レンダリングフレームワーク。「LLMの母語＝Web」を動画タイムラインに変換することで、AIエージェントが人手介入なしに動画を作れるようにした。</p>
+</blockquote>
+<p>After EffectsやDaVinciがタイムライン・レイヤー・キーフレームをXML/JSON/バイナリで持つのは「人間が視覚的に配置する」前提の設計で、LLMには学習サンプルが乏しく外国語に等しかった。Hyperframesはこの障壁を、LLMが圧倒的な学習量を持つHTML/CSS/JS（GSAP・Lottie・Three.js等のWeb資産がそのまま使える）に動画の状態を載せ替えることで解く。AIにとって「書き慣れた言語で動画を書く」状況を作り出した点が本質で、土台が整ったのは2025年11月の<a href="../../../../../../../../../../../models/claude-opus-4-8.html">Claude Opus 4.5</a>/Gemini 3世代でコード生成が「動画として成立する品質」を超えた瞬間だとされる。</p>
+<p>「AIにGUIを直接触らせず、LLMが得意なテキスト表現を中間層に挟む」という構図は <a href="../../../../../../../../../../../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a>（MNP）と同型で、HyperframesはHTML+<code>data-*</code>属性をその中間記法として採用した実例と読める。</p>
+<h2>仕組み</h2>
+<ul>
+<li><strong>タイミング記述</strong>: <code>data-composition-id</code>（識別子）・<code>data-start</code>（開始秒）・<code>data-duration</code>（表示秒）・<code>data-track-index</code>（レイヤー重なり順）をHTML要素に付与。GSAPのタイムラインを<code>window.__timelines[id]</code>に登録してアニメーションを定義する。</li>
+<li><strong>決定論レンダリング</strong>: 現在時刻ではなく<code>frame = floor(time × fps)</code>のフレーム番号を絶対基準にする。ヘッドレスChromeの<code>beginFrame</code> APIで1フレームずつキャプチャ→FFmpegで圧縮。同一HTMLからどのマシンでも100%同一のMP4が出るため、CI/CDでの動画自動生成に向く。</li>
+<li><strong>必要環境</strong>: Node.js 22+・FFmpeg・<a href="../../../../../../../../../../../tools/claude-code.html">claude-code</a>の3つ（Dockerは任意）。</li>
+</ul>
+<h2>主なCLI操作</h2>
+<table>
+<thead>
+<tr>
+<th>コマンド</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npx skills add heygen-com/hyperframes</code></td>
+<td>Claude Codeに使い方スキル（<code>/hyperframes</code>・<code>/hyperframes-cli</code>・<code>/gsap</code>）を追加</td>
+</tr>
+<tr>
+<td><code>npx hyperframes init &lt;name&gt; [--example &lt;tpl&gt;]</code></td>
+<td>プロジェクト初期化（<code>meta.json</code>/<code>index.html</code>/<code>compositions/</code>/<code>assets/</code>）。<code>--video</code>指定で文字起こし字幕テンプレ生成</td>
+</tr>
+<tr>
+<td><code>npx hyperframes preview</code></td>
+<td>ブラウザにHyperframes Studio（プレビュー+タイムライン）を起動、保存即リロード</td>
+</tr>
+<tr>
+<td><code>npx hyperframes add &lt;block&gt;</code></td>
+<td>42種以上のビルトインブロックを<code>compositions/</code>に投入</td>
+</tr>
+<tr>
+<td><code>npx hyperframes lint</code></td>
+<td>構造エラーを特定（長大ログをLLMに貼る前にこれを実行するのが推奨）</td>
+</tr>
+<tr>
+<td><code>npx hyperframes render --output &lt;file&gt;.mp4</code></td>
+<td>MP4書き出し（デフォルト1920×1080/30fps）</td>
+</tr>
+</tbody>
+</table>
+<h2>テンプレート・ブロック</h2>
+<ul>
+<li><strong>スタータープロジェクト9種</strong>: 16:9が7種（warm-grain/play-mode/swiss-grid/kinetic-type/decision-tree/product-promo/nyt-graph）、9:16が1種（vignelli）、白紙のblank。</li>
+<li><strong>ブロック42種以上</strong>: SNSオーバーレイ7種（Instagram/TikTok Follow・YouTube Lower Third・Spotify Now Playing・X/Reddit Post Card・macOS Notification）、シェーダートランジション14種、CSSトランジション13カテゴリ、エフェクト3種。Web上のCodePen/Dribbble等の作例を「コピペ＋タイミング付与」で動画素材化できる。</li>
+</ul>
+<h2>エージェント前提の設計（vs Remotion）</h2>
+<ul>
+<li>CLIがデフォルト<strong>非対話モード</strong>で、フラグを渡せばAIが人間の介入なしに完走できる。</li>
+<li>素のHTMLのみで書ける（RemotionはReact必須＝コードが厚くLLMが間違えやすい）。</li>
+<li>Apache 2.0で商用無制限（Remotionは規模次第で商用有料ライセンス）。</li>
+<li>「人間のReactエンジニアが自分で書くならRemotion、AIに書かせるならHyperframes」が現時点の整理。</li>
+</ul>
+<h2>プロンプト4型（公式推奨）</h2>
+<ol>
+<li><strong>Cold start</strong>: ゼロから指示（尺・アスペクト比・雰囲気・要素を併記すると精度向上）</li>
+<li><strong>Warm start</strong>: PDF/GitHub/CSV等の素材を渡して要約しつつ動画化（公式は「出力品質が高い」と明記）</li>
+<li><strong>Format-specific</strong>: TikTok/YouTubeショート等のフォーマット先指定</li>
+<li><strong>Iterate</strong>: 既存動画に対話で修正を重ねる（Claudeが文脈を保持）</li>
+</ol>
+<h2>HeyGenの戦略的意図</h2>
+<p>HeyGenの本業はAIアバター動画だが「アバターは動画の半分」であり、周囲のモーショングラフィックス制作がユーザーの詰まりポイントだった。その制作層をOSSで配布してコミュニティに磨かせ、自社有料プロダクト（Video Agent）では磨かれたHyperframes＋アバターの両輪を提供する青写真。「HTMLで動画を書く」標準を自社が握る狙いで、Linux/Kubernetes/Reactの「OSSで覇権を取る」パターンの動画版と位置づけられる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-04-16: HeyGenのVP of Product &amp; Agent Engineering Bin Liu（旧Alisa共同創業者、2025年9月HeyGenに買収）がGitHubで公開。著者（@MakeAI_CEO）は「リリース24時間でX上が祭り状態」と記述（単一ソースの主張）。</li>
+<li>ローンチPR動画自体がClaude Code × Hyperframesのみで制作され、ソースコードを「RT＋コメントで配布」する自己言及的プロモを行ったとされる。</li>
+<li>著者主張: モーショングラフィックス外注は従来「1本5〜10万円・納期2週間」が相場 → Claude Code環境で「コスト0円・納期10分」に近づく。発信者の活用例8選（X記事冒頭モーション量産・noteヘッダー動画・VSL冒頭15秒・PDF→45秒ピッチ・CSV→アニメチャート・LINEティザー・多言語展開・ショート動画量産）を提示。いずれも効果測定は未検証。</li>
+<li>著者の煽り文脈（「今が一番早い」「Rails/Next.js黎明期」類比）はポジショントークの可能性に留意。</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>ライセンスはApache 2.0（商用無制限）。</li>
+<li>レンダリングは決定論的（フレーム番号基準・ヘッドレスChrome <code>beginFrame</code>＋FFmpeg）で、同一入力から同一MP4を再現する設計。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>決定論レンダリングを使い、note/wiki記事公開をトリガーにヘッダー動画を自動生成するCI/CDを自分のvaultで組めるか（<a href="../../../../../../../../../../../concepts/llm-wiki.html">llm-wiki</a>連携）。</li>
+<li><code>data-*</code>属性ベースの中間記法は <a href="../../../../../../../../../../../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> のserialize/parse対と比べてどこまで双方向編集できるのか。</li>
+<li>Claude Opus 4.7/4.8世代で実際にどの程度安定して「動画として成立する」HTMLを出せるか、blank/play-modeで1本試す。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../../../../../../../tools/claude-code.html">claude-code</a>（動画生成のエージェント実行環境・<code>/hyperframes</code>スキル）</li>
+<li><a href="../../../../../../../../../../../models/claude-opus-4-7.html">claude-opus-4-7</a>（Hyperframesが想定する実用モデル。転換点はOpus 4.5世代）</li>
+<li><a href="../../../../../../../../../../../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a>（AIにDSL/中間記法を操作させる設計思想の同型例）</li>
+<li><a href="../../../../../../../../../../../tools/remotion.html">remotion</a>（同じくコードから決定論的に動画生成するFW）</li>
+<li><a href="../../../../../../../../../../../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a>（動画量産マーケのレンダリング層として利用）</li>
+<li><a href="../../../../../../../../../../../companies/anthropic.html">anthropic</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../../../../../../../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
+<li><a href="../../../../../../../../../../../models/claude-opus-4-8.html">claude-opus-4-8</a></li>
+<li><a href="../../../../../../../../../../../companies/anthropic.html">anthropic</a></li>
+<li><a href="../../../../../../../../../../../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a></li>
+<li><a href="../../../../../../../../../../../tools/remotion.html">remotion</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Hyperframes
+
+&gt; **TL;DR**: HTMLに`data-*`属性でタイミング情報を付けるだけで決定論的にMP4を出力する、HeyGen製OSS（Apache 2.0）の動画レンダリングフレームワーク。「LLMの母語＝Web」を動画タイムラインに変換することで、AIエージェントが人手介入なしに動画を作れるようにした。
+
+After EffectsやDaVinciがタイムライン・レイヤー・キーフレームをXML/JSON/バイナリで持つのは「人間が視覚的に配置する」前提の設計で、LLMには学習サンプルが乏しく外国語に等しかった。Hyperframesはこの障壁を、LLMが圧倒的な学習量を持つHTML/CSS/JS（GSAP・Lottie・Three.js等のWeb資産がそのまま使える）に動画の状態を載せ替えることで解く。AIにとって「書き慣れた言語で動画を書く」状況を作り出した点が本質で、土台が整ったのは2025年11月の[[models/claude-opus-4-8|Claude Opus 4.5]]/Gemini 3世代でコード生成が「動画として成立する品質」を超えた瞬間だとされる。
+
+「AIにGUIを直接触らせず、LLMが得意なテキスト表現を中間層に挟む」という構図は [[concepts/intermediate-notation-pattern]]（MNP）と同型で、HyperframesはHTML+`data-*`属性をその中間記法として採用した実例と読める。
+
+## 仕組み
+
+- **タイミング記述**: `data-composition-id`（識別子）・`data-start`（開始秒）・`data-duration`（表示秒）・`data-track-index`（レイヤー重なり順）をHTML要素に付与。GSAPのタイムラインを`window.__timelines[id]`に登録してアニメーションを定義する。
+- **決定論レンダリング**: 現在時刻ではなく`frame = floor(time × fps)`のフレーム番号を絶対基準にする。ヘッドレスChromeの`beginFrame` APIで1フレームずつキャプチャ→FFmpegで圧縮。同一HTMLからどのマシンでも100%同一のMP4が出るため、CI/CDでの動画自動生成に向く。
+- **必要環境**: Node.js 22+・FFmpeg・[[tools/claude-code]]の3つ（Dockerは任意）。
+
+## 主なCLI操作
+
+| コマンド | 役割 |
+|---------|------|
+| `npx skills add heygen-com/hyperframes` | Claude Codeに使い方スキル（`/hyperframes`・`/hyperframes-cli`・`/gsap`）を追加 |
+| `npx hyperframes init &lt;name&gt; [--example &lt;tpl&gt;]` | プロジェクト初期化（`meta.json`/`index.html`/`compositions/`/`assets/`）。`--video`指定で文字起こし字幕テンプレ生成 |
+| `npx hyperframes preview` | ブラウザにHyperframes Studio（プレビュー+タイムライン）を起動、保存即リロード |
+| `npx hyperframes add &lt;block&gt;` | 42種以上のビルトインブロックを`compositions/`に投入 |
+| `npx hyperframes lint` | 構造エラーを特定（長大ログをLLMに貼る前にこれを実行するのが推奨） |
+| `npx hyperframes render --output &lt;file&gt;.mp4` | MP4書き出し（デフォルト1920×1080/30fps） |
+
+## テンプレート・ブロック
+
+- **スタータープロジェクト9種**: 16:9が7種（warm-grain/play-mode/swiss-grid/kinetic-type/decision-tree/product-promo/nyt-graph）、9:16が1種（vignelli）、白紙のblank。
+- **ブロック42種以上**: SNSオーバーレイ7種（Instagram/TikTok Follow・YouTube Lower Third・Spotify Now Playing・X/Reddit Post Card・macOS Notification）、シェーダートランジション14種、CSSトランジション13カテゴリ、エフェクト3種。Web上のCodePen/Dribbble等の作例を「コピペ＋タイミング付与」で動画素材化できる。
+
+## エージェント前提の設計（vs Remotion）
+
+- CLIがデフォルト**非対話モード**で、フラグを渡せばAIが人間の介入なしに完走できる。
+- 素のHTMLのみで書ける（RemotionはReact必須＝コードが厚くLLMが間違えやすい）。
+- Apache 2.0で商用無制限（Remotionは規模次第で商用有料ライセンス）。
+- 「人間のReactエンジニアが自分で書くならRemotion、AIに書かせるならHyperframes」が現時点の整理。
+
+## プロンプト4型（公式推奨）
+
+1. **Cold start**: ゼロから指示（尺・アスペクト比・雰囲気・要素を併記すると精度向上）
+2. **Warm start**: PDF/GitHub/CSV等の素材を渡して要約しつつ動画化（公式は「出力品質が高い」と明記）
+3. **Format-specific**: TikTok/YouTubeショート等のフォーマット先指定
+4. **Iterate**: 既存動画に対話で修正を重ねる（Claudeが文脈を保持）
+
+## HeyGenの戦略的意図
+
+HeyGenの本業はAIアバター動画だが「アバターは動画の半分」であり、周囲のモーショングラフィックス制作がユーザーの詰まりポイントだった。その制作層をOSSで配布してコミュニティに磨かせ、自社有料プロダクト（Video Agent）では磨かれたHyperframes＋アバターの両輪を提供する青写真。「HTMLで動画を書く」標準を自社が握る狙いで、Linux/Kubernetes/Reactの「OSSで覇権を取る」パターンの動画版と位置づけられる。
+
+## 観察ログ（未検証）
+
+- 2026-04-16: HeyGenのVP of Product &amp; Agent Engineering Bin Liu（旧Alisa共同創業者、2025年9月HeyGenに買収）がGitHubで公開。著者（@MakeAI_CEO）は「リリース24時間でX上が祭り状態」と記述（単一ソースの主張）。
+- ローンチPR動画自体がClaude Code × Hyperframesのみで制作され、ソースコードを「RT＋コメントで配布」する自己言及的プロモを行ったとされる。
+- 著者主張: モーショングラフィックス外注は従来「1本5〜10万円・納期2週間」が相場 → Claude Code環境で「コスト0円・納期10分」に近づく。発信者の活用例8選（X記事冒頭モーション量産・noteヘッダー動画・VSL冒頭15秒・PDF→45秒ピッチ・CSV→アニメチャート・LINEティザー・多言語展開・ショート動画量産）を提示。いずれも効果測定は未検証。
+- 著者の煽り文脈（「今が一番早い」「Rails/Next.js黎明期」類比）はポジショントークの可能性に留意。
+
+## 検証済み事実
+
+- ライセンスはApache 2.0（商用無制限）。
+- レンダリングは決定論的（フレーム番号基準・ヘッドレスChrome `beginFrame`＋FFmpeg）で、同一入力から同一MP4を再現する設計。
+
+## 問い
+
+- 決定論レンダリングを使い、note/wiki記事公開をトリガーにヘッダー動画を自動生成するCI/CDを自分のvaultで組めるか（[[concepts/llm-wiki]]連携）。
+- `data-*`属性ベースの中間記法は [[concepts/intermediate-notation-pattern]] のserialize/parse対と比べてどこまで双方向編集できるのか。
+- Claude Opus 4.7/4.8世代で実際にどの程度安定して「動画として成立する」HTMLを出せるか、blank/play-modeで1本試す。
+
+## 関連
+
+- [[tools/claude-code]]（動画生成のエージェント実行環境・`/hyperframes`スキル）
+- [[models/claude-opus-4-7]]（Hyperframesが想定する実用モデル。転換点はOpus 4.5世代）
+- [[concepts/intermediate-notation-pattern]]（AIにDSL/中間記法を操作させる設計思想の同型例）
+- [[tools/remotion]]（同じくコードから決定論的に動画生成するFW）
+- [[business/youtube-shorts-jidouka-marketing]]（動画量産マーケのレンダリング層として利用）
+- [[companies/anthropic]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

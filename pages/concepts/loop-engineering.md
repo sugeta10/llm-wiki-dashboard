@@ -127,6 +127,11 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - 2026-06-19 @omarsar0: 具体ループ例「PRお守り（PR babysitter）」——15分ごとに起動し agent-watch ラベルのPRを対象、CI赤が決定論的原因なら修正1回・mainがズレたら1回rebase、予算は1PRあたり修正1回/5分/10ファイル、CI緑か予算切れで停止して人間にping。同形がCIヘルス監視・デプロイ検証・フィードバッククラスタリングにも適用できると例示（著者の実例）
 - 2026-06-19 @omarsar0: Steinberger の crabfleet（OpenClawプロジェクト・「エージェント実行のミッションコントロール」）をオーケストレーションの製品化例として紹介——タスクをカード化しtodo/running/human review/doneのボードで動かす、各runはハートビート付きの耐久実行、runが子セッションを生成しサンドボックス内で自分の要約を更新できる。使い捨てクラウドサンドボックス上で走るため無人runから離席しても安全と述べる（[[tools/openclaw]] 関連・単一記事の言及）
 
+- 2026-06-21 @rsensui（泉水亮介・note）: ループエンジニアリングを「二段ループ」として再整理——外側ループ＝観測→気づき→タスク化（事業の数字・エラーログ・顧客の声を眺めてbacklogに積む）、内側ループ＝計画→実行→検証（積まれたタスクを1件取り作り検証ゲートを通す）。「外側が何を、内側がどう」を分けるとそれぞれが薄く速くなると主張。Stage 5のオーケストレーション（ループがループを監視）を「何を/どう」の役割分担で言い換えた形（personal-post・単一ソース）
+- 2026-06-21 @rsensui: 「文脈は多いほど良い」への反証としてETH Zurich / LogicStar.ai（arXiv:2602.11988, 2026-02）を引用——AGENTS.mdを肥大化させるとリポジトリ文脈なしより成功率が下がり推論コストが20%超増、LLM自動生成の指示書は平均約-3%、人間が丁寧に書いたものでさえ約+4%止まり。「指示書は最小限に削れ、盛るほど負ける」。[[papers/2026-li-skillsbench]]（compact少数精鋭が勝つ・自己生成Skillは逆効果）と同方向の収斂、[[concepts/claude-code-instruction-methods]] の「CLAUDE.mdは200行未満」とも整合（二次引用・未検証）
+- 2026-06-21 @rsensui: 内側ループの検証ゲートを4条件に固定——①具体例が入っているか②数字が入っているか③出典が明記されているか④結論が一文で言い切られているか。1つでも欠けたらcommitしない。Geoffrey Huntleyの「Ralph」運用則「1ループ1タスク・使えるcontextは約170kで使うほど結果が悪くなる・記憶はLLMの脳でなくファイルとgitに置け」を根拠に挙げる（このwikiのingest検証ゲートと同型の発想）
+- 2026-06-21 @rsensui: ガードレールを二層に分離——risk:lowは無承認で自動実行、risk:highは提案止まりで人間承認待ち、公開投稿・送信・削除・課金など不可逆アクションは常に承認ゲート（例外なし）。本ページのセキュリティ税の「権限スコープ」を実運用ラベルに落とした形。Polsia/Ben Brocaの「毎晩エージェントが各事業を評価して翌朝レポートを出す」を外側ループの完成形として挙げる（1人＋Claude Agent SDKで5,900社超ホスト・$6M+ ARR・AI課金月$800、著者引用の数字・未検証）
+
 ## 検証済み事実
 
 - 2026-春: Claude Code および Codex CLI がいずれも `/goal` コマンドを公式実装（[[tools/claude-code-goal]] 参照）。Haiku 評価器による検証済み停止条件付き自律実行
@@ -139,6 +144,7 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - 4条件テストで「トークン予算がある」は何を基準に判断するか。月額コスト全体の何%までループに使えると決めておくべきか
 - Ralph Wiggumループの「静かな失敗」は自分の自動化（launchd ingest）で発生する可能性があるか。完了条件はどこで定義されているか
 - LangChainの4レベルスタック（特にL4ヒルクライミング＝trace分析→ハーネス書き換え）を自分のwiki ingestループに入れるなら、何をトレースとして残すべきか。LESSONS.md追記は手動L4だが、これを分析エージェントで自動化できるか（[[concepts/skill-self-improving-loop]] のIssue→PR3段ループが参考になるか）
+- @rsensui引用のETH Zurich研究（AGENTS.md肥大で成功率低下・推論コスト+20%超）が正しいなら、このwikiのCLAUDE.md・各SKILL.mdに「盛りすぎ」の兆候はあるか。[[concepts/claude-code-instruction-methods]] の200行基準と [[papers/2026-li-skillsbench]] のcompact優位で棚卸しできるか
 
 ## 関連
 
@@ -157,4 +163,6 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[business/frontier-ecosystem]] — Satya「学習ループを早期に作り人的資本×トークン資本を複利させる」の元論
 - [[concepts/harness-engineering-roadmap]] — ループの一階下＝ハーネスを14ステップで積む構築ロードマップ（同じ@0xCodezによる対の記事）
 - [[tools/loop-library]] — 再利用可能なエージェントループの公開カタログ（Forward Future）
+- [[concepts/goal-loop-routine]] — goal/loop/routine の動詞の使い分け（いつ止まるか・自分はその場にいるか）。@mvanhornのループ調査Part 2を分類軸として切り出したもの
 - [[concepts/coding-agent-workflow-styles]] — 委譲低速ループ／高速制御ループの2類型。本ページはその委譲側の極北
+- [[concepts/claude-code-instruction-methods]] — @rsensui の「最小のAGENTS.mdが正義」を公式版で裏付け（CLAUDE.md 200行未満・指示ミニマリズム）
