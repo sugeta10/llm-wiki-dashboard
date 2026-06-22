@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025-kim-mhealth-stress-cosegmentation - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2025-kim-mhealth-stress-cosegmentation</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="2025-kim-mhealth-stress-cosegmentation.md">Markdownで表示</a></div>
+  <div class="meta">papers/2025-kim-mhealth-stress-cosegmentation · papers · <span title="2026-06-23">今日</span></div>
+  <article><h1>Co-Segmentation によるmHealthデータからの感情的ストレス期検出（Kim et al. 2025）</h1>
+<blockquote>
+<p>孤立理由: 本wikiはLLM/AIエンジニアリングと事業領域が中心で、変化点検出・生物統計・mHealth（モバイルヘルス）を扱う既存ページが存在しないため、現時点で意味のある相互リンク先がない。</p>
+<p><strong>TL;DR</strong>: パッシブセンシングデータの変化点で時系列をセグメント化し、各区間ごとに自己申告ストレスとの関連を検定して、関連が成立する「共セグメント（co-segment）」だけを使い感情的ストレス期を検出する手法。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  S1[&quot;Step1: 変化点推定&lt;br/&gt;(CPD/ecp)&quot;] --&gt; S2[&quot;Step2: 関連の有意性&lt;br/&gt;(ANOVA F検定)&quot;]
+  S2 --&gt; S3[&quot;Step3: 隣接区間の差&lt;br/&gt;(Chow検定)&quot;]
+  S3 --&gt; S4[&quot;Step4: 応答分布の差&lt;br/&gt;(Z/カイ二乗検定)&quot;]
+  S4 --&gt; S5[&quot;Step5: ラベル予測&lt;br/&gt;(RF/Boost/SVM分類)&quot;]</pre>
+<p>メンタル不調（気分障害）や慢性疼痛をもつ中高年・高齢患者では、スマホが受動的に集める活動・睡眠・社交・移動のデータと自己申告ストレスとの関連が、時系列全体では見えにくく短い時間窓でのみ立ち現れる（非定常）。全データへ一括で機械学習を当てる従来法は、この局所的・時変的なパターンを取りこぼす。本手法は分析単位を「個々の時点」から「データ駆動で切り出した区間」へ移し、区間ごとに異なる関連を許すことでこれを捉える。</p>
+<p>具体的には <strong>5ステップ</strong>で進む。(1) パッシブ変数だけに変化点検出（CPD）をかけて初期セグメントを作る（Rパッケージ <code>ecp</code>、ノンパラメトリックでモデルフリー）。(2) 各区間で「パッシブ変数→調整済みストレス」の区分線形回帰が有意かをANOVAのF検定で確かめ、有意でない区間は隣へ統合する。(3) 隣接区間どうしで回帰係数が異なるかをChow検定で調べ、区別できない区間は統合する。(4) 応答（ストレス水準）の分布が隣接区間で異なるかをZ検定／カイ二乗検定で確認する。(5) 残った区間に順序ラベルを振り、パッシブ変数からそのラベルを当てる分類問題として将来のストレス状態を予測する（多項ロジ・LDA・SVM・ランダムフォレスト・勾配ブースティング）。応答変数を変化点検出に含めないのは、関心が「応答と予測子の関連の変化」であって応答単体の変化ではないため。自己申告ストレスは5段階Likertで変動が小さいので、arousal（覚醒度）とvalence（感情価）をRussellの感情空間に写すPAMスコアで連続値に調整し、変動を増やす前処理を入れている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-23: 「パッシブ変数と自己申告ストレスの関連は非定常で、短い時間窓に限って意味を持つ」という前提が手法全体の動機。図1の手描き変化点を境に両系列の分布が同時に動く例で示している（著者の問題設定・単一データセットでの観察）。</li>
+<li>2026-06-23: arousal/valence→PAMスコアでストレスを連続化する前処理は「本研究の例に特有」と著者自身が注記。応答の変動が元々大きい他研究では不要かもしれないとしている。</li>
+<li>2026-06-23: 著者が挙げる限界 — ①50日以上のパッシブ＋アクティブデータを持つ患者に限定、②パッシブ/アクティブを同一頻度（日次）で測る前提、③ストレスの変動を増やすためarousal/valenceが必要だが他研究では入手困難な場合がある、④多重比較を未制御（global type-I error の制御は今後の課題）、⑤自己相関など高次モーメントの変化は未考慮。</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-06-23: データはWeill Cornell ALACRITY Center（NIMH P50MH113838）の3研究から収集。気分抑うつで心理療法中の中高年・高齢者が対象、subject IDに <code>relief</code> を含む患者は慢性疼痛も併発。パッシブ11変数（移動・睡眠・社交・位置の4群）＋アクティブ4変数（ストレス水準・arousal・valence・調整済みストレス）を日次集計。</li>
+<li>2026-06-23: 評価実験（6患者・各50日以上、ローリングウィンドウで50成功まで保留サンプルを構築）の結果、ランダムフォレストと勾配ブースティングが全患者・大半の指標で他手法を一貫して上回った。</li>
+<li>2026-06-23: セグメンテーションを組み込むと、組み込まない非セグメント版ベンチマークより精度が高い。パッシブ変数のみの予測（Pred）は応答のみ（Resp）を全体として上回らず、「パッシブ変数はセグメンテーションを考慮したときに初めて有用」という結果が出た。</li>
+<li>2026-06-23: 著者は Younghoon Kim（Cornell University / Weill Cornell Medicine）、Sumanta Basu（Cornell University）、Samprit Banerjee（Weill Cornell Medicine）。arXiv 2502.10558v2。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>データ駆動セグメント単位で関連を検定する発想は、LLM時系列ログ（トークン消費・エラー率の変化点）など自分のwiki運用データの「いつ挙動が変わったか」検出にも転用できるか。</li>
+<li>共セグメントの「区間ごとに関連が変わる」前提は、エージェントの振る舞いが文脈によって非定常に変わる現象（<a href="../concepts/loop-engineering.html">loop-engineering</a> のループ品質の時変）と構造的に似ているか。</li>
+<li>arousal/valence で応答の変動を人工的に増やす前処理は、評価ラベルの分散が小さい他タスク（例: 5段階自己評価）の前処理として一般化できるか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li>現時点で本wiki内に直接の関連ページなし（孤立理由は冒頭参照）。</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://arxiv.org/abs/2502.10558" rel="noopener" target="_blank">https://arxiv.org/abs/2502.10558</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Co-Segmentation によるmHealthデータからの感情的ストレス期検出（Kim et al. 2025）
+
+&gt; 孤立理由: 本wikiはLLM/AIエンジニアリングと事業領域が中心で、変化点検出・生物統計・mHealth（モバイルヘルス）を扱う既存ページが存在しないため、現時点で意味のある相互リンク先がない。
+
+&gt; **TL;DR**: パッシブセンシングデータの変化点で時系列をセグメント化し、各区間ごとに自己申告ストレスとの関連を検定して、関連が成立する「共セグメント（co-segment）」だけを使い感情的ストレス期を検出する手法。
+
+```mermaid
+flowchart LR
+  S1[&quot;Step1: 変化点推定&lt;br/&gt;(CPD/ecp)&quot;] --&gt; S2[&quot;Step2: 関連の有意性&lt;br/&gt;(ANOVA F検定)&quot;]
+  S2 --&gt; S3[&quot;Step3: 隣接区間の差&lt;br/&gt;(Chow検定)&quot;]
+  S3 --&gt; S4[&quot;Step4: 応答分布の差&lt;br/&gt;(Z/カイ二乗検定)&quot;]
+  S4 --&gt; S5[&quot;Step5: ラベル予測&lt;br/&gt;(RF/Boost/SVM分類)&quot;]
+```
+
+メンタル不調（気分障害）や慢性疼痛をもつ中高年・高齢患者では、スマホが受動的に集める活動・睡眠・社交・移動のデータと自己申告ストレスとの関連が、時系列全体では見えにくく短い時間窓でのみ立ち現れる（非定常）。全データへ一括で機械学習を当てる従来法は、この局所的・時変的なパターンを取りこぼす。本手法は分析単位を「個々の時点」から「データ駆動で切り出した区間」へ移し、区間ごとに異なる関連を許すことでこれを捉える。
+
+具体的には **5ステップ**で進む。(1) パッシブ変数だけに変化点検出（CPD）をかけて初期セグメントを作る（Rパッケージ `ecp`、ノンパラメトリックでモデルフリー）。(2) 各区間で「パッシブ変数→調整済みストレス」の区分線形回帰が有意かをANOVAのF検定で確かめ、有意でない区間は隣へ統合する。(3) 隣接区間どうしで回帰係数が異なるかをChow検定で調べ、区別できない区間は統合する。(4) 応答（ストレス水準）の分布が隣接区間で異なるかをZ検定／カイ二乗検定で確認する。(5) 残った区間に順序ラベルを振り、パッシブ変数からそのラベルを当てる分類問題として将来のストレス状態を予測する（多項ロジ・LDA・SVM・ランダムフォレスト・勾配ブースティング）。応答変数を変化点検出に含めないのは、関心が「応答と予測子の関連の変化」であって応答単体の変化ではないため。自己申告ストレスは5段階Likertで変動が小さいので、arousal（覚醒度）とvalence（感情価）をRussellの感情空間に写すPAMスコアで連続値に調整し、変動を増やす前処理を入れている。
+
+## 観察ログ（未検証）
+
+- 2026-06-23: 「パッシブ変数と自己申告ストレスの関連は非定常で、短い時間窓に限って意味を持つ」という前提が手法全体の動機。図1の手描き変化点を境に両系列の分布が同時に動く例で示している（著者の問題設定・単一データセットでの観察）。
+- 2026-06-23: arousal/valence→PAMスコアでストレスを連続化する前処理は「本研究の例に特有」と著者自身が注記。応答の変動が元々大きい他研究では不要かもしれないとしている。
+- 2026-06-23: 著者が挙げる限界 — ①50日以上のパッシブ＋アクティブデータを持つ患者に限定、②パッシブ/アクティブを同一頻度（日次）で測る前提、③ストレスの変動を増やすためarousal/valenceが必要だが他研究では入手困難な場合がある、④多重比較を未制御（global type-I error の制御は今後の課題）、⑤自己相関など高次モーメントの変化は未考慮。
+
+## 検証済み事実
+
+- 2026-06-23: データはWeill Cornell ALACRITY Center（NIMH P50MH113838）の3研究から収集。気分抑うつで心理療法中の中高年・高齢者が対象、subject IDに `relief` を含む患者は慢性疼痛も併発。パッシブ11変数（移動・睡眠・社交・位置の4群）＋アクティブ4変数（ストレス水準・arousal・valence・調整済みストレス）を日次集計。
+- 2026-06-23: 評価実験（6患者・各50日以上、ローリングウィンドウで50成功まで保留サンプルを構築）の結果、ランダムフォレストと勾配ブースティングが全患者・大半の指標で他手法を一貫して上回った。
+- 2026-06-23: セグメンテーションを組み込むと、組み込まない非セグメント版ベンチマークより精度が高い。パッシブ変数のみの予測（Pred）は応答のみ（Resp）を全体として上回らず、「パッシブ変数はセグメンテーションを考慮したときに初めて有用」という結果が出た。
+- 2026-06-23: 著者は Younghoon Kim（Cornell University / Weill Cornell Medicine）、Sumanta Basu（Cornell University）、Samprit Banerjee（Weill Cornell Medicine）。arXiv 2502.10558v2。
+
+## 問い
+
+- データ駆動セグメント単位で関連を検定する発想は、LLM時系列ログ（トークン消費・エラー率の変化点）など自分のwiki運用データの「いつ挙動が変わったか」検出にも転用できるか。
+- 共セグメントの「区間ごとに関連が変わる」前提は、エージェントの振る舞いが文脈によって非定常に変わる現象（[[concepts/loop-engineering]] のループ品質の時変）と構造的に似ているか。
+- arousal/valence で応答の変動を人工的に増やす前処理は、評価ラベルの分散が小さい他タスク（例: 5段階自己評価）の前処理として一般化できるか。
+
+## 関連
+
+- 現時点で本wiki内に直接の関連ページなし（孤立理由は冒頭参照）。
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>
