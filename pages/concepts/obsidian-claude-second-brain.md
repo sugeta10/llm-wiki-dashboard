@@ -29,6 +29,7 @@
 ## 関連
 
 - [[concepts/obsidian-personal-os]] — Obsidian+Claude Code+N8Nの3層で「崩壊しないパーソナルOS」を設計する手法（こちらはアーキテクチャ重心、本ページはプラグイン/ワークフロー網羅重心）
+- [[concepts/obsidian-second-brain-setup]] — 同領域の「install→autopilot 構築手順」重心。本ページのワークフロー網羅に対し、配線手順とプロジェクト構造の設計判断に絞った姉妹ページ
 - [[concepts/llm-wiki]] — Karpathy提唱のLLMが継続メンテする知識ベース（本vault自体の設計思想）
 - [[tools/obsidian-skills]] — kepano製Obsidian向けAgent Skills集（listicleで言及される公式スキル）
 - [[tools/claude-code-obsidian-project]] — Claude Code+Obsidian「何でも相談」プロジェクトの実践設計例

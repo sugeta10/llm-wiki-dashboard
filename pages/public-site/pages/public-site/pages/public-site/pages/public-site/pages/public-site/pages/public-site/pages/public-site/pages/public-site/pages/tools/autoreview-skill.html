@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>autoreview-skill - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>autoreview-skill</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="autoreview-skill.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/tools/autoreview-skill · other · <span title=""></span></div>
+  <article><h1>autoreview スキル</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: ローカル変更・ブランチ・PRに対し、検証済みの実行可能な指摘だけを構造化して返すコードレビュー自動化スキル。デフォルトエンジンは Codex で、複数エンジンのレビューパネルにも対応する。</p>
+</blockquote>
+<p>自動レビューの出力は信用できないという前提から設計されている。だから <a href="../../../../../../../../../../../../../../../../../tools/openclaw.html">openclaw</a> の agent-skills リポジトリに含まれるこのスキルでは、レビュー結果はあくまで「助言」と位置づけ、すべての指摘を実際のコードパスで検証してから採用する。非現実的なエッジケース・投機的リスク・広範なリファクタリング提案は拒否され、アクション可能な指摘だけが残る。用途はクローズアウトチェック（着地前の最終確認）。</p>
+<p><strong>レビュー対象モード</strong>は3種類あり、レビューしたい差分の単位で選ぶ。</p>
+<table>
+<thead>
+<tr>
+<th>モード</th>
+<th>コマンド例</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ローカル変更</td>
+<td><code>autoreview --mode local</code></td>
+<td>ステージ済み・未ステージの変更</td>
+</tr>
+<tr>
+<td>ブランチ/PR</td>
+<td><code>autoreview --mode branch --base origin/main</code></td>
+<td>ブランチとの差分</td>
+</tr>
+<tr>
+<td>単一コミット</td>
+<td><code>autoreview --mode commit --commit HEAD</code></td>
+<td>着地済み・push済み作業</td>
+</tr>
+</tbody>
+</table>
+<p><strong>エンジン</strong>はデフォルトが Codex（最良結果）で、環境変数 <code>AUTOREVIEW_ENGINE</code> で切り替えられる。<code>--reviewers codex,claude</code> または <code>--panel</code> を指定すると、複数エンジンを1つの「冷凍バンドル（固定された差分スナップショット）」に対して並行して走らせるレビューパネルになる。</p>
+<pre><code>autoreview --reviewers codex,claude --model codex=gpt-5.1 --thinking codex=high --model claude=sonnet --thinking claude=max
+</code></pre>
+<p><code>--thinking</code> は各エンジンの推論強度にマッピングされる。Codex は <code>model_reasoning_effort</code>（low/medium/high/xhigh）、Claude は <code>--effort</code>（max まで対応）に対応する。</p>
+<p><strong>実行とテストの連携</strong>: <code>--parallel-tests</code> を付けるとテストとレビューを並行実行し、どちらかが変更を引き起こした場合は再実行する。大きなバンドルでは最大30分間実行可能で、30分未満のサイレント期間ではプロセスを強制終了しない。<code>--stream-engine-output</code> でライブのエンジン出力をストリーミングでき、Codex/Claude はツールイベントとファイルイベントをフィルタリングしてコンパクトなサマリーを出力する。</p>
+<p><strong>出力の挙動</strong>: ヘルパーは stdout のみに出力し、<code>--output</code> / <code>--json-output</code> を指定しない限りファイルを書かない。セキュリティ監査の指摘を抑制する変更を行う場合でも、「抑制済み指摘」を構造化出力に残すことで、有効な出力が無関係なリスクを隠さないよう保証する。</p>
+<p><strong>スキルが守る契約（Contract）</strong>:</p>
+<ul>
+<li>指摘はすべて実コードで検証してから適用する</li>
+<li>セキュリティ指摘は具体的・実行可能なリスクのみ報告する</li>
+<li>ネストされたレビュー・別のエンジン呼び出しは禁止（ヘルパー内部で行う）</li>
+<li>アクション可能な指摘がゼロで exit 0 が出たら停止する。追加の確認レビューは不要</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-28: デフォルトエンジンは Codex（環境変数 <code>AUTOREVIEW_ENGINE</code> で切替可能）</li>
+<li>2026-05-28: <code>--reviewers codex,claude</code> または <code>--panel</code> で複数エンジンレビューパネルを実行できる</li>
+<li>2026-05-28: ヘルパーは stdout のみに出力し、<code>--output</code> / <code>--json-output</code> 指定時以外はファイルを書かない</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このレビュー検証フロー（指摘を実コードで検証してから採用）を自分のwiki運用やレビュー作業に転用できるか</li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/google-code-review.html">google-code-review</a> の人手レビュー原則と autoreview の自動レビューはどこで役割分担すべきか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../../../../../../../../../../../../../tools/openclaw.html">openclaw</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/openclaw-agent-skills.html">openclaw-agent-skills</a> — autoreviewを同梱する共有スキルリポジトリ（正本・zero-setupスナップショット候補）</li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/google-code-review.html">google-code-review</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/claude-code.html">claude-code</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/codex-review-skill.html">codex-review-skill</a> — Codex内でレビュー→修正→合格まで反復するループ型レビューゲート（本スキルの検証済み指摘パネル型と対照）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../../../../../../../../../../../../../concepts/google-code-review.html">google-code-review</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/openclaw.html">openclaw</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/codex-review-skill.html">codex-review-skill</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/openclaw-agent-skills.html">openclaw-agent-skills</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/claude-code.html">claude-code</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># autoreview スキル
+
+&gt; **TL;DR**: ローカル変更・ブランチ・PRに対し、検証済みの実行可能な指摘だけを構造化して返すコードレビュー自動化スキル。デフォルトエンジンは Codex で、複数エンジンのレビューパネルにも対応する。
+
+自動レビューの出力は信用できないという前提から設計されている。だから [[tools/openclaw]] の agent-skills リポジトリに含まれるこのスキルでは、レビュー結果はあくまで「助言」と位置づけ、すべての指摘を実際のコードパスで検証してから採用する。非現実的なエッジケース・投機的リスク・広範なリファクタリング提案は拒否され、アクション可能な指摘だけが残る。用途はクローズアウトチェック（着地前の最終確認）。
+
+**レビュー対象モード**は3種類あり、レビューしたい差分の単位で選ぶ。
+
+| モード | コマンド例 | 用途 |
+|--------|-----------|------|
+| ローカル変更 | `autoreview --mode local` | ステージ済み・未ステージの変更 |
+| ブランチ/PR | `autoreview --mode branch --base origin/main` | ブランチとの差分 |
+| 単一コミット | `autoreview --mode commit --commit HEAD` | 着地済み・push済み作業 |
+
+**エンジン**はデフォルトが Codex（最良結果）で、環境変数 `AUTOREVIEW_ENGINE` で切り替えられる。`--reviewers codex,claude` または `--panel` を指定すると、複数エンジンを1つの「冷凍バンドル（固定された差分スナップショット）」に対して並行して走らせるレビューパネルになる。
+
+```
+autoreview --reviewers codex,claude --model codex=gpt-5.1 --thinking codex=high --model claude=sonnet --thinking claude=max
+```
+
+`--thinking` は各エンジンの推論強度にマッピングされる。Codex は `model_reasoning_effort`（low/medium/high/xhigh）、Claude は `--effort`（max まで対応）に対応する。
+
+**実行とテストの連携**: `--parallel-tests` を付けるとテストとレビューを並行実行し、どちらかが変更を引き起こした場合は再実行する。大きなバンドルでは最大30分間実行可能で、30分未満のサイレント期間ではプロセスを強制終了しない。`--stream-engine-output` でライブのエンジン出力をストリーミングでき、Codex/Claude はツールイベントとファイルイベントをフィルタリングしてコンパクトなサマリーを出力する。
+
+**出力の挙動**: ヘルパーは stdout のみに出力し、`--output` / `--json-output` を指定しない限りファイルを書かない。セキュリティ監査の指摘を抑制する変更を行う場合でも、「抑制済み指摘」を構造化出力に残すことで、有効な出力が無関係なリスクを隠さないよう保証する。
+
+**スキルが守る契約（Contract）**:
+
+- 指摘はすべて実コードで検証してから適用する
+- セキュリティ指摘は具体的・実行可能なリスクのみ報告する
+- ネストされたレビュー・別のエンジン呼び出しは禁止（ヘルパー内部で行う）
+- アクション可能な指摘がゼロで exit 0 が出たら停止する。追加の確認レビューは不要
+
+## 検証済み事実
+
+- 2026-05-28: デフォルトエンジンは Codex（環境変数 `AUTOREVIEW_ENGINE` で切替可能）
+- 2026-05-28: `--reviewers codex,claude` または `--panel` で複数エンジンレビューパネルを実行できる
+- 2026-05-28: ヘルパーは stdout のみに出力し、`--output` / `--json-output` 指定時以外はファイルを書かない
+
+## 問い
+
+- このレビュー検証フロー（指摘を実コードで検証してから採用）を自分のwiki運用やレビュー作業に転用できるか
+- [[concepts/google-code-review]] の人手レビュー原則と autoreview の自動レビューはどこで役割分担すべきか
+
+## 関連
+
+- [[tools/openclaw]]
+- [[tools/openclaw-agent-skills]] — autoreviewを同梱する共有スキルリポジトリ（正本・zero-setupスナップショット候補）
+- [[concepts/google-code-review]]
+- [[tools/claude-code]]
+- [[tools/codex-review-skill]] — Codex内でレビュー→修正→合格まで反復するループ型レビューゲート（本スキルの検証済み指摘パネル型と対照）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

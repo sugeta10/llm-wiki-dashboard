@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>obsidian-skills - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>obsidian-skills</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="obsidian-skills.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/tools/obsidian-skills · other · <span title=""></span></div>
+  <article><h1>obsidian-skills</h1>
+<p><strong>obsidian-skills</strong> は <a href="https://github.com/kepano">kepano</a>（Obsidian CEO、Steph Ango）が作成した Obsidian 向け <strong>Agent Skills</strong> 公式コレクション。<a href="https://agentskills.io/specification">Agent Skills 仕様</a> に準拠しており、<a href="../../../../../../../../../../../../../../../../../tools/claude-code.html">claude-code</a>・Codex CLI・OpenCode など複数のエージェントで共通して利用できる。</p>
+<h2>スキル一覧</h2>
+<table>
+<thead>
+<tr>
+<th>スキル</th>
+<th>概要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>obsidian-markdown</code></td>
+<td>Obsidian Flavored Markdown（wikilinks, embeds, callouts, properties）の作成・編集</td>
+</tr>
+<tr>
+<td><code>obsidian-bases</code></td>
+<td>Obsidian Bases（<code>.base</code>）のビュー・フィルタ・数式・集計の作成・編集</td>
+</tr>
+<tr>
+<td><code>json-canvas</code></td>
+<td>JSON Canvas（<code>.canvas</code>）のノード・エッジ・グループの作成・編集</td>
+</tr>
+<tr>
+<td><code>obsidian-cli</code></td>
+<td>Obsidian CLI 経由でのvault操作、プラグイン・テーマ開発</td>
+</tr>
+<tr>
+<td><code>defuddle</code></td>
+<td>Defuddle CLI でWebページからクリーンなMarkdownを抽出してトークンを節約</td>
+</tr>
+</tbody>
+</table>
+<h2>インストール方法</h2>
+<h3>Claude Code（Marketplace）</h3>
+<pre><code>/plugin marketplace add kepano/obsidian-skills
+/plugin install obsidian@obsidian-skills
+</code></pre>
+<h3>npx skills</h3>
+<pre><code class="language-bash">npx skills add git@github.com:kepano/obsidian-skills.git
+# または HTTPS
+npx skills add https://github.com/kepano/obsidian-skills
+</code></pre>
+<h3>手動（Claude Code）</h3>
+<p>リポジトリの内容を Obsidian vault 直下の <code>/.claude</code> フォルダに配置する。</p>
+<h3>OpenCode</h3>
+<pre><code class="language-bash">git clone https://github.com/kepano/obsidian-skills.git ~/.opencode/skills/obsidian-skills
+</code></pre>
+<p><code>~/.opencode/skills/</code> 以下の <code>SKILL.md</code> を自動検出。設定変更不要で再起動後に有効。</p>
+<h2>Agent Skills 仕様</h2>
+<p><a href="https://agentskills.io/specification">agentskills.io/specification</a> で規定された共通スキル仕様。Claude Code・Codex CLI など複数エージェントが同じスキルファイルを使い回せる設計。スキルは <code>SKILL.md</code> として定義し、エージェントが必要時にロードする。</p>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../../../../../../../../../../../../../tools/claude-code.html">claude-code</a>（Claude Code での利用、Marketplace経由のインストール）</li>
+<li>openai-codex（Codex CLI での利用）</li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/google-agent-skills.html">google-agent-skills</a>（Google製Agent Skills集・同じagentskills.io仕様）</li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/llm-wiki.html">llm-wiki</a>（ObsidianでのLLMナレッジベース管理）</li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/obsidian-personal-os.html">obsidian-personal-os</a>（ObsidianをAI自動化でパーソナルOSとして設計するアーキテクチャ）</li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/taskmd-shelf.html">taskmd-shelf</a>（1タスク1Markdownで管理するタスク手法・Obsidian + Dataview連携）</li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a>（Obsidian+Claude第二の脳listicle・本スキルを「3ヶ月で12,900+ stars」と言及）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../../../../../../../../../../../../../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/taskmd-shelf.html">taskmd-shelf</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/google-agent-skills.html">google-agent-skills</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># obsidian-skills
+
+**obsidian-skills** は [kepano](https://github.com/kepano)（Obsidian CEO、Steph Ango）が作成した Obsidian 向け **Agent Skills** 公式コレクション。[Agent Skills 仕様](https://agentskills.io/specification) に準拠しており、[[tools/claude-code]]・Codex CLI・OpenCode など複数のエージェントで共通して利用できる。
+
+## スキル一覧
+
+| スキル | 概要 |
+|-------|------|
+| `obsidian-markdown` | Obsidian Flavored Markdown（wikilinks, embeds, callouts, properties）の作成・編集 |
+| `obsidian-bases` | Obsidian Bases（`.base`）のビュー・フィルタ・数式・集計の作成・編集 |
+| `json-canvas` | JSON Canvas（`.canvas`）のノード・エッジ・グループの作成・編集 |
+| `obsidian-cli` | Obsidian CLI 経由でのvault操作、プラグイン・テーマ開発 |
+| `defuddle` | Defuddle CLI でWebページからクリーンなMarkdownを抽出してトークンを節約 |
+
+## インストール方法
+
+### Claude Code（Marketplace）
+
+```
+/plugin marketplace add kepano/obsidian-skills
+/plugin install obsidian@obsidian-skills
+```
+
+### npx skills
+
+```bash
+npx skills add git@github.com:kepano/obsidian-skills.git
+# または HTTPS
+npx skills add https://github.com/kepano/obsidian-skills
+```
+
+### 手動（Claude Code）
+
+リポジトリの内容を Obsidian vault 直下の `/.claude` フォルダに配置する。
+
+### OpenCode
+
+```bash
+git clone https://github.com/kepano/obsidian-skills.git ~/.opencode/skills/obsidian-skills
+```
+
+`~/.opencode/skills/` 以下の `SKILL.md` を自動検出。設定変更不要で再起動後に有効。
+
+## Agent Skills 仕様
+
+[agentskills.io/specification](https://agentskills.io/specification) で規定された共通スキル仕様。Claude Code・Codex CLI など複数エージェントが同じスキルファイルを使い回せる設計。スキルは `SKILL.md` として定義し、エージェントが必要時にロードする。
+
+## 関連
+
+- [[tools/claude-code]]（Claude Code での利用、Marketplace経由のインストール）
+- [[tools/openai-codex]]（Codex CLI での利用）
+- [[tools/google-agent-skills]]（Google製Agent Skills集・同じagentskills.io仕様）
+- [[concepts/llm-wiki]]（ObsidianでのLLMナレッジベース管理）
+- [[concepts/obsidian-personal-os]]（ObsidianをAI自動化でパーソナルOSとして設計するアーキテクチャ）
+- [[tools/taskmd-shelf]]（1タスク1Markdownで管理するタスク手法・Obsidian + Dataview連携）
+- [[concepts/obsidian-claude-second-brain]]（Obsidian+Claude第二の脳listicle・本スキルを「3ヶ月で12,900+ stars」と言及）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

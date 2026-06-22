@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>org-design-intelligence - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>org-design-intelligence</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="org-design-intelligence.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/business/org-design-intelligence · other · <span title=""></span></div>
+  <article><h1>AIによる組織設計変革：階層からインテリジェンスへ</h1>
+<p><strong>Sequoia Capital × Block（Jack Dorsey）</strong>による組織設計の根本的な再発明。AIが中間管理職の「情報ルーティング」を代替することで、2000年間続いた階層型組織の前提を覆す。</p>
+<h2>歴史的背景：階層組織の起源</h2>
+<p>組織の階層構造は「情報伝達の問題」を解くために生まれた：</p>
+<table>
+<thead>
+<tr>
+<th>時代</th>
+<th>革新者</th>
+<th>貢献</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ローマ軍</td>
+<td>軍事設計</td>
+<td><strong>スパン・オブ・コントロール</strong>（1リーダー＝3〜8人）の発見。contubernium(8人) → century(80) → cohort(480) → legion(5,000) の入れ子構造</td>
+</tr>
+<tr>
+<td>プロシア（1806年〜）</td>
+<td>シャルンホルスト等</td>
+<td><strong>参謀本部</strong>の発明：情報を集約し決定を事前計算する「中間管理職」の原型</td>
+</tr>
+<tr>
+<td>米国鉄道（1840〜50年代）</td>
+<td>ダニエル・マッカラム</td>
+<td>世界初の<strong>組織図</strong>を作成。ライン（実行）とスタッフ（支援）の分離</td>
+</tr>
+<tr>
+<td>科学的管理法</td>
+<td>フレデリック・テイラー</td>
+<td><strong>機能的ピラミッド</strong>：専門職分業＋測定ベース管理</td>
+</tr>
+<tr>
+<td>戦後グローバル化</td>
+<td>マッキンゼー/ボウア</td>
+<td><strong>マトリクス組織</strong>：機能×事業部の二重構造</td>
+</tr>
+</tbody>
+</table>
+<p>2000年間の組織イノベーションはすべて「スパン・オブ・コントロールのトレードオフを回避しようとした試み」に過ぎない。Spotify・Zappos・Valveも階層の代替を試みたが、数千人規模では機能しなかった。</p>
+<blockquote>
+<p>問題の本質：組織が成長するにつれ、情報を伝達するために層が増え、情報の流れが遅くなる。</p>
+</blockquote>
+<h2>Blockの新しい組織モデル</h2>
+<p>Blockが構築しているのは「<strong>階層ではなくインテリジェンスとして設計された会社</strong>」。4つの構成要素：</p>
+<h3>1. ケイパビリティ（Capabilities）</h3>
+<p>決済・融資・カード発行・銀行・BNPL・給与計算などの<strong>金融プリミティブ</strong>。製品ではなく積み木。UIを持たず、信頼性・コンプライアンス・パフォーマンスの目標値のみを持つ。</p>
+<h3>2. ワールドモデル（World Model）</h3>
+<p>2つの側面から成る：
+- <strong>会社ワールドモデル</strong>: 何が作られているか・何がブロックされているか・リソース配分・機能不全の把握。かつてマネージャーが担っていた「自チームの状況把握と上下へのリレー」を代替する
+- <strong>顧客ワールドモデル</strong>: Cash App（買い手側）× Square（売り手側）のリアルタイム取引データから構築される個客・商業者の行動理解。「お金は嘘をつかない」最も誠実なシグナル</p>
+<h3>3. インテリジェンス層（Intelligence Layer）</h3>
+<p>ケイパビリティを<strong>特定顧客の特定瞬間</strong>にあわせて組み合わせ、プロアクティブに提供する。</p>
+<p>例：季節的な資金繰り悪化パターンを検出した飲食店に対し、短期ローン＋返済スケジュール調整を<strong>プロダクトマネージャーの判断なしに</strong>自動提供。</p>
+<p><strong>重要な示唆</strong>: インテリジェンス層が解を組み立てようとして「ケイパビリティが足りない」と失敗したシグナルが次のロードマップになる。PdMが仮説を立てて作るものではない。</p>
+<h3>4. インターフェース（Interfaces）</h3>
+<p>Square・Cash App・Afterpay・TIDAL・bitkey・protoなどの提供面。価値はここではなく、ワールドモデルとインテリジェンスにある。</p>
+<h2>3つのロール（中間管理職を廃止）</h2>
+<table>
+<thead>
+<tr>
+<th>ロール</th>
+<th>役割</th>
+<th>旧組織との違い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IC（個人寄与者）</strong></td>
+<td>ケイパビリティ・モデル・インテリジェンス・インターフェースの構築・運用</td>
+<td>ワールドモデルがコンテキストを提供するため、指示待ちなしに自律判断できる</td>
+</tr>
+<tr>
+<td><strong>DRI（直接責任者）</strong></td>
+<td>特定の横断的な問題・顧客成果を90日間所有。関連チームのリソースを引き抜く権限を持つ</td>
+<td>固定ではなく流動的に問題に張り付く。解決後は別問題へ移動</td>
+</tr>
+<tr>
+<td><strong>Player-coach</strong></td>
+<td>コードを書きながら周囲の人材育成も担う</td>
+<td>ステータス会議・優先順位交渉が不要。ワールドモデルが整合性を、DRI構造が戦略・優先度を担う</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>「従来の会社では、インテリジェンスが人全体に分散しており、階層がそれをルーティングする。このモデルでは、インテリジェンスはシステムに宿り、人はエッジにいる。」</p>
+</blockquote>
+<h2>「エッジ」が最重要の場所</h2>
+<p>インテリジェンスがモデルにある世界で人間の価値は：
+- モデルがまだ届かない場所に手を伸ばす
+- 直感・意見・文化的コンテキスト・場の空気など<strong>モデルが感知できないもの</strong>を知覚する
+- <strong>倫理的判断・前例なき状況・失敗コストが致命的な判断</strong>はモデルに任せるべきではない</p>
+<p>「ワールドモデルは現実に触れなければただのデータベース」。エッジの人間がリアリティを接地する。</p>
+<h2>ビジネスへの示唆</h2>
+<p>Sequoiaが提示する問い：</p>
+<blockquote>
+<p>「あなたの会社が本当に理解していて、毎日深まり続けているものは何か？」
+- 答えが「ない」→ AIはコスト削減の道具にしかならない
+- 答えが「ある」→ AIはその理解を増幅する</p>
+</blockquote>
+<p>AIによる組織設計変革は「会社が何を本質的に理解しているか」を露わにする。</p>
+<h2>「業務のAI化」と「組織のAI化」は別物</h2>
+<p>このモデルを実務に翻訳すると、決定的な分岐が見える。2024〜2025年に主流だった「既存業務にAIを足す」（営業にライティングツール、CSに要約Bot、エンジニアにCopilot）アプローチは、各人にコパイロットを配る発想で<strong>個人の生産性は確実に上がる</strong>。しかし組織のスループットは変わらない——ボトルネックが「作業」から「判断・調整・承認」へ移動するだけで、消えていないため。AIで作業が速くなるほど判断レイヤーに上がる量が増え、結局は人間（特に中間管理職）の処理速度がボトルネックに戻る。</p>
+<p>AnthropicもOpenAIも「組織の構成員・調整層としてのAI」（<a href="../../../../../../../../../../../../../../../concepts/claude-skills.html">Skills</a>で"仕事の型"を注入、<a href="../../../../../../../../../../../../../../../tools/claude-mcp.html">MCP</a>で外部接続を標準化、Agent SDK / Agent Teams / Codex parallelで複数エージェント協調）を出してきた。配管はもう引かれており、残された論点は「組織の側がこれをどう使うか」だけ——というのがこの記事の中心命題。</p>
+<h2>規模別の実装事例（構造は同じ）</h2>
+<p>理論を実装している3ケース。規模は1万人〜1人とバラバラだが、設計の核（役割・権限・引き継ぎの明文化／World Model中央化／中間管理職レイヤーなし／機能別分業を持ち込まない）は同一。<strong>設計は規模が小さいほど組みやすい</strong>（既存ヒエラルキーを引き継がないぶん抵抗が少ない）。</p>
+<table>
+<thead>
+<tr>
+<th>ケース</th>
+<th>規模</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Block</strong>（Jack Dorsey）</td>
+<td>1万人・上場</td>
+<td>本モデルを宣言し実装フェーズ。全オペを機械可読アーティファクト化（会社World Model）、Cash App/Squareの取引データを顧客World Modelの核に、AIエージェントFW <strong>Goose</strong>を全社展開＋OSS化、Square側に自律エージェント<strong>Managerbot</strong>投入</td>
+</tr>
+<tr>
+<td><strong>Base44</strong>（Maor Shlomo）</td>
+<td>1→8人・6ヶ月で$80M exit</td>
+<td>完全ソロでno-code/vibe codingプラットフォーム立ち上げ→3週間で$1M ARR→Wixが$80M現金買収。外部資金ゼロ。Maor＝唯一のDRI、後続8人は全員IC/Player-Coach、マネージャー職ゼロ</td>
+</tr>
+<tr>
+<td><strong>Pieter Levels</strong>（@levelsio）</td>
+<td>ピュアソロ</td>
+<td>5+プロダクトを1人並列運営で月$250K超。fly.pieter.comはCursorに指示→3時間でプロト→X投稿→リプの要望をAIで実装→デプロイのループを毎日回しローンチ20日で月$130K</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Base44のIntelligence Layerが構造的優位の核</strong>: 「自然言語のアプリ要求→仕様→コード生成→デプロイ」をルーティング・最適化する独自プロンプトハーネス層を持つ。GPT/Claudeは"燃料"として使われ、LLMが進化すると製品が一晩で勝手に良くなる（Claude 3.5リリース時、エンジニアリングなしで品質が跳ねたと本人証言）。「LLMをそのまま使う」のではなく「LLMの進化を直接プロダクト品質に変換できるIntelligence Layerを持つ」という差。</p>
+<p><strong>Pieterの圧縮ループ</strong>: 「ユーザーフィードバック→仕様判断→実装→デプロイ」を人間1人＋AI＋Xで完結。通常PM・エンジニア・QA・CS・マーケで分業されるフローが頭の中でリアルタイム圧縮され、判断から実装までの時差がほぼゼロ。これがソロ×AIの最大の構造的優位。</p>
+<h2>規模別プレイブック</h2>
+<table>
+<thead>
+<tr>
+<th>層</th>
+<th>やるべきこと</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>大企業（数百〜数千人）</strong></td>
+<td>①World Modelの基礎工事（決定事項を機械可読な公開ドキュメントに集約。Slackでなく構造化レコード）から始める ②中間管理職を置かない3〜5人＋エージェントのパイロットチームを既存評価制度の外で試す ③既存マネージャーをPlayer-Coachへ再定義（3〜5年スパン） ④AI活用度を人事評価軸に組み込む（Block方式）。中間管理職こそ最も抵抗するインセンティブを持つ層</td>
+</tr>
+<tr>
+<td><strong>成長期SU（10〜100人）</strong></td>
+<td>①マネージャー採用前に「World Model＋DRI＋AI調整層で同じ問題が解けないか」を必ず1度考える ②機能別組織（PMチーム/エンジニアチーム）を作らず課題ベースのDRIアサインに ③週次定例を廃止しAI週次サマリーへ、会議は意思決定専用に ④採用基準をマネージャー候補でなくPlayer-Coach候補に。30人前後で必ず出る「マネージャー入れよう」で踏みとどまれるかが分水嶺</td>
+</tr>
+<tr>
+<td><strong>創業期SU（1〜5人）</strong></td>
+<td>引き継ぐヒエラルキーがない最も有利な層。①Day 1から共有リポジトリ（GitHub/Notion/Linear）を会社の本体＝World Modelに ②役職でなくロール（DRI/IC）で定義 ③採用より先にResearch/PM/Brand/QA等4〜5体のエージェント基盤＋Skillを設計 ④判断基準・品質基準・価値観をMarkdown（.md）に蒸留（指示にもオンボーディングにも使える永久資産） ⑤採用はPlayer-CoachかICのみ・最初の20人までマネージャー職ゼロを貫く</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>地雷は「最初は普通の組織で、軌道に乗ってからAI化しよう」。逆で、最初に組み直すコストが一番低い。後からは既存社員の再教育・人事制度変更・抵抗との対峙が重なり工数が激増する。</p>
+</blockquote>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-05: 野田克樹（@ktknd）によるnote記事の整理。Block論文 <em>From Hierarchy to Intelligence</em> を下敷きに、Base44（出典: TechCrunch / Lenny's Newsletter）とPieter Levels（本人の収益ダッシュボード/X投稿）を同一フレームにマップした二次まとめ</li>
+<li>2026-06-05: Base44の数字（3週間で$1M ARR、6ヶ月で$80M現金買収、買収時25万〜40万ユーザー・チーム8人、Maorが買収益から$25Mをチームに自主分配、自己資金$10K〜$20K=ほぼLLM API代）は単一まとめソース経由のため要一次確認</li>
+<li>2026-06-05: Pieter Levelsのポートフォリオ内訳（PhotoAI月$130K等、合計月$250K超）は本人公開ダッシュボードが出典だが時点変動あり</li>
+<li>2026-06-05: メルカリがCTO木村俊也をCHRO兼CAIOに任命（AI戦略と人事戦略を統合、AI前提で人と組織の運営基盤を再設計）という日本企業の動きが事例として言及</li>
+<li>2026-06-15: 野田克樹の同記事（note URL n362c35f32346）が2026-06-13付で再キャッシュされた。内容は2026-06-05取込時と同一で新情報なし。本ページが既に全面反映済みのため本文は変更せず、新キャッシュを sources に登録するのみ</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「業務のAI化」で止まる企業 vs 「組織のAI化」に踏み込む企業の分岐は本当に2026年が分水嶺か。中間管理職の抵抗をどう設計で乗り越えるか</li>
+<li>自分のwiki/PKMシステムは個人スケールのWorld Model足り得るか。判断基準を.mdに蒸留する設計（<a href="../../../../../../../../../../../../../../../concepts/claude-md-rules.html">claude-md-rules</a>）はこのプレイブックの「創業期④」に対応している</li>
+<li>Intelligence Layer（LLMの進化を直接プロダクト品質に変換する層）を個人レベルで持つには何が必要か。<a href="../../../../../../../../../../../../../../../concepts/multi-agent-patterns.html">multi-agent-patterns</a>の構成と接続できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../../../../../../../../../../../business/self-improving-company.html">self-improving-company</a> — 同テーマ（ローマ軍団比喩・Jack Dorsey・中間管理職廃止）をYCトークが「再帰的自己改善ループ」の動的視点から論じたもの</li>
+<li><a href="../../../../../../../../../../../../../../../business/ai-vertical-integration.html">ai-vertical-integration</a> — AI時代における企業の垂直統合戦略・受託業界への影響（fladdict分析）</li>
+<li><a href="../../../../../../../../../../../../../../../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a> — AIエージェント時代の企業戦略5テーマ（梶谷健人）：ToA・Authorize権限・器を大きくする思考</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — マルチエージェント設計パターン・AIエージェントによる自律的業務分担</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントが自律的に動く開発スタイル</li>
+<li><a href="../../../../../../../../../../../../../../../companies/anthropic.html">anthropic</a> — Claude Code開発元・AIエージェント活用事例</li>
+<li><a href="../../../../../../../../../../../../../../../business/talent-to-value-ai.html">talent-to-value-ai</a> — 同じ「業務のAI化 vs 組織のAI化」命題を人材評価の側から論じたマッキンゼーのフレーム</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/structuring-ability.html">structuring-ability</a> — 組織の内部構造（目標→評価→基準→人物像→確認）を分解する個人の思考力「構造化力」の習得法</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../../../../../../../../../../../tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../../../../../../../../../../../../../../../business/self-improving-company.html">self-improving-company</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../../../../../../../../../../../../../../../business/talent-to-value-ai.html">talent-to-value-ai</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AIによる組織設計変革：階層からインテリジェンスへ
+
+**Sequoia Capital × Block（Jack Dorsey）**による組織設計の根本的な再発明。AIが中間管理職の「情報ルーティング」を代替することで、2000年間続いた階層型組織の前提を覆す。
+
+## 歴史的背景：階層組織の起源
+
+組織の階層構造は「情報伝達の問題」を解くために生まれた：
+
+| 時代 | 革新者 | 貢献 |
+|------|-------|------|
+| ローマ軍 | 軍事設計 | **スパン・オブ・コントロール**（1リーダー＝3〜8人）の発見。contubernium(8人) → century(80) → cohort(480) → legion(5,000) の入れ子構造 |
+| プロシア（1806年〜） | シャルンホルスト等 | **参謀本部**の発明：情報を集約し決定を事前計算する「中間管理職」の原型 |
+| 米国鉄道（1840〜50年代） | ダニエル・マッカラム | 世界初の**組織図**を作成。ライン（実行）とスタッフ（支援）の分離 |
+| 科学的管理法 | フレデリック・テイラー | **機能的ピラミッド**：専門職分業＋測定ベース管理 |
+| 戦後グローバル化 | マッキンゼー/ボウア | **マトリクス組織**：機能×事業部の二重構造 |
+
+2000年間の組織イノベーションはすべて「スパン・オブ・コントロールのトレードオフを回避しようとした試み」に過ぎない。Spotify・Zappos・Valveも階層の代替を試みたが、数千人規模では機能しなかった。
+
+&gt; 問題の本質：組織が成長するにつれ、情報を伝達するために層が増え、情報の流れが遅くなる。
+
+## Blockの新しい組織モデル
+
+Blockが構築しているのは「**階層ではなくインテリジェンスとして設計された会社**」。4つの構成要素：
+
+### 1. ケイパビリティ（Capabilities）
+決済・融資・カード発行・銀行・BNPL・給与計算などの**金融プリミティブ**。製品ではなく積み木。UIを持たず、信頼性・コンプライアンス・パフォーマンスの目標値のみを持つ。
+
+### 2. ワールドモデル（World Model）
+2つの側面から成る：
+- **会社ワールドモデル**: 何が作られているか・何がブロックされているか・リソース配分・機能不全の把握。かつてマネージャーが担っていた「自チームの状況把握と上下へのリレー」を代替する
+- **顧客ワールドモデル**: Cash App（買い手側）× Square（売り手側）のリアルタイム取引データから構築される個客・商業者の行動理解。「お金は嘘をつかない」最も誠実なシグナル
+
+### 3. インテリジェンス層（Intelligence Layer）
+ケイパビリティを**特定顧客の特定瞬間**にあわせて組み合わせ、プロアクティブに提供する。
+
+例：季節的な資金繰り悪化パターンを検出した飲食店に対し、短期ローン＋返済スケジュール調整を**プロダクトマネージャーの判断なしに**自動提供。
+
+**重要な示唆**: インテリジェンス層が解を組み立てようとして「ケイパビリティが足りない」と失敗したシグナルが次のロードマップになる。PdMが仮説を立てて作るものではない。
+
+### 4. インターフェース（Interfaces）
+Square・Cash App・Afterpay・TIDAL・bitkey・protoなどの提供面。価値はここではなく、ワールドモデルとインテリジェンスにある。
+
+## 3つのロール（中間管理職を廃止）
+
+| ロール | 役割 | 旧組織との違い |
+|--------|------|-------------|
+| **IC（個人寄与者）** | ケイパビリティ・モデル・インテリジェンス・インターフェースの構築・運用 | ワールドモデルがコンテキストを提供するため、指示待ちなしに自律判断できる |
+| **DRI（直接責任者）** | 特定の横断的な問題・顧客成果を90日間所有。関連チームのリソースを引き抜く権限を持つ | 固定ではなく流動的に問題に張り付く。解決後は別問題へ移動 |
+| **Player-coach** | コードを書きながら周囲の人材育成も担う | ステータス会議・優先順位交渉が不要。ワールドモデルが整合性を、DRI構造が戦略・優先度を担う |
+
+&gt; 「従来の会社では、インテリジェンスが人全体に分散しており、階層がそれをルーティングする。このモデルでは、インテリジェンスはシステムに宿り、人はエッジにいる。」
+
+## 「エッジ」が最重要の場所
+
+インテリジェンスがモデルにある世界で人間の価値は：
+- モデルがまだ届かない場所に手を伸ばす
+- 直感・意見・文化的コンテキスト・場の空気など**モデルが感知できないもの**を知覚する
+- **倫理的判断・前例なき状況・失敗コストが致命的な判断**はモデルに任せるべきではない
+
+「ワールドモデルは現実に触れなければただのデータベース」。エッジの人間がリアリティを接地する。
+
+## ビジネスへの示唆
+
+Sequoiaが提示する問い：
+
+&gt; 「あなたの会社が本当に理解していて、毎日深まり続けているものは何か？」
+&gt; - 答えが「ない」→ AIはコスト削減の道具にしかならない
+&gt; - 答えが「ある」→ AIはその理解を増幅する
+
+AIによる組織設計変革は「会社が何を本質的に理解しているか」を露わにする。
+
+## 「業務のAI化」と「組織のAI化」は別物
+
+このモデルを実務に翻訳すると、決定的な分岐が見える。2024〜2025年に主流だった「既存業務にAIを足す」（営業にライティングツール、CSに要約Bot、エンジニアにCopilot）アプローチは、各人にコパイロットを配る発想で**個人の生産性は確実に上がる**。しかし組織のスループットは変わらない——ボトルネックが「作業」から「判断・調整・承認」へ移動するだけで、消えていないため。AIで作業が速くなるほど判断レイヤーに上がる量が増え、結局は人間（特に中間管理職）の処理速度がボトルネックに戻る。
+
+AnthropicもOpenAIも「組織の構成員・調整層としてのAI」（[[concepts/claude-skills|Skills]]で&quot;仕事の型&quot;を注入、[[tools/claude-mcp|MCP]]で外部接続を標準化、Agent SDK / Agent Teams / Codex parallelで複数エージェント協調）を出してきた。配管はもう引かれており、残された論点は「組織の側がこれをどう使うか」だけ——というのがこの記事の中心命題。
+
+## 規模別の実装事例（構造は同じ）
+
+理論を実装している3ケース。規模は1万人〜1人とバラバラだが、設計の核（役割・権限・引き継ぎの明文化／World Model中央化／中間管理職レイヤーなし／機能別分業を持ち込まない）は同一。**設計は規模が小さいほど組みやすい**（既存ヒエラルキーを引き継がないぶん抵抗が少ない）。
+
+| ケース | 規模 | 要点 |
+|--------|------|------|
+| **Block**（Jack Dorsey） | 1万人・上場 | 本モデルを宣言し実装フェーズ。全オペを機械可読アーティファクト化（会社World Model）、Cash App/Squareの取引データを顧客World Modelの核に、AIエージェントFW **Goose**を全社展開＋OSS化、Square側に自律エージェント**Managerbot**投入 |
+| **Base44**（Maor Shlomo） | 1→8人・6ヶ月で$80M exit | 完全ソロでno-code/vibe codingプラットフォーム立ち上げ→3週間で$1M ARR→Wixが$80M現金買収。外部資金ゼロ。Maor＝唯一のDRI、後続8人は全員IC/Player-Coach、マネージャー職ゼロ |
+| **Pieter Levels**（@levelsio） | ピュアソロ | 5+プロダクトを1人並列運営で月$250K超。fly.pieter.comはCursorに指示→3時間でプロト→X投稿→リプの要望をAIで実装→デプロイのループを毎日回しローンチ20日で月$130K |
+
+**Base44のIntelligence Layerが構造的優位の核**: 「自然言語のアプリ要求→仕様→コード生成→デプロイ」をルーティング・最適化する独自プロンプトハーネス層を持つ。GPT/Claudeは&quot;燃料&quot;として使われ、LLMが進化すると製品が一晩で勝手に良くなる（Claude 3.5リリース時、エンジニアリングなしで品質が跳ねたと本人証言）。「LLMをそのまま使う」のではなく「LLMの進化を直接プロダクト品質に変換できるIntelligence Layerを持つ」という差。
+
+**Pieterの圧縮ループ**: 「ユーザーフィードバック→仕様判断→実装→デプロイ」を人間1人＋AI＋Xで完結。通常PM・エンジニア・QA・CS・マーケで分業されるフローが頭の中でリアルタイム圧縮され、判断から実装までの時差がほぼゼロ。これがソロ×AIの最大の構造的優位。
+
+## 規模別プレイブック
+
+| 層 | やるべきこと |
+|----|------------|
+| **大企業（数百〜数千人）** | ①World Modelの基礎工事（決定事項を機械可読な公開ドキュメントに集約。Slackでなく構造化レコード）から始める ②中間管理職を置かない3〜5人＋エージェントのパイロットチームを既存評価制度の外で試す ③既存マネージャーをPlayer-Coachへ再定義（3〜5年スパン） ④AI活用度を人事評価軸に組み込む（Block方式）。中間管理職こそ最も抵抗するインセンティブを持つ層 |
+| **成長期SU（10〜100人）** | ①マネージャー採用前に「World Model＋DRI＋AI調整層で同じ問題が解けないか」を必ず1度考える ②機能別組織（PMチーム/エンジニアチーム）を作らず課題ベースのDRIアサインに ③週次定例を廃止しAI週次サマリーへ、会議は意思決定専用に ④採用基準をマネージャー候補でなくPlayer-Coach候補に。30人前後で必ず出る「マネージャー入れよう」で踏みとどまれるかが分水嶺 |
+| **創業期SU（1〜5人）** | 引き継ぐヒエラルキーがない最も有利な層。①Day 1から共有リポジトリ（GitHub/Notion/Linear）を会社の本体＝World Modelに ②役職でなくロール（DRI/IC）で定義 ③採用より先にResearch/PM/Brand/QA等4〜5体のエージェント基盤＋Skillを設計 ④判断基準・品質基準・価値観をMarkdown（.md）に蒸留（指示にもオンボーディングにも使える永久資産） ⑤採用はPlayer-CoachかICのみ・最初の20人までマネージャー職ゼロを貫く |
+
+&gt; 地雷は「最初は普通の組織で、軌道に乗ってからAI化しよう」。逆で、最初に組み直すコストが一番低い。後からは既存社員の再教育・人事制度変更・抵抗との対峙が重なり工数が激増する。
+
+## 観察ログ（未検証）
+
+- 2026-06-05: 野田克樹（@ktknd）によるnote記事の整理。Block論文 *From Hierarchy to Intelligence* を下敷きに、Base44（出典: TechCrunch / Lenny&#x27;s Newsletter）とPieter Levels（本人の収益ダッシュボード/X投稿）を同一フレームにマップした二次まとめ
+- 2026-06-05: Base44の数字（3週間で$1M ARR、6ヶ月で$80M現金買収、買収時25万〜40万ユーザー・チーム8人、Maorが買収益から$25Mをチームに自主分配、自己資金$10K〜$20K=ほぼLLM API代）は単一まとめソース経由のため要一次確認
+- 2026-06-05: Pieter Levelsのポートフォリオ内訳（PhotoAI月$130K等、合計月$250K超）は本人公開ダッシュボードが出典だが時点変動あり
+- 2026-06-05: メルカリがCTO木村俊也をCHRO兼CAIOに任命（AI戦略と人事戦略を統合、AI前提で人と組織の運営基盤を再設計）という日本企業の動きが事例として言及
+- 2026-06-15: 野田克樹の同記事（note URL n362c35f32346）が2026-06-13付で再キャッシュされた。内容は2026-06-05取込時と同一で新情報なし。本ページが既に全面反映済みのため本文は変更せず、新キャッシュを sources に登録するのみ
+
+## 問い
+
+- 「業務のAI化」で止まる企業 vs 「組織のAI化」に踏み込む企業の分岐は本当に2026年が分水嶺か。中間管理職の抵抗をどう設計で乗り越えるか
+- 自分のwiki/PKMシステムは個人スケールのWorld Model足り得るか。判断基準を.mdに蒸留する設計（[[concepts/claude-md-rules]]）はこのプレイブックの「創業期④」に対応している
+- Intelligence Layer（LLMの進化を直接プロダクト品質に変換する層）を個人レベルで持つには何が必要か。[[concepts/multi-agent-patterns]]の構成と接続できるか
+
+## 関連
+
+- [[business/self-improving-company]] — 同テーマ（ローマ軍団比喩・Jack Dorsey・中間管理職廃止）をYCトークが「再帰的自己改善ループ」の動的視点から論じたもの
+- [[business/ai-vertical-integration]] — AI時代における企業の垂直統合戦略・受託業界への影響（fladdict分析）
+- [[business/ai-agent-era-strategy]] — AIエージェント時代の企業戦略5テーマ（梶谷健人）：ToA・Authorize権限・器を大きくする思考
+- [[concepts/multi-agent-patterns]] — マルチエージェント設計パターン・AIエージェントによる自律的業務分担
+- [[concepts/agentic-coding]] — AIエージェントが自律的に動く開発スタイル
+- [[companies/anthropic]] — Claude Code開発元・AIエージェント活用事例
+- [[business/talent-to-value-ai]] — 同じ「業務のAI化 vs 組織のAI化」命題を人材評価の側から論じたマッキンゼーのフレーム
+- [[concepts/structuring-ability]] — 組織の内部構造（目標→評価→基準→人物像→確認）を分解する個人の思考力「構造化力」の習得法
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

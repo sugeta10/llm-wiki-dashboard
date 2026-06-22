@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>talent-to-value-ai - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>talent-to-value-ai</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="talent-to-value-ai.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/business/talent-to-value-ai · other · <span title=""></span></div>
+  <article><h1>AI時代のTalent to Value（人材とエージェントを価値へ）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 価値評価の単位が「個人」から「人＋AIエージェントが組み合わさったシステム」へ移り、人材戦略の問いが「誰をどの役割に当てるか」から「人とAIをどう配線し、システムをどれだけうまく機能させるか」へ変わる。</p>
+</blockquote>
+<p>マッキンゼーが10年以上使ってきた「<strong>Talent to Value（人材を価値へ）</strong>」は、企業価値の約8割がたった30〜50個の「重要な役割」から生まれるという前提に立ち、その役割を特定してトップ人材を当てればインパクトが最大化する、という人材配置のフレームだ。AI時代版（記事 <em>Rewiring Talent to Value in the age of AI</em>）の核心は、価値がもはや「役割」単体でなく<strong>人とAIエージェントが動的に組み合わさったシステム</strong>から生まれる点にある。生成AIが「仕事のやり方」を変えたのに対し、エージェント型AIは「誰が（あるいは何が）その仕事をやるのか」を変えてしまった——だから人材戦略の再配線（rewire）が要る、というのが主旨。従来の4ステップが更新され、第5ステップが新設された。</p>
+<ul>
+<li><strong>❶ 価値の地図を描き"続ける"</strong> — 価値の源泉が計画サイクルより速く移動するため、価値配分を一度きりの計画でなく継続プロセスとして扱い、人材とエージェントを素早く再配置する。</li>
+<li><strong>❷ 重要な役割"と"エージェントを特定する</strong> — 視点を「Talent to Value」から「<strong>Talent and Agents to Value</strong>」へ移す。最高価値領域をケイパビリティ→スキル→タスクに分解し、各タスクを人間／エージェント／ハイブリッドのどれが一番うまくやれるかで割り当てる。価値の真の単位は単一の役割でなく、人とエージェントが協調する「システム」になる。</li>
+<li><strong>❸ AIで価値を"増幅"できる人を厳しく見極める</strong> — 知識はAI経由でコモディティ化し経験は陳腐化するため、評価軸を「役割への適合」から「その人がAIでどれだけ価値を増幅できるか」へ転換する。鍵は「AIスーパーユーザー」（かつてチームを要した仕事を一人でこなす人）の見極め。ただしツールを配るだけでは差は生まれず、突き抜ける人はごく一部だと釘を刺す。</li>
+<li><strong>❹ トップチーム自身を見直す</strong> — リーダー層こそAIに精通し自ら手を動かし、階層を「監督」するのでなく人材・AI・ワークフロー・資源配分という動的システムを「運用」する側に回る。経営層が最初に再配線される。</li>
+<li><strong>❺（新設）「誰がやったか」より「システムがどう機能したか」</strong> — 評価の問いが個人帰属から「そのシステムはどれだけうまく機能したか」へ。エージェントは意思決定の質・信頼性・速度・コストで、人間は事業インパクト・AIワークフローを定義し改善する力・倫理的利用・横断協働で、補完的に別評価する。</li>
+</ul>
+<p>最大のつまずきは「優秀な人材や高度なAIツールが足りないから」でなく、それらを明確な説明責任とフィードバックを持つ<strong>一貫したシステムに統合できていない</strong>ことにある——という指摘が締め。これは <a href="../../../../../../../../../../../../../../../business/org-design-intelligence.html">org-design-intelligence</a> の「業務のAI化（個人にコパイロットを配る）では組織スループットは変わらず、ボトルネックが作業から判断・調整へ移るだけ」という命題と同じ問題を、人材評価の側から言い換えたものだ。タスクを動詞単位に分けて人とAIへ割り当てる発想は <a href="../../../../../../../../../../../../../../../concepts/palantir-ontology.html">palantir-ontology</a> の名詞＋動詞モデルと、「AIは増幅器」という見極め基準は <a href="../../../../../../../../../../../../../../../concepts/ai-quality-amplification.html">ai-quality-amplification</a> と接続する。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-19（@sho1nakagawa の個人考察）: 役割を"名詞"のまま見るとAI化の判断ができないが、"動詞"のレベルまで割ると担当が見える。例「採用担当」→「候補者をスクリーニングする（エージェント向き）／面接の温度感を読む（人間）／オファーを口説く」。ステップ2を実務に落とす鍵という主張。<a href="../../../../../../../../../../../../../../../concepts/palantir-ontology.html">palantir-ontology</a> の「名詞＋動詞」と同型の発想。</li>
+<li>2026-06-19（@sho1nakagawa の個人考察）: AIはあくまで増幅器であって、増幅される"元"（自分で手を動かしてきた習慣）がない人には効かない。見極めるなら「この1年で新しく学んだこと・試したことは何ですか？」とAIに限定せず聞く、という独自の判定法。著者は外部CMO（株式会社CMO1号）。</li>
+<li>2026-06-19（McKinsey記事の単一ソース数値）: ジョンソン・エンド・ジョンソンは約900の生成AIユースケースを洗い出したが価値の8割はうち10〜15%から生まれ、最も価値を生む施策に絞り込む方針へ転換した、とされる。重要役割のうちCEO直下は5〜10%程度で残りは2〜3階層下にある、metaは各重要役割に「AIによる期待インパクト」を定義し従業員のAI活用での価値創出で評価し始めた、過去18ヶ月で多くのFortune500がAI戦略のためリーダーチームを再編した、等の事例も同記事経由のため一次確認の余地あり。</li>
+<li>2026-06-19: 人材は buy・build・borrow（採る・育てる・借りる）の組み合わせで揃えるが、重要なAI能力を外部人材に頼りすぎると規模化・価値維持に苦しむ脆い組織になる、という注意も提示。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>ステップ2の「タスクを人／エージェント／ハイブリッドに割り当てる」を、自分のLLM Wiki運用（決定論はPython・AIは意味理解のみ）にそのまま重ねられるか。どのタスクが"動詞"として切り出せていないか</li>
+<li>「AIスーパーユーザーはごく一部」という主張は本当か。組織で再現可能な育成パスはあるのか、それとも素質（手を動かす習慣）に依存するのか</li>
+<li>第5ステップ「システムをどう評価するか」を個人スケールに落とすと、自分のwiki＋エージェント群の"システムとしての出来"はどんな指標で測れるか（<a href="../../../../../../../../../../../../../../../concepts/eval-loop.html">eval-loop</a> と接続するか）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../../../../../../../../../../../business/org-design-intelligence.html">org-design-intelligence</a> — 「業務のAI化」と「組織のAI化」の分岐・中間管理職の情報ルーティングをAIが代替するという同じ命題の組織設計側</li>
+<li><a href="../../../../../../../../../../../../../../../business/keidanren-hr-ai-2026.html">keidanren-hr-ai-2026</a> — HR部門のAI活用（安全性・公平性・透明性の3原則と企業事例）</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/ai-quality-amplification.html">ai-quality-amplification</a> — 「AIは増幅器、増幅されるのは弱点も同じ」という見極め基準の根拠</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/palantir-ontology.html">palantir-ontology</a> — 役割を名詞＋動詞に分解してモデル化する発想の同型</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a> — AI時代に重要性が増す「人とエージェントのワークフローを設計する」役割の具体像</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../../../../../../../../../../../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../../../../../../../../../../../../../../../business/keidanren-hr-ai-2026.html">keidanren-hr-ai-2026</a></li>
+<li><a href="../../../../../../../../../../../../../../../business/org-design-intelligence.html">org-design-intelligence</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/palantir-ontology.html">palantir-ontology</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AI時代のTalent to Value（人材とエージェントを価値へ）
+
+&gt; **TL;DR**: 価値評価の単位が「個人」から「人＋AIエージェントが組み合わさったシステム」へ移り、人材戦略の問いが「誰をどの役割に当てるか」から「人とAIをどう配線し、システムをどれだけうまく機能させるか」へ変わる。
+
+マッキンゼーが10年以上使ってきた「**Talent to Value（人材を価値へ）**」は、企業価値の約8割がたった30〜50個の「重要な役割」から生まれるという前提に立ち、その役割を特定してトップ人材を当てればインパクトが最大化する、という人材配置のフレームだ。AI時代版（記事 *Rewiring Talent to Value in the age of AI*）の核心は、価値がもはや「役割」単体でなく**人とAIエージェントが動的に組み合わさったシステム**から生まれる点にある。生成AIが「仕事のやり方」を変えたのに対し、エージェント型AIは「誰が（あるいは何が）その仕事をやるのか」を変えてしまった——だから人材戦略の再配線（rewire）が要る、というのが主旨。従来の4ステップが更新され、第5ステップが新設された。
+
+- **❶ 価値の地図を描き&quot;続ける&quot;** — 価値の源泉が計画サイクルより速く移動するため、価値配分を一度きりの計画でなく継続プロセスとして扱い、人材とエージェントを素早く再配置する。
+- **❷ 重要な役割&quot;と&quot;エージェントを特定する** — 視点を「Talent to Value」から「**Talent and Agents to Value**」へ移す。最高価値領域をケイパビリティ→スキル→タスクに分解し、各タスクを人間／エージェント／ハイブリッドのどれが一番うまくやれるかで割り当てる。価値の真の単位は単一の役割でなく、人とエージェントが協調する「システム」になる。
+- **❸ AIで価値を&quot;増幅&quot;できる人を厳しく見極める** — 知識はAI経由でコモディティ化し経験は陳腐化するため、評価軸を「役割への適合」から「その人がAIでどれだけ価値を増幅できるか」へ転換する。鍵は「AIスーパーユーザー」（かつてチームを要した仕事を一人でこなす人）の見極め。ただしツールを配るだけでは差は生まれず、突き抜ける人はごく一部だと釘を刺す。
+- **❹ トップチーム自身を見直す** — リーダー層こそAIに精通し自ら手を動かし、階層を「監督」するのでなく人材・AI・ワークフロー・資源配分という動的システムを「運用」する側に回る。経営層が最初に再配線される。
+- **❺（新設）「誰がやったか」より「システムがどう機能したか」** — 評価の問いが個人帰属から「そのシステムはどれだけうまく機能したか」へ。エージェントは意思決定の質・信頼性・速度・コストで、人間は事業インパクト・AIワークフローを定義し改善する力・倫理的利用・横断協働で、補完的に別評価する。
+
+最大のつまずきは「優秀な人材や高度なAIツールが足りないから」でなく、それらを明確な説明責任とフィードバックを持つ**一貫したシステムに統合できていない**ことにある——という指摘が締め。これは [[business/org-design-intelligence]] の「業務のAI化（個人にコパイロットを配る）では組織スループットは変わらず、ボトルネックが作業から判断・調整へ移るだけ」という命題と同じ問題を、人材評価の側から言い換えたものだ。タスクを動詞単位に分けて人とAIへ割り当てる発想は [[concepts/palantir-ontology]] の名詞＋動詞モデルと、「AIは増幅器」という見極め基準は [[concepts/ai-quality-amplification]] と接続する。
+
+## 観察ログ（未検証）
+
+- 2026-06-19（@sho1nakagawa の個人考察）: 役割を&quot;名詞&quot;のまま見るとAI化の判断ができないが、&quot;動詞&quot;のレベルまで割ると担当が見える。例「採用担当」→「候補者をスクリーニングする（エージェント向き）／面接の温度感を読む（人間）／オファーを口説く」。ステップ2を実務に落とす鍵という主張。[[concepts/palantir-ontology]] の「名詞＋動詞」と同型の発想。
+- 2026-06-19（@sho1nakagawa の個人考察）: AIはあくまで増幅器であって、増幅される&quot;元&quot;（自分で手を動かしてきた習慣）がない人には効かない。見極めるなら「この1年で新しく学んだこと・試したことは何ですか？」とAIに限定せず聞く、という独自の判定法。著者は外部CMO（株式会社CMO1号）。
+- 2026-06-19（McKinsey記事の単一ソース数値）: ジョンソン・エンド・ジョンソンは約900の生成AIユースケースを洗い出したが価値の8割はうち10〜15%から生まれ、最も価値を生む施策に絞り込む方針へ転換した、とされる。重要役割のうちCEO直下は5〜10%程度で残りは2〜3階層下にある、metaは各重要役割に「AIによる期待インパクト」を定義し従業員のAI活用での価値創出で評価し始めた、過去18ヶ月で多くのFortune500がAI戦略のためリーダーチームを再編した、等の事例も同記事経由のため一次確認の余地あり。
+- 2026-06-19: 人材は buy・build・borrow（採る・育てる・借りる）の組み合わせで揃えるが、重要なAI能力を外部人材に頼りすぎると規模化・価値維持に苦しむ脆い組織になる、という注意も提示。
+
+## 問い
+
+- ステップ2の「タスクを人／エージェント／ハイブリッドに割り当てる」を、自分のLLM Wiki運用（決定論はPython・AIは意味理解のみ）にそのまま重ねられるか。どのタスクが&quot;動詞&quot;として切り出せていないか
+- 「AIスーパーユーザーはごく一部」という主張は本当か。組織で再現可能な育成パスはあるのか、それとも素質（手を動かす習慣）に依存するのか
+- 第5ステップ「システムをどう評価するか」を個人スケールに落とすと、自分のwiki＋エージェント群の&quot;システムとしての出来&quot;はどんな指標で測れるか（[[concepts/eval-loop]] と接続するか）
+
+## 関連
+
+- [[business/org-design-intelligence]] — 「業務のAI化」と「組織のAI化」の分岐・中間管理職の情報ルーティングをAIが代替するという同じ命題の組織設計側
+- [[business/keidanren-hr-ai-2026]] — HR部門のAI活用（安全性・公平性・透明性の3原則と企業事例）
+- [[concepts/ai-quality-amplification]] — 「AIは増幅器、増幅されるのは弱点も同じ」という見極め基準の根拠
+- [[concepts/palantir-ontology]] — 役割を名詞＋動詞に分解してモデル化する発想の同型
+- [[concepts/forward-deployed-engineer]] — AI時代に重要性が増す「人とエージェントのワークフローを設計する」役割の具体像
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

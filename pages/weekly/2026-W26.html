@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-W26 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb9a0"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-W26</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="2026-W26.md">Markdownで表示</a></div>
+  <div class="meta">weekly/2026-W26 · weekly · <span title="2026-06-23">今日</span></div>
+  <article><h1>Weekly Insights: 2026-W26（2026-06-22〜06-28）</h1>
+<h2>今週のホットトピック</h2>
+<p><img alt="infographic-hot-topics.png" src="2026-W26/infographic-hot-topics.png"></p>
+<ul>
+<li><strong><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a> スキルは「少数精鋭」で効く——自動で増やすほど悪化する</strong> — 厳選スキルはパス率を平均+16.6pp押し上げるが、最適は1〜3個で4個以上は劣化、エージェントが自作したスキルはベースを-8〜-11pp下回った。</li>
+<li><strong><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> 「何でもCLAUDE.mdに書くと壊れる」——指示は機構へ振り分ける</strong> — Anthropic公式が振る舞い制御の7手段を整理。推奨はCLAUDE.mdを200行未満に保ち、各指示をロード時点・圧縮生存・権威の要件で適切な置き場所へ逃がすこと。</li>
+<li><strong><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a> 「目次は薄く、中身は厚く」——判断を確信度つきで残し、週次で型へ昇格させる</strong> — 蓄積ではなく昇格。重要な判断を確信度つきでログ化し、低確信を週次で拾ってパターンへ上げるメタ認知の垂直設計。</li>
+</ul>
+<h3>深掘り</h3>
+<p><strong><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a> スキルは「少数精鋭」で効く</strong>
+SkillsBench（arXiv 2602.12670、Dawn Song ら）は「スキルを足すとエージェントは本当に強くなるか、どれだけ」を同一タスクのあり・なし対試験で初めて定量化しました。結論は二面的です。厳選スキルは効く（task-macroパス率 33.9%→50.5%、+16.6pp）が、その効き方は「足し方」に強く依存する——スキルは1個で+18.0pp・2〜3個で+19.0pp・4個以上で+10.1ppへ低下し、網羅的な散文はほぼ無効（+0.7pp）。さらに重要なのは、エージェントがその場で自作したスキルは no-Skill ベースラインを3構成すべてで下回った（-8.1〜-11.5pp）という負の結果です。「自動でスキルを増やせば賢くなる」という直感を、研究レベルの数字が正面から否定しています。</p>
+<p><strong><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> 指示を機構へ振り分ける</strong>
+Anthropic公式ブログ「Steering Claude Code」が、振る舞い制御を7手段（CLAUDE.md・rules・skills・subagents・hooks・output styles・append-system-prompt）として整理しました。出発点は「何でもCLAUDE.mdに書くと壊れる」という観察——共有リポのCLAUDE.mdは誰も消さずに肥大し、無関係な行まで毎回ロードされてトークンを食い、本当に効かせたい指示の遵守を薄めます。だから本質は機能の暗記ではなく、各指示を「いつ読まれるか・圧縮で生き残るか・どれだけ強い権威を持つか」で適切な手段へ振り分けること。Anthropicの推奨はCLAUDE.mdを200行未満に保ち、オーナーを置きコードのようにレビューすること。先週ingestした loop-engineering 内のETH Zurich研究（AGENTS.md肥大で成功率低下・推論コスト+20%超）が、別ルートから同じ結論を裏付けています。</p>
+<p><strong><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a> 判断を確信度つきで残し、週次で型へ昇格させる</strong>
+@kenichiota0711 の連載第3回は、エージェントにメタ認知（思考についての思考）を実装する設計です。核は2つ——重要な判断のたびに「何を・なぜ・他の選択肢・確信度（5段階）」を <code>decisions-log.md</code> に残させ（モニタリング）、週次でAI自身に読み返させて低確信・失敗ケースの共通点を <code>patterns.md</code> へ昇格させる（制御）。設計の規律が示唆的です。入り口の <code>REFLECTION.md</code> は薄い索引に保ち詳細は個別ファイルへ逃がす——「目次は薄く、中身は厚く」。これは上の指示ミニマリズム（200行基準）と同じ発想で、別領域から同じ原理に行き着いています。</p>
+<h2>今週の中心テーマ</h2>
+<p><strong>スキルも指示も「足す」局面は終わった。今週は研究・公式ガイダンス・認知設計が独立に同じ結論へ収斂した——レバーは「効くものだけ残して構造化する（蒸留と垂直の層）」へ移り、自動で足すほど悪化する、というのが今週の硬い発見。</strong></p>
+<p><img alt="infographic-theme.png" src="2026-W26/infographic-theme.png"></p>
+<p>先週（W25）は「AIを自律で回し続ける」ループの話でした。今週はその一階下——ループに何を食わせるか——が論点です。資産（W24の「言語化された判断」）も自律（W25のループ）も、与える文脈が蒸留され構造化されて初めてリターンを返す。そして決定的なのは、その蒸留を自動化で代替しようとすると（自己生成スキル・GUIログからの採掘）かえって質が下がるという、今週揃った複数の証拠です。</p>
+<h2>根拠ページ</h2>
+<ul>
+<li><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a>（→ 今週のホットトピック#1）</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a>（→ 今週のホットトピック#2）</li>
+<li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a>（→ 今週のホットトピック#3）</li>
+<li><a href="../papers/2026-hao-skill-mining.html">2026-hao-skill-mining</a> — GUI操作ログからのスキル自動採掘は、クラスタ自体は読める（8中5が純度0.95以上）のに下流方策の改善に繋がらず、頻度ベースラインにすら負けた負の結果。「読めること」と「転移して効くこと」は別、という今週テーマの直接的な裏付け</li>
+<li><a href="../papers/2026-zhou-colleague-skill.html">2026-zhou-colleague-skill</a> — 雑多な作業痕跡を検査・修正・ロールバック可能なスキルパッケージへ自動蒸留する研究。スキルの「生成側」だが、鍵は能力と振る舞いを分け境界づきの編集可能成果物にする点で、無批判な自動生成とは対極</li>
+<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> — 振り返り→Issue→PRの外部ループ。reflection-layer の「週次でパターンへ昇格」を別セッションへ外部化した形で、人間にマージ判断だけ残す</li>
+<li><a href="../concepts/structuring-ability.html">structuring-ability</a> — 同じ @kenichiota0711 の構造化力論（全体と部分の入れ子を整理し抽象と具体を行き来する）。省察層の人間側の能力にあたる</li>
+</ul>
+<h2>既存wikiとの接続</h2>
+<ul>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a> — Anthropic社内知見の「compact・focusedが網羅的散文に勝つ」を、SkillsBench が +19.0pp vs +0.7pp という数字で定量裏付けした。実務指針が研究で確認された週</li>
+<li><a href="../concepts/agent-skill-management-system.html">agent-skill-management-system</a> — スキル増殖後の「知識的負債」を扱う管理論。「2〜3個が最適・4個以上で劣化」は、増やす前に剪定するための具体的なしきい値を与える</li>
+<li><a href="../business/skill-library-strategy.html">skill-library-strategy</a> — スキルライブラリを私有資産とする戦略（Hiten Shah）。今週の証拠は「蒸留されているかどうか」が、そのライブラリを資産にするか騒音にするかを分けると示す</li>
+</ul>
+<h2>sugeta-san への問い</h2>
+<p><strong>このwikiは ingest で毎週ページとスキルを足し続けているが、それを剪定・蒸留する逆向きの仕組み（lint / review / skill-cleaner）は、足す仕組みと同じ強度で回っているか？</strong></p>
+<p>→ 今週の証拠は「足す自動化」と「引く自動化」の非対称を突いています。SkillsBench の「自己生成スキルはベース割れ」「4個以上で劣化」「網羅的散文は無効」は、自動生成と積み増しを前提にした運用ほど効く警告です。<code>.claude/skills/</code> の本数と各SKILL.mdの厚み、CLAUDE.mdの行数を、足す前に一度棚卸しする週にできます。</p>
+<h2>今週の小アクション（5分）</h2>
+<p><code>wc -l CLAUDE.md .claude/skills/*/SKILL.md</code> を実行して行数を一覧し、200行を超えるファイルを1つ特定する。そのファイルの中で「常時必要な事実」でない行（手続き＝Skill化／決定論的強制＝hook化できる行）を1ブロック見つけ、逃がし先をメモするところまで。</p>
+<h2>いますぐAIと一緒に（コピペ）</h2>
+<p>以下をそのまま Claude / Claude Code に貼って、今週のテーマを自分のスキル運用に当ててみてください。</p>
+<pre><code>このリポの .claude/skills/ を SkillsBench の知見で監査して。観点は3つ:
+1. スキル本数は「2〜3が最適・4以上で劣化」の基準で見て冗長化していないか。統合・削除できる重複はどれか
+2. 各 SKILL.md は compact か。網羅的な散文（ほぼ無効と実証された形）になっているものはどれか
+3. complexity contract（適用境界・想定トークンコスト・軽量フォールバック経路）が frontmatter に無いスキルはどれか。1つ選んで追記案を出して
+結論は「今すぐ剪定すべき1スキル」と「contract を足すべき1スキル」を名指しで。
+参照: wiki/papers/2026-li-skillsbench.md / wiki/concepts/claude-code-instruction-methods.md
+</code></pre>
+<h2>さらに読むべきページ</h2>
+<ul>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — <code>goal</code>／<code>loop</code>／<code>routine</code> の動詞の使い分け（いつ止まるか・自分はその場にいるか）。先週のループ論を実務の選択基準へ落とした続き</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 生成→基準採点→閾値未満を止める品質ゲート。判断やパターンの「昇格」を機械的に判定する土台になる</li>
+<li><a href="../concepts/coding-agent-workflow-styles.html">coding-agent-workflow-styles</a> — 委譲低速ループと高速制御ループの2類型。何を自動化に委ね、何を手元で握るかの線引きに効く</li>
+</ul>
+<h2>今週の音声ニュース</h2>
+<audio controls style="width:100%;margin:1rem 0"><source src="2026-W26/audio.mp3" type="audio/mpeg"></audio>
+<p><a href="https://notebooklm.google.com/notebook/f23c1a80-99e6-4a4e-baa9-a89b4783557e">NotebookLM で開く →</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a></li>
+<li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a></li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../papers/2026-zhou-colleague-skill.html">2026-zhou-colleague-skill</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Weekly Insights: 2026-W26（2026-06-22〜06-28）
+
+## 今週のホットトピック
+
+![[2026-W26/infographic-hot-topics.png]]
+
+- **[[papers/2026-li-skillsbench]] スキルは「少数精鋭」で効く——自動で増やすほど悪化する** — 厳選スキルはパス率を平均+16.6pp押し上げるが、最適は1〜3個で4個以上は劣化、エージェントが自作したスキルはベースを-8〜-11pp下回った。
+- **[[concepts/claude-code-instruction-methods]] 「何でもCLAUDE.mdに書くと壊れる」——指示は機構へ振り分ける** — Anthropic公式が振る舞い制御の7手段を整理。推奨はCLAUDE.mdを200行未満に保ち、各指示をロード時点・圧縮生存・権威の要件で適切な置き場所へ逃がすこと。
+- **[[concepts/agent-reflection-layer]] 「目次は薄く、中身は厚く」——判断を確信度つきで残し、週次で型へ昇格させる** — 蓄積ではなく昇格。重要な判断を確信度つきでログ化し、低確信を週次で拾ってパターンへ上げるメタ認知の垂直設計。
+
+### 深掘り
+
+**[[papers/2026-li-skillsbench]] スキルは「少数精鋭」で効く**
+SkillsBench（arXiv 2602.12670、Dawn Song ら）は「スキルを足すとエージェントは本当に強くなるか、どれだけ」を同一タスクのあり・なし対試験で初めて定量化しました。結論は二面的です。厳選スキルは効く（task-macroパス率 33.9%→50.5%、+16.6pp）が、その効き方は「足し方」に強く依存する——スキルは1個で+18.0pp・2〜3個で+19.0pp・4個以上で+10.1ppへ低下し、網羅的な散文はほぼ無効（+0.7pp）。さらに重要なのは、エージェントがその場で自作したスキルは no-Skill ベースラインを3構成すべてで下回った（-8.1〜-11.5pp）という負の結果です。「自動でスキルを増やせば賢くなる」という直感を、研究レベルの数字が正面から否定しています。
+
+**[[concepts/claude-code-instruction-methods]] 指示を機構へ振り分ける**
+Anthropic公式ブログ「Steering Claude Code」が、振る舞い制御を7手段（CLAUDE.md・rules・skills・subagents・hooks・output styles・append-system-prompt）として整理しました。出発点は「何でもCLAUDE.mdに書くと壊れる」という観察——共有リポのCLAUDE.mdは誰も消さずに肥大し、無関係な行まで毎回ロードされてトークンを食い、本当に効かせたい指示の遵守を薄めます。だから本質は機能の暗記ではなく、各指示を「いつ読まれるか・圧縮で生き残るか・どれだけ強い権威を持つか」で適切な手段へ振り分けること。Anthropicの推奨はCLAUDE.mdを200行未満に保ち、オーナーを置きコードのようにレビューすること。先週ingestした loop-engineering 内のETH Zurich研究（AGENTS.md肥大で成功率低下・推論コスト+20%超）が、別ルートから同じ結論を裏付けています。
+
+**[[concepts/agent-reflection-layer]] 判断を確信度つきで残し、週次で型へ昇格させる**
+@kenichiota0711 の連載第3回は、エージェントにメタ認知（思考についての思考）を実装する設計です。核は2つ——重要な判断のたびに「何を・なぜ・他の選択肢・確信度（5段階）」を `decisions-log.md` に残させ（モニタリング）、週次でAI自身に読み返させて低確信・失敗ケースの共通点を `patterns.md` へ昇格させる（制御）。設計の規律が示唆的です。入り口の `REFLECTION.md` は薄い索引に保ち詳細は個別ファイルへ逃がす——「目次は薄く、中身は厚く」。これは上の指示ミニマリズム（200行基準）と同じ発想で、別領域から同じ原理に行き着いています。
+
+## 今週の中心テーマ
+
+**スキルも指示も「足す」局面は終わった。今週は研究・公式ガイダンス・認知設計が独立に同じ結論へ収斂した——レバーは「効くものだけ残して構造化する（蒸留と垂直の層）」へ移り、自動で足すほど悪化する、というのが今週の硬い発見。**
+
+![[2026-W26/infographic-theme.png]]
+
+先週（W25）は「AIを自律で回し続ける」ループの話でした。今週はその一階下——ループに何を食わせるか——が論点です。資産（W24の「言語化された判断」）も自律（W25のループ）も、与える文脈が蒸留され構造化されて初めてリターンを返す。そして決定的なのは、その蒸留を自動化で代替しようとすると（自己生成スキル・GUIログからの採掘）かえって質が下がるという、今週揃った複数の証拠です。
+
+## 根拠ページ
+
+- [[papers/2026-li-skillsbench]]（→ 今週のホットトピック#1）
+- [[concepts/claude-code-instruction-methods]]（→ 今週のホットトピック#2）
+- [[concepts/agent-reflection-layer]]（→ 今週のホットトピック#3）
+- [[papers/2026-hao-skill-mining]] — GUI操作ログからのスキル自動採掘は、クラスタ自体は読める（8中5が純度0.95以上）のに下流方策の改善に繋がらず、頻度ベースラインにすら負けた負の結果。「読めること」と「転移して効くこと」は別、という今週テーマの直接的な裏付け
+- [[papers/2026-zhou-colleague-skill]] — 雑多な作業痕跡を検査・修正・ロールバック可能なスキルパッケージへ自動蒸留する研究。スキルの「生成側」だが、鍵は能力と振る舞いを分け境界づきの編集可能成果物にする点で、無批判な自動生成とは対極
+- [[concepts/skill-self-improving-loop]] — 振り返り→Issue→PRの外部ループ。reflection-layer の「週次でパターンへ昇格」を別セッションへ外部化した形で、人間にマージ判断だけ残す
+- [[concepts/structuring-ability]] — 同じ @kenichiota0711 の構造化力論（全体と部分の入れ子を整理し抽象と具体を行き来する）。省察層の人間側の能力にあたる
+
+## 既存wikiとの接続
+
+- [[concepts/skill-building-best-practices]] — Anthropic社内知見の「compact・focusedが網羅的散文に勝つ」を、SkillsBench が +19.0pp vs +0.7pp という数字で定量裏付けした。実務指針が研究で確認された週
+- [[concepts/agent-skill-management-system]] — スキル増殖後の「知識的負債」を扱う管理論。「2〜3個が最適・4個以上で劣化」は、増やす前に剪定するための具体的なしきい値を与える
+- [[business/skill-library-strategy]] — スキルライブラリを私有資産とする戦略（Hiten Shah）。今週の証拠は「蒸留されているかどうか」が、そのライブラリを資産にするか騒音にするかを分けると示す
+
+## sugeta-san への問い
+
+**このwikiは ingest で毎週ページとスキルを足し続けているが、それを剪定・蒸留する逆向きの仕組み（lint / review / skill-cleaner）は、足す仕組みと同じ強度で回っているか？**
+
+→ 今週の証拠は「足す自動化」と「引く自動化」の非対称を突いています。SkillsBench の「自己生成スキルはベース割れ」「4個以上で劣化」「網羅的散文は無効」は、自動生成と積み増しを前提にした運用ほど効く警告です。`.claude/skills/` の本数と各SKILL.mdの厚み、CLAUDE.mdの行数を、足す前に一度棚卸しする週にできます。
+
+## 今週の小アクション（5分）
+
+`wc -l CLAUDE.md .claude/skills/*/SKILL.md` を実行して行数を一覧し、200行を超えるファイルを1つ特定する。そのファイルの中で「常時必要な事実」でない行（手続き＝Skill化／決定論的強制＝hook化できる行）を1ブロック見つけ、逃がし先をメモするところまで。
+
+## いますぐAIと一緒に（コピペ）
+
+以下をそのまま Claude / Claude Code に貼って、今週のテーマを自分のスキル運用に当ててみてください。
+
+```
+このリポの .claude/skills/ を SkillsBench の知見で監査して。観点は3つ:
+1. スキル本数は「2〜3が最適・4以上で劣化」の基準で見て冗長化していないか。統合・削除できる重複はどれか
+2. 各 SKILL.md は compact か。網羅的な散文（ほぼ無効と実証された形）になっているものはどれか
+3. complexity contract（適用境界・想定トークンコスト・軽量フォールバック経路）が frontmatter に無いスキルはどれか。1つ選んで追記案を出して
+結論は「今すぐ剪定すべき1スキル」と「contract を足すべき1スキル」を名指しで。
+参照: wiki/papers/2026-li-skillsbench.md / wiki/concepts/claude-code-instruction-methods.md
+```
+
+## さらに読むべきページ
+
+- [[concepts/goal-loop-routine]] — `goal`／`loop`／`routine` の動詞の使い分け（いつ止まるか・自分はその場にいるか）。先週のループ論を実務の選択基準へ落とした続き
+- [[concepts/eval-loop]] — 生成→基準採点→閾値未満を止める品質ゲート。判断やパターンの「昇格」を機械的に判定する土台になる
+- [[concepts/coding-agent-workflow-styles]] — 委譲低速ループと高速制御ループの2類型。何を自動化に委ね、何を手元で握るかの線引きに効く
+
+## 今週の音声ニュース
+
+![[2026-W26/audio.mp3]]
+
+[NotebookLM で開く →](https://notebooklm.google.com/notebook/f23c1a80-99e6-4a4e-baa9-a89b4783557e)
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

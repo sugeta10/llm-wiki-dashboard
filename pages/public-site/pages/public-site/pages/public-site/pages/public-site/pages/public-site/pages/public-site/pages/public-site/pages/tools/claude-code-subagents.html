@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-subagents - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-subagents</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-subagents.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/tools/claude-code-subagents · other · <span title=""></span></div>
+  <article><h1>Claude Code サブエージェント</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: <a href="../../../../../../../../../../../../../../../tools/claude-code.html">claude-code</a> のサブエージェント機能は、専用のコンテキストウィンドウで独立動作し、ツール呼出のノイズをメインに残さず結果サマリーだけを返すことで、長セッションのコンテキスト汚染を防ぐ仕組み。</p>
+</blockquote>
+<p>長いセッションでは grep・find・ls といった探索系ツールの呼出や中間ファイルの読込がすべてメインのコンテキストに蓄積し、ノイズになる。さらに <code>/compact</code> 時にはこの蓄積が原因で重要情報が圧縮で失われやすい。サブエージェントはこの問題を、探索系の呼出や中間読込をサブエージェント側のコンテキストに閉じ込めることで構造的に防ぐ。メインに戻るのは最終的な結果サマリーだけなので、親のコンテキストは汚染されない。</p>
+<p><strong>定義方法</strong>: サブエージェントは <code>.claude/agents/</code>（プロジェクトローカル）または <code>~/.claude/agents/</code>（グローバル）に Markdown ファイルとして置く。frontmatter の <code>description</code> などを Claude Code が自動検出し、タスクが説明に一致すると起動する。優先度は「プロジェクトローカル &gt; グローバル」で、同名定義がある場合は高優先度側が勝つ。チーム共有はプロジェクトローカル、個人用途はグローバルに置くのが使い分けの基本。</p>
+<p><strong>起動時のコンテキスト</strong>: デフォルトのサブエージェントは空コンテキスト（クリーン）で起動する。環境変数 <code>CLAUDE_CODE_FORK_SUBAGENT=1</code> を設定すると、親コンテキストの完全コピーを引き継ぐフォーク起動になる。オンデマンドでフォークする場合は <code>/fork</code> スラッシュコマンドを使う。</p>
+<pre><code class="language-bash">export CLAUDE_CODE_FORK_SUBAGENT=1
+</code></pre>
+<p>フォークされたサブエージェントの特性：</p>
+<ul>
+<li>親の会話全体をフォーク時点で継承する</li>
+<li>親とプロンプトキャッシュプレフィックスを共有する</li>
+<li>ツール呼出は親のコンテキストに入らない</li>
+<li>最終サマリーのみを親に返す</li>
+</ul>
+<h2>Built-in サブエージェント</h2>
+<p>Claude Code には以下のサブエージェントが同梱されている。</p>
+<table>
+<thead>
+<tr>
+<th>サブエージェント</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Explore</strong></td>
+<td>コードベース検索（grep/find 系）を独立コンテキストで実行。関連箇所だけを返す</td>
+</tr>
+<tr>
+<td><strong>Plan</strong></td>
+<td>ファイル読込・アーキテクチャ理解・実装計画を作成。中間ファイル読込がメインに入らない</td>
+</tr>
+</tbody>
+</table>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-23: Claude Code のフォルダ構造に <code>~/.claude/agents/</code> と <code>.claude/agents/</code> が存在することは <a href="../../../../../../../../../../../../../../../tools/claude-code.html">claude-code</a> のフォルダ構成セクションで公式に確認済み</li>
+<li>2026-05-23: built-in サブエージェント <strong>Explore</strong>（コードベース検索）と <strong>Plan</strong>（実装計画立案）が Claude Code に同梱されていることは <a href="../../../../../../../../../../../../../../../tools/claude-code.html">claude-code</a> の記述と一致する</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-04-26: 長いセッションでは grep・find・ls などのツール呼出がすべてコンテキストに残り、30分で 80k トークンのノイズが生じる（単一ソースの数字）</li>
+<li>2026-04-26: フォークされたサブエージェントは親とプロンプトキャッシュプレフィックスを共有するため、2番目以降の子は入力トークンが約10倍安くなるとされる（未確認の効果測定）</li>
+<li>2026-04-26: <code>context-timeline</code> フック（<code>https://www.aitmpl.com/component/hook/monitoring/context-timeline</code>）でメインエージェントと並行動作中のサブエージェントのコンテキストをリアルタイム表示できるという紹介</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li><code>CLAUDE_CODE_FORK_SUBAGENT=1</code> のフォーク起動は、空コンテキスト起動と比べて実タスクでどちらが安定するか自分のワークフローで試す</li>
+<li>「2番目以降の子が約10倍安い」というプロンプトキャッシュ共有の効果は、実際のトークン課金で再現できるか測定する</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../../../../../../../../../../../tools/claude-code.html">claude-code</a>（サブエージェントのフォルダ構成・<code>/batch</code> コマンド等）</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/multi-agent-patterns.html">multi-agent-patterns</a>（マルチエージェント設計パターン全般）</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/agentic-coding.html">agentic-coding</a>（自律コーディングスタイルの文脈）</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a>（4層設定構造との関係）</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/llm-council.html">llm-council</a> — 5人の並列サブエージェントでコンシル実装する応用例</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a> — SubagentsとSkillsの境界・3軸の使い分けフレーム（Cursor文脈）</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/claude-code-google-cloud.html">claude-code-google-cloud</a> — API/パイプライン/ダッシュボードを並列実装する実演例</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — subagent定義を agent teams/worktree と組み合わせる並列運用フレーム</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../../../../../../../../../../../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/llm-council.html">llm-council</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/claude-code-google-cloud.html">claude-code-google-cloud</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Code サブエージェント
+
+&gt; **TL;DR**: [[tools/claude-code]] のサブエージェント機能は、専用のコンテキストウィンドウで独立動作し、ツール呼出のノイズをメインに残さず結果サマリーだけを返すことで、長セッションのコンテキスト汚染を防ぐ仕組み。
+
+長いセッションでは grep・find・ls といった探索系ツールの呼出や中間ファイルの読込がすべてメインのコンテキストに蓄積し、ノイズになる。さらに `/compact` 時にはこの蓄積が原因で重要情報が圧縮で失われやすい。サブエージェントはこの問題を、探索系の呼出や中間読込をサブエージェント側のコンテキストに閉じ込めることで構造的に防ぐ。メインに戻るのは最終的な結果サマリーだけなので、親のコンテキストは汚染されない。
+
+**定義方法**: サブエージェントは `.claude/agents/`（プロジェクトローカル）または `~/.claude/agents/`（グローバル）に Markdown ファイルとして置く。frontmatter の `description` などを Claude Code が自動検出し、タスクが説明に一致すると起動する。優先度は「プロジェクトローカル &gt; グローバル」で、同名定義がある場合は高優先度側が勝つ。チーム共有はプロジェクトローカル、個人用途はグローバルに置くのが使い分けの基本。
+
+**起動時のコンテキスト**: デフォルトのサブエージェントは空コンテキスト（クリーン）で起動する。環境変数 `CLAUDE_CODE_FORK_SUBAGENT=1` を設定すると、親コンテキストの完全コピーを引き継ぐフォーク起動になる。オンデマンドでフォークする場合は `/fork` スラッシュコマンドを使う。
+
+```bash
+export CLAUDE_CODE_FORK_SUBAGENT=1
+```
+
+フォークされたサブエージェントの特性：
+
+- 親の会話全体をフォーク時点で継承する
+- 親とプロンプトキャッシュプレフィックスを共有する
+- ツール呼出は親のコンテキストに入らない
+- 最終サマリーのみを親に返す
+
+## Built-in サブエージェント
+
+Claude Code には以下のサブエージェントが同梱されている。
+
+| サブエージェント | 役割 |
+|--------------|------|
+| **Explore** | コードベース検索（grep/find 系）を独立コンテキストで実行。関連箇所だけを返す |
+| **Plan** | ファイル読込・アーキテクチャ理解・実装計画を作成。中間ファイル読込がメインに入らない |
+
+## 検証済み事実
+
+- 2026-05-23: Claude Code のフォルダ構造に `~/.claude/agents/` と `.claude/agents/` が存在することは [[tools/claude-code]] のフォルダ構成セクションで公式に確認済み
+- 2026-05-23: built-in サブエージェント **Explore**（コードベース検索）と **Plan**（実装計画立案）が Claude Code に同梱されていることは [[tools/claude-code]] の記述と一致する
+
+## 観察ログ（未検証）
+
+- 2026-04-26: 長いセッションでは grep・find・ls などのツール呼出がすべてコンテキストに残り、30分で 80k トークンのノイズが生じる（単一ソースの数字）
+- 2026-04-26: フォークされたサブエージェントは親とプロンプトキャッシュプレフィックスを共有するため、2番目以降の子は入力トークンが約10倍安くなるとされる（未確認の効果測定）
+- 2026-04-26: `context-timeline` フック（`https://www.aitmpl.com/component/hook/monitoring/context-timeline`）でメインエージェントと並行動作中のサブエージェントのコンテキストをリアルタイム表示できるという紹介
+
+## 問い
+
+- `CLAUDE_CODE_FORK_SUBAGENT=1` のフォーク起動は、空コンテキスト起動と比べて実タスクでどちらが安定するか自分のワークフローで試す
+- 「2番目以降の子が約10倍安い」というプロンプトキャッシュ共有の効果は、実際のトークン課金で再現できるか測定する
+
+## 関連
+
+- [[tools/claude-code]]（サブエージェントのフォルダ構成・`/batch` コマンド等）
+- [[concepts/multi-agent-patterns]]（マルチエージェント設計パターン全般）
+- [[concepts/agentic-coding]]（自律コーディングスタイルの文脈）
+- [[concepts/claude-code-context-hierarchy]]（4層設定構造との関係）
+- [[concepts/llm-council]] — 5人の並列サブエージェントでコンシル実装する応用例
+- [[concepts/cursor-instruction-methods]] — SubagentsとSkillsの境界・3軸の使い分けフレーム（Cursor文脈）
+- [[concepts/claude-code-google-cloud]] — API/パイプライン/ダッシュボードを並列実装する実演例
+- [[concepts/claude-code-orchestration]] — subagent定義を agent teams/worktree と組み合わせる並列運用フレーム
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

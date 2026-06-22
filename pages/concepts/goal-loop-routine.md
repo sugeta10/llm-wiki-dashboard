@@ -39,6 +39,7 @@ flowchart TD
 - 2026-06-20 @mvanhorn: catalog から抜いた4本——⑫production error sweep（ログを読み実エラーとノイズを分離しテスト付きで修正→PR）⑬quality streak（初回グリーンで止めずN連続成功で初めて勝利宣言・「1回はまぐれ、連勝が信頼性」）⑭Clodex=CodexにClaudeのPRを反証レビューさせ2モデルファミリーの合意を要求（`--max-iter 5` `--threshold medium`）⑮completion-contract=作業前に「完了の定義と各要件の証拠」を契約として書かせ証拠なしの成功宣言を拒否
 - 2026-06-20 @mvanhorn: コスト警告——Uber は1ツール月$1,500で上限を設定（年間AI予算を4ヶ月で枯渇後）。あるRedditユーザーは1コマンドで一晩$6,000を焼いた（1,273 upvotes）。YouTubeコメント「while (you have tokens): Burn them in a loop!」（TrMarwane・196 likes）。だから全 goal に予算、全 loop に上限を付ける（[[concepts/loop-engineering]] のハードストップと同型）
 - 2026-06-20 @mvanhorn: 検証器について「良い出力と悪い出力を区別できないループは、ただ間違うのを速く自動化するだけ。ループを書くのは簡単、中の検証器が難しい部分」（@ahmetbilicanxyz 引用）。最強のループ（Boris の verifier・build-test-fix・Clodex）はいずれも独立した第二の目をループ内に置いている
+- 2026-06-21 @tomosman: Codex の `/goal` を使った具体実例。「アプリの全機能を洗い出す→コードベースから期待挙動つきユーザーストーリーを作成→単一の正本スプレッドシートで各機能のステータスを追跡→完了したらループをテスト工程（各ユーザーストーリーの検証）に切り替える」という多段タスクを1つの `/goal` で投入し自律実行させた。`/goal` が単純な停止条件だけでなく「達成後に次フェーズへ自動遷移する」複合ワークフローを回せることを示す実例（X bookmark 10,700・impression 850K、2026-06-22時点。"This 'loop' automation is nuts inside of Codex" と評）
 
 ## 問い
 

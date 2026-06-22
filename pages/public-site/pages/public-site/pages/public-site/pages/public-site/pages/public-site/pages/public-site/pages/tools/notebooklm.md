@@ -49,5 +49,6 @@ Googleが提供するAI搭載のノートブックツール。PDFやWebページ
 
 - [[tools/notebooklm-py]] — NotebookLM非公式Python API/CLI（Web UI非公開機能をバッチ操作）
 - [[tools/notebooklm-business-workflows]] — 業務時短9ワークフロー（会議・資料・申請書・改善ループ）
+- [[tools/notebooklm-studio-prompts]] — Studio 9機能のカスタム指示プロンプト集（4点指定・禁則・機能別の型20種）
 - [[concepts/obsidian-personal-os]] — Obsidian+Claude Code+N8NによるパーソナルOS設計
 - [[companies/google]] — NotebookLMを含むGoogle OneのAIサブスクバンドル

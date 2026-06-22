@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>goal-loop-routine</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="goal-loop-routine.md">Markdownで表示</a></div>
-  <div class="meta">concepts/goal-loop-routine · concepts · <span title="2026-06-22">今日</span></div>
+  <div class="meta">concepts/goal-loop-routine · concepts · <span title="2026-06-23">今日</span></div>
   <article><h1>goal / loop / routine の使い分け（3つの動詞）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェント自動化の正体は3つの動詞に分かれる——<code>goal</code>=条件を満たすまで走って止まる、<code>loop</code>=自分がいる間タイマーで繰り返す、<code>routine</code>=自分がいない間クラウドで走る。動詞を取り違えるとコマンドが空振りするので、まず「いつ止まるか」で選ぶ。</p>
@@ -91,6 +91,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-06-20 @mvanhorn: catalog から抜いた4本——⑫production error sweep（ログを読み実エラーとノイズを分離しテスト付きで修正→PR）⑬quality streak（初回グリーンで止めずN連続成功で初めて勝利宣言・「1回はまぐれ、連勝が信頼性」）⑭Clodex=CodexにClaudeのPRを反証レビューさせ2モデルファミリーの合意を要求（<code>--max-iter 5</code> <code>--threshold medium</code>）⑮completion-contract=作業前に「完了の定義と各要件の証拠」を契約として書かせ証拠なしの成功宣言を拒否</li>
 <li>2026-06-20 @mvanhorn: コスト警告——Uber は1ツール月$1,500で上限を設定（年間AI予算を4ヶ月で枯渇後）。あるRedditユーザーは1コマンドで一晩$6,000を焼いた（1,273 upvotes）。YouTubeコメント「while (you have tokens): Burn them in a loop!」（TrMarwane・196 likes）。だから全 goal に予算、全 loop に上限を付ける（<a href="../concepts/loop-engineering.html">loop-engineering</a> のハードストップと同型）</li>
 <li>2026-06-20 @mvanhorn: 検証器について「良い出力と悪い出力を区別できないループは、ただ間違うのを速く自動化するだけ。ループを書くのは簡単、中の検証器が難しい部分」（@ahmetbilicanxyz 引用）。最強のループ（Boris の verifier・build-test-fix・Clodex）はいずれも独立した第二の目をループ内に置いている</li>
+<li>2026-06-21 @tomosman: Codex の <code>/goal</code> を使った具体実例。「アプリの全機能を洗い出す→コードベースから期待挙動つきユーザーストーリーを作成→単一の正本スプレッドシートで各機能のステータスを追跡→完了したらループをテスト工程（各ユーザーストーリーの検証）に切り替える」という多段タスクを1つの <code>/goal</code> で投入し自律実行させた。<code>/goal</code> が単純な停止条件だけでなく「達成後に次フェーズへ自動遷移する」複合ワークフローを回せることを示す実例（X bookmark 10,700・impression 850K、2026-06-22時点。"This 'loop' automation is nuts inside of Codex" と評）</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -106,11 +107,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/eval-loop.html">eval-loop</a> — 「生成→採点→閾値未満で止める」検証器の一般形。3動詞すべてに必須の中身</li>
 <li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a> — 同著者(@mvanhorn)の上位ワークフロー論（plan.md先行・人間はシグナルに徹する）</li>
 <li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a> — Codex 側のエージェントループ内部実装</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/loop-library.html">loop-library</a></li>
-<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
-<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
-<li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2068426104088748331" rel="noopener" target="_blank">https://x.com/i/web/status/2068426104088748331</a></li></ul></section></article>
+<li><a href="../tools/loop-library.html">loop-library</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2068426104088748331" rel="noopener" target="_blank">https://x.com/i/web/status/2068426104088748331</a></li>
+<li><a href="https://x.com/i/web/status/2068692611334893582" rel="noopener" target="_blank">https://x.com/i/web/status/2068692611334893582</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -172,6 +174,7 @@ flowchart TD
 - 2026-06-20 @mvanhorn: catalog から抜いた4本——⑫production error sweep（ログを読み実エラーとノイズを分離しテスト付きで修正→PR）⑬quality streak（初回グリーンで止めずN連続成功で初めて勝利宣言・「1回はまぐれ、連勝が信頼性」）⑭Clodex=CodexにClaudeのPRを反証レビューさせ2モデルファミリーの合意を要求（`--max-iter 5` `--threshold medium`）⑮completion-contract=作業前に「完了の定義と各要件の証拠」を契約として書かせ証拠なしの成功宣言を拒否
 - 2026-06-20 @mvanhorn: コスト警告——Uber は1ツール月$1,500で上限を設定（年間AI予算を4ヶ月で枯渇後）。あるRedditユーザーは1コマンドで一晩$6,000を焼いた（1,273 upvotes）。YouTubeコメント「while (you have tokens): Burn them in a loop!」（TrMarwane・196 likes）。だから全 goal に予算、全 loop に上限を付ける（[[concepts/loop-engineering]] のハードストップと同型）
 - 2026-06-20 @mvanhorn: 検証器について「良い出力と悪い出力を区別できないループは、ただ間違うのを速く自動化するだけ。ループを書くのは簡単、中の検証器が難しい部分」（@ahmetbilicanxyz 引用）。最強のループ（Boris の verifier・build-test-fix・Clodex）はいずれも独立した第二の目をループ内に置いている
+- 2026-06-21 @tomosman: Codex の `/goal` を使った具体実例。「アプリの全機能を洗い出す→コードベースから期待挙動つきユーザーストーリーを作成→単一の正本スプレッドシートで各機能のステータスを追跡→完了したらループをテスト工程（各ユーザーストーリーの検証）に切り替える」という多段タスクを1つの `/goal` で投入し自律実行させた。`/goal` が単純な停止条件だけでなく「達成後に次フェーズへ自動遷移する」複合ワークフローを回せることを示す実例（X bookmark 10,700・impression 850K、2026-06-22時点。&quot;This &#x27;loop&#x27; automation is nuts inside of Codex&quot; と評）
 
 ## 問い
 

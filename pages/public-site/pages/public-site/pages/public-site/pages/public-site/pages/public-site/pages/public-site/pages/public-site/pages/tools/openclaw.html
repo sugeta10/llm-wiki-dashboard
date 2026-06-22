@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>openclaw - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>openclaw</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="openclaw.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/tools/openclaw · other · <span title=""></span></div>
+  <article><h1>OpenClaw</h1>
+<p>オープンソースのAIエージェント基盤。非同期タスク管理・モデル非依存・スキルズ（作業テンプレート）・定期実行を組み合わせた「24時間稼働するAI組織」を構築できる。GitHubスター21万超、フォーク4万、コントリビューター700人以上。</p>
+<h2>5層アーキテクチャ</h2>
+<table>
+<thead>
+<tr>
+<th>層</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>第1層: 体験層</strong></td>
+<td>Discord・LINE・Slack・WhatsApp等の会話インターフェース</td>
+</tr>
+<tr>
+<td><strong>第2層: ゲートウェイ層</strong></td>
+<td>OpenClawの非同期タスク交通整理（⭐革命的）</td>
+</tr>
+<tr>
+<td><strong>第3層: オーケストレーション層</strong></td>
+<td>クーロン（定期実行）・スキルズ</td>
+</tr>
+<tr>
+<td><strong>第4層: エージェント層</strong></td>
+<td>Claude Code・Codex・Gemini等</td>
+</tr>
+<tr>
+<td><strong>第5層: ツール層</strong></td>
+<td>MCP・CDP（ブラウザ直接操作）</td>
+</tr>
+</tbody>
+</table>
+<h2>主要コンポーネント</h2>
+<h3>スキルズ（Skills）</h3>
+<ul>
+<li>膨大な作業手順をMarkdownファイル化した再利用可能テンプレート</li>
+<li>「うまくいった作業を手順まとめてスキル化して」で自動保存</li>
+<li>ClawHubからの外部スキルは悪意あるスキルが混在する事例があるため<strong>自作推奨</strong></li>
+</ul>
+<h3>クーロン（Cron）</h3>
+<ul>
+<li>指定間隔での自動タスク実行（動画投稿・記事作成等）</li>
+<li>Unix cron設定もAIが自動生成</li>
+</ul>
+<h3>ハートビート（Heartbeat）</h3>
+<ul>
+<li>30分ごとに自律的に次の行動を判断する定期プロセス</li>
+<li>人間の介入なしで24時間稼働し続ける</li>
+</ul>
+<h2>CDP vs MCP：ブラウザ操作の違い</h2>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>仕組み</th>
+<th>精度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MCP経由</strong>（Claude Code等）</td>
+<td>Chrome MCPツール経由、抽象化レイヤーあり</td>
+<td>ムラあり</td>
+</tr>
+<tr>
+<td><strong>CDP経由</strong>（OpenClaw）</td>
+<td>Chrome DevTools Protocolで直接操作</td>
+<td>高精度</td>
+</tr>
+</tbody>
+</table>
+<p>CDPを直接操作するためTikTokのカバー画像位置選択等の細かいUI操作も可能。</p>
+<h2>特徴</h2>
+<ul>
+<li><strong>モデル非依存</strong>: Claude Code・Codex・Geminiを切り替え可能。<a href="../../../../../../../../../../../../../../../models/claude-opus-4-7.html">claude-opus-4-7</a>等の最新モデルへいつでも移行できる</li>
+<li><strong>記憶の永続化</strong>: 短期・長期記憶をMarkdownで保持。ハイブリッド検索で効率的に引き出す</li>
+<li><strong>設計の再利用性</strong>: 「ツールは入れ替わるけど設計は残る」— スキルズとして蓄積された設計資産はモデルが変わっても活用可能</li>
+</ul>
+<h2>活用例（マーケティング自動化）</h2>
+<p>Discordチャンネルに1行送信するだけで：
+- Remotion + Gemini TTS + OpenAI Whisperで動画生成（1本あたり約1円以下）
+- YouTube / TikTok / Instagramへ自動アップロード
+- Qiita記事の下書き自動生成・定期投稿</p>
+<h2>セキュリティ対策</h2>
+<ul>
+<li>メインPCではなく<strong>サブPC or VPS</strong>で運用（Xサーバーが月額約1,000円のイメージ提供）</li>
+<li>プロンプトインジェクション対策プロンプトを設定</li>
+<li>Chrome Remote Desktopで安全に遠隔操作</li>
+<li>外部スキル（ClawHub）は使わず自作推奨</li>
+</ul>
+<h2>コスト</h2>
+<ul>
+<li>OpenClaw自体はオープンソースで<strong>無料</strong></li>
+<li>モデル利用にはサブスク必要: Claude Max約3万円/月、またはOpenAI Codex等</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../../../../../../../../../../../tools/claude-code.html">claude-code</a></li>
+<li><a href="../../../../../../../../../../../../../../../tools/gstack.html">gstack</a>（gstack スキルは OpenClaw セッション経由でも動作する）</li>
+<li><a href="../../../../../../../../../../../../../../../tools/notebooklm-py.html">notebooklm-py</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../../../../../../../../../../../../../../../tools/claude-managed-agents.html">claude-managed-agents</a></li>
+<li><a href="../../../../../../../../../../../../../../../tools/hermes-agent.html">hermes-agent</a> — 直接競合。アーキテクチャ哲学が真逆（学習エージェントGW包含 vs エージェントGW包含）</li>
+<li><a href="../../../../../../../../../../../../../../../tools/crabbox.html">crabbox</a> — CrabboxはOpenClawのネイティブプラグインとして動作（リモートボックスへのrsync+実行）</li>
+<li><a href="../../../../../../../../../../../../../../../tools/openclaw-agent-skills.html">openclaw-agent-skills</a> — OpenClaw向け共有スキルリポジトリ（autoreview/crabbox/handoff等の正本・symlink配布）</li>
+<li><a href="../../../../../../../../../../../../../../../tools/autoreview-skill.html">autoreview-skill</a> — OpenClaw agent-skills に含まれるコードレビュー自動化スキル</li>
+<li><a href="../../../../../../../../../../../../../../../concepts/agent-memory-layer.html">agent-memory-layer</a> — @pejmanjohn が OpenClaw を個人アシスタント/アイデア発展の場として使い、推論が他エージェントに同期されない問題を論じた文脈</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../../../../../../../../../../../tools/autoreview-skill.html">autoreview-skill</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../../../../../../../../../../../../../../../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../../../../../../../../../../../../../../../tools/claude-managed-agents.html">claude-managed-agents</a></li>
+<li><a href="../../../../../../../../../../../../../../../tools/notebooklm-py.html">notebooklm-py</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># OpenClaw
+
+オープンソースのAIエージェント基盤。非同期タスク管理・モデル非依存・スキルズ（作業テンプレート）・定期実行を組み合わせた「24時間稼働するAI組織」を構築できる。GitHubスター21万超、フォーク4万、コントリビューター700人以上。
+
+## 5層アーキテクチャ
+
+| 層 | 役割 |
+|----|------|
+| **第1層: 体験層** | Discord・LINE・Slack・WhatsApp等の会話インターフェース |
+| **第2層: ゲートウェイ層** | OpenClawの非同期タスク交通整理（⭐革命的） |
+| **第3層: オーケストレーション層** | クーロン（定期実行）・スキルズ |
+| **第4層: エージェント層** | Claude Code・Codex・Gemini等 |
+| **第5層: ツール層** | MCP・CDP（ブラウザ直接操作） |
+
+## 主要コンポーネント
+
+### スキルズ（Skills）
+- 膨大な作業手順をMarkdownファイル化した再利用可能テンプレート
+- 「うまくいった作業を手順まとめてスキル化して」で自動保存
+- ClawHubからの外部スキルは悪意あるスキルが混在する事例があるため**自作推奨**
+
+### クーロン（Cron）
+- 指定間隔での自動タスク実行（動画投稿・記事作成等）
+- Unix cron設定もAIが自動生成
+
+### ハートビート（Heartbeat）
+- 30分ごとに自律的に次の行動を判断する定期プロセス
+- 人間の介入なしで24時間稼働し続ける
+
+## CDP vs MCP：ブラウザ操作の違い
+
+| 方式 | 仕組み | 精度 |
+|------|-------|------|
+| **MCP経由**（Claude Code等） | Chrome MCPツール経由、抽象化レイヤーあり | ムラあり |
+| **CDP経由**（OpenClaw） | Chrome DevTools Protocolで直接操作 | 高精度 |
+
+CDPを直接操作するためTikTokのカバー画像位置選択等の細かいUI操作も可能。
+
+## 特徴
+
+- **モデル非依存**: Claude Code・Codex・Geminiを切り替え可能。[[models/claude-opus-4-7]]等の最新モデルへいつでも移行できる
+- **記憶の永続化**: 短期・長期記憶をMarkdownで保持。ハイブリッド検索で効率的に引き出す
+- **設計の再利用性**: 「ツールは入れ替わるけど設計は残る」— スキルズとして蓄積された設計資産はモデルが変わっても活用可能
+
+## 活用例（マーケティング自動化）
+
+Discordチャンネルに1行送信するだけで：
+- Remotion + Gemini TTS + OpenAI Whisperで動画生成（1本あたり約1円以下）
+- YouTube / TikTok / Instagramへ自動アップロード
+- Qiita記事の下書き自動生成・定期投稿
+
+## セキュリティ対策
+
+- メインPCではなく**サブPC or VPS**で運用（Xサーバーが月額約1,000円のイメージ提供）
+- プロンプトインジェクション対策プロンプトを設定
+- Chrome Remote Desktopで安全に遠隔操作
+- 外部スキル（ClawHub）は使わず自作推奨
+
+## コスト
+
+- OpenClaw自体はオープンソースで**無料**
+- モデル利用にはサブスク必要: Claude Max約3万円/月、またはOpenAI Codex等
+
+## 関連
+
+- [[tools/claude-code]]
+- [[tools/gstack]]（gstack スキルは OpenClaw セッション経由でも動作する）
+- [[tools/notebooklm-py]]
+- [[concepts/agentic-coding]]
+- [[tools/claude-managed-agents]]
+- [[tools/hermes-agent]] — 直接競合。アーキテクチャ哲学が真逆（学習エージェントGW包含 vs エージェントGW包含）
+- [[tools/crabbox]] — CrabboxはOpenClawのネイティブプラグインとして動作（リモートボックスへのrsync+実行）
+- [[tools/openclaw-agent-skills]] — OpenClaw向け共有スキルリポジトリ（autoreview/crabbox/handoff等の正本・symlink配布）
+- [[tools/autoreview-skill]] — OpenClaw agent-skills に含まれるコードレビュー自動化スキル
+- [[concepts/agent-memory-layer]] — @pejmanjohn が OpenClaw を個人アシスタント/アイデア発展の場として使い、推論が他エージェントに同期されない問題を論じた文脈
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

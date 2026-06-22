@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-opus-4-8 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#8b949e"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-opus-4-8</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-opus-4-8.md">Markdownで表示</a></div>
+  <div class="meta">public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/public-site/pages/models/claude-opus-4-8 · other · <span title=""></span></div>
+  <article><h1>Claude Opus 4.8</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: <a href="../../../../../../../../../../../../../../../../../companies/anthropic.html">anthropic</a> が2026-05-28にリリースした最上位モデルで、長期エージェント実行・正直な自己進捗報告・高精度低再現の挙動と、コストを制御するEffort Control/Fast Modeを特徴とする。</p>
+</blockquote>
+<p><a href="../../../../../../../../../../../../../../../../../models/claude-opus-4-7.html">claude-opus-4-7</a> の後継にあたり、価格は据え置きで提供開始された。Anthropicが前世代との差分として挙げるのは「sharper judgment（より鋭い判断力）」「more honesty about its own progress（自己進捗の正直な報告）」「work independently for longer（より長く独立して作業できる能力）」の3点で、TL;DRの各特徴はこの公式の主張に対応する。</p>
+<p><strong>3つの主要な性質。</strong> (1) 長期エージェント実行：多数のツール呼び出しにまたがるタスクで文脈を維持する。高い推論負荷を前提とするため、仕様を少しずつ追加するのではなく最初に全文脈をまとめて渡す設計が有効。(2) セッション途中のsystemプロンプト：messages配列中途の <code>{"role":"system"}</code> をプロンプトキャッシュを無効化せずに追加できる。上書き指示としてではなく文脈として扱うと挙動が安定する。(3) ツール利用の再調整：Web検索は以前より頻繁に起動する一方、1回の作業内で繰り返す回数は減り、文脈から回答する傾向が強まった（高精度・低再現率の方向へシフト）。</p>
+<p><strong>コスト制御の仕組み。</strong> Opus 4.8はデフォルトがHigh effortで、Claude CodeとClaude.aiの両方で Effort Control（Low/High/Max）を切り替えられる。Fast Mode は通常の約2.5倍速・約3倍安価で、コードレビュー・定型コード生成・繰り返し処理に向く。<a href="../../../../../../../../../../../../../../../../../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> は1セッションで最大1,000サブエージェントを並列実行できる。コスト最適化の起点としてまず Effort Control を使うのが効果的（<a href="../../../../../../../../../../../../../../../../../concepts/claude-usage-optimization.html">claude-usage-optimization</a>）。</p>
+<p><strong>プロンプト調整の実践指針。</strong></p>
+<ul>
+<li>思考設定は "x-high" ではなく "high" から始め、複雑度の階層ごとにテストする</li>
+<li>長期タスクでは全文脈を最初にまとめて渡す（少しずつ追加しない）</li>
+<li>調査系タスクでは「まず検索する」「サブエージェントに任せる」を明示的に指示する</li>
+<li>レビュープロンプトから保守的な表現を外し、フィルタリングは下流で行う（モデルが指示を文字通りに従うため、上流で絞ると再現率が落ちやすい）</li>
+</ul>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-05-30: Anthropic公式が示したOpus 4.8の3機能：Effort Control、Fast Mode（約2.5倍速度）、<a href="../../../../../../../../../../../../../../../../../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a>（最大1,000並列エージェント）</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: 評価対象は軽微・小規模・大規模の複雑度階層からサンプリングした100件のオープンソースPR</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: フルシステムのパス率はOpus 4.8 72% vs ベースライン 68%（+4ポイント）</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: 実用的な指摘のパス率はOpus 4.8 61% vs ベースライン 62%（誤差範囲内）</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: 致命的な指摘（critical）が35件→29件に減少</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: コストは1回あたり$0.20〜0.28（Opus 4.5は約$0.13、Sonnet 4.5は$0.04〜0.12）</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-05-29: コメントの内訳がベースラインよりノイズが多い。major指摘が119件→81件に減少し、minor/nitpickがほぼ倍増（CodeRabbit評価）</li>
+<li>2026-05-29: レビュー指示を文字通りに従う傾向があり、「重大度の高い問題だけを報告する」保守的プロンプトが再現率を強く抑制するとの仮説</li>
+<li>2026-05-29: 200kトークン超えでコンテキスト性能が目に見えて低下。モノレポや大規模コードベースは壁にぶつかる可能性</li>
+<li>2026-05-30: Effort ControlがOpus 4.8で最もコスト削減効果の高い新機能。プロンプトの60%をLow、10%のみMaxに振り分けることで月額コストを半減できるとの主張（@zodchiii）</li>
+<li>2026-05-30: <a href="../../../../../../../../../../../../../../../../../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> は100エージェント規模で$50〜$200のコストがかかるため予算上限設定が必須との指摘</li>
+<li>2026-05-30: Opus 4.8の正直性改善：自己コードの欠陥を未報告のまま放置する確率が旧世代比4倍低下、欠陥ある結果を無批判に報告する率は0%（単一ソースのスコア）</li>
+<li>2026-06-08: @bcherny（Claude Code作者）がOpusが長時間自律作業ベンチマークで最優秀との報告が増えていると発信。Opus自律実行の推奨tips: ①auto modeでpermissions確認を省略 ②<a href="../../../../../../../../../../../../../../../../../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a>でオーケストレーションを活用</li>
+<li>2026-06-08: SWE-Marathon（@rishi_desai2 引用）：1Bトークン予算でコーディングエージェントの継続動作を評価するベンチマーク。SlackをゼロからビルドしたりJAXコードベースをPyTorchに書き直したりCコンパイラをRustで実装するタスクを含む</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>200kトークン超での性能低下は自分のモノレポ規模で実際にボトルネックになるか、Fast Modeで緩和できるか</li>
+<li>「プロンプトの60%をLowに振ってコスト半減」は自分のワークロードで再現するか、品質劣化とのトレードオフはどの程度か</li>
+<li>レビュー用途で保守的プロンプトを外して下流フィルタする運用は、CodeRabbitのノイズ増加問題を回避できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../../../../../../../../../../../../../../../../../companies/anthropic.html">anthropic</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/claude-code.html">claude-code</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../tools/autoreview-skill.html">autoreview-skill</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../../../../../../../../../../../../../../../../../tools/autoreview-skill.html">autoreview-skill</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
+<li><a href="../../../../../../../../../../../../../../../../../companies/anthropic.html">anthropic</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Opus 4.8
+
+&gt; **TL;DR**: [[companies/anthropic]] が2026-05-28にリリースした最上位モデルで、長期エージェント実行・正直な自己進捗報告・高精度低再現の挙動と、コストを制御するEffort Control/Fast Modeを特徴とする。
+
+[[models/claude-opus-4-7]] の後継にあたり、価格は据え置きで提供開始された。Anthropicが前世代との差分として挙げるのは「sharper judgment（より鋭い判断力）」「more honesty about its own progress（自己進捗の正直な報告）」「work independently for longer（より長く独立して作業できる能力）」の3点で、TL;DRの各特徴はこの公式の主張に対応する。
+
+**3つの主要な性質。** (1) 長期エージェント実行：多数のツール呼び出しにまたがるタスクで文脈を維持する。高い推論負荷を前提とするため、仕様を少しずつ追加するのではなく最初に全文脈をまとめて渡す設計が有効。(2) セッション途中のsystemプロンプト：messages配列中途の `{&quot;role&quot;:&quot;system&quot;}` をプロンプトキャッシュを無効化せずに追加できる。上書き指示としてではなく文脈として扱うと挙動が安定する。(3) ツール利用の再調整：Web検索は以前より頻繁に起動する一方、1回の作業内で繰り返す回数は減り、文脈から回答する傾向が強まった（高精度・低再現率の方向へシフト）。
+
+**コスト制御の仕組み。** Opus 4.8はデフォルトがHigh effortで、Claude CodeとClaude.aiの両方で Effort Control（Low/High/Max）を切り替えられる。Fast Mode は通常の約2.5倍速・約3倍安価で、コードレビュー・定型コード生成・繰り返し処理に向く。[[concepts/claude-code-dynamic-workflows]] は1セッションで最大1,000サブエージェントを並列実行できる。コスト最適化の起点としてまず Effort Control を使うのが効果的（[[concepts/claude-usage-optimization]]）。
+
+**プロンプト調整の実践指針。**
+
+- 思考設定は &quot;x-high&quot; ではなく &quot;high&quot; から始め、複雑度の階層ごとにテストする
+- 長期タスクでは全文脈を最初にまとめて渡す（少しずつ追加しない）
+- 調査系タスクでは「まず検索する」「サブエージェントに任せる」を明示的に指示する
+- レビュープロンプトから保守的な表現を外し、フィルタリングは下流で行う（モデルが指示を文字通りに従うため、上流で絞ると再現率が落ちやすい）
+
+## 検証済み事実
+
+- 2026-05-30: Anthropic公式が示したOpus 4.8の3機能：Effort Control、Fast Mode（約2.5倍速度）、[[concepts/claude-code-dynamic-workflows]]（最大1,000並列エージェント）
+- 2026-05-29（CodeRabbitベンチマーク）: 評価対象は軽微・小規模・大規模の複雑度階層からサンプリングした100件のオープンソースPR
+- 2026-05-29（CodeRabbitベンチマーク）: フルシステムのパス率はOpus 4.8 72% vs ベースライン 68%（+4ポイント）
+- 2026-05-29（CodeRabbitベンチマーク）: 実用的な指摘のパス率はOpus 4.8 61% vs ベースライン 62%（誤差範囲内）
+- 2026-05-29（CodeRabbitベンチマーク）: 致命的な指摘（critical）が35件→29件に減少
+- 2026-05-29（CodeRabbitベンチマーク）: コストは1回あたり$0.20〜0.28（Opus 4.5は約$0.13、Sonnet 4.5は$0.04〜0.12）
+
+## 観察ログ（未検証）
+
+- 2026-05-29: コメントの内訳がベースラインよりノイズが多い。major指摘が119件→81件に減少し、minor/nitpickがほぼ倍増（CodeRabbit評価）
+- 2026-05-29: レビュー指示を文字通りに従う傾向があり、「重大度の高い問題だけを報告する」保守的プロンプトが再現率を強く抑制するとの仮説
+- 2026-05-29: 200kトークン超えでコンテキスト性能が目に見えて低下。モノレポや大規模コードベースは壁にぶつかる可能性
+- 2026-05-30: Effort ControlがOpus 4.8で最もコスト削減効果の高い新機能。プロンプトの60%をLow、10%のみMaxに振り分けることで月額コストを半減できるとの主張（@zodchiii）
+- 2026-05-30: [[concepts/claude-code-dynamic-workflows]] は100エージェント規模で$50〜$200のコストがかかるため予算上限設定が必須との指摘
+- 2026-05-30: Opus 4.8の正直性改善：自己コードの欠陥を未報告のまま放置する確率が旧世代比4倍低下、欠陥ある結果を無批判に報告する率は0%（単一ソースのスコア）
+- 2026-06-08: @bcherny（Claude Code作者）がOpusが長時間自律作業ベンチマークで最優秀との報告が増えていると発信。Opus自律実行の推奨tips: ①auto modeでpermissions確認を省略 ②[[concepts/claude-code-dynamic-workflows]]でオーケストレーションを活用
+- 2026-06-08: SWE-Marathon（@rishi_desai2 引用）：1Bトークン予算でコーディングエージェントの継続動作を評価するベンチマーク。SlackをゼロからビルドしたりJAXコードベースをPyTorchに書き直したりCコンパイラをRustで実装するタスクを含む
+
+## 問い
+
+- 200kトークン超での性能低下は自分のモノレポ規模で実際にボトルネックになるか、Fast Modeで緩和できるか
+- 「プロンプトの60%をLowに振ってコスト半減」は自分のワークロードで再現するか、品質劣化とのトレードオフはどの程度か
+- レビュー用途で保守的プロンプトを外して下流フィルタする運用は、CodeRabbitのノイズ増加問題を回避できるか
+
+## 関連
+
+- [[companies/anthropic]]
+- [[models/claude-opus-4-7]]
+- [[tools/claude-code]]
+- [[tools/autoreview-skill]]
+- [[concepts/claude-code-dynamic-workflows]]
+- [[concepts/claude-usage-optimization]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

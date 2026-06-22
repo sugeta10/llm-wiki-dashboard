@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>obsidian-second-brain-setup - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>obsidian-second-brain-setup</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="obsidian-second-brain-setup.md">Markdownで表示</a></div>
+  <div class="meta">concepts/obsidian-second-brain-setup · concepts · <span title="2026-06-22">1日前</span></div>
+  <article><h1>Obsidian + Claude 第二の脳：構築手順</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Obsidian（保存層）と Claude（その上の脳）を一晩で繋ぐ初心者向けエンドツーエンド手順。差別化点は配線そのものでなく、意見の強い3つの設計判断——プロジェクト単位の入出力フォルダ・単一プロジェクトをvaultとして開く文脈スコープ・「言葉でなく鍵で制御する」安全規律。</p>
+<p>📌 X bookmark: 10,382（2026-06-22 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Inputs[&quot;Inputs\nアイデア/素材が着地&quot;] --&gt; Process[&quot;Process\nClaudeが作業&quot;]
+  Process --&gt; Outputs[&quot;Outputs\n完成物&quot;]
+  Outputs --&gt; Feedback[&quot;Feedback\n結果/指標&quot;]
+  Feedback -.学びを次の起点へ.-&gt; Inputs</pre>
+<p>「Obsidianをノートアプリ、Claudeをチャットボットとして別々に使う」段階の一段上にある、構築そのものの手順書。要素技術（vaultをAIの永続メモリに据える設計思想）は <a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a> と共通だが、このページの価値は<strong>未経験者が install から autopilot まで迷わず辿れる順序</strong>と、その途中で下す3つの設計判断にある。</p>
+<p><strong>接続機構</strong>: Obsidian 側に Local REST API プラグイン（コミュニティプラグイン・vaultへの入口を開く）を入れ、Claude Code から <code>mcp-obsidian</code>（uvx 経由のMCPサーバ）で繋ぐ。APIキーは Bearer の語を除いた本体文字列のみを渡す。Obsidian が起動している間だけ接続が生きる点が運用上の制約。</p>
+<p><strong>オンボーディングは面接で行う</strong>: CLAUDE.md を手書きせず、Claude に1問ずつ面接させて回答からプロファイルを合成させ、vaultルートの CLAUDE.md に書き出させる。以降は毎セッション自動ロードされ、自己紹介を繰り返さなくて済む。これは <a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a> の「AIを社員化するオンボーディング」と同型の手法。</p>
+<p><strong>プロジェクト単位の入出力フォルダ</strong>: 仕事の領域ごとに専用フォルダを作り、中に Inputs / Process / Outputs / Feedback の4サブフォルダと、その領域専用の CLAUDE.md（単一ゴールとClaudeの役割を記述）を置く。アイデアは Inputs に着地し、Claude は Process で作業し、完成物は Outputs、結果と指標は Feedback へ——という決まった流れを作る。フォルダ階層で役割を固定する点は <a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a> の inbox/reference/draft/output/archive と同じ発想。</p>
+<p><strong>単一プロジェクトをvaultとして開く（文脈スコープ）</strong>: 巨大なvault全体でなく、作業対象のプロジェクトフォルダだけを「Open folder as a vault」で開く。するとClaudeはそのプロジェクトの CLAUDE.md しか読まず、無関係な文脈を無視する。プロンプトでなく<strong>ディレクトリ境界で文脈を絞る</strong>操作であり、「大きなvaultは計画する、単一プロジェクトは出荷する」と表現される。</p>
+<p><strong>スキルとコネクタと自動運転</strong>: 2回以上やる作業は markdown のスキルファイルに保存し、プロジェクトが名前で呼び出す。カレンダー・メール・Slack・Notion は OAuth で接続し、可能な限り read-only・スコープ限定で許可する。スキルが固まったら日次タスクとしてスケジュールし、vaultが夜間に自分を整理する状態にする。</p>
+<p><strong>載っている安全規律「鍵であって、プロンプトではない（keys, not prompts）」</strong>: エージェントに「これは消すな」と伝えるのは<em>提案</em>であって安全設定ではない。技術的に削除や送信ができるなら、いつかはやる前提で組む。制御は言葉でなく権限レベル（read-only・スコープ限定の鍵）で行う。これは <a href="../concepts/loop-engineering.html">loop-engineering</a> のセキュリティ税・<a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> の外部ポリシー強制と同じ原則を、個人セットアップの言葉に落としたもの。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-22 @undefinedKi: LLM Wiki パターンは Andrej Karpathy が2026年4月に広めたものと帰属（<a href="../concepts/llm-wiki.html">llm-wiki</a> と整合）。セットアップは一晩、使うほど毎日鋭くなると主張</li>
+<li>2026-06-22 @undefinedKi: スクラッチ配線を避ける既製リポ3本を紹介——claude-obsidian（AgriciDaniel製・executive/builder/creator/researcher のロール別プリセット同梱）、obsidian-second-brain（eugeniughelbur製・/obsidian-save等43コマンド・Claude/Codex/Gemini横断）、second-brain-starter（coleam00製・面接→計画生成→plain text+Pythonで構築）。GitHubスター数の記載はなく一次確認推奨</li>
+<li>2026-06-22 @undefinedKi: 有料プラン（Pro $20/月）必須で無料枠では動かないと明記（単一ソースの運用前提）。impression 430万・like 2,287・bookmark 10,382</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>Inputs/Process/Outputs/Feedback のプロジェクト構造は、本wikiの sources/ → wiki/ 構造とどちらが運用に向くか。Feedback→Inputs の還流は Weekly Insights のループに相当するか</li>
+<li>「単一プロジェクトをvaultとして開く」ディレクトリ文脈スコープは、Claude Code の subagent（独立コンテキスト）と比べて分離手段としてどちらが堅いか</li>
+<li>keys-not-prompts を本vaultの launchd ingest（書き込み権限を持つ）にどう適用するか。現状の権限スコープは「言葉でなく鍵」になっているか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a> — 同じObsidian+Claude領域の「30ワークフロー/プラグイン網羅カタログ」。本ページは構築手順、あちらは何をするかの一覧</li>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — Obsidian+Claude Code+N8Nの3層アーキテクチャ重心の設計。本ページは初心者向け配線手順重心</li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a> — Karpathy提唱のLLMが継続メンテする知識ベース（本記事が起点として明示引用）</li>
+<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a> — Inputs/Process/Outputs/Feedback に対応する作業フォルダ設計（プロンプトより先に棚を作る）</li>
+<li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a> — CLAUDE.md面接でAIを社員化するオンボーディング設計図</li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — vaultルートCLAUDE.mdの行動ルール設計（keys-not-prompts の暴走止めと同方向）</li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a> — Local REST API ⇄ Claude を繋ぐMCPの仕様</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
+<li><a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2068306794116501544" rel="noopener" target="_blank">https://x.com/i/web/status/2068306794116501544</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Obsidian + Claude 第二の脳：構築手順
+
+&gt; **TL;DR**: Obsidian（保存層）と Claude（その上の脳）を一晩で繋ぐ初心者向けエンドツーエンド手順。差別化点は配線そのものでなく、意見の強い3つの設計判断——プロジェクト単位の入出力フォルダ・単一プロジェクトをvaultとして開く文脈スコープ・「言葉でなく鍵で制御する」安全規律。
+
+&gt; 📌 X bookmark: 10,382（2026-06-22 時点）
+
+```mermaid
+flowchart LR
+  Inputs[&quot;Inputs\nアイデア/素材が着地&quot;] --&gt; Process[&quot;Process\nClaudeが作業&quot;]
+  Process --&gt; Outputs[&quot;Outputs\n完成物&quot;]
+  Outputs --&gt; Feedback[&quot;Feedback\n結果/指標&quot;]
+  Feedback -.学びを次の起点へ.-&gt; Inputs
+```
+
+「Obsidianをノートアプリ、Claudeをチャットボットとして別々に使う」段階の一段上にある、構築そのものの手順書。要素技術（vaultをAIの永続メモリに据える設計思想）は [[concepts/obsidian-claude-second-brain]] と共通だが、このページの価値は**未経験者が install から autopilot まで迷わず辿れる順序**と、その途中で下す3つの設計判断にある。
+
+**接続機構**: Obsidian 側に Local REST API プラグイン（コミュニティプラグイン・vaultへの入口を開く）を入れ、Claude Code から `mcp-obsidian`（uvx 経由のMCPサーバ）で繋ぐ。APIキーは Bearer の語を除いた本体文字列のみを渡す。Obsidian が起動している間だけ接続が生きる点が運用上の制約。
+
+**オンボーディングは面接で行う**: CLAUDE.md を手書きせず、Claude に1問ずつ面接させて回答からプロファイルを合成させ、vaultルートの CLAUDE.md に書き出させる。以降は毎セッション自動ロードされ、自己紹介を繰り返さなくて済む。これは [[concepts/claude-projects-blueprint]] の「AIを社員化するオンボーディング」と同型の手法。
+
+**プロジェクト単位の入出力フォルダ**: 仕事の領域ごとに専用フォルダを作り、中に Inputs / Process / Outputs / Feedback の4サブフォルダと、その領域専用の CLAUDE.md（単一ゴールとClaudeの役割を記述）を置く。アイデアは Inputs に着地し、Claude は Process で作業し、完成物は Outputs、結果と指標は Feedback へ——という決まった流れを作る。フォルダ階層で役割を固定する点は [[concepts/claude-code-work-folder]] の inbox/reference/draft/output/archive と同じ発想。
+
+**単一プロジェクトをvaultとして開く（文脈スコープ）**: 巨大なvault全体でなく、作業対象のプロジェクトフォルダだけを「Open folder as a vault」で開く。するとClaudeはそのプロジェクトの CLAUDE.md しか読まず、無関係な文脈を無視する。プロンプトでなく**ディレクトリ境界で文脈を絞る**操作であり、「大きなvaultは計画する、単一プロジェクトは出荷する」と表現される。
+
+**スキルとコネクタと自動運転**: 2回以上やる作業は markdown のスキルファイルに保存し、プロジェクトが名前で呼び出す。カレンダー・メール・Slack・Notion は OAuth で接続し、可能な限り read-only・スコープ限定で許可する。スキルが固まったら日次タスクとしてスケジュールし、vaultが夜間に自分を整理する状態にする。
+
+**載っている安全規律「鍵であって、プロンプトではない（keys, not prompts）」**: エージェントに「これは消すな」と伝えるのは*提案*であって安全設定ではない。技術的に削除や送信ができるなら、いつかはやる前提で組む。制御は言葉でなく権限レベル（read-only・スコープ限定の鍵）で行う。これは [[concepts/loop-engineering]] のセキュリティ税・[[concepts/ai-agent-governance]] の外部ポリシー強制と同じ原則を、個人セットアップの言葉に落としたもの。
+
+## 観察ログ（未検証）
+
+- 2026-06-22 @undefinedKi: LLM Wiki パターンは Andrej Karpathy が2026年4月に広めたものと帰属（[[concepts/llm-wiki]] と整合）。セットアップは一晩、使うほど毎日鋭くなると主張
+- 2026-06-22 @undefinedKi: スクラッチ配線を避ける既製リポ3本を紹介——claude-obsidian（AgriciDaniel製・executive/builder/creator/researcher のロール別プリセット同梱）、obsidian-second-brain（eugeniughelbur製・/obsidian-save等43コマンド・Claude/Codex/Gemini横断）、second-brain-starter（coleam00製・面接→計画生成→plain text+Pythonで構築）。GitHubスター数の記載はなく一次確認推奨
+- 2026-06-22 @undefinedKi: 有料プラン（Pro $20/月）必須で無料枠では動かないと明記（単一ソースの運用前提）。impression 430万・like 2,287・bookmark 10,382
+
+## 問い
+
+- Inputs/Process/Outputs/Feedback のプロジェクト構造は、本wikiの sources/ → wiki/ 構造とどちらが運用に向くか。Feedback→Inputs の還流は Weekly Insights のループに相当するか
+- 「単一プロジェクトをvaultとして開く」ディレクトリ文脈スコープは、Claude Code の subagent（独立コンテキスト）と比べて分離手段としてどちらが堅いか
+- keys-not-prompts を本vaultの launchd ingest（書き込み権限を持つ）にどう適用するか。現状の権限スコープは「言葉でなく鍵」になっているか
+
+## 関連
+
+- [[concepts/obsidian-claude-second-brain]] — 同じObsidian+Claude領域の「30ワークフロー/プラグイン網羅カタログ」。本ページは構築手順、あちらは何をするかの一覧
+- [[concepts/obsidian-personal-os]] — Obsidian+Claude Code+N8Nの3層アーキテクチャ重心の設計。本ページは初心者向け配線手順重心
+- [[concepts/llm-wiki]] — Karpathy提唱のLLMが継続メンテする知識ベース（本記事が起点として明示引用）
+- [[concepts/claude-code-work-folder]] — Inputs/Process/Outputs/Feedback に対応する作業フォルダ設計（プロンプトより先に棚を作る）
+- [[concepts/claude-projects-blueprint]] — CLAUDE.md面接でAIを社員化するオンボーディング設計図
+- [[concepts/claude-md-rules]] — vaultルートCLAUDE.mdの行動ルール設計（keys-not-prompts の暴走止めと同方向）
+- [[tools/claude-mcp]] — Local REST API ⇄ Claude を繋ぐMCPの仕様
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

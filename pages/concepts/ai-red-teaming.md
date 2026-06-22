@@ -21,3 +21,4 @@
 - [[llm-council]] — 複数AIの匿名協議で盲点を炙り出す意思決定支援。弱点発見という目的を共有しつつ機構が異なる
 - [[ai-persona-interview]] — AIにペルソナと心理状態次元を与えて具体回答を引き出す手法。敵対ペルソナ設計の土台
 - [[ai-agent-era-strategy]] — 意思決定の速度と質を競争条件に据えるAI時代の企業戦略
+- [[tools/notebooklm-studio-prompts]] — NotebookLM音声解説の「批評モード」が同じ敵対視点による弱点出しを生成ボタンで実現する例
