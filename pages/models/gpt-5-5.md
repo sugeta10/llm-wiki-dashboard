@@ -53,3 +53,4 @@ Codexがこのガイドに基づき旧プロンプトをGPT-5.5向けに自動�
 - [[concepts/prompt-engineering]]
 - [[tools/openai-codex]]
 - [[tools/codex-review-skill]] — GPT-5.5のアウトカム重視指針に合わせ、手順テンプレートを削りレビュールールを強くした自作レビュースキル
+- [[tools/oracle]] — Codex CLIからGPT-5.5の上位Pro版を呼び出すツール（steipete製）

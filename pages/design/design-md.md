@@ -24,3 +24,4 @@ CLAUDE.md / AGENTS.md がエージェントの**行動ルール**を与えるの
 - [[concepts/llm-doc-management]] — アプリ文脈をドキュメント化してLLMに渡すパターンの一種
 - [[concepts/cursor-instruction-methods]] — AGENTS.md/Rules等のプロジェクト常駐コンテキスト手段
 - [[design/image2-brand-slides]] — ロゴからデザインシステムを派生させるスライド生成スキル（同系の「AIデザインの凡庸さ」対策）
+- [[design/slide-md]] — 同じ「デザインを `.md` で固定」発想のスライド版デザインシステム
