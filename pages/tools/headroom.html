@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>headroom</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="headroom.md">Markdownで表示</a></div>
-  <div class="meta">tools/headroom · tools · <span title="2026-06-05">2週間前</span></div>
+  <div class="meta">tools/headroom · tools · <span title="2026-06-24">今日</span></div>
   <article><h1>headroom</h1>
 <p>AIエージェントがLLMへ送るデータを<strong>送信前に圧縮</strong>してトークンを削減するライブラリ（<a href="https://github.com/chopratejas/headroom">github.com/chopratejas/headroom</a>）。Claude Code でも利用できると紹介されている。</p>
 <h2>何を圧縮するか</h2>
@@ -70,6 +70,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-06-02: 精度保持ベンチ（N=100）: GSM8K 0.870→0.870（±0.000）、TruthfulQA 0.530→0.560（+0.030）、SQuAD v2 97%（19%圧縮時）、BFCL 97%（32%圧縮時）</li>
 <li>ライセンス Apache 2.0。Python 3.10+。シェル出力書き換えに <a href="https://github.com/rtk-ai/rtk">RTK</a> バイナリを同梱</li>
 </ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-23 @so_ainsight: 「今週GitHubで急上昇したAIリポジトリ10選」の1位として紹介。「LLMに渡す前にログ・ファイル・RAGチャンクを圧縮しトークン消費を60〜95%削減。ライブラリ・プロキシ・MCPサーバーの3形態で組み込める」と要約（X bookmark 571・impression 29K、2026-06-23時点）。初出（2026-06-02）から約3週間でトレンド入りしており、注目が継続していることを示す二次まとめ。</li>
+</ul>
 <h2>問い</h2>
 <ul>
 <li>「60〜95%削減・精度維持」は実タスクで再現するか。圧縮で欠落する情報が回答品質に効くケースはどこか</li>
@@ -83,7 +87,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/token-management.html">token-management</a></li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061645252503670966" rel="noopener" target="_blank">https://x.com/i/web/status/2061645252503670966</a></li>
-<li><a href="https://github.com/chopratejas/headroom" rel="noopener" target="_blank">https://github.com/chopratejas/headroom</a></li></ul></section></article>
+<li><a href="https://github.com/chopratejas/headroom" rel="noopener" target="_blank">https://github.com/chopratejas/headroom</a></li>
+<li><a href="https://x.com/i/web/status/2069281811168198760" rel="noopener" target="_blank">https://x.com/i/web/status/2069281811168198760</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -153,6 +158,10 @@ AIエージェントがLLMへ送るデータを**送信前に圧縮**してト�
 - 2026-06-02: 公式READMEが提示する**自己公表ベンチマーク**（独立検証ではない）。実エージェント負荷での削減率: Code search 17,765→1,408トークン（92%）、SRE incident debugging 65,694→5,118（92%）、GitHub issue triage 54,174→14,761（73%）、Codebase exploration 78,502→41,254（47%）
 - 2026-06-02: 精度保持ベンチ（N=100）: GSM8K 0.870→0.870（±0.000）、TruthfulQA 0.530→0.560（+0.030）、SQuAD v2 97%（19%圧縮時）、BFCL 97%（32%圧縮時）
 - ライセンス Apache 2.0。Python 3.10+。シェル出力書き換えに [RTK](https://github.com/rtk-ai/rtk) バイナリを同梱
+
+## 観察ログ（未検証）
+
+- 2026-06-23 @so_ainsight: 「今週GitHubで急上昇したAIリポジトリ10選」の1位として紹介。「LLMに渡す前にログ・ファイル・RAGチャンクを圧縮しトークン消費を60〜95%削減。ライブラリ・プロキシ・MCPサーバーの3形態で組み込める」と要約（X bookmark 571・impression 29K、2026-06-23時点）。初出（2026-06-02）から約3週間でトレンド入りしており、注目が継続していることを示す二次まとめ。
 
 ## 問い
 
