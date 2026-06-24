@@ -38,3 +38,4 @@ MCPの **Enterprise-Managed Auth 拡張**に対応した（[[companies/anthropic
 - [[concepts/agentic-coding]]
 - [[concepts/ai-agent-governance]]（MCP認可の限界と外部ポリシーレイヤリング）
 - [[tools/openai-mcp-tunnel]] — OpenAIのSecure MCP Tunnel（プライベートMCPサーバーをトンネル経由でOpenAI製品に接続）
+- [[tools/claude-tag]] — SlackにClaudeをチームメイトとして常駐させる製品（ツール/チャンネルアクセスの付与を伴う）

@@ -65,3 +65,4 @@ Anthropicが公開したマルチエージェント構成では：
 - [[concepts/recursive-self-improvement]]（Anthropic Institute論考：AIがAI開発を加速し後継機建造へ向かう内部証拠）
 - [[models/claude-fable-5]]（初の一般公開Mythosクラスモデル Fable 5 / Mythos 5・2026-06-10）
 - [[companies/apple]]（WWDC26: XcodeのコードAI生成でClaudeが選択可能）
+- [[tools/claude-tag]]（SlackにClaudeをチームメイトとして常駐させる製品・2026-06-23発表）

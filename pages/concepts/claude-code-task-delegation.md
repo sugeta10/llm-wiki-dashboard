@@ -48,3 +48,4 @@ flowchart LR
 - [[concepts/claude-code-work-folder]] — プロンプトより先に作業フォルダ（棚）を設計する初心者向け実践と同じ思想
 - [[concepts/claude-skills]] — 繰り返し作業をSkills化して資産にする（カテゴリ⑤⑥）
 - [[concepts/claude-code-orchestration]] — サブエージェント並列・役割分担（カテゴリ⑥上級者の使い方）の設計
+- [[tools/claude-tag]] — 同じ「AIにタスクを委任する」発想をSlackのチーム常駐に適用した製品
