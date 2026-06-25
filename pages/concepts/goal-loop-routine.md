@@ -55,3 +55,4 @@ flowchart TD
 - [[concepts/eval-loop]] — 「生成→採点→閾値未満で止める」検証器の一般形。3動詞すべてに必須の中身
 - [[concepts/agentic-engineering-workflow]] — 同著者(@mvanhorn)の上位ワークフロー論（plan.md先行・人間はシグナルに徹する）
 - [[concepts/codex-agent-loop]] — Codex 側のエージェントループ内部実装
+- [[tools/makeloop]] — closed/open の二分で骨格を切り替えてループプロンプトを自動生成するコマンド。本ページの動詞分類と同じ「止まる条件で選ぶ」判断軸を生成側に置いたもの

@@ -69,3 +69,4 @@ flowchart LR
 - [[concepts/recursive-self-improvement]] — AIがAIを改善するループの一形態
 - [[tools/hermes-agent-overnight]] — 夜間自動化ワークフロー（同じ Hermes 系の運用設計）
 - [[tools/hermes-agent-research-department]] — プロファイル分離による3エージェント構築ガイド
+- [[tools/makeloop]] — 自己更新するループプロンプト生成器。gate.sh の意味的危険チェックは本リポのガードレール「意味の保存」と同型、さらに trust anchor（自分で触れない安全ルール）を追加

@@ -166,3 +166,4 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[concepts/goal-loop-routine]] — goal/loop/routine の動詞の使い分け（いつ止まるか・自分はその場にいるか）。@mvanhornのループ調査Part 2を分類軸として切り出したもの
 - [[concepts/coding-agent-workflow-styles]] — 委譲低速ループ／高速制御ループの2類型。本ページはその委譲側の極北
 - [[concepts/claude-code-instruction-methods]] — @rsensui の「最小のAGENTS.mdが正義」を公式版で裏付け（CLAUDE.md 200行未満・指示ミニマリズム）
+- [[tools/makeloop]] — `/loop` プロンプトを会話＋コードベースから自動生成するコマンド。Verify/State/Stop の3要素は本ページの最小構成ループと同型、生成器自身を自己改善する設計
