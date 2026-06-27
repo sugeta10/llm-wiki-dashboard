@@ -34,3 +34,4 @@ SLIDE.md が成立するのは「デザインの一貫性は感性でなく仕�
 - [[design/ai-slide-creation]] — スライドの「中身（主張・構造）」を固める方法論（SLIDE.md は見た目を担当し補完的）
 - [[design/ai-slide-to-pptx]] — AI 生成スライドを編集可能な pptx に変換（PowerPoint 出力の崩れ対策）
 - [[design/claude-premium-website-build]] — Claude で高品質制作する別領域のワークフロー
+- [[design/ai-presentation-workflow]] — 構成→視覚→仕上げの工程分業ワークフロー（Style Markdown 準備はその一工程）

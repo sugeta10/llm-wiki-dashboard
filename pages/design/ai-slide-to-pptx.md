@@ -53,3 +53,4 @@ AI製スライドやPDF資料が編集できないのは、スライドの形を
 - [[design/image2-brand-slides]] — ロゴ起点でスライド画像を生成するCodexスキル（こちらは画像→編集可能化、あちらは原稿→画像生成）
 - [[design/lt-preparation-guide]] — LT発表のツール・素材・手順ガイド（Marp/Slidevなどスライド制作ツール情報あり）
 - [[design/ai-slide-creation]] — AIで「刺さるスライド」を作る方法論（主張・構造・100プロンプト）
+- [[design/ai-presentation-workflow]] — Codex構成→画像確認→Presentation Skill仕上げの工程分業（本ページのPPTX化は「仕上げ」工程に当たる）

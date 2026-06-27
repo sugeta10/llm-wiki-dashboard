@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>multi-perspective-decision-prompt - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>multi-perspective-decision-prompt</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="multi-perspective-decision-prompt.md">Markdownで表示</a></div>
+  <div class="meta">concepts/multi-perspective-decision-prompt · concepts · <span title="2026-06-27">今日</span></div>
+  <article><h1>多視点スキャン→統合の実務判断プロンプト</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Stanford STORM由来の「いきなり答えさせず、4視点でスキャン→矛盾を地図化→実務判断へ統合→自己査読」を1本のプロンプトに畳んだ、後戻りの大きい意思決定向けテンプレート。</p>
+</blockquote>
+<p>AIに「この施策どう思う？」と一発で聞くと、多くの人が言いそうな平均的整理に寄り、実務で本当に詰まる粒度——今すぐやるべきことは何か、無料で戻せる改善はどれか、運用で詰まるのはどこか——が出てこない。原因はモデル性能ではなく「問いが浅い」ことにある。だから先に必要なのは答えではなく視点で、実務家・経営者・懐疑派・提案者の目で見てから判断へ統合すると、出力の質が変わる。</p>
+<pre class="mermaid">flowchart TD
+  T[&quot;テーマ / 添付資料&quot;] --&gt; S1[&quot;STEP1 多視点スキャン&lt;br/&gt;実務家・経営/費用対効果・懐疑派・発信&quot;]
+  S1 --&gt; S2[&quot;STEP2 矛盾マップ&lt;br/&gt;衝突・一致・情報不足・5つ目の視点&quot;]
+  S2 --&gt; S3[&quot;STEP3 実務判断へ統合&lt;br/&gt;今すぐ / 保留 / 要確認 / 最初の1歩&quot;]
+  S3 --&gt; S4[&quot;STEP4 自己査読&lt;br/&gt;最弱の主張・推測の混入・100点採点&quot;]</pre>
+<h2>仕組み（4ステップを1プロンプトに）</h2>
+<p>Stanford STORM は、いきなり文章を書かせず、テーマにどんな視点があるかを出し、視点ごとに問いを立て、集めた情報を骨子へ統合する研究システム（arXiv 2402.14207、stanford-oval/storm）。その「文章を書く前に問いの幅を広げる」発想を、記事作成だけでなく実務判断へ転用したのがこのプロンプトの骨格にあたる。元の手法は4回コピペして順に進める重さがあり、それを実務で毎回回せるよう1本へまとめている。</p>
+<ol>
+<li><strong>多視点スキャン</strong> — 同じテーマを4つの視点で順に分析させる。実務家視点（運用で詰まる点・確認漏れ）、経営/費用対効果視点（時間・コストに見合うか、今やる/後回し/費用対効果が悪いの仕分け）、懐疑派視点（弱点・過大評価・止めるべき判断）、発信/提案視点（記事や提案で相手に刺さる切り口）。</li>
+<li><strong>矛盾マップ</strong> — 4視点をもとに、どの判断がぶつかるか、どちらの根拠が強いか、全視点が一致する確からしい判断、情報不足で断定できない判断、そして見落としている5つ目の視点を整理させる。</li>
+<li><strong>実務判断へ統合</strong> — サマリー・重要発見トップ5・今すぐ使える判断・保留すべき判断・追加で確認すべき一次情報・最初の1ステップ・記事化の主軸を、1枚のブリーフィングにまとめさせる。</li>
+<li><strong>自己査読</strong> — 自分の分析を査読させ、最も弱い主張・要確認の数字や仕様・推測が混ざった箇所を挙げ、100点満点で減点理由つきに採点させる。この自己採点は出荷前の品質ゲートとして働く（<a href="../concepts/eval-loop.html">eval-loop</a> と同じ発想）。</li>
+</ol>
+<p>前提として「事実と推測を分ける」「入力にない数値・URL・仕様・事例を作らない」「不明点は要確認と明記」をプロンプト冒頭で縛り、AIが整った見た目で一次情報にない数字を混ぜ込むのを抑える。</p>
+<h2>「答え」より「仕分け」が実務的価値</h2>
+<p>このテンプレの効きどころは、AIが正解を出すことではなく、判断を時間軸で仕分けられることにある。AIに相談すると施策が同じ重さで横並びになりがちだが、実務では「今日やること／今週確認すること／四半期で見ること／まだ断定しないこと」は別物で、無料で戻せる変更と審査や手数料が絡む変更も別物。後戻りが大きい意思決定ほど、この仕分けが効く。逆に翻訳・ファイル名変更・小さなCSS修正など要件が決まった軽作業には重すぎて向かない。</p>
+<h2>関連手法との違い</h2>
+<p>複数視点で盲点を炙り出す発想は共通しても、機構が異なる。<a href="../concepts/llm-council.html">llm-council</a> は複数のAI（または複数サブエージェント）を<strong>並列</strong>にポーリングし匿名ピアレビューで競わせるKarpathy原型なのに対し、本テンプレは単一AIに1本のプロンプトで4ステップを<strong>直列</strong>に演じさせる。懐疑派視点は <a href="../concepts/ai-red-teaming.html">ai-red-teaming</a> の敵対ペルソナによる弱点出しと、視点の分担は <a href="../concepts/ai-persona-interview.html">ai-persona-interview</a> と重なる。プロンプト技術カタログとしては <a href="../concepts/prompt-engineering-playbook.html">prompt-engineering-playbook</a> のマルチエージェント系技法に位置づく。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-25 (今野健介 / @workwithai): tatsukiさん（@nobel_824）が紹介していたStanford STORM型の考え方を、実務判断用に4ステップ1プロンプトへ畳んだと述べている。</li>
+<li>2026-06-25 (今野健介): ある高単価ECの改善提案で試した事例として、事前に自作した提案資料とAIの論点整理は「大枠ほぼズレなかった」と報告。集客より購入直前の離脱を先に見る／無料で戻せる改善から始める／支払い手段拡充は主施策でなく補助策、といった整理が自作資料と近かったとする（単一事例・未検証）。</li>
+<li>2026-06-25 (今野健介): よかったのは正解を出したことでなく「判断の仕分け」ができたことだと主張。AI相談の価値は一発で凄い答えを出すことでなく、判断の前に視点を増やし・反論を出し・今すぐ進めることと確認してから進めることを分けることにあるとまとめている。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>4視点（実務家・経営・懐疑派・発信）を直列で演じさせる本テンプレと、並列複数AIの <a href="../concepts/llm-council.html">llm-council</a> で、盲点検出の質に実際どれだけ差が出るか</li>
+<li>自分のwikiのQuery/Review判断やingest前のソース評価に、この多視点→自己査読プロンプトを組み込めるか</li>
+<li>「5つ目の視点を出せ」「100点で自己採点せよ」という指示は、毎回意味のある追加を生むのか、それとも定型的な体裁返しに堕すのか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/llm-council.html">llm-council</a> — 複数AIを並列ポーリングし匿名ピアレビューで盲点を出すKarpathy原型。本テンプレの単一プロンプト直列版に対する複数AI並列版</li>
+<li><a href="../concepts/ai-red-teaming.html">ai-red-teaming</a> — 敵対ペルソナに自社を攻撃させ弱点を潰す手法。本テンプレの「懐疑派視点」に対応</li>
+<li><a href="../concepts/ai-persona-interview.html">ai-persona-interview</a> — AIに複数ペルソナと心理状態を与え独立収束をシグナルにする手法。視点分担の土台</li>
+<li><a href="../concepts/prompt-engineering-playbook.html">prompt-engineering-playbook</a> — プロンプト設計40技術のカタログ。本テンプレが属するマルチエージェント系技法の上位整理</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 生成→基準採点→閾値未満を止める品質ゲート。STEP4の自己査読と同じ発想</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/llm-council.html">llm-council</a></li>
+<li><a href="../concepts/ai-red-teaming.html">ai-red-teaming</a></li>
+<li><a href="../concepts/ai-persona-interview.html">ai-persona-interview</a></li>
+<li><a href="../concepts/prompt-engineering-playbook.html">prompt-engineering-playbook</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/workwithai/n/n990717a8c9c1?sub_rt=share_b" rel="noopener" target="_blank">https://note.com/workwithai/n/n990717a8c9c1?sub_rt=share_b</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 多視点スキャン→統合の実務判断プロンプト
+
+&gt; **TL;DR**: Stanford STORM由来の「いきなり答えさせず、4視点でスキャン→矛盾を地図化→実務判断へ統合→自己査読」を1本のプロンプトに畳んだ、後戻りの大きい意思決定向けテンプレート。
+
+AIに「この施策どう思う？」と一発で聞くと、多くの人が言いそうな平均的整理に寄り、実務で本当に詰まる粒度——今すぐやるべきことは何か、無料で戻せる改善はどれか、運用で詰まるのはどこか——が出てこない。原因はモデル性能ではなく「問いが浅い」ことにある。だから先に必要なのは答えではなく視点で、実務家・経営者・懐疑派・提案者の目で見てから判断へ統合すると、出力の質が変わる。
+
+```mermaid
+flowchart TD
+  T[&quot;テーマ / 添付資料&quot;] --&gt; S1[&quot;STEP1 多視点スキャン&lt;br/&gt;実務家・経営/費用対効果・懐疑派・発信&quot;]
+  S1 --&gt; S2[&quot;STEP2 矛盾マップ&lt;br/&gt;衝突・一致・情報不足・5つ目の視点&quot;]
+  S2 --&gt; S3[&quot;STEP3 実務判断へ統合&lt;br/&gt;今すぐ / 保留 / 要確認 / 最初の1歩&quot;]
+  S3 --&gt; S4[&quot;STEP4 自己査読&lt;br/&gt;最弱の主張・推測の混入・100点採点&quot;]
+```
+
+## 仕組み（4ステップを1プロンプトに）
+
+Stanford STORM は、いきなり文章を書かせず、テーマにどんな視点があるかを出し、視点ごとに問いを立て、集めた情報を骨子へ統合する研究システム（arXiv 2402.14207、stanford-oval/storm）。その「文章を書く前に問いの幅を広げる」発想を、記事作成だけでなく実務判断へ転用したのがこのプロンプトの骨格にあたる。元の手法は4回コピペして順に進める重さがあり、それを実務で毎回回せるよう1本へまとめている。
+
+1. **多視点スキャン** — 同じテーマを4つの視点で順に分析させる。実務家視点（運用で詰まる点・確認漏れ）、経営/費用対効果視点（時間・コストに見合うか、今やる/後回し/費用対効果が悪いの仕分け）、懐疑派視点（弱点・過大評価・止めるべき判断）、発信/提案視点（記事や提案で相手に刺さる切り口）。
+2. **矛盾マップ** — 4視点をもとに、どの判断がぶつかるか、どちらの根拠が強いか、全視点が一致する確からしい判断、情報不足で断定できない判断、そして見落としている5つ目の視点を整理させる。
+3. **実務判断へ統合** — サマリー・重要発見トップ5・今すぐ使える判断・保留すべき判断・追加で確認すべき一次情報・最初の1ステップ・記事化の主軸を、1枚のブリーフィングにまとめさせる。
+4. **自己査読** — 自分の分析を査読させ、最も弱い主張・要確認の数字や仕様・推測が混ざった箇所を挙げ、100点満点で減点理由つきに採点させる。この自己採点は出荷前の品質ゲートとして働く（[[concepts/eval-loop]] と同じ発想）。
+
+前提として「事実と推測を分ける」「入力にない数値・URL・仕様・事例を作らない」「不明点は要確認と明記」をプロンプト冒頭で縛り、AIが整った見た目で一次情報にない数字を混ぜ込むのを抑える。
+
+## 「答え」より「仕分け」が実務的価値
+
+このテンプレの効きどころは、AIが正解を出すことではなく、判断を時間軸で仕分けられることにある。AIに相談すると施策が同じ重さで横並びになりがちだが、実務では「今日やること／今週確認すること／四半期で見ること／まだ断定しないこと」は別物で、無料で戻せる変更と審査や手数料が絡む変更も別物。後戻りが大きい意思決定ほど、この仕分けが効く。逆に翻訳・ファイル名変更・小さなCSS修正など要件が決まった軽作業には重すぎて向かない。
+
+## 関連手法との違い
+
+複数視点で盲点を炙り出す発想は共通しても、機構が異なる。[[concepts/llm-council]] は複数のAI（または複数サブエージェント）を**並列**にポーリングし匿名ピアレビューで競わせるKarpathy原型なのに対し、本テンプレは単一AIに1本のプロンプトで4ステップを**直列**に演じさせる。懐疑派視点は [[concepts/ai-red-teaming]] の敵対ペルソナによる弱点出しと、視点の分担は [[concepts/ai-persona-interview]] と重なる。プロンプト技術カタログとしては [[concepts/prompt-engineering-playbook]] のマルチエージェント系技法に位置づく。
+
+## 観察ログ（未検証）
+
+- 2026-06-25 (今野健介 / @workwithai): tatsukiさん（@nobel_824）が紹介していたStanford STORM型の考え方を、実務判断用に4ステップ1プロンプトへ畳んだと述べている。
+- 2026-06-25 (今野健介): ある高単価ECの改善提案で試した事例として、事前に自作した提案資料とAIの論点整理は「大枠ほぼズレなかった」と報告。集客より購入直前の離脱を先に見る／無料で戻せる改善から始める／支払い手段拡充は主施策でなく補助策、といった整理が自作資料と近かったとする（単一事例・未検証）。
+- 2026-06-25 (今野健介): よかったのは正解を出したことでなく「判断の仕分け」ができたことだと主張。AI相談の価値は一発で凄い答えを出すことでなく、判断の前に視点を増やし・反論を出し・今すぐ進めることと確認してから進めることを分けることにあるとまとめている。
+
+## 問い
+
+- 4視点（実務家・経営・懐疑派・発信）を直列で演じさせる本テンプレと、並列複数AIの [[concepts/llm-council]] で、盲点検出の質に実際どれだけ差が出るか
+- 自分のwikiのQuery/Review判断やingest前のソース評価に、この多視点→自己査読プロンプトを組み込めるか
+- 「5つ目の視点を出せ」「100点で自己採点せよ」という指示は、毎回意味のある追加を生むのか、それとも定型的な体裁返しに堕すのか
+
+## 関連
+
+- [[concepts/llm-council]] — 複数AIを並列ポーリングし匿名ピアレビューで盲点を出すKarpathy原型。本テンプレの単一プロンプト直列版に対する複数AI並列版
+- [[concepts/ai-red-teaming]] — 敵対ペルソナに自社を攻撃させ弱点を潰す手法。本テンプレの「懐疑派視点」に対応
+- [[concepts/ai-persona-interview]] — AIに複数ペルソナと心理状態を与え独立収束をシグナルにする手法。視点分担の土台
+- [[concepts/prompt-engineering-playbook]] — プロンプト設計40技術のカタログ。本テンプレが属するマルチエージェント系技法の上位整理
+- [[concepts/eval-loop]] — 生成→基準採点→閾値未満を止める品質ゲート。STEP4の自己査読と同じ発想
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

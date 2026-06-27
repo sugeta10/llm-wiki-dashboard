@@ -22,4 +22,4 @@
 
 ## 関連
 
-関連: [[concepts/managed-agents-dreams]] · [[concepts/llm-wiki]] · [[papers/2026-peng-llm-memory-faulty]] · [[tools/openclaw]] · [[people/garry-tan]] · [[concepts/ai-session-handover]] · [[concepts/openai-data-agent-context-layers]]
+関連: [[concepts/managed-agents-dreams]] · [[concepts/llm-wiki]] · [[papers/2026-peng-llm-memory-faulty]] · [[tools/openclaw]] · [[people/garry-tan]] · [[concepts/ai-session-handover]] · [[concepts/openai-data-agent-context-layers]] · [[concepts/philosophy-external-memory]]（個人版：思想を単一の外部記憶に出し全エージェントに参照させる）

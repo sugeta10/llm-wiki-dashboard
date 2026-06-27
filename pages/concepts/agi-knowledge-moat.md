@@ -24,3 +24,4 @@ AGIは**知識の希少性**を壊す一方、以下の希少性はむしろ際�
 - [[concepts/forward-deployed-engineer]] — 顧客の世界を深く知るポジション
 - [[business/ai-vertical-integration]] — AGI時代の競争優位の変容（同じ問い）
 - [[concepts/recursive-self-improvement]] — capabilityが汗かき作業から自動化され research taste に優位が集約される論考
+- [[concepts/philosophy-external-memory]] — 「外部記憶を持つ人間だけが固有性を保つ」——個人レベルで知識MOATを思想哲学DBとして実装する方法論

@@ -35,3 +35,4 @@
 - [[concepts/claude-best-practices]] — Claude効果的活用（Projects・Custom Instructions・スタイルクローニングを含む総合）
 - [[concepts/claude-md-persistent-contract]] — システムプロンプト/CLAUDE.mdを「永続契約」として設計する考え方（Identity/Rules設計の背景）
 - [[design/claude-design-workflow]] — Projectへのコンテキスト集約をデザイン制作の文書連鎖に使う実践（チェイン・コンテキスティング）
+- [[concepts/philosophy-external-memory]] — Knowledge Files／Identity の中身を「思想哲学DB（3層・素材から更新）」として育てる方法論。本設計図の参照資料づくりの上流

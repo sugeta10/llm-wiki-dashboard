@@ -24,3 +24,4 @@ MBTIなどの性格モデルをプロンプト/システムプロンプトに組
 - [[concepts/prompt-engineering]] — プロンプトレベルでの挙動制御全般
 - [[concepts/self-refining-skills]] — LLMの自律的な改善ループ設計
 - [[concepts/ai-persona-interview]] — 性格注入の応用：ペルソナに心理的状態次元を与えAI擬似インタビューの質を上げる手法
+- [[concepts/philosophy-external-memory]] — 性格・文体の注入を「服（着替え可能）」、思想の外部化を「骨格」と区別し、後者こそが固有な出力を生むとする対比
