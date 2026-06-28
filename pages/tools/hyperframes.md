@@ -71,4 +71,5 @@ HeyGenの本業はAIアバター動画だが「アバターは動画の半分」
 - [[concepts/intermediate-notation-pattern]]（AIにDSL/中間記法を操作させる設計思想の同型例）
 - [[tools/remotion]]（同じくコードから決定論的に動画生成するFW）
 - [[business/youtube-shorts-jidouka-marketing]]（動画量産マーケのレンダリング層として利用）
+- [[tools/openmontage]] — エージェント型動画制作システム。Hyperframesをモーショングラフィックス向けレンダラとして採用
 - [[companies/anthropic]]

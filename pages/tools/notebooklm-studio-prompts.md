@@ -76,6 +76,7 @@ mindmap
 
 - [[tools/notebooklm]] — NotebookLM全般の活用ガイド（カスタムプロンプト・隠し機能10選）。本ページは Studio 9機能の指示パターンに特化した姉妹ページ
 - [[tools/notebooklm-business-workflows]] — 同じ @ai_jitan による業務時短9ワークフロー。本ページが「各機能をどう指示するか」、あちらが「どの業務に当てるか」
+- [[tools/notebooklm-employees]] — 同じ @ai_jitan による「従業員化」運用。本ページが生成機能の指示、あちらがノート自体を人格化して働かせる方法
 - [[tools/notebooklm-py]] — NotebookLM非公式Python API/CLI（バッチ操作で投入を自動化）
 - [[concepts/chatgpt-custom-instructions]] — カスタム指示の親概念（全チャット共通ルール・職種別テンプレート）
 - [[concepts/prompt-engineering]] — 4点指定・禁則の指示設計の一般形

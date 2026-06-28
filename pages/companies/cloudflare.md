@@ -64,3 +64,4 @@ WorkersとDurable Objectsを隠蔽してAIエージェント開発をシンプ�
 - [[concepts/generative-ui]] — Dynamic WorkersによるGenerativeUI「4番目のアプローチ（Dynamic）」がyusukebeにより提案
 - [[concepts/intermediate-notation-pattern]] — Code Modeは型定義ファイル（.d.ts）を中間記法として使う設計の実例
 - [[concepts/multi-agent-patterns]] — Agents SDKのチャンネル設計・状態管理はマルチエージェントパターンと交差する
+- [[concepts/ai-native-cloud-selection]] — 「AIエージェントがCLI/APIで操作しやすいか」でクラウドを選ぶ基準。その筆頭としてCloudflareを挙げる論

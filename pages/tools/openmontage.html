@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>openmontage - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>openmontage</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="openmontage.md">Markdownで表示</a></div>
+  <div class="meta">tools/openmontage · tools · <span title="2026-06-28">今日</span></div>
+  <article><h1>OpenMontage</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIコーディングアシスタント（Claude Code/Cursor/Codex等）をそのまま「動画制作スタジオ」に変える、オープンソースのエージェント型動画制作システム。リサーチ→脚本→素材生成→編集→合成までを複数のパイプラインで自動化する（AGPLv3）。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  R[&quot;research\nライブWeb調査&quot;] --&gt; P[&quot;proposal\n提案・コスト見積&quot;]
+  P --&gt; SC[&quot;script\n脚本・ナレーション&quot;]
+  SC --&gt; SP[&quot;scene_plan&quot;]
+  SP --&gt; A[&quot;assets\n画像/動画/音声生成&quot;]
+  A --&gt; E[&quot;edit&quot;]
+  E --&gt; C[&quot;compose\nRemotion / HyperFrames&quot;]
+  C --&gt; QC[&quot;post-render 自己レビュー&quot;]</pre>
+<p>OpenMontageの設計思想は「コードのオーケストレーターを置かず、AIコーディングアシスタント自身をオーケストレーターにする」点にある。動画リクエストは常に「どのパイプラインを選ぶか」という選択問題として扱われ、エージェントはYAMLのパイプライン・マニフェスト（ステージ・ツール・レビュー基準・成功ゲート）を読み、各ステージのディレクター・スキル（Markdownの手順書）に従ってPythonツールを呼び、自己レビューと状態チェックポイントを挟みながら、創造的判断のたびに人間の承認を取る。Pythonは「ツールと永続化」だけを担い、創造的判断・レビュー基準・品質基準はすべて可読なYAML/Markdownに置かれて検査・改変できる。</p>
+<p>知識は3層に分かれる。Layer 1（tools/＋pipeline_defs/）が「何が存在するか」、Layer 2（skills/）が「OpenMontage流のどう使うか」、Layer 3（.agents/skills/）が「各技術がどう動くか」の外部知識パックで、各ツールが依存するLayer 3スキルを宣言する。これは特定ベンダーに縛られない設計と組み合わさり、各能力がローカル/OSSとクラウドAPIの両方を持つため「手元にある鍵の分だけ動く」。</p>
+<p>特徴的なのは「本物の映像（real footage）」を扱える点だ。多くの「無料AI動画」は静止画を動かすだけだが、OpenMontageはArchive.org・NASA・Wikimedia Commons等のフリー素材からCLIP検索可能なコーパスを構築し、実際のモーション素材を取得して意図的に編集する。APIキーゼロでもPiper TTS（オフライン音声）＋フリー素材＋Remotionで完結する。レンダリングは<a href="../tools/remotion.html">remotion</a>（React/データ駆動の説明動画向け・既定）と<a href="../tools/hyperframes.html">hyperframes</a>（HTML+GSAP/モーショングラフィックス向け）を提案時に選んで固定し（<code>render_runtime</code>）、無断のランタイム切替はガバナンス違反とされる。</p>
+<p>品質はエンジニアリングとして強制される。プロバイダー選定は7次元（タスク適合・出力品質・制御・信頼性・コスト効率・レイテンシ・継続性）でスコアリングして監査可能な決定ログに残し、レンダー前のバリデーションでスライドショー化（静止画が大半の「動くPowerPoint」）を弾き、レンダー後はffprobe・フレーム抽出・音声レベル解析による自己レビューが通った場合のみ動画を提示する。予算もestimate→reserve→reconcileで管理され、デフォルト上限$10・1アクション$0.50超で承認を挟む。</p>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-06-28（公式README）: 12本の制作パイプライン（Animated Explainer / Cinematic / Documentary Montage / Clip Factory / Talking Head / Localization &amp; Dub 等）を備え、動画生成14・画像生成10・TTS 4プロバイダーを横断する。ライセンスはGNU AGPLv3</li>
+<li>2026-06-28（公式README）: 全パイプライン共通フローは <code>research -&gt; proposal -&gt; script -&gt; scene_plan -&gt; assets -&gt; edit -&gt; compose</code>。各ステージにディレクター・スキル（Markdown）が紐づく</li>
+<li>2026-06-28（公式README）: Claude Code/Cursor/Copilot/Windsurf/Codex向けの指示ファイルを同梱し、いずれも共有の AGENT_GUIDE.md / PROJECT_CONTEXT.md を指す</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-27 @sharbel: 「今週もっとも急成長したGitHubリポジトリ」ランキング1位としてOpenMontageを紹介（+17.2K stars/週）。「世界初のオープンソース・エージェント型動画制作システム。12パイプライン・52ツール・500+スキル」と要約（二次まとめ、X bookmark 4,938・2026-06-28時点）</li>
+<li>2026-06-28（公式README）: 「#1 Repository of the Day on GitHub Trending」を掲げる。ツール数は紹介文で「52」、Architecture節で「48 Python tools」と記述が揺れ、スキル数も「500+」「400+」と表記揺れがある</li>
+<li>2026-06-28（公式README）: 制作例の自己申告コスト——「The Last Banana」（Pixar風60秒）$1.33、「The Library at Alexandria」（70秒）$0.02、「VOID」（製品広告）$0.69、「Candyland」（ジブリ風）$0.15（いずれも公開者の自己申告）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「コードのオーケストレーター無し・AIアシスタント自身が司令塔」というagent-first設計は、自前のスキル/パイプライン運用にどこまで転用できるか</li>
+<li>レンダー層の<a href="../tools/remotion.html">remotion</a>/<a href="../tools/hyperframes.html">hyperframes</a>選択ロジック（render_runtime固定・無断切替禁止）は実運用でどの程度効くか</li>
+<li>real-footageコーパス（Archive.org/NASA/Wikimedia）のCLIP検索編集は、静止画アニメ化に対して品質でどれだけ優位か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/remotion.html">remotion</a> — OpenMontageの既定レンダリングエンジン（React/データ駆動向け）</li>
+<li><a href="../tools/hyperframes.html">hyperframes</a> — OpenMontageのもう一方のレンダラ（HTML+GSAP/モーショングラフィックス向け）</li>
+<li><a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a> — 動画量産マーケの文脈（OpenMontageはClip Factory等で同領域をカバー）</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — AIエージェントが自律実行する開発スタイル（agent-firstアーキの前提）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/remotion.html">remotion</a></li>
+<li><a href="../tools/hyperframes.html">hyperframes</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2070812435653464323" rel="noopener" target="_blank">https://x.com/i/web/status/2070812435653464323</a></li>
+<li><a href="https://github.com/calesthio/OpenMontage" rel="noopener" target="_blank">https://github.com/calesthio/OpenMontage</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># OpenMontage
+
+&gt; **TL;DR**: AIコーディングアシスタント（Claude Code/Cursor/Codex等）をそのまま「動画制作スタジオ」に変える、オープンソースのエージェント型動画制作システム。リサーチ→脚本→素材生成→編集→合成までを複数のパイプラインで自動化する（AGPLv3）。
+
+```mermaid
+flowchart LR
+  R[&quot;research\nライブWeb調査&quot;] --&gt; P[&quot;proposal\n提案・コスト見積&quot;]
+  P --&gt; SC[&quot;script\n脚本・ナレーション&quot;]
+  SC --&gt; SP[&quot;scene_plan&quot;]
+  SP --&gt; A[&quot;assets\n画像/動画/音声生成&quot;]
+  A --&gt; E[&quot;edit&quot;]
+  E --&gt; C[&quot;compose\nRemotion / HyperFrames&quot;]
+  C --&gt; QC[&quot;post-render 自己レビュー&quot;]
+```
+
+OpenMontageの設計思想は「コードのオーケストレーターを置かず、AIコーディングアシスタント自身をオーケストレーターにする」点にある。動画リクエストは常に「どのパイプラインを選ぶか」という選択問題として扱われ、エージェントはYAMLのパイプライン・マニフェスト（ステージ・ツール・レビュー基準・成功ゲート）を読み、各ステージのディレクター・スキル（Markdownの手順書）に従ってPythonツールを呼び、自己レビューと状態チェックポイントを挟みながら、創造的判断のたびに人間の承認を取る。Pythonは「ツールと永続化」だけを担い、創造的判断・レビュー基準・品質基準はすべて可読なYAML/Markdownに置かれて検査・改変できる。
+
+知識は3層に分かれる。Layer 1（tools/＋pipeline_defs/）が「何が存在するか」、Layer 2（skills/）が「OpenMontage流のどう使うか」、Layer 3（.agents/skills/）が「各技術がどう動くか」の外部知識パックで、各ツールが依存するLayer 3スキルを宣言する。これは特定ベンダーに縛られない設計と組み合わさり、各能力がローカル/OSSとクラウドAPIの両方を持つため「手元にある鍵の分だけ動く」。
+
+特徴的なのは「本物の映像（real footage）」を扱える点だ。多くの「無料AI動画」は静止画を動かすだけだが、OpenMontageはArchive.org・NASA・Wikimedia Commons等のフリー素材からCLIP検索可能なコーパスを構築し、実際のモーション素材を取得して意図的に編集する。APIキーゼロでもPiper TTS（オフライン音声）＋フリー素材＋Remotionで完結する。レンダリングは[[tools/remotion]]（React/データ駆動の説明動画向け・既定）と[[tools/hyperframes]]（HTML+GSAP/モーショングラフィックス向け）を提案時に選んで固定し（`render_runtime`）、無断のランタイム切替はガバナンス違反とされる。
+
+品質はエンジニアリングとして強制される。プロバイダー選定は7次元（タスク適合・出力品質・制御・信頼性・コスト効率・レイテンシ・継続性）でスコアリングして監査可能な決定ログに残し、レンダー前のバリデーションでスライドショー化（静止画が大半の「動くPowerPoint」）を弾き、レンダー後はffprobe・フレーム抽出・音声レベル解析による自己レビューが通った場合のみ動画を提示する。予算もestimate→reserve→reconcileで管理され、デフォルト上限$10・1アクション$0.50超で承認を挟む。
+
+## 検証済み事実
+
+- 2026-06-28（公式README）: 12本の制作パイプライン（Animated Explainer / Cinematic / Documentary Montage / Clip Factory / Talking Head / Localization &amp; Dub 等）を備え、動画生成14・画像生成10・TTS 4プロバイダーを横断する。ライセンスはGNU AGPLv3
+- 2026-06-28（公式README）: 全パイプライン共通フローは `research -&gt; proposal -&gt; script -&gt; scene_plan -&gt; assets -&gt; edit -&gt; compose`。各ステージにディレクター・スキル（Markdown）が紐づく
+- 2026-06-28（公式README）: Claude Code/Cursor/Copilot/Windsurf/Codex向けの指示ファイルを同梱し、いずれも共有の AGENT_GUIDE.md / PROJECT_CONTEXT.md を指す
+
+## 観察ログ（未検証）
+
+- 2026-06-27 @sharbel: 「今週もっとも急成長したGitHubリポジトリ」ランキング1位としてOpenMontageを紹介（+17.2K stars/週）。「世界初のオープンソース・エージェント型動画制作システム。12パイプライン・52ツール・500+スキル」と要約（二次まとめ、X bookmark 4,938・2026-06-28時点）
+- 2026-06-28（公式README）: 「#1 Repository of the Day on GitHub Trending」を掲げる。ツール数は紹介文で「52」、Architecture節で「48 Python tools」と記述が揺れ、スキル数も「500+」「400+」と表記揺れがある
+- 2026-06-28（公式README）: 制作例の自己申告コスト——「The Last Banana」（Pixar風60秒）$1.33、「The Library at Alexandria」（70秒）$0.02、「VOID」（製品広告）$0.69、「Candyland」（ジブリ風）$0.15（いずれも公開者の自己申告）
+
+## 問い
+
+- 「コードのオーケストレーター無し・AIアシスタント自身が司令塔」というagent-first設計は、自前のスキル/パイプライン運用にどこまで転用できるか
+- レンダー層の[[tools/remotion]]/[[tools/hyperframes]]選択ロジック（render_runtime固定・無断切替禁止）は実運用でどの程度効くか
+- real-footageコーパス（Archive.org/NASA/Wikimedia）のCLIP検索編集は、静止画アニメ化に対して品質でどれだけ優位か
+
+## 関連
+
+- [[tools/remotion]] — OpenMontageの既定レンダリングエンジン（React/データ駆動向け）
+- [[tools/hyperframes]] — OpenMontageのもう一方のレンダラ（HTML+GSAP/モーショングラフィックス向け）
+- [[business/youtube-shorts-jidouka-marketing]] — 動画量産マーケの文脈（OpenMontageはClip Factory等で同領域をカバー）
+- [[concepts/agentic-coding]] — AIエージェントが自律実行する開発スタイル（agent-firstアーキの前提）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

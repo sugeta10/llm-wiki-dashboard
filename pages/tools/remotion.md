@@ -28,3 +28,4 @@ GUI の動画編集ソフトと違い、構成がコード（＝中間記法）�
 - [[tools/hyperframes]]
 - [[concepts/intermediate-notation-pattern]]
 - [[business/youtube-shorts-jidouka-marketing]]
+- [[tools/openmontage]] — エージェント型動画制作システム。Remotionを既定レンダラとして組み込む
