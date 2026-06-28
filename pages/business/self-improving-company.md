@@ -60,3 +60,4 @@
 - [[people/garry-tan]] — トーク内で言及されるYC CEO・AIソフトウェアファクトリー実践者
 - [[concepts/agentic-coding]] — 自律ループを支えるエージェント開発スタイル
 - [[business/frontier-ecosystem]] — 学習ループを企業のIPと捉え人的資本/トークン資本を複利させるNadellaの論
+- [[business/founders-playbook]] — 同じAIネイティブ思想をゼロから起業する個人向けに当てたAnthropic公式プレイブック

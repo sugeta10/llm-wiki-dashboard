@@ -47,4 +47,4 @@ AIによる生産性向上は、ソロプレナー（少人数・極小資本で
 
 ## 関連
 
-関連: [[business/org-design-intelligence]], [[business/ai-vertical-integration]], [[concepts/agentic-coding]], [[business/saas-inside-ai-agents]]
+関連: [[business/org-design-intelligence]], [[business/ai-vertical-integration]], [[concepts/agentic-coding]], [[business/saas-inside-ai-agents]], [[business/founders-playbook]]（同じAIネイティブ思想を起業ライフサイクル側に当てたAnthropic公式プレイブック）

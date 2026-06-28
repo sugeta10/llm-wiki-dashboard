@@ -66,3 +66,4 @@ Anthropicが公開したマルチエージェント構成では：
 - [[models/claude-fable-5]]（初の一般公開Mythosクラスモデル Fable 5 / Mythos 5・2026-06-10）
 - [[companies/apple]]（WWDC26: XcodeのコードAI生成でClaudeが選択可能）
 - [[tools/claude-tag]]（SlackにClaudeをチームメイトとして常駐させる製品・2026-06-23発表）
+- [[business/founders-playbook]]（AIネイティブ・スタートアップ構築の公式プレイブック・Chat/Cowork/Code製品マトリクス）

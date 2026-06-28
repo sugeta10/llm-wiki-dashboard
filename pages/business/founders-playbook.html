@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>founders-playbook - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>founders-playbook</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="founders-playbook.md">Markdownで表示</a></div>
+  <div class="meta">business/founders-playbook · business · <span title="2026-06-29">今日</span></div>
+  <article><h1>The Founder's Playbook（AIネイティブ・スタートアップ構築）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Anthropic公式の、スタートアップの4ライフサイクル（Idea→MVP→Launch→Scale）をAI前提に組み替え、各段階に目標・卒業条件・典型的な失敗モード・AI演習を割り当てた起業プレイブック。</p>
+</blockquote>
+<p>前提にあるのは「創業者の役割が個人コントリビューターからオーケストレーターへ移る」という変化である。コードを書いたことのない創業者が本番アプリを出荷し、人を増やす前に売上に到達し、自分の面倒な作業を自動化するツールを自作できる——その2026年時点で可能になったことを踏まえ、各段階で何を目標にし・どこで卒業判定し・どこで失敗しやすいかを引き直す。創業者にしかできない仕事へ集中を寄せるための運用設計に焦点がある。</p>
+<h2>4段階フレームワーク</h2>
+<p>各段階に「目標・卒業条件・よくある失敗モード・効くAI演習」を割り当てて構成する。Anthropicがブログで明かした各段階の重心は次のとおり。</p>
+<ul>
+<li><strong>Idea（着想）</strong>: 問題仮説の検証、競合ランドスケープのマッピング、顧客ディスカバリーをAIで回す。</li>
+<li><strong>MVP</strong>: AI生成コードベースが技術的負債を溜め込まないためのアーキテクチャ・スコープ・セキュリティの作法。Vibe Coding的に量産したコードの「負債化」をどう防ぐかが論点。</li>
+<li><strong>Launch（ローンチ）</strong>: 創業者の注意（attention）をエージェント的ワークフローで置き換える運用システム。手作業の張り付きを自動化に移す。</li>
+<li><strong>Scale（拡大）</strong>: 段階移行の判断軸を整える。</li>
+</ul>
+<p>加えて、本物のプロダクトマーケットフィット（PMF）と初期の盛り上がり（hype）を見分けるための<strong>測定フレームワーク</strong>が示される。「ローンチ直後の熱狂」を誤ってPMFと判定しないための歯止めにあたる。</p>
+<h2>プロダクトマトリクス（Chat / Cowork / Code）</h2>
+<p>各段階で<strong>Chat・Claude Cowork・Claude Code</strong>のどれをいつ・どう使うかを対応づけたマトリクスを提示する。汎用チャット・バックグラウンドエージェント・コーディングCLIという粒度の異なる3製品を、起業フェーズに合わせて使い分ける指針である。製品ごとの位置づけは <a href="../companies/anthropic.html">anthropic</a> と <a href="../tools/claude-code.html">claude-code</a> を参照。</p>
+<h2>位置づけ</h2>
+<p>「AI活用を効率化（器の中の整理）で測ると競争力を測り損なう」とする <a href="../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a> や、会社を再帰的AIループの集合として再設計する <a href="../business/self-improving-company.html">self-improving-company</a> が<strong>既存企業・組織側</strong>の組み替えを論じるのに対し、本プレイブックは<strong>ゼロから起業する個人</strong>に同じAIネイティブ思想を当てる。day 1から会社をAI中心に設計したい創業者と、それを支える初期オペレーター向けに書かれている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-29: Anthropic公式ブログ（claude.com）が自社プレイブックを告知。本文の詳細（各段階の演習・卒業条件・測定フレームワークの具体）はリンク先PDF（The Founders Playbook v3）にあり、本ページはブログ告知文から枠組みを合成したもの。各段階の細目はPDF未精読のため未反映</li>
+<li>2026-06-29: 創業者ストーリーとして Ambral・Anything・Carta Healthcare・<a href="../concepts/12-factor-agents.html">HumanLayer</a>・Vulcan Technologies ほかが収録されると告知（各社の具体内容は未確認）</li>
+<li>2026-06-29: 「コードを書いたことのない創業者が本番アプリを出荷」「人を増やす前に売上到達」はAnthropicの主張（プレイブックの売り口上であり、独立した効果測定ではない）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>4段階の「卒業条件（exit criteria）」を自分のwiki/PKMプロジェクトに当てはめると、各フェーズの完了をどう定義できるか</li>
+<li>「PMFと初期hypeを見分ける測定フレームワーク」の具体指標は何か——PDFを読んで <a href="../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a> の「効率化で測る罠」と接続できるか</li>
+<li>Chat/Cowork/Codeのマトリクスは、自分が個人で回すワークフロー（ingest・weekly生成・調査）の道具選択にそのまま転用できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a> — AIネイティブ企業戦略5テーマ（既存企業側の組み替え／本ページは起業側）</li>
+<li><a href="../business/self-improving-company.html">self-improving-company</a> — 会社を再帰的AIループの集合として再設計するYC構想</li>
+<li><a href="../companies/anthropic.html">anthropic</a> — 発信元。Chat/Cowork/Codeの製品群</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — プロダクトマトリクスの一角（MVP/Scaleのコーディング担当）</li>
+<li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a> — 価値の単位が「人＋エージェントのシステム」へ移る論（創業者=オーケストレーター化と接続）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../business/ai-agent-era-strategy.html">ai-agent-era-strategy</a></li>
+<li><a href="../business/self-improving-company.html">self-improving-company</a></li>
+<li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/the-founders-playbook" rel="noopener" target="_blank">https://claude.com/blog/the-founders-playbook</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># The Founder&#x27;s Playbook（AIネイティブ・スタートアップ構築）
+
+&gt; **TL;DR**: Anthropic公式の、スタートアップの4ライフサイクル（Idea→MVP→Launch→Scale）をAI前提に組み替え、各段階に目標・卒業条件・典型的な失敗モード・AI演習を割り当てた起業プレイブック。
+
+前提にあるのは「創業者の役割が個人コントリビューターからオーケストレーターへ移る」という変化である。コードを書いたことのない創業者が本番アプリを出荷し、人を増やす前に売上に到達し、自分の面倒な作業を自動化するツールを自作できる——その2026年時点で可能になったことを踏まえ、各段階で何を目標にし・どこで卒業判定し・どこで失敗しやすいかを引き直す。創業者にしかできない仕事へ集中を寄せるための運用設計に焦点がある。
+
+## 4段階フレームワーク
+
+各段階に「目標・卒業条件・よくある失敗モード・効くAI演習」を割り当てて構成する。Anthropicがブログで明かした各段階の重心は次のとおり。
+
+- **Idea（着想）**: 問題仮説の検証、競合ランドスケープのマッピング、顧客ディスカバリーをAIで回す。
+- **MVP**: AI生成コードベースが技術的負債を溜め込まないためのアーキテクチャ・スコープ・セキュリティの作法。Vibe Coding的に量産したコードの「負債化」をどう防ぐかが論点。
+- **Launch（ローンチ）**: 創業者の注意（attention）をエージェント的ワークフローで置き換える運用システム。手作業の張り付きを自動化に移す。
+- **Scale（拡大）**: 段階移行の判断軸を整える。
+
+加えて、本物のプロダクトマーケットフィット（PMF）と初期の盛り上がり（hype）を見分けるための**測定フレームワーク**が示される。「ローンチ直後の熱狂」を誤ってPMFと判定しないための歯止めにあたる。
+
+## プロダクトマトリクス（Chat / Cowork / Code）
+
+各段階で**Chat・Claude Cowork・Claude Code**のどれをいつ・どう使うかを対応づけたマトリクスを提示する。汎用チャット・バックグラウンドエージェント・コーディングCLIという粒度の異なる3製品を、起業フェーズに合わせて使い分ける指針である。製品ごとの位置づけは [[companies/anthropic]] と [[tools/claude-code]] を参照。
+
+## 位置づけ
+
+「AI活用を効率化（器の中の整理）で測ると競争力を測り損なう」とする [[business/ai-agent-era-strategy]] や、会社を再帰的AIループの集合として再設計する [[business/self-improving-company]] が**既存企業・組織側**の組み替えを論じるのに対し、本プレイブックは**ゼロから起業する個人**に同じAIネイティブ思想を当てる。day 1から会社をAI中心に設計したい創業者と、それを支える初期オペレーター向けに書かれている。
+
+## 観察ログ（未検証）
+
+- 2026-06-29: Anthropic公式ブログ（claude.com）が自社プレイブックを告知。本文の詳細（各段階の演習・卒業条件・測定フレームワークの具体）はリンク先PDF（The Founders Playbook v3）にあり、本ページはブログ告知文から枠組みを合成したもの。各段階の細目はPDF未精読のため未反映
+- 2026-06-29: 創業者ストーリーとして Ambral・Anything・Carta Healthcare・[[concepts/12-factor-agents|HumanLayer]]・Vulcan Technologies ほかが収録されると告知（各社の具体内容は未確認）
+- 2026-06-29: 「コードを書いたことのない創業者が本番アプリを出荷」「人を増やす前に売上到達」はAnthropicの主張（プレイブックの売り口上であり、独立した効果測定ではない）
+
+## 問い
+
+- 4段階の「卒業条件（exit criteria）」を自分のwiki/PKMプロジェクトに当てはめると、各フェーズの完了をどう定義できるか
+- 「PMFと初期hypeを見分ける測定フレームワーク」の具体指標は何か——PDFを読んで [[business/ai-agent-era-strategy]] の「効率化で測る罠」と接続できるか
+- Chat/Cowork/Codeのマトリクスは、自分が個人で回すワークフロー（ingest・weekly生成・調査）の道具選択にそのまま転用できるか
+
+## 関連
+
+- [[business/ai-agent-era-strategy]] — AIネイティブ企業戦略5テーマ（既存企業側の組み替え／本ページは起業側）
+- [[business/self-improving-company]] — 会社を再帰的AIループの集合として再設計するYC構想
+- [[companies/anthropic]] — 発信元。Chat/Cowork/Codeの製品群
+- [[tools/claude-code]] — プロダクトマトリクスの一角（MVP/Scaleのコーディング担当）
+- [[business/talent-to-value-ai]] — 価値の単位が「人＋エージェントのシステム」へ移る論（創業者=オーケストレーター化と接続）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
