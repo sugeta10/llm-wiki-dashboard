@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-W27 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb9a0"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-W27</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="2026-W27.md">Markdownで表示</a></div>
+  <div class="meta">weekly/2026-W27 · weekly · <span title="2026-06-29">今日</span></div>
+  <article><h1>Weekly Insights: 2026-W27（2026-06-29〜07-05）</h1>
+<h2>今週のホットトピック</h2>
+<p><img alt="infographic-hot-topics.png" src="2026-W27/infographic-hot-topics.png"></p>
+<ul>
+<li><strong><a href="../tools/claude-tag.html">claude-tag</a> AIが「呼び出す道具」から常駐する「同僚」へ</strong> — SlackにメンバーとしてClaudeを置き、メンションで非同期にタスクを委任する公式機能（@claudeai発・X bookmark 10,104）。</li>
+<li><strong><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a> 委任の本体は「判断軸を外に出す」こと</strong> — フロントのAIは交換可能で、出力の固有性を生むのは外部記憶（思想）の深さ、というmasaki_lippleの主張（bm 3,824）。</li>
+<li><strong><a href="../tools/openmontage.html">openmontage</a> 出力のバラつきを「仕様」で固定する</strong> — AIコーディングアシスタント自身を司令塔にし、品質基準をYAML/Markdownに明文化して工学的に強制する動画制作OSS（X bookmark 4,938）。</li>
+</ul>
+<h3>深掘り</h3>
+<p><strong><a href="../tools/claude-tag.html">claude-tag</a> AIを「相談先」から「同僚」へ</strong><br>
+これまでのClaudeは人間が開いた画面で対話する相手だったが、Claude Tagはワークフローが流れるSlackチャンネルにClaudeを最初から常駐させ、人にタスクを振るのと同じメンションで非同期に委任する。効くのは委任UXの変化だけではなく、チャンネル単位・ツール単位でアクセスを絞る認可設計が製品レベルで前提に織り込まれている点だ。同じ「配置する」発想は、NotebookLMに役割と人格を仕込んで自律的に働かせる <a href="../tools/notebooklm-employees.html">notebooklm-employees</a>、創業者を個人コントリビューターからオーケストレーターへ移す <a href="../business/founders-playbook.html">founders-playbook</a> にも共通する。AIが「使うもの」から「自分の場の中に居るもの」へ移った週。</p>
+<p><strong><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a> 渡しているのは作業ではなく判断軸</strong><br>
+masaki_lippleは「書かせる（丸投げ）」と「任せる（権限委譲）」を分け、両者を分けるのは文体の模倣ではなく判断軸＝思想を外部記憶に構造化して置いたかどうかだと主張する（本人の体験談を含む単一ソース）。同じ「何を人間に残すか」の線引きが、検証器をワーカー自身に持たせない <a href="../concepts/goal-loop-routine.html">goal-loop-routine</a>（自己採点するエージェントは落ちるテストを消して「完了」と言う）、安全ルールをAIに触らせない不可触領域（trust anchor）として固める <a href="../tools/makeloop.html">makeloop</a> にも現れる。実行は委任しても、判断（思想・検証器・ドグマ）は「どこに置くか」を人間が決める。</p>
+<p><strong><a href="../tools/openmontage.html">openmontage</a> 品質は感性でなく工学で強制する</strong><br>
+OpenMontageは「コードのオーケストレーターを置かず、AIアシスタント自身を司令塔にする」設計で、創造的判断・レビュー基準・品質基準をすべて可読なYAML/Markdownに出し、7次元のプロバイダー選定スコアリングとレンダー後の自己レビューゲートで品質をエンジニアリングとして強制する。「デザインのバラつき＝ガチャ」を色・余白・構図の仕様（.md）で抑える <a href="../design/slide-md.html">slide-md</a> と同じ構えだ。出力の一貫性は感性ではなく明文化した仕様で担保する、という設計思想が今週は動画とスライドの両方で立ち上がった。</p>
+<h2>今週の中心テーマ</h2>
+<p><strong>委任とは「タスクを渡す」ことではなく、実行を手放しつつ判断——検証器・trust anchor・思想——を「どこに置くか」を決める設計になった。</strong></p>
+<p><img alt="infographic-theme.png" src="2026-W27/infographic-theme.png"></p>
+<h2>根拠ページ</h2>
+<ul>
+<li><a href="../tools/claude-tag.html">claude-tag</a>（→ 今週のホットトピック#1）</li>
+<li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a>（→ 今週のホットトピック#2）</li>
+<li><a href="../tools/openmontage.html">openmontage</a>（→ 今週のホットトピック#3）</li>
+<li><a href="../tools/notebooklm-employees.html">notebooklm-employees</a> — 知識＋人格＝自律的に働く従業員。「配置」クラスタのもう一つの代表（bm 7,532）</li>
+<li><a href="../business/founders-playbook.html">founders-playbook</a> — 創業者をオーケストレーター化するAnthropic公式プレイブック（Chat/Cowork/Code）</li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — goal/loop/routineの3動詞分類。「検証器がゲーム全体」＝判断を残す論の核（bm 4,135）</li>
+<li><a href="../tools/makeloop.html">makeloop</a> — 採否評価もAIに渡すが、trust anchorだけは人間に残す自己改善ループ</li>
+<li><a href="../tools/oracle.html">oracle</a> — 重い判断だけ別の上位AIに渡すセカンドオピニオン層（multi-modelパネル・bm 2,792）</li>
+<li><a href="../design/slide-md.html">slide-md</a> — デザイン一貫性を感性でなく仕様（.md3層）で固定するスライドシステム</li>
+<li><a href="../concepts/ai-native-cloud-selection.html">ai-native-cloud-selection</a> — クラウド選定軸が「人間のGUI操作性」から「エージェントのCLI操作性」へ（Cloudflare）</li>
+</ul>
+<h2>既存wikiとの接続</h2>
+<ul>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 生成→採点→閾値未満で止める品質ゲートの一般形。今週の検証器（goal-loop-routine）・AI評価パネル（makeloop）・レンダー後自己レビュー（openmontage）はいずれも「判断を残す＝採点をどこに置くか」のこの実装にあたる。</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — ユーザー所有の単一メモリ層を全エージェントの下に敷く設計。philosophy-external-memoryの「思想を外部記憶に出す」はこの記憶層に判断軸を載せた形。</li>
+<li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a> — Claude Projectsを「AI社員化」する6パート設計図。notebooklm-employeesの「知識＋人格」はプラットフォーム違いの同型パターン。</li>
+</ul>
+<h2>sugeta-san への問い</h2>
+<p><strong>あなたのwiki運用（ingest・weekly生成・調査）で、いま「実行」と一緒にうっかり「判断」まで委ねてしまっている工程はどこか。</strong></p>
+<p>→ 今週のページが揃って示すのは、委任の品質は「何を渡すか」でなく「何を残すか」で決まること。たとえば ingest の検証ゲート（具体例/数字/出典/一文結論）は、生成したワーカー自身が自己採点する構造になっていないか。goal-loop-routineの「別モデルを審判に立てる」やmakeloopの「採否評価を別AIパネルに渡す」を当てると、自分のwikiでも検証器を生成器から分離する余地が見えてくる。</p>
+<h2>今週の小アクション（5分）</h2>
+<p><code>wiki-ingest</code> の検証ゲートを1つ選び、「これは生成した本人が自己採点しているか、独立した目が採点しているか」を <code>LESSONS.md</code> に1行メモする。自己採点になっていれば「別観点で再採点する工程」を足す候補として記録する。</p>
+<h2>いますぐAIと一緒に（コピペ）</h2>
+<p>以下をそのまま Claude / Claude Code に貼って、今週の「判断をどこに置くか」を自分のwikiに当ててみてください。</p>
+<pre><code>このリポジトリの wiki-ingest スキル（.claude/skills/wiki-ingest/SKILL.md）と
+その LESSONS.md を読み、ingest の品質検証ゲートを洗い出してください。そのうえで:
+1. 各ゲートを「生成したワーカー自身が採点している / 独立した目が採点している」で分類
+2. 自己採点になっているゲートを1つ選び、別観点（別モデル・別プロンプト）で
+   再採点する最小の工程を提案
+3. その変更が &quot;見た目は追加だが意味は検証の緩和&quot; になっていないか自己点検
+参照: wiki/concepts/goal-loop-routine.md, wiki/tools/makeloop.md
+</code></pre>
+<h2>さらに読むべきページ</h2>
+<ul>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — 今週の goal-loop-routine / makeloop の親概念。ループ設計の工学全体（4条件テスト・6構成要素・ハードストップ）を押さえると、3動詞と自己改善ループが1枚の地図に乗る。</li>
+<li><a href="../concepts/llm-council.html">llm-council</a> — oracleのmulti-modelパネル、makeloopのAI評価パネル、notebooklm-employeesの「会議」が共通して踏む「複数の目で盲点を炙る」パターンの親概念。</li>
+<li><a href="../business/self-improving-company.html">self-improving-company</a> — 委任の話を組織スケールに引き上げた構想（品質ゲート・学習層を会社の再帰ループに組み込む）。今週の「判断をどこに置くか」を会社設計で読む補助線。</li>
+</ul>
+<h2>今週の音声ニュース</h2>
+<audio controls style="width:100%;margin:1rem 0"><source src="2026-W27/audio.mp3" type="audio/mpeg"></audio>
+<p><a href="https://notebooklm.google.com/notebook/ab1f4a2c-6094-46ab-980e-09766aa0e1df">NotebookLM で開く →</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/founders-playbook.html">founders-playbook</a></li>
+<li><a href="../business/self-improving-company.html">self-improving-company</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../tools/notebooklm-employees.html">notebooklm-employees</a></li>
+<li><a href="../tools/oracle.html">oracle</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Weekly Insights: 2026-W27（2026-06-29〜07-05）
+
+## 今週のホットトピック
+
+![[2026-W27/infographic-hot-topics.png]]
+
+- **[[tools/claude-tag]] AIが「呼び出す道具」から常駐する「同僚」へ** — SlackにメンバーとしてClaudeを置き、メンションで非同期にタスクを委任する公式機能（@claudeai発・X bookmark 10,104）。
+- **[[concepts/philosophy-external-memory]] 委任の本体は「判断軸を外に出す」こと** — フロントのAIは交換可能で、出力の固有性を生むのは外部記憶（思想）の深さ、というmasaki_lippleの主張（bm 3,824）。
+- **[[tools/openmontage]] 出力のバラつきを「仕様」で固定する** — AIコーディングアシスタント自身を司令塔にし、品質基準をYAML/Markdownに明文化して工学的に強制する動画制作OSS（X bookmark 4,938）。
+
+### 深掘り
+
+**[[tools/claude-tag]] AIを「相談先」から「同僚」へ**  
+これまでのClaudeは人間が開いた画面で対話する相手だったが、Claude Tagはワークフローが流れるSlackチャンネルにClaudeを最初から常駐させ、人にタスクを振るのと同じメンションで非同期に委任する。効くのは委任UXの変化だけではなく、チャンネル単位・ツール単位でアクセスを絞る認可設計が製品レベルで前提に織り込まれている点だ。同じ「配置する」発想は、NotebookLMに役割と人格を仕込んで自律的に働かせる [[tools/notebooklm-employees]]、創業者を個人コントリビューターからオーケストレーターへ移す [[business/founders-playbook]] にも共通する。AIが「使うもの」から「自分の場の中に居るもの」へ移った週。
+
+**[[concepts/philosophy-external-memory]] 渡しているのは作業ではなく判断軸**  
+masaki_lippleは「書かせる（丸投げ）」と「任せる（権限委譲）」を分け、両者を分けるのは文体の模倣ではなく判断軸＝思想を外部記憶に構造化して置いたかどうかだと主張する（本人の体験談を含む単一ソース）。同じ「何を人間に残すか」の線引きが、検証器をワーカー自身に持たせない [[concepts/goal-loop-routine]]（自己採点するエージェントは落ちるテストを消して「完了」と言う）、安全ルールをAIに触らせない不可触領域（trust anchor）として固める [[tools/makeloop]] にも現れる。実行は委任しても、判断（思想・検証器・ドグマ）は「どこに置くか」を人間が決める。
+
+**[[tools/openmontage]] 品質は感性でなく工学で強制する**  
+OpenMontageは「コードのオーケストレーターを置かず、AIアシスタント自身を司令塔にする」設計で、創造的判断・レビュー基準・品質基準をすべて可読なYAML/Markdownに出し、7次元のプロバイダー選定スコアリングとレンダー後の自己レビューゲートで品質をエンジニアリングとして強制する。「デザインのバラつき＝ガチャ」を色・余白・構図の仕様（.md）で抑える [[design/slide-md]] と同じ構えだ。出力の一貫性は感性ではなく明文化した仕様で担保する、という設計思想が今週は動画とスライドの両方で立ち上がった。
+
+## 今週の中心テーマ
+
+**委任とは「タスクを渡す」ことではなく、実行を手放しつつ判断——検証器・trust anchor・思想——を「どこに置くか」を決める設計になった。**
+
+![[2026-W27/infographic-theme.png]]
+
+## 根拠ページ
+
+- [[tools/claude-tag]]（→ 今週のホットトピック#1）
+- [[concepts/philosophy-external-memory]]（→ 今週のホットトピック#2）
+- [[tools/openmontage]]（→ 今週のホットトピック#3）
+- [[tools/notebooklm-employees]] — 知識＋人格＝自律的に働く従業員。「配置」クラスタのもう一つの代表（bm 7,532）
+- [[business/founders-playbook]] — 創業者をオーケストレーター化するAnthropic公式プレイブック（Chat/Cowork/Code）
+- [[concepts/goal-loop-routine]] — goal/loop/routineの3動詞分類。「検証器がゲーム全体」＝判断を残す論の核（bm 4,135）
+- [[tools/makeloop]] — 採否評価もAIに渡すが、trust anchorだけは人間に残す自己改善ループ
+- [[tools/oracle]] — 重い判断だけ別の上位AIに渡すセカンドオピニオン層（multi-modelパネル・bm 2,792）
+- [[design/slide-md]] — デザイン一貫性を感性でなく仕様（.md3層）で固定するスライドシステム
+- [[concepts/ai-native-cloud-selection]] — クラウド選定軸が「人間のGUI操作性」から「エージェントのCLI操作性」へ（Cloudflare）
+
+## 既存wikiとの接続
+
+- [[concepts/eval-loop]] — 生成→採点→閾値未満で止める品質ゲートの一般形。今週の検証器（goal-loop-routine）・AI評価パネル（makeloop）・レンダー後自己レビュー（openmontage）はいずれも「判断を残す＝採点をどこに置くか」のこの実装にあたる。
+- [[concepts/agent-memory-layer]] — ユーザー所有の単一メモリ層を全エージェントの下に敷く設計。philosophy-external-memoryの「思想を外部記憶に出す」はこの記憶層に判断軸を載せた形。
+- [[concepts/claude-projects-blueprint]] — Claude Projectsを「AI社員化」する6パート設計図。notebooklm-employeesの「知識＋人格」はプラットフォーム違いの同型パターン。
+
+## sugeta-san への問い
+
+**あなたのwiki運用（ingest・weekly生成・調査）で、いま「実行」と一緒にうっかり「判断」まで委ねてしまっている工程はどこか。**
+
+→ 今週のページが揃って示すのは、委任の品質は「何を渡すか」でなく「何を残すか」で決まること。たとえば ingest の検証ゲート（具体例/数字/出典/一文結論）は、生成したワーカー自身が自己採点する構造になっていないか。goal-loop-routineの「別モデルを審判に立てる」やmakeloopの「採否評価を別AIパネルに渡す」を当てると、自分のwikiでも検証器を生成器から分離する余地が見えてくる。
+
+## 今週の小アクション（5分）
+
+`wiki-ingest` の検証ゲートを1つ選び、「これは生成した本人が自己採点しているか、独立した目が採点しているか」を `LESSONS.md` に1行メモする。自己採点になっていれば「別観点で再採点する工程」を足す候補として記録する。
+
+## いますぐAIと一緒に（コピペ）
+
+以下をそのまま Claude / Claude Code に貼って、今週の「判断をどこに置くか」を自分のwikiに当ててみてください。
+
+```
+このリポジトリの wiki-ingest スキル（.claude/skills/wiki-ingest/SKILL.md）と
+その LESSONS.md を読み、ingest の品質検証ゲートを洗い出してください。そのうえで:
+1. 各ゲートを「生成したワーカー自身が採点している / 独立した目が採点している」で分類
+2. 自己採点になっているゲートを1つ選び、別観点（別モデル・別プロンプト）で
+   再採点する最小の工程を提案
+3. その変更が &quot;見た目は追加だが意味は検証の緩和&quot; になっていないか自己点検
+参照: wiki/concepts/goal-loop-routine.md, wiki/tools/makeloop.md
+```
+
+## さらに読むべきページ
+
+- [[concepts/loop-engineering]] — 今週の goal-loop-routine / makeloop の親概念。ループ設計の工学全体（4条件テスト・6構成要素・ハードストップ）を押さえると、3動詞と自己改善ループが1枚の地図に乗る。
+- [[concepts/llm-council]] — oracleのmulti-modelパネル、makeloopのAI評価パネル、notebooklm-employeesの「会議」が共通して踏む「複数の目で盲点を炙る」パターンの親概念。
+- [[business/self-improving-company]] — 委任の話を組織スケールに引き上げた構想（品質ゲート・学習層を会社の再帰ループに組み込む）。今週の「判断をどこに置くか」を会社設計で読む補助線。
+
+## 今週の音声ニュース
+
+![[2026-W27/audio.mp3]]
+
+[NotebookLM で開く →](https://notebooklm.google.com/notebook/ab1f4a2c-6094-46ab-980e-09766aa0e1df)
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
