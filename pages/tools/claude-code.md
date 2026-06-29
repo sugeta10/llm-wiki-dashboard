@@ -419,3 +419,4 @@ Claude Codeにアプリのフロー構造をHTML + JSONで文書化させ、そ�
 - [[concepts/claude-code-work-folder]]（初心者向け作業フォルダ設計：inbox/reference/draft/output/archive）
 - [[tools/understand-anything]]（コードベースを対話型ナレッジグラフ化する補助ツール・Claude Code対応）
 - [[concepts/claude-code-task-delegation]]（業務フローを渡す活用法50選と「環境を設計する」発想）
+- [[concepts/product-role-archetypes]]（作者 Boris Cherny が Claude Code チームから抽出した5アーキタイプ＝Prototyper/Builder/Sweeper/Grower/Maintainer）

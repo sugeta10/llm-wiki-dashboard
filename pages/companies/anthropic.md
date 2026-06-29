@@ -67,3 +67,4 @@ Anthropicが公開したマルチエージェント構成では：
 - [[companies/apple]]（WWDC26: XcodeのコードAI生成でClaudeが選択可能）
 - [[tools/claude-tag]]（SlackにClaudeをチームメイトとして常駐させる製品・2026-06-23発表）
 - [[business/founders-playbook]]（AIネイティブ・スタートアップ構築の公式プレイブック・Chat/Cowork/Code製品マトリクス）
+- [[concepts/product-role-archetypes]]（Boris Cherny が Anthropic 内で観察した職能横断の5アーキタイプ）

@@ -32,3 +32,4 @@
 - [[concepts/ai-quality-amplification]] — 「AIは増幅器、増幅されるのは弱点も同じ」という見極め基準の根拠
 - [[concepts/palantir-ontology]] — 役割を名詞＋動詞に分解してモデル化する発想の同型
 - [[concepts/forward-deployed-engineer]] — AI時代に重要性が増す「人とエージェントのワークフローを設計する」役割の具体像
+- [[concepts/product-role-archetypes]] — 役割を職能から局面（Prototyper/Builder/Sweeper/Grower/Maintainer）へずらす分類。価値の単位を個人から外す本ページと同型

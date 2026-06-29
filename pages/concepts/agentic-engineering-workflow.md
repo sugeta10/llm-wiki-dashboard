@@ -45,3 +45,4 @@ vibe coding がモデルの性能向上で「おもちゃ」から「唯一の�
 - [[concepts/loop-engineering]] — 同著者が分析した「ループエンジニアリング」概念（ループ進化5段階・コスト・スキル）
 - [[concepts/spec-driven-development]] — 計画先行・仕様を起点にする思想の重なり
 - [[concepts/coding-agent-workflow-styles]] — 「手をやめてシグナルになる」は委譲低速ループ側。両極を俯瞰する2類型の見取り図
+- [[concepts/skills-over-memory]] — 同著者 @mvanhorn の続編。「2回やったらスキル化」を「教訓はメモリでなくスキルへPR」として深掘りし、メモリ削減と対にした

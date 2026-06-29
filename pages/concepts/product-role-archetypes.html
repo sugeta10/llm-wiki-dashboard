@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>product-role-archetypes - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>product-role-archetypes</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="product-role-archetypes.md">Markdownで表示</a></div>
+  <div class="meta">concepts/product-role-archetypes · concepts · <span title="2026-06-29">今日</span></div>
+  <article><h1>プロダクトの5アーキタイプ（職能でなく価値創出の局面で人を見る）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: エンジニア・PM・デザイン・DS といった職能が一つの新しい役割へ融け合う中で、仕事は Prototyper / Builder / Sweeper / Grower / Maintainer の5アーキタイプに分かれる。役割は職種に紐づかず、健全なチームはプロダクトの成熟段階に応じてこれらを配合する。</p>
+<p>📌 X bookmark: 13,254（2026-06-29 時点）</p>
+</blockquote>
+<p>軸が「あなたは何の職種か（エンジニアかPMかデザイナーか）」から「プロダクトのライフサイクルのどこで価値を生むか」へ移る、という見立てである。同じ職種の中にも異なるアーキタイプが混在し、逆に異なる職種が同じアーキタイプに収まる。だから将来のプロダクト役割は、今日のようなドメイン特化の肩書きでなく、この局面ベースの分類に近づくのではないか、というのが核心の問いになる。</p>
+<p>5つのアーキタイプ:</p>
+<ol>
+<li><strong>Prototyper</strong>: まったく新しいアイデアを出す。大量に生み出すが、その多くは出荷されない</li>
+<li><strong>Builder</strong>: プロトタイプやアイデアを素早く本番品質のプロダクト／インフラへ仕上げる</li>
+<li><strong>Sweeper</strong>: UIを磨き、コードとシステムを単純化し、不要機能を畳み（unship）、性能を最適化する</li>
+<li><strong>Grower</strong>: 作られたプロダクトを反復改善し、プロダクトマーケットフィット（PMF）を高める</li>
+<li><strong>Maintainer</strong>: 成熟したシステムを所有し、規模拡大に耐える安全性・信頼性・速度・効率を保つ</li>
+</ol>
+<p>多くの人は2つ、ときに3つのアーキタイプにまたがる。重要なのは、これらが職能（job function）に縛られない点で、デザイナーにもアーキタイプ1の人・2の人・3の人がいて、エンジニア・PM・DSでも同様だという。</p>
+<p>健全なチームはプロダクトの段階に応じて配合を変える:</p>
+<table>
+<thead>
+<tr>
+<th>プロダクトの段階</th>
+<th>必要なアーキタイプの配合</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新規・PMF前</td>
+<td>1+2+3 に強い人</td>
+</tr>
+<tr>
+<td>成長中・PMF達成</td>
+<td>2+3+4 と一部5</td>
+</tr>
+<tr>
+<td>強いPMF・規模拡大</td>
+<td>3+4+5 と一部2</td>
+</tr>
+</tbody>
+</table>
+<p>この分類は、価値評価の単位を「個人の役割」から「局面ごとの貢献」へずらす点で、人材を価値へ最適配置する議論（<a href="../business/talent-to-value-ai.html">talent-to-value-ai</a>）や、コード量でなく何を生んだかでエンジニアを見る AI時代のエンジニア像（<a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a>）と同じ方向を向く。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-28: Boris Cherny（@bcherny、Anthropic の <a href="../tools/claude-code.html">claude-code</a> 作者）が、Claude Code チームを見て感じる5アーキタイプとして提示。エンジニア・プロダクト・デザイン・DS などが「新しい種類の役割」へ融け合いつつあるという観察が前提にある（本人の考察・将来予測を含む）。</li>
+<li>2026-06-28: Anthropic 全体で、デザイナーにもアーキタイプ1/2/3の人がいて、エンジニア・PM・DSでも同じく職能とアーキタイプが一致しない、と本人が述べる（一次観察だが社内の主観的印象）。</li>
+<li>2026-06-28: 「将来のプロダクト役割は今日のドメイン特化の役割でなく、こうした局面ベースに近づくのでは」という本人の予測。断定でなく問いの形で提示されている。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>この5アーキタイプは自分（一人＋エージェント群）の運用にも写せるか。wiki運用の中で自分はどの局面（新規ingest設計＝Prototyper/Builder か、lint・統廃合＝Sweeper か、Weekly育成＝Grower か）にどれだけ時間を割いているか。</li>
+<li>「役割は職能に紐づかない」が正しいなら、エージェントにアーキタイプを割り当てる（探索担当＝Prototyper、実装担当＝Builder、整理担当＝Sweeper）設計は <a href="../business/talent-to-value-ai.html">talent-to-value-ai</a> のタスク=動詞割当とどう接続するか。</li>
+<li>段階別の配合表は、自分のプロジェクト（PMF前か後か）に当てはめると今どのアーキタイプが不足しているかを示すか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a> — 価値の単位を個人から「人＋エージェントのシステム」へ移し、役割を局面・タスク単位で割り当てる議論。本ページの「職能でなく局面で見る」と同型</li>
+<li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a> — コード量でなく何を作るかでエンジニアを評価する像。観察ログで既に Boris 氏の「マネージャーはコード量を見ない」発言に言及していた</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — 著者 Boris Cherny が作者。本ページのアーキタイプは Claude Code チームの観察から生まれた</li>
+<li><a href="../companies/anthropic.html">anthropic</a> — アーキタイプが観察された組織。職能とアーキタイプが一致しないという指摘の母体</li>
+<li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a> — ドメイン理解とワークフロー構築を中心に置く、職能横断で融け合う役割の別の具体像</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a></li>
+<li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a></li>
+<li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2071379474277613732" rel="noopener" target="_blank">https://x.com/i/web/status/2071379474277613732</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># プロダクトの5アーキタイプ（職能でなく価値創出の局面で人を見る）
+
+&gt; **TL;DR**: エンジニア・PM・デザイン・DS といった職能が一つの新しい役割へ融け合う中で、仕事は Prototyper / Builder / Sweeper / Grower / Maintainer の5アーキタイプに分かれる。役割は職種に紐づかず、健全なチームはプロダクトの成熟段階に応じてこれらを配合する。
+
+&gt; 📌 X bookmark: 13,254（2026-06-29 時点）
+
+軸が「あなたは何の職種か（エンジニアかPMかデザイナーか）」から「プロダクトのライフサイクルのどこで価値を生むか」へ移る、という見立てである。同じ職種の中にも異なるアーキタイプが混在し、逆に異なる職種が同じアーキタイプに収まる。だから将来のプロダクト役割は、今日のようなドメイン特化の肩書きでなく、この局面ベースの分類に近づくのではないか、というのが核心の問いになる。
+
+5つのアーキタイプ:
+
+1. **Prototyper**: まったく新しいアイデアを出す。大量に生み出すが、その多くは出荷されない
+2. **Builder**: プロトタイプやアイデアを素早く本番品質のプロダクト／インフラへ仕上げる
+3. **Sweeper**: UIを磨き、コードとシステムを単純化し、不要機能を畳み（unship）、性能を最適化する
+4. **Grower**: 作られたプロダクトを反復改善し、プロダクトマーケットフィット（PMF）を高める
+5. **Maintainer**: 成熟したシステムを所有し、規模拡大に耐える安全性・信頼性・速度・効率を保つ
+
+多くの人は2つ、ときに3つのアーキタイプにまたがる。重要なのは、これらが職能（job function）に縛られない点で、デザイナーにもアーキタイプ1の人・2の人・3の人がいて、エンジニア・PM・DSでも同様だという。
+
+健全なチームはプロダクトの段階に応じて配合を変える:
+
+| プロダクトの段階 | 必要なアーキタイプの配合 |
+|---|---|
+| 新規・PMF前 | 1+2+3 に強い人 |
+| 成長中・PMF達成 | 2+3+4 と一部5 |
+| 強いPMF・規模拡大 | 3+4+5 と一部2 |
+
+この分類は、価値評価の単位を「個人の役割」から「局面ごとの貢献」へずらす点で、人材を価値へ最適配置する議論（[[business/talent-to-value-ai]]）や、コード量でなく何を生んだかでエンジニアを見る AI時代のエンジニア像（[[concepts/ai-era-good-engineer]]）と同じ方向を向く。
+
+## 観察ログ（未検証）
+
+- 2026-06-28: Boris Cherny（@bcherny、Anthropic の [[tools/claude-code]] 作者）が、Claude Code チームを見て感じる5アーキタイプとして提示。エンジニア・プロダクト・デザイン・DS などが「新しい種類の役割」へ融け合いつつあるという観察が前提にある（本人の考察・将来予測を含む）。
+- 2026-06-28: Anthropic 全体で、デザイナーにもアーキタイプ1/2/3の人がいて、エンジニア・PM・DSでも同じく職能とアーキタイプが一致しない、と本人が述べる（一次観察だが社内の主観的印象）。
+- 2026-06-28: 「将来のプロダクト役割は今日のドメイン特化の役割でなく、こうした局面ベースに近づくのでは」という本人の予測。断定でなく問いの形で提示されている。
+
+## 問い
+
+- この5アーキタイプは自分（一人＋エージェント群）の運用にも写せるか。wiki運用の中で自分はどの局面（新規ingest設計＝Prototyper/Builder か、lint・統廃合＝Sweeper か、Weekly育成＝Grower か）にどれだけ時間を割いているか。
+- 「役割は職能に紐づかない」が正しいなら、エージェントにアーキタイプを割り当てる（探索担当＝Prototyper、実装担当＝Builder、整理担当＝Sweeper）設計は [[business/talent-to-value-ai]] のタスク=動詞割当とどう接続するか。
+- 段階別の配合表は、自分のプロジェクト（PMF前か後か）に当てはめると今どのアーキタイプが不足しているかを示すか。
+
+## 関連
+
+- [[business/talent-to-value-ai]] — 価値の単位を個人から「人＋エージェントのシステム」へ移し、役割を局面・タスク単位で割り当てる議論。本ページの「職能でなく局面で見る」と同型
+- [[concepts/ai-era-good-engineer]] — コード量でなく何を作るかでエンジニアを評価する像。観察ログで既に Boris 氏の「マネージャーはコード量を見ない」発言に言及していた
+- [[tools/claude-code]] — 著者 Boris Cherny が作者。本ページのアーキタイプは Claude Code チームの観察から生まれた
+- [[companies/anthropic]] — アーキタイプが観察された組織。職能とアーキタイプが一致しないという指摘の母体
+- [[concepts/forward-deployed-engineer]] — ドメイン理解とワークフロー構築を中心に置く、職能横断で融け合う役割の別の具体像
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
