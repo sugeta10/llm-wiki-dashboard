@@ -33,3 +33,4 @@ npx skills add google/skills
 - [[tools/obsidian-skills]] — kepano製Obsidian向けAgent Skills（同じagentskills.io仕様・参考実装）
 - [[tools/claude-code]] — Claude Code（Agent Skillsの主要インストール先）
 - [[concepts/claude-code-google-cloud]] — これらGCPスキルをE2E開発デモで活用するパターン
+- [[tools/google-agents-cli]] — 同じ「コーディングエージェントへスキルを注入する」系譜のGoogle製CLI。ADKエージェントの足場〜デプロイを7スキルで一本化

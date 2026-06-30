@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>eval-loop</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="eval-loop.md">Markdownで表示</a></div>
-  <div class="meta">concepts/eval-loop · concepts · <span title="2026-06-02">3週間前</span></div>
+  <div class="meta">concepts/eval-loop · concepts · <span title="2026-06-02">4週間前</span></div>
   <article><h1>Eval Loop（AI出力の品質ゲート）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: AIスロップ（量産される薄い出力）はプロンプト問題ではなく品質管理問題であり、出力を基準に対して自動採点し閾値未満を出荷前に止める「eval loop」という品質レイヤーの欠如が原因。プロンプト改良・高価なモデル・メモリは全て入力側の対症療法で、根治しない。</p>
@@ -116,11 +116,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a> — 個人の仕事に適用したeval loop。「物差しを持ち閾値未満を出さない」を人の成果物で回す</li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a> — ループエンジニアリングの Verification 要素がeval loopと重なる。ループの品質ゲートとして使われる</li>
 <li><a href="../tools/codex-review-skill.html">codex-review-skill</a> — eval loopの「合格まで反復し合格分のみ通す」ゲートをコードレビューに具体実装したCodex内ループ型スキル</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/dspy.html">dspy</a></li>
+<li><a href="../tools/google-agents-cli.html">google-agents-cli</a> — デプロイ前のeval（取得正答/拒否/マルチホップ/引用精度の4分類）を1プロンプトで自動生成・実行するADKツール。「最も飛ばされがちな最重要工程」をCLIに組み込んだ実例</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
 <li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a></li>
-<li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a></li>
-<li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a></li>
-<li><a href="../tools/hermes-agent.html">hermes-agent</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060736517564477901" rel="noopener" target="_blank">https://x.com/i/web/status/2060736517564477901</a></li></ul></section></article>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
+<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060736517564477901" rel="noopener" target="_blank">https://x.com/i/web/status/2060736517564477901</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -217,6 +218,7 @@ eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
 - [[concepts/self-evaluation-gap]] — 個人の仕事に適用したeval loop。「物差しを持ち閾値未満を出さない」を人の成果物で回す
 - [[concepts/loop-engineering]] — ループエンジニアリングの Verification 要素がeval loopと重なる。ループの品質ゲートとして使われる
 - [[tools/codex-review-skill]] — eval loopの「合格まで反復し合格分のみ通す」ゲートをコードレビューに具体実装したCodex内ループ型スキル
+- [[tools/google-agents-cli]] — デプロイ前のeval（取得正答/拒否/マルチホップ/引用精度の4分類）を1プロンプトで自動生成・実行するADKツール。「最も飛ばされがちな最重要工程」をCLIに組み込んだ実例
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

@@ -74,3 +74,4 @@ eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
 - [[concepts/self-evaluation-gap]] — 個人の仕事に適用したeval loop。「物差しを持ち閾値未満を出さない」を人の成果物で回す
 - [[concepts/loop-engineering]] — ループエンジニアリングの Verification 要素がeval loopと重なる。ループの品質ゲートとして使われる
 - [[tools/codex-review-skill]] — eval loopの「合格まで反復し合格分のみ通す」ゲートをコードレビューに具体実装したCodex内ループ型スキル
+- [[tools/google-agents-cli]] — デプロイ前のeval（取得正答/拒否/マルチホップ/引用精度の4分類）を1プロンプトで自動生成・実行するADKツール。「最も飛ばされがちな最重要工程」をCLIに組み込んだ実例
