@@ -34,6 +34,7 @@ NotebookLM単体はノートをまたげない弱点があるが、同じGoogle�
 
 ## 関連
 
+- [[tools/notebooklm-book-mentors]] — 同じ@ai_jitanによる「知識＋人格」の**メンター版**。同じ機構（Gemini降臨・会議・人格の二重化）を部署の従業員でなく蔵書（積読本）に適用した姉妹ページ
 - [[tools/notebooklm]] — NotebookLM全般の活用ガイド。本ページは「従業員化」運用に特化した姉妹ページ
 - [[tools/notebooklm-studio-prompts]] — 同じ@ai_jitanによるStudio 9機能の指示集。あちらが「生成機能をどう指示するか」、本ページが「ノート自体を人格化して働かせるか」
 - [[tools/notebooklm-business-workflows]] — NotebookLM業務時短9ワークフロー（どの業務に当てるか）

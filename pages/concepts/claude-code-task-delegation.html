@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-task-delegation</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-task-delegation.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-code-task-delegation · concepts · <span title="2026-06-19">1週間前</span></div>
+  <div class="meta">concepts/claude-code-task-delegation · concepts · <span title="2026-07-02">今日</span></div>
   <article><h1>Claude Codeに業務を渡す（環境設計発想）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Claude Codeを「賢い質問箱」でなく業務フローごと渡せる作業者として使うための活用法50個と、その根底にある「毎回うまく指示する」から「指示なしでも良い結果が出る環境を一度設計する」への発想転換。</p>
@@ -86,6 +86,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>「AIに自分のフォルダを触らせる」抵抗感への答えは根性論でなく仕組み化。<code>/plan</code> で触るファイル・手順・リスクを承認まで止め、Plan modeで停止、暴走しても <code>/rewind</code> で巻き戻し、重要ファイルはバックアップ前提、Hooksで危険な削除を実行前にブロックする。逃げ道があると分かると人は踏み出せる、という導入設計の論理になっている。この発想は <a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a> の「プロンプトより先に棚（作業フォルダ）を作る」と地続きで、<a href="../tools/claude-code.html">claude-code</a> を安全に任せるための前提整備にあたる。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
+<li>2026-06-13 @conao_3: 「業務を渡す」の極端例として、ClaudeのMaxプラン（$220/月）契約2日後の返金交渉そのものをClaude Code（Opus 4.8）に丸投げし、AnthropicのAIがAnthropicのサポートと交渉して全額返金を得たと報告。単発の質問でなく「交渉というタスクの完遂」をエージェントに委任した事例（単一ソース・個人の体験談。X bookmark 3,954・2026-07-01時点）</li>
 <li>2026-06-16: 著者(@fuji_ai_)の効果数字 — 朝のメール整理は30分→約5分、Excel集計は3時間→約20分に短縮できる（単一ソース・未検証）</li>
 <li>2026-06-16: 「Claudeを使っている人の9割はその実力を持て余している。これは能力でなく使い方の発想の問題」という著者の主張</li>
 <li>2026-06-16: 記事全体の結論は50番「良い指示をしなくても良い結果が出る環境を作る」。①〜③は作業を渡す入口、④〜⑥は環境を設計する応用と位置づける</li>
@@ -105,11 +106,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — 繰り返し作業をSkills化して資産にする（カテゴリ⑤⑥）</li>
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — サブエージェント並列・役割分担（カテゴリ⑥上級者の使い方）の設計</li>
 <li><a href="../tools/claude-tag.html">claude-tag</a> — 同じ「AIにタスクを委任する」発想をSlackのチーム常駐に適用した製品</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li>
 <li><a href="../tools/claude-tag.html">claude-tag</a></li>
-<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066887630533357925" rel="noopener" target="_blank">https://x.com/i/web/status/2066887630533357925</a></li></ul></section></article>
+<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066887630533357925" rel="noopener" target="_blank">https://x.com/i/web/status/2066887630533357925</a></li>
+<li><a href="https://x.com/i/web/status/2065815666310238330" rel="noopener" target="_blank">https://x.com/i/web/status/2065815666310238330</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -162,6 +164,7 @@ flowchart LR
 
 ## 観察ログ（未検証）
 
+- 2026-06-13 @conao_3: 「業務を渡す」の極端例として、ClaudeのMaxプラン（$220/月）契約2日後の返金交渉そのものをClaude Code（Opus 4.8）に丸投げし、AnthropicのAIがAnthropicのサポートと交渉して全額返金を得たと報告。単発の質問でなく「交渉というタスクの完遂」をエージェントに委任した事例（単一ソース・個人の体験談。X bookmark 3,954・2026-07-01時点）
 - 2026-06-16: 著者(@fuji_ai_)の効果数字 — 朝のメール整理は30分→約5分、Excel集計は3時間→約20分に短縮できる（単一ソース・未検証）
 - 2026-06-16: 「Claudeを使っている人の9割はその実力を持て余している。これは能力でなく使い方の発想の問題」という著者の主張
 - 2026-06-16: 記事全体の結論は50番「良い指示をしなくても良い結果が出る環境を作る」。①〜③は作業を渡す入口、④〜⑥は環境を設計する応用と位置づける

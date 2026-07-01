@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>notebooklm-book-mentors - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>notebooklm-book-mentors</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="notebooklm-book-mentors.md">Markdownで表示</a></div>
+  <div class="meta">tools/notebooklm-book-mentors · tools · <span title="2026-07-02">今日</span></div>
+  <article><h1>NotebookLM「本をメンター化」メソッド</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 積読本の原本を丸ごとNotebookLMに入れ、カスタム指示で「答えでなく問いを返す人格」を与えて、いつでも相談できるメンターに変える読書術。複数の本を同席させれば「賢人会議」もできる。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  K[&quot;Kindle積読本&quot;] --&gt;|&quot;0秒読書でOCR PDF化&quot;| SRC[&quot;原本テキスト&quot;]
+  P[&quot;紙の本&quot;] --&gt;|&quot;CZURスキャナでOCR&quot;| SRC
+  SRC --&gt; NB[&quot;NotebookLMに原本のみ投入&quot;]
+  NB --&gt;|&quot;カスタム指示で人格付与&quot;| MENTOR[&quot;答えでなく問いを返すメンター&quot;]
+  MENTOR --&gt;|&quot;Gemini連携で複数同席&quot;| KENJIN[&quot;賢人会議（複数の本が議論）&quot;]</pre>
+<p>読書が定着しない構造的な原因は、インプットしただけでは知識が血肉にならず、内容を「自分の言葉で言い換える・自分の状況に当てはめる・疑問をぶつける」壁打ちの相手がいないことにある。本をメンター化する狙いは、この壁打ち相手を本そのものに演じさせる点にある。「読み切ったか」でなく「必要なときに思想を引き出せるか」に本の価値を置き直すことで、積読を「未完了タスク」から「まだ面接していない候補者の列」に読み替える。これは<a href="../tools/notebooklm-employees.html">notebooklm-employees</a>の「知識＋人格＝自律的に働く従業員」という等式を、部署の従業員でなく蔵書に適用した姉妹パターンにあたる。</p>
+<p>作り方は3ステップに集約される。①本の<strong>原本（全文）だけ</strong>をNotebookLMに入れる。書評やまとめ記事を混ぜると本そのものの思想が薄まり壁打ち精度が落ちるため、原本一本を貫く。②原本が手に入らない絶版本などに限り、次善策として「ソースを探す（Fast Research）」で書評・講演・論争点・実践事例を3切り口で集めて擬似メンターを作る。③ノートの「カスタム指示」に人格プロンプトを貼り、本を「メンター」として降臨させる。</p>
+<p>メンター人格の設計で肝になるのは<strong>答えを教えさせないこと</strong>。悩みに直接「こうすべき」と返させず、その本の具体的な概念名・章・エピソードをレンズにして「問い」を投げ返させる。答えをもらうだけならただの検索で、問いを返されるからこそ自分の中に気づきが生まれる、という設計思想になっている。優しく寄り添うモードと厳しく問い詰めるモードを、同じ1冊の中の別の思想を使ってテーマに応じて切り替えられる。</p>
+<p>複数の本を降臨させれば「賢人会議」になる。Web版Geminiは複数のNotebookLMを同時接続できるため、別々に雇った本のメンターを1つの会議室に同席させ、各自が自分の本の思想だけを根拠に同じ悩みへ視点を述べ、進行役が対立点を浮かび上がらせて「次に考えるべき問い」を1つに絞る。これはNotebookLM単体では不可能で、複数視点で意思決定を支える<a href="../concepts/llm-council.html">llm-council</a>をノーコードで実装する形になる。Geminiと連携する場合、人格プロンプトはカスタム指示だけでなく<strong>ソースにも入れて二重化</strong>しないと連携時に反映されない（<a href="../tools/notebooklm-employees.html">notebooklm-employees</a>と同じ二重化の要点）。</p>
+<h2>取り込みツール（積読本を原本化する経路）</h2>
+<ul>
+<li><strong>0秒読書</strong>（Kindleなど電子書籍向け）: 画面を1ページずつ自動キャプチャし、文字情報つきPDFに変換する有料ソフト。1冊2〜3分でPDF化。DRM（コピーガード）で画面キャプチャ自体ができない本には使えない。</li>
+<li><strong>CZURブックスキャナ</strong>（紙の本向け）: ページをめくるだけで自動スキャン＋OCR。約300ページ10分で全文データ化。</li>
+<li>手持ちの形（電子か紙か）に合わせて選ぶ。</li>
+</ul>
+<h2>著作権の線引き（この用途固有の必須ルール）</h2>
+<p>自分で買った本を自分が使うためにPDF化・スキャンして自分のNotebookLMに入れるのは私的複製の範囲で問題ない。<strong>絶対にやってはいけないのは、そのPDF・スキャンデータ・本を入れたNotebookLMを他人に共有・配布すること</strong>（著作権侵害）。0秒読書で作ったPDFには作成者を特定できる情報が全ページに埋め込まれ、ネットに上げれば追跡される。社内マニュアルや自社資料の共有は問題ないが、書籍を入れたノートだけは共有しない、と明確に線を引く。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-30 @ai_jitan: Kindleで眠っていた47冊の本をメンターとして雇っていると主張。以前の「NotebookLMに26人の従業員を雇う」記事（<a href="../tools/notebooklm-employees.html">notebooklm-employees</a>）のメンター版と位置づける（X bookmark 3,041・impression 約80万・2026-07-01時点）</li>
+<li>2026-06-30 @ai_jitan: 実演例として『嫌われる勇気』をメンター化し「課題の分離」の概念で問いを返す対話、『7つの習慣』『嫌われる勇気』『イシューからはじめよ』の3冊で賢人会議を開く例を提示（プロンプト全文を記事で公開）</li>
+<li>2026-06-30 @ai_jitan: 毎回ノートを選ぶ手間を省く上級技として、GeminiのGem（カスタムAI）に本のNotebookLMを紐づけ「専属読書メンター」を常駐させる方法を提示</li>
+<li>2026-06-30 @ai_jitan: 記事末尾で書籍『AI仕事最速大全 NotebookLM即戦力スキル』（2026-07-16発売）の予約特典セミナー・無料オプチャでのプロンプト集配布を告知（＝販促文脈）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「答えでなく問いを返す」メンター人格は、<a href="../concepts/output-first-learning.html">output-first-learning</a>の「読書をその場でエッセイに昇華して血肉化する」手法と組み合わせて、問い→自分の言語化→出力まで一気通貫できるか</li>
+<li>原本全文を入れる方式は、書評ベースの<a href="../tools/notebooklm-employees.html">notebooklm-employees</a>の職種knowledge注入より壁打ち精度が本当に高いか。原本一本の原則はどの本でも効くか</li>
+<li>賢人会議での複数の本の同席は、単一AIに複数の思想を演じ分けさせるより本当に立体的な気づきが出るか（<a href="../concepts/ai-persona-interview.html">ai-persona-interview</a>の独立収束と同型か）</li>
+<li>自分のwiki運用に置き換えると、蔵書でなく<code>sources/</code>の蓄積を「問いを返すメンター」化して活用できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/notebooklm-employees.html">notebooklm-employees</a> — 同じ@ai_jitanによる「知識＋人格＝自律エージェント」の従業員版。本ページは同じ機構を蔵書（読書術）に適用した姉妹ページ。Gemini降臨・会議・人格の二重化は共通</li>
+<li><a href="../tools/notebooklm.html">notebooklm</a> — NotebookLM全般の活用ガイド</li>
+<li><a href="../tools/notebooklm-studio-prompts.html">notebooklm-studio-prompts</a> — 同@ai_jitanのStudio 9機能の指示集。用途別に分かれた姉妹ページ群の一つ</li>
+<li><a href="../tools/notebooklm-business-workflows.html">notebooklm-business-workflows</a> — NotebookLM業務時短9ワークフロー（どの業務に当てるか）</li>
+<li><a href="../concepts/llm-council.html">llm-council</a> — 複数AIが意思決定を支援するパターン（賢人会議の親概念）</li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a> — 出力前提で読書を血肉化する学習法（読書術としての接続先）</li>
+<li><a href="../concepts/ai-persona-interview.html">ai-persona-interview</a> — 複数ペルソナの独立収束を実装シグナルにする手法（賢人会議の質を測る観点）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/notebooklm-employees.html">notebooklm-employees</a></li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a></li>
+<li><a href="../tools/notebooklm-studio-prompts.html">notebooklm-studio-prompts</a></li>
+<li><a href="../concepts/llm-council.html">llm-council</a></li>
+<li><a href="../tools/notebooklm.html">notebooklm</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2072072927324119317" rel="noopener" target="_blank">https://x.com/i/web/status/2072072927324119317</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># NotebookLM「本をメンター化」メソッド
+
+&gt; **TL;DR**: 積読本の原本を丸ごとNotebookLMに入れ、カスタム指示で「答えでなく問いを返す人格」を与えて、いつでも相談できるメンターに変える読書術。複数の本を同席させれば「賢人会議」もできる。
+
+```mermaid
+flowchart TD
+  K[&quot;Kindle積読本&quot;] --&gt;|&quot;0秒読書でOCR PDF化&quot;| SRC[&quot;原本テキスト&quot;]
+  P[&quot;紙の本&quot;] --&gt;|&quot;CZURスキャナでOCR&quot;| SRC
+  SRC --&gt; NB[&quot;NotebookLMに原本のみ投入&quot;]
+  NB --&gt;|&quot;カスタム指示で人格付与&quot;| MENTOR[&quot;答えでなく問いを返すメンター&quot;]
+  MENTOR --&gt;|&quot;Gemini連携で複数同席&quot;| KENJIN[&quot;賢人会議（複数の本が議論）&quot;]
+```
+
+読書が定着しない構造的な原因は、インプットしただけでは知識が血肉にならず、内容を「自分の言葉で言い換える・自分の状況に当てはめる・疑問をぶつける」壁打ちの相手がいないことにある。本をメンター化する狙いは、この壁打ち相手を本そのものに演じさせる点にある。「読み切ったか」でなく「必要なときに思想を引き出せるか」に本の価値を置き直すことで、積読を「未完了タスク」から「まだ面接していない候補者の列」に読み替える。これは[[tools/notebooklm-employees]]の「知識＋人格＝自律的に働く従業員」という等式を、部署の従業員でなく蔵書に適用した姉妹パターンにあたる。
+
+作り方は3ステップに集約される。①本の**原本（全文）だけ**をNotebookLMに入れる。書評やまとめ記事を混ぜると本そのものの思想が薄まり壁打ち精度が落ちるため、原本一本を貫く。②原本が手に入らない絶版本などに限り、次善策として「ソースを探す（Fast Research）」で書評・講演・論争点・実践事例を3切り口で集めて擬似メンターを作る。③ノートの「カスタム指示」に人格プロンプトを貼り、本を「メンター」として降臨させる。
+
+メンター人格の設計で肝になるのは**答えを教えさせないこと**。悩みに直接「こうすべき」と返させず、その本の具体的な概念名・章・エピソードをレンズにして「問い」を投げ返させる。答えをもらうだけならただの検索で、問いを返されるからこそ自分の中に気づきが生まれる、という設計思想になっている。優しく寄り添うモードと厳しく問い詰めるモードを、同じ1冊の中の別の思想を使ってテーマに応じて切り替えられる。
+
+複数の本を降臨させれば「賢人会議」になる。Web版Geminiは複数のNotebookLMを同時接続できるため、別々に雇った本のメンターを1つの会議室に同席させ、各自が自分の本の思想だけを根拠に同じ悩みへ視点を述べ、進行役が対立点を浮かび上がらせて「次に考えるべき問い」を1つに絞る。これはNotebookLM単体では不可能で、複数視点で意思決定を支える[[concepts/llm-council]]をノーコードで実装する形になる。Geminiと連携する場合、人格プロンプトはカスタム指示だけでなく**ソースにも入れて二重化**しないと連携時に反映されない（[[tools/notebooklm-employees]]と同じ二重化の要点）。
+
+## 取り込みツール（積読本を原本化する経路）
+
+- **0秒読書**（Kindleなど電子書籍向け）: 画面を1ページずつ自動キャプチャし、文字情報つきPDFに変換する有料ソフト。1冊2〜3分でPDF化。DRM（コピーガード）で画面キャプチャ自体ができない本には使えない。
+- **CZURブックスキャナ**（紙の本向け）: ページをめくるだけで自動スキャン＋OCR。約300ページ10分で全文データ化。
+- 手持ちの形（電子か紙か）に合わせて選ぶ。
+
+## 著作権の線引き（この用途固有の必須ルール）
+
+自分で買った本を自分が使うためにPDF化・スキャンして自分のNotebookLMに入れるのは私的複製の範囲で問題ない。**絶対にやってはいけないのは、そのPDF・スキャンデータ・本を入れたNotebookLMを他人に共有・配布すること**（著作権侵害）。0秒読書で作ったPDFには作成者を特定できる情報が全ページに埋め込まれ、ネットに上げれば追跡される。社内マニュアルや自社資料の共有は問題ないが、書籍を入れたノートだけは共有しない、と明確に線を引く。
+
+## 観察ログ（未検証）
+
+- 2026-06-30 @ai_jitan: Kindleで眠っていた47冊の本をメンターとして雇っていると主張。以前の「NotebookLMに26人の従業員を雇う」記事（[[tools/notebooklm-employees]]）のメンター版と位置づける（X bookmark 3,041・impression 約80万・2026-07-01時点）
+- 2026-06-30 @ai_jitan: 実演例として『嫌われる勇気』をメンター化し「課題の分離」の概念で問いを返す対話、『7つの習慣』『嫌われる勇気』『イシューからはじめよ』の3冊で賢人会議を開く例を提示（プロンプト全文を記事で公開）
+- 2026-06-30 @ai_jitan: 毎回ノートを選ぶ手間を省く上級技として、GeminiのGem（カスタムAI）に本のNotebookLMを紐づけ「専属読書メンター」を常駐させる方法を提示
+- 2026-06-30 @ai_jitan: 記事末尾で書籍『AI仕事最速大全 NotebookLM即戦力スキル』（2026-07-16発売）の予約特典セミナー・無料オプチャでのプロンプト集配布を告知（＝販促文脈）
+
+## 問い
+
+- 「答えでなく問いを返す」メンター人格は、[[concepts/output-first-learning]]の「読書をその場でエッセイに昇華して血肉化する」手法と組み合わせて、問い→自分の言語化→出力まで一気通貫できるか
+- 原本全文を入れる方式は、書評ベースの[[tools/notebooklm-employees]]の職種knowledge注入より壁打ち精度が本当に高いか。原本一本の原則はどの本でも効くか
+- 賢人会議での複数の本の同席は、単一AIに複数の思想を演じ分けさせるより本当に立体的な気づきが出るか（[[concepts/ai-persona-interview]]の独立収束と同型か）
+- 自分のwiki運用に置き換えると、蔵書でなく`sources/`の蓄積を「問いを返すメンター」化して活用できるか
+
+## 関連
+
+- [[tools/notebooklm-employees]] — 同じ@ai_jitanによる「知識＋人格＝自律エージェント」の従業員版。本ページは同じ機構を蔵書（読書術）に適用した姉妹ページ。Gemini降臨・会議・人格の二重化は共通
+- [[tools/notebooklm]] — NotebookLM全般の活用ガイド
+- [[tools/notebooklm-studio-prompts]] — 同@ai_jitanのStudio 9機能の指示集。用途別に分かれた姉妹ページ群の一つ
+- [[tools/notebooklm-business-workflows]] — NotebookLM業務時短9ワークフロー（どの業務に当てるか）
+- [[concepts/llm-council]] — 複数AIが意思決定を支援するパターン（賢人会議の親概念）
+- [[concepts/output-first-learning]] — 出力前提で読書を血肉化する学習法（読書術としての接続先）
+- [[concepts/ai-persona-interview]] — 複数ペルソナの独立収束を実装シグナルにする手法（賢人会議の質を測る観点）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

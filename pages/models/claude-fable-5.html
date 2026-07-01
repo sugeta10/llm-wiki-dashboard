@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-fable-5</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-fable-5.md">Markdownで表示</a></div>
-  <div class="meta">models/claude-fable-5 · models · <span title="2026-06-19">1週間前</span></div>
+  <div class="meta">models/claude-fable-5 · models · <span title="2026-07-02">今日</span></div>
   <article><h1>Claude Fable 5 / Mythos 5</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: <a href="../companies/anthropic.html">anthropic</a> が一般公開した初の <strong>Mythos クラス</strong>（Opusの上位ティア）モデル。中身は Fable 5 = Mythos 5 で同一、違いはセーフガードの有無だけ。</p>
@@ -119,8 +119,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>2026-06-13 (@nukonuko による詳細解説): 上記の経緯を独自にまとめた日本語解説。政府ディレクティブは現地時間午後5:21に受領。指令内容は「外国籍の人（Anthropic社員も含む）へのFable 5 / Mythos 5アクセス禁止」で、国籍リアルタイム判別が不可能なため全ユーザー一律停止となった。政府が示した懸念は<strong>特定のコードベースをモデルに読み込ませてソフトバグを修正させる</strong>というもので（口頭証拠のみ・汎用ではない限定的ジェイルブレイク）、Anthropicは「他モデル（GPT-5.5含む）でも得られる能力水準に過ぎず、防御側担当者が日常的に使うレベル」と反論。ユニバーサルジェイルブレイクは誰も発見していない状況。Anthropicは法的指示には従うが「特定ケースのジェイルブレイクを理由に数億人への提供を回収すべきという考えには同意しない」立場をとり、この基準を業界全体に当てはめるとフロンティアモデル公開がすべて止まると主張。24時間以内の続報を表明（@nukonuko はAI Safety文脈を踏まえた詳細解説として投稿）</p>
 </li>
 <li>
-<p>2026-06-17 (水島宏太/@kmizu): 上記「言語の庭」生成の代償としてトークン消費が突出すると報告。Claude Max 20x でもこのサイト生成を含む数時間でその日の usage limit に到達。Fable 5 は1回のゴール設定から大量タスクを並列展開して自走するため消費が桁違い、という主張。推奨運用は「Fable 5 を計画と骨格（立ち上げ・全体設計・品質基準づくり）に使い、その後の細かい修正・機能追加・定型タスクは Opus/Sonnet に引き継ぐ」モデルスタッキング（<a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a>）。記事自体もネタ出し・編集・リテイク以外は Fable 5 が執筆したと明記（単一ソース・実体験）</p>
+<p>2026-07-01 (@claudeai公式、bookmark 3,431 / like 47,682 / impression 250万): 動画付きで「<strong>Fable 5 is back</strong>」と告知。ローンチ約3日後に輸出規制ディレクティブで全世界停止したこと（上記2026-06-12〜13の経緯）からの復帰マーカー。復帰の詳細条件（地域制限の解消方法・対象プラン）は本ソースのテキストには含まれず未取得</p>
 </li>
+<li>2026-06-17 (水島宏太/@kmizu): 上記「言語の庭」生成の代償としてトークン消費が突出すると報告。Claude Max 20x でもこのサイト生成を含む数時間でその日の usage limit に到達。Fable 5 は1回のゴール設定から大量タスクを並列展開して自走するため消費が桁違い、という主張。推奨運用は「Fable 5 を計画と骨格（立ち上げ・全体設計・品質基準づくり）に使い、その後の細かい修正・機能追加・定型タスクは Opus/Sonnet に引き継ぐ」モデルスタッキング（<a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a>）。記事自体もネタ出し・編集・リテイク以外は Fable 5 が執筆したと明記（単一ソース・実体験）</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -140,17 +141,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — Fable 5のループ実験で使用したCMAプラットフォーム（Outcomes・セルフホストサンドボックス）</li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — Fable 5の「長い複雑タスクほど差が開く」特性を踏まえた工程分解型モデル選択戦略</li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — 「言語の庭」を生成した <code>/goal</code> 自律ワークフロー機能。Fable 5のループ型の使い方の入口</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
-<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
-<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
-<li><a href="../models/claude-mythos.html">claude-mythos</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" rel="noopener" target="_blank">https://www.anthropic.com/news/claude-fable-5-mythos-5</a></li>
+<li><a href="../models/claude-mythos.html">claude-mythos</a></li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" rel="noopener" target="_blank">https://www.anthropic.com/news/claude-fable-5-mythos-5</a></li>
 <li><a href="https://x.com/i/web/status/2064397389189071163" rel="noopener" target="_blank">https://x.com/i/web/status/2064397389189071163</a></li>
 <li><a href="https://x.com/i/web/status/2064409694761054332" rel="noopener" target="_blank">https://x.com/i/web/status/2064409694761054332</a></li>
 <li><a href="https://x.com/i/web/status/2064431279383433646" rel="noopener" target="_blank">https://x.com/i/web/status/2064431279383433646</a></li>
 <li><a href="https://x.com/i/web/status/2065456678909227064" rel="noopener" target="_blank">https://x.com/i/web/status/2065456678909227064</a></li>
 <li><a href="https://x.com/i/web/status/2065640176299516404" rel="noopener" target="_blank">https://x.com/i/web/status/2065640176299516404</a></li>
-<li><a href="https://zenn.dev/nextbeat/articles/2026-06-cs-edu-site-fable5" rel="noopener" target="_blank">https://zenn.dev/nextbeat/articles/2026-06-cs-edu-site-fable5</a></li></ul></section></article>
+<li><a href="https://zenn.dev/nextbeat/articles/2026-06-cs-edu-site-fable5" rel="noopener" target="_blank">https://zenn.dev/nextbeat/articles/2026-06-cs-edu-site-fable5</a></li>
+<li><a href="https://x.com/i/web/status/2072402636813607381" rel="noopener" target="_blank">https://x.com/i/web/status/2072402636813607381</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -251,6 +253,7 @@ Fable 5 の分類器が**サイバーセキュリティ・生物化学・蒸留*
 - 2026-06-12 (チャエン/茶圓が自身のXで報じた未確認情報): Fable 5 / Mythos 5 がローンチ約3日後に全世界・全顧客向けで一夜にして利用停止になったと報告。理由は性能や不具合でなく米政府の輸出規制ディレクティブ（発令省庁は未公表）による「外国籍ユーザーのアクセス禁止」指令で、居住地をリアルタイム判別できず Anthropic は全ユーザーを一律停止、AWS Bedrock 経由も取消、と説明。Opus / Sonnet / Haiku は無事で Claude Code はそれらで稼働継続、Anthropic は「誤解だ」と反論し早期復旧を目指す、とも。詳細は [[tools/openai-codex]] の「2本目のエンジン」戦略の動機として記録
 - 2026-06-13 (@nukonuko による詳細解説): 上記の経緯を独自にまとめた日本語解説。政府ディレクティブは現地時間午後5:21に受領。指令内容は「外国籍の人（Anthropic社員も含む）へのFable 5 / Mythos 5アクセス禁止」で、国籍リアルタイム判別が不可能なため全ユーザー一律停止となった。政府が示した懸念は**特定のコードベースをモデルに読み込ませてソフトバグを修正させる**というもので（口頭証拠のみ・汎用ではない限定的ジェイルブレイク）、Anthropicは「他モデル（GPT-5.5含む）でも得られる能力水準に過ぎず、防御側担当者が日常的に使うレベル」と反論。ユニバーサルジェイルブレイクは誰も発見していない状況。Anthropicは法的指示には従うが「特定ケースのジェイルブレイクを理由に数億人への提供を回収すべきという考えには同意しない」立場をとり、この基準を業界全体に当てはめるとフロンティアモデル公開がすべて止まると主張。24時間以内の続報を表明（@nukonuko はAI Safety文脈を踏まえた詳細解説として投稿）
 
+- 2026-07-01 (@claudeai公式、bookmark 3,431 / like 47,682 / impression 250万): 動画付きで「**Fable 5 is back**」と告知。ローンチ約3日後に輸出規制ディレクティブで全世界停止したこと（上記2026-06-12〜13の経緯）からの復帰マーカー。復帰の詳細条件（地域制限の解消方法・対象プラン）は本ソースのテキストには含まれず未取得
 - 2026-06-17 (水島宏太/@kmizu): 上記「言語の庭」生成の代償としてトークン消費が突出すると報告。Claude Max 20x でもこのサイト生成を含む数時間でその日の usage limit に到達。Fable 5 は1回のゴール設定から大量タスクを並列展開して自走するため消費が桁違い、という主張。推奨運用は「Fable 5 を計画と骨格（立ち上げ・全体設計・品質基準づくり）に使い、その後の細かい修正・機能追加・定型タスクは Opus/Sonnet に引き継ぐ」モデルスタッキング（[[concepts/llm-model-selection-strategy]]）。記事自体もネタ出し・編集・リテイク以外は Fable 5 が執筆したと明記（単一ソース・実体験）
 
 ## 問い
