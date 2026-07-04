@@ -51,3 +51,4 @@ Anthropic 公式リポジトリ「cwc-long-running-agents」が提示する3つ�
 - [[concepts/ai-engineer-roadmap]]（2026年AIエンジニアが学ぶ・作る・スキップすべきことの整理）
 - [[concepts/recursive-self-improvement]]（AIがAI開発を加速し後継機を建造する流れ・Claudeが80%のコードを書く内部データ）
 - [[concepts/ai-dev-two-commands]]（ZOZOによる/dev-init+/dev-resumeの組織標準化・Claude Code×Codex批判的対話レビュー）
+- [[concepts/finding-unknowns]]（unknownsの削減と計画をagentic codingの中核スキルと位置づける実装前・中・後の技法フレーム・@trq212）

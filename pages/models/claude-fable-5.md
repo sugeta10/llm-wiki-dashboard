@@ -99,3 +99,4 @@ Fable 5 の分類器が**サイバーセキュリティ・生物化学・蒸留*
 - [[tools/claude-managed-agents]] — Fable 5のループ実験で使用したCMAプラットフォーム（Outcomes・セルフホストサンドボックス）
 - [[concepts/llm-model-selection-strategy]] — Fable 5の「長い複雑タスクほど差が開く」特性を踏まえた工程分解型モデル選択戦略
 - [[tools/claude-code-goal]] — 「言語の庭」を生成した `/goal` 自律ワークフロー機能。Fable 5のループ型の使い方の入口
+- [[concepts/finding-unknowns]] — Fable時代の運用フレーム：仕事の質のボトルネックが人間側のunknown明確化に移るという実践論（@trq212）

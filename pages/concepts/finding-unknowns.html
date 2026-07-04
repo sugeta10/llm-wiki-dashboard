@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>finding-unknowns - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>finding-unknowns</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="finding-unknowns.md">Markdownで表示</a></div>
+  <div class="meta">concepts/finding-unknowns · concepts · <span title="2026-07-04">今日</span></div>
+  <article><h1>未知の発見（Finding Your Unknowns）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: プロンプトや仕様（地図）と実際の作業環境（領土）のずれ＝unknownsを、実装の前・中・後で体系的に発見する技法集。モデルが強くなるほど、仕事の質のボトルネックはモデル性能でなく人間側のunknown明確化能力に移る。
+⚠ 独立審判（Codex）が本文に5件の未検証/誤配置を指摘（2026-07-04）。該当は観察ログ末尾に隔離 &lt;!-- grounding:v1 --&gt;</p>
+<p>📌 X bookmark: 11,745（2026-07-04 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  P[&quot;実装前&quot;] --&gt; P1[&quot;ブラインドスポットパス（未知の未知）&quot;]
+  P --&gt; P2[&quot;ブレスト＋HTMLプロトタイプ（未知の既知）&quot;]
+  P --&gt; P3[&quot;インタビュー / 参照コード&quot;]
+  P1 --&gt; PL[&quot;実装計画（変わりやすい決定を先頭に）&quot;]
+  P2 --&gt; PL
+  P3 --&gt; PL
+  PL --&gt; D[&quot;実装中: implementation-notes.md に逸脱を記録&quot;]
+  D --&gt; A[&quot;実装後: ピッチ資料＋クイズ（全問正解でマージ）&quot;]
+  A --&gt;|&quot;新たな unknown を発見&quot;| P</pre>
+<p>エージェントは unknown に突き当たるたび「依頼者が何を望むか」の推測で穴を埋めて進む。任せる仕事が大きいほど推測箇所は増え、指示が具体的すぎればピボットすべき場面でも指示に従い続け、曖昧すぎれば業界標準ベースの仮定で埋められてタスクに合わない、という両側の失敗が起きる。事前計画だけでは足りず、unknownは実装の深部で見つかったり、そもそも別の解き方をすべきだと教えてくれたりするため、前・中・後の反復プロセスとして扱う。出発点は自分の未知の4象限での棚卸しになる。</p>
+<ul>
+<li><strong>Known Knowns</strong>: プロンプトに書いた内容そのもの</li>
+<li><strong>Known Unknowns</strong>: まだ決めていないと自覚できていること</li>
+<li><strong>Unknown Knowns</strong>: 自明すぎて書かないが、見れば「これじゃない」と分かる暗黙の基準</li>
+<li><strong>Unknown Unknowns</strong>: そもそも考慮していないこと・どこまで良くできるか知らないこと</li>
+</ul>
+<p>エージェント自身が unknown の発見を加速する道具になる。コードベースとWebを高速に探索でき、平均的なトピックについては人間より知識があり、失敗からの反復も速いためである。その際は自分の思考の現在地・問題とコードベースへの習熟度を開示し、思考パートナーとして扱うことが前提になる。</p>
+<h2>実装前の技法</h2>
+<ul>
+<li><strong>ブラインドスポットパス</strong>: 未知の未知が多い領域（初めて触るモジュール・不慣れなドメイン）では、「blindspot pass」「unknown unknowns」という語を文字どおり使って盲点を洗い出させ、その結果で本題のプロンプトを改善する。自分が誰で何を知っているかの文脈提示が重要</li>
+<li><strong>ブレスト＋プロトタイプ</strong>: 「見れば分かる」型の unknown knowns は、バックエンド配線なしのHTMLモックや大きく異なる複数デザイン案への反応で早期に言語化する。実装後に発見すると手戻りが高くつく。ほぼ毎回のコーディングセッションを探索・ブレストから始めることで、狭すぎ・広すぎのスコープ設定を防ぐ</li>
+<li><strong>インタビュー</strong>: 「一度に1問ずつ、回答次第でアーキテクチャが変わる質問を優先して」と面接させ、残った曖昧さを潰す（<a href="../tools/grill-me.html">grill-me</a> と同型の技法）</li>
+<li><strong>参照</strong>: 言語化できない要求はソースコードを参照として渡すのが最良。別言語のライブラリでもフォルダごと指し示せば同じ意味論を移植できる。Claude Design がスクリーンショットでなく背後のコードを読むのも同じ原理</li>
+<li><strong>実装計画</strong>: 変わりやすい決定（データモデル・型インターフェース・ユーザー向けの挙動）を先頭に、機械的なリファクタリングを末尾に並べた計画をレビューし、変更が必要な箇所を先に浮上させる</li>
+</ul>
+<h2>実装中の技法</h2>
+<ul>
+<li><strong>実装ノート</strong>: implementation-notes.md を並走させ、計画から逸脱を迫られたら保守的な選択肢を選んで「Deviations」に記録して続行させる。どれだけ計画しても unknown unknowns は残るため、次の試行のための学習ログを取る（<a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> の運用形）</li>
+</ul>
+<h2>実装後の技法</h2>
+<ul>
+<li><strong>ピッチ・説明資料</strong>: プロトタイプ・仕様・実装ノートを1つの文書にまとめる。レビュアーは自分と同じunknownsから出発するため、理解と承認の両方が速くなる</li>
+<li><strong>クイズ</strong>: 変更内容の文脈つき解説とクイズを生成させ、全問正解するまでマージしない。差分読解だけでは既存コードパス依存の挙動を把握しきれない（<a href="../concepts/ai-teacher-prompt.html">ai-teacher-prompt</a> と同じ「人間をループに残す」系の技法）</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-03: @trq212（Anthropic の Claude Code 開発者 Thariq Shihipar。<a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a>・<a href="../concepts/ai-teacher-prompt.html">ai-teacher-prompt</a> の発信者）が「A Field Guide to Fable: Finding Your Unknowns」として公開。「<a href="../models/claude-fable-5.html">Fable</a> は仕事の質が自分のunknownsを明確化する能力でボトルネックになる最初のモデル」は本人の評価</li>
+<li>2026-07-03: 最高のagentic coder（本人が挙げる例はBorisとJarred）はunknownsが相対的に少なく、コードベースとモデル挙動の双方に深く同期している。「unknownsを減らし備えることがagentic codingのスキルそのもの」という本人の観察・主張</li>
+<li>2026-07-03: Fableのローンチ動画は全編Claude Codeで編集したと本人が明言。転写でum・長い間をffmpegで削れるかの確認 → Remotionで語りに同期したUIのプロトタイプ → カラーグレーディングは「良し悪しが分からない」と気づき教師役で学ぶ、という自身のunknown発見プロセスの実例として提示</li>
+<li>
+<p>2026-07-03: これらの可視化にはほぼすべてのケースでHTML artifactが最良の表現手段、という本人の実践則</p>
+</li>
+<li>
+<p>2026-07-04 [独立審判FLAG] misrouted: "事前計画だけでは足りず、unknownは実装の深部で見つかったり、そもそも別の解き方をすべきだと教えてくれたりするため、前・中・後の反復プロセスとして扱う。" &lt;!-- grounding:v1 --&gt;</p>
+</li>
+<li>2026-07-04 [独立審判FLAG] misrouted: "出発点は自分の未知の4象限での棚卸しになる。" &lt;!-- grounding:v1 --&gt;</li>
+<li>2026-07-04 [独立審判FLAG] misrouted: "エージェント自身が unknown の発見を加速する道具になる。" &lt;!-- grounding:v1 --&gt;</li>
+<li>2026-07-04 [独立審判FLAG] misrouted: "コードベースとWebを高速に探索でき、平均的なトピックについては人間より知識があり、失敗からの反復も速いためである。" &lt;!-- grounding:v1 --&gt;</li>
+<li>2026-07-04 [独立審判FLAG] misrouted: "その際は自分の思考の現在地・問題とコードベースへの習熟度を開示し、思考パートナーとして扱うことが前提になる。" &lt;!-- grounding:v1 --&gt;</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のwiki運用に「ブラインドスポットパス」を移植できるか。新領域のingestやスキル設計の前に unknown unknowns を先に洗わせる工程を足す価値はあるか</li>
+<li><a href="../tools/grill-me.html">grill-me</a> のインタビューとの違いは何か。「アーキテクチャが変わる質問を優先」という優先順位付けはgrill-me側にも足せるか</li>
+<li>実装計画の「変わりやすい決定を先頭に・機械的作業は末尾に」という並べ替えは、自分のspecs/plansテンプレートに適用できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> — 同じ@trq212の技法。本フレームでは「実装中」フェーズに位置づく</li>
+<li><a href="../concepts/ai-teacher-prompt.html">ai-teacher-prompt</a> — 同じ@trq212の技法。実装後の理解補完（教師役・クイズ）と同目的</li>
+<li><a href="../tools/grill-me.html">grill-me</a> — 実装前「インタビュー」技法の独立実装（Matt Pocock作）。一問ずつの深掘りが同型</li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> — 本手法の背景となるモデル。強いモデルほどボトルネックが人間側のunknown明確化に移る</li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a> — 上位概念。unknownsの削減と計画をその中核スキルと位置づける</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
+<li><a href="../tools/grill-me.html">grill-me</a></li>
+<li><a href="../concepts/ai-teacher-prompt.html">ai-teacher-prompt</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2073100352921215386" rel="noopener" target="_blank">https://x.com/i/web/status/2073100352921215386</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 未知の発見（Finding Your Unknowns）
+
+&gt; **TL;DR**: プロンプトや仕様（地図）と実際の作業環境（領土）のずれ＝unknownsを、実装の前・中・後で体系的に発見する技法集。モデルが強くなるほど、仕事の質のボトルネックはモデル性能でなく人間側のunknown明確化能力に移る。
+&gt; ⚠ 独立審判（Codex）が本文に5件の未検証/誤配置を指摘（2026-07-04）。該当は観察ログ末尾に隔離 &lt;!-- grounding:v1 --&gt;
+
+&gt; 📌 X bookmark: 11,745（2026-07-04 時点）
+
+```mermaid
+flowchart TD
+  P[&quot;実装前&quot;] --&gt; P1[&quot;ブラインドスポットパス（未知の未知）&quot;]
+  P --&gt; P2[&quot;ブレスト＋HTMLプロトタイプ（未知の既知）&quot;]
+  P --&gt; P3[&quot;インタビュー / 参照コード&quot;]
+  P1 --&gt; PL[&quot;実装計画（変わりやすい決定を先頭に）&quot;]
+  P2 --&gt; PL
+  P3 --&gt; PL
+  PL --&gt; D[&quot;実装中: implementation-notes.md に逸脱を記録&quot;]
+  D --&gt; A[&quot;実装後: ピッチ資料＋クイズ（全問正解でマージ）&quot;]
+  A --&gt;|&quot;新たな unknown を発見&quot;| P
+```
+
+エージェントは unknown に突き当たるたび「依頼者が何を望むか」の推測で穴を埋めて進む。任せる仕事が大きいほど推測箇所は増え、指示が具体的すぎればピボットすべき場面でも指示に従い続け、曖昧すぎれば業界標準ベースの仮定で埋められてタスクに合わない、という両側の失敗が起きる。事前計画だけでは足りず、unknownは実装の深部で見つかったり、そもそも別の解き方をすべきだと教えてくれたりするため、前・中・後の反復プロセスとして扱う。出発点は自分の未知の4象限での棚卸しになる。
+
+- **Known Knowns**: プロンプトに書いた内容そのもの
+- **Known Unknowns**: まだ決めていないと自覚できていること
+- **Unknown Knowns**: 自明すぎて書かないが、見れば「これじゃない」と分かる暗黙の基準
+- **Unknown Unknowns**: そもそも考慮していないこと・どこまで良くできるか知らないこと
+
+エージェント自身が unknown の発見を加速する道具になる。コードベースとWebを高速に探索でき、平均的なトピックについては人間より知識があり、失敗からの反復も速いためである。その際は自分の思考の現在地・問題とコードベースへの習熟度を開示し、思考パートナーとして扱うことが前提になる。
+
+## 実装前の技法
+
+- **ブラインドスポットパス**: 未知の未知が多い領域（初めて触るモジュール・不慣れなドメイン）では、「blindspot pass」「unknown unknowns」という語を文字どおり使って盲点を洗い出させ、その結果で本題のプロンプトを改善する。自分が誰で何を知っているかの文脈提示が重要
+- **ブレスト＋プロトタイプ**: 「見れば分かる」型の unknown knowns は、バックエンド配線なしのHTMLモックや大きく異なる複数デザイン案への反応で早期に言語化する。実装後に発見すると手戻りが高くつく。ほぼ毎回のコーディングセッションを探索・ブレストから始めることで、狭すぎ・広すぎのスコープ設定を防ぐ
+- **インタビュー**: 「一度に1問ずつ、回答次第でアーキテクチャが変わる質問を優先して」と面接させ、残った曖昧さを潰す（[[tools/grill-me]] と同型の技法）
+- **参照**: 言語化できない要求はソースコードを参照として渡すのが最良。別言語のライブラリでもフォルダごと指し示せば同じ意味論を移植できる。Claude Design がスクリーンショットでなく背後のコードを読むのも同じ原理
+- **実装計画**: 変わりやすい決定（データモデル・型インターフェース・ユーザー向けの挙動）を先頭に、機械的なリファクタリングを末尾に並べた計画をレビューし、変更が必要な箇所を先に浮上させる
+
+## 実装中の技法
+
+- **実装ノート**: implementation-notes.md を並走させ、計画から逸脱を迫られたら保守的な選択肢を選んで「Deviations」に記録して続行させる。どれだけ計画しても unknown unknowns は残るため、次の試行のための学習ログを取る（[[concepts/implementation-notes-prompt]] の運用形）
+
+## 実装後の技法
+
+- **ピッチ・説明資料**: プロトタイプ・仕様・実装ノートを1つの文書にまとめる。レビュアーは自分と同じunknownsから出発するため、理解と承認の両方が速くなる
+- **クイズ**: 変更内容の文脈つき解説とクイズを生成させ、全問正解するまでマージしない。差分読解だけでは既存コードパス依存の挙動を把握しきれない（[[concepts/ai-teacher-prompt]] と同じ「人間をループに残す」系の技法）
+
+## 観察ログ（未検証）
+
+- 2026-07-03: @trq212（Anthropic の Claude Code 開発者 Thariq Shihipar。[[concepts/implementation-notes-prompt]]・[[concepts/ai-teacher-prompt]] の発信者）が「A Field Guide to Fable: Finding Your Unknowns」として公開。「[[models/claude-fable-5|Fable]] は仕事の質が自分のunknownsを明確化する能力でボトルネックになる最初のモデル」は本人の評価
+- 2026-07-03: 最高のagentic coder（本人が挙げる例はBorisとJarred）はunknownsが相対的に少なく、コードベースとモデル挙動の双方に深く同期している。「unknownsを減らし備えることがagentic codingのスキルそのもの」という本人の観察・主張
+- 2026-07-03: Fableのローンチ動画は全編Claude Codeで編集したと本人が明言。転写でum・長い間をffmpegで削れるかの確認 → Remotionで語りに同期したUIのプロトタイプ → カラーグレーディングは「良し悪しが分からない」と気づき教師役で学ぶ、という自身のunknown発見プロセスの実例として提示
+- 2026-07-03: これらの可視化にはほぼすべてのケースでHTML artifactが最良の表現手段、という本人の実践則
+
+- 2026-07-04 [独立審判FLAG] misrouted: &quot;事前計画だけでは足りず、unknownは実装の深部で見つかったり、そもそも別の解き方をすべきだと教えてくれたりするため、前・中・後の反復プロセスとして扱う。&quot; &lt;!-- grounding:v1 --&gt;
+- 2026-07-04 [独立審判FLAG] misrouted: &quot;出発点は自分の未知の4象限での棚卸しになる。&quot; &lt;!-- grounding:v1 --&gt;
+- 2026-07-04 [独立審判FLAG] misrouted: &quot;エージェント自身が unknown の発見を加速する道具になる。&quot; &lt;!-- grounding:v1 --&gt;
+- 2026-07-04 [独立審判FLAG] misrouted: &quot;コードベースとWebを高速に探索でき、平均的なトピックについては人間より知識があり、失敗からの反復も速いためである。&quot; &lt;!-- grounding:v1 --&gt;
+- 2026-07-04 [独立審判FLAG] misrouted: &quot;その際は自分の思考の現在地・問題とコードベースへの習熟度を開示し、思考パートナーとして扱うことが前提になる。&quot; &lt;!-- grounding:v1 --&gt;
+
+## 問い
+
+- 自分のwiki運用に「ブラインドスポットパス」を移植できるか。新領域のingestやスキル設計の前に unknown unknowns を先に洗わせる工程を足す価値はあるか
+- [[tools/grill-me]] のインタビューとの違いは何か。「アーキテクチャが変わる質問を優先」という優先順位付けはgrill-me側にも足せるか
+- 実装計画の「変わりやすい決定を先頭に・機械的作業は末尾に」という並べ替えは、自分のspecs/plansテンプレートに適用できるか
+
+## 関連
+
+- [[concepts/implementation-notes-prompt]] — 同じ@trq212の技法。本フレームでは「実装中」フェーズに位置づく
+- [[concepts/ai-teacher-prompt]] — 同じ@trq212の技法。実装後の理解補完（教師役・クイズ）と同目的
+- [[tools/grill-me]] — 実装前「インタビュー」技法の独立実装（Matt Pocock作）。一問ずつの深掘りが同型
+- [[models/claude-fable-5]] — 本手法の背景となるモデル。強いモデルほどボトルネックが人間側のunknown明確化に移る
+- [[concepts/agentic-coding]] — 上位概念。unknownsの削減と計画をその中核スキルと位置づける
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

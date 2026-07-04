@@ -40,3 +40,4 @@ or interprets the spec, including:
 - [[concepts/prompt-engineering]] — プロンプト設計全般
 - [[concepts/agentic-coding]] — AIエージェントによるコード生成
 - [[concepts/ai-teacher-prompt]] — 作業後に教師役で理解を補完する姉妹手法（同じ@trq212発・人間をループに残す）
+- [[concepts/finding-unknowns]] — 同じ@trq212による実装前・中・後の unknown 発見フレーム。本手法は「実装中」の技法として包含される

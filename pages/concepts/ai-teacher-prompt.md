@@ -33,3 +33,4 @@ Suzanne（Anthropic）が共有し、@trq212 がお気に入りとして紹介�
 - [[concepts/implementation-notes-prompt]] — 作業中に判断を並走ノート化する姉妹手法（同じ@trq212発）
 - [[concepts/prompt-engineering]] — プロンプト設計全般
 - [[concepts/developer-ai-collaboration]] — 開発者とAIエージェントの役割分担
+- [[concepts/finding-unknowns]] — 同じ@trq212の unknown 発見フレーム。実装後のクイズ技法が本手法と同目的
