@@ -49,23 +49,19 @@
 - **No-code エージェントプラットフォーム**: 使い捨て用途以外は不要
 - **OpenAI Swarm / Assistants API**: 前者は公式に本番非対応、後者は2026年半ばにsunsetting
 
+## 学習ロードマップ（@sairahul1）
+
+@sairahul1 は「How To Become An AI Engineer in 2026」で6フェーズ・フルタイム17週間／副業40週間のロードマップを提示する。Phase 0＝メンタルモデル、Phase 1＝生SDK＋Claude Agent SDKで素のエージェントを二度書く、Phase 2＝LangGraph＋Deep Agentsで本番構成、Phase 3＝自前ミニハーネス約1,500行、Phase 4＝eval・回帰ハーネス（golden 30〜50問・CIゲート）、Phase 5＝本番ハードニング（永続）。
+
+推奨スタックは LangGraph 1.0 + Deep Agents（state machine＋PostgresSaver耐久性＋time-travel debug＋OTEL）、ハーネス参照実装は Claude Agent SDK（Claude Code と同一ハーネス）、観測性は LangSmith / Braintrust / Arize Phoenix から1つ、と同氏は整理する。ツール評として CrewAI をデモ最速だが本番脆弱、AutoGen を Microsoft Agent Framework への統合で先行き不透明とする。
+
+@rohit4verse は「What to Learn, Build, and Skip in AI Agents」で、エージェントを「賢い自動化」でなく「自律的な判断主体」として設計する時代だとし、ハーネス設計（[[tools/claude-harness]]）を差別化要因に挙げる（@sairahul1 と一致）。学ぶべき基礎に LLM API 活用・[[concepts/prompt-engineering]]・[[concepts/agentic-coding]]・RAG・eval を、作るべきものに専用エージェント・社内 [[concepts/llm-wiki]]・CI組込みの自動コードレビュー・データパイプラインを挙げる。
+
 ## 観察ログ（未検証）
 
-「How To Become An AI Engineer in 2026」（@sairahul1, 2026-06-05, X bookmark 2,378）の固有主張・数字：
-
-- 2026-06-05: 同一モデル（Opus 4.5）をハーネス違いでCOREベンチに通すと、Claude Codeハーネス78% vs Smolagentsハーネス42%（36ポイント差）と主張。「賢いラッパー」と「本番システム」の給与差は約$150,000とも
-- 2026-06-05: 6フェーズ・17週間（フルタイム）/ 40週間（副業）ロードマップを提示。Phase 0=メンタルモデル / Phase 1=生SDK＋Claude Agent SDKで素のエージェント二度書き / Phase 2=LangGraph+Deep Agentsで本番構成 / Phase 3=自前ミニハーネス約1,500行 / Phase 4=eval・回帰ハーネス（golden 30-50問・CI gate） / Phase 5=本番ハードニング（永久）
-- 2026-06-05: 推奨スタックは LangGraph 1.0 + Deep Agents（state machine＋PostgresSaver耐久性＋time-travel debug＋OTEL）、ハーネス参照実装は Claude Agent SDK（Claude Codeと同一ハーネス）、観測性は LangSmith / Braintrust / Arize Phoenix から1つ
-- 2026-06-05: CrewAI=デモ最速だが本番脆弱、AutoGen=Microsoft Agent Frameworkへ統合で先行き不透明、との評
-- 2026-06-05: ベンチ数字（2026年5月時点・単一ソース）: SWE-bench Verified Claude Opus 4.7 ~87.6% / GPT-5.5 ~88.7%、GAIA Claude Sonnet 4.5 74.6%、τ-bench Claude Mythos Preview 89.2%
-- 2026-06-05: 「57%のチームが本番にエージェントを持ち、そのうち89%が観測性を配線済み」と主張
-
-「What to Learn, Build, and Skip in AI Agents (2026)」（@rohit4verse）の整理：
-
-- エージェントは「賢い自動化」でなく「自律的な判断主体」として設計する時代
-- ハーネス設計（[[tools/claude-harness]]）が差別化要因
-- 学ぶべき基礎: LLM API活用 / [[concepts/prompt-engineering]] / [[concepts/agentic-coding]] / RAG / eval
-- 作るべきもの: 専用エージェント / 社内 [[concepts/llm-wiki]] / CI組込み自動コードレビュー / データパイプライン
+- 2026-06-05 @sairahul1: 同一モデル（Opus 4.5）をハーネス違いでCOREベンチに通すと Claude Codeハーネス78% vs Smolagentsハーネス42%（36ポイント差）、「賢いラッパー」と「本番システム」の給与差は約$150,000と主張（単一ソースの数字）
+- 2026-06-05 @sairahul1: ベンチ数字（2026年5月時点・単一ソース）——SWE-bench Verified Opus 4.7 約87.6% / GPT-5.5 約88.7%、GAIA Sonnet 4.5 74.6%、τ-bench Mythos Preview 89.2%
+- 2026-06-05 @sairahul1: 「57%のチームが本番にエージェントを持ち、そのうち89%が観測性を配線済み」と主張（単一ソースの調査値）
 
 ## 問い
 

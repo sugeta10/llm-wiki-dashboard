@@ -44,6 +44,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>調査系タスクでは「まず検索する」「サブエージェントに任せる」を明示的に指示する</li>
 <li>レビュープロンプトから保守的な表現を外し、フィルタリングは下流で行う（モデルが指示を文字通りに従うため、上流で絞ると再現率が落ちやすい）</li>
 </ul>
+<p>Boris Cherny（Claude Code 作者）は、Opus 4.8 が長時間の自律作業ベンチマークで最優秀という報告が増えていると発信し、自律実行の tips として auto mode で権限確認を省くことと <a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> でのオーケストレーション活用を挙げる。長時間自律の評価軸としては、1Bトークン予算でコーディングエージェントの継続動作を測る SWE-Marathon（@rishi_desai2 引用。Slack をゼロからビルド／JAX コードベースを PyTorch へ書き換え／C コンパイラを Rust で実装等のタスクを含む）が登場している。</p>
 <h2>検証済み事実</h2>
 <ul>
 <li>2026-05-30: Anthropic公式が示したOpus 4.8の3機能：Effort Control、Fast Mode（約2.5倍速度）、<a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a>（最大1,000並列エージェント）</li>
@@ -52,17 +53,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-29（CodeRabbitベンチマーク）: 実用的な指摘のパス率はOpus 4.8 61% vs ベースライン 62%（誤差範囲内）</li>
 <li>2026-05-29（CodeRabbitベンチマーク）: 致命的な指摘（critical）が35件→29件に減少</li>
 <li>2026-05-29（CodeRabbitベンチマーク）: コストは1回あたり$0.20〜0.28（Opus 4.5は約$0.13、Sonnet 4.5は$0.04〜0.12）</li>
+<li>2026-05-29（CodeRabbitベンチマーク）: major指摘が119件→81件に減少し、minor/nitpickがほぼ倍増（コメント全体のノイズはベースラインより増加）</li>
 </ul>
 <h2>観察ログ（未検証）</h2>
 <ul>
-<li>2026-05-29: コメントの内訳がベースラインよりノイズが多い。major指摘が119件→81件に減少し、minor/nitpickがほぼ倍増（CodeRabbit評価）</li>
-<li>2026-05-29: レビュー指示を文字通りに従う傾向があり、「重大度の高い問題だけを報告する」保守的プロンプトが再現率を強く抑制するとの仮説</li>
-<li>2026-05-29: 200kトークン超えでコンテキスト性能が目に見えて低下。モノレポや大規模コードベースは壁にぶつかる可能性</li>
-<li>2026-05-30: Effort ControlがOpus 4.8で最もコスト削減効果の高い新機能。プロンプトの60%をLow、10%のみMaxに振り分けることで月額コストを半減できるとの主張（@zodchiii）</li>
-<li>2026-05-30: <a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> は100エージェント規模で$50〜$200のコストがかかるため予算上限設定が必須との指摘</li>
-<li>2026-05-30: Opus 4.8の正直性改善：自己コードの欠陥を未報告のまま放置する確率が旧世代比4倍低下、欠陥ある結果を無批判に報告する率は0%（単一ソースのスコア）</li>
-<li>2026-06-08: @bcherny（Claude Code作者）がOpusが長時間自律作業ベンチマークで最優秀との報告が増えていると発信。Opus自律実行の推奨tips: ①auto modeでpermissions確認を省略 ②<a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a>でオーケストレーションを活用</li>
-<li>2026-06-08: SWE-Marathon（@rishi_desai2 引用）：1Bトークン予算でコーディングエージェントの継続動作を評価するベンチマーク。SlackをゼロからビルドしたりJAXコードベースをPyTorchに書き直したりCコンパイラをRustで実装するタスクを含む</li>
+<li>2026-05-29: レビュー用途で200kトークンを超えるとコンテキスト性能が目に見えて低下し、モノレポや大規模コードベースは壁にぶつかる可能性（単一ソースの観察・要検証）</li>
+<li>2026-05-30 @zodchiii: Effort Control が Opus 4.8 で最もコスト削減効果の高い新機能で、プロンプトの60%をLow・10%のみMaxに振ると月額コストを半減できるとの主張（単一ソースの数字）</li>
+<li>2026-05-29: Opus 4.8 の正直性——自己コードの欠陥を未報告のまま放置する確率が旧世代比4倍低下、欠陥ある結果を無批判に報告する率は0%（単一ソースのスコア）</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -78,9 +75,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li>
 <li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
 <li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
-<li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2060042702150930686" rel="noopener" target="_blank">https://x.com/i/web/status/2060042702150930686</a></li>
 <li><a href="https://x.com/i/web/status/2060153411627257928" rel="noopener" target="_blank">https://x.com/i/web/status/2060153411627257928</a></li>
@@ -124,6 +121,8 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - 調査系タスクでは「まず検索する」「サブエージェントに任せる」を明示的に指示する
 - レビュープロンプトから保守的な表現を外し、フィルタリングは下流で行う（モデルが指示を文字通りに従うため、上流で絞ると再現率が落ちやすい）
 
+Boris Cherny（Claude Code 作者）は、Opus 4.8 が長時間の自律作業ベンチマークで最優秀という報告が増えていると発信し、自律実行の tips として auto mode で権限確認を省くことと [[concepts/claude-code-dynamic-workflows]] でのオーケストレーション活用を挙げる。長時間自律の評価軸としては、1Bトークン予算でコーディングエージェントの継続動作を測る SWE-Marathon（@rishi_desai2 引用。Slack をゼロからビルド／JAX コードベースを PyTorch へ書き換え／C コンパイラを Rust で実装等のタスクを含む）が登場している。
+
 ## 検証済み事実
 
 - 2026-05-30: Anthropic公式が示したOpus 4.8の3機能：Effort Control、Fast Mode（約2.5倍速度）、[[concepts/claude-code-dynamic-workflows]]（最大1,000並列エージェント）
@@ -132,17 +131,13 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - 2026-05-29（CodeRabbitベンチマーク）: 実用的な指摘のパス率はOpus 4.8 61% vs ベースライン 62%（誤差範囲内）
 - 2026-05-29（CodeRabbitベンチマーク）: 致命的な指摘（critical）が35件→29件に減少
 - 2026-05-29（CodeRabbitベンチマーク）: コストは1回あたり$0.20〜0.28（Opus 4.5は約$0.13、Sonnet 4.5は$0.04〜0.12）
+- 2026-05-29（CodeRabbitベンチマーク）: major指摘が119件→81件に減少し、minor/nitpickがほぼ倍増（コメント全体のノイズはベースラインより増加）
 
 ## 観察ログ（未検証）
 
-- 2026-05-29: コメントの内訳がベースラインよりノイズが多い。major指摘が119件→81件に減少し、minor/nitpickがほぼ倍増（CodeRabbit評価）
-- 2026-05-29: レビュー指示を文字通りに従う傾向があり、「重大度の高い問題だけを報告する」保守的プロンプトが再現率を強く抑制するとの仮説
-- 2026-05-29: 200kトークン超えでコンテキスト性能が目に見えて低下。モノレポや大規模コードベースは壁にぶつかる可能性
-- 2026-05-30: Effort ControlがOpus 4.8で最もコスト削減効果の高い新機能。プロンプトの60%をLow、10%のみMaxに振り分けることで月額コストを半減できるとの主張（@zodchiii）
-- 2026-05-30: [[concepts/claude-code-dynamic-workflows]] は100エージェント規模で$50〜$200のコストがかかるため予算上限設定が必須との指摘
-- 2026-05-30: Opus 4.8の正直性改善：自己コードの欠陥を未報告のまま放置する確率が旧世代比4倍低下、欠陥ある結果を無批判に報告する率は0%（単一ソースのスコア）
-- 2026-06-08: @bcherny（Claude Code作者）がOpusが長時間自律作業ベンチマークで最優秀との報告が増えていると発信。Opus自律実行の推奨tips: ①auto modeでpermissions確認を省略 ②[[concepts/claude-code-dynamic-workflows]]でオーケストレーションを活用
-- 2026-06-08: SWE-Marathon（@rishi_desai2 引用）：1Bトークン予算でコーディングエージェントの継続動作を評価するベンチマーク。SlackをゼロからビルドしたりJAXコードベースをPyTorchに書き直したりCコンパイラをRustで実装するタスクを含む
+- 2026-05-29: レビュー用途で200kトークンを超えるとコンテキスト性能が目に見えて低下し、モノレポや大規模コードベースは壁にぶつかる可能性（単一ソースの観察・要検証）
+- 2026-05-30 @zodchiii: Effort Control が Opus 4.8 で最もコスト削減効果の高い新機能で、プロンプトの60%をLow・10%のみMaxに振ると月額コストを半減できるとの主張（単一ソースの数字）
+- 2026-05-29: Opus 4.8 の正直性——自己コードの欠陥を未報告のまま放置する確率が旧世代比4倍低下、欠陥ある結果を無批判に報告する率は0%（単一ソースのスコア）
 
 ## 問い
 
