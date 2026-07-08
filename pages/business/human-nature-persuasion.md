@@ -38,3 +38,5 @@ Koe は persuasion を道具として位置づけ、「倫理的かどうかは�
 - [[design/fastview-design]] — ファーストビューで数秒に注意を掴む設計は、レバー1「まず問題を名指して注意を得る」と同じ心理の実装
 - [[business/youtube-shorts-jidouka-marketing]] — フック（緊張）でスクロールを止め CTA（解決策）へ運ぶマーケ実装例
 - [[concepts/output-first-learning]] — 「知識は現実でテストしないと意味がない＝出力して反応を見る」学習観で重なる
+- [[concepts/mendokusasa-barrier]] — 人が変わらない本音は「面倒くさい（着手コスト）」＝レバー5「最初の一歩を与える」で下げる着手障壁と同じ心理
+- [[concepts/organizational-maneuvering]] — 「褒めて味方を作る」「上司の不安を先に消す」立ち回りは、生存の緊張を鎮めアイデンティティを満たす心理レバーの実装例

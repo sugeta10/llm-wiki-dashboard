@@ -45,3 +45,4 @@
 - [[concepts/mental-conditioning]] — 認知的アンローディング（書き出し）・意志でなく仕組みで不安を断つ設計で強く重なる
 - [[tools/taskmd-shelf]] — 頭の中のタスク・不安を外部ファイルに出す「積極的棚上げ」の実装例
 - [[concepts/slack-time-at-work]] — 「取り返そうと頑張らない」引き算思想を働き方の稼働率（80%）に適用した隣接概念
+- [[concepts/mendokusasa-barrier]] — 「意志で頑張る」でなく機械的に動く仕組みを作る＝悪習慣のトリガーを断つ引き算と同じ仕組み志向

@@ -13,3 +13,4 @@ ClaudeにリアルUIを操作させるエージェント機能。マウスクリ
 - [[tools/browser-use]] — WebブラウザをAIが操作する専用ライブラリ（クロスブラウザ対応）
 - [[tools/claude-code]] — Anthropic製AIコーディングCLI（同じく自律的に操作するが対象はコードベース）
 - [[concepts/multi-agent-patterns]] — マルチエージェント設計パターン（Computer Useをサブエージェントとして組み込む構成を含む）
+- [[tools/claude-real-video]] — 動画を変化フレーム抽出＋文字起こしで機械可読化しClaudeに見せるOSS（デモ録画リプレイと同じ「動画を扱う」系譜）

@@ -35,3 +35,4 @@ flowchart LR
 - [[concepts/team-leader-transition]] — 一つ下の階層（プレイヤー→マネージャー）の役割転換論。「自分でやるより環境を設計する」への転換と地続き
 - [[concepts/structuring-ability]] — 「蓋然性を語る＝先を決め確からしさを作る」は、全体と部分を入れ子で整理する構造化力と重なる
 - [[business/org-design-intelligence]] — 中間管理職の役割そのものが問われる組織設計の変化という上位の文脈
+- [[concepts/organizational-maneuvering]] — 「ウェットな対人力・根回し」で戦わず人を動かす立ち回りの具体例（佐久間宣行の仕事術）
