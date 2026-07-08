@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>loop-anatomy - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>loop-anatomy</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="loop-anatomy.md">Markdownで表示</a></div>
+  <div class="meta">concepts/loop-anatomy · concepts · <span title="2026-07-06">2日前</span></div>
+  <article><h1>ループの解剖学（5ムーブ×6パーツ）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: ループの1ターンを「発見→引き渡し→検証→永続化→スケジュール」の5ムーブに分解し、故障を「どのムーブが欠けたか」で1対1診断する枠組み。最難関は生成者から分離した「no と言える検証」の設置。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  D[&quot;Discovery 発見&quot;] --&gt; H[&quot;Handoff 引き渡し&quot;] --&gt; V[&quot;Verification 検証 = no と言える箇所&quot;] --&gt; P[&quot;Persistence 永続化&quot;] --&gt; S[&quot;Scheduling 次ターンへ&quot;] --&gt; D</pre>
+<p>出典は HuaShu が自身の公開ガイド「Loop Engineering: Stop Asking Me What It Is」を学会論文スタイルに再構成した文書で、枠組みの一次発信者は Addy Osmani（Google Chrome チームのエンジニア、2026年6月）。土台に置かれる直観はこうだ——<strong>ミスのコストは「発見されるまで生き延びたターン数」に比例し、ループは構造上そのターン数を最大化する機械</strong>である。プロンプト層のミスはその場で見つかるが、ループ層のミスは状態ファイルに書き込まれ、翌朝「確定事実」として読み戻され、気づいた時には他の判断の前提として荷重を支えている。評価器・人間チェックポイント・予算キャップはすべて「ミスと発見の距離を縮める」装置としてここに位置づく。</p>
+<h2>5ムーブと6パーツの対応</h2>
+<p>1ターン＝5ムーブ。どれを落としてもループは回らないか、空回りする。</p>
+<table>
+<thead>
+<tr>
+<th>ムーブ</th>
+<th>何をするか</th>
+<th>実現するパーツ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>発見（Discovery）</td>
+<td>そのターンにやる価値のある仕事を自分で見つける。CI失敗・issue・コミットを読む</td>
+<td>スキル</td>
+</tr>
+<tr>
+<td>引き渡し（Handoff）</td>
+<td>タスクを隔離してエージェントに渡す</td>
+<td>worktree</td>
+</tr>
+<tr>
+<td>検証（Verification）</td>
+<td>別エージェントを立てて no と言わせる</td>
+<td>サブエージェント</td>
+</tr>
+<tr>
+<td>永続化（Persistence）</td>
+<td>会話の外に生き残る場所へ状態を書く</td>
+<td>メモリ＝ディスク上のファイル/ボード</td>
+</tr>
+<tr>
+<td>スケジュール（Scheduling）</td>
+<td>1回きりの実行をターンの連続に変える</td>
+<td>自動化＝cron/トリガー</td>
+</tr>
+</tbody>
+</table>
+<p>6つ目のパーツはコネクターで、MCP 接続として発見と永続化の視界・到達範囲を決める（ファイルシステムしか見えないループは小さいループ）。</p>
+<p>Osmani は2点を強調する。発見がループ全体の品質の天井を決めること——価値のない仕事を掘り当てたら、残り4ムーブは無のために完璧に働く。そして自動化はスキル（SKILL.md として永続化された知識）を呼ぶべきで、誰も更新しない cron 内の「指示の壁」を呼んではならないこと。</p>
+<h2>Generator/Evaluator 分離</h2>
+<p>Anthropic エンジニアの Prithvi Rajasekaran が長時間稼働アプリの構築で観察した知見: エージェントに自分の書いた出力を採点させると、人間には平凡とわかる品質でも自信満々に自賛する。書いた時のコンテキストには「そう書いた理由」が詰まっており、自分の出力を見ても結果ではなく自己説得の連鎖を見てしまうためだ。対処は構造的で、<strong>謙虚な作者を作るより、独立した懐疑者をチューニングする方がはるかに扱いやすい</strong>と Rajasekaran は結論する。</p>
+<ul>
+<li><strong>評価器は読むだけでなく行動する</strong>: コードを読むだけでは「正しそうに見えるか」しか判定できない。Rajasekaran はフロントエンド案件で評価器に Playwright MCP（ブラウザ操作接続）を繋ぎ、ページを開きクリックしスクリーンショットを撮らせた。判定根拠が「JSX が良さそう」から「ボタンを押したら遷移した」に変わる</li>
+<li><strong>デフォルトは疑い</strong>: コミュニティの定番調整は「壊れていると仮定し、反証されるまで疑え」</li>
+<li><strong>停止判定は新鮮なモデルに</strong>: Claude Code の /goal コマンドは各ターン後に小型の別モデルが条件成立を判定し、作業者自身に完了を宣言させない。銀行で数十年続く maker–checker 原則（入力者と承認者を分ける）の停止条件への適用</li>
+</ul>
+<p><strong>ループの床は評価器</strong>: 生成者の水準はループが「何を作れるか」を決め、評価器の水準は「何を出さないか」を決める。</p>
+<h2>5つのアンチパターン（＝ムーブの欠落）</h2>
+<table>
+<thead>
+<tr>
+<th>アンチパターン</th>
+<th>欠落ムーブ</th>
+<th>症状</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>頷くループ</td>
+<td>検証</td>
+<td>数百ターン一度も no と言っていない。実作業では統計的にありえず、検証が存在しない証拠</td>
+</tr>
+<tr>
+<td>健忘ループ</td>
+<td>永続化</td>
+<td>毎朝同じ地点から始まり、累積進捗がない</td>
+</tr>
+<tr>
+<td>手動ループ</td>
+<td>スケジュール</td>
+<td>最終実行日がデモした日</td>
+</tr>
+<tr>
+<td>盲目ループ</td>
+<td>発見</td>
+<td>人間がまだ毎朝「やること」を渡している。選ぶことこそ高価な部分なので節約幅が見かけより小さい</td>
+</tr>
+<tr>
+<td>もつれループ</td>
+<td>引き渡し</td>
+<td>並列化した最初の朝にだけ現れる編集衝突</td>
+</tr>
+</tbody>
+</table>
+<p>HuaShu は5つが独立でないと注記する。雑なループは目に見える出力を生む発見と引き渡しだけを実装し、安全を生む残り3つを飛ばす形でクラスタする。</p>
+<h2>4つの沈黙コスト</h2>
+<p>走っている間は警報が鳴らない4つの負債。<strong>検証負債</strong>（「動く」と「正しい」の隙間に未検証出力が溜まる）、<strong>理解の腐敗</strong>（読まないまま出荷され頭の中の地図が停滞する）、<strong>認知的降伏</strong>（出力に意見を持つのをやめる）、<strong>トークン爆発</strong>（1つのバグが夜通し空転して請求書になる）。HuaShu はこれらを「4つの顔を持つ単一の失敗」と呼ぶ——未検証出力が理解を蝕み、理解の低下が降伏を招き、降伏がループを長く走らせて請求を膨らませる相互強化サイクル。</p>
+<p>運用規律は3つ:</p>
+<ul>
+<li><strong>毎日サンプルを読む</strong>: 全部読むのは本末転倒。代表サンプルを毎日読み、その変更を自分の言葉で説明できるか自問する。説明できないことは地図が遅れた精密なシグナル</li>
+<li><strong>出荷前にキャップ</strong>: ラン毎予算・日次予算・最大リトライを初回の無人実行より前に設定する。キャップなしのループは、自分のバグに支出権限を委譲したループ</li>
+<li><strong>ドアを1つ開けておく</strong>: 人間が立ち寄れるチェックポイントを構造として残す。全部の扉を溶接した者は、入る必要が生じた日に自分が鍵を持っていないことに気づく</li>
+</ul>
+<h2>最初のループのチェックリスト（6要素）</h2>
+<p>発見ソース・状態ファイル・評価器・隔離・トークンキャップ・人間レビューの6つ。前の2つはループが回るかを決め、後ろの4つは回った後に事故るかを決める。初心者は前の2つだけ作って出荷しがちで、結果は「誰も見ておらず誰も止められない、自分に頷くループ」になると HuaShu は述べる。小さく作ってよいが、no と言う検証と人間レビュー点だけは完全装備で始めよ、が結びの助言。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06: 発火点になった Peter Steinberger のポスト（もうコーディングエージェントにプロンプトするな、それをプロンプトするループを設計しろ）が800万ビュー到達（HuaShu 経由の二次数値）</li>
+<li>「Claude Code の約90%は自身が書いた」等の流布数値は二次まとめでありラフな参考に留めよ、と HuaShu 自身が注記</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の wiki ingest ループを5ムーブで監査すると検証ムーブは存在するか。launchd 実行の出力に誰が no と言えるか——「頷くループ」の症状（一度も no と言わない）に該当しないか</li>
+<li>「行動する評価器」は wiki 品質にどう翻訳できるか。validate_wiki.py スクリプトは決定論ゲートだが、リンク先を実際に読んで判定する評価器は必要か</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> の4条件テスト（構築前の事前判定）とこの5ムーブ診断（構築後の事後解剖）は1枚の運用チェックリストに統合できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — 親概念。用語の起源・5段階進化史・4条件テスト・6構成要素はこちらが正本</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — 1階下の層＝単発ランの武装。Generator/Evaluator 分離の観察もこのページに既録</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 検証ムーブを品質ゲートとして独立に扱うパターン</li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — スケジュールムーブの動詞の使い分け（いつ止まるか・自分はその場にいるか）</li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — maker–checker 停止判定（Haiku 評価器）の具体実装</li>
+<li><a href="../tools/stripe-minions.html">stripe-minions</a> — 5ムーブ全装備のエンタープライズ実例。決定論ゲート×LLM交互配置で週1,300本のPRをマージ</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../tools/stripe-minions.html">stripe-minions</a></li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://drive.google.com/file/d/1qzKI4DKnyHRpXK1J3ATPqwaqLc0iNu-M/view" rel="noopener" target="_blank">https://drive.google.com/file/d/1qzKI4DKnyHRpXK1J3ATPqwaqLc0iNu-M/view</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># ループの解剖学（5ムーブ×6パーツ）
+
+&gt; **TL;DR**: ループの1ターンを「発見→引き渡し→検証→永続化→スケジュール」の5ムーブに分解し、故障を「どのムーブが欠けたか」で1対1診断する枠組み。最難関は生成者から分離した「no と言える検証」の設置。
+
+```mermaid
+flowchart LR
+  D[&quot;Discovery 発見&quot;] --&gt; H[&quot;Handoff 引き渡し&quot;] --&gt; V[&quot;Verification 検証 = no と言える箇所&quot;] --&gt; P[&quot;Persistence 永続化&quot;] --&gt; S[&quot;Scheduling 次ターンへ&quot;] --&gt; D
+```
+
+出典は HuaShu が自身の公開ガイド「Loop Engineering: Stop Asking Me What It Is」を学会論文スタイルに再構成した文書で、枠組みの一次発信者は Addy Osmani（Google Chrome チームのエンジニア、2026年6月）。土台に置かれる直観はこうだ——**ミスのコストは「発見されるまで生き延びたターン数」に比例し、ループは構造上そのターン数を最大化する機械**である。プロンプト層のミスはその場で見つかるが、ループ層のミスは状態ファイルに書き込まれ、翌朝「確定事実」として読み戻され、気づいた時には他の判断の前提として荷重を支えている。評価器・人間チェックポイント・予算キャップはすべて「ミスと発見の距離を縮める」装置としてここに位置づく。
+
+## 5ムーブと6パーツの対応
+
+1ターン＝5ムーブ。どれを落としてもループは回らないか、空回りする。
+
+| ムーブ | 何をするか | 実現するパーツ |
+|---|---|---|
+| 発見（Discovery） | そのターンにやる価値のある仕事を自分で見つける。CI失敗・issue・コミットを読む | スキル |
+| 引き渡し（Handoff） | タスクを隔離してエージェントに渡す | worktree |
+| 検証（Verification） | 別エージェントを立てて no と言わせる | サブエージェント |
+| 永続化（Persistence） | 会話の外に生き残る場所へ状態を書く | メモリ＝ディスク上のファイル/ボード |
+| スケジュール（Scheduling） | 1回きりの実行をターンの連続に変える | 自動化＝cron/トリガー |
+
+6つ目のパーツはコネクターで、MCP 接続として発見と永続化の視界・到達範囲を決める（ファイルシステムしか見えないループは小さいループ）。
+
+Osmani は2点を強調する。発見がループ全体の品質の天井を決めること——価値のない仕事を掘り当てたら、残り4ムーブは無のために完璧に働く。そして自動化はスキル（SKILL.md として永続化された知識）を呼ぶべきで、誰も更新しない cron 内の「指示の壁」を呼んではならないこと。
+
+## Generator/Evaluator 分離
+
+Anthropic エンジニアの Prithvi Rajasekaran が長時間稼働アプリの構築で観察した知見: エージェントに自分の書いた出力を採点させると、人間には平凡とわかる品質でも自信満々に自賛する。書いた時のコンテキストには「そう書いた理由」が詰まっており、自分の出力を見ても結果ではなく自己説得の連鎖を見てしまうためだ。対処は構造的で、**謙虚な作者を作るより、独立した懐疑者をチューニングする方がはるかに扱いやすい**と Rajasekaran は結論する。
+
+- **評価器は読むだけでなく行動する**: コードを読むだけでは「正しそうに見えるか」しか判定できない。Rajasekaran はフロントエンド案件で評価器に Playwright MCP（ブラウザ操作接続）を繋ぎ、ページを開きクリックしスクリーンショットを撮らせた。判定根拠が「JSX が良さそう」から「ボタンを押したら遷移した」に変わる
+- **デフォルトは疑い**: コミュニティの定番調整は「壊れていると仮定し、反証されるまで疑え」
+- **停止判定は新鮮なモデルに**: Claude Code の /goal コマンドは各ターン後に小型の別モデルが条件成立を判定し、作業者自身に完了を宣言させない。銀行で数十年続く maker–checker 原則（入力者と承認者を分ける）の停止条件への適用
+
+**ループの床は評価器**: 生成者の水準はループが「何を作れるか」を決め、評価器の水準は「何を出さないか」を決める。
+
+## 5つのアンチパターン（＝ムーブの欠落）
+
+| アンチパターン | 欠落ムーブ | 症状 |
+|---|---|---|
+| 頷くループ | 検証 | 数百ターン一度も no と言っていない。実作業では統計的にありえず、検証が存在しない証拠 |
+| 健忘ループ | 永続化 | 毎朝同じ地点から始まり、累積進捗がない |
+| 手動ループ | スケジュール | 最終実行日がデモした日 |
+| 盲目ループ | 発見 | 人間がまだ毎朝「やること」を渡している。選ぶことこそ高価な部分なので節約幅が見かけより小さい |
+| もつれループ | 引き渡し | 並列化した最初の朝にだけ現れる編集衝突 |
+
+HuaShu は5つが独立でないと注記する。雑なループは目に見える出力を生む発見と引き渡しだけを実装し、安全を生む残り3つを飛ばす形でクラスタする。
+
+## 4つの沈黙コスト
+
+走っている間は警報が鳴らない4つの負債。**検証負債**（「動く」と「正しい」の隙間に未検証出力が溜まる）、**理解の腐敗**（読まないまま出荷され頭の中の地図が停滞する）、**認知的降伏**（出力に意見を持つのをやめる）、**トークン爆発**（1つのバグが夜通し空転して請求書になる）。HuaShu はこれらを「4つの顔を持つ単一の失敗」と呼ぶ——未検証出力が理解を蝕み、理解の低下が降伏を招き、降伏がループを長く走らせて請求を膨らませる相互強化サイクル。
+
+運用規律は3つ:
+
+- **毎日サンプルを読む**: 全部読むのは本末転倒。代表サンプルを毎日読み、その変更を自分の言葉で説明できるか自問する。説明できないことは地図が遅れた精密なシグナル
+- **出荷前にキャップ**: ラン毎予算・日次予算・最大リトライを初回の無人実行より前に設定する。キャップなしのループは、自分のバグに支出権限を委譲したループ
+- **ドアを1つ開けておく**: 人間が立ち寄れるチェックポイントを構造として残す。全部の扉を溶接した者は、入る必要が生じた日に自分が鍵を持っていないことに気づく
+
+## 最初のループのチェックリスト（6要素）
+
+発見ソース・状態ファイル・評価器・隔離・トークンキャップ・人間レビューの6つ。前の2つはループが回るかを決め、後ろの4つは回った後に事故るかを決める。初心者は前の2つだけ作って出荷しがちで、結果は「誰も見ておらず誰も止められない、自分に頷くループ」になると HuaShu は述べる。小さく作ってよいが、no と言う検証と人間レビュー点だけは完全装備で始めよ、が結びの助言。
+
+## 観察ログ（未検証）
+
+- 2026-06: 発火点になった Peter Steinberger のポスト（もうコーディングエージェントにプロンプトするな、それをプロンプトするループを設計しろ）が800万ビュー到達（HuaShu 経由の二次数値）
+- 「Claude Code の約90%は自身が書いた」等の流布数値は二次まとめでありラフな参考に留めよ、と HuaShu 自身が注記
+
+## 問い
+
+- 自分の wiki ingest ループを5ムーブで監査すると検証ムーブは存在するか。launchd 実行の出力に誰が no と言えるか——「頷くループ」の症状（一度も no と言わない）に該当しないか
+- 「行動する評価器」は wiki 品質にどう翻訳できるか。validate_wiki.py スクリプトは決定論ゲートだが、リンク先を実際に読んで判定する評価器は必要か
+- [[concepts/loop-engineering]] の4条件テスト（構築前の事前判定）とこの5ムーブ診断（構築後の事後解剖）は1枚の運用チェックリストに統合できるか
+
+## 関連
+
+- [[concepts/loop-engineering]] — 親概念。用語の起源・5段階進化史・4条件テスト・6構成要素はこちらが正本
+- [[concepts/harness-engineering]] — 1階下の層＝単発ランの武装。Generator/Evaluator 分離の観察もこのページに既録
+- [[concepts/eval-loop]] — 検証ムーブを品質ゲートとして独立に扱うパターン
+- [[concepts/goal-loop-routine]] — スケジュールムーブの動詞の使い分け（いつ止まるか・自分はその場にいるか）
+- [[tools/claude-code-goal]] — maker–checker 停止判定（Haiku 評価器）の具体実装
+- [[tools/stripe-minions]] — 5ムーブ全装備のエンタープライズ実例。決定論ゲート×LLM交互配置で週1,300本のPRをマージ
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

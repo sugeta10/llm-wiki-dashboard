@@ -37,3 +37,4 @@
 - [[concepts/output-first-learning]] — 解像度を上げ血肉化する学習法。「いいものに触れる時間を増やす」と同方向
 - [[concepts/ai-quality-amplification]] — 品質をスケールさせる思想。「当たり前の基準値」を上げる話と接続
 - [[concepts/mental-conditioning]] — 自己嫌悪・後悔の反芻との付き合い方（過活動なDMNの罠）という裏面
+- [[concepts/team-leader-transition]] — フィードバックの「型」（状況→行動→結果→次）を他者に与える側の実装

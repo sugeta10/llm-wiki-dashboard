@@ -114,6 +114,7 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - 2026-06-08 @mvanhorn: Uber が Claude Code と Cursor の1人あたり月額上限を $1,500 に設定したところ、年間AI予算を4ヶ月で使い切ったと報告（単一ソース・ループ管理コストの実測例）
 - 2026-06-09 @masa_okamura108: Codex `/goal` の Notion タスク自動実行ループが1日で43コミットを生成したが、修正範囲が元PRの趣旨を逸脱しほぼ全件却下（ループ設計ミスによる暴走の実測例）
 - 2026-06-21 @rsensui: 「文脈は多いほど良い」への反証として ETH Zurich / LogicStar.ai（arXiv:2602.11988）を引用——AGENTS.md を肥大化させるとリポジトリ文脈なしより成功率が下がり推論コストが20%超増、人間が丁寧に書いた指示書でも約+4%止まりと主張（二次引用・未検証。[[papers/2026-li-skillsbench]] / [[concepts/claude-code-instruction-methods]] と同方向）
+- 2026-06-30 HuaShu「Orange Book」（Osmani 枠組みの論文スタイル再構成・[[concepts/loop-anatomy]] の出典）: 発火点の @steipete ポストは800万ビュー到達と記載。「Claude Code の約90%は自身が書いた」等の流布数値は二次まとめでラフな参考に留めよと HuaShu 自身が注記
 
 ## 検証済み事実
 
@@ -150,3 +151,5 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[concepts/coding-agent-workflow-styles]] — 委譲低速ループ／高速制御ループの2類型。本ページはその委譲側の極北
 - [[concepts/claude-code-instruction-methods]] — @rsensui の「最小のAGENTS.mdが正義」を公式版で裏付け（CLAUDE.md 200行未満・指示ミニマリズム）
 - [[tools/makeloop]] — `/loop` プロンプトを会話＋コードベースから自動生成するコマンド。Verify/State/Stop の3要素は本ページの最小構成ループと同型、生成器自身を自己改善する設計
+- [[concepts/loop-anatomy]] — 本概念の解剖学版：1ターン＝5ムーブ×6パーツ、欠落＝5アンチパターン、4つの沈黙コスト（HuaShu Orange Book の統合枠組み）
+- [[tools/stripe-minions]] — エンタープライズ実例：決定論ゲート×LLM交互配置で週1,300本のマシン生成PRをマージ。信頼性は制約の質から

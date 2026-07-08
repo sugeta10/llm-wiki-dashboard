@@ -61,3 +61,4 @@ mindmap
 - [[concepts/agents-md-canonical]] — 指示文（CLAUDE.md等）と実行機構（skills/agents/hooks/MCP）は別物という線引き。本ページの振り分け判断の前提
 - [[concepts/loop-engineering]] — 「最小のAGENTS.mdが正義」（@rsensui引用のETH Zurich研究: 肥大で成功率低下・推論コスト+20%超）として本ページの「CLAUDE.mdは200行未満」基準を別ルートで裏付け
 - [[concepts/skills-over-memory]] — メモリと CLAUDE.md を同じ「常時ロードの肥大」問題として束ね、教訓はスキルへPRせよと説く実践論。本ページの格納先決定フレームの動機側
+- [[concepts/claude-code-compact-recovery]] — 「hooks はコンパクションをバイパスする」性質を復旧経路として使う実践例（state file 退避＋marker 経由で圧縮直後に判断構造を復元）

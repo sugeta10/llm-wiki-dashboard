@@ -30,3 +30,4 @@ LayerXが挙げる「よいエンジニア」の条件:
 - [[concepts/agentic-engineering-workflow]] — 「人間は手でなくシグナル」になる実践者の総合スタック
 - [[concepts/forward-deployed-engineer]] — 課題設定・ドメイン理解を価値の中心に置くエンジニア像
 - [[concepts/product-role-archetypes]] — Boris Cherny の5アーキタイプ。職能でなく価値創出の局面で人を見る分類で、本ページの「コード量で測らない」と同方向
+- [[concepts/career-advice-ai-age]] — Phil Chenの「問題を見つける力・最も野心的な形の問題を選ぶ」が本ページの「論点発見」と重なる

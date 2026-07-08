@@ -25,3 +25,4 @@
 - [[concepts/claude-md-rules]] — CLAUDE.md/AGENTS.mdに行動ルールを仕込むアプローチ（引き継ぎ指示の置き場所）
 - [[concepts/agentic-engineering-workflow]] — plan.md先行・スキルを束ねる実践者スタック（セッションをまたぐ作業継続の文脈）
 - [[concepts/agents-md-canonical]] — AGENTS.md を正本にツール間で設定を共通化するパターン（こちらはツール間の移植、本ページはセッション間の引き継ぎ）
+- [[concepts/claude-code-compact-recovery]] — 引き継ぎを compact のライフサイクルに機械的に結線した発展形（state file 退避＋marker 経由 2 段 hook で圧縮直後に自動復元）

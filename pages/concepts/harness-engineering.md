@@ -77,3 +77,4 @@ OpenAI・Anthropic・ThoughtWorksが調整なく同じ壁にぶつかり、異�
 - [[concepts/spec-driven-development]] — 仕様先行開発・コンテキストエンジニアリングとの接続
 - [[concepts/ai-agent-building-blocks]] — 同著者(@sairahul1)によるエージェント入門（ReActループ＋脳/手/記憶/ループ/検証の5ブロック）。ハーネス概念の具体的構成要素にあたる
 - [[concepts/harness-engineering-roadmap]] — この理論を「14ステップ・3階層の構築手順」に落とした実装ロードマップ版（@0xCodez）
+- [[concepts/loop-anatomy]] — 1階上のループを5ムーブに解剖した枠組み。本ページの Generator/Evaluator 分離（Rajasekaran）を検証ムーブの中核として詳述

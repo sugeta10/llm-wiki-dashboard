@@ -63,3 +63,4 @@ flowchart TD
 - [[tools/grill-me]] — 実装前「インタビュー」技法の独立実装（Matt Pocock作）。一問ずつの深掘りが同型
 - [[models/claude-fable-5]] — 本手法の背景となるモデル。強いモデルほどボトルネックが人間側のunknown明確化に移る
 - [[concepts/agentic-coding]] — 上位概念。unknownsの削減と計画をその中核スキルと位置づける
+- [[concepts/career-advice-ai-age]] — Phil Chenの「問題を解くより見つける」。エージェント時代に価値を出す問題選択スキルとして接続

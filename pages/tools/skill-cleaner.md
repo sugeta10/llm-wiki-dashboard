@@ -39,3 +39,4 @@ node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --
 - [[concepts/claude-skills]] — Claudeスキルの概念（永続的職務定義ファイル・Claude.ai/Claude Code両対応）
 - [[tools/obsidian-skills]] — kepano製 Obsidian向けAgent Skills集（agentskills.io仕様準拠）
 - [[tools/gstack]] — Garry Tan製AIソフトウェアファクトリー（Claude Code拡張・23スキル収録）
+- [[tools/codexbar]] — 同じ steipete 製。Codex/Claude Code の使用制限残量をメニューバーに表示するアプリ

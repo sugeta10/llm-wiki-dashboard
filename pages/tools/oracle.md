@@ -42,3 +42,4 @@ flowchart LR
 - [[concepts/llm-council]] — 複数モデルへの諮問パネルに役割分担＋匿名レビューを与える意思決定パターン（oracle はその機械的土台）
 - [[tools/claude-mcp]] — oracle は `oracle-mcp` で MCP サーバとして公開され、Cursor / Claude Code から接続できる
 - [[tools/skill-cleaner]] — 同じ steipete 製の Codex/OpenClaw 向けツール
+- [[tools/codexbar]] — 同じ steipete 製。Codex/Claude Code の使用制限残量をメニューバーに表示するアプリ

@@ -73,3 +73,4 @@ Discordチャンネルに1行送信するだけで：
 - [[tools/openclaw-agent-skills]] — OpenClaw向け共有スキルリポジトリ（autoreview/crabbox/handoff等の正本・symlink配布）
 - [[tools/autoreview-skill]] — OpenClaw agent-skills に含まれるコードレビュー自動化スキル
 - [[concepts/agent-memory-layer]] — @pejmanjohn が OpenClaw を個人アシスタント/アイデア発展の場として使い、推論が他エージェントに同期されない問題を論じた文脈
+- [[tools/codexbar]] — 同じ @steipete 製。Codex/Claude Code の使用制限残量をメニューバー常駐で表示

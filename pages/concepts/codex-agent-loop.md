@@ -39,3 +39,4 @@
 - [[concepts/prompt-caching]] — プロンプトキャッシュの仕組みとベストプラクティス（Claude版だがOpenAI版と設計思想が共通）
 - [[concepts/multi-agent-patterns]] — エージェントアーキテクチャのパターン集
 - [[concepts/12-factor-agents]] — 信頼性の高いエージェント設計原則（ステートレス設計原則と共鳴）
+- [[concepts/claude-code-compact-recovery]] — Claude Code 側の compact（テキスト要約ベース・判断構造が落ちる）への対策パターン。潜在表現を保持する Codex の Compaction との対比

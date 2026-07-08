@@ -27,3 +27,4 @@
 - [[concepts/coachability]] — 素直に受け取れる人が出力前提学習を最大活用できる。両者は自己成長ループの表裏
 - [[business/hensu-kyokushouka]] — 同作者（@shinkaron）のビジネス設計哲学：制約を逆手にとる思考が共通
 - [[concepts/structuring-ability]] — 学びを構造化して他者に届く形へ昇華する点で接続。構造化力の出力面
+- [[business/human-nature-persuasion]] — 「知識は現実でテストしないと意味がない＝出力して反応を見る」学習観で接続（Dan Koe）

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>career-advice-ai-age - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>career-advice-ai-age</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="career-advice-ai-age.md">Markdownで表示</a></div>
+  <div class="meta">concepts/career-advice-ai-age · concepts · <span title="2026-07-07">1日前</span></div>
+  <article><h1>AI時代のキャリア戦略（Phil Chen）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 「AI は損失関数を書けるものは何でも上達する→学校の課題はほぼ損失関数→ゆえに次の10年で価値ある仕事は"モデル訓練期間内に採点できないもの"全て」という前提から導く、早期キャリア向けの6つの指針（Phil Chen / @philhchen）。</p>
+<p>📌 X bookmark: 18,090（2026-07-07 時点）</p>
+</blockquote>
+<p>Phil Chen（@philhchen）は、自身のスタートアップ・Helm AI・Scale AI・OpenAI・Google を経て、現在はフルにエージェントネイティブな会社を創業した立場から助言する。彼の会社は「誰も手でコードを1行も書かない」ため、必要な人材像は過去に働いたどの会社とも異なる、という当事者の採用視点が背景にある。有名な格言（ロケットに乗れるなら座席は問うな等）は今も真だが、agentic coding の台頭で変わった点があるとして、次の6つを挙げる。</p>
+<ul>
+<li><strong>1. 本当に希少な資源に集中する</strong>: 資本へのアクセスはかつてなく容易になった。希少なのは「実時間・強い人間関係・評判（過去の関連実績）」。@philhchen は Scale 入社時にクオンツの高額オファーを断ったが、そこで得た人脈と露出が DeepMind/OpenAI の機会につながり、追加の現金より遥かに大きな価値を生んだと振り返る。vibe-coding で小銭を稼ぐ機会は増えたが、賞金は本物の価値を探したときの方が大きい。</li>
+<li><strong>2. 問題を"解く"だけでなく"見つける"力</strong>: 誰も手でコードを書かない環境では、Leetcode 型やシステム設計の設問は実務成績と相関しない。@philhchen の会社の面接は「置かれた環境を素早く理解し、解く価値のある問題を特定し、既存環境の制約下で実行できるか」を測る。強力になり続けるエージェントは複雑でも well-defined な問題をこなせるので、最もインパクトを出すのは「重要な問題を見極め、トークンと時間を配分できる人」。学生がエージェントに問題集を解かれて意気消沈する傾向があるが、同じ解答に至るまでに必要な時間とトークンは候補者ごとに大きく違い、優秀な人ほど高レベルの直観と外部文脈をエージェントとの協働に持ち込む。</li>
+<li><strong>3. 問題の最も野心的な形に取り組む</strong>: 過去10年で最も有用なフレームは「bitter lesson（一般的手法のスケールが結局タスク特化最適化に勝つ）」で、これは問題や会社の選択にも当てはまる。ソフトウェア構築が容易になり誰でも単純なシステムを作れる今、本当に耐久性のある価値は「真に野心的な問題への極端な集中」からしか生まれない。会社選びは「その会社が問題の最も野心的な形に取り組んでいるか、そして実際に解ける見込みがあるか」で、役割選びは「その問題のフロンティアに直接携われるか」で評価せよ。</li>
+<li><strong>4. ラストマイルを全力疾走する</strong>: Alfred Lin の言う通り、最後の10%が仕事の90%かつ報酬の90%。AI は「雑なプロンプトでエージェントが出せる中央値」が成果の基準になったため結果が二極化した。価値は「独自視点」か「細部へのこだわり」から来る。@philhchen は、進歩が速いので前世代の学びを踏まえて次世代の知能でゼロからやり直す方が良いことも多い、と実践を勧める。</li>
+<li><strong>5. xG と決定率を両方上げる</strong>: サッカーの xG（期待ゴール＝機会の質）と efficiency（決定率）の比喩。@philhchen は 2023年に Anthropic（当時 ~50 FTE）と Cursor（当時 創業者以外 2 FTE）を断り DeepMind を、2024年には両者を再度断り OpenAI を選んだ。いずれもキャリア上は高 xG だったが、興味・カルチャーフィット・目標で選んだ。機会を見られる位置取り（＝評判と専門性）が得点の第一歩だが、人生はいずれ機会を見るだけでなく決めることが問われるので、ゴール前の決定率も重要。彼は「もっとデータを集めてから決めればよかった」と振り返る。早期ステージの会社選びは本質的にチームと市場で決まり、多くの候補者は既存プロダクトに固執するが、チームが良ければプロダクトは大きく変わる（Anthropic の初期デモは彼にとって ChatGPT 以下の Slackbot だった）。</li>
+<li><strong>6. いまリサーチに入れる</strong>: @philhchen は「リサーチャーであることは職業でなくメンタリティ」だと言う。フロンティアラボのリサーチも、好奇心で新アイデアを探り、インフラと格闘して実装し、システムを細部まで理解してデバッグし、成果の価値を説明して計算資源を確保する営みの混合で、これらはラボの外でもできる。モデルを使って自分の直観を評価（eval）に落とし込み、Modal 等の学術クレジットを使ってアイデアを今すぐ試せ。大半のアイデアはスケールで失敗するが、その失敗の理解が「実際に効くもの」の理解の第一歩になる。</li>
+</ul>
+<p>全体を貫く彼の見立ては「ASI が知識労働のすべてを置換するとは信じない——人間には"ASI に解かせる意味ある問題を選ぶ"能力と"それを解く資本を配分する"能力に差別的優位があるから」。価値の源泉が「解くこと」から「選ぶこと・配分すること」へ移る、という <a href="../concepts/research-methodology.html">research-methodology</a> の問題選択論や <a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a> の競争優位論と地続きの主張になっている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-07: @philhchen の予測「ASI は知識労働ジョブのすべてを置換しない（人間は問題選択と資本配分で差別化される）」——外れうる大胆な予測として後で答え合わせする。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「損失関数を書けるものは AI が上達する→採点できないものに価値」という切り分けは、自分の仕事のどの部分が"採点可能"かを棚卸しする軸として使えるか。</li>
+<li>問題選択・リソース配分が最重要という主張は <a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a> の「論点発見」や <a href="../concepts/finding-unknowns.html">finding-unknowns</a> の unknowns 棚卸しとどう重なり、どこが違うか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/research-methodology.html">research-methodology</a></li>
+<li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a></li>
+<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li>
+<li><a href="../concepts/finding-unknowns.html">finding-unknowns</a></li>
+<li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a></li>
+<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li>
+<li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a></li>
+<li><a href="../concepts/finding-unknowns.html">finding-unknowns</a></li>
+<li><a href="../concepts/research-methodology.html">research-methodology</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2072793818945167475" rel="noopener" target="_blank">https://x.com/i/web/status/2072793818945167475</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AI時代のキャリア戦略（Phil Chen）
+
+&gt; **TL;DR**: 「AI は損失関数を書けるものは何でも上達する→学校の課題はほぼ損失関数→ゆえに次の10年で価値ある仕事は&quot;モデル訓練期間内に採点できないもの&quot;全て」という前提から導く、早期キャリア向けの6つの指針（Phil Chen / @philhchen）。
+
+&gt; 📌 X bookmark: 18,090（2026-07-07 時点）
+
+Phil Chen（@philhchen）は、自身のスタートアップ・Helm AI・Scale AI・OpenAI・Google を経て、現在はフルにエージェントネイティブな会社を創業した立場から助言する。彼の会社は「誰も手でコードを1行も書かない」ため、必要な人材像は過去に働いたどの会社とも異なる、という当事者の採用視点が背景にある。有名な格言（ロケットに乗れるなら座席は問うな等）は今も真だが、agentic coding の台頭で変わった点があるとして、次の6つを挙げる。
+
+- **1. 本当に希少な資源に集中する**: 資本へのアクセスはかつてなく容易になった。希少なのは「実時間・強い人間関係・評判（過去の関連実績）」。@philhchen は Scale 入社時にクオンツの高額オファーを断ったが、そこで得た人脈と露出が DeepMind/OpenAI の機会につながり、追加の現金より遥かに大きな価値を生んだと振り返る。vibe-coding で小銭を稼ぐ機会は増えたが、賞金は本物の価値を探したときの方が大きい。
+- **2. 問題を&quot;解く&quot;だけでなく&quot;見つける&quot;力**: 誰も手でコードを書かない環境では、Leetcode 型やシステム設計の設問は実務成績と相関しない。@philhchen の会社の面接は「置かれた環境を素早く理解し、解く価値のある問題を特定し、既存環境の制約下で実行できるか」を測る。強力になり続けるエージェントは複雑でも well-defined な問題をこなせるので、最もインパクトを出すのは「重要な問題を見極め、トークンと時間を配分できる人」。学生がエージェントに問題集を解かれて意気消沈する傾向があるが、同じ解答に至るまでに必要な時間とトークンは候補者ごとに大きく違い、優秀な人ほど高レベルの直観と外部文脈をエージェントとの協働に持ち込む。
+- **3. 問題の最も野心的な形に取り組む**: 過去10年で最も有用なフレームは「bitter lesson（一般的手法のスケールが結局タスク特化最適化に勝つ）」で、これは問題や会社の選択にも当てはまる。ソフトウェア構築が容易になり誰でも単純なシステムを作れる今、本当に耐久性のある価値は「真に野心的な問題への極端な集中」からしか生まれない。会社選びは「その会社が問題の最も野心的な形に取り組んでいるか、そして実際に解ける見込みがあるか」で、役割選びは「その問題のフロンティアに直接携われるか」で評価せよ。
+- **4. ラストマイルを全力疾走する**: Alfred Lin の言う通り、最後の10%が仕事の90%かつ報酬の90%。AI は「雑なプロンプトでエージェントが出せる中央値」が成果の基準になったため結果が二極化した。価値は「独自視点」か「細部へのこだわり」から来る。@philhchen は、進歩が速いので前世代の学びを踏まえて次世代の知能でゼロからやり直す方が良いことも多い、と実践を勧める。
+- **5. xG と決定率を両方上げる**: サッカーの xG（期待ゴール＝機会の質）と efficiency（決定率）の比喩。@philhchen は 2023年に Anthropic（当時 ~50 FTE）と Cursor（当時 創業者以外 2 FTE）を断り DeepMind を、2024年には両者を再度断り OpenAI を選んだ。いずれもキャリア上は高 xG だったが、興味・カルチャーフィット・目標で選んだ。機会を見られる位置取り（＝評判と専門性）が得点の第一歩だが、人生はいずれ機会を見るだけでなく決めることが問われるので、ゴール前の決定率も重要。彼は「もっとデータを集めてから決めればよかった」と振り返る。早期ステージの会社選びは本質的にチームと市場で決まり、多くの候補者は既存プロダクトに固執するが、チームが良ければプロダクトは大きく変わる（Anthropic の初期デモは彼にとって ChatGPT 以下の Slackbot だった）。
+- **6. いまリサーチに入れる**: @philhchen は「リサーチャーであることは職業でなくメンタリティ」だと言う。フロンティアラボのリサーチも、好奇心で新アイデアを探り、インフラと格闘して実装し、システムを細部まで理解してデバッグし、成果の価値を説明して計算資源を確保する営みの混合で、これらはラボの外でもできる。モデルを使って自分の直観を評価（eval）に落とし込み、Modal 等の学術クレジットを使ってアイデアを今すぐ試せ。大半のアイデアはスケールで失敗するが、その失敗の理解が「実際に効くもの」の理解の第一歩になる。
+
+全体を貫く彼の見立ては「ASI が知識労働のすべてを置換するとは信じない——人間には&quot;ASI に解かせる意味ある問題を選ぶ&quot;能力と&quot;それを解く資本を配分する&quot;能力に差別的優位があるから」。価値の源泉が「解くこと」から「選ぶこと・配分すること」へ移る、という [[concepts/research-methodology]] の問題選択論や [[concepts/agi-knowledge-moat]] の競争優位論と地続きの主張になっている。
+
+## 観察ログ（未検証）
+
+- 2026-07-07: @philhchen の予測「ASI は知識労働ジョブのすべてを置換しない（人間は問題選択と資本配分で差別化される）」——外れうる大胆な予測として後で答え合わせする。
+
+## 問い
+
+- 「損失関数を書けるものは AI が上達する→採点できないものに価値」という切り分けは、自分の仕事のどの部分が&quot;採点可能&quot;かを棚卸しする軸として使えるか。
+- 問題選択・リソース配分が最重要という主張は [[concepts/ai-era-good-engineer]] の「論点発見」や [[concepts/finding-unknowns]] の unknowns 棚卸しとどう重なり、どこが違うか。
+
+## 関連
+
+- [[concepts/research-methodology]]
+- [[concepts/ai-era-good-engineer]]
+- [[concepts/agi-knowledge-moat]]
+- [[concepts/finding-unknowns]]
+- [[business/talent-to-value-ai]]
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

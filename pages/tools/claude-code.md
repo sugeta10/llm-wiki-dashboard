@@ -420,3 +420,4 @@ Claude Codeにアプリのフロー構造をHTML + JSONで文書化させ、そ�
 - [[tools/understand-anything]]（コードベースを対話型ナレッジグラフ化する補助ツール・Claude Code対応）
 - [[concepts/claude-code-task-delegation]]（業務フローを渡す活用法50選と「環境を設計する」発想）
 - [[concepts/product-role-archetypes]]（作者 Boris Cherny が Claude Code チームから抽出した5アーキタイプ＝Prototyper/Builder/Sweeper/Grower/Maintainer）
+- [[tools/codexbar]]（Codex/Claude Code の使用制限残量をメニューバー常駐で可視化する macOS アプリ・steipete製）

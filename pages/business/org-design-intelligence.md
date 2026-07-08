@@ -123,3 +123,4 @@ AnthropicもOpenAIも「組織の構成員・調整層としてのAI」（[[conc
 - [[companies/anthropic]] — Claude Code開発元・AIエージェント活用事例
 - [[business/talent-to-value-ai]] — 同じ「業務のAI化 vs 組織のAI化」命題を人材評価の側から論じたマッキンゼーのフレーム
 - [[concepts/structuring-ability]] — 組織の内部構造（目標→評価→基準→人物像→確認）を分解する個人の思考力「構造化力」の習得法
+- [[concepts/team-leader-transition]] — 「自分が動く」から「チームが動ける環境を設計する」への新任リーダーの転換（個人スケールの委譲・組織アウトプット観）

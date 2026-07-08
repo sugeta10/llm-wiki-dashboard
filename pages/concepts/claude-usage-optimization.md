@@ -26,3 +26,4 @@ Claudeのトークン使用制限（レートリミット）を回避するた�
 - [[concepts/claude-code-large-codebase]]（大規模コードベースでのコンテキスト管理）
 - [[models/claude-opus-4-8]]（Effort Control・Fast Modeによるコスト最適化）
 - [[concepts/llm-model-selection-strategy]]（工程分解型モデル選択：上流大モデル・下流小モデルのサンドイッチ戦略）
+- [[tools/codexbar]]（Codex/Claude Codeの使用制限残量をメニューバー常駐で可視化するアプリ・steipete製）
