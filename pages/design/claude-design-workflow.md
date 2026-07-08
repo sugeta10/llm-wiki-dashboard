@@ -28,3 +28,4 @@
 - [[concepts/ai-quality-amplification]] — AIは速さでなく品質のスケールが本質という主張（「自動化でなく意思決定の質」と同じ論点）
 - [[design/claude-premium-website-build]] — Claude Codeで高級サイトを作る制作ワークフロー（同じくClaudeを制作主体に据える）
 - [[design/slide-md]] — 同じClaude Designでスライドのデザインを `.md` 3層で固定するシステム
+- [[concepts/study-group-facilitation]] — 同じ @sodawateeer による社内勉強会運営術（別トピックだが同著者の実践）

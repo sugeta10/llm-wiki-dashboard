@@ -74,3 +74,4 @@ OpenAI Codex CLI, OpenCode, Cursor, Factory Droid, Slate, Kiro, Hermes, GBrain �
 - [[people/andrej-karpathy]]
 - [[concepts/agentic-coding]]
 - [[concepts/vibe-coding]]
+- [[tools/superpowers]] — @LinearUncleが並べて挙げたobra製の開発方法論スキルライブラリ

@@ -91,6 +91,7 @@ Claude.ai と Claude Code は同じ仕組みでスキルを動作させる。
 - [[concepts/self-refining-skills]] — スキルに自己改善ループを組み込む発展的なパターン（LESSONS.mdアプローチ）
 - [[tools/grill-me]] — Matt Pocock作の実装前要件掘り下げ3行スキルの実践例
 - [[tools/matt-pocock-skills]] — grill-me含む実践的エンジニアリングスキルコレクション
+- [[tools/superpowers]] — 本概念の大規模な実装例（obra製14スキル＋毎セッション注入ブートストラップの開発方法論）
 - [[tools/buy-or-bounce]] — コンバージョン改善のためのスキル活用例（5バイヤーペルソナ）
 - [[tools/claude-code]] — Claude Code での `.claude/agents/` によるスキル運用
 - [[tools/claude-code-plugins]] — Claude Code公式マーケットプレイスのスキル・エージェント一覧

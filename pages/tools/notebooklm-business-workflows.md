@@ -52,6 +52,7 @@ NotebookLMの核心的な強みは「自分が入れた情報のみを使い、�
 ## 関連
 
 - [[tools/notebooklm]] — NotebookLM全般の活用ガイド（カスタムプロンプト・隠し機能10選）
+- [[tools/notebooklm-beginner-guide]] — 初心者向け2ノート運用法（本ページが「9業務への横展開」、あちらが「入口の2ノート」）
 - [[tools/notebooklm-studio-prompts]] — Studio 9機能のカスタム指示プロンプト集（本ページが「どの業務に当てるか」、あちらが「各機能をどう指示するか」）
 - [[tools/notebooklm-py]] — NotebookLM非公式Python API/CLI（バッチDL等Web UI非公開機能）
 - [[concepts/obsidian-personal-os]] — Obsidian+Claude Code+N8Nの3層アーキテクチャによるパーソナルOS設計

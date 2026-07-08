@@ -51,5 +51,6 @@ Googleが提供するAI搭載のノートブックツール。PDFやWebページ
 - [[tools/notebooklm-business-workflows]] — 業務時短9ワークフロー（会議・資料・申請書・改善ループ）
 - [[tools/notebooklm-studio-prompts]] — Studio 9機能のカスタム指示プロンプト集（4点指定・禁則・機能別の型20種）
 - [[tools/notebooklm-employees]] — 「知識＋人格」でノートを自律的な専門従業員に変え、Gemini連携で降臨・会議させる運用法
+- [[tools/notebooklm-beginner-guide]] — 初心者向け2ノート運用法（振り返りノート＋攻略本ノート）と使い続けた先の変化
 - [[concepts/obsidian-personal-os]] — Obsidian+Claude Code+N8NによるパーソナルOS設計
 - [[companies/google]] — NotebookLMを含むGoogle OneのAIサブスクバンドル
