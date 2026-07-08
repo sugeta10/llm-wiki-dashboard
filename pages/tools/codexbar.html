@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>codexbar</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="codexbar.md">Markdownで表示</a></div>
-  <div class="meta">tools/codexbar · tools · <span title="2026-07-07">2日前</span></div>
+  <div class="meta">tools/codexbar · tools · <span title="2026-07-09">今日</span></div>
   <article><h1>CodexBar</h1>
 <p><strong>CodexBar</strong> は、openai-codex（Codex CLI）と <a href="../tools/claude-code.html">claude-code</a> の<strong>使用制限（レートリミット）の残量をメニューバー常駐で表示する macOS アプリ</strong>。@steipete（Peter Steinberger、<a href="../tools/openclaw.html">openclaw</a> の開発者）が製作し、GitHub で公開している。@taiyo_ai_gakuse が「PC 上のどこでも Codex と Claude Code の利用制限が見られる」と便利さを紹介した。</p>
 <p>CLI で作業していると使用枠をどれだけ消費したかが見えにくく、いきなり制限に当たって作業が止まる。CodexBar はその残量を画面隅に常時可視化することで、<a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a> が説く「制限を計画的に避ける」運用を、頭の中の管理でなく UI で支える。</p>
@@ -37,6 +37,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>リポジトリ: github.com/steipete/CodexBar</li>
 <li>同じ @steipete 製のエージェント運用ツールに <a href="../tools/skill-cleaner.html">skill-cleaner</a>（スキル監査 CLI）、<a href="../tools/oracle.html">oracle</a>（Codex から上位モデル呼び出し）がある</li>
 </ul>
+<h2>対応範囲と仕組み</h2>
+<p>公式リポジトリの README（作者 steipete 本人の一次資料）によれば、CodexBar は <strong>57プロバイダ</strong>（Codex・OpenAI・Claude・Cursor・Gemini・Copilot・Grok・z.ai・MiniMax・AWS Bedrock・OpenRouter・LiteLLM ほか）に対応する。1プロバイダ＝1ステータス項目、または <strong>Merge Icons モード</strong>で1項目＋プロバイダ切替にまとめられる。各プロバイダごとに session／weekly／monthly のウィンドウと次回リセットまでのカウントダウンを出し、クレジット残高・Admin API の支出ダッシュボード・ローカルのコストスキャンを表示する。プロバイダのステータスをポーリングしてインシデントバッジをメニューとバーアイコンに重ねる。WidgetKit ウィジェットと21言語ローカライズにも対応する。macOS 14+ 専用。</p>
+<h2>認証とプライバシー設計</h2>
+<p>設計の核は「<strong>既存のプロバイダセッションを再利用する</strong>」こと。OAuth・device flow・API キー・ブラウザ cookie・ローカルファイルを流用し、パスワードは保存しない。デフォルトは on-device parsing で、ブラウザ cookie の読み取りは opt-in。作者は「ディスクを走査するわけではなく、関連機能を有効にしたときだけ既知の場所（cookie/local storage・provider config・ローカル JSONL ログ）を読む」と明言する。Full Disk Access が要るのは Safari の cookie を読むときのみで、他ブラウザ・手動 cookie・API キー・OAuth・CLI/ローカルソースで代替できる。プロバイダトークンは制限付きファイル権限の config ファイルに置かれる。</p>
+<h2>CLI</h2>
+<p>バンドル CLI（<code>codexbar</code>）で Settings と同じプロバイダ設定をスクリプト化できる（<code>codexbar config providers</code>／<code>config enable --provider grok</code>／<code>config set-api-key --provider elevenlabs --stdin</code>）。ローカルのコスト使用量は <code>codexbar cost --provider codex</code>（<code>claude</code>／<code>both</code> も可）で取得でき、macOS・Linux 両方の CLI ビルドが提供される。コスト使用量トラッキングは <a href="https://github.com/ryoppippi/ccusage">ccusage</a> にインスパイアされた、と作者はクレジットしている。</p>
 <h2>問い</h2>
 <ul>
 <li>使用枠の可視化は本当に「制限に当たって止まる」を減らすか、それとも枠を意識しすぎて萎縮するか。</li>
@@ -54,7 +60,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../tools/openclaw.html">openclaw</a></li>
 <li><a href="../tools/oracle.html">oracle</a></li>
-<li><a href="../tools/skill-cleaner.html">skill-cleaner</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2073401043975913683" rel="noopener" target="_blank">https://x.com/i/web/status/2073401043975913683</a></li></ul></section></article>
+<li><a href="../tools/skill-cleaner.html">skill-cleaner</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/steipete/CodexBar" rel="noopener" target="_blank">https://github.com/steipete/CodexBar</a></li>
+<li><a href="https://x.com/i/web/status/2073401043975913683" rel="noopener" target="_blank">https://x.com/i/web/status/2073401043975913683</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -83,6 +90,18 @@ CLI で作業していると使用枠をどれだけ消費したかが見えに�
 
 - リポジトリ: github.com/steipete/CodexBar
 - 同じ @steipete 製のエージェント運用ツールに [[tools/skill-cleaner]]（スキル監査 CLI）、[[tools/oracle]]（Codex から上位モデル呼び出し）がある
+
+## 対応範囲と仕組み
+
+公式リポジトリの README（作者 steipete 本人の一次資料）によれば、CodexBar は **57プロバイダ**（Codex・OpenAI・Claude・Cursor・Gemini・Copilot・Grok・z.ai・MiniMax・AWS Bedrock・OpenRouter・LiteLLM ほか）に対応する。1プロバイダ＝1ステータス項目、または **Merge Icons モード**で1項目＋プロバイダ切替にまとめられる。各プロバイダごとに session／weekly／monthly のウィンドウと次回リセットまでのカウントダウンを出し、クレジット残高・Admin API の支出ダッシュボード・ローカルのコストスキャンを表示する。プロバイダのステータスをポーリングしてインシデントバッジをメニューとバーアイコンに重ねる。WidgetKit ウィジェットと21言語ローカライズにも対応する。macOS 14+ 専用。
+
+## 認証とプライバシー設計
+
+設計の核は「**既存のプロバイダセッションを再利用する**」こと。OAuth・device flow・API キー・ブラウザ cookie・ローカルファイルを流用し、パスワードは保存しない。デフォルトは on-device parsing で、ブラウザ cookie の読み取りは opt-in。作者は「ディスクを走査するわけではなく、関連機能を有効にしたときだけ既知の場所（cookie/local storage・provider config・ローカル JSONL ログ）を読む」と明言する。Full Disk Access が要るのは Safari の cookie を読むときのみで、他ブラウザ・手動 cookie・API キー・OAuth・CLI/ローカルソースで代替できる。プロバイダトークンは制限付きファイル権限の config ファイルに置かれる。
+
+## CLI
+
+バンドル CLI（`codexbar`）で Settings と同じプロバイダ設定をスクリプト化できる（`codexbar config providers`／`config enable --provider grok`／`config set-api-key --provider elevenlabs --stdin`）。ローカルのコスト使用量は `codexbar cost --provider codex`（`claude`／`both` も可）で取得でき、macOS・Linux 両方の CLI ビルドが提供される。コスト使用量トラッキングは [ccusage](https://github.com/ryoppippi/ccusage) にインスパイアされた、と作者はクレジットしている。
 
 ## 問い
 

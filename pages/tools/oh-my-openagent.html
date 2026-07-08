@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>oh-my-openagent - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>oh-my-openagent</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="oh-my-openagent.md">Markdownで表示</a></div>
+  <div class="meta">tools/oh-my-openagent · tools · <span title="2026-07-09">今日</span></div>
+  <article><h1>oh-my-openagent</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: OpenCode（と Codex CLI）に載せるオピニオネイテッドなエージェント基盤プラグイン。<code>ultrawork</code> 一語で複数エージェントと Team Mode が起動し「終わるまで止まらない」。作者 code-yeongyu（Sisyphus Labs）はマルチモデル前提で設計している。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  User[&quot;ultrawork / ulw&quot;] --&gt; Sisyphus[&quot;Sisyphus（オーケストレータ）&quot;]
+  Sisyphus --&gt; Prometheus[&quot;Prometheus（計画・インタビュー）&quot;]
+  Sisyphus --&gt; Hephaestus[&quot;Hephaestus（自律実装 / GPT-5.5）&quot;]
+  Sisyphus --&gt; Oracle[&quot;Oracle（設計・デバッグ）&quot;]
+  Sisyphus --&gt; Librarian[&quot;Librarian（文書・コード検索）&quot;]
+  Sisyphus --&gt; Explore[&quot;Explore（高速grep）&quot;]</pre>
+<p>このツールの主張の核心は「単一プロバイダに賭けない」という設計思想にある。作者 code-yeongyu は README 冒頭で「Claude Code は快適な牢獄だが牢獄だ（a nice prison, but still a prison）」「未来は勝者を1つ選ぶことでなく全部をオーケストレートすることだ」と述べ、Anthropic が自分たちのせいで OpenCode をブロックしたと主張する（<a href="../tools/openclaw.html">openclaw</a> 開発者らの thdxr のポストを引用）。oh-my-openagent はその思想を、OpenCode 本体の上に「テスト済みで実際に出荷できたものだけを残した」配合物として実装したものだと位置づけている。ユーザーは設定を覚える必要はなく <code>ultrawork</code>（または <code>ulw</code>）と打つだけ、というのが売り文句。</p>
+<h2>2つのエディション</h2>
+<p>作者は同一プロダクトを2エディションで配布している。</p>
+<ul>
+<li><strong>Ultimate Edition（OpenCode 向け）</strong> — フル版。11エージェント・54+ライフサイクルフック・5つの内蔵MCP・全スラッシュコマンド・Team Mode・ulw-loop・Hashline編集を含む。<code>bunx oh-my-openagent install</code> でインストール。</li>
+<li><strong>Light Edition（Codex CLI 向け）</strong> — Codex のプラグインシステムに収まる可搬コンポーネント（<code>rules</code>・<code>comment-checker</code>・<code>git-bash</code>・<code>lsp</code>・<code>ultrawork</code>・<code>ulw-loop</code>・<code>start-work-continuation</code>・<code>telemetry</code>）とプラグインスコープのMCP。エージェントオーケストレーションと <code>team_*</code> ツールは含まず、そこは Codex CLI 自身の機構に任せる。<code>npx lazycodex-ai install</code> でインストール。</li>
+</ul>
+<p>なお npm 公開パッケージ名は移行期のため <code>oh-my-opencode</code> と <code>oh-my-openagent</code> の二重公開で、<code>bunx omo</code> は<strong>別人の無関係パッケージに解決されうる</strong>ため使うなと作者が注意している。</p>
+<h2>Discipline Agents とカテゴリルーティング</h2>
+<p>Ultimate 版のエージェントは各モデルの強みに合わせてチューニングされている、と作者は説明する。</p>
+<ul>
+<li><strong>Sisyphus</strong>（<code>claude-opus-4-7</code> / <code>kimi-k2.6</code> / <code>glm-5.1</code>）— 主オーケストレータ。計画・委任・完遂を担い「途中で止まらない」。</li>
+<li><strong>Hephaestus</strong>（<code>gpt-5.5</code>）— 自律的な深掘りワーカー。レシピでなくゴールを渡すと自分でコードベースを探索し end-to-end で実行する。</li>
+<li><strong>Prometheus</strong>（<code>claude-opus-4-7</code> / <code>kimi-k2.6</code> / <code>glm-5.1</code>）— 戦略プランナー。インタビュー方式で1行もコードを書く前に詳細計画を作る。</li>
+</ul>
+<p>Sisyphus がサブエージェントへ委任するときは<strong>モデルでなくカテゴリ</strong>（<code>visual-engineering</code> / <code>deep</code> / <code>quick</code> / <code>ultrabrain</code>）を指定し、ハーネスがカテゴリを適切なモデルへ自動マッピングする。作者いわく <code>ultrabrain</code> はデフォルトで GPT-5.5 xhigh にルーティングされる。この「エージェントは必要な仕事の種類を宣言し、ハーネスがモデルを選ぶ」構造は、<a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> の工程別モデル選択を委任層に内蔵した形と言える。</p>
+<h2>Team Mode（v4.0・opt-in）</h2>
+<p>「1体のエージェントは速い。協調したチームは壊滅的（devastating）」というのが Team Mode の主張。リードエージェントがカテゴリ特化したメンバーを最大8並列で走らせ、専用ツール（<code>team_create</code> / <code>team_send_message</code> / <code>team_task_create</code> / <code>team_status</code> …）でピアツーピア通信させ、tmux レイアウトで全メンバーの作業を同時に可視化する。これは <a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> の Specialist Team / Orchestrator-Worker をプロダクトに実装した例にあたる。上に乗る2スキルが象徴的:</p>
+<ul>
+<li><strong>hyperplan</strong> — 5体の敵対的エージェントが計画を直交する角度から引き裂く（<a href="../concepts/ai-red-teaming.html">ai-red-teaming</a> の内製版）。</li>
+<li><strong>security-research</strong> — 3体の脆弱性ハンター＋2体のPoCエンジニアが並列監査し、深刻度を「実際の悪用可能性」で較正する。</li>
+</ul>
+<h2>Hashline（Hash-Anchored Edit）</h2>
+<p>作者は「エージェント失敗の多くはモデルのせいでなく編集ツールのせい」という Can Bölük「The Harness Problem」の主張を引き、oh-my-pi にインスパイアされて <strong>Hashline</strong> を実装したと述べる。エージェントが読む各行には <code>LINE#ID</code> 形式の内容ハッシュが付き（例: <code>22#XJ|   return "world";</code>）、編集はそのタグを参照して行う。前回読んだ後にファイルが変わっていればハッシュが一致せず、破損する前に編集が拒否される。空白の再現も stale-line エラーも起きない、というのが売り。これは <a href="../concepts/harness-engineering.html">harness-engineering</a>（モデル＋ハーネス、編集ツールの信頼性）の具体的な打ち手にあたる。</p>
+<h2>ポジショニングとメンテナンス体制</h2>
+<ul>
+<li><strong>アンチ・ウォールドガーデン</strong>: 「$200 払って2時間分の仕事をする必要はない。モデルは毎月安く・賢くなる。単一プロバイダが支配することはない」——開かれた市場に賭ける、と繰り返し主張する。</li>
+<li><strong>Ralph Loop / <code>ulw-loop</code></strong>: 100% 完了まで止まらない自己参照ループ（<a href="../concepts/loop-engineering.html">loop-engineering</a> の実装）。Todo Enforcer がアイドルになったエージェントを引き戻す。</li>
+<li><strong>Building in Public</strong>: メンテナは Jobdori という AI アシスタント（<a href="../tools/openclaw.html">openclaw</a> の heavily customized fork 上で動く）でリポジトリをリアルタイム運用し、Discord で公開している。Sisyphus Labs は個人向け版 Dori を waitlist 提供中。</li>
+<li><strong>Claude Code 互換</strong>: 既存の hook・command・skill・MCP・plugin がそのまま動くと謳う（<a href="../tools/claude-code.html">claude-code</a>）。AmpCode と Claude Code から強く影響を受け「機能を移植し、しばしば改善した」とする。</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-09: 作者主張——Hashline 導入だけで Grok Code Fast 1 の編集成功率が <strong>6.7% → 68.3%</strong> に向上（単一ソースの数字、ベンチ詳細は README 非開示）。</li>
+<li>2026-07-09: 作者主張——「Kimi K2.6 + GPT-5.5 だけで vanilla Claude Code を上回る。ゼロ設定」。比較根拠は未開示。</li>
+<li>2026-07-09: 作者は「個人プロジェクトで LLM トークンに $24K 燃やして全ツールを試した末に OpenCode を選んだ」と述べ、本プラグインをその蒸留と位置づける（自己申告）。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li><code>ultrawork</code> 一語で全エージェント起動という「オピニオネイテッドさ」は、<a href="../concepts/skills-over-memory.html">skills-over-memory</a> が説く「効くものだけ残す」設計と両立するか、それとも足しすぎの方向か。</li>
+<li>カテゴリルーティング（エージェントが種類を宣言→ハーネスがモデル選択）は自分の wiki ハーネスに移植価値があるか。<a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> との差分は何か。</li>
+<li>「マルチモデルで vanilla Claude Code を超える」は再現可能な主張か、宣伝か——検証するなら同一タスクで何を測るか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/openclaw.html">openclaw</a> — メンテナAI Jobdori/Dori が OpenClaw の fork 上で動作。作者 Sisyphus Labs の運用基盤</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — Hashline / The Harness Problem（編集ツールの信頼性）の具体実装</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Team Mode（lead＋最大8並列member・ピアツーピア通信）＝Specialist Team の実装例</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — Ralph Loop / ulw-loop（完了まで止まらないループ）</li>
+<li><a href="../concepts/ai-red-teaming.html">ai-red-teaming</a> — hyperplan（5敵対エージェントが計画を攻撃）の思想</li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — カテゴリ→モデル自動マッピングの委任層内蔵版</li>
+<li>openai-codex — Light Edition（lazycodex-ai）の載る先</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — 互換対象かつ作者が「牢獄」と評する比較対象</li>
+<li><a href="../models/gpt-5-5.html">gpt-5-5</a> — Hephaestus / ultrabrain のモデル</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+<li><a href="../tools/openclaw.html">openclaw</a></li>
+<li><a href="../concepts/ai-red-teaming.html">ai-red-teaming</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/code-yeongyu/oh-my-openagent" rel="noopener" target="_blank">https://github.com/code-yeongyu/oh-my-openagent</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># oh-my-openagent
+
+&gt; **TL;DR**: OpenCode（と Codex CLI）に載せるオピニオネイテッドなエージェント基盤プラグイン。`ultrawork` 一語で複数エージェントと Team Mode が起動し「終わるまで止まらない」。作者 code-yeongyu（Sisyphus Labs）はマルチモデル前提で設計している。
+
+```mermaid
+flowchart TD
+  User[&quot;ultrawork / ulw&quot;] --&gt; Sisyphus[&quot;Sisyphus（オーケストレータ）&quot;]
+  Sisyphus --&gt; Prometheus[&quot;Prometheus（計画・インタビュー）&quot;]
+  Sisyphus --&gt; Hephaestus[&quot;Hephaestus（自律実装 / GPT-5.5）&quot;]
+  Sisyphus --&gt; Oracle[&quot;Oracle（設計・デバッグ）&quot;]
+  Sisyphus --&gt; Librarian[&quot;Librarian（文書・コード検索）&quot;]
+  Sisyphus --&gt; Explore[&quot;Explore（高速grep）&quot;]
+```
+
+このツールの主張の核心は「単一プロバイダに賭けない」という設計思想にある。作者 code-yeongyu は README 冒頭で「Claude Code は快適な牢獄だが牢獄だ（a nice prison, but still a prison）」「未来は勝者を1つ選ぶことでなく全部をオーケストレートすることだ」と述べ、Anthropic が自分たちのせいで OpenCode をブロックしたと主張する（[[tools/openclaw]] 開発者らの thdxr のポストを引用）。oh-my-openagent はその思想を、OpenCode 本体の上に「テスト済みで実際に出荷できたものだけを残した」配合物として実装したものだと位置づけている。ユーザーは設定を覚える必要はなく `ultrawork`（または `ulw`）と打つだけ、というのが売り文句。
+
+## 2つのエディション
+
+作者は同一プロダクトを2エディションで配布している。
+
+- **Ultimate Edition（OpenCode 向け）** — フル版。11エージェント・54+ライフサイクルフック・5つの内蔵MCP・全スラッシュコマンド・Team Mode・ulw-loop・Hashline編集を含む。`bunx oh-my-openagent install` でインストール。
+- **Light Edition（Codex CLI 向け）** — Codex のプラグインシステムに収まる可搬コンポーネント（`rules`・`comment-checker`・`git-bash`・`lsp`・`ultrawork`・`ulw-loop`・`start-work-continuation`・`telemetry`）とプラグインスコープのMCP。エージェントオーケストレーションと `team_*` ツールは含まず、そこは Codex CLI 自身の機構に任せる。`npx lazycodex-ai install` でインストール。
+
+なお npm 公開パッケージ名は移行期のため `oh-my-opencode` と `oh-my-openagent` の二重公開で、`bunx omo` は**別人の無関係パッケージに解決されうる**ため使うなと作者が注意している。
+
+## Discipline Agents とカテゴリルーティング
+
+Ultimate 版のエージェントは各モデルの強みに合わせてチューニングされている、と作者は説明する。
+
+- **Sisyphus**（`claude-opus-4-7` / `kimi-k2.6` / `glm-5.1`）— 主オーケストレータ。計画・委任・完遂を担い「途中で止まらない」。
+- **Hephaestus**（`gpt-5.5`）— 自律的な深掘りワーカー。レシピでなくゴールを渡すと自分でコードベースを探索し end-to-end で実行する。
+- **Prometheus**（`claude-opus-4-7` / `kimi-k2.6` / `glm-5.1`）— 戦略プランナー。インタビュー方式で1行もコードを書く前に詳細計画を作る。
+
+Sisyphus がサブエージェントへ委任するときは**モデルでなくカテゴリ**（`visual-engineering` / `deep` / `quick` / `ultrabrain`）を指定し、ハーネスがカテゴリを適切なモデルへ自動マッピングする。作者いわく `ultrabrain` はデフォルトで GPT-5.5 xhigh にルーティングされる。この「エージェントは必要な仕事の種類を宣言し、ハーネスがモデルを選ぶ」構造は、[[concepts/llm-model-selection-strategy]] の工程別モデル選択を委任層に内蔵した形と言える。
+
+## Team Mode（v4.0・opt-in）
+
+「1体のエージェントは速い。協調したチームは壊滅的（devastating）」というのが Team Mode の主張。リードエージェントがカテゴリ特化したメンバーを最大8並列で走らせ、専用ツール（`team_create` / `team_send_message` / `team_task_create` / `team_status` …）でピアツーピア通信させ、tmux レイアウトで全メンバーの作業を同時に可視化する。これは [[concepts/multi-agent-patterns]] の Specialist Team / Orchestrator-Worker をプロダクトに実装した例にあたる。上に乗る2スキルが象徴的:
+
+- **hyperplan** — 5体の敵対的エージェントが計画を直交する角度から引き裂く（[[concepts/ai-red-teaming]] の内製版）。
+- **security-research** — 3体の脆弱性ハンター＋2体のPoCエンジニアが並列監査し、深刻度を「実際の悪用可能性」で較正する。
+
+## Hashline（Hash-Anchored Edit）
+
+作者は「エージェント失敗の多くはモデルのせいでなく編集ツールのせい」という Can Bölük「The Harness Problem」の主張を引き、oh-my-pi にインスパイアされて **Hashline** を実装したと述べる。エージェントが読む各行には `LINE#ID` 形式の内容ハッシュが付き（例: `22#XJ|   return &quot;world&quot;;`）、編集はそのタグを参照して行う。前回読んだ後にファイルが変わっていればハッシュが一致せず、破損する前に編集が拒否される。空白の再現も stale-line エラーも起きない、というのが売り。これは [[concepts/harness-engineering]]（モデル＋ハーネス、編集ツールの信頼性）の具体的な打ち手にあたる。
+
+## ポジショニングとメンテナンス体制
+
+- **アンチ・ウォールドガーデン**: 「$200 払って2時間分の仕事をする必要はない。モデルは毎月安く・賢くなる。単一プロバイダが支配することはない」——開かれた市場に賭ける、と繰り返し主張する。
+- **Ralph Loop / `ulw-loop`**: 100% 完了まで止まらない自己参照ループ（[[concepts/loop-engineering]] の実装）。Todo Enforcer がアイドルになったエージェントを引き戻す。
+- **Building in Public**: メンテナは Jobdori という AI アシスタント（[[tools/openclaw]] の heavily customized fork 上で動く）でリポジトリをリアルタイム運用し、Discord で公開している。Sisyphus Labs は個人向け版 Dori を waitlist 提供中。
+- **Claude Code 互換**: 既存の hook・command・skill・MCP・plugin がそのまま動くと謳う（[[tools/claude-code]]）。AmpCode と Claude Code から強く影響を受け「機能を移植し、しばしば改善した」とする。
+
+## 観察ログ（未検証）
+
+- 2026-07-09: 作者主張——Hashline 導入だけで Grok Code Fast 1 の編集成功率が **6.7% → 68.3%** に向上（単一ソースの数字、ベンチ詳細は README 非開示）。
+- 2026-07-09: 作者主張——「Kimi K2.6 + GPT-5.5 だけで vanilla Claude Code を上回る。ゼロ設定」。比較根拠は未開示。
+- 2026-07-09: 作者は「個人プロジェクトで LLM トークンに $24K 燃やして全ツールを試した末に OpenCode を選んだ」と述べ、本プラグインをその蒸留と位置づける（自己申告）。
+
+## 問い
+
+- `ultrawork` 一語で全エージェント起動という「オピニオネイテッドさ」は、[[concepts/skills-over-memory]] が説く「効くものだけ残す」設計と両立するか、それとも足しすぎの方向か。
+- カテゴリルーティング（エージェントが種類を宣言→ハーネスがモデル選択）は自分の wiki ハーネスに移植価値があるか。[[concepts/llm-model-selection-strategy]] との差分は何か。
+- 「マルチモデルで vanilla Claude Code を超える」は再現可能な主張か、宣伝か——検証するなら同一タスクで何を測るか。
+
+## 関連
+
+- [[tools/openclaw]] — メンテナAI Jobdori/Dori が OpenClaw の fork 上で動作。作者 Sisyphus Labs の運用基盤
+- [[concepts/harness-engineering]] — Hashline / The Harness Problem（編集ツールの信頼性）の具体実装
+- [[concepts/multi-agent-patterns]] — Team Mode（lead＋最大8並列member・ピアツーピア通信）＝Specialist Team の実装例
+- [[concepts/loop-engineering]] — Ralph Loop / ulw-loop（完了まで止まらないループ）
+- [[concepts/ai-red-teaming]] — hyperplan（5敵対エージェントが計画を攻撃）の思想
+- [[concepts/llm-model-selection-strategy]] — カテゴリ→モデル自動マッピングの委任層内蔵版
+- [[tools/openai-codex]] — Light Edition（lazycodex-ai）の載る先
+- [[tools/claude-code]] — 互換対象かつ作者が「牢獄」と評する比較対象
+- [[models/gpt-5-5]] — Hephaestus / ultrabrain のモデル
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

@@ -169,6 +169,7 @@ Anthropicが公開しているエージェント量産手法は、**英語圏の
 - [[concepts/claude-code-orchestration]] — Claude Code の subagent/agent teams/worktree を使い分ける並列運用フレーム
 - [[tools/hermes-agent-research-department]] — Scout/Analyst/BrieferのPipelineパターンをHermesで実装した3エージェント・リサーチ部門
 - [[tools/stripe-minions]] — 決定論的オーケストレーター＋LLMワーカーの交互配置で週1,300本のマシン生成PRをマージするStripe社内パイプライン（Orchestrator-Workerの大規模実例）
+- [[tools/oh-my-openagent]] — Team Mode（lead＋最大8並列member・ピアツーピア通信）で Specialist Team を実装した OpenCode プラグイン
 
 ## 観察ログ（未検証）
 

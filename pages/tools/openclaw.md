@@ -74,3 +74,4 @@ Discordチャンネルに1行送信するだけで：
 - [[tools/autoreview-skill]] — OpenClaw agent-skills に含まれるコードレビュー自動化スキル
 - [[concepts/agent-memory-layer]] — @pejmanjohn が OpenClaw を個人アシスタント/アイデア発展の場として使い、推論が他エージェントに同期されない問題を論じた文脈
 - [[tools/codexbar]] — 同じ @steipete 製。Codex/Claude Code の使用制限残量をメニューバー常駐で表示
+- [[tools/oh-my-openagent]] — メンテナAI Jobdori が OpenClaw の heavily customized fork 上で動作（Sisyphus Labs の運用基盤）
