@@ -35,3 +35,4 @@
 - [[tools/claude-code-obsidian-project]] — Claude Code+Obsidian「何でも相談」プロジェクトの実践設計例
 - [[tools/claude-code-obsidian-sync]] — Claude Code会話履歴をObsidianに自動記録する実装
 - [[concepts/output-first-learning]] — 書いて蓄積する側の「学習法」（出力を強制関数に知識を血肉化）。同一著者@eng_khairallah1繋がりの別概念は [[concepts/claude-projects-blueprint]]
+- [[concepts/frontier-model-extraction]] — deep researchを原子ノート化してvaultへマイニングする型3の実践先（「要約でなく原子化せよ」）

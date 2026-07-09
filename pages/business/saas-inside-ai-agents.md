@@ -26,3 +26,4 @@
 - [[business/ai-vertical-integration]] — AI企業の垂直統合とSaaS受託業界への影響（fladdict分析）
 - [[tools/openai-codex]] — Dan Shipperが主作業環境として使うCodex
 - [[tools/claude-code]] — 競合ポジションにありながらDanが事前に注目していたツール
+- [[business/startups-for-agents]] — 「エージェントがデフォルトで手を伸ばすツールを作れ」という供給側の投資テーゼ（@gregisenberg）。需要側の本ページと表裏

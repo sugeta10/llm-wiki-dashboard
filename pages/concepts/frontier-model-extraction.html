@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>frontier-model-extraction - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>frontier-model-extraction</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="frontier-model-extraction.md">Markdownで表示</a></div>
+  <div class="meta">concepts/frontier-model-extraction · concepts · <span title="2026-07-09">今日</span></div>
+  <article><h1>フロンティアモデルの抽出（去る前に判断を永続資産へ）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 去りゆくフロンティアモデルには「会話」でなく「抽出」で向き合う。「安いモデルが明日やり直せる作業か?」の<strong>不可逆性フィルタ</strong>で選別し、5つの型で判断を永続資産（標準・ロードマップ・知識庫・スキル）に落とす（@EXM7777）。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  Q{&quot;安いモデルが明日&lt;br/&gt;やり直せる作業か?&quot;}
+  Q --&gt;|Yes| Skip[&quot;捨てる: サイト/デモアプリ/量産投稿&quot;]
+  Q --&gt;|No| Extract[&quot;抽出: 判断を書き下す&quot;]
+  Extract --&gt; M1[&quot;1. 標準を CLAUDE.md/skills へ&quot;]
+  Extract --&gt; M2[&quot;2. コンサル監査 → ロードマップ&quot;]
+  Extract --&gt; M3[&quot;3. 深掘りリサーチ → Obsidian原子ノート&quot;]
+  Extract --&gt; M4[&quot;4. /goal + 動的ワークフロー&quot;]
+  Extract --&gt; M5[&quot;5. extract-approach スキル&quot;]
+  M1 --&gt; Assets[(&quot;モデルが去っても残る&lt;br/&gt;永続資産&quot;)]
+  M2 --&gt; Assets
+  M3 --&gt; Assets
+  M4 --&gt; Assets
+  M5 --&gt; Assets</pre>
+<p>@EXM7777 は、<a href="../models/claude-fable-5.html">Fable 5</a> がサブスクから外れ従量課金へ移る「最終日」の過ごし方の大半は間違っていると述べる。出回るリストは「サイトを作れ・デモアプリを出せ・1ヶ月分のコンテンツを生成しろ」だが、これらは唯一意味のあるテストに落第する。テストは一問——<strong>「安いモデルが明日これをやり直せるか?」</strong>。サイトもデモも投稿も、プランに残る日常モデル（Opus）が来週タダで作り直せる。フロンティアモデルの最後の時間をそこに使うのは「外科医を雇って血圧を測らせるようなもの」だ、と @EXM7777 は言う。</p>
+<p>抽出すべきは、<strong>作るのにfableレベルの判断が要るが、使うのは普通の知能で足りるもの</strong>——書き下された標準／推論済みのロードマップ／蒸留された知識庫／自走するスキル。これらはモデルが手の届かない所に行っても価値を保つ。@EXM7777 は歴史的パターンを引く。llama時代に最も複製された訓練データは、フロンティアモデルから52,000の回答を引き出して小型オープンモデルを訓練したもので、生成コストは$500未満だった。教師モデルは引退したが、それで訓練したものは今も動く。「教師は死んだが、抽出したものは残る」。だから今日の戦略は会話でなく<strong>抽出</strong>だ、というのが全体の論旨。</p>
+<h2>5つの型</h2>
+<p><strong>1. workspace に fable の判断を植える</strong> — 最高価値の成果物は「標準」。1つの答えは一度助けるだけだが、標準は以後の全ての答えを底上げする。<a href="../concepts/claude-md-rules.html">CLAUDE.md</a>・<a href="../concepts/claude-skills.html">skills</a>・learningsファイル・メモリ設定は、将来のどのモデルも作業前に読む層。今日 fable が、opusには追随できるが決して書けない水準でその層を書く。<strong>「基準の行（criteria line）」が肝</strong>——安いモデルは品質バーを発明できないが、書かれた品質バーは問題なく適用できる。</p>
+<p><strong>2. コンサル監査（the consultant audit）</strong> — fableの検証された強みは、難しく雑然とした問題での判断（最難関コーディングtierで次点モデルの2倍超のスコア、難度が上がるほど差が開く）。ならば自分が持つ最も難しく雑然とした問題＝<strong>自分のビジネス</strong>を渡す。プロジェクト・数字・文脈にアクセスできるセッションで監査させる。成果物ルールが価値を運ぶ——<strong>推論を今日書き下す</strong>（それを生めるモデルがflat-rateの間に）。明日のopusは天才である必要はなく、天才的な文書に従えばよい。</p>
+<p><strong>3. second brain run</strong> — リサーチが最も深く抽出できる（長い多段の統合がfableの最大の測定リード）。ニッチ・競合・顧客の問題・学びたかった手法をdeep researchで大量に走らせ、各runを <a href="../concepts/obsidian-claude-second-brain.html">Obsidian vault</a> にマイニングする。<strong>要約して1本の長いレポートにするな、原子化せよ</strong>——100本のリンクされた1インサイト・ノートは検索・再利用されるが、40ページのレポートは保存され忘れられる、と @EXM7777 は言う。この原子ノート観は <a href="../concepts/llm-wiki.html">llm-wiki</a> の設計思想と一致する。</p>
+<p><strong>4. fire the goals</strong> — fableの署名的能力は「何時間も一つの仕事を筋を見失わず保持する」持久力で、これが明日flat-rateでなくなるもの。<a href="../tools/claude-code.html">Claude Code</a> の2コマンドを使う。<a href="../tools/claude-code-goal.html">/goal</a> はプロンプトでなく<strong>完了条件</strong>を置き、2つ目の小型モデルが毎ターン条件を判定し、満たすまで止めない。<a href="../concepts/claude-code-dynamic-workflows.html">dynamic workflows</a> はスケール層で、モデルがオーケストレーションスクリプトを書き、数十のサブエージェントを背後で並列に走らせ互いの発見を照合する。2つの安全ルール:</p>
+<ul>
+<li><strong>完了条件に「貼られた証拠」を要求</strong>する。審判モデルは会話しか読めずテストを実行できないので、緑のrunを<strong>貼らせる・約束させない</strong>。</li>
+<li><strong>全runに上限</strong>（ターンか実時間）を条件に書き込む。上限なしの1ループは朝までに$6,000請求されうる。</li>
+</ul>
+<p>加えてメーター注意——fableは週次上限をopusの約2倍速で消費し、そもそも週次上限の半分しか適用されない。10個でなく最も価値の詰まった2〜3ゴールに絞る。</p>
+<p><strong>5. how fable thinks を記録するスキル</strong> — fableが難問を解くたび、その approach はセッション終了で蒸発する。<code>.claude/skills/extract-approach/SKILL.md</code> を作り、CLAUDE.mdに配線して<strong>指示なしで発火</strong>させる。以後、実際のバックログ（厄介なバグ・回り続けていたアーキ判断）でfableを酷使すると、解くたびにノートが残る。ノートこそ蒸留物——fableの推論がリポに座り、後続のどのモデルも読める。@EXM7777 はこれを<strong>複利の型</strong>と呼び、1時間しかないなら最初に入れるべきものだと言う（残りのfable時間を自動で永続資産に変換するため）。この自己記録は <a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> と同系。</p>
+<p><strong>時間がないときの順序</strong>: 5 →（単独で走る）4 → 1 → 2 → 3。</p>
+<h2>繰り返す状況</h2>
+<p>@EXM7777 は「この状況はまた繰り返す」と述べる。過去1年のパターン——フロンティアモデルが現れ、値付けし直され、引かれ、時に戻り、いずれ引退する。ある主要モデルは予告なく削除され、反発で復活し、それでも6ヶ月後に引退した（<a href="../models/claude-fable-5.html">claude-fable-5</a> の輸出規制による一時停止と復帰の経緯を指すと思われる）。アクセスがある間に保存しないアウトプットは、去った後には再構築できない。「あらゆる教師は去る。抽出したものが手元に残る」。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-06: fableは最難関コーディングtierで次点モデルの2倍超のスコア、長い多段統合が全モデル中最大の測定リード、という @EXM7777 の主張（単一ソース）。<a href="../models/claude-fable-5.html">claude-fable-5</a> の「Cognition FrontierCodeでフロンティア最高」等の検証済み事実と整合するか要確認。</li>
+<li>上限なしの自律ループが朝までに$6,000請求されうる、との警句（単一ソース・後で相場感を確かめたい数字）。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「安いモデルが明日やり直せるか?」の不可逆性フィルタは、自分のバックログの棚卸しにそのまま使えるか</li>
+<li>型5の <code>extract-approach</code> スキルを自分のvault／CLAUDE.mdにどう実装・配線するか</li>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a>（参謀プロンプトでの棚卸し）と本抽出術を「棚卸し → 抽出 → 永続資産」の一連の運用に束ねられるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> — 抽出対象のフロンティアモデル。サブスク枠→従量課金の移行が本ページの前提</li>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a> — 同じ「Fable最終日」テーマの姉妹編。参謀プロンプトで人生・事業を棚卸しする型（@akira_papa_IT）</li>
+<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a> — AGI時代の競争優位の源泉の変容。抽出した判断＝私有資産という本ページの論旨と同系</li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — 型4の <code>/goal</code>（完了条件で自律ターン反復）</li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — 型4のスケール層（オーケストレーションスクリプト＋大規模並列サブエージェント）</li>
+<li><a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a> — 型3のリサーチ・マイニング先（Obsidian原子ノート）</li>
+<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> — 型5と同系の会話→ノート→スキルの自己改善ループ</li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 「fableで推論・opusで実行」の工程分解型モデル選択</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a></li>
+<li><a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2074158459545854232" rel="noopener" target="_blank">https://x.com/i/web/status/2074158459545854232</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># フロンティアモデルの抽出（去る前に判断を永続資産へ）
+
+&gt; **TL;DR**: 去りゆくフロンティアモデルには「会話」でなく「抽出」で向き合う。「安いモデルが明日やり直せる作業か?」の**不可逆性フィルタ**で選別し、5つの型で判断を永続資産（標準・ロードマップ・知識庫・スキル）に落とす（@EXM7777）。
+
+```mermaid
+flowchart TD
+  Q{&quot;安いモデルが明日&lt;br/&gt;やり直せる作業か?&quot;}
+  Q --&gt;|Yes| Skip[&quot;捨てる: サイト/デモアプリ/量産投稿&quot;]
+  Q --&gt;|No| Extract[&quot;抽出: 判断を書き下す&quot;]
+  Extract --&gt; M1[&quot;1. 標準を CLAUDE.md/skills へ&quot;]
+  Extract --&gt; M2[&quot;2. コンサル監査 → ロードマップ&quot;]
+  Extract --&gt; M3[&quot;3. 深掘りリサーチ → Obsidian原子ノート&quot;]
+  Extract --&gt; M4[&quot;4. /goal + 動的ワークフロー&quot;]
+  Extract --&gt; M5[&quot;5. extract-approach スキル&quot;]
+  M1 --&gt; Assets[(&quot;モデルが去っても残る&lt;br/&gt;永続資産&quot;)]
+  M2 --&gt; Assets
+  M3 --&gt; Assets
+  M4 --&gt; Assets
+  M5 --&gt; Assets
+```
+
+@EXM7777 は、[[models/claude-fable-5|Fable 5]] がサブスクから外れ従量課金へ移る「最終日」の過ごし方の大半は間違っていると述べる。出回るリストは「サイトを作れ・デモアプリを出せ・1ヶ月分のコンテンツを生成しろ」だが、これらは唯一意味のあるテストに落第する。テストは一問——**「安いモデルが明日これをやり直せるか?」**。サイトもデモも投稿も、プランに残る日常モデル（Opus）が来週タダで作り直せる。フロンティアモデルの最後の時間をそこに使うのは「外科医を雇って血圧を測らせるようなもの」だ、と @EXM7777 は言う。
+
+抽出すべきは、**作るのにfableレベルの判断が要るが、使うのは普通の知能で足りるもの**——書き下された標準／推論済みのロードマップ／蒸留された知識庫／自走するスキル。これらはモデルが手の届かない所に行っても価値を保つ。@EXM7777 は歴史的パターンを引く。llama時代に最も複製された訓練データは、フロンティアモデルから52,000の回答を引き出して小型オープンモデルを訓練したもので、生成コストは$500未満だった。教師モデルは引退したが、それで訓練したものは今も動く。「教師は死んだが、抽出したものは残る」。だから今日の戦略は会話でなく**抽出**だ、というのが全体の論旨。
+
+## 5つの型
+
+**1. workspace に fable の判断を植える** — 最高価値の成果物は「標準」。1つの答えは一度助けるだけだが、標準は以後の全ての答えを底上げする。[[concepts/claude-md-rules|CLAUDE.md]]・[[concepts/claude-skills|skills]]・learningsファイル・メモリ設定は、将来のどのモデルも作業前に読む層。今日 fable が、opusには追随できるが決して書けない水準でその層を書く。**「基準の行（criteria line）」が肝**——安いモデルは品質バーを発明できないが、書かれた品質バーは問題なく適用できる。
+
+**2. コンサル監査（the consultant audit）** — fableの検証された強みは、難しく雑然とした問題での判断（最難関コーディングtierで次点モデルの2倍超のスコア、難度が上がるほど差が開く）。ならば自分が持つ最も難しく雑然とした問題＝**自分のビジネス**を渡す。プロジェクト・数字・文脈にアクセスできるセッションで監査させる。成果物ルールが価値を運ぶ——**推論を今日書き下す**（それを生めるモデルがflat-rateの間に）。明日のopusは天才である必要はなく、天才的な文書に従えばよい。
+
+**3. second brain run** — リサーチが最も深く抽出できる（長い多段の統合がfableの最大の測定リード）。ニッチ・競合・顧客の問題・学びたかった手法をdeep researchで大量に走らせ、各runを [[concepts/obsidian-claude-second-brain|Obsidian vault]] にマイニングする。**要約して1本の長いレポートにするな、原子化せよ**——100本のリンクされた1インサイト・ノートは検索・再利用されるが、40ページのレポートは保存され忘れられる、と @EXM7777 は言う。この原子ノート観は [[concepts/llm-wiki]] の設計思想と一致する。
+
+**4. fire the goals** — fableの署名的能力は「何時間も一つの仕事を筋を見失わず保持する」持久力で、これが明日flat-rateでなくなるもの。[[tools/claude-code|Claude Code]] の2コマンドを使う。[[tools/claude-code-goal|/goal]] はプロンプトでなく**完了条件**を置き、2つ目の小型モデルが毎ターン条件を判定し、満たすまで止めない。[[concepts/claude-code-dynamic-workflows|dynamic workflows]] はスケール層で、モデルがオーケストレーションスクリプトを書き、数十のサブエージェントを背後で並列に走らせ互いの発見を照合する。2つの安全ルール:
+
+- **完了条件に「貼られた証拠」を要求**する。審判モデルは会話しか読めずテストを実行できないので、緑のrunを**貼らせる・約束させない**。
+- **全runに上限**（ターンか実時間）を条件に書き込む。上限なしの1ループは朝までに$6,000請求されうる。
+
+加えてメーター注意——fableは週次上限をopusの約2倍速で消費し、そもそも週次上限の半分しか適用されない。10個でなく最も価値の詰まった2〜3ゴールに絞る。
+
+**5. how fable thinks を記録するスキル** — fableが難問を解くたび、その approach はセッション終了で蒸発する。`.claude/skills/extract-approach/SKILL.md` を作り、CLAUDE.mdに配線して**指示なしで発火**させる。以後、実際のバックログ（厄介なバグ・回り続けていたアーキ判断）でfableを酷使すると、解くたびにノートが残る。ノートこそ蒸留物——fableの推論がリポに座り、後続のどのモデルも読める。@EXM7777 はこれを**複利の型**と呼び、1時間しかないなら最初に入れるべきものだと言う（残りのfable時間を自動で永続資産に変換するため）。この自己記録は [[concepts/skill-self-improving-loop]] と同系。
+
+**時間がないときの順序**: 5 →（単独で走る）4 → 1 → 2 → 3。
+
+## 繰り返す状況
+
+@EXM7777 は「この状況はまた繰り返す」と述べる。過去1年のパターン——フロンティアモデルが現れ、値付けし直され、引かれ、時に戻り、いずれ引退する。ある主要モデルは予告なく削除され、反発で復活し、それでも6ヶ月後に引退した（[[models/claude-fable-5]] の輸出規制による一時停止と復帰の経緯を指すと思われる）。アクセスがある間に保存しないアウトプットは、去った後には再構築できない。「あらゆる教師は去る。抽出したものが手元に残る」。
+
+## 観察ログ（未検証）
+
+- 2026-07-06: fableは最難関コーディングtierで次点モデルの2倍超のスコア、長い多段統合が全モデル中最大の測定リード、という @EXM7777 の主張（単一ソース）。[[models/claude-fable-5]] の「Cognition FrontierCodeでフロンティア最高」等の検証済み事実と整合するか要確認。
+- 上限なしの自律ループが朝までに$6,000請求されうる、との警句（単一ソース・後で相場感を確かめたい数字）。
+
+## 問い
+
+- 「安いモデルが明日やり直せるか?」の不可逆性フィルタは、自分のバックログの棚卸しにそのまま使えるか
+- 型5の `extract-approach` スキルを自分のvault／CLAUDE.mdにどう実装・配線するか
+- [[concepts/ai-strategist-prompt]]（参謀プロンプトでの棚卸し）と本抽出術を「棚卸し → 抽出 → 永続資産」の一連の運用に束ねられるか
+
+## 関連
+
+- [[models/claude-fable-5]] — 抽出対象のフロンティアモデル。サブスク枠→従量課金の移行が本ページの前提
+- [[concepts/ai-strategist-prompt]] — 同じ「Fable最終日」テーマの姉妹編。参謀プロンプトで人生・事業を棚卸しする型（@akira_papa_IT）
+- [[concepts/agi-knowledge-moat]] — AGI時代の競争優位の源泉の変容。抽出した判断＝私有資産という本ページの論旨と同系
+- [[tools/claude-code-goal]] — 型4の `/goal`（完了条件で自律ターン反復）
+- [[concepts/claude-code-dynamic-workflows]] — 型4のスケール層（オーケストレーションスクリプト＋大規模並列サブエージェント）
+- [[concepts/obsidian-claude-second-brain]] — 型3のリサーチ・マイニング先（Obsidian原子ノート）
+- [[concepts/skill-self-improving-loop]] — 型5と同系の会話→ノート→スキルの自己改善ループ
+- [[concepts/llm-model-selection-strategy]] — 「fableで推論・opusで実行」の工程分解型モデル選択
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

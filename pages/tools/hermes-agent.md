@@ -98,3 +98,4 @@ Hermesを「チャットアプリ」として使うと機能の90%を残すこ�
 - [[tools/hermes-agent-overnight]] — 夜間9時間自動化ワークフローの詳細設計（SOUL.md制限・5層セキュリティ・段階的セットアップ）
 - [[tools/hermes-agent-self-evolution]] — GEPAによるスキル/プロンプト/コードのオフライン進化を担う独立リポ（5フェーズ計画・ガードレール5項目）
 - [[tools/hermes-agent-research-department]] — プロファイル分離を使った3エージェント（Scout/Analyst/Briefer）リサーチ部門の具体的構築ガイド
+- [[business/startups-for-agents]] — 本ツールがエージェントの動く「ハーネス」の例として名指しされた投資テーゼ（@gregisenberg）

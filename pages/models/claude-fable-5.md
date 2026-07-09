@@ -93,3 +93,5 @@ Fable 5 の分類器が**サイバーセキュリティ・生物化学・蒸留*
 - [[tools/claude-code-goal]] — 「言語の庭」を生成した `/goal` 自律ワークフロー機能。Fable 5のループ型の使い方の入口
 - [[concepts/finding-unknowns]] — Fable時代の運用フレーム：仕事の質のボトルネックが人間側のunknown明確化に移るという実践論（@trq212）
 - [[concepts/notebooklm-claude-workflow]] — Fable 5を「考える」側に据え、NotebookLMの引用付き事実を「知る」入口にする分業ワークフロー（@ai_jitan）
+- [[concepts/ai-strategist-prompt]] — Fable 5の「長く複雑なタスクほど差が開く」本領を、全会話履歴の棚卸し＝参謀プロンプトで個人利用に引き出す型（@akira_papa_IT）
+- [[concepts/frontier-model-extraction]] — サブスク枠→従量課金の移行を前提に、Fable 5の判断を去る前に永続資産へ抽出する5つの型（@EXM7777）

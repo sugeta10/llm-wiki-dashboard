@@ -64,3 +64,4 @@ flowchart TD
 - [[models/claude-fable-5]] — 本手法の背景となるモデル。強いモデルほどボトルネックが人間側のunknown明確化に移る
 - [[concepts/agentic-coding]] — 上位概念。unknownsの削減と計画をその中核スキルと位置づける
 - [[concepts/career-advice-ai-age]] — Phil Chenの「問題を解くより見つける」。エージェント時代に価値を出す問題選択スキルとして接続
+- [[concepts/ai-strategist-prompt]] — 会話履歴を横断させ「見えていない機会/リスク/前提」を強制出力させる参謀プロンプト。unknownsの掘り出しを個人利用に落とした型

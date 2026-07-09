@@ -78,4 +78,5 @@ OpenAI・Anthropic・ThoughtWorksが調整なく同じ壁にぶつかり、異�
 - [[concepts/ai-agent-building-blocks]] — 同著者(@sairahul1)によるエージェント入門（ReActループ＋脳/手/記憶/ループ/検証の5ブロック）。ハーネス概念の具体的構成要素にあたる
 - [[concepts/harness-engineering-roadmap]] — この理論を「14ステップ・3階層の構築手順」に落とした実装ロードマップ版（@0xCodez）
 - [[concepts/loop-anatomy]] — 1階上のループを5ムーブに解剖した枠組み。本ページの Generator/Evaluator 分離（Rajasekaran）を検証ムーブの中核として詳述
+- [[business/startups-for-agents]] — ハーネスがデフォルトで読み込むツールになれば「golden」という投資テーゼ（@gregisenberg）。ハーネスをビジネス機会の側から見る視点
 - [[tools/oh-my-openagent]] — Hashline（The Harness Problem / Can Bölük）を実装したエージェント基盤。「失敗はモデルでなく編集ツールのせい」という具体的打ち手

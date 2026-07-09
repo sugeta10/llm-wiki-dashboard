@@ -26,3 +26,4 @@ AGIは**知識の希少性**を壊す一方、以下の希少性はむしろ際�
 - [[concepts/recursive-self-improvement]] — capabilityが汗かき作業から自動化され research taste に優位が集約される論考
 - [[concepts/philosophy-external-memory]] — 「外部記憶を持つ人間だけが固有性を保つ」——個人レベルで知識MOATを思想哲学DBとして実装する方法論
 - [[concepts/career-advice-ai-age]] — Phil Chenの「人間は問題選択と資本配分で差別化される」——競争優位が"選ぶ・配分する"へ移る同じ問い
+- [[concepts/frontier-model-extraction]] — 去るフロンティアモデルの判断を標準・ロードマップ・知識庫・スキルへ抽出＝私有資産化する実践（同じ「抽出した判断が残る」論旨）

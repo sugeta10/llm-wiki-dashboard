@@ -76,3 +76,4 @@ claude -p "/goal CHANGELOG.md has an entry for every PR merged this week"
 - [[concepts/loop-engineering]] — /goal がループエンジニアリング Stage 4 の具体実装として位置づけられる
 - [[concepts/goal-loop-routine]] — goal/loop/routine の動詞の使い分け。/goal は「条件を満たすまで走って止まる」動詞
 - [[models/claude-fable-5]] — `/goal` にゴールだけ与えて放置し、全6コース54レッスンの教材サイト「言語の庭」が自走で完成した実証事例（水島宏太）
+- [[concepts/frontier-model-extraction]] — フロンティアモデルの持久力を抽出する型4として `/goal`＋動的ワークフローを使う（貼られた証拠＋ハード上限の2安全ルール）
