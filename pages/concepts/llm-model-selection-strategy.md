@@ -46,3 +46,5 @@ flowchart LR
 - [[concepts/multi-agent-patterns]] — Pipeline/Fan-Outパターン（並列実行とコスト最適化の接点）
 - [[concepts/loop-engineering]] — ループ設計でFable 5性能を引き出す手法
 - [[concepts/prompt-engineering]] — 上流で「濃いコンテキスト」を作るコンテキストエンジニアリングの実践
+- [[concepts/notebooklm-claude-workflow]] — 「上流に濃い文脈を渡し切る」原則の事実供給版：NotebookLMで網羅出力させてClaudeに渡す（@ai_jitan）
+- [[concepts/agent-adoption-walls]] — 企業エージェント導入の「⑦モデル選択の自由度」＝プロバイダー非依存の運用（@kzkhykw）

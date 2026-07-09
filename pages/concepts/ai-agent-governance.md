@@ -60,3 +60,4 @@ Rexは「外部ポリシーで実行を縛る」設計思想の参照例であ�
 - [[concepts/claude-code-security]]（組織展開でのセキュリティ設定）
 - [[concepts/agentic-coding]]（エージェント活用の基盤）
 - [[concepts/idp-shared-cli-mcp]]（IdP認証をCLI/MCPで共有し人間とAIを同一認可経路に乗せる設計）
+- [[concepts/agent-adoption-walls]]（企業エージェント導入の「⑤ガバナンス」を含む7つの壁）

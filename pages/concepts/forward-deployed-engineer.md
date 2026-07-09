@@ -41,3 +41,4 @@ FDEは単なる職種ではなく、エンタープライズAI時代の収益モ
 - [[concepts/agi-knowledge-moat]] — 競争優位が「文脈の深さ」へ移る
 - [[concepts/ai-requirements-definition]] — 「整理から決断へ」の能力転換がFDE像に収斂するという論考
 - [[business/google-calendar-ai-database]] — FDEが顧客組織に入ってまず行う業務データ構造化の具体例（GoogleカレンダーDB化）
+- [[concepts/agent-adoption-walls]] — FDEアプローチで企業にエージェントを導入する際に共通して詰まる7つの壁（@kzkhykw）

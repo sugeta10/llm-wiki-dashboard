@@ -54,3 +54,4 @@ Googleが提供するAI搭載のノートブックツール。PDFやWebページ
 - [[tools/notebooklm-beginner-guide]] — 初心者向け2ノート運用法（振り返りノート＋攻略本ノート）と使い続けた先の変化
 - [[concepts/obsidian-personal-os]] — Obsidian+Claude Code+N8NによるパーソナルOS設計
 - [[companies/google]] — NotebookLMを含むGoogle OneのAIサブスクバンドル
+- [[concepts/notebooklm-claude-workflow]] — NotebookLMを「知る」入口、Claudeを「考える」本体に分業するコピペ連携ワークフロー（@ai_jitan）
