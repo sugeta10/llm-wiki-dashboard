@@ -49,3 +49,4 @@ flowchart LR
 - [[concepts/notebooklm-claude-workflow]] — 「上流に濃い文脈を渡し切る」原則の事実供給版：NotebookLMで網羅出力させてClaudeに渡す（@ai_jitan）
 - [[concepts/agent-adoption-walls]] — 企業エージェント導入の「⑦モデル選択の自由度」＝プロバイダー非依存の運用（@kzkhykw）
 - [[concepts/advisor-executor-pattern]] — 同型のサンドイッチ戦略を Fable 5×Sonnet 5 の2モデル・3パターンで具体化（別著者の収斂）
+- [[concepts/claude-code-model-effort]] — 「モデル×エフォートの二軸」の公式解説版。モデル=何を知っているか／effort=どれだけ徹底するか

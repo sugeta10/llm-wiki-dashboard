@@ -56,3 +56,4 @@ flowchart TD
 - [[concepts/agentic-engineering-workflow]] — 同著者(@mvanhorn)の上位ワークフロー論（plan.md先行・人間はシグナルに徹する）
 - [[concepts/codex-agent-loop]] — Codex 側のエージェントループ内部実装
 - [[tools/makeloop]] — closed/open の二分で骨格を切り替えてループプロンプトを自動生成するコマンド。本ページの動詞分類と同じ「止まる条件で選ぶ」判断軸を生成側に置いたもの
+- [[concepts/claude-code-loop-types]] — 公式チーム版の分類。本ページの3動詞に turn-based（素の agentic loop）と proactive（合成）を加えた4類型

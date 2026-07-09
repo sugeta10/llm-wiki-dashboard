@@ -2,6 +2,8 @@
 
 > **TL;DR**: 高知能・高価格の [[models/claude-fable-5|Fable 5]] と高速・安価な Sonnet 5 を、役割やフェーズで使い分ける3つの連携パターン（Advisor／Orchestrator／Fable Sandwich）。単一モデルを回すのでなくモデルを組み合わせて「知能」と「コスト・速度」のトレードオフを解消する。
 
+> 📌 X bookmark: 26,784（2026-07-09 時点、@ClaudeDevs 公式ポスト）
+
 ```mermaid
 flowchart LR
   A["Phase 1 探索\nSonnet 5\nリポ巡回・依存/ログ収集"] --> B["Phase 2 計画・査読\nFable 5\n修正方針・リスクチェック"] --> C["Phase 3 実行\nSonnet 5\nコード書換・ローカルテスト"]
@@ -16,7 +18,7 @@ flowchart LR
 - **Executor（Sonnet 5）**: メインループを毎ターン回し、ファイル読み書き・ローカルコマンド・テスト実行・基本的なコード書きといった手を動かす作業を高速・低コストで愚直にこなす。
 - **Advisor（Fable 5）**: 常時は回さず、必要なときだけオンデマンドで呼ぶ。複雑なエラーの根本原因特定や設計方針の決定など、頭を使う高度な判断に特化する。
 
-大半のトークン消費は安価な Executor レートで課金されつつ、全体の知能レベルは最高峰の Advisor と同等に保てるのが強み。記事は、Claude Code にはこの Advisor 機能がネイティブで備わり、`/advisor fable` でアドバイザーモデルを固定できると紹介する（Sonnet 5 が壁に当たると自動で Fable 5 に助言を仰ぐ、という描写。コマンドの存在は本記事のみの記述で要検証）。
+大半のトークン消費は安価な Executor レートで課金されつつ、全体の知能レベルは最高峰の Advisor と同等に保てるのが強み。この核心は一次ソースでも確認できる。@ClaudeDevs 公式ポストは「Fable 5 でよく使うパターン」の筆頭に Advisor を挙げ、Executor（Sonnet 5）が指針を求めて Fable 5 を呼び、大半のトークンは低い Executor レートで課金される、と明言している（2026-07-07・図解画像つき）。記事は、Claude Code にはこの Advisor 機能がネイティブで備わり、`/advisor fable` でアドバイザーモデルを固定できると紹介する（Sonnet 5 が壁に当たると自動で Fable 5 に助言を仰ぐ、という描写。コマンドの存在は本記事のみの記述で要検証）。
 
 ## パターン2: Orchestrator（司令塔）
 
@@ -44,7 +46,7 @@ Na は記事末で、AIエージェントの実用化・プロダクション導
 ## 観察ログ（未検証）
 
 - 2026-07-09（Na/yuche）: Claude Code に Advisor 機能がネイティブで備わり `/advisor fable` でアドバイザーモデルを固定できる、という記述。本記事のみの単一ソースで、コマンドの実在は要検証
-- 2026-07-09: 記事は Fable 5／Sonnet 5 を「次世代モデル（仮定）」と前置きしつつ実運用例を書いている。Fable 5 は既にローンチ済み（[[models/claude-fable-5]]）だが Sonnet 5 側の実在・スペックは本記事では未確定
+- 2026-07-09: 記事は Fable 5／Sonnet 5 を「次世代モデル（仮定）」と前置きしつつ実運用例を書いている。Fable 5 は既にローンチ済み（[[models/claude-fable-5]]）だが Sonnet 5 側の実在・スペックは本記事では未確定 → 2026-07-10: @ClaudeDevs 公式ポスト（一次ソース）が Executor として Sonnet 5 を実名で挙げており、実在は公式発信で裏付けられた。スペックは引き続き未捕捉
 
 ## 問い
 
@@ -61,3 +63,4 @@ Na は記事末で、AIエージェントの実用化・プロダクション導
 - [[concepts/coding-agent-workflow-styles]] — 高速制御ループ／委譲低速ループの2類型
 - [[concepts/claude-code-orchestration]] — Claude Code の subagent/agent teams/worktree 使い分け
 - [[concepts/loop-engineering]] — エージェントループの設計論（安価ループ＋高価判断の配分）
+- [[concepts/claude-code-model-effort]] — モデル=何を知っているか／effort=どれだけ徹底するかの公式フレーム。どこに高価モデルを差すかの判断基準側

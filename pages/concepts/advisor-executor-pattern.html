@@ -29,10 +29,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>advisor-executor-pattern</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="advisor-executor-pattern.md">Markdownで表示</a></div>
-  <div class="meta">concepts/advisor-executor-pattern · concepts · <span title="2026-07-09">今日</span></div>
+  <div class="meta">concepts/advisor-executor-pattern · concepts · <span title="2026-07-10">今日</span></div>
   <article><h1>Advisor-Executor パターン（Fable 5 × Sonnet 5 連携）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 高知能・高価格の <a href="../models/claude-fable-5.html">Fable 5</a> と高速・安価な Sonnet 5 を、役割やフェーズで使い分ける3つの連携パターン（Advisor／Orchestrator／Fable Sandwich）。単一モデルを回すのでなくモデルを組み合わせて「知能」と「コスト・速度」のトレードオフを解消する。</p>
+<p>📌 X bookmark: 26,784（2026-07-09 時点、@ClaudeDevs 公式ポスト）</p>
 </blockquote>
 <pre class="mermaid">flowchart LR
   A[&quot;Phase 1 探索\nSonnet 5\nリポ巡回・依存/ログ収集&quot;] --&gt; B[&quot;Phase 2 計画・査読\nFable 5\n修正方針・リスクチェック&quot;] --&gt; C[&quot;Phase 3 実行\nSonnet 5\nコード書換・ローカルテスト&quot;]</pre>
@@ -43,7 +44,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>Executor（Sonnet 5）</strong>: メインループを毎ターン回し、ファイル読み書き・ローカルコマンド・テスト実行・基本的なコード書きといった手を動かす作業を高速・低コストで愚直にこなす。</li>
 <li><strong>Advisor（Fable 5）</strong>: 常時は回さず、必要なときだけオンデマンドで呼ぶ。複雑なエラーの根本原因特定や設計方針の決定など、頭を使う高度な判断に特化する。</li>
 </ul>
-<p>大半のトークン消費は安価な Executor レートで課金されつつ、全体の知能レベルは最高峰の Advisor と同等に保てるのが強み。記事は、Claude Code にはこの Advisor 機能がネイティブで備わり、<code>/advisor fable</code> でアドバイザーモデルを固定できると紹介する（Sonnet 5 が壁に当たると自動で Fable 5 に助言を仰ぐ、という描写。コマンドの存在は本記事のみの記述で要検証）。</p>
+<p>大半のトークン消費は安価な Executor レートで課金されつつ、全体の知能レベルは最高峰の Advisor と同等に保てるのが強み。この核心は一次ソースでも確認できる。@ClaudeDevs 公式ポストは「Fable 5 でよく使うパターン」の筆頭に Advisor を挙げ、Executor（Sonnet 5）が指針を求めて Fable 5 を呼び、大半のトークンは低い Executor レートで課金される、と明言している（2026-07-07・図解画像つき）。記事は、Claude Code にはこの Advisor 機能がネイティブで備わり、<code>/advisor fable</code> でアドバイザーモデルを固定できると紹介する（Sonnet 5 が壁に当たると自動で Fable 5 に助言を仰ぐ、という描写。コマンドの存在は本記事のみの記述で要検証）。</p>
 <h2>パターン2: Orchestrator（司令塔）</h2>
 <p>Fable 5 を司令塔（プランナー）としてトップに据え、Sonnet 5 を作業員（ワーカー）として従わせる。</p>
 <ul>
@@ -64,7 +65,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-07-09（Na/yuche）: Claude Code に Advisor 機能がネイティブで備わり <code>/advisor fable</code> でアドバイザーモデルを固定できる、という記述。本記事のみの単一ソースで、コマンドの実在は要検証</li>
-<li>2026-07-09: 記事は Fable 5／Sonnet 5 を「次世代モデル（仮定）」と前置きしつつ実運用例を書いている。Fable 5 は既にローンチ済み（<a href="../models/claude-fable-5.html">claude-fable-5</a>）だが Sonnet 5 側の実在・スペックは本記事では未確定</li>
+<li>2026-07-09: 記事は Fable 5／Sonnet 5 を「次世代モデル（仮定）」と前置きしつつ実運用例を書いている。Fable 5 は既にローンチ済み（<a href="../models/claude-fable-5.html">claude-fable-5</a>）だが Sonnet 5 側の実在・スペックは本記事では未確定 → 2026-07-10: @ClaudeDevs 公式ポスト（一次ソース）が Executor として Sonnet 5 を実名で挙げており、実在は公式発信で裏付けられた。スペックは引き続き未捕捉</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -81,11 +82,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/coding-agent-workflow-styles.html">coding-agent-workflow-styles</a> — 高速制御ループ／委譲低速ループの2類型</li>
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — Claude Code の subagent/agent teams/worktree 使い分け</li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a> — エージェントループの設計論（安価ループ＋高価判断の配分）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a></li>
+<li><a href="../concepts/claude-code-model-effort.html">claude-code-model-effort</a> — モデル=何を知っているか／effort=どれだけ徹底するかの公式フレーム。どこに高価モデルを差すかの判断基準側</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-model-effort.html">claude-code-model-effort</a></li>
+<li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a></li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
-<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/yuche/articles/advisor-executor-pattern" rel="noopener" target="_blank">https://zenn.dev/yuche/articles/advisor-executor-pattern</a></li></ul></section></article>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/yuche/articles/advisor-executor-pattern" rel="noopener" target="_blank">https://zenn.dev/yuche/articles/advisor-executor-pattern</a></li>
+<li><a href="https://x.com/i/web/status/2074606058128224365" rel="noopener" target="_blank">https://x.com/i/web/status/2074606058128224365</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -110,6 +113,8 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 
 &gt; **TL;DR**: 高知能・高価格の [[models/claude-fable-5|Fable 5]] と高速・安価な Sonnet 5 を、役割やフェーズで使い分ける3つの連携パターン（Advisor／Orchestrator／Fable Sandwich）。単一モデルを回すのでなくモデルを組み合わせて「知能」と「コスト・速度」のトレードオフを解消する。
 
+&gt; 📌 X bookmark: 26,784（2026-07-09 時点、@ClaudeDevs 公式ポスト）
+
 ```mermaid
 flowchart LR
   A[&quot;Phase 1 探索\nSonnet 5\nリポ巡回・依存/ログ収集&quot;] --&gt; B[&quot;Phase 2 計画・査読\nFable 5\n修正方針・リスクチェック&quot;] --&gt; C[&quot;Phase 3 実行\nSonnet 5\nコード書換・ローカルテスト&quot;]
@@ -124,7 +129,7 @@ flowchart LR
 - **Executor（Sonnet 5）**: メインループを毎ターン回し、ファイル読み書き・ローカルコマンド・テスト実行・基本的なコード書きといった手を動かす作業を高速・低コストで愚直にこなす。
 - **Advisor（Fable 5）**: 常時は回さず、必要なときだけオンデマンドで呼ぶ。複雑なエラーの根本原因特定や設計方針の決定など、頭を使う高度な判断に特化する。
 
-大半のトークン消費は安価な Executor レートで課金されつつ、全体の知能レベルは最高峰の Advisor と同等に保てるのが強み。記事は、Claude Code にはこの Advisor 機能がネイティブで備わり、`/advisor fable` でアドバイザーモデルを固定できると紹介する（Sonnet 5 が壁に当たると自動で Fable 5 に助言を仰ぐ、という描写。コマンドの存在は本記事のみの記述で要検証）。
+大半のトークン消費は安価な Executor レートで課金されつつ、全体の知能レベルは最高峰の Advisor と同等に保てるのが強み。この核心は一次ソースでも確認できる。@ClaudeDevs 公式ポストは「Fable 5 でよく使うパターン」の筆頭に Advisor を挙げ、Executor（Sonnet 5）が指針を求めて Fable 5 を呼び、大半のトークンは低い Executor レートで課金される、と明言している（2026-07-07・図解画像つき）。記事は、Claude Code にはこの Advisor 機能がネイティブで備わり、`/advisor fable` でアドバイザーモデルを固定できると紹介する（Sonnet 5 が壁に当たると自動で Fable 5 に助言を仰ぐ、という描写。コマンドの存在は本記事のみの記述で要検証）。
 
 ## パターン2: Orchestrator（司令塔）
 
@@ -152,7 +157,7 @@ Na は記事末で、AIエージェントの実用化・プロダクション導
 ## 観察ログ（未検証）
 
 - 2026-07-09（Na/yuche）: Claude Code に Advisor 機能がネイティブで備わり `/advisor fable` でアドバイザーモデルを固定できる、という記述。本記事のみの単一ソースで、コマンドの実在は要検証
-- 2026-07-09: 記事は Fable 5／Sonnet 5 を「次世代モデル（仮定）」と前置きしつつ実運用例を書いている。Fable 5 は既にローンチ済み（[[models/claude-fable-5]]）だが Sonnet 5 側の実在・スペックは本記事では未確定
+- 2026-07-09: 記事は Fable 5／Sonnet 5 を「次世代モデル（仮定）」と前置きしつつ実運用例を書いている。Fable 5 は既にローンチ済み（[[models/claude-fable-5]]）だが Sonnet 5 側の実在・スペックは本記事では未確定 → 2026-07-10: @ClaudeDevs 公式ポスト（一次ソース）が Executor として Sonnet 5 を実名で挙げており、実在は公式発信で裏付けられた。スペックは引き続き未捕捉
 
 ## 問い
 
@@ -169,6 +174,7 @@ Na は記事末で、AIエージェントの実用化・プロダクション導
 - [[concepts/coding-agent-workflow-styles]] — 高速制御ループ／委譲低速ループの2類型
 - [[concepts/claude-code-orchestration]] — Claude Code の subagent/agent teams/worktree 使い分け
 - [[concepts/loop-engineering]] — エージェントループの設計論（安価ループ＋高価判断の配分）
+- [[concepts/claude-code-model-effort]] — モデル=何を知っているか／effort=どれだけ徹底するかの公式フレーム。どこに高価モデルを差すかの判断基準側
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

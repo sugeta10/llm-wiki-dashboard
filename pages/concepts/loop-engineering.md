@@ -153,3 +153,4 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[tools/makeloop]] — `/loop` プロンプトを会話＋コードベースから自動生成するコマンド。Verify/State/Stop の3要素は本ページの最小構成ループと同型、生成器自身を自己改善する設計
 - [[concepts/loop-anatomy]] — 本概念の解剖学版：1ターン＝5ムーブ×6パーツ、欠落＝5アンチパターン、4つの沈黙コスト（HuaShu Orange Book の統合枠組み）
 - [[tools/stripe-minions]] — エンタープライズ実例：決定論ゲート×LLM交互配置で週1,300本のマシン生成PRをマージ。信頼性は制約の質から
+- [[concepts/claude-code-loop-types]] — Claude Code チーム公式のループ定義と4類型（Turn-based/Goal-based/Time-based/Proactive）。コミュニティ発の本ページに対する公式の回答

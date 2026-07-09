@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-loop-types - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-loop-types</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-loop-types.md">Markdownで表示</a></div>
+  <div class="meta">concepts/claude-code-loop-types · concepts · <span title="2026-07-10">今日</span></div>
+  <article><h1>Claude Code 公式ループ4類型（Getting started with loops）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Claude Code チームによるループの公式定義は「停止条件を満たすまで作業サイクルを繰り返すエージェント」。トリガー・停止条件・使用プリミティブ・適合タスクの4軸で Turn-based / Goal-based / Time-based / Proactive の4類型に整理し、「最も単純な解決策から始めて選択的に使う」を原則に置く。</p>
+<p>📌 X bookmark: 25,526（2026-07-07 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  L[&quot;ループ = 停止条件を満たすまで作業サイクルを繰り返すエージェント&quot;] --&gt; T[&quot;Turn-based（agentic loop）\nトリガー: プロンプト\n停止: Claudeの完了判断&quot;]
+  L --&gt; G[&quot;Goal-based（/goal）\nトリガー: 手動プロンプト\n停止: 条件達成 or ターン上限&quot;]
+  L --&gt; TI[&quot;Time-based（/loop・/schedule）\nトリガー: 時間間隔\n停止: キャンセル or 作業完了&quot;]
+  L --&gt; P[&quot;Proactive（合成）\nトリガー: イベント/スケジュール\n停止: routineを止めるまで&quot;]</pre>
+<p>X 上では「プロンプトでなくループを設計せよ」が流行語になる一方、「ループとは何か」の答えが発信者ごとに食い違う——という状況認識から、Claude Code チームとしての定義を確定させるために書かれた公式記事。執筆は同チームの @delba_oliveira で、@ClaudeDevs 公式アカウントが2026-07-06に公開した。コミュニティ側の定義乱立は <a href="../concepts/loop-engineering.html">loop-engineering</a> や <a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> が扱ってきた問題そのもので、本記事はそれに対するベンダー公式の回答にあたる。全タスクに複雑なループは不要で、最も単純な解決策から始めてパターンは選択的に使え、という但し書きが全体を貫く。</p>
+<h2>4類型</h2>
+<table>
+<thead>
+<tr>
+<th>類型</th>
+<th>トリガー</th>
+<th>停止条件</th>
+<th>適合タスク</th>
+<th>使用量の管理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Turn-based</strong>（agentic loop）</td>
+<td>ユーザーのプロンプト</td>
+<td>Claude がタスク完了 or 追加文脈が必要と判断</td>
+<td>定常プロセス外の短いタスク</td>
+<td>具体的なプロンプト＋スキルで検証を強化しターン数を減らす</td>
+</tr>
+<tr>
+<td><strong>Goal-based</strong>（<code>/goal</code>）</td>
+<td>リアルタイムの手動プロンプト</td>
+<td>目標達成 or 最大ターン数到達</td>
+<td>検証可能な終了基準を持つタスク</td>
+<td>明確な完了基準＋「5回試したら止まる」等の明示的ターン上限</td>
+</tr>
+<tr>
+<td><strong>Time-based</strong>（<code>/loop</code>・<code>/schedule</code>）</td>
+<td>指定した時間間隔</td>
+<td>ユーザーのキャンセル or 作業自体の完了（PRマージ・キュー空）</td>
+<td>定期作業・外部システムとの接続</td>
+<td>間隔を長くする・時間でなくイベントに反応させる</td>
+</tr>
+<tr>
+<td><strong>Proactive</strong></td>
+<td>イベント or スケジュール（リアルタイムの人間不在）</td>
+<td>各タスクはゴール達成で終了、routine 自体は止めるまで走る</td>
+<td>バグ報告・issue トリアージ・移行・依存更新など定型作業の継続的な流れ</td>
+<td>routine は小型高速モデルへ、判断は最上位モデルへ</td>
+</tr>
+</tbody>
+</table>
+<p>Turn-based は毎プロンプトが1つの手動ループで、文脈収集→行動→自己チェック→応答のサイクルをチームは agentic loop と呼ぶ。手動でやっている検証手順を SKILL.md に符号化すると Claude が自己検証できる範囲が広がり、チェックが定量的なほど自己検証しやすいと記事は述べる。</p>
+<p>Goal-based は「もう十分か」の判断を Claude 自身にさせない仕組みで、停止しようとするたびに評価器モデルが条件を照合し、未達なら作業へ送り返す。だからテスト通過数やスコア閾値のような決定論的基準が最も効く（実装は <a href="../tools/claude-code-goal.html">claude-code-goal</a>）。</p>
+<p>Time-based の <code>/loop</code> はローカル実行なのでPCを閉じると止まる。クラウドへ移すなら <code>/schedule</code> で routine 化する。</p>
+<p>Proactive は単独機能でなく合成で、<code>/schedule</code> で新着レポートを確認し、<code>/goal</code> で完了を定義し、dynamic workflows（<a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a>）でトリアージ→修正→レビューをオーケストレーションし、auto モードで許可確認なしに回す構成例が示される。</p>
+<h2>品質はループの周囲のシステムが決める</h2>
+<p>記事は「ループの出力品質はそれを取り巻くシステムに依存する」とし4点を挙げる。①コードベース自体を綺麗に保つ（Claude は既存の慣習に従うため）②スキルで「良い」の定義を符号化し自己検証させる③フレームワークのドキュメントに届きやすくする④コードレビューには別のエージェントを使う——新鮮なコンテキストを持つレビュアーはメインエージェントの推論に影響されずバイアスが少ない。個別の結果が基準を満たさないときは、個別修正で止めずシステム側に符号化して以後の全イテレーションを改善せよ、と結ぶ。④は <a href="../concepts/loop-anatomy.html">loop-anatomy</a> の Generator/Evaluator 分離と同旨。</p>
+<h2>トークン管理</h2>
+<ul>
+<li>適切なプリミティブとモデルを選ぶ。小タスクに複数エージェントやループは不要</li>
+<li>成功・停止基準を具体的に定義する。早すぎる完了も遠回りも防ぐ</li>
+<li>大規模実行の前に小さなスライスで試走する。dynamic workflows は数百エージェントを起動しうる</li>
+<li>決定論的作業はスクリプトにする。毎回コードを再導出するよりスクリプト実行が安い</li>
+<li>routine を必要以上の頻度で回さない。監視対象の変化頻度に間隔を合わせる</li>
+<li>使用量をレビューする。<code>/usage</code> はスキル・サブエージェント・MCP 別の内訳、引数なしの <code>/goal</code> はここまでのターン数とトークン使用量、<code>/workflows</code> はエージェント別の使用量を表示し、エージェントはいつでも停止できる</li>
+</ul>
+<p>「決定論的作業はスクリプト」はこの vault の決定論 vs AI の線引き方針と同じ原則であり、「間隔を監視対象の変化頻度に合わせる」は launchd ingest の間隔設計にそのまま適用できると考えられる。</p>
+<h2>問い</h2>
+<ul>
+<li>自分の launchd ingest ループは4類型のどれとして最適化すべきか。time-based からイベント駆動へ移す余地はあるか</li>
+<li>「個別修正で止めずシステムに符号化する」は LESSONS.md 追記の運用と同型だが、符号化した教訓が後続イテレーションを実際に改善したかを測る術はあるか</li>
+<li>公式4類型と <a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> の3動詞・<a href="../concepts/loop-engineering.html">loop-engineering</a> の4条件テストを1枚の実務チートシートに統合できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — コミュニティ発のループ工学の正本（5段階史・4条件テスト・6構成要素）。本ページはその公式定義版</li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — goal/loop/routine の3動詞の使い分け。公式4類型は turn-based と proactive を加えた上位集合</li>
+<li><a href="../concepts/loop-anatomy.html">loop-anatomy</a> — 1ターンの解剖学（5ムーブ×6パーツ）。「別エージェントでレビュー」は Generator/Evaluator 分離と一致</li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — Goal-based ループの具体実装（評価器モデルによる停止判定）</li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — Proactive ループの合成部品（トリアージ→修正→レビューのオーケストレーション）</li>
+<li><a href="../tools/loop-library.html">loop-library</a> — すぐ使えるループのカタログ。本ページの類型で分類し直せる</li>
+<li><a href="../tools/makeloop.html">makeloop</a> — <code>/loop</code> プロンプト生成器。time-based ループの設計を自動化する側</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li>
+<li><a href="../concepts/loop-anatomy.html">loop-anatomy</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2074208949205881033" rel="noopener" target="_blank">https://x.com/i/web/status/2074208949205881033</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Code 公式ループ4類型（Getting started with loops）
+
+&gt; **TL;DR**: Claude Code チームによるループの公式定義は「停止条件を満たすまで作業サイクルを繰り返すエージェント」。トリガー・停止条件・使用プリミティブ・適合タスクの4軸で Turn-based / Goal-based / Time-based / Proactive の4類型に整理し、「最も単純な解決策から始めて選択的に使う」を原則に置く。
+
+&gt; 📌 X bookmark: 25,526（2026-07-07 時点）
+
+```mermaid
+flowchart TD
+  L[&quot;ループ = 停止条件を満たすまで作業サイクルを繰り返すエージェント&quot;] --&gt; T[&quot;Turn-based（agentic loop）\nトリガー: プロンプト\n停止: Claudeの完了判断&quot;]
+  L --&gt; G[&quot;Goal-based（/goal）\nトリガー: 手動プロンプト\n停止: 条件達成 or ターン上限&quot;]
+  L --&gt; TI[&quot;Time-based（/loop・/schedule）\nトリガー: 時間間隔\n停止: キャンセル or 作業完了&quot;]
+  L --&gt; P[&quot;Proactive（合成）\nトリガー: イベント/スケジュール\n停止: routineを止めるまで&quot;]
+```
+
+X 上では「プロンプトでなくループを設計せよ」が流行語になる一方、「ループとは何か」の答えが発信者ごとに食い違う——という状況認識から、Claude Code チームとしての定義を確定させるために書かれた公式記事。執筆は同チームの @delba_oliveira で、@ClaudeDevs 公式アカウントが2026-07-06に公開した。コミュニティ側の定義乱立は [[concepts/loop-engineering]] や [[concepts/goal-loop-routine]] が扱ってきた問題そのもので、本記事はそれに対するベンダー公式の回答にあたる。全タスクに複雑なループは不要で、最も単純な解決策から始めてパターンは選択的に使え、という但し書きが全体を貫く。
+
+## 4類型
+
+| 類型 | トリガー | 停止条件 | 適合タスク | 使用量の管理 |
+|---|---|---|---|---|
+| **Turn-based**（agentic loop） | ユーザーのプロンプト | Claude がタスク完了 or 追加文脈が必要と判断 | 定常プロセス外の短いタスク | 具体的なプロンプト＋スキルで検証を強化しターン数を減らす |
+| **Goal-based**（`/goal`） | リアルタイムの手動プロンプト | 目標達成 or 最大ターン数到達 | 検証可能な終了基準を持つタスク | 明確な完了基準＋「5回試したら止まる」等の明示的ターン上限 |
+| **Time-based**（`/loop`・`/schedule`） | 指定した時間間隔 | ユーザーのキャンセル or 作業自体の完了（PRマージ・キュー空） | 定期作業・外部システムとの接続 | 間隔を長くする・時間でなくイベントに反応させる |
+| **Proactive** | イベント or スケジュール（リアルタイムの人間不在） | 各タスクはゴール達成で終了、routine 自体は止めるまで走る | バグ報告・issue トリアージ・移行・依存更新など定型作業の継続的な流れ | routine は小型高速モデルへ、判断は最上位モデルへ |
+
+Turn-based は毎プロンプトが1つの手動ループで、文脈収集→行動→自己チェック→応答のサイクルをチームは agentic loop と呼ぶ。手動でやっている検証手順を SKILL.md に符号化すると Claude が自己検証できる範囲が広がり、チェックが定量的なほど自己検証しやすいと記事は述べる。
+
+Goal-based は「もう十分か」の判断を Claude 自身にさせない仕組みで、停止しようとするたびに評価器モデルが条件を照合し、未達なら作業へ送り返す。だからテスト通過数やスコア閾値のような決定論的基準が最も効く（実装は [[tools/claude-code-goal]]）。
+
+Time-based の `/loop` はローカル実行なのでPCを閉じると止まる。クラウドへ移すなら `/schedule` で routine 化する。
+
+Proactive は単独機能でなく合成で、`/schedule` で新着レポートを確認し、`/goal` で完了を定義し、dynamic workflows（[[concepts/claude-code-dynamic-workflows]]）でトリアージ→修正→レビューをオーケストレーションし、auto モードで許可確認なしに回す構成例が示される。
+
+## 品質はループの周囲のシステムが決める
+
+記事は「ループの出力品質はそれを取り巻くシステムに依存する」とし4点を挙げる。①コードベース自体を綺麗に保つ（Claude は既存の慣習に従うため）②スキルで「良い」の定義を符号化し自己検証させる③フレームワークのドキュメントに届きやすくする④コードレビューには別のエージェントを使う——新鮮なコンテキストを持つレビュアーはメインエージェントの推論に影響されずバイアスが少ない。個別の結果が基準を満たさないときは、個別修正で止めずシステム側に符号化して以後の全イテレーションを改善せよ、と結ぶ。④は [[concepts/loop-anatomy]] の Generator/Evaluator 分離と同旨。
+
+## トークン管理
+
+- 適切なプリミティブとモデルを選ぶ。小タスクに複数エージェントやループは不要
+- 成功・停止基準を具体的に定義する。早すぎる完了も遠回りも防ぐ
+- 大規模実行の前に小さなスライスで試走する。dynamic workflows は数百エージェントを起動しうる
+- 決定論的作業はスクリプトにする。毎回コードを再導出するよりスクリプト実行が安い
+- routine を必要以上の頻度で回さない。監視対象の変化頻度に間隔を合わせる
+- 使用量をレビューする。`/usage` はスキル・サブエージェント・MCP 別の内訳、引数なしの `/goal` はここまでのターン数とトークン使用量、`/workflows` はエージェント別の使用量を表示し、エージェントはいつでも停止できる
+
+「決定論的作業はスクリプト」はこの vault の決定論 vs AI の線引き方針と同じ原則であり、「間隔を監視対象の変化頻度に合わせる」は launchd ingest の間隔設計にそのまま適用できると考えられる。
+
+## 問い
+
+- 自分の launchd ingest ループは4類型のどれとして最適化すべきか。time-based からイベント駆動へ移す余地はあるか
+- 「個別修正で止めずシステムに符号化する」は LESSONS.md 追記の運用と同型だが、符号化した教訓が後続イテレーションを実際に改善したかを測る術はあるか
+- 公式4類型と [[concepts/goal-loop-routine]] の3動詞・[[concepts/loop-engineering]] の4条件テストを1枚の実務チートシートに統合できるか
+
+## 関連
+
+- [[concepts/loop-engineering]] — コミュニティ発のループ工学の正本（5段階史・4条件テスト・6構成要素）。本ページはその公式定義版
+- [[concepts/goal-loop-routine]] — goal/loop/routine の3動詞の使い分け。公式4類型は turn-based と proactive を加えた上位集合
+- [[concepts/loop-anatomy]] — 1ターンの解剖学（5ムーブ×6パーツ）。「別エージェントでレビュー」は Generator/Evaluator 分離と一致
+- [[tools/claude-code-goal]] — Goal-based ループの具体実装（評価器モデルによる停止判定）
+- [[concepts/claude-code-dynamic-workflows]] — Proactive ループの合成部品（トリアージ→修正→レビューのオーケストレーション）
+- [[tools/loop-library]] — すぐ使えるループのカタログ。本ページの類型で分類し直せる
+- [[tools/makeloop]] — `/loop` プロンプト生成器。time-based ループの設計を自動化する側
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

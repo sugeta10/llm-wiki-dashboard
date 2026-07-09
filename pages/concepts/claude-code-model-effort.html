@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-model-effort - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-model-effort</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-model-effort.md">Markdownで表示</a></div>
+  <div class="meta">concepts/claude-code-model-effort · concepts · <span title="2026-07-10">今日</span></div>
+  <article><h1>モデル選択と Effort（knowing more vs trying harder）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: モデル設定は「どの凍結済み重みが応答するか＝何を知っているか」を、effort 設定は「完了と見なす前にどれだけ徹底的に働くか」を決める別次元のつまみ。Claude が間違えたらまずコンテキストを疑い、次に「知らなかったのか（モデル）／頑張らなかったのか（effort）」で切り分ける。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  W[&quot;Claudeが間違えた&quot;] --&gt; C{&quot;まずコンテキストを疑う\nプロンプト/ツール/スキルは十分か&quot;}
+  C --&gt;|&quot;不足&quot;| F[&quot;設定でなくコンテキストを直す&quot;]
+  C --&gt;|&quot;十分なのに間違う&quot;| Q{&quot;知らなかったのか\n頑張らなかったのか&quot;}
+  Q --&gt;|&quot;文脈を与えても確信を持って誤る&quot;| M[&quot;より大きいモデルへ&quot;]
+  Q --&gt;|&quot;ファイル読み飛ばし・テスト未実行&quot;| E[&quot;effortを上げる&quot;]</pre>
+<p>「大きいモデル＝賢い出力」は正しいが「高 effort＝長く考える」は不正確だ、というのが出発点。effort は思考時間だけでなく、読むファイル数・検証の量・ユーザーに戻る前にマルチステップタスクをどこまで進めるかという「リクエスト全体の仕事量」を制御し、低 effort では自力でトークンを使って調べるよりユーザーに文脈を尋ねる方へ倒れる——と Claude Code チームの Lydia Hallie（@lydiahallie）が公式記事で解説する（@ClaudeDevs が2026-07-08公開）。</p>
+<h2>モデル設定＝どの重みが応答するか</h2>
+<p>プロンプトはトークン化されて整数列になり、モデルは訓練時に固定された重み（数十億のパラメータ行列）を通して次トークンの確率を計算する。重みは推論時には読み取り専用で、プロンプトも CLAUDE.md も重みを変えない——文脈投入は「操舵」であって「教育」ではない。訓練時に存在しなかったライブラリは重みに無く、docs を文脈に入れても効果はそのリクエスト限り。存在しない API を自信満々に呼ぶ幻覚は「検索の失敗」ではなく、訓練パターンから尤もらしいトークン列が生成された結果だと Hallie は説明する。モデル設定が実際に決めるのは、①どの重みセットが処理するか②出力トークン単価、の2つで、何トークン生成されるかは決めない。そこを決めるのが effort。</p>
+<h2>Effort＝どこまで徹底するか</h2>
+<p>思考・ツール呼び出し・ユーザー向けテキストはすべて同一の生成ループから出る出力トークンで、同一レートで課金される。effort はプロンプトと並んでリクエストの入力としてモデルに渡され、各レベルでの振る舞いは訓練で重みに焼き込まれている。その効果は「完了と見なすために必要な徹底度・確信度の閾値」を毎ターン設定すること。高 effort では計画が深く広くなり二重チェックが増えるが、計画は固定されず途中の結果で更新される——3仮説のデバッグ計画で1つ目にバグが見つかれば残りはスキップされる。一方で単純タスクの使用量を人工的に膨らませる「overthinking」は品質劣化要因として訓練時に監視している、とチームは明言する。</p>
+<p>推奨は「デフォルト effort を使い、変えるならタスク単位でなく一般的な好みとして扱う」。Opus 4.8 のデフォルト effort は Opus 4.7 のデフォルト比で、同程度のトークン量のままより良い結果を出すとチームは自社テストを報告している。結果が悪いときの第一手は設定変更でなくコンテキストの見直し（プロンプトの曖昧さ・ツール・スキル）で、effort を上げたくなるタスクの修正はたいてい上流にある。</p>
+<h2>使い分け: 知らなかったのか、頑張らなかったのか</h2>
+<ul>
+<li><strong>モデルを上げる</strong>: 問題が本当に難しいとき（微妙なバグ・未知ドメイン・アーキテクチャ判断）。どれだけ文脈を与えても小モデルが「確信を持って間違う」なら上げるシグナル。大モデルは曖昧さの処理も上手く、小モデルには実行を細かく指示する方が効く</li>
+<li><strong>effort を上げる</strong>: ファイルを読み飛ばした・テストを実行しなかった・二重チェックしなかったなど「試行の不足」で間違えたとき。特にデフォルト未満の effort を選んでいた場合</li>
+</ul>
+<p>Hallie の比喩では、Fable は「他の誰にも解けない問題を扱う専門医」、Opus は「経験豊富な専門家」、Sonnet は「優秀な万能選手」で、effort は誰であれその人が費やす時間を決める。Opus 低 effort は「専門家との5分間」、Sonnet 高 effort は「午後いっぱい使える万能選手」にあたる。</p>
+<h2>コストとの相互作用</h2>
+<p>同一 effort の定型作業では大小どちらのモデルも正解するが、大モデルは検証を多めに入れ単価も高い——定型区間で小モデルへ落とすのは品質コストゼロの節約になる。逆に難しいマルチステップ作業では、小モデルが能力の限界へ向けて反復を燃やす間に大モデルは少ないステップで同じ品質へ到達し、タスク単位の総コストは逆転しうる。チームのテストでは Fable は Opus/Sonnet がどの effort レベルでも到達できないジョブを完了しており、それが最長・最難のタスクに Fable を温存する理由でもある（<a href="../models/claude-fable-5.html">claude-fable-5</a> の「長く複雑なタスクほど差が開く」特性と一致）。effort はトークン消費を形作るが上限ではなく、唯一のハードキャップは max_tokens。トークン予算や「簡潔に」という指示は、壁でなくモデルが従うよう訓練されたガイダンスとして機能する。</p>
+<h2>問い</h2>
+<ul>
+<li>headless 実行（launchd ingest）は「ユーザーに聞けない」環境なので、低 effort の「聞く方へ倒れる」性質と相性が悪いはず。自動実行系のデフォルト effort はどう設定すべきか</li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> の工程分解（上流大・下流小）に「確信を持って間違うならモデル、試行不足なら effort」の診断軸を重ねると、工程ごとの effort 既定値まで設計できるか</li>
+<li>「effort はタスク単位でなく一般的な好みとして扱え」という公式推奨は、rigor を都度選ぶ自分の運用と矛盾するか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 「モデル×エフォートの二軸」を工程分解で運用する実務戦略。本ページはその公式の理論版</li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> — 専門医側の実体。どの effort でも他モデルが届かないジョブを完了するという公式主張の対象</li>
+<li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> — モデルの知識差を前提に高価モデルの出番を絞る配線パターン</li>
+<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a> — 専門家側。デフォルト effort が 4.7 比で同トークン量のままより良い結果という公式報告</li>
+<li><a href="../concepts/token-management.html">token-management</a> — トークン消費を経営イシューとして扱う上位論点</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../concepts/token-management.html">token-management</a></li>
+<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2074900291062034618" rel="noopener" target="_blank">https://x.com/i/web/status/2074900291062034618</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># モデル選択と Effort（knowing more vs trying harder）
+
+&gt; **TL;DR**: モデル設定は「どの凍結済み重みが応答するか＝何を知っているか」を、effort 設定は「完了と見なす前にどれだけ徹底的に働くか」を決める別次元のつまみ。Claude が間違えたらまずコンテキストを疑い、次に「知らなかったのか（モデル）／頑張らなかったのか（effort）」で切り分ける。
+
+```mermaid
+flowchart TD
+  W[&quot;Claudeが間違えた&quot;] --&gt; C{&quot;まずコンテキストを疑う\nプロンプト/ツール/スキルは十分か&quot;}
+  C --&gt;|&quot;不足&quot;| F[&quot;設定でなくコンテキストを直す&quot;]
+  C --&gt;|&quot;十分なのに間違う&quot;| Q{&quot;知らなかったのか\n頑張らなかったのか&quot;}
+  Q --&gt;|&quot;文脈を与えても確信を持って誤る&quot;| M[&quot;より大きいモデルへ&quot;]
+  Q --&gt;|&quot;ファイル読み飛ばし・テスト未実行&quot;| E[&quot;effortを上げる&quot;]
+```
+
+「大きいモデル＝賢い出力」は正しいが「高 effort＝長く考える」は不正確だ、というのが出発点。effort は思考時間だけでなく、読むファイル数・検証の量・ユーザーに戻る前にマルチステップタスクをどこまで進めるかという「リクエスト全体の仕事量」を制御し、低 effort では自力でトークンを使って調べるよりユーザーに文脈を尋ねる方へ倒れる——と Claude Code チームの Lydia Hallie（@lydiahallie）が公式記事で解説する（@ClaudeDevs が2026-07-08公開）。
+
+## モデル設定＝どの重みが応答するか
+
+プロンプトはトークン化されて整数列になり、モデルは訓練時に固定された重み（数十億のパラメータ行列）を通して次トークンの確率を計算する。重みは推論時には読み取り専用で、プロンプトも CLAUDE.md も重みを変えない——文脈投入は「操舵」であって「教育」ではない。訓練時に存在しなかったライブラリは重みに無く、docs を文脈に入れても効果はそのリクエスト限り。存在しない API を自信満々に呼ぶ幻覚は「検索の失敗」ではなく、訓練パターンから尤もらしいトークン列が生成された結果だと Hallie は説明する。モデル設定が実際に決めるのは、①どの重みセットが処理するか②出力トークン単価、の2つで、何トークン生成されるかは決めない。そこを決めるのが effort。
+
+## Effort＝どこまで徹底するか
+
+思考・ツール呼び出し・ユーザー向けテキストはすべて同一の生成ループから出る出力トークンで、同一レートで課金される。effort はプロンプトと並んでリクエストの入力としてモデルに渡され、各レベルでの振る舞いは訓練で重みに焼き込まれている。その効果は「完了と見なすために必要な徹底度・確信度の閾値」を毎ターン設定すること。高 effort では計画が深く広くなり二重チェックが増えるが、計画は固定されず途中の結果で更新される——3仮説のデバッグ計画で1つ目にバグが見つかれば残りはスキップされる。一方で単純タスクの使用量を人工的に膨らませる「overthinking」は品質劣化要因として訓練時に監視している、とチームは明言する。
+
+推奨は「デフォルト effort を使い、変えるならタスク単位でなく一般的な好みとして扱う」。Opus 4.8 のデフォルト effort は Opus 4.7 のデフォルト比で、同程度のトークン量のままより良い結果を出すとチームは自社テストを報告している。結果が悪いときの第一手は設定変更でなくコンテキストの見直し（プロンプトの曖昧さ・ツール・スキル）で、effort を上げたくなるタスクの修正はたいてい上流にある。
+
+## 使い分け: 知らなかったのか、頑張らなかったのか
+
+- **モデルを上げる**: 問題が本当に難しいとき（微妙なバグ・未知ドメイン・アーキテクチャ判断）。どれだけ文脈を与えても小モデルが「確信を持って間違う」なら上げるシグナル。大モデルは曖昧さの処理も上手く、小モデルには実行を細かく指示する方が効く
+- **effort を上げる**: ファイルを読み飛ばした・テストを実行しなかった・二重チェックしなかったなど「試行の不足」で間違えたとき。特にデフォルト未満の effort を選んでいた場合
+
+Hallie の比喩では、Fable は「他の誰にも解けない問題を扱う専門医」、Opus は「経験豊富な専門家」、Sonnet は「優秀な万能選手」で、effort は誰であれその人が費やす時間を決める。Opus 低 effort は「専門家との5分間」、Sonnet 高 effort は「午後いっぱい使える万能選手」にあたる。
+
+## コストとの相互作用
+
+同一 effort の定型作業では大小どちらのモデルも正解するが、大モデルは検証を多めに入れ単価も高い——定型区間で小モデルへ落とすのは品質コストゼロの節約になる。逆に難しいマルチステップ作業では、小モデルが能力の限界へ向けて反復を燃やす間に大モデルは少ないステップで同じ品質へ到達し、タスク単位の総コストは逆転しうる。チームのテストでは Fable は Opus/Sonnet がどの effort レベルでも到達できないジョブを完了しており、それが最長・最難のタスクに Fable を温存する理由でもある（[[models/claude-fable-5]] の「長く複雑なタスクほど差が開く」特性と一致）。effort はトークン消費を形作るが上限ではなく、唯一のハードキャップは max_tokens。トークン予算や「簡潔に」という指示は、壁でなくモデルが従うよう訓練されたガイダンスとして機能する。
+
+## 問い
+
+- headless 実行（launchd ingest）は「ユーザーに聞けない」環境なので、低 effort の「聞く方へ倒れる」性質と相性が悪いはず。自動実行系のデフォルト effort はどう設定すべきか
+- [[concepts/llm-model-selection-strategy]] の工程分解（上流大・下流小）に「確信を持って間違うならモデル、試行不足なら effort」の診断軸を重ねると、工程ごとの effort 既定値まで設計できるか
+- 「effort はタスク単位でなく一般的な好みとして扱え」という公式推奨は、rigor を都度選ぶ自分の運用と矛盾するか
+
+## 関連
+
+- [[concepts/llm-model-selection-strategy]] — 「モデル×エフォートの二軸」を工程分解で運用する実務戦略。本ページはその公式の理論版
+- [[models/claude-fable-5]] — 専門医側の実体。どの effort でも他モデルが届かないジョブを完了するという公式主張の対象
+- [[concepts/advisor-executor-pattern]] — モデルの知識差を前提に高価モデルの出番を絞る配線パターン
+- [[models/claude-opus-4-8]] — 専門家側。デフォルト effort が 4.7 比で同トークン量のままより良い結果という公式報告
+- [[concepts/token-management]] — トークン消費を経営イシューとして扱う上位論点
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

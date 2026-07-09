@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>loop-anatomy</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="loop-anatomy.md">Markdownで表示</a></div>
-  <div class="meta">concepts/loop-anatomy · concepts · <span title="2026-07-06">3日前</span></div>
+  <div class="meta">concepts/loop-anatomy · concepts · <span title="2026-07-06">4日前</span></div>
   <article><h1>ループの解剖学（5ムーブ×6パーツ）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: ループの1ターンを「発見→引き渡し→検証→永続化→スケジュール」の5ムーブに分解し、故障を「どのムーブが欠けたか」で1対1診断する枠組み。最難関は生成者から分離した「no と言える検証」の設置。</p>
@@ -152,11 +152,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — スケジュールムーブの動詞の使い分け（いつ止まるか・自分はその場にいるか）</li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — maker–checker 停止判定（Haiku 評価器）の具体実装</li>
 <li><a href="../tools/stripe-minions.html">stripe-minions</a> — 5ムーブ全装備のエンタープライズ実例。決定論ゲート×LLM交互配置で週1,300本のPRをマージ</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — 公式4類型とトークン管理原則。「コードレビューは別エージェントで」は本ページの Generator/Evaluator 分離と同旨</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
-<li><a href="../tools/stripe-minions.html">stripe-minions</a></li>
-<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://drive.google.com/file/d/1qzKI4DKnyHRpXK1J3ATPqwaqLc0iNu-M/view" rel="noopener" target="_blank">https://drive.google.com/file/d/1qzKI4DKnyHRpXK1J3ATPqwaqLc0iNu-M/view</a></li></ul></section></article>
+<li><a href="../tools/stripe-minions.html">stripe-minions</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://drive.google.com/file/d/1qzKI4DKnyHRpXK1J3ATPqwaqLc0iNu-M/view" rel="noopener" target="_blank">https://drive.google.com/file/d/1qzKI4DKnyHRpXK1J3ATPqwaqLc0iNu-M/view</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -259,6 +260,7 @@ HuaShu は5つが独立でないと注記する。雑なループは目に見え
 - [[concepts/goal-loop-routine]] — スケジュールムーブの動詞の使い分け（いつ止まるか・自分はその場にいるか）
 - [[tools/claude-code-goal]] — maker–checker 停止判定（Haiku 評価器）の具体実装
 - [[tools/stripe-minions]] — 5ムーブ全装備のエンタープライズ実例。決定論ゲート×LLM交互配置で週1,300本のPRをマージ
+- [[concepts/claude-code-loop-types]] — 公式4類型とトークン管理原則。「コードレビューは別エージェントで」は本ページの Generator/Evaluator 分離と同旨
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

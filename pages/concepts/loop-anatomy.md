@@ -80,3 +80,4 @@ HuaShu は5つが独立でないと注記する。雑なループは目に見え
 - [[concepts/goal-loop-routine]] — スケジュールムーブの動詞の使い分け（いつ止まるか・自分はその場にいるか）
 - [[tools/claude-code-goal]] — maker–checker 停止判定（Haiku 評価器）の具体実装
 - [[tools/stripe-minions]] — 5ムーブ全装備のエンタープライズ実例。決定論ゲート×LLM交互配置で週1,300本のPRをマージ
+- [[concepts/claude-code-loop-types]] — 公式4類型とトークン管理原則。「コードレビューは別エージェントで」は本ページの Generator/Evaluator 分離と同旨
