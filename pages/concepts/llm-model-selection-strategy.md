@@ -48,3 +48,4 @@ flowchart LR
 - [[concepts/prompt-engineering]] — 上流で「濃いコンテキスト」を作るコンテキストエンジニアリングの実践
 - [[concepts/notebooklm-claude-workflow]] — 「上流に濃い文脈を渡し切る」原則の事実供給版：NotebookLMで網羅出力させてClaudeに渡す（@ai_jitan）
 - [[concepts/agent-adoption-walls]] — 企業エージェント導入の「⑦モデル選択の自由度」＝プロバイダー非依存の運用（@kzkhykw）
+- [[concepts/advisor-executor-pattern]] — 同型のサンドイッチ戦略を Fable 5×Sonnet 5 の2モデル・3パターンで具体化（別著者の収斂）

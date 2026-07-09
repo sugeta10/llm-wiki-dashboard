@@ -21,7 +21,7 @@ flowchart LR
 
 毎セッション注入される性質上そのトークン費用は常時発生するため、直近のv6.1.0では using-superpowers ブートストラップと参照ファイルを「振る舞いを変える内容を落とさずに」圧縮する作業が入っている（graphvizのスキルフロー図を散文に置換、プラットフォーム別解説の削除など）。挙動でなくコストを削るリリースで、方針として [[concepts/skills-over-memory]]（短く保ち決定を変える行だけ残す）と同じ思想が読み取れる。
 
-Superpowersはマルチハーネス対応で、Claude Code・Antigravity・Codex（App/CLI）・Cursor・Factory Droid・GitHub Copilot CLI・Kimi Code・OpenCode・Pi それぞれに別々にインストールする。v6.1.xのリリースノートはCodexのSessionStackフック二重登録の修正など、ハーネスごとのフック挙動の作り込みに紙幅を割いている。
+Superpowersはマルチハーネス対応で、Claude Code・Antigravity・Codex（App/CLI）・Cursor・Factory Droid・GitHub Copilot CLI・Kimi Code・OpenCode・Pi それぞれに別々にインストールする。v6.1.xのリリースノートはCodexのSessionStackフック二重登録の修正など、ハーネスごとのフック挙動の作り込みに紙幅を割いている。なおREADMEによれば、利用状況を把握する手段がスキル配布側にないため、brainstormingの任意のビジュアルコンパニオン機能でPrime Radiantのロゴを同社サイトから読み込む際に「Superpowersのバージョンだけ」を送る任意テレメトリが既定で有効になっている（プロジェクト内容・プロンプト・使用エージェントは送らない）。無効化は環境変数 `SUPERPOWERS_DISABLE_TELEMETRY` を真値に設定するか、Claude Code の `DISABLE_TELEMETRY` 等のopt-outで行う。
 
 ## 収録スキル（v6.1.1・14本）
 

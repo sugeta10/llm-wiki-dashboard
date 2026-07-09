@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fable-5-prompting - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>fable-5-prompting</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="fable-5-prompting.md">Markdownで表示</a></div>
+  <div class="meta">concepts/fable-5-prompting · concepts · <span title="2026-07-09">今日</span></div>
+  <article><h1>Claude Fable 5 プロンプティング（公式ガイド）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: <a href="../companies/anthropic.html">anthropic</a> 公式の <a href="../models/claude-fable-5.html">claude-fable-5</a> 向けプロンプト指針。指示を「足す」より「減らす」——動作を1つずつ列挙する細かいプロンプトはむしろ品質を落とすので簡潔な原則指示に置き換え、同時にハーネスを「長ターン・非同期」前提に組み直す。</p>
+</blockquote>
+<p>Fable 5 は指示追従・自律性・検証能力が Opus 4.8 より上がったぶん、旧モデル向けに書かれたスキルやシステムプロンプトが<strong>過剰な足枷になる</strong>という反転が起きる。Anthropic はガイドで「この能力向上は、どの指示・ツール・ガードレールがまだ必要かを再評価する好機」だと述べ、最も頻繁に調整が要る動作ごとに短い原則プロンプト（多くは英語スニペット）を提示している。ここではその調整ポイントを4群にまとめる。個々のスニペット全文は元ドキュメントを参照。</p>
+<h2>1. ハーネスを「長ターン・非同期」前提に組み直す</h2>
+<p>高いエフォート設定では1リクエストが数分、自律実行なら数時間に及ぶ。Anthropic はこれを「チームが Fable 5 へ移行する際に直面する最大の変化の一つ」と位置づけ、クライアントのタイムアウト・ストリーミング・進捗インジケーターを調整し、ブロッキングでなくスケジュールされたジョブで非同期に状況確認するようハーネスを再構築せよと勧める（<a href="../concepts/harness-engineering.html">harness-engineering</a> の設計課題に直結）。</p>
+<ul>
+<li><strong>エフォートは全段検討する</strong>: デフォルト <code>high</code>、最難関は <code>xhigh</code>、日常作業は <code>medium</code>/<code>low</code>。Anthropic は「Fable 5 の低エフォートでも旧モデルの <code>xhigh</code> を上回ることが多い」とし、完了はするが遅いと感じたらエフォートを下げよと述べる。</li>
+<li><strong>まれな早期停止に備える</strong>: 長セッション深部で、対応ツール呼び出しなしに「これから X を実行します」と意図だけ述べてターンを終える／続行に十分な情報があるのに許可を求めて止まる、という挙動がまれに出る。「続けてください」で足りるが、自律パイプラインでは「あなたは自律実行中で、ユーザーは見ていないので許可を求めると作業が止まる。可逆な行動は尋ねず進めよ。ターン終了前に最後の段落を点検し、計画・質問・約束で終わっていたらツール呼び出しで今やり切れ」というシステムリマインダーを足す。</li>
+<li><strong>コンテキスト残量を見せない</strong>: 非常に長いセッションで、Fable 5 が新セッションを提案したり要約引き継ぎを申し出たり自分の作業を削ったりする。残トークンのカウントダウン表示が最大の誘因なので、可能なら表示せず、必要なら「十分な残量がある。コンテキスト制限を理由に停止・要約・新セッション提案をするな」と安心させる。</li>
+</ul>
+<h2>2. 指示は「足す」から「減らす」へ</h2>
+<p>指示追従が十分に改善したため、各動作を名前で列挙せずとも簡潔な原則指示でほとんどの挙動を制御できる。Anthropic は「短い簡潔さの指示は、各パターンを列挙するのと同じくらい効果的」と明言する。</p>
+<ul>
+<li><strong>冗長さを抑える</strong>: 高エフォートで日常作業をやると、採用しない選択肢の調査・根本原因の長広い説明・過剰に構造化された PR 説明・次行の解説コメントが出がち。「結論から述べよ（Lead with the outcome）」「短さは含める内容の取捨で作れ、矢印チェーンや略語への圧縮ではない」といった簡潔さ指示1つで抑えられる。</li>
+<li><strong>不要な整理・リファクタを止める</strong>: 高エフォートは要求外の cleanup を招く。「タスクが要求する以上の機能追加・リファクタ・抽象化をするな。バグ修正に周辺の掃除は要らない。起こり得ないケースのエラーハンドリングやフォールバックを足すな。境界（ユーザー入力・外部API）でのみ検証せよ」と制約する。</li>
+<li><strong>境界を明示する</strong>: 依頼していないメールの下書き作成や防御的な git バックアップブランチ作成など、要求外アクションが出る。「ユーザーが問題を説明・質問・思考の言語化をしているだけなら、成果物はあなたの評価。所見を報告して止まれ。頼まれるまで修正を適用するな」と、すべきこと・すべきでないことを明示する。</li>
+<li><strong>推論の再現を指示しない（重要なgotcha）</strong>: 内部推論を応答テキストとしてエコー・書き起こし・説明させるプロンプトは、Fable 5 で <code>reasoning_extraction</code> 拒否カテゴリをトリガーし、Opus 4.8 へのフォールバックが増える。移行時に既存スキル・システムプロンプトから「思考過程を示せ」系の指示を監査して除け。推論の可視性が要るなら適応的思考の <code>thinking</code> ブロックを読む。</li>
+</ul>
+<h2>3. 自律実行の信頼性を裏付ける</h2>
+<ul>
+<li><strong>進捗報告を証拠で監査させる</strong>: 「進捗を報告する前に、各主張をこのセッションのツール結果に照合せよ。証拠を指させる作業だけ報告し、未検証なら明示せよ」。Anthropic のテストでは、この指示が<strong>捏造を誘発するよう設計されたタスクでも捏造ステータスをほぼ排除した</strong>と報告している（<a href="../concepts/eval-loop.html">eval-loop</a>・<a href="../concepts/claude-md-rules.html">claude-md-rules</a> の「正直な報告」と同型）。</li>
+<li><strong>チェックポイントを絞る</strong>: 「破壊的・不可逆な操作、本当のスコープ変更、ユーザーしか出せない入力のときだけ止まれ。それ以外は約束で終えず進め」。</li>
+<li><strong>自己検証は独立サブエージェントで</strong>: 新しいコンテキストを持つ独立した検証サブエージェントは、自己批評より良い結果を出す傾向。長時間タスクでは「一定間隔で仕様に照らしサブエージェントに検証させよ」と組み込む（<a href="../models/claude-fable-5.html">claude-fable-5</a> のループ実験と一致）。</li>
+<li><strong>並列サブエージェントの非同期化</strong>: Fable 5 は旧モデルより積極的に並列サブエージェントをディスパッチする。各サブエージェントが返るまでブロックせず、オーケストレーター⇔サブエージェント間の非同期通信を優先し、長寿命サブエージェントでキャッシュ読み取りの時間・コストを節約する（<a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>・<a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> の具体化）。</li>
+<li><strong>send-to-user ツールを作る</strong>: 長時間の非同期エージェントには、ターンを終えずにユーザーが読むべき内容（成果物・具体数値の進捗・質問への直接回答）をそのまま届けるクライアントサイドツールを与える。ツール入力は決して要約されないため内容がそのまま届く。ただし定義するだけでは呼ばれず、システムプロンプトで「verbatim で読ませたい内容のときだけ呼べ、ナレーションには使うな」と誘導が要る。</li>
+</ul>
+<h2>4. メモリと「なぜ」で底上げする</h2>
+<ul>
+<li><strong>メモリシステムを与える</strong>: Fable 5 は過去の実行から得た教訓を記録・参照できると特に強い。「1ファイル1教訓、冒頭に1行要約。修正も確認済みアプローチも、なぜ重要だったかごと記録。リポや履歴が既に記録することは保存せず、重複でなく既存を更新し、誤りは削除」。既存履歴からのブートストラップは「過去セッションを振り返りサブエージェントで核心テーマを抽出して [X] に保存せよ」で行う（このvaultの <code>memory/</code> 運用や <a href="../concepts/skills-over-memory.html">skills-over-memory</a>・<a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a> とほぼ同型）。</li>
+<li><strong>リクエストだけでなく理由を伝える</strong>: 「[大きなタスク] を [誰のため] にやっていて、彼らは [出力が可能にすること] を必要としている。それを踏まえて [依頼]」という枠で意図を渡すと、自ら意図を推測せずタスクを関連情報に結びつけられる。</li>
+<li><strong>最終要約は読みやすく</strong>: ツール呼び出し間の作業用ショートハンドはそのままでよいが、最終要約は「その作業を見ていない読者」向けに書き直す。矢印チェーン・ハイフン連結の造語・自作ラベルを落とし、完全な文で結論から述べる。</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-09（Anthropic）: 進捗を「ツール結果に照合してから報告せよ」の指示が、捏造を誘発するよう設計されたタスクでも捏造ステータスレポートをほぼ排除した、というテスト結果。単一ソースの効果主張として追跡したい</li>
+<li>2026-07-09（Anthropic）: 「Fable 5 の低エフォートでも旧モデルの <code>xhigh</code> を上回ることが多い」という主張。自分のワークロードで低エフォート常用が成立するかは要実測</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultのCLAUDE.md・<code>memory/</code> 運用は、このガイドのメモリ／進捗監査スニペットとほぼ一致している。逆に「指示を減らす」節に照らすと、CLAUDE.mdの細かいルール列挙は Fable 5 では過剰になっていないか</li>
+<li>「推論を再現させるな（reasoning_extraction）」は、観察ログや実装ノートを書かせる <a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> と衝突しないか。ノート＝成果物 と 思考過程のエコー の線引きはどこか</li>
+<li>send-to-user ツールや長ターン前提のハーネス再設計を、headless の wiki-ingest パイプラインに適用する余地はあるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> — 本ガイドが対象とするモデル（能力・セーフガード・ループ性能）</li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計の総論。本ページはFable 5固有の調整版</li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — エフォート×モデル規模の二軸最適化（本ガイドの「全エフォート検討」と接続）</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — 並列サブエージェント・オーケストレーションの設計パターン</li>
+<li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> — Fable 5＋Sonnet 5を役割で分ける具体的な連携パターン</li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> — 「短く保ち決定を変える行だけ残す」メモリ設計。本ガイドのメモリ節と同型</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — 長ターン・非同期前提へのハーネス再設計の土台</li>
+<li><a href="../concepts/finding-unknowns.html">finding-unknowns</a> — Fable時代の運用フレーム（品質のボトルネックが人間側のunknown明確化へ移る）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/ja/build-with-claude/prompt-engineering/prompting-claude-fable-5" rel="noopener" target="_blank">https://platform.claude.com/docs/ja/build-with-claude/prompt-engineering/prompting-claude-fable-5</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Fable 5 プロンプティング（公式ガイド）
+
+&gt; **TL;DR**: [[companies/anthropic]] 公式の [[models/claude-fable-5]] 向けプロンプト指針。指示を「足す」より「減らす」——動作を1つずつ列挙する細かいプロンプトはむしろ品質を落とすので簡潔な原則指示に置き換え、同時にハーネスを「長ターン・非同期」前提に組み直す。
+
+Fable 5 は指示追従・自律性・検証能力が Opus 4.8 より上がったぶん、旧モデル向けに書かれたスキルやシステムプロンプトが**過剰な足枷になる**という反転が起きる。Anthropic はガイドで「この能力向上は、どの指示・ツール・ガードレールがまだ必要かを再評価する好機」だと述べ、最も頻繁に調整が要る動作ごとに短い原則プロンプト（多くは英語スニペット）を提示している。ここではその調整ポイントを4群にまとめる。個々のスニペット全文は元ドキュメントを参照。
+
+## 1. ハーネスを「長ターン・非同期」前提に組み直す
+
+高いエフォート設定では1リクエストが数分、自律実行なら数時間に及ぶ。Anthropic はこれを「チームが Fable 5 へ移行する際に直面する最大の変化の一つ」と位置づけ、クライアントのタイムアウト・ストリーミング・進捗インジケーターを調整し、ブロッキングでなくスケジュールされたジョブで非同期に状況確認するようハーネスを再構築せよと勧める（[[concepts/harness-engineering]] の設計課題に直結）。
+
+- **エフォートは全段検討する**: デフォルト `high`、最難関は `xhigh`、日常作業は `medium`/`low`。Anthropic は「Fable 5 の低エフォートでも旧モデルの `xhigh` を上回ることが多い」とし、完了はするが遅いと感じたらエフォートを下げよと述べる。
+- **まれな早期停止に備える**: 長セッション深部で、対応ツール呼び出しなしに「これから X を実行します」と意図だけ述べてターンを終える／続行に十分な情報があるのに許可を求めて止まる、という挙動がまれに出る。「続けてください」で足りるが、自律パイプラインでは「あなたは自律実行中で、ユーザーは見ていないので許可を求めると作業が止まる。可逆な行動は尋ねず進めよ。ターン終了前に最後の段落を点検し、計画・質問・約束で終わっていたらツール呼び出しで今やり切れ」というシステムリマインダーを足す。
+- **コンテキスト残量を見せない**: 非常に長いセッションで、Fable 5 が新セッションを提案したり要約引き継ぎを申し出たり自分の作業を削ったりする。残トークンのカウントダウン表示が最大の誘因なので、可能なら表示せず、必要なら「十分な残量がある。コンテキスト制限を理由に停止・要約・新セッション提案をするな」と安心させる。
+
+## 2. 指示は「足す」から「減らす」へ
+
+指示追従が十分に改善したため、各動作を名前で列挙せずとも簡潔な原則指示でほとんどの挙動を制御できる。Anthropic は「短い簡潔さの指示は、各パターンを列挙するのと同じくらい効果的」と明言する。
+
+- **冗長さを抑える**: 高エフォートで日常作業をやると、採用しない選択肢の調査・根本原因の長広い説明・過剰に構造化された PR 説明・次行の解説コメントが出がち。「結論から述べよ（Lead with the outcome）」「短さは含める内容の取捨で作れ、矢印チェーンや略語への圧縮ではない」といった簡潔さ指示1つで抑えられる。
+- **不要な整理・リファクタを止める**: 高エフォートは要求外の cleanup を招く。「タスクが要求する以上の機能追加・リファクタ・抽象化をするな。バグ修正に周辺の掃除は要らない。起こり得ないケースのエラーハンドリングやフォールバックを足すな。境界（ユーザー入力・外部API）でのみ検証せよ」と制約する。
+- **境界を明示する**: 依頼していないメールの下書き作成や防御的な git バックアップブランチ作成など、要求外アクションが出る。「ユーザーが問題を説明・質問・思考の言語化をしているだけなら、成果物はあなたの評価。所見を報告して止まれ。頼まれるまで修正を適用するな」と、すべきこと・すべきでないことを明示する。
+- **推論の再現を指示しない（重要なgotcha）**: 内部推論を応答テキストとしてエコー・書き起こし・説明させるプロンプトは、Fable 5 で `reasoning_extraction` 拒否カテゴリをトリガーし、Opus 4.8 へのフォールバックが増える。移行時に既存スキル・システムプロンプトから「思考過程を示せ」系の指示を監査して除け。推論の可視性が要るなら適応的思考の `thinking` ブロックを読む。
+
+## 3. 自律実行の信頼性を裏付ける
+
+- **進捗報告を証拠で監査させる**: 「進捗を報告する前に、各主張をこのセッションのツール結果に照合せよ。証拠を指させる作業だけ報告し、未検証なら明示せよ」。Anthropic のテストでは、この指示が**捏造を誘発するよう設計されたタスクでも捏造ステータスをほぼ排除した**と報告している（[[concepts/eval-loop]]・[[concepts/claude-md-rules]] の「正直な報告」と同型）。
+- **チェックポイントを絞る**: 「破壊的・不可逆な操作、本当のスコープ変更、ユーザーしか出せない入力のときだけ止まれ。それ以外は約束で終えず進め」。
+- **自己検証は独立サブエージェントで**: 新しいコンテキストを持つ独立した検証サブエージェントは、自己批評より良い結果を出す傾向。長時間タスクでは「一定間隔で仕様に照らしサブエージェントに検証させよ」と組み込む（[[models/claude-fable-5]] のループ実験と一致）。
+- **並列サブエージェントの非同期化**: Fable 5 は旧モデルより積極的に並列サブエージェントをディスパッチする。各サブエージェントが返るまでブロックせず、オーケストレーター⇔サブエージェント間の非同期通信を優先し、長寿命サブエージェントでキャッシュ読み取りの時間・コストを節約する（[[concepts/multi-agent-patterns]]・[[concepts/advisor-executor-pattern]] の具体化）。
+- **send-to-user ツールを作る**: 長時間の非同期エージェントには、ターンを終えずにユーザーが読むべき内容（成果物・具体数値の進捗・質問への直接回答）をそのまま届けるクライアントサイドツールを与える。ツール入力は決して要約されないため内容がそのまま届く。ただし定義するだけでは呼ばれず、システムプロンプトで「verbatim で読ませたい内容のときだけ呼べ、ナレーションには使うな」と誘導が要る。
+
+## 4. メモリと「なぜ」で底上げする
+
+- **メモリシステムを与える**: Fable 5 は過去の実行から得た教訓を記録・参照できると特に強い。「1ファイル1教訓、冒頭に1行要約。修正も確認済みアプローチも、なぜ重要だったかごと記録。リポや履歴が既に記録することは保存せず、重複でなく既存を更新し、誤りは削除」。既存履歴からのブートストラップは「過去セッションを振り返りサブエージェントで核心テーマを抽出して [X] に保存せよ」で行う（このvaultの `memory/` 運用や [[concepts/skills-over-memory]]・[[concepts/agent-reflection-layer]] とほぼ同型）。
+- **リクエストだけでなく理由を伝える**: 「[大きなタスク] を [誰のため] にやっていて、彼らは [出力が可能にすること] を必要としている。それを踏まえて [依頼]」という枠で意図を渡すと、自ら意図を推測せずタスクを関連情報に結びつけられる。
+- **最終要約は読みやすく**: ツール呼び出し間の作業用ショートハンドはそのままでよいが、最終要約は「その作業を見ていない読者」向けに書き直す。矢印チェーン・ハイフン連結の造語・自作ラベルを落とし、完全な文で結論から述べる。
+
+## 観察ログ（未検証）
+
+- 2026-07-09（Anthropic）: 進捗を「ツール結果に照合してから報告せよ」の指示が、捏造を誘発するよう設計されたタスクでも捏造ステータスレポートをほぼ排除した、というテスト結果。単一ソースの効果主張として追跡したい
+- 2026-07-09（Anthropic）: 「Fable 5 の低エフォートでも旧モデルの `xhigh` を上回ることが多い」という主張。自分のワークロードで低エフォート常用が成立するかは要実測
+
+## 問い
+
+- このvaultのCLAUDE.md・`memory/` 運用は、このガイドのメモリ／進捗監査スニペットとほぼ一致している。逆に「指示を減らす」節に照らすと、CLAUDE.mdの細かいルール列挙は Fable 5 では過剰になっていないか
+- 「推論を再現させるな（reasoning_extraction）」は、観察ログや実装ノートを書かせる [[concepts/implementation-notes-prompt]] と衝突しないか。ノート＝成果物 と 思考過程のエコー の線引きはどこか
+- send-to-user ツールや長ターン前提のハーネス再設計を、headless の wiki-ingest パイプラインに適用する余地はあるか
+
+## 関連
+
+- [[models/claude-fable-5]] — 本ガイドが対象とするモデル（能力・セーフガード・ループ性能）
+- [[concepts/prompt-engineering]] — プロンプト設計の総論。本ページはFable 5固有の調整版
+- [[concepts/llm-model-selection-strategy]] — エフォート×モデル規模の二軸最適化（本ガイドの「全エフォート検討」と接続）
+- [[concepts/multi-agent-patterns]] — 並列サブエージェント・オーケストレーションの設計パターン
+- [[concepts/advisor-executor-pattern]] — Fable 5＋Sonnet 5を役割で分ける具体的な連携パターン
+- [[concepts/skills-over-memory]] — 「短く保ち決定を変える行だけ残す」メモリ設計。本ガイドのメモリ節と同型
+- [[concepts/harness-engineering]] — 長ターン・非同期前提へのハーネス再設計の土台
+- [[concepts/finding-unknowns]] — Fable時代の運用フレーム（品質のボトルネックが人間側のunknown明確化へ移る）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

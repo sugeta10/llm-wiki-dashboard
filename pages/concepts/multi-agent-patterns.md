@@ -170,6 +170,8 @@ Anthropicが公開しているエージェント量産手法は、**英語圏の
 - [[tools/hermes-agent-research-department]] — Scout/Analyst/BrieferのPipelineパターンをHermesで実装した3エージェント・リサーチ部門
 - [[tools/stripe-minions]] — 決定論的オーケストレーター＋LLMワーカーの交互配置で週1,300本のマシン生成PRをマージするStripe社内パイプライン（Orchestrator-Workerの大規模実例）
 - [[tools/oh-my-openagent]] — Team Mode（lead＋最大8並列member・ピアツーピア通信）で Specialist Team を実装した OpenCode プラグイン
+- [[concepts/advisor-executor-pattern]] — Fan-Out/Orchestratorを Fable 5（上位）×Sonnet 5（下位）のモデル階層に対応づけた3連携パターン
+- [[concepts/fable-5-prompting]] — 並列サブエージェントを非同期・長寿命で回すFable 5公式の指針
 
 ## 観察ログ（未検証）
 

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>advisor-executor-pattern - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>advisor-executor-pattern</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="advisor-executor-pattern.md">Markdownで表示</a></div>
+  <div class="meta">concepts/advisor-executor-pattern · concepts · <span title="2026-07-09">今日</span></div>
+  <article><h1>Advisor-Executor パターン（Fable 5 × Sonnet 5 連携）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 高知能・高価格の <a href="../models/claude-fable-5.html">Fable 5</a> と高速・安価な Sonnet 5 を、役割やフェーズで使い分ける3つの連携パターン（Advisor／Orchestrator／Fable Sandwich）。単一モデルを回すのでなくモデルを組み合わせて「知能」と「コスト・速度」のトレードオフを解消する。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;Phase 1 探索\nSonnet 5\nリポ巡回・依存/ログ収集&quot;] --&gt; B[&quot;Phase 2 計画・査読\nFable 5\n修正方針・リスクチェック&quot;] --&gt; C[&quot;Phase 3 実行\nSonnet 5\nコード書換・ローカルテスト&quot;]</pre>
+<p>自作コーディングエージェントに複雑な作業をさせるとコンテキストが膨らみ、賢いモデル（Opus/Fable級）を毎ターン呼ぶだけで API 料金が跳ね上がり応答も遅くなる——というのが出発点の悩みだと Na（yuche、AIツール活用ブロガー）は書く。この記事は ClaudeDevs 公式 X スレッドで紹介された「Fable 5＋Sonnet 5 のエージェント連携パターン」を、Claude Code での実用例つきで解説したもの。共通する発想は、<strong>作業ループの9割以上を占める泥臭い手作業は安価モデルで回し、本当に知恵が要る瞬間だけ高価モデルを通す</strong>という配分でトレードオフを解くことにある。3パターンは「どこに高価モデルを差すか」の位置が違う。</p>
+<h2>パターン1: Advisor（相談役）</h2>
+<p>エージェントの役割を <strong>Executor（実行役 / Sonnet 5）</strong> と <strong>Advisor（相談役 / Fable 5）</strong> に完全分離して協調させる。</p>
+<ul>
+<li><strong>Executor（Sonnet 5）</strong>: メインループを毎ターン回し、ファイル読み書き・ローカルコマンド・テスト実行・基本的なコード書きといった手を動かす作業を高速・低コストで愚直にこなす。</li>
+<li><strong>Advisor（Fable 5）</strong>: 常時は回さず、必要なときだけオンデマンドで呼ぶ。複雑なエラーの根本原因特定や設計方針の決定など、頭を使う高度な判断に特化する。</li>
+</ul>
+<p>大半のトークン消費は安価な Executor レートで課金されつつ、全体の知能レベルは最高峰の Advisor と同等に保てるのが強み。記事は、Claude Code にはこの Advisor 機能がネイティブで備わり、<code>/advisor fable</code> でアドバイザーモデルを固定できると紹介する（Sonnet 5 が壁に当たると自動で Fable 5 に助言を仰ぐ、という描写。コマンドの存在は本記事のみの記述で要検証）。</p>
+<h2>パターン2: Orchestrator（司令塔）</h2>
+<p>Fable 5 を司令塔（プランナー）としてトップに据え、Sonnet 5 を作業員（ワーカー）として従わせる。</p>
+<ul>
+<li><strong>Orchestrator（Fable 5）</strong>: ユーザーの巨大タスクを解析し、アーキテクチャ設計と矛盾のない実行プランを作る。タスクを小さく分割してワーカーへ指示を出す。</li>
+<li><strong>Worker（Sonnet 5）</strong>: 「この関数のユニットテストを書く」「CSSを修正する」など単一サブタスクに集中してコードを書き、Orchestrator に結果を報告する。</li>
+</ul>
+<p>メインコンテキストを Orchestrator が握るため、作業中にエージェントが何をやっていたか忘れて迷子になる「コンテキストロス」を防げる。並列で複数の Worker を走らせればタスク処理時間も大幅短縮できる。これは <a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> の Fan-Out／Orchestrator-subagent を、上位=Fable・下位=Sonnet というモデル階層に対応づけた形にあたる。</p>
+<h2>パターン3: Fable Sandwich（サンドイッチ）</h2>
+<p>開発プロセスのフェーズごとにモデルを交互に入れ替える3ステップの信頼性重視パターン。最初と最後の関門だけ高知能モデルを置き、作業の大部分を標準モデルで挟むことから「サンドイッチ」と呼ばれる（上図）。</p>
+<ul>
+<li><strong>Phase 1: Explore（探索）</strong> — 安価で高速な Sonnet 5 がリポジトリ全体を巡回し、関連コード・依存関係・エラーログを徹底的に集めて整理する。</li>
+<li><strong>Phase 2: Plan &amp; Review（計画・査読）</strong> — 整理された文脈を Fable 5 に渡し、最も頭を使う修正方針の決定とリスクチェック（セキュリティ・パフォーマンス影響）を行う。</li>
+<li><strong>Phase 3: Execute（実行）</strong> — Fable 5 が立てたプランに沿って再び Sonnet 5 が具体的なコード書き換えとローカルテストを担当する。</li>
+</ul>
+<p>最初から Fable 5 に探索させると読み込みトークンだけで膨大な費用がかかる。泥臭い探索は Sonnet に任せ、最も思考力が要る「設計・チェック」の一点だけ Fable 5 を通すことで、最高精度の成果物を最も安価に得る狙い。この3フェーズ配分は <a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> の工程分解型サンドイッチ戦略（@ozaken_AI・上流大／中流中／下流小）と本質的に同じ発想で、別著者・別スレッドから同型の設計思想が収斂している。</p>
+<h2>まとめの含意</h2>
+<p>Na は記事末で、AIエージェントの実用化・プロダクション導入では<strong>単一モデルの性能向上を待つのでなく、モデルの組み合わせで限界を突破するのがこれからのトレンド</strong>になりそうだと結ぶ。3パターンは排他でなく、規模の判断は Advisor、大タスクの分解は Orchestrator、信頼性重視の1本道は Fable Sandwich、と局面で選べる。<a href="../concepts/coding-agent-workflow-styles.html">coding-agent-workflow-styles</a> の「高速制御ループ vs 委譲低速ループ」という2類型とも重なり、モデル階層をどう配線するかがハーネス設計の主軸になりつつある。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-09（Na/yuche）: Claude Code に Advisor 機能がネイティブで備わり <code>/advisor fable</code> でアドバイザーモデルを固定できる、という記述。本記事のみの単一ソースで、コマンドの実在は要検証</li>
+<li>2026-07-09: 記事は Fable 5／Sonnet 5 を「次世代モデル（仮定）」と前置きしつつ実運用例を書いている。Fable 5 は既にローンチ済み（<a href="../models/claude-fable-5.html">claude-fable-5</a>）だが Sonnet 5 側の実在・スペックは本記事では未確定</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>Advisor パターンの「9割を安価モデル・判断だけ高価モデル」は、このvaultの <a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> とどこまで同一で、何が新しいのか（Advisor＝オンデマンド呼び出しという発火設計が差分か）</li>
+<li><code>/advisor fable</code> は本当に Claude Code に存在するか。存在するなら <a href="../tools/claude-code-subagents.html">claude-code-subagents</a> やサブエージェントのモデル指定とどう関係するか</li>
+<li>自作エージェントで Fable Sandwich を組むとき、Phase 1→2 の「文脈の受け渡し」で情報が劣化しない中間記法は何か（<a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> と接続できるか）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> — 高知能側モデル。長い複雑タスクほど差が開く特性がこのパターンの前提</li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 工程分解型サンドイッチ戦略。Fable Sandwich と同型の設計思想（別著者の収斂）</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Orchestrator＝Fan-Out/Orchestrator-subagentのモデル階層版</li>
+<li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a> — Fable 5公式プロンプト指針（並列サブエージェント・委任の非同期化）</li>
+<li><a href="../concepts/coding-agent-workflow-styles.html">coding-agent-workflow-styles</a> — 高速制御ループ／委譲低速ループの2類型</li>
+<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — Claude Code の subagent/agent teams/worktree 使い分け</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — エージェントループの設計論（安価ループ＋高価判断の配分）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/yuche/articles/advisor-executor-pattern" rel="noopener" target="_blank">https://zenn.dev/yuche/articles/advisor-executor-pattern</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Advisor-Executor パターン（Fable 5 × Sonnet 5 連携）
+
+&gt; **TL;DR**: 高知能・高価格の [[models/claude-fable-5|Fable 5]] と高速・安価な Sonnet 5 を、役割やフェーズで使い分ける3つの連携パターン（Advisor／Orchestrator／Fable Sandwich）。単一モデルを回すのでなくモデルを組み合わせて「知能」と「コスト・速度」のトレードオフを解消する。
+
+```mermaid
+flowchart LR
+  A[&quot;Phase 1 探索\nSonnet 5\nリポ巡回・依存/ログ収集&quot;] --&gt; B[&quot;Phase 2 計画・査読\nFable 5\n修正方針・リスクチェック&quot;] --&gt; C[&quot;Phase 3 実行\nSonnet 5\nコード書換・ローカルテスト&quot;]
+```
+
+自作コーディングエージェントに複雑な作業をさせるとコンテキストが膨らみ、賢いモデル（Opus/Fable級）を毎ターン呼ぶだけで API 料金が跳ね上がり応答も遅くなる——というのが出発点の悩みだと Na（yuche、AIツール活用ブロガー）は書く。この記事は ClaudeDevs 公式 X スレッドで紹介された「Fable 5＋Sonnet 5 のエージェント連携パターン」を、Claude Code での実用例つきで解説したもの。共通する発想は、**作業ループの9割以上を占める泥臭い手作業は安価モデルで回し、本当に知恵が要る瞬間だけ高価モデルを通す**という配分でトレードオフを解くことにある。3パターンは「どこに高価モデルを差すか」の位置が違う。
+
+## パターン1: Advisor（相談役）
+
+エージェントの役割を **Executor（実行役 / Sonnet 5）** と **Advisor（相談役 / Fable 5）** に完全分離して協調させる。
+
+- **Executor（Sonnet 5）**: メインループを毎ターン回し、ファイル読み書き・ローカルコマンド・テスト実行・基本的なコード書きといった手を動かす作業を高速・低コストで愚直にこなす。
+- **Advisor（Fable 5）**: 常時は回さず、必要なときだけオンデマンドで呼ぶ。複雑なエラーの根本原因特定や設計方針の決定など、頭を使う高度な判断に特化する。
+
+大半のトークン消費は安価な Executor レートで課金されつつ、全体の知能レベルは最高峰の Advisor と同等に保てるのが強み。記事は、Claude Code にはこの Advisor 機能がネイティブで備わり、`/advisor fable` でアドバイザーモデルを固定できると紹介する（Sonnet 5 が壁に当たると自動で Fable 5 に助言を仰ぐ、という描写。コマンドの存在は本記事のみの記述で要検証）。
+
+## パターン2: Orchestrator（司令塔）
+
+Fable 5 を司令塔（プランナー）としてトップに据え、Sonnet 5 を作業員（ワーカー）として従わせる。
+
+- **Orchestrator（Fable 5）**: ユーザーの巨大タスクを解析し、アーキテクチャ設計と矛盾のない実行プランを作る。タスクを小さく分割してワーカーへ指示を出す。
+- **Worker（Sonnet 5）**: 「この関数のユニットテストを書く」「CSSを修正する」など単一サブタスクに集中してコードを書き、Orchestrator に結果を報告する。
+
+メインコンテキストを Orchestrator が握るため、作業中にエージェントが何をやっていたか忘れて迷子になる「コンテキストロス」を防げる。並列で複数の Worker を走らせればタスク処理時間も大幅短縮できる。これは [[concepts/multi-agent-patterns]] の Fan-Out／Orchestrator-subagent を、上位=Fable・下位=Sonnet というモデル階層に対応づけた形にあたる。
+
+## パターン3: Fable Sandwich（サンドイッチ）
+
+開発プロセスのフェーズごとにモデルを交互に入れ替える3ステップの信頼性重視パターン。最初と最後の関門だけ高知能モデルを置き、作業の大部分を標準モデルで挟むことから「サンドイッチ」と呼ばれる（上図）。
+
+- **Phase 1: Explore（探索）** — 安価で高速な Sonnet 5 がリポジトリ全体を巡回し、関連コード・依存関係・エラーログを徹底的に集めて整理する。
+- **Phase 2: Plan &amp; Review（計画・査読）** — 整理された文脈を Fable 5 に渡し、最も頭を使う修正方針の決定とリスクチェック（セキュリティ・パフォーマンス影響）を行う。
+- **Phase 3: Execute（実行）** — Fable 5 が立てたプランに沿って再び Sonnet 5 が具体的なコード書き換えとローカルテストを担当する。
+
+最初から Fable 5 に探索させると読み込みトークンだけで膨大な費用がかかる。泥臭い探索は Sonnet に任せ、最も思考力が要る「設計・チェック」の一点だけ Fable 5 を通すことで、最高精度の成果物を最も安価に得る狙い。この3フェーズ配分は [[concepts/llm-model-selection-strategy]] の工程分解型サンドイッチ戦略（@ozaken_AI・上流大／中流中／下流小）と本質的に同じ発想で、別著者・別スレッドから同型の設計思想が収斂している。
+
+## まとめの含意
+
+Na は記事末で、AIエージェントの実用化・プロダクション導入では**単一モデルの性能向上を待つのでなく、モデルの組み合わせで限界を突破するのがこれからのトレンド**になりそうだと結ぶ。3パターンは排他でなく、規模の判断は Advisor、大タスクの分解は Orchestrator、信頼性重視の1本道は Fable Sandwich、と局面で選べる。[[concepts/coding-agent-workflow-styles]] の「高速制御ループ vs 委譲低速ループ」という2類型とも重なり、モデル階層をどう配線するかがハーネス設計の主軸になりつつある。
+
+## 観察ログ（未検証）
+
+- 2026-07-09（Na/yuche）: Claude Code に Advisor 機能がネイティブで備わり `/advisor fable` でアドバイザーモデルを固定できる、という記述。本記事のみの単一ソースで、コマンドの実在は要検証
+- 2026-07-09: 記事は Fable 5／Sonnet 5 を「次世代モデル（仮定）」と前置きしつつ実運用例を書いている。Fable 5 は既にローンチ済み（[[models/claude-fable-5]]）だが Sonnet 5 側の実在・スペックは本記事では未確定
+
+## 問い
+
+- Advisor パターンの「9割を安価モデル・判断だけ高価モデル」は、このvaultの [[concepts/llm-model-selection-strategy]] とどこまで同一で、何が新しいのか（Advisor＝オンデマンド呼び出しという発火設計が差分か）
+- `/advisor fable` は本当に Claude Code に存在するか。存在するなら [[tools/claude-code-subagents]] やサブエージェントのモデル指定とどう関係するか
+- 自作エージェントで Fable Sandwich を組むとき、Phase 1→2 の「文脈の受け渡し」で情報が劣化しない中間記法は何か（[[concepts/intermediate-notation-pattern]] と接続できるか）
+
+## 関連
+
+- [[models/claude-fable-5]] — 高知能側モデル。長い複雑タスクほど差が開く特性がこのパターンの前提
+- [[concepts/llm-model-selection-strategy]] — 工程分解型サンドイッチ戦略。Fable Sandwich と同型の設計思想（別著者の収斂）
+- [[concepts/multi-agent-patterns]] — Orchestrator＝Fan-Out/Orchestrator-subagentのモデル階層版
+- [[concepts/fable-5-prompting]] — Fable 5公式プロンプト指針（並列サブエージェント・委任の非同期化）
+- [[concepts/coding-agent-workflow-styles]] — 高速制御ループ／委譲低速ループの2類型
+- [[concepts/claude-code-orchestration]] — Claude Code の subagent/agent teams/worktree 使い分け
+- [[concepts/loop-engineering]] — エージェントループの設計論（安価ループ＋高価判断の配分）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

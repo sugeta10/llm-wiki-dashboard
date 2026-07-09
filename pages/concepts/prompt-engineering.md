@@ -129,3 +129,4 @@ Claude 4.6以降、アシスタントターンへの先頭埋め込み（prefill
 - [[concepts/implementation-notes-prompt]] — 実装時に並走ノートを書かせるプロンプト手法（Anthropicエンジニア発）
 - [[concepts/chatgpt-custom-instructions]] — ChatGPTカスタム指示の設定手法（全チャット共通の永続プロンプト設定）
 - [[concepts/prompt-engineering-playbook]] — 海外AIガチ勢の実践プロンプト40技術（CoVe・ToT・マルチエージェント・ハーネス設計）
+- [[concepts/fable-5-prompting]] — [[models/claude-fable-5]] 固有のプロンプト指針（Anthropic公式・指示を減らす／長ターン前提／reasoning_extraction回避）

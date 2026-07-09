@@ -45,7 +45,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>仕組み：ブートストラップ＋自動トリガー</h2>
 <p>コアは <code>using-superpowers</code> スキルで、これが<strong>毎セッションの冒頭に注入される</strong>。「作業（質問への回答・コードベース探索・ファイル確認を含む）の前に、1%でも関連しうるスキルがあれば必ず呼べ」という規律を課し、rationalization（「これは単純な質問だから」等）を封じる赤旗テーブルを持つ。他の13スキルは各自の description（例：brainstorming＝「創作の前に必ず使え」）で<strong>自動的にトリガー</strong>するため、ユーザーが明示的に呼ばなくても発火する。</p>
 <p>毎セッション注入される性質上そのトークン費用は常時発生するため、直近のv6.1.0では using-superpowers ブートストラップと参照ファイルを「振る舞いを変える内容を落とさずに」圧縮する作業が入っている（graphvizのスキルフロー図を散文に置換、プラットフォーム別解説の削除など）。挙動でなくコストを削るリリースで、方針として <a href="../concepts/skills-over-memory.html">skills-over-memory</a>（短く保ち決定を変える行だけ残す）と同じ思想が読み取れる。</p>
-<p>Superpowersはマルチハーネス対応で、Claude Code・Antigravity・Codex（App/CLI）・Cursor・Factory Droid・GitHub Copilot CLI・Kimi Code・OpenCode・Pi それぞれに別々にインストールする。v6.1.xのリリースノートはCodexのSessionStackフック二重登録の修正など、ハーネスごとのフック挙動の作り込みに紙幅を割いている。</p>
+<p>Superpowersはマルチハーネス対応で、Claude Code・Antigravity・Codex（App/CLI）・Cursor・Factory Droid・GitHub Copilot CLI・Kimi Code・OpenCode・Pi それぞれに別々にインストールする。v6.1.xのリリースノートはCodexのSessionStackフック二重登録の修正など、ハーネスごとのフック挙動の作り込みに紙幅を割いている。なおREADMEによれば、利用状況を把握する手段がスキル配布側にないため、brainstormingの任意のビジュアルコンパニオン機能でPrime Radiantのロゴを同社サイトから読み込む際に「Superpowersのバージョンだけ」を送る任意テレメトリが既定で有効になっている（プロジェクト内容・プロンプト・使用エージェントは送らない）。無効化は環境変数 <code>SUPERPOWERS_DISABLE_TELEMETRY</code> を真値に設定するか、Claude Code の <code>DISABLE_TELEMETRY</code> 等のopt-outで行う。</p>
 <h2>収録スキル（v6.1.1・14本）</h2>
 <ul>
 <li><strong>規律・完了基準</strong>: <code>using-superpowers</code>（毎セッション注入の入口・スキル呼び出しを強制）／<code>verification-before-completion</code>（完了・修正・合格を主張する前に検証コマンドを実行し出力で裏を取る＝主張の前に必ず証拠）</li>
@@ -75,7 +75,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/gstack.html">gstack</a></li>
 <li><a href="../tools/matt-pocock-skills.html">matt-pocock-skills</a></li>
 <li><a href="../concepts/agent-skill-management-system.html">agent-skill-management-system</a></li>
-<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2073936671482233307" rel="noopener" target="_blank">https://x.com/i/web/status/2073936671482233307</a></li></ul></section></article>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/obra/superpowers" rel="noopener" target="_blank">https://github.com/obra/superpowers</a></li>
+<li><a href="https://x.com/i/web/status/2073936671482233307" rel="noopener" target="_blank">https://x.com/i/web/status/2073936671482233307</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -119,7 +120,7 @@ flowchart LR
 
 毎セッション注入される性質上そのトークン費用は常時発生するため、直近のv6.1.0では using-superpowers ブートストラップと参照ファイルを「振る舞いを変える内容を落とさずに」圧縮する作業が入っている（graphvizのスキルフロー図を散文に置換、プラットフォーム別解説の削除など）。挙動でなくコストを削るリリースで、方針として [[concepts/skills-over-memory]]（短く保ち決定を変える行だけ残す）と同じ思想が読み取れる。
 
-Superpowersはマルチハーネス対応で、Claude Code・Antigravity・Codex（App/CLI）・Cursor・Factory Droid・GitHub Copilot CLI・Kimi Code・OpenCode・Pi それぞれに別々にインストールする。v6.1.xのリリースノートはCodexのSessionStackフック二重登録の修正など、ハーネスごとのフック挙動の作り込みに紙幅を割いている。
+Superpowersはマルチハーネス対応で、Claude Code・Antigravity・Codex（App/CLI）・Cursor・Factory Droid・GitHub Copilot CLI・Kimi Code・OpenCode・Pi それぞれに別々にインストールする。v6.1.xのリリースノートはCodexのSessionStackフック二重登録の修正など、ハーネスごとのフック挙動の作り込みに紙幅を割いている。なおREADMEによれば、利用状況を把握する手段がスキル配布側にないため、brainstormingの任意のビジュアルコンパニオン機能でPrime Radiantのロゴを同社サイトから読み込む際に「Superpowersのバージョンだけ」を送る任意テレメトリが既定で有効になっている（プロジェクト内容・プロンプト・使用エージェントは送らない）。無効化は環境変数 `SUPERPOWERS_DISABLE_TELEMETRY` を真値に設定するか、Claude Code の `DISABLE_TELEMETRY` 等のopt-outで行う。
 
 ## 収録スキル（v6.1.1・14本）
 

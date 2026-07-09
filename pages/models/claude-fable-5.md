@@ -95,3 +95,5 @@ Fable 5 の分類器が**サイバーセキュリティ・生物化学・蒸留*
 - [[concepts/notebooklm-claude-workflow]] — Fable 5を「考える」側に据え、NotebookLMの引用付き事実を「知る」入口にする分業ワークフロー（@ai_jitan）
 - [[concepts/ai-strategist-prompt]] — Fable 5の「長く複雑なタスクほど差が開く」本領を、全会話履歴の棚卸し＝参謀プロンプトで個人利用に引き出す型（@akira_papa_IT）
 - [[concepts/frontier-model-extraction]] — サブスク枠→従量課金の移行を前提に、Fable 5の判断を去る前に永続資産へ抽出する5つの型（@EXM7777）
+- [[concepts/fable-5-prompting]] — Fable 5固有のプロンプト／スキャフォールディング公式指針（指示を減らす・長ターン前提のハーネス再設計）
+- [[concepts/advisor-executor-pattern]] — Fable 5＋Sonnet 5を役割で分ける3つの連携パターン（Advisor/Orchestrator/Fable Sandwich）
