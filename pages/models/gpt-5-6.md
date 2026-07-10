@@ -14,6 +14,8 @@ flowchart TD
 
 命名体系が変わった点が構造上の要点で、数字（5.6）が世代を表し、Sol・Terra・Lunaは各自のケイデンスで進化しうる永続的な能力ティアだとOpenAIは説明する。発表全体を貫くのは「同じ知能をより少ないトークン・コスト・時間で」という効率のポジショニングで、比較対象としてほぼ一貫して [[models/claude-fable-5]] を名指ししている。前世代 [[models/gpt-5-5]] が推奨したアウトカム重視プロンプトの延長線上に、ツール協調をモデル自身のプログラム実行に委ねる方向へ踏み込んだ世代と言える。
 
+発表に際し Sam Altman（OpenAI CEO）は自身のXポストで「明らかに我々がこれまで作った最高のモデルだが、同時に我々が書いた最高のブログ記事の一つでもある」と述べ、モデルと並べて発表記事そのものを売り込んだ（2026-07-09）。
+
 ## 効率戦略とベンチマークの読み方
 
 OpenAIの自社測定によると、SolはAgents' Last Exam（55分野の長時間プロフェッショナルワークフロー評価）で53.6を記録しFable 5（adaptive reasoning）を13.1点上回り、medium reasoningでも約1/4の推定コストで11.4点上回る。TerraとLunaは約1/16のコストでFable 5超えと主張する。Artificial Analysis Intelligence IndexではSol（max）がFable 5の1点差以内に迫り、61%短い時間・約半分の推定コストで完了。Artificial Analysis Coding Agent IndexではSolが80でSOTA（Fable 5比+2.8点、出力トークン半分以下）とする。

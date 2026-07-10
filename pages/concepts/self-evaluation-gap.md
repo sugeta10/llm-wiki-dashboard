@@ -38,3 +38,4 @@
 - [[concepts/ai-quality-amplification]] — 品質をスケールさせる思想。「当たり前の基準値」を上げる話と接続
 - [[concepts/mental-conditioning]] — 自己嫌悪・後悔の反芻との付き合い方（過活動なDMNの罠）という裏面
 - [[concepts/team-leader-transition]] — フィードバックの「型」（状況→行動→結果→次）を他者に与える側の実装
+- [[concepts/chokkan-karte]] — AIを自己批判の鏡でなく自己解剖の翻訳機に使う隣接実践（直感素材から本音を言語化）

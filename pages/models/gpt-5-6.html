@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>gpt-5-6</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="gpt-5-6.md">Markdownで表示</a></div>
-  <div class="meta">models/gpt-5-6 · models · <span title="2026-07-10">今日</span></div>
+  <div class="meta">models/gpt-5-6 · models · <span title="2026-07-11">今日</span></div>
   <article><h1>GPT-5.6</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: OpenAIが2026-07-10にGA公開した新世代モデルファミリー。Sol（旗艦）/ Terra（バランス）/ Luna（最安）の3ティア構成で「トークンあたりの有用な仕事」＝効率を主戦場に据え、並列4エージェントの <code>ultra</code> 設定とProgrammatic Tool Callingを導入した。</p>
@@ -42,6 +42,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   S --&gt; U[&quot;ultra — 既定4エージェント並列&quot;]
   U --&gt; W[&quot;並列ワークストリームを統合し時短&quot;]</pre>
 <p>命名体系が変わった点が構造上の要点で、数字（5.6）が世代を表し、Sol・Terra・Lunaは各自のケイデンスで進化しうる永続的な能力ティアだとOpenAIは説明する。発表全体を貫くのは「同じ知能をより少ないトークン・コスト・時間で」という効率のポジショニングで、比較対象としてほぼ一貫して <a href="../models/claude-fable-5.html">claude-fable-5</a> を名指ししている。前世代 <a href="../models/gpt-5-5.html">gpt-5-5</a> が推奨したアウトカム重視プロンプトの延長線上に、ツール協調をモデル自身のプログラム実行に委ねる方向へ踏み込んだ世代と言える。</p>
+<p>発表に際し Sam Altman（OpenAI CEO）は自身のXポストで「明らかに我々がこれまで作った最高のモデルだが、同時に我々が書いた最高のブログ記事の一つでもある」と述べ、モデルと並べて発表記事そのものを売り込んだ（2026-07-09）。</p>
 <h2>効率戦略とベンチマークの読み方</h2>
 <p>OpenAIの自社測定によると、SolはAgents' Last Exam（55分野の長時間プロフェッショナルワークフロー評価）で53.6を記録しFable 5（adaptive reasoning）を13.1点上回り、medium reasoningでも約1/4の推定コストで11.4点上回る。TerraとLunaは約1/16のコストでFable 5超えと主張する。Artificial Analysis Intelligence IndexではSol（max）がFable 5の1点差以内に迫り、61%短い時間・約半分の推定コストで完了。Artificial Analysis Coding Agent IndexではSolが80でSOTA（Fable 5比+2.8点、出力トークン半分以下）とする。</p>
 <p>一方、同記事末尾のOpenAI自身の比較表では別の顔も見える。GDPval-AA v2はFable 5が1,759.6 EloでSol（1,747.8）を上回り、Artificial Analysis Intelligence Index v4.1もFable 5 59.9 &gt; Sol 58.9。SWE-Bench ProはFable 5 80%に対しSol 64.6%、FrontierMath Tier 4はFable 5 87.8%に対しSol 83%。「ピーク知能では拮抗ないし一部劣位、トークン効率・コスト・速度で圧倒」というポジショニングだと読める（wiki側の解釈）。なお本文が主張するAgents' Last Exam 53.6と表中のSol 52.7%は一致せず、条件差の説明は記事内にない。数値はすべてOpenAI自社測定・自社推定コストである点に注意。</p>
@@ -82,7 +83,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
 <li><a href="../models/gpt-5-5.html">gpt-5-5</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://openai.com/index/gpt-5-6/" rel="noopener" target="_blank">https://openai.com/index/gpt-5-6/</a></li></ul></section></article>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://openai.com/index/gpt-5-6/" rel="noopener" target="_blank">https://openai.com/index/gpt-5-6/</a></li>
+<li><a href="https://x.com/i/web/status/2075266471316615436" rel="noopener" target="_blank">https://x.com/i/web/status/2075266471316615436</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -118,6 +120,8 @@ flowchart TD
 ```
 
 命名体系が変わった点が構造上の要点で、数字（5.6）が世代を表し、Sol・Terra・Lunaは各自のケイデンスで進化しうる永続的な能力ティアだとOpenAIは説明する。発表全体を貫くのは「同じ知能をより少ないトークン・コスト・時間で」という効率のポジショニングで、比較対象としてほぼ一貫して [[models/claude-fable-5]] を名指ししている。前世代 [[models/gpt-5-5]] が推奨したアウトカム重視プロンプトの延長線上に、ツール協調をモデル自身のプログラム実行に委ねる方向へ踏み込んだ世代と言える。
+
+発表に際し Sam Altman（OpenAI CEO）は自身のXポストで「明らかに我々がこれまで作った最高のモデルだが、同時に我々が書いた最高のブログ記事の一つでもある」と述べ、モデルと並べて発表記事そのものを売り込んだ（2026-07-09）。
 
 ## 効率戦略とベンチマークの読み方
 

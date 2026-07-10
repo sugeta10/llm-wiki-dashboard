@@ -172,6 +172,7 @@ Anthropicが公開しているエージェント量産手法は、**英語圏の
 - [[tools/oh-my-openagent]] — Team Mode（lead＋最大8並列member・ピアツーピア通信）で Specialist Team を実装した OpenCode プラグイン
 - [[concepts/advisor-executor-pattern]] — Fan-Out/Orchestratorを Fable 5（上位）×Sonnet 5（下位）のモデル階層に対応づけた3連携パターン
 - [[concepts/fable-5-prompting]] — 並列サブエージェントを非同期・長寿命で回すFable 5公式の指針
+- [[tools/adversarial-panel]] — Generator-Verifierを異種モデル・複数Verifier・敵対プロトコルに拡張したClaude Codeスキル（誤りの非相関＋検証優位）
 
 ## 観察ログ（未検証）
 
