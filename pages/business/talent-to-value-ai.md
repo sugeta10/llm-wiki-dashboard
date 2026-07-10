@@ -34,3 +34,4 @@
 - [[concepts/forward-deployed-engineer]] — AI時代に重要性が増す「人とエージェントのワークフローを設計する」役割の具体像
 - [[concepts/product-role-archetypes]] — 役割を職能から局面（Prototyper/Builder/Sweeper/Grower/Maintainer）へずらす分類。価値の単位を個人から外す本ページと同型
 - [[concepts/career-advice-ai-age]] — 同じ「価値の単位がシフトする」命題を、企業の人材評価でなく個人のキャリア選択の側から論じたPhil Chenの指針
+- [[concepts/action-space]] — 個人側の同型命題。AIは環境が許すアクションの幅を増幅するため、環境選択＝資本配分になる（上野山勝也／James Riney）

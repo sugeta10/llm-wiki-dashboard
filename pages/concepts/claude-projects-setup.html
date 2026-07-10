@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-projects-setup - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-projects-setup</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-projects-setup.md">Markdownで表示</a></div>
+  <div class="meta">concepts/claude-projects-setup · concepts · <span title="2026-07-10">今日</span></div>
+  <article><h1>Claude Projects セットアップ実践（精密知識ベース・retrieval テスト）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Claude Projects を機能させる鍵は「1〜3ページの精密な知識ファイル・standing brief 型の指示・retrieval テスト・更新習慣」の4点にあり、最大の失敗は知識ベースを物置にして検索精度を希釈すること（@cyrilXBT）。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  A[&quot;アカウント全体の指示&lt;br/&gt;（全チャット共通の普遍ルール）&quot;] --&gt; B[&quot;Project instructions&lt;br/&gt;（そのプロジェクト固有の standing brief）&quot;]
+  B --&gt; C[&quot;Styles&lt;br/&gt;（会話単位のトーン調整）&quot;]
+  B --&gt; D[&quot;Knowledge base&lt;br/&gt;（1〜3ページの精密な参照文書）&quot;]
+  D --&gt;|&quot;クエリごとに関連部分を retrieval&quot;| E[&quot;各会話&lt;br/&gt;（会話同士の履歴は共有されない）&quot;]
+  B --&gt; E</pre>
+<p>Project の実体は「custom instructions（全会話に自動適用される常設ブリーフ）・knowledge base（毎回参照できるファイル群）・scoped conversations（同じ指示と知識を継承するチャット群）」の3要素で、@cyrilXBT は「会話同士はメッセージ履歴を共有しない。引き継がれるのは指示とファイルだけ」という点が設計のすべての前提だと強調する。毎朝同じ従業員に同じブリーフィングをして夜に忘れられる状態（検索バー的な使い方）を、指示とファイルの常設で断ち切るのが Projects の価値。</p>
+<h2>最大の失敗: 知識ベースを物置にする</h2>
+<p>@cyrilXBT が最大の誤りとして挙げるのは、ブランドマニュアル全冊・半年分の議事録・40ページの戦略資料を全部投げ込むこと。Project knowledge は全文が毎回ロードされるのではなく<strong>クエリごとに関連部分が retrieval で引かれる</strong>ため、緩く関連する資料を積むほどシグナルが希釈され、コンテキストウィンドウもファイルで圧迫される。処方箋は逆張りで、<strong>各文書を1〜3ページに絞る</strong>——「3ページのブランドボイスガイドは40ページのブランドマニュアルに毎回勝つ。シグナル密度が高くノイズが低いから」と述べる。ファイル名も「notes」でなく「Brand Voice Guide v3」のように記述的に付け、retrieval が正しい文書を引けるようにする。</p>
+<h2>セットアップの要点</h2>
+<ul>
+<li><strong>1 project = 1 関心事</strong>: バックエンドコードとマーケ文章、クライアントAとBを混ぜない。「全部入りのメガプロジェクト」は脱出したかった汎用チャットボットの再現になる。名前も「Work」でなく「Newsletter」のように具体的に付ける。</li>
+<li><strong>指示はプロンプトでなく standing brief</strong>: 「あなたは親切なアシスタント」ではなく、自分を全く知らない読み手に向けた完全なブリーフを書く。ROLE / WHAT THIS PROJECT IS FOR / HOW TO RESPOND / WHAT TO ASSUME / NEVER のテンプレート構造を提示。特に「確認質問をせず、合理的な仮定を置いて明示し、先に進め」の一文は、毎セッションの前置きの往復を消す高レバレッジな指定だとする。</li>
+<li><strong>retrieval テストをしてから信用する</strong>: アップロード後に「Project knowledge のブランドボイスガイドに基づくと書き出しはどうすべきか。使った該当箇所を引用して」と各重要文書について確認する。ジェネリックな答えが返るならファイル未処理・命名の曖昧さ・文書の埋没が起きている。「動くと思っている project」と「動くと知っている project」を分ける5分の工程。</li>
+<li><strong>会話ごとにモデルを選ぶ</strong>: Project はモデルを固定しない。定型ドラフトは速いモデル、深い推論が要る会話は上位モデルと、同じ指示・知識のまま会話単位でエンジンを切り替えられる。</li>
+<li><strong>思考の会話にも使う</strong>: 完成タスクだけでなく、判断の理由を声に出して考える会話を Project 内で行うと、数週間かけて出力パターンだけでなく判断パターンまで合ってくると述べる。</li>
+<li><strong>メンテナンス習慣</strong>: 古い知識は「自信を持って間違った文脈」を生み、無文脈より悪い。ポジショニングや仕様が変わったらファイルを差し替え、指示は四半期ごとに見直す。</li>
+</ul>
+<h2>Cowork Projects（2026年アップデート）</h2>
+<p>@cyrilXBT によると、Projects はデスクトップのエージェント型アプリ Claude Cowork 内にも存在し、チャット版にない3つを加える——セッション間で持続する<strong>スコープ付きメモリ</strong>（「先週のレポートの続きを」が通じる）・実ファイルを読み書きする<strong>専用ローカルフォルダ</strong>・定期実行の<strong>スケジュールタスク</strong>。セットアップの論理は同じだが、会話に情報を与えるだけでなく実ファイルに対して仕事を実行する分、天井が高い。</p>
+<h2>instructions と knowledge の分離原則</h2>
+<p>Content / Code / Client / Research の4テンプレートに共通するパターンとして、<strong>振る舞いのルールは instructions に、参照資料と実例は knowledge に</strong>置く分離を挙げる。行動ルールを知識ファイルに書いたり参照文書を指示欄に貼ったりする混在が、原因の見えない性能低下を生む。またパーソナライゼーションは「アカウント全体の指示（普遍ルール）→ Project instructions（プロジェクト固有）→ Styles（会話単位）」の3層が同時に適用されるため、普遍的な好みをアカウント層に逃がすと各 Project の指示が差分だけに集中できる。</p>
+<h2>問い</h2>
+<ul>
+<li>「1〜3ページが40ページに勝つ」は retrieval の仕様に依存する主張。knowledge base の retrieval 粒度が変われば逆転しないか</li>
+<li>retrieval テスト（引用させて確認）は、自分の wiki の Query 操作やスキルの動作確認にも流用できる型ではないか</li>
+<li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a> の6パート設計図とこのセットアップ原則を1枚に統合すると、どちらに含まれない要素が残るか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a> — 同じ Claude Projects の「AI社員化」6パート設計図。こちらは何を書くかの構成論、本ページは retrieval・精度・維持の運用原則</li>
+<li><a href="../concepts/claude-best-practices.html">claude-best-practices</a> — Projects・Custom Instructions を含む Claude 活用18ステップの総合</li>
+<li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a> — ChatGPT 版の「カスタム指示/メモリ/Projects の使い分け」。3層パーソナライゼーションと同型の整理</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a></li>
+<li><a href="../concepts/claude-best-practices.html">claude-best-practices</a></li>
+<li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2074669139730284735" rel="noopener" target="_blank">https://x.com/i/web/status/2074669139730284735</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Projects セットアップ実践（精密知識ベース・retrieval テスト）
+
+&gt; **TL;DR**: Claude Projects を機能させる鍵は「1〜3ページの精密な知識ファイル・standing brief 型の指示・retrieval テスト・更新習慣」の4点にあり、最大の失敗は知識ベースを物置にして検索精度を希釈すること（@cyrilXBT）。
+
+```mermaid
+flowchart TD
+  A[&quot;アカウント全体の指示&lt;br/&gt;（全チャット共通の普遍ルール）&quot;] --&gt; B[&quot;Project instructions&lt;br/&gt;（そのプロジェクト固有の standing brief）&quot;]
+  B --&gt; C[&quot;Styles&lt;br/&gt;（会話単位のトーン調整）&quot;]
+  B --&gt; D[&quot;Knowledge base&lt;br/&gt;（1〜3ページの精密な参照文書）&quot;]
+  D --&gt;|&quot;クエリごとに関連部分を retrieval&quot;| E[&quot;各会話&lt;br/&gt;（会話同士の履歴は共有されない）&quot;]
+  B --&gt; E
+```
+
+Project の実体は「custom instructions（全会話に自動適用される常設ブリーフ）・knowledge base（毎回参照できるファイル群）・scoped conversations（同じ指示と知識を継承するチャット群）」の3要素で、@cyrilXBT は「会話同士はメッセージ履歴を共有しない。引き継がれるのは指示とファイルだけ」という点が設計のすべての前提だと強調する。毎朝同じ従業員に同じブリーフィングをして夜に忘れられる状態（検索バー的な使い方）を、指示とファイルの常設で断ち切るのが Projects の価値。
+
+## 最大の失敗: 知識ベースを物置にする
+
+@cyrilXBT が最大の誤りとして挙げるのは、ブランドマニュアル全冊・半年分の議事録・40ページの戦略資料を全部投げ込むこと。Project knowledge は全文が毎回ロードされるのではなく**クエリごとに関連部分が retrieval で引かれる**ため、緩く関連する資料を積むほどシグナルが希釈され、コンテキストウィンドウもファイルで圧迫される。処方箋は逆張りで、**各文書を1〜3ページに絞る**——「3ページのブランドボイスガイドは40ページのブランドマニュアルに毎回勝つ。シグナル密度が高くノイズが低いから」と述べる。ファイル名も「notes」でなく「Brand Voice Guide v3」のように記述的に付け、retrieval が正しい文書を引けるようにする。
+
+## セットアップの要点
+
+- **1 project = 1 関心事**: バックエンドコードとマーケ文章、クライアントAとBを混ぜない。「全部入りのメガプロジェクト」は脱出したかった汎用チャットボットの再現になる。名前も「Work」でなく「Newsletter」のように具体的に付ける。
+- **指示はプロンプトでなく standing brief**: 「あなたは親切なアシスタント」ではなく、自分を全く知らない読み手に向けた完全なブリーフを書く。ROLE / WHAT THIS PROJECT IS FOR / HOW TO RESPOND / WHAT TO ASSUME / NEVER のテンプレート構造を提示。特に「確認質問をせず、合理的な仮定を置いて明示し、先に進め」の一文は、毎セッションの前置きの往復を消す高レバレッジな指定だとする。
+- **retrieval テストをしてから信用する**: アップロード後に「Project knowledge のブランドボイスガイドに基づくと書き出しはどうすべきか。使った該当箇所を引用して」と各重要文書について確認する。ジェネリックな答えが返るならファイル未処理・命名の曖昧さ・文書の埋没が起きている。「動くと思っている project」と「動くと知っている project」を分ける5分の工程。
+- **会話ごとにモデルを選ぶ**: Project はモデルを固定しない。定型ドラフトは速いモデル、深い推論が要る会話は上位モデルと、同じ指示・知識のまま会話単位でエンジンを切り替えられる。
+- **思考の会話にも使う**: 完成タスクだけでなく、判断の理由を声に出して考える会話を Project 内で行うと、数週間かけて出力パターンだけでなく判断パターンまで合ってくると述べる。
+- **メンテナンス習慣**: 古い知識は「自信を持って間違った文脈」を生み、無文脈より悪い。ポジショニングや仕様が変わったらファイルを差し替え、指示は四半期ごとに見直す。
+
+## Cowork Projects（2026年アップデート）
+
+@cyrilXBT によると、Projects はデスクトップのエージェント型アプリ Claude Cowork 内にも存在し、チャット版にない3つを加える——セッション間で持続する**スコープ付きメモリ**（「先週のレポートの続きを」が通じる）・実ファイルを読み書きする**専用ローカルフォルダ**・定期実行の**スケジュールタスク**。セットアップの論理は同じだが、会話に情報を与えるだけでなく実ファイルに対して仕事を実行する分、天井が高い。
+
+## instructions と knowledge の分離原則
+
+Content / Code / Client / Research の4テンプレートに共通するパターンとして、**振る舞いのルールは instructions に、参照資料と実例は knowledge に**置く分離を挙げる。行動ルールを知識ファイルに書いたり参照文書を指示欄に貼ったりする混在が、原因の見えない性能低下を生む。またパーソナライゼーションは「アカウント全体の指示（普遍ルール）→ Project instructions（プロジェクト固有）→ Styles（会話単位）」の3層が同時に適用されるため、普遍的な好みをアカウント層に逃がすと各 Project の指示が差分だけに集中できる。
+
+## 問い
+
+- 「1〜3ページが40ページに勝つ」は retrieval の仕様に依存する主張。knowledge base の retrieval 粒度が変われば逆転しないか
+- retrieval テスト（引用させて確認）は、自分の wiki の Query 操作やスキルの動作確認にも流用できる型ではないか
+- [[concepts/claude-projects-blueprint]] の6パート設計図とこのセットアップ原則を1枚に統合すると、どちらに含まれない要素が残るか
+
+## 関連
+
+- [[concepts/claude-projects-blueprint]] — 同じ Claude Projects の「AI社員化」6パート設計図。こちらは何を書くかの構成論、本ページは retrieval・精度・維持の運用原則
+- [[concepts/claude-best-practices]] — Projects・Custom Instructions を含む Claude 活用18ステップの総合
+- [[concepts/chatgpt-custom-instructions]] — ChatGPT 版の「カスタム指示/メモリ/Projects の使い分け」。3層パーソナライゼーションと同型の整理
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

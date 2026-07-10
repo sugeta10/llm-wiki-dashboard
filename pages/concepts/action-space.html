@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>action-space - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>action-space</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="action-space.md">Markdownで表示</a></div>
+  <div class="meta">concepts/action-space · concepts · <span title="2026-07-10">今日</span></div>
+  <article><h1>アクション空間と知的な運動神経</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 「地頭」を抽象化・構造化する力と現実を動かす力に腑分けし、前者はAIでコモディティ化するため、キャリアの問いは「自分のアクション空間（取れる行動の幅）をどの環境が広げてくれるか」へ移る——上野山勝也（PKSHA Technology代表）の枠組みをJames Riney（Coral Capital）が紹介・展開した論考。</p>
+</blockquote>
+<p>「AIで優秀な人がさらに強くなる」という通説は半分しか正しくなく、AI時代の本質はむしろ強者を強者たらしめていた条件の一部（賢さ）が急速にコモディティ化することにある、とJames Rineyは述べる。2026年7月1日公開のStartup Aquariumトークセッション（上野山勝也×安野貴博の対談）で、上野山は地頭をひとかたまりの才能として扱わず、<strong>物事を抽象化し構造化して理解する力</strong>と<strong>それを使って現実に何かを動かす力</strong>に切り分けた。前者はAIによって誰もが借りられるようになり差がつきにくくなる。後者を上野山は「<strong>知的な運動神経</strong>」と呼ぶ——どこに入り込み、誰を動かし、どの順番で試し、どの角度から市場や組織に変化を起こすかという能力で、AIが新しく重要にした能力ではなく、AIによってもともと重要だった能力がむき出しになっただけだとJames Rineyは整理する。</p>
+<p>上野山はAI自体も「言語のモデル」から「行動のモデル」へ進化する（テキストを返す物知りなAIから、コードを書きタスクを実行しソフトウェアを操作する存在へ）と話しており、AIが動く存在になるほど人間に問われるのも「知っていること」から「動かせること」へ移る。</p>
+<h2>アクション空間: キャリア選択の再定義</h2>
+<p>上野山が繰り返し使った「<strong>アクション空間</strong>」は自分が取れる行動の幅を指す。人は「自分にはこれとこれしかできない」と無意識に思い込み、選択肢を実際より狭く見積もっている。James Rineyはこれをキャリア論に展開する:</p>
+<ul>
+<li><strong>AIは行動の増幅器</strong>——その人が置かれた環境で取りうるアクションの幅を増幅するため、最初の範囲が狭ければ増幅結果も狭い。同じAIを使っても、提案書を速く作れるようになるだけの人と、顧客理解からプロダクト改善・営業・採用・資金調達まで一気に関われる人に分かれる</li>
+<li>キャリアで問うべきは「どの会社にいるか」でなく「<strong>どの環境が自分のアクション空間を広げてくれるか</strong>」。どこで働くかの選択は、自分の時間という資産をどのアクション空間に置くかという資本配分の意思決定</li>
+<li>大企業かスタートアップかの単純な話ではないが、スタートアップは未完成ゆえに1人の行動が会社の形を変える余地が大きい。AI時代に価値が下がるのは指示された作業を正確にこなす能力で、上がるのは「どの作業をすべきかを決め、実際に動かし、結果から学ぶ」こと——選ぶべきは作業を効率化できる環境でなく、<strong>より良い失敗をより速く多く経験できる環境</strong>だと述べる</li>
+<li>リーダー側には裏返しの問いが立つ: 自分の組織はメンバーのアクション空間を広げているか、狭めているか</li>
+</ul>
+<p>上野山の「あなたはすでに起業している」という締めをJames Rineyは比喩でないと受ける——社会人は誰もが時間・体力・知識・人間関係・信用・好奇心という有限リソースを毎日配分する経営者であり、問われているのは「自分という会社の成長率をどう上げるか」。AIで能力の調達コストが下がるほど「技術がないから」という言い訳は弱くなり、最後に残る差は「どれだけ大きな問いを本気で扱うか」だとし、日本のスタートアップに足りないのは技術でも資金でもなく規模を本気で目指す野心だという持論に接続している。</p>
+<h2>問い</h2>
+<ul>
+<li>「アクション空間の広さ」は事前にどう測れるか。触れられる顧客・任される仕事・動かせる資源・周りの人、という4要素は転職・案件選定のチェックリストになるか</li>
+<li>自分のwiki運用は「抽象化・構造化」（AIでコモディティ化する側）に寄っていないか。蓄えた知識を「現実に動かす」帰還ループにどう接続するか</li>
+<li><a href="../concepts/career-advice-ai-age.html">career-advice-ai-age</a> の「問題を見つける力・野心的な問題選択」と「知的な運動神経」は同じものの別名か、それとも直交する能力か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/career-advice-ai-age.html">career-advice-ai-age</a> — Phil Chen の同テーマ論考。「解く力のコモディティ化→問題選択と資本配分に価値」という同型の主張を米国側から</li>
+<li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a> — LayerX の「実装のコモディティ化→ドメイン理解・論点発見へ」。エンジニア職能に絞った同じ構図</li>
+<li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a> — 価値の単位が個人から「人＋エージェントのシステム」へ移るという組織側の同型命題</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a></li>
+<li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a></li>
+<li><a href="../concepts/career-advice-ai-age.html">career-advice-ai-age</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2074993963791270234" rel="noopener" target="_blank">https://x.com/i/web/status/2074993963791270234</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># アクション空間と知的な運動神経
+
+&gt; **TL;DR**: 「地頭」を抽象化・構造化する力と現実を動かす力に腑分けし、前者はAIでコモディティ化するため、キャリアの問いは「自分のアクション空間（取れる行動の幅）をどの環境が広げてくれるか」へ移る——上野山勝也（PKSHA Technology代表）の枠組みをJames Riney（Coral Capital）が紹介・展開した論考。
+
+「AIで優秀な人がさらに強くなる」という通説は半分しか正しくなく、AI時代の本質はむしろ強者を強者たらしめていた条件の一部（賢さ）が急速にコモディティ化することにある、とJames Rineyは述べる。2026年7月1日公開のStartup Aquariumトークセッション（上野山勝也×安野貴博の対談）で、上野山は地頭をひとかたまりの才能として扱わず、**物事を抽象化し構造化して理解する力**と**それを使って現実に何かを動かす力**に切り分けた。前者はAIによって誰もが借りられるようになり差がつきにくくなる。後者を上野山は「**知的な運動神経**」と呼ぶ——どこに入り込み、誰を動かし、どの順番で試し、どの角度から市場や組織に変化を起こすかという能力で、AIが新しく重要にした能力ではなく、AIによってもともと重要だった能力がむき出しになっただけだとJames Rineyは整理する。
+
+上野山はAI自体も「言語のモデル」から「行動のモデル」へ進化する（テキストを返す物知りなAIから、コードを書きタスクを実行しソフトウェアを操作する存在へ）と話しており、AIが動く存在になるほど人間に問われるのも「知っていること」から「動かせること」へ移る。
+
+## アクション空間: キャリア選択の再定義
+
+上野山が繰り返し使った「**アクション空間**」は自分が取れる行動の幅を指す。人は「自分にはこれとこれしかできない」と無意識に思い込み、選択肢を実際より狭く見積もっている。James Rineyはこれをキャリア論に展開する:
+
+- **AIは行動の増幅器**——その人が置かれた環境で取りうるアクションの幅を増幅するため、最初の範囲が狭ければ増幅結果も狭い。同じAIを使っても、提案書を速く作れるようになるだけの人と、顧客理解からプロダクト改善・営業・採用・資金調達まで一気に関われる人に分かれる
+- キャリアで問うべきは「どの会社にいるか」でなく「**どの環境が自分のアクション空間を広げてくれるか**」。どこで働くかの選択は、自分の時間という資産をどのアクション空間に置くかという資本配分の意思決定
+- 大企業かスタートアップかの単純な話ではないが、スタートアップは未完成ゆえに1人の行動が会社の形を変える余地が大きい。AI時代に価値が下がるのは指示された作業を正確にこなす能力で、上がるのは「どの作業をすべきかを決め、実際に動かし、結果から学ぶ」こと——選ぶべきは作業を効率化できる環境でなく、**より良い失敗をより速く多く経験できる環境**だと述べる
+- リーダー側には裏返しの問いが立つ: 自分の組織はメンバーのアクション空間を広げているか、狭めているか
+
+上野山の「あなたはすでに起業している」という締めをJames Rineyは比喩でないと受ける——社会人は誰もが時間・体力・知識・人間関係・信用・好奇心という有限リソースを毎日配分する経営者であり、問われているのは「自分という会社の成長率をどう上げるか」。AIで能力の調達コストが下がるほど「技術がないから」という言い訳は弱くなり、最後に残る差は「どれだけ大きな問いを本気で扱うか」だとし、日本のスタートアップに足りないのは技術でも資金でもなく規模を本気で目指す野心だという持論に接続している。
+
+## 問い
+
+- 「アクション空間の広さ」は事前にどう測れるか。触れられる顧客・任される仕事・動かせる資源・周りの人、という4要素は転職・案件選定のチェックリストになるか
+- 自分のwiki運用は「抽象化・構造化」（AIでコモディティ化する側）に寄っていないか。蓄えた知識を「現実に動かす」帰還ループにどう接続するか
+- [[concepts/career-advice-ai-age]] の「問題を見つける力・野心的な問題選択」と「知的な運動神経」は同じものの別名か、それとも直交する能力か
+
+## 関連
+
+- [[concepts/career-advice-ai-age]] — Phil Chen の同テーマ論考。「解く力のコモディティ化→問題選択と資本配分に価値」という同型の主張を米国側から
+- [[concepts/ai-era-good-engineer]] — LayerX の「実装のコモディティ化→ドメイン理解・論点発見へ」。エンジニア職能に絞った同じ構図
+- [[business/talent-to-value-ai]] — 価値の単位が個人から「人＋エージェントのシステム」へ移るという組織側の同型命題
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-strategy-officer - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-strategy-officer</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-strategy-officer.md">Markdownで表示</a></div>
+  <div class="meta">business/ai-strategy-officer · business · <span title="2026-07-10">今日</span></div>
+  <article><h1>AIを「戦略責任者」として雇う副業論</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AI副業の役割分担を「自分が考えてAIが作る」から「AIが市場分析・商品決定・戦略立案まで担い、自分は実行だけやる」へ逆転させる方法論。市場選定という最もミスりやすい工程をAIに委任するのが核（@AInokuhaku）。</p>
+</blockquote>
+<p>副業で挫折する原因の9割は最初の市場選定ミスにあり、人間が選ぶと「自分の好み」と「不安」がノイズとして混ざる——だからこそ感情抜きでデータから選べるAIに市場選定そのものを委ねるべきだ、というのが @AInokuhaku の主張。Fable 5 の進化の本質は文章力でなく「長時間思考・大量情報の統合・未来予測・仮説生成・戦略立案」であり、「作業するAI」から「考えるAI」への転換によって、AIを作業要員でなく戦略コンサルとして専属契約する使い方が初めて成立したと位置づける。世の中の9割はこの能力を持つAIに文章の清書をさせており、もったいないと述べる。</p>
+<h2>4ステップの手順（@AInokuhaku提示）</h2>
+<ol>
+<li><strong>市場選定を委任する</strong> — 「私は会社員です。平日1時間しか使えません。今後6ヶ月で最も利益が出そうな副業を選んでください」と自分の制約条件を渡し、候補を「競争が少ない・参入障壁が低い・利益率が高い」で絞り、市場規模・競争・利益率・伸び率で採点させ、1位だけ残す。</li>
+<li><strong>商品と「売れる理由」をセットで作らせる</strong> — 商品生成で終わらせず「この市場で売れる理由を説明してください」と続ける。売れる理由が言語化されていないと投稿もLPも全部ブレるため、後続の導線すべての軸になる。</li>
+<li><strong>競合の「未来」に先回りする</strong> — 競合100人の分析後に「競合が半年後にやりそうなことを予測してください」→「そのさらに先を行く商品を作ってください」と重ねる。競合の「今」でなく「半年後」に勝つ商品を今日作る、長時間思考と未来予測を持つAIならではの戦い方だと述べる。</li>
+<li><strong>実行パーツを量産する</strong> — 市場分析の図解（Nano Banana Pro）・Threads投稿100本・LINE導線・90日プランを生成させ、以降の人間の仕事はプラン通りに手を動かすことだけになる。</li>
+</ol>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-06-10: 「会社員が月30万円を稼ぐ」というタイトルの収益額は根拠の提示なし。記事末尾はメルマガ誘導で締められており、手法の実績データは示されていない（単一ソース・宣伝目的の可能性）</li>
+<li>2026-06-10: @AInokuhaku の予測「半年後にはみんなこの使い方を真似し始め、市場分析の精度では差がつかなくなる」——後で答え合わせしたい大胆な予測</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「AIに市場選定を丸ごと任せる」は本当に機能するか。AIの市場分析はWeb検索の範囲に依存し、ニッチ市場の一次データ（実売上・広告単価）を持たないまま「それっぽい採点」を返すだけにならないか</li>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a> の「私が言いそうなことを出したら失敗」のような縛りなしで、戦略委任は「喜ばれそうな答え」に流れないか</li>
+<li>自分の場合、wiki運用・発信の「何をやるか」の選定をAIに委ねる価値はあるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a> — 同じ「AIを参謀・戦略側に置く」型。こちらは全会話履歴の棚卸しで盲点を掘る個人利用版</li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> — 「長く複雑なタスクほど差が開く」性能が戦略委任論の前提</li>
+<li><a href="../business/ai-income-retirement-strategy.html">ai-income-retirement-strategy</a> — AIによる自動収益化・早期退職という同系の個人ビジネス戦略</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-income-retirement-strategy.html">ai-income-retirement-strategy</a></li>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2064640152295891082" rel="noopener" target="_blank">https://x.com/i/web/status/2064640152295891082</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AIを「戦略責任者」として雇う副業論
+
+&gt; **TL;DR**: AI副業の役割分担を「自分が考えてAIが作る」から「AIが市場分析・商品決定・戦略立案まで担い、自分は実行だけやる」へ逆転させる方法論。市場選定という最もミスりやすい工程をAIに委任するのが核（@AInokuhaku）。
+
+副業で挫折する原因の9割は最初の市場選定ミスにあり、人間が選ぶと「自分の好み」と「不安」がノイズとして混ざる——だからこそ感情抜きでデータから選べるAIに市場選定そのものを委ねるべきだ、というのが @AInokuhaku の主張。Fable 5 の進化の本質は文章力でなく「長時間思考・大量情報の統合・未来予測・仮説生成・戦略立案」であり、「作業するAI」から「考えるAI」への転換によって、AIを作業要員でなく戦略コンサルとして専属契約する使い方が初めて成立したと位置づける。世の中の9割はこの能力を持つAIに文章の清書をさせており、もったいないと述べる。
+
+## 4ステップの手順（@AInokuhaku提示）
+
+1. **市場選定を委任する** — 「私は会社員です。平日1時間しか使えません。今後6ヶ月で最も利益が出そうな副業を選んでください」と自分の制約条件を渡し、候補を「競争が少ない・参入障壁が低い・利益率が高い」で絞り、市場規模・競争・利益率・伸び率で採点させ、1位だけ残す。
+2. **商品と「売れる理由」をセットで作らせる** — 商品生成で終わらせず「この市場で売れる理由を説明してください」と続ける。売れる理由が言語化されていないと投稿もLPも全部ブレるため、後続の導線すべての軸になる。
+3. **競合の「未来」に先回りする** — 競合100人の分析後に「競合が半年後にやりそうなことを予測してください」→「そのさらに先を行く商品を作ってください」と重ねる。競合の「今」でなく「半年後」に勝つ商品を今日作る、長時間思考と未来予測を持つAIならではの戦い方だと述べる。
+4. **実行パーツを量産する** — 市場分析の図解（Nano Banana Pro）・Threads投稿100本・LINE導線・90日プランを生成させ、以降の人間の仕事はプラン通りに手を動かすことだけになる。
+
+## 観察ログ（未検証）
+
+- 2026-06-10: 「会社員が月30万円を稼ぐ」というタイトルの収益額は根拠の提示なし。記事末尾はメルマガ誘導で締められており、手法の実績データは示されていない（単一ソース・宣伝目的の可能性）
+- 2026-06-10: @AInokuhaku の予測「半年後にはみんなこの使い方を真似し始め、市場分析の精度では差がつかなくなる」——後で答え合わせしたい大胆な予測
+
+## 問い
+
+- 「AIに市場選定を丸ごと任せる」は本当に機能するか。AIの市場分析はWeb検索の範囲に依存し、ニッチ市場の一次データ（実売上・広告単価）を持たないまま「それっぽい採点」を返すだけにならないか
+- [[concepts/ai-strategist-prompt]] の「私が言いそうなことを出したら失敗」のような縛りなしで、戦略委任は「喜ばれそうな答え」に流れないか
+- 自分の場合、wiki運用・発信の「何をやるか」の選定をAIに委ねる価値はあるか
+
+## 関連
+
+- [[concepts/ai-strategist-prompt]] — 同じ「AIを参謀・戦略側に置く」型。こちらは全会話履歴の棚卸しで盲点を掘る個人利用版
+- [[models/claude-fable-5]] — 「長く複雑なタスクほど差が開く」性能が戦略委任論の前提
+- [[business/ai-income-retirement-strategy]] — AIによる自動収益化・早期退職という同系の個人ビジネス戦略
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

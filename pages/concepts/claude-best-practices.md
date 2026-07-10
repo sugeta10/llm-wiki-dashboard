@@ -49,3 +49,4 @@ Claudeを日常的に使っていても多くのユーザーはその能力の�
 - [[concepts/chatgpt-custom-instructions]] — ChatGPT版のカスタム指示活用法（同様の概念）
 - [[concepts/claude-projects-blueprint]] — Claude Projectsを6パートで「AI社員化」する設計図（Projects活用の深掘り）
 - [[tools/claude-code]] — Anthropic製AIコーディングCLI（同じClaudeエコシステム）
+- [[concepts/claude-projects-setup]] — Projects に絞ったセットアップ実践（精密知識ベース・retrieval テスト・3層パーソナライゼーション）

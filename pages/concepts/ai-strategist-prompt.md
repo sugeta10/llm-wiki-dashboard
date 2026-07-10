@@ -45,3 +45,4 @@ flowchart LR
 - [[concepts/finding-unknowns]] — 地図と領土のずれ＝unknownsを棚卸しする運用フレーム（盲点掘り出しと同系）
 - [[concepts/self-evaluation-gap]] — AIに成果物をダメ出しさせて自己評価の甘さを補正する実践
 - [[concepts/frontier-model-extraction]] — 同じ「Fable最終日」テーマの姉妹編。会話でなく判断の抽出で去るモデルに向き合う型（@EXM7777）
+- [[business/ai-strategy-officer]] — 同じ「AIを戦略側に置く」型を副業の市場選定・商品決定に適用した委任論（@AInokuhaku）

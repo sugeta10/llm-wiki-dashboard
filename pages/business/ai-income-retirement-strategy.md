@@ -19,3 +19,4 @@
 - [[business/backoffice-ai-implementation]] — AI×業務自動化の実践例（グッドパッチ）
 - [[concepts/agi-knowledge-moat]] — AI時代に個人が持つべき競争優位の源泉
 - [[business/youtube-shorts-jidouka-marketing]] — 完全自動化ショート運用によるプロダクト宣伝（自動収益化の一手法）
+- [[business/ai-strategy-officer]] — AIに市場選定・戦略立案まで委任する副業論（同系のAI収益化戦略）
