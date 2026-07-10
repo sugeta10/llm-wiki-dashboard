@@ -4,7 +4,7 @@ GPT シリーズ・ChatGPT・Codex を開発する AI 企業。AGI の安全な�
 
 ## 主要製品
 
-- **GPT シリーズ** — LLM フラグシップモデル（[[models/gpt-5-5]] 等）
+- **GPT シリーズ** — LLM フラグシップモデル（[[models/gpt-5-6]]・[[models/gpt-5-5]] 等）。GPT-5.6からは数字が世代・Sol/Terra/Lunaが永続能力ティアという命名体系に移行
 - **ChatGPT** — 一般向け AI チャットサービス
 - **[[tools/openai-codex]]** — コード生成・エージェント実行プラットフォーム
 - **[[tools/openai-mcp-tunnel]]** — Secure MCP Tunnel: プライベートMCPサーバーをファイアウォール開放なしでOpenAI製品に接続

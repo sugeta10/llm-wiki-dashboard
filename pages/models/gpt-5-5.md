@@ -50,6 +50,7 @@ Codexがこのガイドに基づき旧プロンプトをGPT-5.5向けに自動�
 
 ## 関連
 
+- [[models/gpt-5-6]] — 後継世代（Sol/Terra/Luna・2026-07-10 GA）。効率戦略とultra並列設定を導入
 - [[concepts/prompt-engineering]]
 - [[tools/openai-codex]]
 - [[tools/codex-review-skill]] — GPT-5.5のアウトカム重視指針に合わせ、手順テンプレートを削りレビュールールを強くした自作レビュースキル

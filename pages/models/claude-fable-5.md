@@ -83,6 +83,7 @@ Fable 5 の分類器が**サイバーセキュリティ・生物化学・蒸留*
 ## 関連
 
 - [[companies/anthropic]] — 開発元
+- [[models/gpt-5-6]] — OpenAIの対抗世代（2026-07-10 GA）。効率（トークン・コスト）でFable 5超えを主張する一方、自社比較表ではGDPval・SWE-Bench Pro等でFable 5が上回る
 - [[models/claude-mythos]] — 前身の Mythos Preview（一般公開見送り）。本モデルはその後継かつ一般公開版
 - [[models/claude-opus-4-8]] — セーフガード発火時のフォールバック先・次点モデル
 - [[concepts/recursive-self-improvement]] — Mythos が主役として登場するAI開発加速の論考
