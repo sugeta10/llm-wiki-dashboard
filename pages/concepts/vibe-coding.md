@@ -27,3 +27,4 @@
 - [[tools/claude-code]]
 - [[concepts/agentic-coding]]
 - [[concepts/spec-driven-development]] — Vibe Codingの限界を受けて生まれた仕様駆動スタイル
+- [[tools/google-ai-studio]] — 自然言語アプリ構築〜無料デプロイ・pretty URL配布までを受けるGoogleのプラットフォーム

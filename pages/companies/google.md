@@ -30,3 +30,4 @@ Googleの消費者向けAI戦略は、個別プロダクト課金ではなく**�
 - [[companies/apple]] — 次世代Apple IntelligenceにGemini技術を供給（基盤モデルの他社OSへの供給先）
 - [[tools/notebooklm]] — 本バンドルに含まれるNotebookLMの活用ガイド
 - [[tools/notebooklm-py]] — NotebookLMの非公式Python API/CLI（Web UI非公開機能対応）
+- [[tools/google-ai-studio]] — 開発者/作り手側の無料化戦略（無料アプリ構築・デプロイ・pretty URL）

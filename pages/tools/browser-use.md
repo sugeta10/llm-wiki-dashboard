@@ -19,3 +19,4 @@ WebブラウザをAIエージェントが操作するためのライブラリ。
 - [[tools/cursor]]
 - [[concepts/agentic-coding]]
 - [[tools/claude-computer-use]]（AnthropicによるデスクトップUI操作エージェント機能）
+- [[tools/video-use]] — 同じ「◯◯-use」命名系譜の Claude Code 動画編集 OSS

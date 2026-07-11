@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>advisor-executor-pattern</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="advisor-executor-pattern.md">Markdownで表示</a></div>
-  <div class="meta">concepts/advisor-executor-pattern · concepts · <span title="2026-07-10">1日前</span></div>
+  <div class="meta">concepts/advisor-executor-pattern · concepts · <span title="2026-07-11">今日</span></div>
   <article><h1>Advisor-Executor パターン（Fable 5 × Sonnet 5 連携）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 高知能・高価格の <a href="../models/claude-fable-5.html">Fable 5</a> と高速・安価な Sonnet 5 を、役割やフェーズで使い分ける3つの連携パターン（Advisor／Orchestrator／Fable Sandwich）。単一モデルを回すのでなくモデルを組み合わせて「知能」と「コスト・速度」のトレードオフを解消する。</p>
@@ -60,6 +60,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>Phase 3: Execute（実行）</strong> — Fable 5 が立てたプランに沿って再び Sonnet 5 が具体的なコード書き換えとローカルテストを担当する。</li>
 </ul>
 <p>最初から Fable 5 に探索させると読み込みトークンだけで膨大な費用がかかる。泥臭い探索は Sonnet に任せ、最も思考力が要る「設計・チェック」の一点だけ Fable 5 を通すことで、最高精度の成果物を最も安価に得る狙い。この3フェーズ配分は <a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> の工程分解型サンドイッチ戦略（@ozaken_AI・上流大／中流中／下流小）と本質的に同じ発想で、別著者・別スレッドから同型の設計思想が収斂している。</p>
+<h2>実践例: 品質エスカレーション付き司令塔（fladdict）</h2>
+<p><a href="../people/fladdict.html">深津貴之（@fladdict）</a>が2026-07-10に共有したプロンプトは、Orchestrator パターンをワンプロンプトで実装した実践例。「Fableは各Issueの設計を行い、実装タスク担当者を、fable, opus, sonet, 人間に割り当ててください。FableはOpus, SonetのPullRequestをレビューし、品質がたりない場合、タスク担当者を上位モデルに切り替えて最実行してください」というもの（引用は原文ママ）。狙いはトークン消費の削減で、本人は「これでトークンゴリッと減らないかな」と述べる。</p>
+<p>上の3パターンに対する差分は2つあると考えられる。第一に、担当者の候補に<strong>人間</strong>を含めており、人間をループの外の監督でなく割り当て可能なワーカーの一人として配置している。第二に、最初から適材適所を決め打つ静的な配分でなく、<strong>PRレビューで品質不足が出たときだけ担当を上位モデルに切り替えて再実行する</strong>エスカレーション型の動的配分になっている。Advisor の「必要なときだけ高価モデルを通す」判断を、レビュー駆動で自動化した形といえる。</p>
 <h2>まとめの含意</h2>
 <p>Na は記事末で、AIエージェントの実用化・プロダクション導入では<strong>単一モデルの性能向上を待つのでなく、モデルの組み合わせで限界を突破するのがこれからのトレンド</strong>になりそうだと結ぶ。3パターンは排他でなく、規模の判断は Advisor、大タスクの分解は Orchestrator、信頼性重視の1本道は Fable Sandwich、と局面で選べる。<a href="../concepts/coding-agent-workflow-styles.html">coding-agent-workflow-styles</a> の「高速制御ループ vs 委譲低速ループ」という2類型とも重なり、モデル階層をどう配線するかがハーネス設計の主軸になりつつある。</p>
 <h2>観察ログ（未検証）</h2>
@@ -72,6 +75,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>Advisor パターンの「9割を安価モデル・判断だけ高価モデル」は、このvaultの <a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> とどこまで同一で、何が新しいのか（Advisor＝オンデマンド呼び出しという発火設計が差分か）</li>
 <li><code>/advisor fable</code> は本当に Claude Code に存在するか。存在するなら <a href="../tools/claude-code-subagents.html">claude-code-subagents</a> やサブエージェントのモデル指定とどう関係するか</li>
 <li>自作エージェントで Fable Sandwich を組むとき、Phase 1→2 の「文脈の受け渡し」で情報が劣化しない中間記法は何か（<a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> と接続できるか）</li>
+<li>fladdict 式エスカレーション（下位モデルで失敗→上位モデルで再実行）は、失敗コスト（下位モデルの無駄試行＋レビュー分）を織り込んでも静的な工程分解型配分より安くなるか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -88,7 +92,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../models/claude-fable-5.html">claude-fable-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/yuche/articles/advisor-executor-pattern" rel="noopener" target="_blank">https://zenn.dev/yuche/articles/advisor-executor-pattern</a></li>
-<li><a href="https://x.com/i/web/status/2074606058128224365" rel="noopener" target="_blank">https://x.com/i/web/status/2074606058128224365</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2074606058128224365" rel="noopener" target="_blank">https://x.com/i/web/status/2074606058128224365</a></li>
+<li><a href="https://x.com/i/web/status/2075480881163276492" rel="noopener" target="_blank">https://x.com/i/web/status/2075480881163276492</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -150,6 +155,12 @@ Fable 5 を司令塔（プランナー）としてトップに据え、Sonnet 5 
 
 最初から Fable 5 に探索させると読み込みトークンだけで膨大な費用がかかる。泥臭い探索は Sonnet に任せ、最も思考力が要る「設計・チェック」の一点だけ Fable 5 を通すことで、最高精度の成果物を最も安価に得る狙い。この3フェーズ配分は [[concepts/llm-model-selection-strategy]] の工程分解型サンドイッチ戦略（@ozaken_AI・上流大／中流中／下流小）と本質的に同じ発想で、別著者・別スレッドから同型の設計思想が収斂している。
 
+## 実践例: 品質エスカレーション付き司令塔（fladdict）
+
+[[people/fladdict|深津貴之（@fladdict）]]が2026-07-10に共有したプロンプトは、Orchestrator パターンをワンプロンプトで実装した実践例。「Fableは各Issueの設計を行い、実装タスク担当者を、fable, opus, sonet, 人間に割り当ててください。FableはOpus, SonetのPullRequestをレビューし、品質がたりない場合、タスク担当者を上位モデルに切り替えて最実行してください」というもの（引用は原文ママ）。狙いはトークン消費の削減で、本人は「これでトークンゴリッと減らないかな」と述べる。
+
+上の3パターンに対する差分は2つあると考えられる。第一に、担当者の候補に**人間**を含めており、人間をループの外の監督でなく割り当て可能なワーカーの一人として配置している。第二に、最初から適材適所を決め打つ静的な配分でなく、**PRレビューで品質不足が出たときだけ担当を上位モデルに切り替えて再実行する**エスカレーション型の動的配分になっている。Advisor の「必要なときだけ高価モデルを通す」判断を、レビュー駆動で自動化した形といえる。
+
 ## まとめの含意
 
 Na は記事末で、AIエージェントの実用化・プロダクション導入では**単一モデルの性能向上を待つのでなく、モデルの組み合わせで限界を突破するのがこれからのトレンド**になりそうだと結ぶ。3パターンは排他でなく、規模の判断は Advisor、大タスクの分解は Orchestrator、信頼性重視の1本道は Fable Sandwich、と局面で選べる。[[concepts/coding-agent-workflow-styles]] の「高速制御ループ vs 委譲低速ループ」という2類型とも重なり、モデル階層をどう配線するかがハーネス設計の主軸になりつつある。
@@ -164,6 +175,7 @@ Na は記事末で、AIエージェントの実用化・プロダクション導
 - Advisor パターンの「9割を安価モデル・判断だけ高価モデル」は、このvaultの [[concepts/llm-model-selection-strategy]] とどこまで同一で、何が新しいのか（Advisor＝オンデマンド呼び出しという発火設計が差分か）
 - `/advisor fable` は本当に Claude Code に存在するか。存在するなら [[tools/claude-code-subagents]] やサブエージェントのモデル指定とどう関係するか
 - 自作エージェントで Fable Sandwich を組むとき、Phase 1→2 の「文脈の受け渡し」で情報が劣化しない中間記法は何か（[[concepts/intermediate-notation-pattern]] と接続できるか）
+- fladdict 式エスカレーション（下位モデルで失敗→上位モデルで再実行）は、失敗コスト（下位モデルの無駄試行＋レビュー分）を織り込んでも静的な工程分解型配分より安くなるか
 
 ## 関連
 

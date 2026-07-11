@@ -63,3 +63,4 @@ flowchart LR
 - [[tools/claude-code]] — スキルとして組み込む先の本体
 - [[concepts/intermediate-notation-pattern]] — 動画を LLM 可読な中間形式へ整える点で「中間記法を渡す」思想と接続
 - [[concepts/claude-skills]] — スキルとして配布・組み込みできる形態
+- [[tools/video-use]] — 逆方向の OSS：Claude Code に動画を「編集させる」（素材フォルダ→final.mp4）
