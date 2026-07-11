@@ -50,3 +50,4 @@ flowchart LR
 - [[concepts/agent-adoption-walls]] — 企業エージェント導入の「⑦モデル選択の自由度」＝プロバイダー非依存の運用（@kzkhykw）
 - [[concepts/advisor-executor-pattern]] — 同型のサンドイッチ戦略を Fable 5×Sonnet 5 の2モデル・3パターンで具体化（別著者の収斂）
 - [[concepts/claude-code-model-effort]] — 「モデル×エフォートの二軸」の公式解説版。モデル=何を知っているか／effort=どれだけ徹底するか
+- [[concepts/cost-effective-harness]] — 工程分解と同型の「タスク形状」評価に、委譲の協調コスト（損益分岐）の実測を加えた発展形（Lance Martin）

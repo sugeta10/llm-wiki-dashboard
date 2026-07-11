@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>llm-model-selection-strategy</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="llm-model-selection-strategy.md">Markdownで表示</a></div>
-  <div class="meta">concepts/llm-model-selection-strategy · concepts · <span title="2026-06-14">3週間前</span></div>
+  <div class="meta">concepts/llm-model-selection-strategy · concepts · <span title="2026-06-14">4週間前</span></div>
   <article><h1>LLMモデル選択戦略（工程分解型コスト最適化）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: タスクを上流（設計・方針）・中流（実装）・下流（整形・量産）に分解し、各工程に最適な規模のモデルを当てる。大モデルを全工程に使うのは最弱の運用で、前処理（小）→上流（大）→中流（中）→下流（小）の「サンドイッチ」往復が速度・コスト・質を同時に最適化する。</p>
@@ -70,11 +70,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a> — 企業エージェント導入の「⑦モデル選択の自由度」＝プロバイダー非依存の運用（@kzkhykw）</li>
 <li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> — 同型のサンドイッチ戦略を Fable 5×Sonnet 5 の2モデル・3パターンで具体化（別著者の収斂）</li>
 <li><a href="../concepts/claude-code-model-effort.html">claude-code-model-effort</a> — 「モデル×エフォートの二軸」の公式解説版。モデル=何を知っているか／effort=どれだけ徹底するか</li>
+<li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a> — 工程分解と同型の「タスク形状」評価に、委譲の協調コスト（損益分岐）の実測を加えた発展形（Lance Martin）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
 <li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a></li>
 <li><a href="../concepts/claude-code-model-effort.html">claude-code-model-effort</a></li>
 <li><a href="../concepts/claude-usage-optimization.html">claude-usage-optimization</a></li>
-<li><a href="../concepts/notebooklm-claude-workflow.html">notebooklm-claude-workflow</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2064496342412746814" rel="noopener" target="_blank">https://x.com/i/web/status/2064496342412746814</a></li>
+<li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2064496342412746814" rel="noopener" target="_blank">https://x.com/i/web/status/2064496342412746814</a></li>
 <li><a href="https://x.com/i/web/status/2064547052366049533" rel="noopener" target="_blank">https://x.com/i/web/status/2064547052366049533</a></li></ul></section></article>
 </main>
 <script>
@@ -148,6 +149,7 @@ flowchart LR
 - [[concepts/agent-adoption-walls]] — 企業エージェント導入の「⑦モデル選択の自由度」＝プロバイダー非依存の運用（@kzkhykw）
 - [[concepts/advisor-executor-pattern]] — 同型のサンドイッチ戦略を Fable 5×Sonnet 5 の2モデル・3パターンで具体化（別著者の収斂）
 - [[concepts/claude-code-model-effort]] — 「モデル×エフォートの二軸」の公式解説版。モデル=何を知っているか／effort=どれだけ徹底するか
+- [[concepts/cost-effective-harness]] — 工程分解と同型の「タスク形状」評価に、委譲の協調コスト（損益分岐）の実測を加えた発展形（Lance Martin）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

@@ -71,3 +71,4 @@ Na は記事末で、AIエージェントの実用化・プロダクション導
 - [[concepts/claude-code-orchestration]] — Claude Code の subagent/agent teams/worktree 使い分け
 - [[concepts/loop-engineering]] — エージェントループの設計論（安価ループ＋高価判断の配分）
 - [[concepts/claude-code-model-effort]] — モデル=何を知っているか／effort=どれだけ徹底するかの公式フレーム。どこに高価モデルを差すかの判断基準側
+- [[concepts/cost-effective-harness]] — 3パターンを「いつ使うと引き合うか」で実測した経済分析側（Lance Martin・Parameter Golf/BrowseComp）

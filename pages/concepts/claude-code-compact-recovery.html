@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-compact-recovery</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-compact-recovery.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-code-compact-recovery · concepts · <span title="2026-07-06">5日前</span></div>
+  <div class="meta">concepts/claude-code-compact-recovery · concepts · <span title="2026-07-06">6日前</span></div>
   <article><h1>Claude Code compact の判断構造喪失と復旧設計（compact-prep + 2段hook + 60%通知）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Claude Code の compact は「何をやったか」の物語要約で判断構造（却下理由・現在フェーズ・セッション状態）を落とすため、圧縮前に state file へ退避し、marker ファイル経由の 2 段 hook で圧縮直後に自動復元する運用パターン（@u1 の実践）。</p>

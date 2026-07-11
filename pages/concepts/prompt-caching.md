@@ -92,3 +92,4 @@ response = client.messages.create(
 - [[companies/anthropic]] — Claude API提供元
 - [[tools/claude-code]] — Claude Code内でもキャッシュ戦略が関連
 - [[concepts/attention]] — キャッシュ対象となる Key/Value はアテンション機構が計算するベクトル
+- [[concepts/cost-effective-harness]] — マルチエージェント委譲でキャッシュミスが協調コストを暴発させる実例側（同一ワーカーへのルーティングでキャッシュを蓄積）
