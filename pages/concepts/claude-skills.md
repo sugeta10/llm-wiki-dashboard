@@ -105,3 +105,4 @@ Claude.ai と Claude Code は同じ仕組みでスキルを動作させる。
 - [[papers/2026-zhou-colleague-skill]] — 人物の作業痕跡からスキルを自動生成する研究。スキルの「梱包形式」を所与として、痕跡からの生成側を扱う
 - [[papers/2026-li-skillsbench]] — Skillが実際どれだけ効くかを対試験で測るベンチマーク（curatedで平均+16.6pp、compact・少数精鋭が網羅的散文に勝つ）
 - [[papers/2026-hao-skill-mining]] — GUI軌跡からSKILL.mdを自動採掘する診断研究。可読でも転移せず頻度ベースラインに負けるという負の結果
+- [[tools/emil-kowalski-skills]] — デザインエンジニアの専門性（taste）をスキル化した実例（/apple-design・「AIは専門性を置き換えず増幅する」）

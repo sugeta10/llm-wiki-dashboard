@@ -26,3 +26,4 @@ CLAUDE.md / AGENTS.md がエージェントの**行動ルール**を与えるの
 - [[design/image2-brand-slides]] — ロゴからデザインシステムを派生させるスライド生成スキル（同系の「AIデザインの凡庸さ」対策）
 - [[design/slide-md]] — 同じ「デザインを `.md` で固定」発想のスライド版デザインシステム
 - [[concepts/chokkan-karte]] — 参照画像の世界観をAIに言語化させてから発注に使うEC/クリエイティブ応用。tasteを言葉でなく素材で渡す同じ前提の逆方向（素材→言葉）
+- [[tools/emil-kowalski-skills]] — 「エージェントにはtasteがない」問題をスキル（誤りリスト＋直し方）で解く同系アプローチ。/apple-designはWWDCデザイン原則の.md化

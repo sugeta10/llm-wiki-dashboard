@@ -43,3 +43,4 @@
 - [[concepts/ai-quality-amplification]] — 速さでなく品質スケールが本質という論点と接続
 - [[concepts/agi-knowledge-moat]] — capabilityコモディティ化後の競争優位の所在
 - [[concepts/skill-self-improving-loop]] — スキル改善版のミニチュア実装（会話履歴→Issue→Routines→PR、人間はマージ判断のみ）
+- [[companies/linear]] — モデル開発企業でない一般プロダクト企業で開発全工程へのLLM組み込みが常態化した事例（「ツールが消えるとエンジニアが悲鳴」）

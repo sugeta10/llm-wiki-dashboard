@@ -16,3 +16,4 @@ AIが「スキル」を持ち、それをCompose・管理する時代に、デ�
 - [[concepts/self-refining-skills]] — LLMスキルに自己改善ループを組み込む設計パターン
 - [[design/ai-ux-methods]] — AI時代のUXデザイン5メソッド
 - [[tools/obsidian-skills]] — Obsidian向けAgent Skills集
+- [[tools/emil-kowalski-skills]] — デザイン職の専門性をAgent Skillsに落とした実例（Emil Kowalskiの/apple-design等4スキル）

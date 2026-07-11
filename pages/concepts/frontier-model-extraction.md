@@ -67,3 +67,4 @@ flowchart TD
 - [[concepts/obsidian-claude-second-brain]] — 型3のリサーチ・マイニング先（Obsidian原子ノート）
 - [[concepts/skill-self-improving-loop]] — 型5と同系の会話→ノート→スキルの自己改善ループ
 - [[concepts/llm-model-selection-strategy]] — 「fableで推論・opusで実行」の工程分解型モデル選択
+- [[concepts/second-brain-operations]] — 同著者@EXM7777による第二の脳のフル運用設計。「vaultはモデル交代を生き延びる」という本ページと同じ結論に運用側から到達する

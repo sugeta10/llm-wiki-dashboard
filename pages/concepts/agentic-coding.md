@@ -52,3 +52,4 @@ Anthropic 公式リポジトリ「cwc-long-running-agents」が提示する3つ�
 - [[concepts/recursive-self-improvement]]（AIがAI開発を加速し後継機を建造する流れ・Claudeが80%のコードを書く内部データ）
 - [[concepts/ai-dev-two-commands]]（ZOZOによる/dev-init+/dev-resumeの組織標準化・Claude Code×Codex批判的対話レビュー）
 - [[concepts/finding-unknowns]]（unknownsの削減と計画をagentic codingの中核スキルと位置づける実装前・中・後の技法フレーム・@trq212）
+- [[companies/linear]]（LLMがトリアージ・バグ調査・PR生成など開発ほぼ全工程に組み込まれた企業事例）

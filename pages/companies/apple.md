@@ -36,3 +36,4 @@ Appleの生成AI戦略は、2026年2月に発表したGoogleとの提携を土�
 - [[companies/google]] — 次世代Apple IntelligenceとPrivate Cloud Computeに採用されるGemini技術の提供元
 - [[companies/openai]] — Xcodeのコード生成で選択可能なChatGPTの提供元
 - [[companies/anthropic]] — Xcodeのコード生成で選択可能なClaudeの提供元
+- [[tools/emil-kowalski-skills]] — WWDCデザイントークから17のデザイン・モーション原則を蒸留した/apple-designスキル（Emil Kowalski製）

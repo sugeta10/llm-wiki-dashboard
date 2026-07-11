@@ -32,3 +32,4 @@ UIエンジニア・デザインエンジニア向けのClaude Codeスキル専�
 - [[tools/claude-code-plugins]]
 - [[concepts/skill-building-best-practices]]
 - [[concepts/claude-skills]]
+- [[tools/emil-kowalski-skills]] — 掲載スキル `emil-design-eng` の作者Emil Kowalski本人のスキルリポジトリ（/apple-design等4スキル）
