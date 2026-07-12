@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fable-sprint-strategy - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>fable-sprint-strategy</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="fable-sprint-strategy.md">Markdownで表示</a></div>
+  <div class="meta">concepts/fable-sprint-strategy · concepts · <span title="2026-07-12">今日</span></div>
+  <article><h1>Fableスプリント攻略（期間限定モデルの全力運用）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 期間限定開放された <a href="../models/claude-fable-5.html">Fable 5</a> を8アカウント・Mac 9台で全力運用する実践記。柱は「HTMLしか読まない」認知負荷対策・初日のメタハーネス（改善基盤）先行構築・週50%制限下で Planner/Evaluator に Fable、Generator に下位モデルを置くループ設計の3つ（@AI_masaou）。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  P[&quot;Planner: Fable&lt;br/&gt;解像度の高い計画&quot;] --&gt; G[&quot;Generator: Opus/Sonnet&lt;br/&gt;実装・実行の使いっ走り&quot;] --&gt; E[&quot;Evaluator: Fable&lt;br/&gt;品質評価・抜け漏れチェック&quot;] --&gt; P</pre>
+<p>出発点は前回6月上旬の開放で得た「人間の方がボトルネック」という反省だと @AI_masaou は書く。マシンを増やしても、人間が成果物を読んで判断する速度が追いつかない。そこで今回は、次にいつ使えるか分からない7月7日までの開放に対し「時間をお金で買う」勝負の1週間と位置づけ、体制（並列数）・認知負荷（人間側の処理速度）・改善基盤（メタハーネス）・モデル配分（週50%制限）の4層で初日から攻略を仕込んだ記事になっている。</p>
+<h2>認知負荷対策「HTMLしか読まない」</h2>
+<p>やることはシンプルで、成果物をとにかくHTML化させる。自分は文章を読まず「HTMLしか読まない」つもりで、SVGや画像を入れて直感的に読める形にする、と @AI_masaou は述べる。何十ものループを回すと待ち時間が生まれるが、HTMLプレビューを作らせておけば「ここ何やってたっけ」がすぐ分かり、作業の引き継ぎ資料としても機能する。これは多窓・多アカウントで並列数を上げたときに効く対策で、1アカウント運用で文章を読む注意力を割けるならMarkdownでもよい、と適用条件も添えている。</p>
+<p>細かい工夫として3つを挙げる。見た目が冗長になりがちな出力に「それジョブズなら許してくれるんですか」と圧をかけるプロンプト、「このくらいのトークン消費でいいだろう」という無意識の遠慮を外す意図的なリミッター解除、散歩しながらスマホで指示できる低認知負荷インターフェースの活用（かんばん型やモバイル指示）。</p>
+<h2>初日はメタハーネス（改善し続けられる基盤）から</h2>
+<p>初日の使い道として一番効くのは、コンテンツやアプリの制作でなくメタハーネスの自作だと @AI_masaou は主張する。具体的には、入力プロンプトを分析して改善させる仕組み・スキルやCLAUDE.mdをアップデートできる基盤・自分の意思決定情報ループ・増えた自作ハーネス群のアナリティクスツール——要するに「ログと、自分が作ったものを改善し続けられる基盤」を最速で仕込む。身近な一歩として、Claude Codeがローカルに残すJSONL形式の会話ログを「これを元に改善して」と渡すところから始めるのを勧めている。この投資はFableの期間が終わったあとのOpus環境でも効き続けるのが要点で、<a href="../concepts/harness-engineering.html">harness-engineering</a> でいう自己改善レイヤーを、最上位モデルが使えるうちに書かせておく発想と読める。計画づくりにはExcalidrawというホワイトボードツールを使い、コンテンツ系→最終日はOpusでもやれることを高速で投げ倒す、という1週間の配分を先に設計したという。</p>
+<h2>週50%制限とモデル配分</h2>
+<p>実際に使うと5時間制限より週次制限が効いてくる、と @AI_masaou は指摘する。Fableは週の利用枠の50%までしか使えないため、Fableだけを回すと残り半分が丸ごと余る。挙がる戦略は3つ。①Fableを計画と評価の専任に絞る ②残り50%は外側のループで消化する（速度重視はSonnet、待てる場面はOpus） ③ultracode（多数のエージェントを一斉起動する機能）は雑に撃つと制限が速攻で来るので、本当に重要な所だけに使う。</p>
+<p>雑にトークンを燃やして解決できない環境では、ハーネスエンジニアリング・<a href="../concepts/loop-engineering.html">ループエンジニアリング</a>の腕の見せ所になる、というのが著者の整理。ベースはAnthropicが以前から示すPlanner/Generator/Evaluator分割のループ設計パターンで、配分は Planner=Fable（メタ認知が強く目標ドリフトしにくい計画）・Evaluator=Fable（出力の品質評価は実は難しい仕事で、評価結果を次のPlannerに渡して回す）・Generator=Opus/Sonnet（実行の使いっ走りに最上位モデルは必須でなく、フレームワークによってはCodexでもよい）。実装はサブエージェントがAgentツール経由で呼ばれる性質を使い、CLAUDE.mdに「Evaluatorを呼ぶときはmodel=opusで」のようにモデル指定を書いて誘導するだけとする（記事中の例文ママ・<a href="../tools/claude-code-subagents.html">claude-code-subagents</a> 参照）。Evaluatorは新品のコンテキストで評価させたいのでサブエージェント呼び出しと相性がよく、指定したモデルで実際に起動しているかは触って確認せよ、とも注意している。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-03: @AI_masaou は Mac 9台・8アカウント・課金約28万円の体制でも「全然足りない」と報告（単一ソースの規模感の実測）</li>
+<li>2026-07-03: 公式からも「HTMLプレビューをどんどん使いましょう」という発信が出ていたと @AI_masaou が言及（公式発信の所在は未確認）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>Planner/Evaluator=Fable・Generator=下位という配分は、<a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> のFable Sandwichと何が違うか。評価器に最上位モデルを置く点が差分で、Haiku評価器を使う /goal コマンドとは逆の思想ではないか</li>
+<li>自分のvaultで「Fableが去った後も効き続けるメタハーネス」に相当するのはどれか（LESSONS.md・evolve-insightsはその一部か、意思決定情報ループに相当するものは無いのでは）</li>
+<li>「HTMLしか読まない」認知負荷対策は、1アカウント運用の自分にはどの並列数から引き合うか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> — モデル配分3パターン（Advisor/Orchestrator/Fable Sandwich）の体系側。本ページはその実践者版のP/G/E配分</li>
+<li><a href="../concepts/frontier-model-extraction.html">frontier-model-extraction</a> — 同じ期間限定Fable週間への向き合い方。あちらは「去る前に判断を抽出する」、こちらは「開放中に全力で運用する」</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — 「雑にトークンを燃やせない環境ではループ設計が腕の見せ所」という本ページの前提の一般論側</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
+<li><a href="../concepts/frontier-model-extraction.html">frontier-model-extraction</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2072989142578016325" rel="noopener" target="_blank">https://x.com/i/web/status/2072989142578016325</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Fableスプリント攻略（期間限定モデルの全力運用）
+
+&gt; **TL;DR**: 期間限定開放された [[models/claude-fable-5|Fable 5]] を8アカウント・Mac 9台で全力運用する実践記。柱は「HTMLしか読まない」認知負荷対策・初日のメタハーネス（改善基盤）先行構築・週50%制限下で Planner/Evaluator に Fable、Generator に下位モデルを置くループ設計の3つ（@AI_masaou）。
+
+```mermaid
+flowchart LR
+  P[&quot;Planner: Fable&lt;br/&gt;解像度の高い計画&quot;] --&gt; G[&quot;Generator: Opus/Sonnet&lt;br/&gt;実装・実行の使いっ走り&quot;] --&gt; E[&quot;Evaluator: Fable&lt;br/&gt;品質評価・抜け漏れチェック&quot;] --&gt; P
+```
+
+出発点は前回6月上旬の開放で得た「人間の方がボトルネック」という反省だと @AI_masaou は書く。マシンを増やしても、人間が成果物を読んで判断する速度が追いつかない。そこで今回は、次にいつ使えるか分からない7月7日までの開放に対し「時間をお金で買う」勝負の1週間と位置づけ、体制（並列数）・認知負荷（人間側の処理速度）・改善基盤（メタハーネス）・モデル配分（週50%制限）の4層で初日から攻略を仕込んだ記事になっている。
+
+## 認知負荷対策「HTMLしか読まない」
+
+やることはシンプルで、成果物をとにかくHTML化させる。自分は文章を読まず「HTMLしか読まない」つもりで、SVGや画像を入れて直感的に読める形にする、と @AI_masaou は述べる。何十ものループを回すと待ち時間が生まれるが、HTMLプレビューを作らせておけば「ここ何やってたっけ」がすぐ分かり、作業の引き継ぎ資料としても機能する。これは多窓・多アカウントで並列数を上げたときに効く対策で、1アカウント運用で文章を読む注意力を割けるならMarkdownでもよい、と適用条件も添えている。
+
+細かい工夫として3つを挙げる。見た目が冗長になりがちな出力に「それジョブズなら許してくれるんですか」と圧をかけるプロンプト、「このくらいのトークン消費でいいだろう」という無意識の遠慮を外す意図的なリミッター解除、散歩しながらスマホで指示できる低認知負荷インターフェースの活用（かんばん型やモバイル指示）。
+
+## 初日はメタハーネス（改善し続けられる基盤）から
+
+初日の使い道として一番効くのは、コンテンツやアプリの制作でなくメタハーネスの自作だと @AI_masaou は主張する。具体的には、入力プロンプトを分析して改善させる仕組み・スキルやCLAUDE.mdをアップデートできる基盤・自分の意思決定情報ループ・増えた自作ハーネス群のアナリティクスツール——要するに「ログと、自分が作ったものを改善し続けられる基盤」を最速で仕込む。身近な一歩として、Claude Codeがローカルに残すJSONL形式の会話ログを「これを元に改善して」と渡すところから始めるのを勧めている。この投資はFableの期間が終わったあとのOpus環境でも効き続けるのが要点で、[[concepts/harness-engineering]] でいう自己改善レイヤーを、最上位モデルが使えるうちに書かせておく発想と読める。計画づくりにはExcalidrawというホワイトボードツールを使い、コンテンツ系→最終日はOpusでもやれることを高速で投げ倒す、という1週間の配分を先に設計したという。
+
+## 週50%制限とモデル配分
+
+実際に使うと5時間制限より週次制限が効いてくる、と @AI_masaou は指摘する。Fableは週の利用枠の50%までしか使えないため、Fableだけを回すと残り半分が丸ごと余る。挙がる戦略は3つ。①Fableを計画と評価の専任に絞る ②残り50%は外側のループで消化する（速度重視はSonnet、待てる場面はOpus） ③ultracode（多数のエージェントを一斉起動する機能）は雑に撃つと制限が速攻で来るので、本当に重要な所だけに使う。
+
+雑にトークンを燃やして解決できない環境では、ハーネスエンジニアリング・[[concepts/loop-engineering|ループエンジニアリング]]の腕の見せ所になる、というのが著者の整理。ベースはAnthropicが以前から示すPlanner/Generator/Evaluator分割のループ設計パターンで、配分は Planner=Fable（メタ認知が強く目標ドリフトしにくい計画）・Evaluator=Fable（出力の品質評価は実は難しい仕事で、評価結果を次のPlannerに渡して回す）・Generator=Opus/Sonnet（実行の使いっ走りに最上位モデルは必須でなく、フレームワークによってはCodexでもよい）。実装はサブエージェントがAgentツール経由で呼ばれる性質を使い、CLAUDE.mdに「Evaluatorを呼ぶときはmodel=opusで」のようにモデル指定を書いて誘導するだけとする（記事中の例文ママ・[[tools/claude-code-subagents]] 参照）。Evaluatorは新品のコンテキストで評価させたいのでサブエージェント呼び出しと相性がよく、指定したモデルで実際に起動しているかは触って確認せよ、とも注意している。
+
+## 観察ログ（未検証）
+
+- 2026-07-03: @AI_masaou は Mac 9台・8アカウント・課金約28万円の体制でも「全然足りない」と報告（単一ソースの規模感の実測）
+- 2026-07-03: 公式からも「HTMLプレビューをどんどん使いましょう」という発信が出ていたと @AI_masaou が言及（公式発信の所在は未確認）
+
+## 問い
+
+- Planner/Evaluator=Fable・Generator=下位という配分は、[[concepts/advisor-executor-pattern]] のFable Sandwichと何が違うか。評価器に最上位モデルを置く点が差分で、Haiku評価器を使う /goal コマンドとは逆の思想ではないか
+- 自分のvaultで「Fableが去った後も効き続けるメタハーネス」に相当するのはどれか（LESSONS.md・evolve-insightsはその一部か、意思決定情報ループに相当するものは無いのでは）
+- 「HTMLしか読まない」認知負荷対策は、1アカウント運用の自分にはどの並列数から引き合うか
+
+## 関連
+
+- [[concepts/advisor-executor-pattern]] — モデル配分3パターン（Advisor/Orchestrator/Fable Sandwich）の体系側。本ページはその実践者版のP/G/E配分
+- [[concepts/frontier-model-extraction]] — 同じ期間限定Fable週間への向き合い方。あちらは「去る前に判断を抽出する」、こちらは「開放中に全力で運用する」
+- [[concepts/loop-engineering]] — 「雑にトークンを燃やせない環境ではループ設計が腕の見せ所」という本ページの前提の一般論側
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

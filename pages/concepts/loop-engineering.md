@@ -154,3 +154,4 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[concepts/loop-anatomy]] — 本概念の解剖学版：1ターン＝5ムーブ×6パーツ、欠落＝5アンチパターン、4つの沈黙コスト（HuaShu Orange Book の統合枠組み）
 - [[tools/stripe-minions]] — エンタープライズ実例：決定論ゲート×LLM交互配置で週1,300本のマシン生成PRをマージ。信頼性は制約の質から
 - [[concepts/claude-code-loop-types]] — Claude Code チーム公式のループ定義と4類型（Turn-based/Goal-based/Time-based/Proactive）。コミュニティ発の本ページに対する公式の回答
+- [[concepts/fable-sprint-strategy]] — 週50%制限下で「ループ設計が腕の見せ所」になる実践記録（Planner/Evaluator=Fable・Generator=下位モデル・@AI_masaou）

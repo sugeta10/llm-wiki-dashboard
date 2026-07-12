@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>session-history-mirror - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>session-history-mirror</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="session-history-mirror.md">Markdownで表示</a></div>
+  <div class="meta">concepts/session-history-mirror · concepts · <span title="2026-07-12">今日</span></div>
+  <article><h1>セッション履歴ミラー（エージェントログの自己分析プロンプト）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: コーディングエージェントのセッション履歴を「誰にも演技していない最も正直な自己記録」として掘らせ、6フェーズ（Excavate→Distill→Interview→Mirror→Leverage→Residue）で人物像・時間の使い方・エージェント環境の改修まで導く全文公開プロンプト（@EXM7777）。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  P1[&quot;1 Excavate&lt;br/&gt;ログ探索・目録&quot;] --&gt; P2[&quot;2 Distill&lt;br/&gt;ガード付き証拠抽出&lt;br/&gt;evidence.md&quot;] --&gt; P3[&quot;3 Interview&lt;br/&gt;仮説を質問で検証&quot;] --&gt; P4[&quot;4 Mirror&lt;br/&gt;人物像の提示&quot;] --&gt; P5[&quot;5 Leverage&lt;br/&gt;時間の6リスト&quot;] --&gt; P6[&quot;6 Residue&lt;br/&gt;mirror.md / roadmap.md&lt;br/&gt;設定改修&quot;]</pre>
+<p>人は日記では読み手向けに演技し、セラピーでも取り繕うが、コーディングエージェントへの依頼では誰も演技しない——@EXM7777 はこの非対称を突く。ローカルのセッション履歴フォルダ（Claude Codeなら ~/.claude/projects）には、タイプした全依頼・始めて放棄したプロジェクト・3回頼んで一度も自動化しなかった修正が、すべてタイムスタンプ付きで残っている。モデルは以前からこの記録を読めたが、数ヶ月分の行動を一つの分析で保持して「星占いでなく真実」を返すのは <a href="../models/claude-fable-5.html">Fable 5</a> が最初だ、というのが著者の主張（かつて優れたセラピストと1年のセッションが必要だった水準の読み、と形容する）。プロンプトはファイルアクセスできるエージェントに1回貼るだけで動く設計になっている。</p>
+<h2>6フェーズの構造</h2>
+<ol>
+<li><strong>Excavate（発掘）</strong> — Claude Code・Codex・OpenCodeなど各エージェントのセッションアーカイブを走査し、ツール名・パス・ファイル数・期間の目録を提示する。中身は一切読まず、採掘計画をユーザーが承認してから先へ進む。</li>
+<li><strong>Distill（蒸留）</strong> — ガードレール付きでログを証拠ファイル evidence.md に落とす。6つの節（繰り返すテーマ／放棄の墓場／修正パターン／反復税＝二度目に自動化すべきだった依頼／リズム／盲点＝ログに不在のもの）を、短い原文引用・日付・件数つきで埋める。</li>
+<li><strong>Interview（面接）</strong> — 証拠から最も強い仮説を5つ立てるが、明かさない。本人が自分で気づくよう設計した質問を1問ずつ投げ、回答がログと矛盾したら日付つき証拠を見せて再質問する。「言ったこと」と「やったこと」のギャップが最大の発見だとされる。</li>
+<li><strong>Mirror（鏡）</strong> — 人物像を提示する。信念は「時間をどこに使ったか」で測る・思考が速い所とループする所・避けているものと、その回避が守っているもの・「記録の全ページに現れるのに一度も口にしたことがないパターン」。最も痛い真実は最後に一度だけ言う（繰り返せば説教になる、という理由づき）。</li>
+<li><strong>Leverage（てこ）</strong> — 同じ証拠を仕事側へ向け、WASTE（時間が死ぬ場所）／DELEGATE（AIへ恒久委任・週あたり回収時間で順位付け）／FOCUS（自分にしかできない1〜2個）／DROP（やめること）／KEEP（守ること）／RHYTHM（タイムスタンプから割り出す深い仕事の時間帯）の6リストを、各項目に証拠と最初の一歩を付けて出す。「次の行動のない洞察はただの娯楽」と釘を刺す。</li>
+<li><strong>Residue（残留物）</strong> — 会話を成果物に変換する。6ヶ月後の自分向けの mirror.md、30日計画の roadmap.md、そして反復税を潰すCLAUDE.md/AGENTS.md改修案とカスタムスキル最大3本。既存設定への変更はすべてdiff提示・個別承認制。</li>
+</ol>
+<h2>設計上の工夫</h2>
+<ul>
+<li><strong>コンテキスト・ガードレール</strong>: セッションファイルの通読を禁止し、1ファイル150行まで・最大200ファイル・最新15/最古10/中間20のサンプリング・grep一斉スイープ（修正フレーズ・繰り返し依頼・3回現れて消えたプロジェクト・作業時間帯）で走査する。25ファイルごとに発見を evidence.md へ書き出して生テキストを捨てるため、履歴がどれだけ大きくても詰まらない。</li>
+<li><strong>証拠の基準</strong>: 「パターンは日付つき3回以上の出現で初めてカウントする。1回はノイズ、11回は人格」。</li>
+<li><strong>解釈と収集の分離</strong>: Phase 2では解釈を禁止する。「結論の下で集められた証拠は汚染されている」がその理由づけ。各フェーズ末尾にゲートがあり、満たすまで先へ進めない。</li>
+<li><strong>仮説非開示のインタビュー</strong>: 「自分で到達した結論は人を動かすが、手渡された結論には人は反論する」ため、仮説は述べずに質問で気づかせる。</li>
+<li><strong>誠実性の制約</strong>: 証拠が薄ければ「insufficient data」と言わせる（「重みを持って届けられた偽の洞察が、唯一回復できない失敗」）。診断・病理化の禁止、セッションデータの外部送信禁止、機密情報の引用禁止も明記されている。</li>
+<li><strong>出力水準の実例</strong>: 「あなたは好奇心旺盛で学習好きですね!」は無価値で、「41セッションでリサーチシステムを作り、0セッションでそれをユーザーに出荷した。何の許可をリサーチしているのか?」が基準——と、プロンプト自身に良し悪しの対比が書き込まれている。</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-07: @EXM7777 は「プロンプト自体はどのモデルでも走るが、Fable以前のモデルはこの種の読みで星占いレベルしか返せなかった」と主張（単一ソース・下位モデルとの品質差は要検証）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の ~/.claude/projects でこれを走らせたら、このvaultの課題である「知識→判断・発信・行動」の帰還ループ不在は、Phase 5のどのリスト（WASTE/FOCUS/DROP）として現れるか</li>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a> との差分——ガードレール付き証拠抽出・フェーズゲート・仮説非開示インタビューは、盲点指摘の精度にどれだけ効くのか</li>
+<li>「日付つき3回以上で初めてパターン」という証拠基準は、このwikiの観察ログ運用（単一ソースの数字の追跡）に輸入できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a> — 同じ「自己の履歴をAIに掘らせる」型。あちらはチャット会話履歴×3つの縛り、こちらはエージェントセッションログ×6フェーズ・証拠ゲート</li>
+<li><a href="../concepts/frontier-model-extraction.html">frontier-model-extraction</a> — 同著者@EXM7777の姉妹編。去るFableの最終夜の使い道として本プロンプトが書かれており、「会話でなく抽出」の実践例にあたる</li>
+<li><a href="../concepts/chokkan-karte.html">chokkan-karte</a> — 同じ自己解剖を非言語素材（無意識に保存した画像・音楽）から掘る対の手法。こちらは「演技のない行動ログ」から掘る</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a></li>
+<li><a href="../concepts/chokkan-karte.html">chokkan-karte</a></li>
+<li><a href="../concepts/frontier-model-extraction.html">frontier-model-extraction</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2074501620235465089" rel="noopener" target="_blank">https://x.com/i/web/status/2074501620235465089</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># セッション履歴ミラー（エージェントログの自己分析プロンプト）
+
+&gt; **TL;DR**: コーディングエージェントのセッション履歴を「誰にも演技していない最も正直な自己記録」として掘らせ、6フェーズ（Excavate→Distill→Interview→Mirror→Leverage→Residue）で人物像・時間の使い方・エージェント環境の改修まで導く全文公開プロンプト（@EXM7777）。
+
+```mermaid
+flowchart LR
+  P1[&quot;1 Excavate&lt;br/&gt;ログ探索・目録&quot;] --&gt; P2[&quot;2 Distill&lt;br/&gt;ガード付き証拠抽出&lt;br/&gt;evidence.md&quot;] --&gt; P3[&quot;3 Interview&lt;br/&gt;仮説を質問で検証&quot;] --&gt; P4[&quot;4 Mirror&lt;br/&gt;人物像の提示&quot;] --&gt; P5[&quot;5 Leverage&lt;br/&gt;時間の6リスト&quot;] --&gt; P6[&quot;6 Residue&lt;br/&gt;mirror.md / roadmap.md&lt;br/&gt;設定改修&quot;]
+```
+
+人は日記では読み手向けに演技し、セラピーでも取り繕うが、コーディングエージェントへの依頼では誰も演技しない——@EXM7777 はこの非対称を突く。ローカルのセッション履歴フォルダ（Claude Codeなら ~/.claude/projects）には、タイプした全依頼・始めて放棄したプロジェクト・3回頼んで一度も自動化しなかった修正が、すべてタイムスタンプ付きで残っている。モデルは以前からこの記録を読めたが、数ヶ月分の行動を一つの分析で保持して「星占いでなく真実」を返すのは [[models/claude-fable-5|Fable 5]] が最初だ、というのが著者の主張（かつて優れたセラピストと1年のセッションが必要だった水準の読み、と形容する）。プロンプトはファイルアクセスできるエージェントに1回貼るだけで動く設計になっている。
+
+## 6フェーズの構造
+
+1. **Excavate（発掘）** — Claude Code・Codex・OpenCodeなど各エージェントのセッションアーカイブを走査し、ツール名・パス・ファイル数・期間の目録を提示する。中身は一切読まず、採掘計画をユーザーが承認してから先へ進む。
+2. **Distill（蒸留）** — ガードレール付きでログを証拠ファイル evidence.md に落とす。6つの節（繰り返すテーマ／放棄の墓場／修正パターン／反復税＝二度目に自動化すべきだった依頼／リズム／盲点＝ログに不在のもの）を、短い原文引用・日付・件数つきで埋める。
+3. **Interview（面接）** — 証拠から最も強い仮説を5つ立てるが、明かさない。本人が自分で気づくよう設計した質問を1問ずつ投げ、回答がログと矛盾したら日付つき証拠を見せて再質問する。「言ったこと」と「やったこと」のギャップが最大の発見だとされる。
+4. **Mirror（鏡）** — 人物像を提示する。信念は「時間をどこに使ったか」で測る・思考が速い所とループする所・避けているものと、その回避が守っているもの・「記録の全ページに現れるのに一度も口にしたことがないパターン」。最も痛い真実は最後に一度だけ言う（繰り返せば説教になる、という理由づき）。
+5. **Leverage（てこ）** — 同じ証拠を仕事側へ向け、WASTE（時間が死ぬ場所）／DELEGATE（AIへ恒久委任・週あたり回収時間で順位付け）／FOCUS（自分にしかできない1〜2個）／DROP（やめること）／KEEP（守ること）／RHYTHM（タイムスタンプから割り出す深い仕事の時間帯）の6リストを、各項目に証拠と最初の一歩を付けて出す。「次の行動のない洞察はただの娯楽」と釘を刺す。
+6. **Residue（残留物）** — 会話を成果物に変換する。6ヶ月後の自分向けの mirror.md、30日計画の roadmap.md、そして反復税を潰すCLAUDE.md/AGENTS.md改修案とカスタムスキル最大3本。既存設定への変更はすべてdiff提示・個別承認制。
+
+## 設計上の工夫
+
+- **コンテキスト・ガードレール**: セッションファイルの通読を禁止し、1ファイル150行まで・最大200ファイル・最新15/最古10/中間20のサンプリング・grep一斉スイープ（修正フレーズ・繰り返し依頼・3回現れて消えたプロジェクト・作業時間帯）で走査する。25ファイルごとに発見を evidence.md へ書き出して生テキストを捨てるため、履歴がどれだけ大きくても詰まらない。
+- **証拠の基準**: 「パターンは日付つき3回以上の出現で初めてカウントする。1回はノイズ、11回は人格」。
+- **解釈と収集の分離**: Phase 2では解釈を禁止する。「結論の下で集められた証拠は汚染されている」がその理由づけ。各フェーズ末尾にゲートがあり、満たすまで先へ進めない。
+- **仮説非開示のインタビュー**: 「自分で到達した結論は人を動かすが、手渡された結論には人は反論する」ため、仮説は述べずに質問で気づかせる。
+- **誠実性の制約**: 証拠が薄ければ「insufficient data」と言わせる（「重みを持って届けられた偽の洞察が、唯一回復できない失敗」）。診断・病理化の禁止、セッションデータの外部送信禁止、機密情報の引用禁止も明記されている。
+- **出力水準の実例**: 「あなたは好奇心旺盛で学習好きですね!」は無価値で、「41セッションでリサーチシステムを作り、0セッションでそれをユーザーに出荷した。何の許可をリサーチしているのか?」が基準——と、プロンプト自身に良し悪しの対比が書き込まれている。
+
+## 観察ログ（未検証）
+
+- 2026-07-07: @EXM7777 は「プロンプト自体はどのモデルでも走るが、Fable以前のモデルはこの種の読みで星占いレベルしか返せなかった」と主張（単一ソース・下位モデルとの品質差は要検証）
+
+## 問い
+
+- 自分の ~/.claude/projects でこれを走らせたら、このvaultの課題である「知識→判断・発信・行動」の帰還ループ不在は、Phase 5のどのリスト（WASTE/FOCUS/DROP）として現れるか
+- [[concepts/ai-strategist-prompt]] との差分——ガードレール付き証拠抽出・フェーズゲート・仮説非開示インタビューは、盲点指摘の精度にどれだけ効くのか
+- 「日付つき3回以上で初めてパターン」という証拠基準は、このwikiの観察ログ運用（単一ソースの数字の追跡）に輸入できるか
+
+## 関連
+
+- [[concepts/ai-strategist-prompt]] — 同じ「自己の履歴をAIに掘らせる」型。あちらはチャット会話履歴×3つの縛り、こちらはエージェントセッションログ×6フェーズ・証拠ゲート
+- [[concepts/frontier-model-extraction]] — 同著者@EXM7777の姉妹編。去るFableの最終夜の使い道として本プロンプトが書かれており、「会話でなく抽出」の実践例にあたる
+- [[concepts/chokkan-karte]] — 同じ自己解剖を非言語素材（無意識に保存した画像・音楽）から掘る対の手法。こちらは「演技のない行動ログ」から掘る
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

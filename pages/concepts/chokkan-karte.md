@@ -49,3 +49,4 @@ flowchart LR
 - [[concepts/ai-strategist-prompt]] — 同じ自己の棚卸しを会話履歴（言語資産）から掘る参謀化。非言語素材（画像・音楽）から掘る本手法と対
 - [[concepts/self-evaluation-gap]] — AIを自己批判の鏡として使う実践。自己認識の補正という同じゴールへの別ルート
 - [[design/design-md]] — taste（趣味）は言葉で説明するより参照を与える方が伝わる、という同じ前提。こちらは参照素材そのものをAIに言語化させる逆方向
+- [[concepts/session-history-mirror]] — 同じ「演技していないデータからの自己解剖」を、直感の痕跡（画像・音楽）でなく行動の痕跡（エージェントセッションログ）から行う型（@EXM7777）

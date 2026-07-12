@@ -68,3 +68,5 @@ flowchart TD
 - [[concepts/skill-self-improving-loop]] — 型5と同系の会話→ノート→スキルの自己改善ループ
 - [[concepts/llm-model-selection-strategy]] — 「fableで推論・opusで実行」の工程分解型モデル選択
 - [[concepts/second-brain-operations]] — 同著者@EXM7777による第二の脳のフル運用設計。「vaultはモデル交代を生き延びる」という本ページと同じ結論に運用側から到達する
+- [[concepts/fable-sprint-strategy]] — 同じ期間限定Fable週間の「開放中に全力で運用する」側（8アカウント体制・メタハーネス先行・P/G/E配分・@AI_masaou）
+- [[concepts/session-history-mirror]] — 同著者による抽出の実践例。Fable最終夜にセッション履歴から自己分析を引き出す6フェーズプロンプト

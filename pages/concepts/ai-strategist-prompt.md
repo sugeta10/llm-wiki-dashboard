@@ -47,3 +47,4 @@ flowchart LR
 - [[concepts/frontier-model-extraction]] — 同じ「Fable最終日」テーマの姉妹編。会話でなく判断の抽出で去るモデルに向き合う型（@EXM7777）
 - [[business/ai-strategy-officer]] — 同じ「AIを戦略側に置く」型を副業の市場選定・商品決定に適用した委任論（@AInokuhaku）
 - [[concepts/chokkan-karte]] — 同じ自己の棚卸しを会話履歴（言語資産）でなく画像・音楽（非言語の直感素材）から掘る手法
+- [[concepts/session-history-mirror]] — 同じ履歴の自己分析をエージェントセッションログ×6フェーズ・証拠ゲートで行う型（@EXM7777）。仮説非開示インタビューと証拠基準（3回以上）が差分
