@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NORTH-STAR - LLM Wiki</title>
+<title>blume - LLM Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -24,111 +24,22 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </style>
 </head>
 <body>
-<div class="cat-band" style="background:#8b949e"></div>
+<div class="cat-band" style="background:#58a6ff"></div>
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
-  <h1>NORTH-STAR</h1>
-  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="NORTH-STAR.md">Markdownで表示</a></div>
-  <div class="meta">weekly/NORTH-STAR · meta · <span title="2026-07-11">3日前</span></div>
-  <article><h1>North Star Metric</h1>
+  <h1>blume</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="blume.md">Markdownで表示</a></div>
+  <div class="meta">tools/blume · tools · <span title="2026-07-14">今日</span></div>
+  <article><h1>Blume</h1>
 <blockquote>
-<p><strong>「週に1回以上、過去のwiki知識が新しい問い・判断・行動に接続された回数」</strong></p>
+<p>孤立理由: ドキュメントサイト生成フレームワークというテーマでwiki内に既存の関連ページが見つからなかったため、孤立ページとして登録。</p>
 </blockquote>
-<p>pages数・links数はサロゲートメトリクスに過ぎない。</p>
-<h2>計測イベント（手動check-inから開始）</h2>
-<table>
-<thead>
-<tr>
-<th>イベント</th>
-<th>記録方法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>weekly insight generated</td>
-<td>wiki/weekly/ にファイルが存在する</td>
-</tr>
-<tr>
-<td>weekly insight opened</td>
-<td>（主観）読んだら ✅</td>
-</tr>
-<tr>
-<td>related page clicked</td>
-<td>（主観）リンクを辿ったら ✅</td>
-</tr>
-<tr>
-<td>action accepted</td>
-<td>小アクションを実行したら ✅</td>
-</tr>
-<tr>
-<td>source revived (14d+)</td>
-<td>古いページに戻れたら ✅</td>
-</tr>
-<tr>
-<td>unconnected seed connected</td>
-<td>Unconnected Seedsにリンクを貼ったら ✅</td>
-</tr>
-<tr>
-<td>query led to wiki update</td>
-<td>クエリ後にページを更新したら ✅</td>
-</tr>
-</tbody>
-</table>
-<h2>Weekly Check-in（毎週月曜・3分）</h2>
-<ol>
-<li>先週のInsightsを読んだか？ (Y/N)</li>
-<li>wikiの知識が行動・判断に繋がった瞬間があったか？ (Y/N + メモ1行)</li>
-<li>今週のNorth Starスコア（上のイベント合計数）: ___</li>
-</ol>
-<h2>目標</h2>
-<table>
-<thead>
-<tr>
-<th>時期</th>
-<th>目標スコア</th>
-<th>意味</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Month 1</td>
-<td>≥ 1</td>
-<td>週1回は知識が行動に接続される</td>
-</tr>
-<tr>
-<td>Month 3</td>
-<td>≥ 3</td>
-<td>習慣として定着。wikiが「使われている」</td>
-</tr>
-<tr>
-<td>Month 6</td>
-<td>≥ 5</td>
-<td>知識が複利化し始めている</td>
-</tr>
-</tbody>
-</table>
-<h2>記録ログ</h2>
-<table>
-<thead>
-<tr>
-<th>週</th>
-<th>スコア</th>
-<th>メモ</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2026-W22</td>
-<td>—</td>
-<td>check-in開始週</td>
-</tr>
-<tr>
-<td>2026-W28</td>
-<td>1</td>
-<td>note記事を自身で改訂・公開。wiki知識と再定義分析が発信に接続</td>
-</tr>
-</tbody>
-</table></article>
+<p>@haydenbleasel がXで発表したドキュメントサイト生成フレームワーク。Markdownファイルをフォルダに置くだけで、アプリのボイラープレートを書かずにフルスペックのドキュメントサイトを構築できることを謳う。ゼロコンフィグセットアップ・自動SEO/AEO対応・30以上の組み込みコンポーネントを備え、Astro＋Vite上に構築されたオープンソース・無料のツールとされる。</p>
+<h2>問い</h2>
+<ul>
+<li>GitHubリポジトリや公式サイトURLが未確認（投稿には動画メディアのみ添付）。実際のコンポーネント構成やセットアップ手順は一次情報で要確認</li>
+<li>同種のドキュメントフレームワーク（Nextra, Docusaurus, Starlight等）と比べた差別化点は何か</li>
+</ul><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2076714329404268576" rel="noopener" target="_blank">https://x.com/i/web/status/2076714329404268576</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -149,44 +60,16 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
-<script id="page-markdown" type="text/plain"># North Star Metric
+<script id="page-markdown" type="text/plain"># Blume
 
-&gt; **「週に1回以上、過去のwiki知識が新しい問い・判断・行動に接続された回数」**
+&gt; 孤立理由: ドキュメントサイト生成フレームワークというテーマでwiki内に既存の関連ページが見つからなかったため、孤立ページとして登録。
 
-pages数・links数はサロゲートメトリクスに過ぎない。
+@haydenbleasel がXで発表したドキュメントサイト生成フレームワーク。Markdownファイルをフォルダに置くだけで、アプリのボイラープレートを書かずにフルスペックのドキュメントサイトを構築できることを謳う。ゼロコンフィグセットアップ・自動SEO/AEO対応・30以上の組み込みコンポーネントを備え、Astro＋Vite上に構築されたオープンソース・無料のツールとされる。
 
-## 計測イベント（手動check-inから開始）
+## 問い
 
-| イベント | 記録方法 |
-|---|---|
-| weekly insight generated | wiki/weekly/ にファイルが存在する |
-| weekly insight opened | （主観）読んだら ✅ |
-| related page clicked | （主観）リンクを辿ったら ✅ |
-| action accepted | 小アクションを実行したら ✅ |
-| source revived (14d+) | 古いページに戻れたら ✅ |
-| unconnected seed connected | Unconnected Seedsにリンクを貼ったら ✅ |
-| query led to wiki update | クエリ後にページを更新したら ✅ |
-
-## Weekly Check-in（毎週月曜・3分）
-
-1. 先週のInsightsを読んだか？ (Y/N)
-2. wikiの知識が行動・判断に繋がった瞬間があったか？ (Y/N + メモ1行)
-3. 今週のNorth Starスコア（上のイベント合計数）: ___
-
-## 目標
-
-| 時期 | 目標スコア | 意味 |
-|---|---|---|
-| Month 1 | ≥ 1 | 週1回は知識が行動に接続される |
-| Month 3 | ≥ 3 | 習慣として定着。wikiが「使われている」 |
-| Month 6 | ≥ 5 | 知識が複利化し始めている |
-
-## 記録ログ
-
-| 週 | スコア | メモ |
-|---|---|---|
-| 2026-W22 | — | check-in開始週 |
-| 2026-W28 | 1 | note記事を自身で改訂・公開。wiki知識と再定義分析が発信に接続 |
+- GitHubリポジトリや公式サイトURLが未確認（投稿には動画メディアのみ添付）。実際のコンポーネント構成やセットアップ手順は一次情報で要確認
+- 同種のドキュメントフレームワーク（Nextra, Docusaurus, Starlight等）と比べた差別化点は何か
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

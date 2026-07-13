@@ -27,3 +27,4 @@ CLAUDE.md / AGENTS.md がエージェントの**行動ルール**を与えるの
 - [[design/slide-md]] — 同じ「デザインを `.md` で固定」発想のスライド版デザインシステム
 - [[concepts/chokkan-karte]] — 参照画像の世界観をAIに言語化させてから発注に使うEC/クリエイティブ応用。tasteを言葉でなく素材で渡す同じ前提の逆方向（素材→言葉）
 - [[tools/emil-kowalski-skills]] — 「エージェントにはtasteがない」問題をスキル（誤りリスト＋直し方）で解く同系アプローチ。/apple-designはWWDCデザイン原則の.md化
+- [[design/ui-pattern-dictionary]] — 同じ「デザインパターンを体系化して参照可能にする」発想を、AI向けコンテキストファイルでなく人間向けの名称辞典として実装したもの
