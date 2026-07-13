@@ -65,3 +65,4 @@ flowchart LR
 - [[concepts/palantir-ontology]] — データとAIの間に業務文脈を保持する中間層という同型の発想。Palantirは「名詞＋動詞」、本ページは「6層」で構造化
 - [[concepts/claude-code-context-hierarchy]] — Claude Codeの4層コンテキスト階層（Enterprise/Global/Project shared/Project just me）。スコープ軸での層分けという点で類似
 - [[companies/openai]] — 本記事の発信元
+- [[tools/google-knowledge-catalog]] — Google Cloudが提供するマネージド版のメタデータ→エンリッチ→検証済みクエリのパイプライン

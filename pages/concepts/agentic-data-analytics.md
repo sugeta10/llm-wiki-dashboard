@@ -93,3 +93,4 @@ flowchart LR
 - [[concepts/multi-agent-patterns]] — アドバーサリアルレビューサブエージェントがここで言及されるfan-outパターンに相当
 - [[concepts/claude-skills]] — 本ページのスキル層（Claude Codeスキルフォルダ）の概念的基盤
 - [[companies/anthropic]] — 本記事の発信元
+- [[tools/google-knowledge-catalog]] — Google Cloudが同型のパイプライン（メタデータ収集→エンリッチ→検証済みクエリ）をマネージド製品として提供
