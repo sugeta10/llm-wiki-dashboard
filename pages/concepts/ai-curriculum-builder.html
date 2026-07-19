@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-curriculum-builder - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-curriculum-builder</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-curriculum-builder.md">Markdownで表示</a></div>
+  <div class="meta">concepts/ai-curriculum-builder · concepts · <span title="2026-07-16">3日前</span></div>
+  <article><h1>AI駆動カリキュラム構築（学習DNAプロファイル×パーソナライズ講座）</h1>
+<blockquote>
+<p>📌 X bookmark: 17,461（2026-07-15 時点）</p>
+<p><strong>TL;DR</strong>: 複雑な専門分野を丸ごとマスターするための5段階システム——多角的ソースの要約をClaude Projectへ集約し、学習者の認知特性を「学習DNAプロファイル」としてJSON化し、それに合わせてパーソナライズしたカリキュラムと章ごとのインタラクティブ講座を生成し、各章の学習記録を次章のAIへ引き継ぐフィードバックループを回す。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Sources[&quot;多角的ソース収集\n書籍/YouTube/カンファレンス&quot;] --&gt; Ingest[&quot;Claude Projectへ\n要約を集約&quot;]
+  Ingest --&gt; Profile[&quot;学習DNAプロファイル\n生成(JSON)&quot;]
+  Profile --&gt; Curriculum[&quot;パーソナライズ\nカリキュラム構築&quot;]
+  Curriculum --&gt; Interactive[&quot;章ごとの\nインタラクティブ講座&quot;]
+  Interactive --&gt;|&quot;学習記録(JSON)を\n次章へ引き継ぐ&quot;| Curriculum</pre>
+<p>多くの人は専門書をAIに要約させて終わりにしてしまうが、@EXM7777 は「1冊読んで満足する」学び方と「複数の情報源を1つのシステムに統合し自分の認知特性に合わせて再構成する」学び方は別物だと述べる。実例としてゲーム理論を題材にしているが、著者はこれを特定分野の攻略法でなく「複雑な知識領域を深く習得するためのメタフレームワーク」として提示しており、量子物理学や行動心理学など任意の分野に転用できると主張する。</p>
+<h2>Step1〜2: 知識収集とAIへの投入</h2>
+<p>まず書籍（Von Neumann &amp; Morgenstern の原典から応用書まで8冊）・YouTube講義（Yale/Stanfordの公開コース等）・学会録画といった複数種のソースをかき集める。ここで著者が強調するのは「1つのソースを丸ごとLLMに投げない」こと。書籍は分割してアップロードし、専用プロンプトで「著者独自の視点・声を保った詳細サマリー」を1冊ずつ作らせ、その出力ファイルをClaude Projectに蓄積していく。YouTube動画はNotebookLMの動画解析機能でPDF化してから同じProjectに追加する。全ソースを個別に処理してから1箇所に集約する、という順序がこの手法の肝だと著者は述べる。</p>
+<h2>Step3: 学習DNAプロファイル</h2>
+<p>次に専用プロンプトでユーザー自身の学習スタイルを診断させ、その結果をJSONファイルとしてProjectに保存する。大枠から入るか積み上げ型か、反復定着型か即応用型か、といった認知特性を明文化し、以降のすべての講座生成プロンプトがこのプロファイルを参照する設計にする。画一的な教材でなく、この学習者固有のプロファイルに合わせてカリキュラムを組み直す点が本手法の核だと著者は位置づける。</p>
+<h2>Step4〜5: カリキュラムとインタラクティブ講座</h2>
+<p>蓄積した要約と学習DNAプロファイルを渡し、層を積み上げる形でカリキュラムを生成させ、<code>course_summary.pdf</code> としてProjectに保存する。最後に各章ごとに「[SELECTED CHAPTER]」部分を差し替えながら同じプロンプトを繰り返し実行し、その章に特化したインタラクティブ講座を生成する。各章の完了時には「何を学び・どこでつまずいたか」を記録したJSONを <code>completed-[chapter-name].json</code> として保存し、次の章の講座生成がこの記録を参照する。著者はこれを「章を追うごとに賢くなるフィードバックループ」と呼ぶ。</p>
+<h2>なぜ機能するか（著者の主張）</h2>
+<p>著者は、この仕組みが効くのは「複数の専門的視点の統合」「学習者固有の認知特性への最適化」「何が定着し何が定着しなかったかの追跡」を1つのシステムに同居させているためだと説明する。一度構築すれば、完了後も「この概念を自分の業界の例で説明し直して」といった問いかけができる永続的な個人チューターとして機能し続ける、というのが著者の位置づけ。</p>
+<h2>問い</h2>
+<ul>
+<li>このメタフレームワークをwikiのingest対象トピック学習（新規分野のキャッチアップ）に転用できるか</li>
+<li>Claude Projectへの知識蓄積という設計は <a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a> の6パート（Identity/Rules/Process/Output/Knowledge Files/Onboarding）とどう対応するか。Knowledge Filesを「学習DNAプロファイル」に特化させた形と言えるか</li>
+<li>学習DNAプロファイル（JSON化した認知特性）は、コーディングスタイル学習など他分野にも転用できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/notebooklm-claude-workflow.html">notebooklm-claude-workflow</a> — NotebookLMで「知り」Claudeで「考える」分業パターン。本ページのStep1〜2（YouTube→NotebookLM→Claude Project）と同型の橋渡し</li>
+<li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a> — Claude Projectsを「AI社員化」する6パート設計図。本ページは学習ドメインに特化した実装例と言える</li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a> — 学習定着を「出力（エッセイ化）」で強制する別の学習法。本ページは「AIとの対話・カリキュラム化」で強制する点が異なる</li>
+<li><a href="../tools/notebooklm-beginner-guide.html">notebooklm-beginner-guide</a> — NotebookLM単体の学習運用（振り返りノート・攻略本ノート）</li>
+<li><a href="../tools/notebooklm-book-mentors.html">notebooklm-book-mentors</a> — 積読本をNotebookLMでメンター化する読書術。本ページのStep1（書籍収集・活用）と接続</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a></li>
+<li><a href="../concepts/notebooklm-claude-workflow.html">notebooklm-claude-workflow</a></li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a></li>
+<li><a href="../tools/notebooklm-beginner-guide.html">notebooklm-beginner-guide</a></li>
+<li><a href="../tools/notebooklm-book-mentors.html">notebooklm-book-mentors</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2013258826259005636" rel="noopener" target="_blank">https://x.com/i/web/status/2013258826259005636</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AI駆動カリキュラム構築（学習DNAプロファイル×パーソナライズ講座）
+
+&gt; 📌 X bookmark: 17,461（2026-07-15 時点）
+
+&gt; **TL;DR**: 複雑な専門分野を丸ごとマスターするための5段階システム——多角的ソースの要約をClaude Projectへ集約し、学習者の認知特性を「学習DNAプロファイル」としてJSON化し、それに合わせてパーソナライズしたカリキュラムと章ごとのインタラクティブ講座を生成し、各章の学習記録を次章のAIへ引き継ぐフィードバックループを回す。
+
+```mermaid
+flowchart LR
+  Sources[&quot;多角的ソース収集\n書籍/YouTube/カンファレンス&quot;] --&gt; Ingest[&quot;Claude Projectへ\n要約を集約&quot;]
+  Ingest --&gt; Profile[&quot;学習DNAプロファイル\n生成(JSON)&quot;]
+  Profile --&gt; Curriculum[&quot;パーソナライズ\nカリキュラム構築&quot;]
+  Curriculum --&gt; Interactive[&quot;章ごとの\nインタラクティブ講座&quot;]
+  Interactive --&gt;|&quot;学習記録(JSON)を\n次章へ引き継ぐ&quot;| Curriculum
+```
+
+多くの人は専門書をAIに要約させて終わりにしてしまうが、@EXM7777 は「1冊読んで満足する」学び方と「複数の情報源を1つのシステムに統合し自分の認知特性に合わせて再構成する」学び方は別物だと述べる。実例としてゲーム理論を題材にしているが、著者はこれを特定分野の攻略法でなく「複雑な知識領域を深く習得するためのメタフレームワーク」として提示しており、量子物理学や行動心理学など任意の分野に転用できると主張する。
+
+## Step1〜2: 知識収集とAIへの投入
+
+まず書籍（Von Neumann &amp; Morgenstern の原典から応用書まで8冊）・YouTube講義（Yale/Stanfordの公開コース等）・学会録画といった複数種のソースをかき集める。ここで著者が強調するのは「1つのソースを丸ごとLLMに投げない」こと。書籍は分割してアップロードし、専用プロンプトで「著者独自の視点・声を保った詳細サマリー」を1冊ずつ作らせ、その出力ファイルをClaude Projectに蓄積していく。YouTube動画はNotebookLMの動画解析機能でPDF化してから同じProjectに追加する。全ソースを個別に処理してから1箇所に集約する、という順序がこの手法の肝だと著者は述べる。
+
+## Step3: 学習DNAプロファイル
+
+次に専用プロンプトでユーザー自身の学習スタイルを診断させ、その結果をJSONファイルとしてProjectに保存する。大枠から入るか積み上げ型か、反復定着型か即応用型か、といった認知特性を明文化し、以降のすべての講座生成プロンプトがこのプロファイルを参照する設計にする。画一的な教材でなく、この学習者固有のプロファイルに合わせてカリキュラムを組み直す点が本手法の核だと著者は位置づける。
+
+## Step4〜5: カリキュラムとインタラクティブ講座
+
+蓄積した要約と学習DNAプロファイルを渡し、層を積み上げる形でカリキュラムを生成させ、`course_summary.pdf` としてProjectに保存する。最後に各章ごとに「[SELECTED CHAPTER]」部分を差し替えながら同じプロンプトを繰り返し実行し、その章に特化したインタラクティブ講座を生成する。各章の完了時には「何を学び・どこでつまずいたか」を記録したJSONを `completed-[chapter-name].json` として保存し、次の章の講座生成がこの記録を参照する。著者はこれを「章を追うごとに賢くなるフィードバックループ」と呼ぶ。
+
+## なぜ機能するか（著者の主張）
+
+著者は、この仕組みが効くのは「複数の専門的視点の統合」「学習者固有の認知特性への最適化」「何が定着し何が定着しなかったかの追跡」を1つのシステムに同居させているためだと説明する。一度構築すれば、完了後も「この概念を自分の業界の例で説明し直して」といった問いかけができる永続的な個人チューターとして機能し続ける、というのが著者の位置づけ。
+
+## 問い
+
+- このメタフレームワークをwikiのingest対象トピック学習（新規分野のキャッチアップ）に転用できるか
+- Claude Projectへの知識蓄積という設計は [[concepts/claude-projects-blueprint]] の6パート（Identity/Rules/Process/Output/Knowledge Files/Onboarding）とどう対応するか。Knowledge Filesを「学習DNAプロファイル」に特化させた形と言えるか
+- 学習DNAプロファイル（JSON化した認知特性）は、コーディングスタイル学習など他分野にも転用できるか
+
+## 関連
+
+- [[concepts/notebooklm-claude-workflow]] — NotebookLMで「知り」Claudeで「考える」分業パターン。本ページのStep1〜2（YouTube→NotebookLM→Claude Project）と同型の橋渡し
+- [[concepts/claude-projects-blueprint]] — Claude Projectsを「AI社員化」する6パート設計図。本ページは学習ドメインに特化した実装例と言える
+- [[concepts/output-first-learning]] — 学習定着を「出力（エッセイ化）」で強制する別の学習法。本ページは「AIとの対話・カリキュラム化」で強制する点が異なる
+- [[tools/notebooklm-beginner-guide]] — NotebookLM単体の学習運用（振り返りノート・攻略本ノート）
+- [[tools/notebooklm-book-mentors]] — 積読本をNotebookLMでメンター化する読書術。本ページのStep1（書籍収集・活用）と接続
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>prompt-engineering</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="prompt-engineering.md">Markdownで表示</a></div>
-  <div class="meta">concepts/prompt-engineering · concepts · <span title="2026-05-20">1ヶ月前</span></div>
+  <div class="meta">concepts/prompt-engineering · concepts · <span title="2026-07-16">3日前</span></div>
   <article><h1>プロンプトエンジニアリング</h1>
 <p>LLMへの入力（プロンプト）を設計・最適化する技術。適切なプロンプト設計により出力品質を大幅に向上させられる。</p>
 <h2>主要テクニック</h2>
@@ -126,6 +126,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - コンテキストが切れる前に状態をファイル/メモリに保存</p>
 <h3>Prefill（応答先読み）の廃止</h3>
 <p>Claude 4.6以降、アシスタントターンへの先頭埋め込み（prefill）は非推奨。明示的な指示で代替する。</p>
+<h2>ChatGPT公式プロンプティングガイド（Goal/Context/Output/Boundaries）</h2>
+<p>OpenAI公式のプロンプティングドキュメント（learn.chatgpt.com/docs/prompting）が示す、Chat・Work・Codexに共通する4要素フレームワーク。</p>
+<ul>
+<li><strong>Goal（目的）</strong>: ChatGPTに何をしてほしいか</li>
+<li><strong>Context（文脈）</strong>: 何の情報・ソースが助けになるか</li>
+<li><strong>Output（出力）</strong>: どの形式・長さ・詳細度が必要か</li>
+<li><strong>Boundaries（境界）</strong>: 何を変えてはいけないか、何を避けるべきか、何を事前確認すべきか</li>
+</ul>
+<p>OpenAI公式は「4項目すべてを毎回埋める必要はなく、結果を左右する要素だけ書けばよい」と説明する。短いプロンプトで十分な場合も多いが、規模の大きいタスクや重要なタスクほど各要素を明示する価値が上がる、という位置づけ。</p>
+<p>境界（Boundaries）は「変更したら成果物が使い物にならなくなる詳細」や「他者に影響する前にレビューしたい行動」がある場合にのみ追加する。1〜2個に絞り、すべての手順を縛ろうとしないのが要点。</p>
+<p><strong>Work（時間のかかる複雑タスク）向けの追加指針</strong>: ソース資料・対象読者・レビュー方法を明示したうえで、計画→情報収集→ファイル作成→自己チェックをChatGPTに任せる。最初の1回で完璧を狙わず、レビュー結果を見てから指示を絞り込み、うまくいったワークフローを再利用する運用が推奨されている。</p>
+<p><strong>フォローアップでの改善</strong>: 最初のプロンプトを完璧に作る必要はなく、結果を見てから「この変更だけ」と絞って追加指示を出す運用が前提。Codex CLIでは実行中のターンに割り込む「Steer」と次のターン用に指示を貯める「Queue」が区別されている。</p>
 <h2>Claude サブスク活用プロンプト20選</h2>
 <p>@shota7180 が海外で話題になった実用プロンプト集を日本語でまとめている（元ネタ: @AnatoliKopadze の X記事）。</p>
 <blockquote>
@@ -150,6 +162,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a> — ChatGPTカスタム指示の設定手法（全チャット共通の永続プロンプト設定）</li>
 <li><a href="../concepts/prompt-engineering-playbook.html">prompt-engineering-playbook</a> — 海外AIガチ勢の実践プロンプト40技術（CoVe・ToT・マルチエージェント・ハーネス設計）</li>
 <li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a> — <a href="../models/claude-fable-5.html">claude-fable-5</a> 固有のプロンプト指針（Anthropic公式・指示を減らす／長ターン前提／reasoning_extraction回避）</li>
+<li>openai-codex — Codex向け実践プロンプティングパターン集（OpenAI公式ガイド・コードベース理解/バグ修正/PRレビュー等）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a></li>
 <li><a href="../concepts/claude-best-practices.html">claude-best-practices</a></li>
@@ -160,7 +173,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="https://developers.openai.com/api/docs/guides/prompt-guidance" rel="noopener" target="_blank">https://developers.openai.com/api/docs/guides/prompt-guidance</a></li>
 <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" rel="noopener" target="_blank">https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices</a></li>
 <li><a href="https://x.com/i/web/status/2055602484853567963" rel="noopener" target="_blank">https://x.com/i/web/status/2055602484853567963</a></li>
-<li><a href="https://x.com/i/web/status/2049492553133629950" rel="noopener" target="_blank">https://x.com/i/web/status/2049492553133629950</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2049492553133629950" rel="noopener" target="_blank">https://x.com/i/web/status/2049492553133629950</a></li>
+<li><a href="https://learn.chatgpt.com/docs/prompting" rel="noopener" target="_blank">https://learn.chatgpt.com/docs/prompting</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -287,6 +301,23 @@ client.messages.create(
 
 Claude 4.6以降、アシスタントターンへの先頭埋め込み（prefill）は非推奨。明示的な指示で代替する。
 
+## ChatGPT公式プロンプティングガイド（Goal/Context/Output/Boundaries）
+
+OpenAI公式のプロンプティングドキュメント（learn.chatgpt.com/docs/prompting）が示す、Chat・Work・Codexに共通する4要素フレームワーク。
+
+- **Goal（目的）**: ChatGPTに何をしてほしいか
+- **Context（文脈）**: 何の情報・ソースが助けになるか
+- **Output（出力）**: どの形式・長さ・詳細度が必要か
+- **Boundaries（境界）**: 何を変えてはいけないか、何を避けるべきか、何を事前確認すべきか
+
+OpenAI公式は「4項目すべてを毎回埋める必要はなく、結果を左右する要素だけ書けばよい」と説明する。短いプロンプトで十分な場合も多いが、規模の大きいタスクや重要なタスクほど各要素を明示する価値が上がる、という位置づけ。
+
+境界（Boundaries）は「変更したら成果物が使い物にならなくなる詳細」や「他者に影響する前にレビューしたい行動」がある場合にのみ追加する。1〜2個に絞り、すべての手順を縛ろうとしないのが要点。
+
+**Work（時間のかかる複雑タスク）向けの追加指針**: ソース資料・対象読者・レビュー方法を明示したうえで、計画→情報収集→ファイル作成→自己チェックをChatGPTに任せる。最初の1回で完璧を狙わず、レビュー結果を見てから指示を絞り込み、うまくいったワークフローを再利用する運用が推奨されている。
+
+**フォローアップでの改善**: 最初のプロンプトを完璧に作る必要はなく、結果を見てから「この変更だけ」と絞って追加指示を出す運用が前提。Codex CLIでは実行中のターンに割り込む「Steer」と次のターン用に指示を貯める「Queue」が区別されている。
+
 ## Claude サブスク活用プロンプト20選
 
 @shota7180 が海外で話題になった実用プロンプト集を日本語でまとめている（元ネタ: @AnatoliKopadze の X記事）。
@@ -313,6 +344,7 @@ Claude 4.6以降、アシスタントターンへの先頭埋め込み（prefill
 - [[concepts/chatgpt-custom-instructions]] — ChatGPTカスタム指示の設定手法（全チャット共通の永続プロンプト設定）
 - [[concepts/prompt-engineering-playbook]] — 海外AIガチ勢の実践プロンプト40技術（CoVe・ToT・マルチエージェント・ハーネス設計）
 - [[concepts/fable-5-prompting]] — [[models/claude-fable-5]] 固有のプロンプト指針（Anthropic公式・指示を減らす／長ターン前提／reasoning_extraction回避）
+- [[tools/openai-codex]] — Codex向け実践プロンプティングパターン集（OpenAI公式ガイド・コードベース理解/バグ修正/PRレビュー等）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

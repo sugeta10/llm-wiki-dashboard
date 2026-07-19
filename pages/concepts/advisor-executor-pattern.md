@@ -73,3 +73,4 @@ Na は記事末で、AIエージェントの実用化・プロダクション導
 - [[concepts/claude-code-model-effort]] — モデル=何を知っているか／effort=どれだけ徹底するかの公式フレーム。どこに高価モデルを差すかの判断基準側
 - [[concepts/cost-effective-harness]] — 3パターンを「いつ使うと引き合うか」で実測した経済分析側（Lance Martin・Parameter Golf/BrowseComp）
 - [[concepts/fable-sprint-strategy]] — 実践者版のP/G/E配分（Planner/Evaluator=Fable・Generator=Opus/Sonnet）。週50%制限下の運用記録（@AI_masaou）
+- [[concepts/delegation-management-style]] — 本ページのOrchestratorパターンに近いDevin Fusion構成で、リードモデルをFable/Opusで入れ替えたコスト実験（Cognition社）

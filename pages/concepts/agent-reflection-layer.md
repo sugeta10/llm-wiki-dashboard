@@ -47,3 +47,4 @@ flowchart TD
 - [[concepts/agent-memory-layer]] — 連載が前提に置く「記憶の層」。本ページのメタ認知（垂直の層）と対になる水平の層
 - [[concepts/structuring-ability]] — 同著者(@kenichiota0711)の構造化力論（全体と部分の入れ子を整理する）
 - [[concepts/loop-engineering]] — 観察→調整の学習ループをエージェント運用工学として一般化した上位概念
+- [[concepts/semantic-generation-skill]] — 「書く前に構造化させる」という同じ設計思想を、判断ログでなく独自語の定義に適用したもの（@u1）

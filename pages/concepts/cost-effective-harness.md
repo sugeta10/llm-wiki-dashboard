@@ -57,3 +57,4 @@ Tarun Amasa（@trq212）の「Claude がタスクに応じて自分でハーネ�
 - [[concepts/prompt-caching]] — ガイダンス4「キャッシュミスが委譲コスト暴発の主因」の技術的基盤
 - [[tools/claude-managed-agents]] — 実験基盤。サブエージェントのキャッシュ維持をネイティブサポート
 - [[concepts/multi-agent-patterns]] — fan-out overlap 等の協調コストが生じるマルチエージェント設計の一般論
+- [[concepts/delegation-management-style]] — 同じ委任コスト論を、別著者（Cognition社/Devin Fusion）が「リードモデルの管理スタイルの違い」という別軸で実測した実験

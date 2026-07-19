@@ -18,11 +18,49 @@ PC 上の大事なファイルや認証情報にアクセスできる → クラ
 4. **Sandbox によるアクセス制限** — ディレクトリ外操作禁止、ネットワーク制限による漏洩防止
 5. **セキュリティポリシーをシステムプロンプトに追加** — CLAUDE.md に記述
 
+## 実装例：settings.json の具体的な書き方
+
+上記5点をClaude Code公式の設定キーで実装するとこうなる（@hermes_code、2026-07-14）。キー名・書き方はAnthropic公式ドキュメントで確認したもの。
+
+```json
+{
+  "permissions": {
+    "disableBypassPermissionsMode": "disable",
+    "deny": [
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(sudo:*)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/.ssh/**)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(rm:*)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "network": {
+      "allowedDomains": ["*.github.com", "registry.npmjs.org"]
+    }
+  }
+}
+```
+
+- `permissions.disableBypassPermissionsMode` / `disableAutoMode` を `"disable"` にすると確認スキップモード・自動モードに入れなくなる。管理者設定（後述）に置くと社員側で解除できない。
+- `Bash(curl:*)` のように**丸ごと拒否**するのが公式推奨。「curlをGitHub宛てだけ許可」のように引数で細かく絞る書き方は、リダイレクト等ですり抜けられるため公式が明示的に非推奨としている。ネット取得が必要なら拒否リストで塞いだ上でWebFetch（許可ドメイン制御可）に一本化する。
+- `Read(.env)` は `Read(**/.env)` と同義で、作業フォルダ配下のどの階層の`.env`も読めなくする。
+- **拒否リストの限界**: Claude自身のファイル読み取りやcat等の分かりやすいコマンドには効くが、AIが書いたスクリプトが裏でこっそりファイルを開くような回り道までは止めきれない。これがサンドボックス（OSレベルで作業フォルダ外・許可外ネットワーク先への到達を物理的に遮断）が必要な理由。拒否リストとサンドボックスを重ねるのが公式の想定する最終防御。
+- サンドボックスが効くのはmacOS・Linux・WSL2のみ。ネイティブWindowsは非対応のため、Windows主体の職場は権限設定（deny/ask）を厚めにする判断になる。
+
 ## MDM による全社配布
 
 MDM（端末管理システム）を使って以下を一斉展開：
 - Claude Code の設定ファイル
 - システムプロンプト（CLAUDE.md）
+
+管理者設定の置き場所はOSごとに決まっている（例: macOSは`/Library/Application Support/ClaudeCode/managed-settings.json`）。個人の`.claude/settings.json`より優先され、本人には変更できない。
 
 **罠**: MDM 配布設定は最高優先度で扱われるため、カスタマイズしたいエンジニアと、最初から安全な状態が欲しい非エンジニアの両方を単一設定では満たせない。
 
@@ -34,6 +72,8 @@ MDM（端末管理システム）を使って以下を一斉展開：
 | 非エンジニア | 実現できうる最も安全な設定（カスタマイズなし） |
 
 MDM に連携した情報から配布設定を分離することで、それぞれが生産性高く安全に利用できる環境を実現。
+
+MDMを持たない中小企業でも、上記5点の最小セットを1枚の`settings.json`にまとめ「`.claude/`フォルダに置いて」と配って共有すれば同じ方向性を再現できる。強制力は落ちるが、まず`Read(.env)`の1行だけでも入れる価値が最も大きいという実務助言もある（@hermes_code）。
 
 ## エンタープライズ展開事例：NOT A HOTEL
 

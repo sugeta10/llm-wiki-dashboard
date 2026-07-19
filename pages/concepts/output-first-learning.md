@@ -28,3 +28,4 @@
 - [[business/hensu-kyokushouka]] — 同作者（@shinkaron）のビジネス設計哲学：制約を逆手にとる思考が共通
 - [[concepts/structuring-ability]] — 学びを構造化して他者に届く形へ昇華する点で接続。構造化力の出力面
 - [[business/human-nature-persuasion]] — 「知識は現実でテストしないと意味がない＝出力して反応を見る」学習観で接続（Dan Koe）
+- [[concepts/ai-curriculum-builder]] — 「AIとの対話・カリキュラム化」で学習を定着させる別の学習法。本ページの「出力（エッセイ化）」で定着させる手法と対をなす

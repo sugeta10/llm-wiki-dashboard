@@ -32,3 +32,4 @@ CLI で作業していると使用枠をどれだけ消費したかが見えに�
 - [[tools/openclaw]]
 - [[tools/skill-cleaner]]
 - [[tools/oracle]]
+- [[tools/notch-multi-agent-monitor]] — 同じ「AIエージェントの状態を画面隅に常駐可視化する」系統だが、対象は使用制限でなくアクション要求（完了・要承認）の通知

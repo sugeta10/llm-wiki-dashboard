@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-security</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-security.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-code-security · concepts · <span title="2026-06-09">1ヶ月前</span></div>
+  <div class="meta">concepts/claude-code-security · concepts · <span title="2026-07-15">4日前</span></div>
   <article><h1>Claude Code セキュリティ設定と組織展開</h1>
 <p>メルカリ AI Security Team による <a href="../tools/claude-code.html">claude-code</a> の組織展開戦略。エンジニアと非エンジニアの双方が安全かつ生産性高く利用できる設定を MDM で配布する方法論。</p>
 <h2>Claude Code のリスク</h2>
@@ -47,10 +47,44 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>Sandbox によるアクセス制限</strong> — ディレクトリ外操作禁止、ネットワーク制限による漏洩防止</li>
 <li><strong>セキュリティポリシーをシステムプロンプトに追加</strong> — CLAUDE.md に記述</li>
 </ol>
+<h2>実装例：settings.json の具体的な書き方</h2>
+<p>上記5点をClaude Code公式の設定キーで実装するとこうなる（@hermes_code、2026-07-14）。キー名・書き方はAnthropic公式ドキュメントで確認したもの。</p>
+<pre><code class="language-json">{
+  &quot;permissions&quot;: {
+    &quot;disableBypassPermissionsMode&quot;: &quot;disable&quot;,
+    &quot;deny&quot;: [
+      &quot;Bash(curl:*)&quot;,
+      &quot;Bash(wget:*)&quot;,
+      &quot;Bash(sudo:*)&quot;,
+      &quot;Read(.env)&quot;,
+      &quot;Read(.env.*)&quot;,
+      &quot;Read(**/.ssh/**)&quot;
+    ],
+    &quot;ask&quot;: [
+      &quot;Bash(git push:*)&quot;,
+      &quot;Bash(rm:*)&quot;
+    ]
+  },
+  &quot;sandbox&quot;: {
+    &quot;enabled&quot;: true,
+    &quot;network&quot;: {
+      &quot;allowedDomains&quot;: [&quot;*.github.com&quot;, &quot;registry.npmjs.org&quot;]
+    }
+  }
+}
+</code></pre>
+<ul>
+<li><code>permissions.disableBypassPermissionsMode</code> / <code>disableAutoMode</code> を <code>"disable"</code> にすると確認スキップモード・自動モードに入れなくなる。管理者設定（後述）に置くと社員側で解除できない。</li>
+<li><code>Bash(curl:*)</code> のように<strong>丸ごと拒否</strong>するのが公式推奨。「curlをGitHub宛てだけ許可」のように引数で細かく絞る書き方は、リダイレクト等ですり抜けられるため公式が明示的に非推奨としている。ネット取得が必要なら拒否リストで塞いだ上でWebFetch（許可ドメイン制御可）に一本化する。</li>
+<li><code>Read(.env)</code> は <code>Read(**/.env)</code> と同義で、作業フォルダ配下のどの階層の<code>.env</code>も読めなくする。</li>
+<li><strong>拒否リストの限界</strong>: Claude自身のファイル読み取りやcat等の分かりやすいコマンドには効くが、AIが書いたスクリプトが裏でこっそりファイルを開くような回り道までは止めきれない。これがサンドボックス（OSレベルで作業フォルダ外・許可外ネットワーク先への到達を物理的に遮断）が必要な理由。拒否リストとサンドボックスを重ねるのが公式の想定する最終防御。</li>
+<li>サンドボックスが効くのはmacOS・Linux・WSL2のみ。ネイティブWindowsは非対応のため、Windows主体の職場は権限設定（deny/ask）を厚めにする判断になる。</li>
+</ul>
 <h2>MDM による全社配布</h2>
 <p>MDM（端末管理システム）を使って以下を一斉展開：
 - Claude Code の設定ファイル
 - システムプロンプト（CLAUDE.md）</p>
+<p>管理者設定の置き場所はOSごとに決まっている（例: macOSは<code>/Library/Application Support/ClaudeCode/managed-settings.json</code>）。個人の<code>.claude/settings.json</code>より優先され、本人には変更できない。</p>
 <p><strong>罠</strong>: MDM 配布設定は最高優先度で扱われるため、カスタマイズしたいエンジニアと、最初から安全な状態が欲しい非エンジニアの両方を単一設定では満たせない。</p>
 <h2>解決策：ユーザータイプ別設定分離</h2>
 <table>
@@ -72,6 +106,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>MDM に連携した情報から配布設定を分離することで、それぞれが生産性高く安全に利用できる環境を実現。</p>
+<p>MDMを持たない中小企業でも、上記5点の最小セットを1枚の<code>settings.json</code>にまとめ「<code>.claude/</code>フォルダに置いて」と配って共有すれば同じ方向性を再現できる。強制力は落ちるが、まず<code>Read(.env)</code>の1行だけでも入れる価値が最も大きいという実務助言もある（@hermes_code）。</p>
 <h2>エンタープライズ展開事例：NOT A HOTEL</h2>
 <p>@oikon48 による紹介（2026-05-19）。エンプラ組織での参考になる3点セット：</p>
 <p><strong>① アクセス制御</strong>
@@ -147,7 +182,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener" target="_blank">https://speakerdeck.com/hi120ki/claude-code-organization-settings</a></li>
 <li><a href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">https://x.com/i/web/status/2056571858242404578</a></li>
 <li><a href="https://github.com/anthropics/claude-code/blob/b7339920b69f4a395c28727a1e2305dc5b122cb2/plugins/security-guidance/hooks/hooks.json#L63" rel="noopener" target="_blank">https://github.com/anthropics/claude-code/blob/b7339920b69f4a395c28727a1e2305dc5b122cb2/plugins/security-guidance/hooks/hooks.json#L63</a></li>
-<li><a href="https://x.com/i/web/status/2063105741976952929" rel="noopener" target="_blank">https://x.com/i/web/status/2063105741976952929</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2063105741976952929" rel="noopener" target="_blank">https://x.com/i/web/status/2063105741976952929</a></li>
+<li><a href="https://x.com/i/web/status/2076895490957066612" rel="noopener" target="_blank">https://x.com/i/web/status/2076895490957066612</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -188,11 +224,49 @@ PC 上の大事なファイルや認証情報にアクセスできる → クラ
 4. **Sandbox によるアクセス制限** — ディレクトリ外操作禁止、ネットワーク制限による漏洩防止
 5. **セキュリティポリシーをシステムプロンプトに追加** — CLAUDE.md に記述
 
+## 実装例：settings.json の具体的な書き方
+
+上記5点をClaude Code公式の設定キーで実装するとこうなる（@hermes_code、2026-07-14）。キー名・書き方はAnthropic公式ドキュメントで確認したもの。
+
+```json
+{
+  &quot;permissions&quot;: {
+    &quot;disableBypassPermissionsMode&quot;: &quot;disable&quot;,
+    &quot;deny&quot;: [
+      &quot;Bash(curl:*)&quot;,
+      &quot;Bash(wget:*)&quot;,
+      &quot;Bash(sudo:*)&quot;,
+      &quot;Read(.env)&quot;,
+      &quot;Read(.env.*)&quot;,
+      &quot;Read(**/.ssh/**)&quot;
+    ],
+    &quot;ask&quot;: [
+      &quot;Bash(git push:*)&quot;,
+      &quot;Bash(rm:*)&quot;
+    ]
+  },
+  &quot;sandbox&quot;: {
+    &quot;enabled&quot;: true,
+    &quot;network&quot;: {
+      &quot;allowedDomains&quot;: [&quot;*.github.com&quot;, &quot;registry.npmjs.org&quot;]
+    }
+  }
+}
+```
+
+- `permissions.disableBypassPermissionsMode` / `disableAutoMode` を `&quot;disable&quot;` にすると確認スキップモード・自動モードに入れなくなる。管理者設定（後述）に置くと社員側で解除できない。
+- `Bash(curl:*)` のように**丸ごと拒否**するのが公式推奨。「curlをGitHub宛てだけ許可」のように引数で細かく絞る書き方は、リダイレクト等ですり抜けられるため公式が明示的に非推奨としている。ネット取得が必要なら拒否リストで塞いだ上でWebFetch（許可ドメイン制御可）に一本化する。
+- `Read(.env)` は `Read(**/.env)` と同義で、作業フォルダ配下のどの階層の`.env`も読めなくする。
+- **拒否リストの限界**: Claude自身のファイル読み取りやcat等の分かりやすいコマンドには効くが、AIが書いたスクリプトが裏でこっそりファイルを開くような回り道までは止めきれない。これがサンドボックス（OSレベルで作業フォルダ外・許可外ネットワーク先への到達を物理的に遮断）が必要な理由。拒否リストとサンドボックスを重ねるのが公式の想定する最終防御。
+- サンドボックスが効くのはmacOS・Linux・WSL2のみ。ネイティブWindowsは非対応のため、Windows主体の職場は権限設定（deny/ask）を厚めにする判断になる。
+
 ## MDM による全社配布
 
 MDM（端末管理システム）を使って以下を一斉展開：
 - Claude Code の設定ファイル
 - システムプロンプト（CLAUDE.md）
+
+管理者設定の置き場所はOSごとに決まっている（例: macOSは`/Library/Application Support/ClaudeCode/managed-settings.json`）。個人の`.claude/settings.json`より優先され、本人には変更できない。
 
 **罠**: MDM 配布設定は最高優先度で扱われるため、カスタマイズしたいエンジニアと、最初から安全な状態が欲しい非エンジニアの両方を単一設定では満たせない。
 
@@ -204,6 +278,8 @@ MDM（端末管理システム）を使って以下を一斉展開：
 | 非エンジニア | 実現できうる最も安全な設定（カスタマイズなし） |
 
 MDM に連携した情報から配布設定を分離することで、それぞれが生産性高く安全に利用できる環境を実現。
+
+MDMを持たない中小企業でも、上記5点の最小セットを1枚の`settings.json`にまとめ「`.claude/`フォルダに置いて」と配って共有すれば同じ方向性を再現できる。強制力は落ちるが、まず`Read(.env)`の1行だけでも入れる価値が最も大きいという実務助言もある（@hermes_code）。
 
 ## エンタープライズ展開事例：NOT A HOTEL
 

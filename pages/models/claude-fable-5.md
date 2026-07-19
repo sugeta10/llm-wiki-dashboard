@@ -100,3 +100,4 @@ Fable 5 の分類器が**サイバーセキュリティ・生物化学・蒸留*
 - [[concepts/advisor-executor-pattern]] — Fable 5＋Sonnet 5を役割で分ける3つの連携パターン（Advisor/Orchestrator/Fable Sandwich）
 - [[concepts/claude-code-model-effort]] — Fable=専門医の比喩と「どの effort でも他モデルが届かないジョブを完了する」公式解説（モデル vs effort の使い分け）
 - [[business/ai-strategy-officer]] — 「考えるAI」への転換を根拠に市場選定・戦略立案を丸ごと委任するAI副業論（@AInokuhaku）
+- [[concepts/delegation-management-style]] — Devin Fusion実験：Fable 5主導はOpus 4.8主導よりトークン単価が高くても総コストが安くなるという逆転（Cognition社・3,000セッション）

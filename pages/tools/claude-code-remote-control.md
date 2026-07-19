@@ -69,3 +69,4 @@ flowchart TD
 - [[concepts/claude-code-orchestration]] — 複数セッション・サブエージェント・worktreeの並列運用フレーム。著者の「仮想社員20人」運用が重なる
 - [[concepts/loop-engineering]] — @steipete のオーケストレーションループのように、出先から自律ループを起動・操舵する入口としてリモートコントロールが効く
 - [[tools/claude-computer-use]] — ClaudeがリアルUIを操作する機能。こちらはClaudeが画面を操作する側、リモートコントロールは人間が遠隔からClaudeを操作する側
+- [[tools/notch-multi-agent-monitor]] — こちらはPCのノッチに複数ハーネスの状態を集約表示し「ワンクリックで戻る」体験を提供する点が近い。リモートコントロールはPC外から、notch監視はPC本体上での集約という違い

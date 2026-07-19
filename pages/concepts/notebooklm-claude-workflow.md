@@ -43,3 +43,4 @@ flowchart LR
 - [[tools/notebooklm-studio-prompts]] — 同 @ai_jitan のNotebookLM出力設計プロンプト集（網羅出力の型に接続）
 - [[concepts/llm-model-selection-strategy]] — 上流に濃い文脈を渡し切る原則の事実供給版
 - [[concepts/token-management]] — Fable 5に大量投入する運用のコスト面
+- [[concepts/ai-curriculum-builder]] — 本ページのYouTube→NotebookLM→Claude Projectの橋渡しを、専門分野習得のカリキュラム構築に応用した実装例

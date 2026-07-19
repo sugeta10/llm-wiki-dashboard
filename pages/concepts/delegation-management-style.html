@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>delegation-management-style - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>delegation-management-style</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="delegation-management-style.md">Markdownで表示</a></div>
+  <div class="meta">concepts/delegation-management-style · concepts · <span title="2026-07-16">3日前</span></div>
+  <article><h1>委任の管理スタイル（Fable 5とOpus 4.8の逆転コスト）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 同じ委任アーキテクチャ（Devin Fusionのリード+サイドキック構成）でリードモデルをOpus 4.8からFable 5に替えると、トークン単価が2倍高いFable 5の方が総コストは安くなる——差を生むのは委任の量でなく「いつ・何を委任するか」という管理スタイルの違い。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  subgraph Fable[&quot;Fable 5 主導 — マネージャー型&quot;]
+    F1[&quot;早期の偵察のみ&quot;] --&gt; F2[&quot;制約・完了条件を明記した\n設計書ブリーフを1本委任&quot;] --&gt; F3[&quot;git diffで軽くレビュー&quot;]
+  end
+  subgraph Opus[&quot;Opus 4.8 主導 — マイクロマネージャー型&quot;]
+    O1[&quot;20〜45ターンの\n独力探索・実装&quot;] --&gt; O2[&quot;終盤に機械的な\n作業だけ1回委任&quot;] --&gt; O3[&quot;差し戻し・自分で\n書き直しが多発&quot;]
+  end</pre>
+<p>トークン単価はFable 5がOpus 4.8の2倍高いため、素朴な直感では「Fable主導のエージェントの方が高くつく」はずだ。ところがDevin（コーディングエージェント）を開発するCognition社が、自社のFusionアーキテクチャ上でFrontierCode 1.1評価3,000セッションを回して検証したところ、結果は逆だった。Fable 5単独で走らせるとOpus 4.8単独より高くつくが（スコア60.8 vs 55.4で高くはなる）、同じ安価なサイドキックを付けた構成で比べると、Fable 5+サイドキックはOpus 4.8+サイドキックよりコストが安く（$1.86 vs $2.04）、スコアも高い（60.7 vs 54.6）。純粋Fableと比べても、サイドキックを付けるだけでコストを54%削減しつつスコアはほぼ変わらない。</p>
+<h2>実験の設計（Fusionアーキテクチャ）</h2>
+<p>Fusionは、リードエージェントがセッションを握り、ユーザー対応・計画・レビュー・コミットを担当しつつ、実装作業を委任できる永続的なサイドキックサブエージェント（安価なモデル）を持つ構成。リードは平文のハンドオフブリーフを書き、サイドキックが自分のコンテキストで作業して結果を報告し、リードがそれをレビューして次を決める。Cognition社は3,000セッション全件のLLM呼び出しログ（発話モデル・使用ツール・入出力トークン・コスト）を解析し、加えて「Fableが著しく安かったタスク」「Opusが著しく安かったタスク」「中間のランダムサンプル」から40タスクを選んで軌跡を突き合わせて分析した。</p>
+<h2>逆転したコストの内訳</h2>
+<p>Fable 5のリードはサイドキックに$0.27多く払うが、自分自身の作業には$0.45少なく払う。ターン数はFable主導が11.5ターンなのに対しOpus主導は26.5ターン、出力トークンはFable主導がOpus主導の約3分の1（6.1k対19.0k）で済む。決定的な差は「何もしない」頻度で、Fable主導ランの81%ではリードが一度もコード編集をしないのに対し、Opus主導では24%にとどまる。Fable主導ランの13%ではリードがリポジトリのファイルすら一度も読まない。両者とも委任回数自体はほぼ同じ（1セッションあたり約3回）で、「委任する量」でなく「いつ・何を委任するか」が差を生んでいる。</p>
+<h2>いつ・何を委任するか</h2>
+<p>Fable主導は早い段階で最初のハンドオフを行い、実装・テスト・lintのループを丸ごと1本のブリーフで委任し、最後にgit diffで軽くレビューしてコミットする。対してOpus主導は20〜45ターンの独力探索・設計・実装を経てから、設計判断がすべて終わった後の機械的な作業だけを終盤に委任する。委任を早める方向にOpusを強制的に調整すると、単純にスコアが下がったとCognition社は報告する。「今の調査を任せて安全か、自分でやるべきか」の判断自体が知能を要する仕事であり、強制的に委任させてもその判断力は身につかず、間違った内容を委任するだけになる。</p>
+<h2>ハンドオフブリーフの質が精度を分ける</h2>
+<p>委任の質そのものにも差がある。Opusは実装を委任するとき手順を逐一指示するのに対し、Fable 5は設計書（制約・エッジケース・完了の定義を明文化したもの）を書く。ある課題（ポインタ長に対しO(1)であることが要件のハッシュ関数実装）で、Opusは自ら実装しこの制約をどこにも書き残さないまま作業を進めた結果、線形時間の実装を出荷しスコア25点に終わった。一方Fable 5は「operator()はポインタ長に対しO(1)であること：全トークンスキャン禁止」という高レベル制約を明記したブリーフでサイドキックに委任し、サイドキックはこれを正しく実装してスコア94点を得た。Cognition社はこのパターンがタスク全般で一般化すると報告する。</p>
+<p>委任後の振る舞いにも差があり、両者ともgit diff等の安価な確認は行うが、Opusはサイドキックの成果物を2倍の頻度で自分のコンテキストに引き戻し、4倍の頻度でリード側の単価で修正編集を行う。極端な例ではサイドキックの作業を差し戻して自分で書き直すケースもあった。Cognition社はOpusのこの不信感が正確性の向上にはつながっていないとも指摘する。</p>
+<h2>委任が効かないタスク</h2>
+<p>Fable主導の委任戦略は万能ではなく、分解可能な要素がないタスクでは機能しない。リードモデルのターン数が少なく決めて出すだけの短いタスクや、原因究明の連鎖が1本の長い推論になる逐次的なデバッグタスクでは、蓄積された文脈自体が仕事の本体になるため委任の出番がない。実際こうしたタスクではFable 5もほとんど委任しないという。</p>
+<h2>観察ログ(未検証)</h2>
+<ul>
+<li>2026-07-13(Cognition社): Fable主導ランの81%でリードが一度もコード編集をしない（Opus主導は24%）——3,000セッション全件解析の実測値</li>
+<li>2026-07-13(Cognition社): ハッシュ関数タスクでOpus実装（制約を書き残さず線形時間実装）はスコア25点、Fable委任（制約明記のブリーフ）はスコア94点——40タスク精査中の1事例</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a> のLance Martin実測（Parameter Golf/BrowseComp）と本実験（Devin Fusion）は「委任が引き合う条件」について矛盾しないか、補完関係か</li>
+<li>自分のClaude Code運用でサブエージェントへのハンドオフを「手順指示」でなく「制約と完了条件を明記した設計書」に変えるだけで精度は上がるか</li>
+<li>Opusの「後で書き直す」傾向は <a href="../concepts/claude-code-model-effort.html">claude-code-model-effort</a> のeffort配分がうまく機能していない事例と言えるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a> — 同じ委任コスト論だが「タスク形状×協調コスト」の経済分析（Lance Martin・Parameter Golf/BrowseComp）。本ページは「同じアーキテクチャでリードモデルだけ変えた」場合の実験で補完的</li>
+<li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> — Fable 5×Sonnet 5の3連携パターン紹介。本ページのFusionサイドキック構成はOrchestratorパターンに近い</li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 工程分解型モデル選択。本ページの「制約重視ブリーフ」は上流モデルが下流へ何を渡すべきかの具体例</li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> — リード側モデル。長い複雑タスクほど差が開く特性がこの実験の前提</li>
+<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a> — 比較対象モデル</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
+<li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2076714221837173097" rel="noopener" target="_blank">https://x.com/i/web/status/2076714221837173097</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 委任の管理スタイル（Fable 5とOpus 4.8の逆転コスト）
+
+&gt; **TL;DR**: 同じ委任アーキテクチャ（Devin Fusionのリード+サイドキック構成）でリードモデルをOpus 4.8からFable 5に替えると、トークン単価が2倍高いFable 5の方が総コストは安くなる——差を生むのは委任の量でなく「いつ・何を委任するか」という管理スタイルの違い。
+
+```mermaid
+flowchart TD
+  subgraph Fable[&quot;Fable 5 主導 — マネージャー型&quot;]
+    F1[&quot;早期の偵察のみ&quot;] --&gt; F2[&quot;制約・完了条件を明記した\n設計書ブリーフを1本委任&quot;] --&gt; F3[&quot;git diffで軽くレビュー&quot;]
+  end
+  subgraph Opus[&quot;Opus 4.8 主導 — マイクロマネージャー型&quot;]
+    O1[&quot;20〜45ターンの\n独力探索・実装&quot;] --&gt; O2[&quot;終盤に機械的な\n作業だけ1回委任&quot;] --&gt; O3[&quot;差し戻し・自分で\n書き直しが多発&quot;]
+  end
+```
+
+トークン単価はFable 5がOpus 4.8の2倍高いため、素朴な直感では「Fable主導のエージェントの方が高くつく」はずだ。ところがDevin（コーディングエージェント）を開発するCognition社が、自社のFusionアーキテクチャ上でFrontierCode 1.1評価3,000セッションを回して検証したところ、結果は逆だった。Fable 5単独で走らせるとOpus 4.8単独より高くつくが（スコア60.8 vs 55.4で高くはなる）、同じ安価なサイドキックを付けた構成で比べると、Fable 5+サイドキックはOpus 4.8+サイドキックよりコストが安く（$1.86 vs $2.04）、スコアも高い（60.7 vs 54.6）。純粋Fableと比べても、サイドキックを付けるだけでコストを54%削減しつつスコアはほぼ変わらない。
+
+## 実験の設計（Fusionアーキテクチャ）
+
+Fusionは、リードエージェントがセッションを握り、ユーザー対応・計画・レビュー・コミットを担当しつつ、実装作業を委任できる永続的なサイドキックサブエージェント（安価なモデル）を持つ構成。リードは平文のハンドオフブリーフを書き、サイドキックが自分のコンテキストで作業して結果を報告し、リードがそれをレビューして次を決める。Cognition社は3,000セッション全件のLLM呼び出しログ（発話モデル・使用ツール・入出力トークン・コスト）を解析し、加えて「Fableが著しく安かったタスク」「Opusが著しく安かったタスク」「中間のランダムサンプル」から40タスクを選んで軌跡を突き合わせて分析した。
+
+## 逆転したコストの内訳
+
+Fable 5のリードはサイドキックに$0.27多く払うが、自分自身の作業には$0.45少なく払う。ターン数はFable主導が11.5ターンなのに対しOpus主導は26.5ターン、出力トークンはFable主導がOpus主導の約3分の1（6.1k対19.0k）で済む。決定的な差は「何もしない」頻度で、Fable主導ランの81%ではリードが一度もコード編集をしないのに対し、Opus主導では24%にとどまる。Fable主導ランの13%ではリードがリポジトリのファイルすら一度も読まない。両者とも委任回数自体はほぼ同じ（1セッションあたり約3回）で、「委任する量」でなく「いつ・何を委任するか」が差を生んでいる。
+
+## いつ・何を委任するか
+
+Fable主導は早い段階で最初のハンドオフを行い、実装・テスト・lintのループを丸ごと1本のブリーフで委任し、最後にgit diffで軽くレビューしてコミットする。対してOpus主導は20〜45ターンの独力探索・設計・実装を経てから、設計判断がすべて終わった後の機械的な作業だけを終盤に委任する。委任を早める方向にOpusを強制的に調整すると、単純にスコアが下がったとCognition社は報告する。「今の調査を任せて安全か、自分でやるべきか」の判断自体が知能を要する仕事であり、強制的に委任させてもその判断力は身につかず、間違った内容を委任するだけになる。
+
+## ハンドオフブリーフの質が精度を分ける
+
+委任の質そのものにも差がある。Opusは実装を委任するとき手順を逐一指示するのに対し、Fable 5は設計書（制約・エッジケース・完了の定義を明文化したもの）を書く。ある課題（ポインタ長に対しO(1)であることが要件のハッシュ関数実装）で、Opusは自ら実装しこの制約をどこにも書き残さないまま作業を進めた結果、線形時間の実装を出荷しスコア25点に終わった。一方Fable 5は「operator()はポインタ長に対しO(1)であること：全トークンスキャン禁止」という高レベル制約を明記したブリーフでサイドキックに委任し、サイドキックはこれを正しく実装してスコア94点を得た。Cognition社はこのパターンがタスク全般で一般化すると報告する。
+
+委任後の振る舞いにも差があり、両者ともgit diff等の安価な確認は行うが、Opusはサイドキックの成果物を2倍の頻度で自分のコンテキストに引き戻し、4倍の頻度でリード側の単価で修正編集を行う。極端な例ではサイドキックの作業を差し戻して自分で書き直すケースもあった。Cognition社はOpusのこの不信感が正確性の向上にはつながっていないとも指摘する。
+
+## 委任が効かないタスク
+
+Fable主導の委任戦略は万能ではなく、分解可能な要素がないタスクでは機能しない。リードモデルのターン数が少なく決めて出すだけの短いタスクや、原因究明の連鎖が1本の長い推論になる逐次的なデバッグタスクでは、蓄積された文脈自体が仕事の本体になるため委任の出番がない。実際こうしたタスクではFable 5もほとんど委任しないという。
+
+## 観察ログ(未検証)
+
+- 2026-07-13(Cognition社): Fable主導ランの81%でリードが一度もコード編集をしない（Opus主導は24%）——3,000セッション全件解析の実測値
+- 2026-07-13(Cognition社): ハッシュ関数タスクでOpus実装（制約を書き残さず線形時間実装）はスコア25点、Fable委任（制約明記のブリーフ）はスコア94点——40タスク精査中の1事例
+
+## 問い
+
+- [[concepts/cost-effective-harness]] のLance Martin実測（Parameter Golf/BrowseComp）と本実験（Devin Fusion）は「委任が引き合う条件」について矛盾しないか、補完関係か
+- 自分のClaude Code運用でサブエージェントへのハンドオフを「手順指示」でなく「制約と完了条件を明記した設計書」に変えるだけで精度は上がるか
+- Opusの「後で書き直す」傾向は [[concepts/claude-code-model-effort]] のeffort配分がうまく機能していない事例と言えるか
+
+## 関連
+
+- [[concepts/cost-effective-harness]] — 同じ委任コスト論だが「タスク形状×協調コスト」の経済分析（Lance Martin・Parameter Golf/BrowseComp）。本ページは「同じアーキテクチャでリードモデルだけ変えた」場合の実験で補完的
+- [[concepts/advisor-executor-pattern]] — Fable 5×Sonnet 5の3連携パターン紹介。本ページのFusionサイドキック構成はOrchestratorパターンに近い
+- [[concepts/llm-model-selection-strategy]] — 工程分解型モデル選択。本ページの「制約重視ブリーフ」は上流モデルが下流へ何を渡すべきかの具体例
+- [[models/claude-fable-5]] — リード側モデル。長い複雑タスクほど差が開く特性がこの実験の前提
+- [[models/claude-opus-4-8]] — 比較対象モデル
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

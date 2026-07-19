@@ -37,3 +37,4 @@
 - [[design/claude-design-workflow]] — Projectへのコンテキスト集約をデザイン制作の文書連鎖に使う実践（チェイン・コンテキスティング）
 - [[concepts/philosophy-external-memory]] — Knowledge Files／Identity の中身を「思想哲学DB（3層・素材から更新）」として育てる方法論。本設計図の参照資料づくりの上流
 - [[concepts/claude-projects-setup]] — 同じ Claude Projects の運用原則側（精密知識ベース・retrieval テスト・維持習慣・Cowork Projects）。本ページの構成論と対をなす
+- [[concepts/ai-curriculum-builder]] — Knowledge Filesを「学習DNAプロファイル」に特化させ、学習ドメインに応用した実装例

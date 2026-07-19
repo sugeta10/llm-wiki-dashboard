@@ -47,3 +47,4 @@ Boris Cherny（Claude Code 作者）は、Opus 4.8 が長時間の自律作業�
 - [[tools/autoreview-skill]]
 - [[concepts/claude-code-dynamic-workflows]]
 - [[concepts/claude-usage-optimization]]
+- [[concepts/delegation-management-style]] — Devin Fusion実験：Opus 4.8主導は独力探索が長くサイドキックへの不信も強く、Fable 5主導よりコストが高くなる（Cognition社・3,000セッション）

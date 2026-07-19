@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-md-rules</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-md-rules.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-md-rules · concepts · <span title="2026-06-15">4週間前</span></div>
+  <div class="meta">concepts/claude-md-rules · concepts · <span title="2026-06-15">1ヶ月前</span></div>
   <article><h1>CLAUDE.md 行動ルール設計</h1>
 <p><strong>CLAUDE.md</strong> は <a href="../tools/claude-code.html">claude-code</a> の動作を規定する行動契約ファイル。ウィッシュリストではなく、「この命令でどの失敗モードを閉じるか」を根拠に記述する。</p>
 <h2>Karpathy 発端</h2>
@@ -209,6 +209,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/ai-session-handover.html">ai-session-handover</a> — AGENTS.md/カスタム指示に「引き継ぎ」エクスポート指示を仕込むパターン</li>
 <li><a href="../concepts/claude-code-task-delegation.html">claude-code-task-delegation</a> — CLAUDE.mdへのルール記述を「環境を設計する」発想の中核に位置づけた活用法50選</li>
 <li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a> — 確信度の自己申告（モニタリング）と失敗の可視化（Rule 12）を省察層としてCLAUDE.mdに組み込む設計</li>
+<li><a href="../concepts/semantic-generation-skill.html">semantic-generation-skill</a> — 独自語を先に置いて設計を進める失敗への対策（@u1）。Rule 7（競合の表面化）・Rule 11（慣習優先）に近い、言葉の定義レベルでの規律</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a></li>
 <li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
@@ -344,6 +345,7 @@ Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → �
 - [[concepts/ai-session-handover]] — AGENTS.md/カスタム指示に「引き継ぎ」エクスポート指示を仕込むパターン
 - [[concepts/claude-code-task-delegation]] — CLAUDE.mdへのルール記述を「環境を設計する」発想の中核に位置づけた活用法50選
 - [[concepts/agent-reflection-layer]] — 確信度の自己申告（モニタリング）と失敗の可視化（Rule 12）を省察層としてCLAUDE.mdに組み込む設計
+- [[concepts/semantic-generation-skill]] — 独自語を先に置いて設計を進める失敗への対策（@u1）。Rule 7（競合の表面化）・Rule 11（慣習優先）に近い、言葉の定義レベルでの規律
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

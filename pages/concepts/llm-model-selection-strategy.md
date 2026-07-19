@@ -51,3 +51,4 @@ flowchart LR
 - [[concepts/advisor-executor-pattern]] — 同型のサンドイッチ戦略を Fable 5×Sonnet 5 の2モデル・3パターンで具体化（別著者の収斂）
 - [[concepts/claude-code-model-effort]] — 「モデル×エフォートの二軸」の公式解説版。モデル=何を知っているか／effort=どれだけ徹底するか
 - [[concepts/cost-effective-harness]] — 工程分解と同型の「タスク形状」評価に、委譲の協調コスト（損益分岐）の実測を加えた発展形（Lance Martin）
+- [[concepts/delegation-management-style]] — 「上流モデルが下流へ何を渡すべきか」を制約明記ブリーフの実例で具体化した実験（Cognition社）

@@ -46,3 +46,4 @@ Claude Code の PostCompact hook は additionalContext を返せない仕様の�
 - [[concepts/ai-session-handover]] — セッション文脈の明示的エクスポートパターン。本ページは「圧縮イベントに同期した退避＋自動復旧」で、引き継ぎを compact のライフサイクルに機械的に結線した発展形
 - [[concepts/claude-code-instruction-methods]] — 7手段を「圧縮生存」軸で振り分ける公式フレーム。hooks がコンパクションを完全にバイパスする性質を、本ページは復旧経路として活用している
 - [[concepts/codex-agent-loop]] — Codex 側の Compaction 実装（潜在表現を保持する圧縮）。テキスト要約ベースで判断構造が落ちる Claude Code compact との対比
+- [[concepts/semantic-generation-skill]] — 同著者（@u1）の別記事。こちらは判断構造の喪失でなく、対象の定まらない独自語の生成という別のCodex運用課題への対策

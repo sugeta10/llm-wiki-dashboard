@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>cost-effective-harness</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cost-effective-harness.md">Markdownで表示</a></div>
-  <div class="meta">concepts/cost-effective-harness · concepts · <span title="2026-07-12">2日前</span></div>
+  <div class="meta">concepts/cost-effective-harness · concepts · <span title="2026-07-12">1週間前</span></div>
   <article><h1>コスト効率ハーネス（委譲の損益分岐）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Fable 5 と安価モデルの組み合わせは「タスク形状（知能の非対称性）の見極め」と「委譲のコーディネーションコスト」の損益計算で決まる——Lance Martin が Parameter Golf と BrowseComp の2実験で示した設計指針。委譲は常に得ではなく、ワーカーが吸収するトークン量が協調コストを上回るときだけ引き合う。</p>
@@ -78,11 +78,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — ガイダンス4「キャッシュミスが委譲コスト暴発の主因」の技術的基盤</li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — 実験基盤。サブエージェントのキャッシュ維持をネイティブサポート</li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — fan-out overlap 等の協調コストが生じるマルチエージェント設計の一般論</li>
+<li><a href="../concepts/delegation-management-style.html">delegation-management-style</a> — 同じ委任コスト論を、別著者（Cognition社/Devin Fusion）が「リードモデルの管理スタイルの違い」という別軸で実測した実験</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
+<li><a href="../concepts/delegation-management-style.html">delegation-management-style</a></li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
-<li><a href="../concepts/finding-unknowns.html">finding-unknowns</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2075641284635799865" rel="noopener" target="_blank">https://x.com/i/web/status/2075641284635799865</a></li></ul></section></article>
+<li><a href="../concepts/finding-unknowns.html">finding-unknowns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2075641284635799865" rel="noopener" target="_blank">https://x.com/i/web/status/2075641284635799865</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -162,6 +163,7 @@ Tarun Amasa（@trq212）の「Claude がタスクに応じて自分でハーネ�
 - [[concepts/prompt-caching]] — ガイダンス4「キャッシュミスが委譲コスト暴発の主因」の技術的基盤
 - [[tools/claude-managed-agents]] — 実験基盤。サブエージェントのキャッシュ維持をネイティブサポート
 - [[concepts/multi-agent-patterns]] — fan-out overlap 等の協調コストが生じるマルチエージェント設計の一般論
+- [[concepts/delegation-management-style]] — 同じ委任コスト論を、別著者（Cognition社/Devin Fusion）が「リードモデルの管理スタイルの違い」という別軸で実測した実験
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

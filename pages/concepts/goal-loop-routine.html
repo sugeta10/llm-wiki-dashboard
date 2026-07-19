@@ -109,11 +109,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a> — Codex 側のエージェントループ内部実装</li>
 <li><a href="../tools/makeloop.html">makeloop</a> — closed/open の二分で骨格を切り替えてループプロンプトを自動生成するコマンド。本ページの動詞分類と同じ「止まる条件で選ぶ」判断軸を生成側に置いたもの</li>
 <li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — 公式チーム版の分類。本ページの3動詞に turn-based（素の agentic loop）と proactive（合成）を加えた4類型</li>
+<li><a href="../concepts/dynamic-agent-org.html">dynamic-agent-org</a> — 本ページが動詞（単体エージェントの止まり方）を扱うのに対し、こちらは複数エージェントの接続構造（グラフ）が実行中に書き換わる次の抽象化レイヤー</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
+<li><a href="../concepts/dynamic-agent-org.html">dynamic-agent-org</a></li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
-<li><a href="../tools/loop-library.html">loop-library</a></li>
-<li><a href="../tools/makeloop.html">makeloop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2068426104088748331" rel="noopener" target="_blank">https://x.com/i/web/status/2068426104088748331</a></li>
+<li><a href="../tools/loop-library.html">loop-library</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2068426104088748331" rel="noopener" target="_blank">https://x.com/i/web/status/2068426104088748331</a></li>
 <li><a href="https://x.com/i/web/status/2068692611334893582" rel="noopener" target="_blank">https://x.com/i/web/status/2068692611334893582</a></li></ul></section></article>
 </main>
 <script>
@@ -194,6 +195,7 @@ flowchart TD
 - [[concepts/codex-agent-loop]] — Codex 側のエージェントループ内部実装
 - [[tools/makeloop]] — closed/open の二分で骨格を切り替えてループプロンプトを自動生成するコマンド。本ページの動詞分類と同じ「止まる条件で選ぶ」判断軸を生成側に置いたもの
 - [[concepts/claude-code-loop-types]] — 公式チーム版の分類。本ページの3動詞に turn-based（素の agentic loop）と proactive（合成）を加えた4類型
+- [[concepts/dynamic-agent-org]] — 本ページが動詞（単体エージェントの止まり方）を扱うのに対し、こちらは複数エージェントの接続構造（グラフ）が実行中に書き換わる次の抽象化レイヤー
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

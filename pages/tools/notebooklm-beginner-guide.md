@@ -67,3 +67,4 @@ flowchart LR
 - [[tools/notebooklm-employees]] — 「知識＋人格」でノートを自律的な専門従業員に変える発展形
 - [[tools/notebooklm-book-mentors]] — 本の原本を入れ「答えでなく問いを返す」メンター化（同じ @ai_jitan の別運用）
 - [[concepts/output-first-learning]] — 出力前提で学びを血肉化する方法論（「問いを立てる力・言語化」と地続き）
+- [[concepts/ai-curriculum-builder]] — 本ページの「攻略本ノート」と同じNotebookLM活用を、体系的な専門分野習得のカリキュラム構築まで発展させた方法論

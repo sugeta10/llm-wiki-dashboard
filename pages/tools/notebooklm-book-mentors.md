@@ -52,3 +52,4 @@ flowchart TD
 - [[concepts/llm-council]] — 複数AIが意思決定を支援するパターン（賢人会議の親概念）
 - [[concepts/output-first-learning]] — 出力前提で読書を血肉化する学習法（読書術としての接続先）
 - [[concepts/ai-persona-interview]] — 複数ペルソナの独立収束を実装シグナルにする手法（賢人会議の質を測る観点）
+- [[concepts/ai-curriculum-builder]] — 本ページの書籍取り込みを、体系的カリキュラム＋学習者プロファイルへ発展させた方法論
