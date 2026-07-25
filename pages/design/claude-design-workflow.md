@@ -29,3 +29,4 @@
 - [[design/claude-premium-website-build]] — Claude Codeで高級サイトを作る制作ワークフロー（同じくClaudeを制作主体に据える）
 - [[design/slide-md]] — 同じClaude Designでスライドのデザインを `.md` 3層で固定するシステム
 - [[concepts/study-group-facilitation]] — 同じ @sodawateeer による社内勉強会運営術（別トピックだが同著者の実践）
+- [[concepts/html-output-format]] — Anthropic公式のHTML出力実例集（コードレビュー・スライド・レポート等）。ここで語られるHTML視覚化の裏付けにあたる

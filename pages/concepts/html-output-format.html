@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>html-output-format - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>html-output-format</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="html-output-format.md">Markdownで表示</a></div>
+  <div class="meta">concepts/html-output-format · concepts · <span title="2026-07-25">今日</span></div>
+  <article><h1>HTMLを柔軟な出力フォーマットとして使う</h1>
+<p>Anthropicが公開した実例ギャラリーリポジトリ「html-effectiveness」。ブログ記事「The unreasonable effectiveness of HTML」に付随し、LLMの<strong>出力</strong>フォーマットとしてHTMLを使う設計思想を、ビルド不要・依存なしの自己完結型HTMLファイル群で示す。各ファイルは単体の<code>.html</code>で、ブラウザで直接開くだけで動く。</p>
+<h2>収録カテゴリと用途</h2>
+<table>
+<thead>
+<tr>
+<th>カテゴリ</th>
+<th>用途例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Exploration</td>
+<td>コードアプローチ比較、ビジュアルデザイン比較</td>
+</tr>
+<tr>
+<td>Code</td>
+<td>レビュー、理解支援、デザインシステム、コンポーネントバリアント</td>
+</tr>
+<tr>
+<td>Prototyping</td>
+<td>アニメーション、インタラクション</td>
+</tr>
+<tr>
+<td>Communication</td>
+<td>スライドデック、ステータスレポート、インシデントレポート、PR説明</td>
+</tr>
+<tr>
+<td>Diagrams &amp; research</td>
+<td>フローチャート、機能・概念の説明図</td>
+</tr>
+<tr>
+<td>Custom editing UIs</td>
+<td>トリアージボード、機能フラグ管理、プロンプトチューナー</td>
+</tr>
+</tbody>
+</table>
+<p>サンプル内の製品名・データ・シナリオはすべて架空のもの（プレースホルダーブランド「Acme」など）で、説明目的のみに使われている。</p>
+<h2>問い</h2>
+<ul>
+<li>ブログ本文「The unreasonable effectiveness of HTML」がHTML出力を推す具体的な理由（Markdownやプレーンテキストとの比較根拠）を読む</li>
+<li>このパターンと<a href="../concepts/llm-doc-management.html">llm-doc-management</a>（LLMへの入力としてHTMLを使うパターン）を組み合わせ、入出力の両方をHTML+JSONで統一できるか試す</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/llm-doc-management.html">llm-doc-management</a> — 同じHTML活用でも逆方向：LLMへの入力（コードベース文書化）としてHTML+JSONを使うパターン</li>
+<li><a href="../design/claude-design-workflow.html">claude-design-workflow</a> — HTML視覚化を制作物のデザイン叩き台に使う実践</li>
+<li><a href="../tools/hyperframes.html">hyperframes</a> — HTML+data-*属性を決定論的な動画生成の入力として使う応用例</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li>
+<li><a href="../design/claude-design-workflow.html">claude-design-workflow</a></li>
+<li><a href="../tools/hyperframes.html">hyperframes</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/anthropics/html-effectiveness" rel="noopener" target="_blank">https://github.com/anthropics/html-effectiveness</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># HTMLを柔軟な出力フォーマットとして使う
+
+Anthropicが公開した実例ギャラリーリポジトリ「html-effectiveness」。ブログ記事「The unreasonable effectiveness of HTML」に付随し、LLMの**出力**フォーマットとしてHTMLを使う設計思想を、ビルド不要・依存なしの自己完結型HTMLファイル群で示す。各ファイルは単体の`.html`で、ブラウザで直接開くだけで動く。
+
+## 収録カテゴリと用途
+
+| カテゴリ | 用途例 |
+| --- | --- |
+| Exploration | コードアプローチ比較、ビジュアルデザイン比較 |
+| Code | レビュー、理解支援、デザインシステム、コンポーネントバリアント |
+| Prototyping | アニメーション、インタラクション |
+| Communication | スライドデック、ステータスレポート、インシデントレポート、PR説明 |
+| Diagrams &amp; research | フローチャート、機能・概念の説明図 |
+| Custom editing UIs | トリアージボード、機能フラグ管理、プロンプトチューナー |
+
+サンプル内の製品名・データ・シナリオはすべて架空のもの（プレースホルダーブランド「Acme」など）で、説明目的のみに使われている。
+
+## 問い
+
+- ブログ本文「The unreasonable effectiveness of HTML」がHTML出力を推す具体的な理由（Markdownやプレーンテキストとの比較根拠）を読む
+- このパターンと[[concepts/llm-doc-management]]（LLMへの入力としてHTMLを使うパターン）を組み合わせ、入出力の両方をHTML+JSONで統一できるか試す
+
+## 関連
+
+- [[concepts/llm-doc-management]] — 同じHTML活用でも逆方向：LLMへの入力（コードベース文書化）としてHTML+JSONを使うパターン
+- [[design/claude-design-workflow]] — HTML視覚化を制作物のデザイン叩き台に使う実践
+- [[tools/hyperframes]] — HTML+data-*属性を決定論的な動画生成の入力として使う応用例
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

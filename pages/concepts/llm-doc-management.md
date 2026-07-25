@@ -40,3 +40,4 @@ HTMLで全体像を確認し、JSONを次の依頼の最初に貼る、という
 - [[concepts/spec-driven-development]] — 仕様を文書化してLLMに渡すアプローチ
 - [[concepts/implementation-notes-prompt]] — 実装と並走でノートを生成させる関連手法
 - [[design/claude-design-workflow]] — HTMLでの視覚化をデザイン叩き台に使う実践（制作側からの裏付け）
+- [[concepts/html-output-format]] — 同じHTML活用でも逆方向：LLMの出力フォーマットとしてHTMLを使うAnthropic公式パターン
