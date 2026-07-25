@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>no-ai-slop - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>no-ai-slop</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="no-ai-slop.md">Markdownで表示</a></div>
+  <div class="meta">tools/no-ai-slop · tools · <span title="2026-07-25">今日</span></div>
+  <article><h1>no-ai-slop</h1>
+<p><strong>no-ai-slop</strong> はAI文章に典型的な「AIスロップ」パターンを20種類以上検出し除去するClaude Code/Codexスキル。作者Peter Yangによれば<code>/no-ai-slop</code>で下書きを渡すと最小限の編集を加えて返し、<code>/no-ai-slop is this AI slop?</code>で検出のみも行える。</p>
+<h2>検出パターン</h2>
+<table>
+<thead>
+<tr>
+<th>パターン</th>
+<th>具体例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>二項対立</td>
+<td>「XではなくY」</td>
+</tr>
+<tr>
+<td>空咳ぎ的な前置き</td>
+<td>「ここで重要なのは...」</td>
+</tr>
+<tr>
+<td>偽の洞察の予告</td>
+<td>「誰も教えてくれないこと」</td>
+</tr>
+<tr>
+<td>コロンによる種明かし</td>
+<td>「一番の見どころ：学習する」</td>
+</tr>
+<tr>
+<td>表層的な分析</td>
+<td>「〜へのコミットメントを際立たせる」</td>
+</tr>
+<tr>
+<td>重要性の誇張</td>
+<td>「画期的な瞬間を告げる」</td>
+</tr>
+<tr>
+<td>弱い帰属</td>
+<td>「専門家は同意する」「研究によれば」</td>
+</tr>
+<tr>
+<td>見せかけの強い動詞</td>
+<td>「中央ハブとして機能する」</td>
+</tr>
+<tr>
+<td>同義語の使い回し</td>
+<td>エージェント→アシスタント→ツール、と言い換え続ける</td>
+</tr>
+<tr>
+<td>否定列挙</td>
+<td>「Xでもない。Yでもない。Zだ」</td>
+</tr>
+<tr>
+<td>芝居がかった断片化</td>
+<td>「それだけだ。それが全てだ」</td>
+</tr>
+</tbody>
+</table>
+<p>これに加え、要点を先に書く・能動態を使う・読みにくい文をほどく・抽象より具体的な数値を優先する、といった「良い文章の基本」も強制する。編集後は自身の作業を<code>eval.md</code>のPass/Fail基準に照らして検査してから返す仕組みで、<a href="../concepts/eval-loop.html">eval-loop</a>と同型の自己採点ゲートを内蔵している。</p>
+<p>作者Peter Yangは個人のAIオペレーティングシステム「Behind the Craft」の一部としてこのスキルを公開しており、コース・ワークフロー群の一本という位置付け。MITライセンス。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-23: パターン一覧・検出例はREADME記載のもの。実際の誤検出率・日本語文章への適用可否は未検証</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a>（鹿野桂一郎の日本語版文章規範）とパターンの重なり・差分はどこか。英語のAIスロップパターンは日本語訳してこのvaultのCLAUDE.md「文章スタイル」節に転用できるか</li>
+<li><code>eval.md</code>による自己採点ゲートは、実際にどの程度誤検出（false positive/negative）を防げているか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/slop-grenade.html">slop-grenade</a> — AI生成長文をコミュニケーションの場に無造作に貼る行為への命名。no-ai-slopはその発生源となる文章パターンへの対策</li>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a> — 日本語版の同種の文章規範スキル（鹿野桂一郎）</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 「生成→基準で採点→閾値未満を止める」品質ゲート。no-ai-slopの<code>eval.md</code>自己検査は同型の実装</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/slop-grenade.html">slop-grenade</a></li>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/petergyang/no-ai-slop" rel="noopener" target="_blank">https://github.com/petergyang/no-ai-slop</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># no-ai-slop
+
+**no-ai-slop** はAI文章に典型的な「AIスロップ」パターンを20種類以上検出し除去するClaude Code/Codexスキル。作者Peter Yangによれば`/no-ai-slop`で下書きを渡すと最小限の編集を加えて返し、`/no-ai-slop is this AI slop?`で検出のみも行える。
+
+## 検出パターン
+
+| パターン | 具体例 |
+| --- | --- |
+| 二項対立 | 「XではなくY」 |
+| 空咳ぎ的な前置き | 「ここで重要なのは...」 |
+| 偽の洞察の予告 | 「誰も教えてくれないこと」 |
+| コロンによる種明かし | 「一番の見どころ：学習する」 |
+| 表層的な分析 | 「〜へのコミットメントを際立たせる」 |
+| 重要性の誇張 | 「画期的な瞬間を告げる」 |
+| 弱い帰属 | 「専門家は同意する」「研究によれば」 |
+| 見せかけの強い動詞 | 「中央ハブとして機能する」 |
+| 同義語の使い回し | エージェント→アシスタント→ツール、と言い換え続ける |
+| 否定列挙 | 「Xでもない。Yでもない。Zだ」 |
+| 芝居がかった断片化 | 「それだけだ。それが全てだ」 |
+
+これに加え、要点を先に書く・能動態を使う・読みにくい文をほどく・抽象より具体的な数値を優先する、といった「良い文章の基本」も強制する。編集後は自身の作業を`eval.md`のPass/Fail基準に照らして検査してから返す仕組みで、[[concepts/eval-loop]]と同型の自己採点ゲートを内蔵している。
+
+作者Peter Yangは個人のAIオペレーティングシステム「Behind the Craft」の一部としてこのスキルを公開しており、コース・ワークフロー群の一本という位置付け。MITライセンス。
+
+## 観察ログ（未検証）
+
+- 2026-07-23: パターン一覧・検出例はREADME記載のもの。実際の誤検出率・日本語文章への適用可否は未検証
+
+## 問い
+
+- [[tools/japanese-tech-writing]]（鹿野桂一郎の日本語版文章規範）とパターンの重なり・差分はどこか。英語のAIスロップパターンは日本語訳してこのvaultのCLAUDE.md「文章スタイル」節に転用できるか
+- `eval.md`による自己採点ゲートは、実際にどの程度誤検出（false positive/negative）を防げているか
+
+## 関連
+
+- [[concepts/slop-grenade]] — AI生成長文をコミュニケーションの場に無造作に貼る行為への命名。no-ai-slopはその発生源となる文章パターンへの対策
+- [[tools/japanese-tech-writing]] — 日本語版の同種の文章規範スキル（鹿野桂一郎）
+- [[concepts/eval-loop]] — 「生成→基準で採点→閾値未満を止める」品質ゲート。no-ai-slopの`eval.md`自己検査は同型の実装
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

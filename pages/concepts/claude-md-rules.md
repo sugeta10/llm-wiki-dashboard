@@ -106,3 +106,4 @@ Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → �
 - [[concepts/claude-code-task-delegation]] — CLAUDE.mdへのルール記述を「環境を設計する」発想の中核に位置づけた活用法50選
 - [[concepts/agent-reflection-layer]] — 確信度の自己申告（モニタリング）と失敗の可視化（Rule 12）を省察層としてCLAUDE.mdに組み込む設計
 - [[concepts/semantic-generation-skill]] — 独自語を先に置いて設計を進める失敗への対策（@u1）。Rule 7（競合の表面化）・Rule 11（慣習優先）に近い、言葉の定義レベルでの規律
+- [[concepts/parallel-e2e-testing]] — 「Iron Law」としてflaky対策を明文化しスキルで機械的に強制する実践。CLAUDE.mdルール強制の別ドメイン版

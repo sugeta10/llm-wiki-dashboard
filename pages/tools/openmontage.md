@@ -46,3 +46,4 @@ OpenMontageの設計思想は「コードのオーケストレーターを置か
 - [[business/youtube-shorts-jidouka-marketing]] — 動画量産マーケの文脈（OpenMontageはClip Factory等で同領域をカバー）
 - [[concepts/agentic-coding]] — AIエージェントが自律実行する開発スタイル（agent-firstアーキの前提）
 - [[tools/video-use]] — Claude Codeと会話して手持ち素材を編集するOSS（制作全工程を持つOpenMontageに対し編集特化）
+- [[tools/video-shotcraft]] — ショット単位のレシピカード集に特化したRemotionベースのスキル（OpenMontageは工程全体、こちらはショット設計に特化）

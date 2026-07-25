@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>loop-graph-grounding - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>loop-graph-grounding</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="loop-graph-grounding.md">Markdownで表示</a></div>
+  <div class="meta">concepts/loop-graph-grounding · concepts · <span title="2026-07-22">3日前</span></div>
+  <article><h1>ループからグラフへ、そして接地（Grounding）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 単一ループの構造的失敗はループ同士が監視し合う「グラフ」に組み替えれば解決するように見えるが、@IntuitMachineは、グラフ自体も生の現実に触れる「アンカー」を持たない限り同じ失敗をより静かに・より高価に繰り返すだけだと論じる。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  Single[&quot;単一ループ\n測定→比較→行動&quot;] --&gt; F1[&quot;Goodhart\n指標のゲーム化&quot;]
+  Single --&gt; F2[&quot;盲目な上昇\n目標を疑えない&quot;]
+  Single --&gt; F3[&quot;衝突\nループ同士が競合&quot;]
+  Single --&gt; F4[&quot;測定劣化\n監視者不在&quot;]
+  F1 &amp; F2 &amp; F3 &amp; F4 --&gt; Graph[&quot;グラフ化\nペアメトリクス/階層/調停/監査ループ&quot;]
+  Graph --&gt; Ungrounded[&quot;接地なきグラフ\n相互確認だけの循環&quot;]
+  Graph --&gt; Anchors[&quot;アンカー\n凍結ルール＋生の指標＋人間の目的判断&quot;]</pre>
+<p>Peter Steinbergerの「まだloopの話をしているのか、それともgraphの話に移ったのか」という9語のミームを出発点に、@IntuitMachineは自己改善ループが単体では必ず壊れる4つの理由を構造から導く。指標を最適化し続けると指標自体が実態から乖離するGoodhartの法則、ループが自分の目標（reference）の妥当性を問えない盲目な上昇、独立に作られた複数のループが互いを妨害する衝突、そして測定システム自体が実態から静かに乖離していく劣化——これら4つは個別のバグではなく単一ループという構造そのものの帰結だと@IntuitMachineは述べる。</p>
+<p>MLOpsの本番パイプライン（チャンピオン・チャレンジャー比較＋ドリフト監視＋ロールバック＋訓練ループが決して見てはならないheld-outデータセット）や、企業のガバナンス構造（日次運用ループ→四半期経営ループ→年次監査ループ→取締役会）は、いずれもループを監視・拘束・調停するループの網＝グラフとして機能していると@IntuitMachineは指摘する。Goodhartにはペアの対抗指標を、盲目な上昇には上位ループによる目標オーナーシップを、衝突には調停ループを、測定劣化には独立監査ループを——4つの失敗はいずれもトポロジー（接続構造）の設計で解決できるように見える。</p>
+<p>しかし@IntuitMachineが記事の核心に据えるのは、その先にある落とし穴だ。すべてのループが互いの数字だけを参照し合い、誰も生の現実——実際に着金した売上、実際に実行されたテスト、実際に残った顧客——に触れていないグラフは、単一ループより静かに、より高価に、より多くの緑のシグナルを灯しながら同じように失敗する。@IntuitMachineはこれを「循環的だが検証されていない」状態と呼び、グラフには最適化ループが変更してはならない凍結された規則と、議論の余地のない生の指標という「アンカー」が要ると論じる。さらに、「何をもって良しとするか」という最終判断そのものは機構が生成できず、現実の失敗に触れた人間が供給するしかないと結論づける。</p>
+<h2>問い</h2>
+<ul>
+<li>自分のwiki運用（ingest→lint→review）をループのグラフとして見た時、どのループが「アンカー」役（生の実測）を担っているかを棚卸しできるか。</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a>の4条件テストや<a href="../concepts/eval-loop.html">eval-loop</a>のゲートは、このグラフのどの位置（監査ループか実行ループか）に当たるかを整理すると設計が見えるのではないか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — 単一ループのStage 5「orchestration: loops supervise loops」との対比・4失敗パターンの重なり</li>
+<li><a href="../concepts/dynamic-agent-org.html">dynamic-agent-org</a> — 同じloop→graphのメタファーを「組織構造の可変性」という別軸で扱う@Saboo_Shubham_の議論</li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — goal/loop/routineの動詞区別との接続</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 品質ゲートという「アンカー」の具体実装</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — ハーネスという静的制約とアンカーの関係</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/dynamic-agent-org.html">dynamic-agent-org</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2078419526354378975" rel="noopener" target="_blank">https://x.com/i/web/status/2078419526354378975</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># ループからグラフへ、そして接地（Grounding）
+
+&gt; **TL;DR**: 単一ループの構造的失敗はループ同士が監視し合う「グラフ」に組み替えれば解決するように見えるが、@IntuitMachineは、グラフ自体も生の現実に触れる「アンカー」を持たない限り同じ失敗をより静かに・より高価に繰り返すだけだと論じる。
+
+```mermaid
+flowchart TD
+  Single[&quot;単一ループ\n測定→比較→行動&quot;] --&gt; F1[&quot;Goodhart\n指標のゲーム化&quot;]
+  Single --&gt; F2[&quot;盲目な上昇\n目標を疑えない&quot;]
+  Single --&gt; F3[&quot;衝突\nループ同士が競合&quot;]
+  Single --&gt; F4[&quot;測定劣化\n監視者不在&quot;]
+  F1 &amp; F2 &amp; F3 &amp; F4 --&gt; Graph[&quot;グラフ化\nペアメトリクス/階層/調停/監査ループ&quot;]
+  Graph --&gt; Ungrounded[&quot;接地なきグラフ\n相互確認だけの循環&quot;]
+  Graph --&gt; Anchors[&quot;アンカー\n凍結ルール＋生の指標＋人間の目的判断&quot;]
+```
+
+Peter Steinbergerの「まだloopの話をしているのか、それともgraphの話に移ったのか」という9語のミームを出発点に、@IntuitMachineは自己改善ループが単体では必ず壊れる4つの理由を構造から導く。指標を最適化し続けると指標自体が実態から乖離するGoodhartの法則、ループが自分の目標（reference）の妥当性を問えない盲目な上昇、独立に作られた複数のループが互いを妨害する衝突、そして測定システム自体が実態から静かに乖離していく劣化——これら4つは個別のバグではなく単一ループという構造そのものの帰結だと@IntuitMachineは述べる。
+
+MLOpsの本番パイプライン（チャンピオン・チャレンジャー比較＋ドリフト監視＋ロールバック＋訓練ループが決して見てはならないheld-outデータセット）や、企業のガバナンス構造（日次運用ループ→四半期経営ループ→年次監査ループ→取締役会）は、いずれもループを監視・拘束・調停するループの網＝グラフとして機能していると@IntuitMachineは指摘する。Goodhartにはペアの対抗指標を、盲目な上昇には上位ループによる目標オーナーシップを、衝突には調停ループを、測定劣化には独立監査ループを——4つの失敗はいずれもトポロジー（接続構造）の設計で解決できるように見える。
+
+しかし@IntuitMachineが記事の核心に据えるのは、その先にある落とし穴だ。すべてのループが互いの数字だけを参照し合い、誰も生の現実——実際に着金した売上、実際に実行されたテスト、実際に残った顧客——に触れていないグラフは、単一ループより静かに、より高価に、より多くの緑のシグナルを灯しながら同じように失敗する。@IntuitMachineはこれを「循環的だが検証されていない」状態と呼び、グラフには最適化ループが変更してはならない凍結された規則と、議論の余地のない生の指標という「アンカー」が要ると論じる。さらに、「何をもって良しとするか」という最終判断そのものは機構が生成できず、現実の失敗に触れた人間が供給するしかないと結論づける。
+
+## 問い
+
+- 自分のwiki運用（ingest→lint→review）をループのグラフとして見た時、どのループが「アンカー」役（生の実測）を担っているかを棚卸しできるか。
+- [[concepts/loop-engineering]]の4条件テストや[[concepts/eval-loop]]のゲートは、このグラフのどの位置（監査ループか実行ループか）に当たるかを整理すると設計が見えるのではないか。
+
+## 関連
+
+- [[concepts/loop-engineering]] — 単一ループのStage 5「orchestration: loops supervise loops」との対比・4失敗パターンの重なり
+- [[concepts/dynamic-agent-org]] — 同じloop→graphのメタファーを「組織構造の可変性」という別軸で扱う@Saboo_Shubham_の議論
+- [[concepts/goal-loop-routine]] — goal/loop/routineの動詞区別との接続
+- [[concepts/eval-loop]] — 品質ゲートという「アンカー」の具体実装
+- [[concepts/harness-engineering]] — ハーネスという静的制約とアンカーの関係
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

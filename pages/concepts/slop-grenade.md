@@ -4,4 +4,4 @@ AIが生成した無駄に長い文章を、チャット・メール・Slackな�
 
 「**スロップ（Slop）**」はAI生成の低品質・無差別なコンテンツを指す既存語。「**グレネード（手榴弾）**」を組み合わせることで、コミュニケーションの場に爆発物を投げ込むような破壊性を示唆する命名。
 
-関連: [[concepts/prompt-engineering]] · [[concepts/claude-best-practices]]
+関連: [[concepts/prompt-engineering]] · [[concepts/claude-best-practices]] · [[tools/no-ai-slop]]

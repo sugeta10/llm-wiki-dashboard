@@ -18,3 +18,4 @@ Claude Code に動画編集をさせるオープンソースのツール。紹�
 - [[tools/claude-real-video]] — 逆方向の OSS：動画を LLM 可読な中間形式にして Claude Code に「見せる」前処理器
 - [[tools/openmontage]] — エージェント型動画制作システム（制作全工程 vs 編集特化の対照）
 - [[tools/browser-use]] — 「◯◯-use」命名の源流。AI に外部対象を操作させる系譜
+- [[tools/video-shotcraft]] — Remotionでのショット単位「新規制作」に特化したスキル（video-useは既存素材の「編集」に特化）

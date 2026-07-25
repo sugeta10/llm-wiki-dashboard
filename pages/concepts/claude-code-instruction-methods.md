@@ -46,7 +46,7 @@ mindmap
 
 - このwikiの CLAUDE.md は今どの行が「常時必要な事実」で、どの行が「手続き（Skill化すべき）」「決定論的強制（hook/permission化すべき）」か。7手段の地図で棚卸しすると何がCLAUDE.mdから逃がせるか。
 - 「200行未満・オーナー・コードレビュー」基準で見て、現状のCLAUDE.md（役割ルーター＋操作手順）は肥大の兆候があるか。操作手順は既に各スキルが正本なので、CLAUDE.md側は索引に徹せるか。
-- launchd auto-sync の暴走（[[memory/feedback_autosync_race]]）のような「絶対こうなってほしくない」案件は、CLAUDE.mdの注意書きでなくhook/permissionで決定論的に止めるべきではないか。
+- launchd auto-sync の暴走（memory: autosync-race）のような「絶対こうなってほしくない」案件は、CLAUDE.mdの注意書きでなくhook/permissionで決定論的に止めるべきではないか。
 - output styles を入れると software-engineer 既定が落ちる、という指摘は重要。このリポでスタイル変更を避け append-system-prompt で足すだけにする線引きをルール化できるか。
 
 ## 関連

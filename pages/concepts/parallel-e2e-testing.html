@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>parallel-e2e-testing - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>parallel-e2e-testing</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="parallel-e2e-testing.md">Markdownで表示</a></div>
+  <div class="meta">concepts/parallel-e2e-testing · concepts · <span title="2026-07-25">今日</span></div>
+  <article><h1>並列E2Eテスト設計</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: E2Eテストの「遅い・壊れやすい」を解消する鍵はPlaywrightの並列設定そのものでなく、per-testデータ独立・層状アーキテクチャ・計測に基づくインフラチューニング・AIスキルによるflaky対策の機械的強制という4点セットだと株式会社BerryのQMSmart開発チームが実践レポートで示す。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  spec --&gt; fixture
+  fixture --&gt; pages[&quot;pages(POM) / helpers&quot;]
+  pages --&gt; repos[&quot;repositories / precheckers / schemas&quot;]
+  repos --&gt; selectors[&quot;selectors / types&quot;]</pre>
+<p>実行時間30〜56分（timeout 150分設定）でPRでは回らず夜間バッチ止まりだった旧E2Eスイートに対し、同チームは既存スイートの改修ではなく並列実行前提の新アーキテクチャをゼロから設計した。ボトルネックはPlaywrightの設定ではなく「テスト同士がデータと状態を共有していること」で、構造さえ正しければ並列化は設定変更だけで済むという。</p>
+<h2>per-testデータ独立とstorageState</h2>
+<p>すべてのテストは専用データをFactory経由でSupabaseに直接INSERTして作り、teardownで派生レコードからStorageファイルまで回収する。UI操作は検証対象の操作にのみ使い、前提データ投入はUIを通さない。ログイン省略のため、globalSetupで4ロール×各5アカウントのセッションをstorageStateとして事前生成し、各テストはCookie読み込みだけでロールを切り替える。5アカウントずつ用意するのは、並列workerが同一アカウントを取り合う干渉を避けるため。</p>
+<h2>レイヤー構造とProject分割</h2>
+<p>spec から <code>page.locator(...)</code> を直接書くことを禁止し、待機戦略をPage Objectに閉じ込めることで「flaky対策が個々のspec作者の力量に依存しない」状態を作る（構造は冒頭の図）。Playwright projectは load（light/heavy）× release × feature の3軸で分割し、Edge Function呼び出し（PDF生成+S3、約60秒）を伴うheavyテストは<code>fullyParallel: false</code>で3並列、それ以外のlightは<code>fullyParallel: true</code>でworkers 5（CI）。並列度は「上げられるだけ上げる」のでなく計測に基づきproject単位で調整され、CPU競合起因のflakyが計測で判明した文書管理ドメインはlight=3/heavy=2に下げられている。</p>
+<h2>インフラの隠れた限界</h2>
+<p>CIは<code>{load}-{release}-{feature}</code>単位で10ジョブに分割され、各ジョブが独立した8core Runner上で<code>supabase start</code>・Edge Functions・<code>vite build</code>（本番ビルド）・Playwright実行という「本物のフルスタック」を毎回構築する。並列度を上げるとPostgRESTのデフォルトDBプール（10）が枯渇して504が出たため、<code>PGRST_DB_POOL=30</code>を環境変数差し替えで注入している。</p>
+<p>最も深い沼は数ミリ秒で返る謎の502だった。真因はHTTP keep-alive接続の「再利用レース」——KongのUpstream keepalive idle timeout（既定60秒）がPostgREST（Haskell Warp）のアイドルクローズ（約30秒）より長いため、サーバー側はもう閉じているのにKongはまだ生きていると誤認する30〜60秒の窓が恒常的に生じ、その窓で死んだソケットに書き込むと即時502になる。対処は<code>KONG_UPSTREAM_KEEPALIVE_IDLE_TIMEOUT=10</code>でKong側をWarpより短くし、それでも高負荷バースト時（125〜160 req/s）に残るvariantには<code>KONG_UPSTREAM_KEEPALIVE_MAX_REQUESTS=1</code>で接続再利用そのものを無効化した。非冪等リクエストのリトライで吸収する案は採らず、「再利用を無効化してレース面自体を消す方がCIの安定化としては構造的に安全」という判断による。</p>
+<h2>計測に基づくチューニング</h2>
+<p>チューニングを支える計装はいずれも<code>/proc</code>直読みのbashスクリプトで、追加パッケージなしにRunnerへ載せられる。CPU競合はPSI（<code>/proc/pressure/cpu</code>）を主指標にし、<code>full</code>（全runnableタスクが同時に待った＝枯渇度）をSEVERE判定の主指標、<code>some</code>（どれかが待った＝混雑度）をWARNの補助指標に使い分ける。CPU使用率100%は「よく働いている」と「足りない」を区別できないが、PSIはCPU待ちで止まっていた時間の割合を直接測れるため。Edge FunctionのS3・外部API待ちはプロセスがsocket待ちでsleepしておりCPU系指標に現れないため、<code>/proc/&lt;pid&gt;/fd</code>のソケットinodeと<code>/proc/&lt;pid&gt;/net/tcp</code>（コンテナ内プロセスは<code>/proc/&lt;pid&gt;/ns/net</code>でnetwork namespaceを特定し、namespace単位で読む必要がある）を突き合わせて外部向け接続の滞留を直接数える。</p>
+<h2>Iron Law: flaky対策の明文化</h2>
+<p>flaky対策を個人のノウハウにせず、E2E作成スキルに「Iron Law」として明文化し機械的に強制している。<code>waitForTimeout</code>（固定sleep）は全面禁止でstate-based waitのみとし、CIは<code>--retries=0</code>で運用してリトライによるflaky隠蔽を許さない。不在判定（<code>not.toBeVisible()</code>）は要素が0個になった瞬間に即成立してしまうため、不在を主張する前に「描画されるなら同時に描画され終わっているはずの陽性要素」の出現を先に待つ。<code>innerText()</code>等の同期DOM read＋静的expectは全面禁止しauto-wait matcherに置き換える。ソート・フィルタのような「再取得後の表示が直前と一致しうる」操作は、操作前にレスポンス待ちを仕掛けてから実行する共通ヘルパで対応する。</p>
+<h2>AIスキルによる機械的強制</h2>
+<p>これらのルールはドキュメントに書くだけでは守られないとして、Claude Codeのスキルとして運用に組み込まれている。<code>qms-e2e-author</code>は正典レファレンス4本の読了とIron Lawのセルフチェックリスト通過を強制する対話型テスト作成スキルで、<code>data-testid</code>やPage Objectの存在をgrepで実在確認してから使う・事前データ投入（S0）があればprecheckを必須実装する、といった制約をワークフローとして課す。<code>qms-e2e-impact-gate</code>はCIと同じ<code>impact-map.json</code>でコミット前にローカル実行し、<code>qms-investigate</code>はテスト失敗の根本原因を仮説→検証→絞り込みのサイクルで特定する。AIにテストを書かせる場合でも人間が書く場合でも同じ品質バーを機械的に通すことが、140テストまでスケールしても品質が均質な理由だとしている。</p>
+<h2>変更差分のみ実行するImpact Tests</h2>
+<p>全量6〜8分とはいえ全PRで10ジョブ×8coreを毎回回すのは重いため、テストコード自体の変更時のみ全量を実行し、アプリ実装（<code>src/**</code>・migration・Edge Functions等）の変更時は<code>impact-map.json</code>（変更ファイルパス→影響specのルール集）による差分実行に分けている。設計はfirst-match評価で具体的なルールを先に評価し、どのルールにも当たらないファイルやGitHub APIの変更ファイル一覧が3000件で切り詰められた場合は安全側に倒して全量実行にフォールバックする。判定ロジック自体のユニットテストも毎回実行し、判定ロジックの退行を防ぐ。</p>
+<p>全量6〜8分（旧30〜56分）、影響範囲のみのImpact Testsは4〜7分となり、Vitest（components 約3分・repositories 約7〜8分）やESLint（約9分）と同じ所要時間感覚に収まった。「E2Eだけ結果を待たずにマージする」運用崩壊が起きなくなったという。副産物として、spec単位でURS（ユーザー要求仕様）の手順番号を刻む・動画とスクリーンショットと実ファイルを証跡としてHTMLレポートに添付する・PRごとに影響URSを自動トレースする、というQMS領域で求められるソフトウェアバリデーション記録としても機能している。</p>
+<h2>問い</h2>
+<ul>
+<li>このリポジトリの <code>validate_wiki.py</code> のような決定論的チェックにも、「Iron Law」的に機械強制できるスキル化余地はないか</li>
+<li>PSIベースのCPU競合計測（<code>/proc/pressure/cpu</code>）は、GitHub Actionsを使う他プロジェクトのCIチューニングにどこまで一般化できるか</li>
+<li>Kongのkeep-alive再利用レースは「再利用する側のidle timeoutをサーバー側より短くする」という一般原理だが、自分が触るリバースプロキシ構成（nginx/Envoy等）で同種の窓は存在しないか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 生成物を基準に採点し閾値未満を止める品質ゲートの思想。本ページのIron Lawはテストにおける同型の品質ゲート</li>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a> — Anthropic社内の9カテゴリで「Product verification」を最高ROIと位置づける主張と、本記事がスキルでテスト品質を機械強制する実践が対応する</li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — ルールを明文化し機械的に強制してミス率を下げる設計思想。CLAUDE.mdのルール強制とE2EスキルのIron Law強制は同じ発想の別実装</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/berry_blog/articles/39392e1da7ca71" rel="noopener" target="_blank">https://zenn.dev/berry_blog/articles/39392e1da7ca71</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 並列E2Eテスト設計
+
+&gt; **TL;DR**: E2Eテストの「遅い・壊れやすい」を解消する鍵はPlaywrightの並列設定そのものでなく、per-testデータ独立・層状アーキテクチャ・計測に基づくインフラチューニング・AIスキルによるflaky対策の機械的強制という4点セットだと株式会社BerryのQMSmart開発チームが実践レポートで示す。
+
+```mermaid
+flowchart LR
+  spec --&gt; fixture
+  fixture --&gt; pages[&quot;pages(POM) / helpers&quot;]
+  pages --&gt; repos[&quot;repositories / precheckers / schemas&quot;]
+  repos --&gt; selectors[&quot;selectors / types&quot;]
+```
+
+実行時間30〜56分（timeout 150分設定）でPRでは回らず夜間バッチ止まりだった旧E2Eスイートに対し、同チームは既存スイートの改修ではなく並列実行前提の新アーキテクチャをゼロから設計した。ボトルネックはPlaywrightの設定ではなく「テスト同士がデータと状態を共有していること」で、構造さえ正しければ並列化は設定変更だけで済むという。
+
+## per-testデータ独立とstorageState
+
+すべてのテストは専用データをFactory経由でSupabaseに直接INSERTして作り、teardownで派生レコードからStorageファイルまで回収する。UI操作は検証対象の操作にのみ使い、前提データ投入はUIを通さない。ログイン省略のため、globalSetupで4ロール×各5アカウントのセッションをstorageStateとして事前生成し、各テストはCookie読み込みだけでロールを切り替える。5アカウントずつ用意するのは、並列workerが同一アカウントを取り合う干渉を避けるため。
+
+## レイヤー構造とProject分割
+
+spec から `page.locator(...)` を直接書くことを禁止し、待機戦略をPage Objectに閉じ込めることで「flaky対策が個々のspec作者の力量に依存しない」状態を作る（構造は冒頭の図）。Playwright projectは load（light/heavy）× release × feature の3軸で分割し、Edge Function呼び出し（PDF生成+S3、約60秒）を伴うheavyテストは`fullyParallel: false`で3並列、それ以外のlightは`fullyParallel: true`でworkers 5（CI）。並列度は「上げられるだけ上げる」のでなく計測に基づきproject単位で調整され、CPU競合起因のflakyが計測で判明した文書管理ドメインはlight=3/heavy=2に下げられている。
+
+## インフラの隠れた限界
+
+CIは`{load}-{release}-{feature}`単位で10ジョブに分割され、各ジョブが独立した8core Runner上で`supabase start`・Edge Functions・`vite build`（本番ビルド）・Playwright実行という「本物のフルスタック」を毎回構築する。並列度を上げるとPostgRESTのデフォルトDBプール（10）が枯渇して504が出たため、`PGRST_DB_POOL=30`を環境変数差し替えで注入している。
+
+最も深い沼は数ミリ秒で返る謎の502だった。真因はHTTP keep-alive接続の「再利用レース」——KongのUpstream keepalive idle timeout（既定60秒）がPostgREST（Haskell Warp）のアイドルクローズ（約30秒）より長いため、サーバー側はもう閉じているのにKongはまだ生きていると誤認する30〜60秒の窓が恒常的に生じ、その窓で死んだソケットに書き込むと即時502になる。対処は`KONG_UPSTREAM_KEEPALIVE_IDLE_TIMEOUT=10`でKong側をWarpより短くし、それでも高負荷バースト時（125〜160 req/s）に残るvariantには`KONG_UPSTREAM_KEEPALIVE_MAX_REQUESTS=1`で接続再利用そのものを無効化した。非冪等リクエストのリトライで吸収する案は採らず、「再利用を無効化してレース面自体を消す方がCIの安定化としては構造的に安全」という判断による。
+
+## 計測に基づくチューニング
+
+チューニングを支える計装はいずれも`/proc`直読みのbashスクリプトで、追加パッケージなしにRunnerへ載せられる。CPU競合はPSI（`/proc/pressure/cpu`）を主指標にし、`full`（全runnableタスクが同時に待った＝枯渇度）をSEVERE判定の主指標、`some`（どれかが待った＝混雑度）をWARNの補助指標に使い分ける。CPU使用率100%は「よく働いている」と「足りない」を区別できないが、PSIはCPU待ちで止まっていた時間の割合を直接測れるため。Edge FunctionのS3・外部API待ちはプロセスがsocket待ちでsleepしておりCPU系指標に現れないため、`/proc/&lt;pid&gt;/fd`のソケットinodeと`/proc/&lt;pid&gt;/net/tcp`（コンテナ内プロセスは`/proc/&lt;pid&gt;/ns/net`でnetwork namespaceを特定し、namespace単位で読む必要がある）を突き合わせて外部向け接続の滞留を直接数える。
+
+## Iron Law: flaky対策の明文化
+
+flaky対策を個人のノウハウにせず、E2E作成スキルに「Iron Law」として明文化し機械的に強制している。`waitForTimeout`（固定sleep）は全面禁止でstate-based waitのみとし、CIは`--retries=0`で運用してリトライによるflaky隠蔽を許さない。不在判定（`not.toBeVisible()`）は要素が0個になった瞬間に即成立してしまうため、不在を主張する前に「描画されるなら同時に描画され終わっているはずの陽性要素」の出現を先に待つ。`innerText()`等の同期DOM read＋静的expectは全面禁止しauto-wait matcherに置き換える。ソート・フィルタのような「再取得後の表示が直前と一致しうる」操作は、操作前にレスポンス待ちを仕掛けてから実行する共通ヘルパで対応する。
+
+## AIスキルによる機械的強制
+
+これらのルールはドキュメントに書くだけでは守られないとして、Claude Codeのスキルとして運用に組み込まれている。`qms-e2e-author`は正典レファレンス4本の読了とIron Lawのセルフチェックリスト通過を強制する対話型テスト作成スキルで、`data-testid`やPage Objectの存在をgrepで実在確認してから使う・事前データ投入（S0）があればprecheckを必須実装する、といった制約をワークフローとして課す。`qms-e2e-impact-gate`はCIと同じ`impact-map.json`でコミット前にローカル実行し、`qms-investigate`はテスト失敗の根本原因を仮説→検証→絞り込みのサイクルで特定する。AIにテストを書かせる場合でも人間が書く場合でも同じ品質バーを機械的に通すことが、140テストまでスケールしても品質が均質な理由だとしている。
+
+## 変更差分のみ実行するImpact Tests
+
+全量6〜8分とはいえ全PRで10ジョブ×8coreを毎回回すのは重いため、テストコード自体の変更時のみ全量を実行し、アプリ実装（`src/**`・migration・Edge Functions等）の変更時は`impact-map.json`（変更ファイルパス→影響specのルール集）による差分実行に分けている。設計はfirst-match評価で具体的なルールを先に評価し、どのルールにも当たらないファイルやGitHub APIの変更ファイル一覧が3000件で切り詰められた場合は安全側に倒して全量実行にフォールバックする。判定ロジック自体のユニットテストも毎回実行し、判定ロジックの退行を防ぐ。
+
+全量6〜8分（旧30〜56分）、影響範囲のみのImpact Testsは4〜7分となり、Vitest（components 約3分・repositories 約7〜8分）やESLint（約9分）と同じ所要時間感覚に収まった。「E2Eだけ結果を待たずにマージする」運用崩壊が起きなくなったという。副産物として、spec単位でURS（ユーザー要求仕様）の手順番号を刻む・動画とスクリーンショットと実ファイルを証跡としてHTMLレポートに添付する・PRごとに影響URSを自動トレースする、というQMS領域で求められるソフトウェアバリデーション記録としても機能している。
+
+## 問い
+
+- このリポジトリの `validate_wiki.py` のような決定論的チェックにも、「Iron Law」的に機械強制できるスキル化余地はないか
+- PSIベースのCPU競合計測（`/proc/pressure/cpu`）は、GitHub Actionsを使う他プロジェクトのCIチューニングにどこまで一般化できるか
+- Kongのkeep-alive再利用レースは「再利用する側のidle timeoutをサーバー側より短くする」という一般原理だが、自分が触るリバースプロキシ構成（nginx/Envoy等）で同種の窓は存在しないか
+
+## 関連
+
+- [[concepts/eval-loop]] — 生成物を基準に採点し閾値未満を止める品質ゲートの思想。本ページのIron Lawはテストにおける同型の品質ゲート
+- [[concepts/skill-building-best-practices]] — Anthropic社内の9カテゴリで「Product verification」を最高ROIと位置づける主張と、本記事がスキルでテスト品質を機械強制する実践が対応する
+- [[concepts/claude-md-rules]] — ルールを明文化し機械的に強制してミス率を下げる設計思想。CLAUDE.mdのルール強制とE2EスキルのIron Law強制は同じ発想の別実装
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>
