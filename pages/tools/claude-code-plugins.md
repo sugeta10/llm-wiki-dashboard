@@ -103,3 +103,4 @@ C/C++・C#・Go・Java・Kotlin・Lua・PHP・Python・Ruby・Rust・Swift・Typ
 - [[tools/claude-code]] — Claude Code 本体
 - [[tools/claude-mcp]] — MCP（Model Context Protocol）の概要
 - [[concepts/agentic-coding]] — プラグインが活用されるエージェント開発スタイル
+- [[tools/knowledge-work-plugins]] — 別マーケットプレイス`knowledge-work-plugins`（業務別10プラグイン、Desktop/Cowork主体）。本ページの`claude-plugins-official`とは配布元パッケージが異なる
