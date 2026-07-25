@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>advisor-executor-pattern</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="advisor-executor-pattern.md">Markdownで表示</a></div>
-  <div class="meta">concepts/advisor-executor-pattern · concepts · <span title="2026-07-11">2週間前</span></div>
+  <div class="meta">concepts/advisor-executor-pattern · concepts · <span title="2026-07-26">今日</span></div>
   <article><h1>Advisor-Executor パターン（Fable 5 × Sonnet 5 連携）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 高知能・高価格の <a href="../models/claude-fable-5.html">Fable 5</a> と高速・安価な Sonnet 5 を、役割やフェーズで使い分ける3つの連携パターン（Advisor／Orchestrator／Fable Sandwich）。単一モデルを回すのでなくモデルを組み合わせて「知能」と「コスト・速度」のトレードオフを解消する。</p>
@@ -68,6 +68,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-07-09（Na/yuche）: Claude Code に Advisor 機能がネイティブで備わり <code>/advisor fable</code> でアドバイザーモデルを固定できる、という記述。本記事のみの単一ソースで、コマンドの実在は要検証</li>
+<li>2026-07-21 @cathrynlavery: 「Fableで計画し、Codexで実装する」を1コマンド化した <code>/codex-build</code> スキルを紹介。Fableがオーケストレーション（計画・taste・文脈）、Codexが実装、両者の間に承認ゲートを置き何もレビュー・テストなしに出荷されないようにすると説明。本ページのOrchestratorパターンを自社モデル同士（Fable×Sonnet）でなくAnthropic外の製品（Codex）へ越境させた実例（詳細な内部実装は未公開）</li>
 <li>2026-07-09: 記事は Fable 5／Sonnet 5 を「次世代モデル（仮定）」と前置きしつつ実運用例を書いている。Fable 5 は既にローンチ済み（<a href="../models/claude-fable-5.html">claude-fable-5</a>）だが Sonnet 5 側の実在・スペックは本記事では未確定 → 2026-07-10: @ClaudeDevs 公式ポスト（一次ソース）が Executor として Sonnet 5 を実名で挙げており、実在は公式発信で裏付けられた。スペックは引き続き未捕捉</li>
 </ul>
 <h2>問い</h2>
@@ -96,7 +97,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a></li>
 <li><a href="../concepts/fable-sprint-strategy.html">fable-sprint-strategy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/yuche/articles/advisor-executor-pattern" rel="noopener" target="_blank">https://zenn.dev/yuche/articles/advisor-executor-pattern</a></li>
 <li><a href="https://x.com/i/web/status/2074606058128224365" rel="noopener" target="_blank">https://x.com/i/web/status/2074606058128224365</a></li>
-<li><a href="https://x.com/i/web/status/2075480881163276492" rel="noopener" target="_blank">https://x.com/i/web/status/2075480881163276492</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2075480881163276492" rel="noopener" target="_blank">https://x.com/i/web/status/2075480881163276492</a></li>
+<li><a href="https://x.com/i/web/status/2079412360394199148" rel="noopener" target="_blank">https://x.com/i/web/status/2079412360394199148</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -171,6 +173,7 @@ Na は記事末で、AIエージェントの実用化・プロダクション導
 ## 観察ログ（未検証）
 
 - 2026-07-09（Na/yuche）: Claude Code に Advisor 機能がネイティブで備わり `/advisor fable` でアドバイザーモデルを固定できる、という記述。本記事のみの単一ソースで、コマンドの実在は要検証
+- 2026-07-21 @cathrynlavery: 「Fableで計画し、Codexで実装する」を1コマンド化した `/codex-build` スキルを紹介。Fableがオーケストレーション（計画・taste・文脈）、Codexが実装、両者の間に承認ゲートを置き何もレビュー・テストなしに出荷されないようにすると説明。本ページのOrchestratorパターンを自社モデル同士（Fable×Sonnet）でなくAnthropic外の製品（Codex）へ越境させた実例（詳細な内部実装は未公開）
 - 2026-07-09: 記事は Fable 5／Sonnet 5 を「次世代モデル（仮定）」と前置きしつつ実運用例を書いている。Fable 5 は既にローンチ済み（[[models/claude-fable-5]]）だが Sonnet 5 側の実在・スペックは本記事では未確定 → 2026-07-10: @ClaudeDevs 公式ポスト（一次ソース）が Executor として Sonnet 5 を実名で挙げており、実在は公式発信で裏付けられた。スペックは引き続き未捕捉
 
 ## 問い

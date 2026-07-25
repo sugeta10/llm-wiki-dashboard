@@ -89,3 +89,4 @@
 - [[concepts/eval-loop]] — generate-and-filter / adversarial verification の品質ゲート応用
 - [[tools/claude-code-goal]] — `/goal` との組み合わせ（ハード完了要件）
 - [[concepts/claude-code-loop-types]] — 公式4類型。Proactive ループの合成部品として本機能を位置づける
+- [[concepts/graph-engineering]] — 本機能をノード/エッジ/契約というグラフ語彙で捉え直し、バリアの要否を判定するスメルテストまで踏み込んだ実践論（@0xCodez）

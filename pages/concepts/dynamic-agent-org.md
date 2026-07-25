@@ -17,3 +17,4 @@
 - [[concepts/goal-loop-routine]]
 - [[concepts/multi-agent-patterns]]
 - [[concepts/claude-code-dynamic-workflows]]
+- [[concepts/graph-engineering]] — 本ページが提起した「graph」側の抽象化を、ノード契約・エッジ判定・バリアのスメルテストまで実装レベルへ展開した記事（@0xCodez）

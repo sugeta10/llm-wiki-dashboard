@@ -75,3 +75,4 @@ flowchart TD
 - [[concepts/claude-md-rules]] — CLAUDE.mdを事実に絞り行動ルール化する具体例
 - [[concepts/claude-code-dynamic-workflows]] — Step内の「動的ワークフロー（agent/parallel/pipeline）」の機能詳細
 - [[concepts/multi-agent-patterns]] — レビュアsubagent・fan-out等のオーケストレーションパターン
+- [[concepts/graph-engineering]] — 同じ@0xCodezによる、グラフ層（ノード/エッジ/トポロジー）を掘り下げた対の記事。ハーネス→ループ→グラフの3部作の最終層

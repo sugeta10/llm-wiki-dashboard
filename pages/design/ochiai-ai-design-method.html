@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ochiai-ai-design-method - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#5fd0a0"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ochiai-ai-design-method</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ochiai-ai-design-method.md">Markdownで表示</a></div>
+  <div class="meta">design/ochiai-ai-design-method · design · <span title="2026-07-26">今日</span></div>
+  <article><h1>落合式AIデザイン術（形容詞でなくオブジェクトで指示する）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 落合陽一の公開作品・発言から@kimuai08が抽出・再構成した、AIデザイン生成を「高級感・未来的」といった形容詞でなく主役物体・関係・矛盾・媒体といった設計変数で指示する7原則と6ステップの実践フロー。</p>
+</blockquote>
+<p>AIにデザインを頼むと「高級感があって、未来的で、かっこよく」という指示に対しAIが無難な中間値を返し、どこかで見たようなCGしか出てこない——という初心者の失敗パターンから記事は出発する。@kimuai08 は、落合陽一が公開している作品・発言・GitHub上の設計思想を手がかりにこの失敗を避ける方法論へ再構成した。ただし著者自身が明記する通り、これは落合本人の非公開プロンプトの再現ではなく、公開情報からの二次的な抽出・再構築である。落合陽一は画像生成を「国語とロジスティクスの問題」と表現しているという——形容詞のセンスでなく、物体の配置や撮影条件をどれだけ正確に言語化できるかの問題だと捉える発想だと@kimuai08は紹介する。</p>
+<h2>7つの原理</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>原理</th>
+<th>要旨</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>形容詞でなくオブジェクトで指示する</td>
+<td>「かっこいい」を主役物体・周辺物体・位置関係・状態・光との関係・視線動線・禁止要素など9項目へ分解して渡す</td>
+</tr>
+<tr>
+<td>2</td>
+<td>画像生成では「カメラマンの言葉」を使う</td>
+<td>被写体・構図・距離・レンズ感・光・素材・用途の7項目を指定する。専門用語を並べすぎると逆に出力が崩れるため、効く変数だけを選ぶ取捨選択が要る</td>
+</tr>
+<tr>
+<td>3</td>
+<td>「あり得ないが理解できる矛盾」を一つ入れる</td>
+<td>意味的には関連するが物理的には矛盾する2概念を接続する。「なぜこの組み合わせか」の理由が説明できない矛盾は採用しない</td>
+</tr>
+<tr>
+<td>4</td>
+<td>AIの誤生成を全部消さない</td>
+<td>誤生成を「破綻（修正する）」「逸脱（検討する）」「発見（採用する）」の3つに分類し、発見は作品の中心へ昇格させうる</td>
+</tr>
+<tr>
+<td>5</td>
+<td>デザインを静止画でなく時間と身体で考える</td>
+<td>スクロール・マウス反応・情報開示の順序などで「見た人の頭の中がどう変わっていくか」を時間軸で設計する</td>
+</tr>
+<tr>
+<td>6</td>
+<td>デザインを画面の外まで設計する</td>
+<td>スマホ／大型モニター／印刷／SNS0.5秒閲覧など、出力媒体ごとに最適な余白・文字サイズ・情報量が変わる前提で逆算する</td>
+</tr>
+<tr>
+<td>7</td>
+<td>一つのAIに制作と採点をさせない</td>
+<td>目的整理・方向出し・監査・粗探しを別々のAIに分担させる。同じAIに自作を採点させると評価が甘くなるため</td>
+</tr>
+</tbody>
+</table>
+<h2>6ステップの実践フロー</h2>
+<ol>
+<li>5分間、整理せず音声でそのまま話す（WhisperとGPT-4を組み合わせ未整理の会話をプロ向け対話文書へ変換する）</li>
+<li>AIに要件を事実・希望・感情・制約・ターゲット・未定義の言葉・矛盾している条件へ分類させる</li>
+<li>機能重視・感情重視・実験重視など、原理の異なる3方向を作らせる</li>
+<li>文章だけで判断せず、静止画かワイヤーフレームへ必ず具体化する</li>
+<li>制作したAIとは別のAIに、目的適合・視線誘導・独自性・スマホ対応などを厳しく監査させる</li>
+<li>却下理由を「もっとかっこよく」でなく「主役が二つ存在し視線が分散している」のような具体的な設計変数の指示へ変換し、次の生成条件にする</li>
+</ol>
+<p>落合式を表面的に真似ると黒背景・液体・鏡といった見た目だけの模倣になりがちだが、@kimuai08は再現すべきは作風でなく「抽象概念を具体的な物体へ変える／矛盾を一つ入れる／異なるAIに監査させる／却下理由を蓄積する」といった制作構造の側だと結論づける。採用理由でなく却下理由を保存する方が長期的に強いデザインシステムになるという指摘も添える——うまくいった理由は再現しにくいが、失敗した理由は次の生成条件として確実に効くため。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-20 @kimuai08: 原理7の裏付けとして、2026年公開の「co-vibe」というマルチエージェントAIツール（Anthropic/OpenAI/Groq/ローカルモデル横断構成、debug-first設計）を挙げる。本記事内の言及のみで実在・詳細は未確認</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>原理1「形容詞でなくオブジェクトで指示する」は、このvaultのwiki-ingest時のカテゴリ判定・ページ生成プロンプトにも転用できないか</li>
+<li>却下理由を蓄積する運用は <code>.claude/skills/wiki-ingest/LESSONS.md</code> の粒度判定ログと同じ構造では？比較して何が足りないか</li>
+<li>co-vibeは実在し公開されているか。実装の詳細を追う価値はあるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../design/design-md.html">design-md</a> — 同じ「AIデザインの凡庸さ」問題に対する別解（既存ブランドの仕様を<code>.md</code>で参照させる方式）</li>
+<li><a href="../design/claude-design-workflow.html">claude-design-workflow</a> — HTML視覚化とコメント→自動修正によるデザイン意思決定の別方法論</li>
+<li><a href="../design/ai-slide-creation.html">ai-slide-creation</a> — 1スライド1主張・100プロンプトのスライド特化版</li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — 形容詞でなく構造化変数で指示するという発想の一般化</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — 原理7「別AIに制作と採点を分ける」の一般パターン</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/design-md.html">design-md</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li>
+<li><a href="../design/ai-slide-creation.html">ai-slide-creation</a></li>
+<li><a href="../design/claude-design-workflow.html">claude-design-workflow</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2079212341250724250" rel="noopener" target="_blank">https://x.com/i/web/status/2079212341250724250</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 落合式AIデザイン術（形容詞でなくオブジェクトで指示する）
+
+&gt; **TL;DR**: 落合陽一の公開作品・発言から@kimuai08が抽出・再構成した、AIデザイン生成を「高級感・未来的」といった形容詞でなく主役物体・関係・矛盾・媒体といった設計変数で指示する7原則と6ステップの実践フロー。
+
+AIにデザインを頼むと「高級感があって、未来的で、かっこよく」という指示に対しAIが無難な中間値を返し、どこかで見たようなCGしか出てこない——という初心者の失敗パターンから記事は出発する。@kimuai08 は、落合陽一が公開している作品・発言・GitHub上の設計思想を手がかりにこの失敗を避ける方法論へ再構成した。ただし著者自身が明記する通り、これは落合本人の非公開プロンプトの再現ではなく、公開情報からの二次的な抽出・再構築である。落合陽一は画像生成を「国語とロジスティクスの問題」と表現しているという——形容詞のセンスでなく、物体の配置や撮影条件をどれだけ正確に言語化できるかの問題だと捉える発想だと@kimuai08は紹介する。
+
+## 7つの原理
+
+| # | 原理 | 要旨 |
+|---|------|------|
+| 1 | 形容詞でなくオブジェクトで指示する | 「かっこいい」を主役物体・周辺物体・位置関係・状態・光との関係・視線動線・禁止要素など9項目へ分解して渡す |
+| 2 | 画像生成では「カメラマンの言葉」を使う | 被写体・構図・距離・レンズ感・光・素材・用途の7項目を指定する。専門用語を並べすぎると逆に出力が崩れるため、効く変数だけを選ぶ取捨選択が要る |
+| 3 | 「あり得ないが理解できる矛盾」を一つ入れる | 意味的には関連するが物理的には矛盾する2概念を接続する。「なぜこの組み合わせか」の理由が説明できない矛盾は採用しない |
+| 4 | AIの誤生成を全部消さない | 誤生成を「破綻（修正する）」「逸脱（検討する）」「発見（採用する）」の3つに分類し、発見は作品の中心へ昇格させうる |
+| 5 | デザインを静止画でなく時間と身体で考える | スクロール・マウス反応・情報開示の順序などで「見た人の頭の中がどう変わっていくか」を時間軸で設計する |
+| 6 | デザインを画面の外まで設計する | スマホ／大型モニター／印刷／SNS0.5秒閲覧など、出力媒体ごとに最適な余白・文字サイズ・情報量が変わる前提で逆算する |
+| 7 | 一つのAIに制作と採点をさせない | 目的整理・方向出し・監査・粗探しを別々のAIに分担させる。同じAIに自作を採点させると評価が甘くなるため |
+
+## 6ステップの実践フロー
+
+1. 5分間、整理せず音声でそのまま話す（WhisperとGPT-4を組み合わせ未整理の会話をプロ向け対話文書へ変換する）
+2. AIに要件を事実・希望・感情・制約・ターゲット・未定義の言葉・矛盾している条件へ分類させる
+3. 機能重視・感情重視・実験重視など、原理の異なる3方向を作らせる
+4. 文章だけで判断せず、静止画かワイヤーフレームへ必ず具体化する
+5. 制作したAIとは別のAIに、目的適合・視線誘導・独自性・スマホ対応などを厳しく監査させる
+6. 却下理由を「もっとかっこよく」でなく「主役が二つ存在し視線が分散している」のような具体的な設計変数の指示へ変換し、次の生成条件にする
+
+落合式を表面的に真似ると黒背景・液体・鏡といった見た目だけの模倣になりがちだが、@kimuai08は再現すべきは作風でなく「抽象概念を具体的な物体へ変える／矛盾を一つ入れる／異なるAIに監査させる／却下理由を蓄積する」といった制作構造の側だと結論づける。採用理由でなく却下理由を保存する方が長期的に強いデザインシステムになるという指摘も添える——うまくいった理由は再現しにくいが、失敗した理由は次の生成条件として確実に効くため。
+
+## 観察ログ（未検証）
+
+- 2026-07-20 @kimuai08: 原理7の裏付けとして、2026年公開の「co-vibe」というマルチエージェントAIツール（Anthropic/OpenAI/Groq/ローカルモデル横断構成、debug-first設計）を挙げる。本記事内の言及のみで実在・詳細は未確認
+
+## 問い
+
+- 原理1「形容詞でなくオブジェクトで指示する」は、このvaultのwiki-ingest時のカテゴリ判定・ページ生成プロンプトにも転用できないか
+- 却下理由を蓄積する運用は `.claude/skills/wiki-ingest/LESSONS.md` の粒度判定ログと同じ構造では？比較して何が足りないか
+- co-vibeは実在し公開されているか。実装の詳細を追う価値はあるか
+
+## 関連
+
+- [[design/design-md]] — 同じ「AIデザインの凡庸さ」問題に対する別解（既存ブランドの仕様を`.md`で参照させる方式）
+- [[design/claude-design-workflow]] — HTML視覚化とコメント→自動修正によるデザイン意思決定の別方法論
+- [[design/ai-slide-creation]] — 1スライド1主張・100プロンプトのスライド特化版
+- [[concepts/prompt-engineering]] — 形容詞でなく構造化変数で指示するという発想の一般化
+- [[concepts/multi-agent-patterns]] — 原理7「別AIに制作と採点を分ける」の一般パターン
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
