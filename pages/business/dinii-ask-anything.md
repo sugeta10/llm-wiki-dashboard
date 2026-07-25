@@ -51,3 +51,4 @@ Claude Managed Agentsへ載せ替えた結果、自前コードは3種類に収�
 - [[business/backoffice-ai-implementation]] — AI=一次担当/人間=判断モデルの社内実装事例（グッドパッチ）
 - [[concepts/multi-agent-patterns]] — 複数ツールを叩き調査をやり切るエージェント設計
 - [[companies/anthropic]] — Claude Managed Agents提供元
+- [[concepts/cerebras-knowledge-base]] — 同じ「RAGは過去の問いしか拾えない」限界への別解（ハイブリッド検索＋プロジェクトスコープで一次情報網羅性を上げる設計）

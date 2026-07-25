@@ -52,3 +52,4 @@ app.use(async ({ payload, next, logger }) => {
 ## 関連
 
 - [[tools/claude-code]] — 類似のフレームワーク設計（CLI Appのミドルウェア構造）
+- [[concepts/cerebras-knowledge-base]] — Socket ModeでSlackを常時取り込み社内知識ベースへ正規化する実装例

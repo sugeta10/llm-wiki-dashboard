@@ -91,3 +91,4 @@ AIで早く作れる時代だからこそ、「何を作るか」「何を検証
 - [[design/fastview-design]] — ファーストビュー設計原則（UXフリクション削減に関連）
 - [[concepts/spec-driven-development]] — AI時代の仕様駆動設計（設計から実装への接続）
 - [[people/fladdict]] — UX設計者・深津貴之（AI産業のUX分析）
+- [[design/vibe-coding-design-gap]] — 現場デザイナーによる「AIで作れることと使われるものは別」の実例批判

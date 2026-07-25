@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cerebras-knowledge-base - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>cerebras-knowledge-base</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cerebras-knowledge-base.md">Markdownで表示</a></div>
+  <div class="meta">concepts/cerebras-knowledge-base · concepts · <span title="2026-07-25">今日</span></div>
+  <article><h1>Cerebrasの社内知識ベース設計</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Cerebrasが3ヶ月で社内定着させた知識ベースは、全データソースを単一の埋め込みテーブルに正規化し、Slackは全文検索＋埋め込み＋IDF＋鮮度減衰のハイブリッドで検索した上でRRF融合とリランキングを行い、MCPで検索プリミティブをそのままツールとして公開する設計だ。</p>
+<p>📌 X bookmark: 12,615（2026-07-24 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Sources[&quot;Slack/Code/Docs/DB&quot;] --&gt; Distill[&quot;Distillation (LLM)&quot;] --&gt; Embed[&quot;Embeddings Table (Postgres)&quot;]
+  Embed --&gt; Plan[&quot;Planner&quot;] --&gt; Fanout[&quot;Tool Fan-out&quot;] --&gt; RRF[&quot;RRF + Rerank&quot;] --&gt; Synth[&quot;Synthesis LLM&quot;]</pre>
+<p>Cerebrasの従業員は1日1万5000件以上の質問をこの社内知識ベースに投げており、公開から3ヶ月で社内で最も定着したツールの一つになった、と著者（@hi_im_isaac_、@learnwdaniel、@gaozenghao）は説明する。四半期ごとに「全情報を1つのプラットフォームに集約しよう」という提案が出ては実現しないという組織あるあるを踏まえ、Cerebrasのチームは情報を発生源（Slack・GitHub・Jira・ドキュメント）に置いたまま、抽出側だけを工夫する設計を選んだ、と述べる。</p>
+<h2>アーキテクチャの中核：単一埋め込みテーブル</h2>
+<p>著者らは、Slackスレッドからネットリスト（チップ設計データ）まで、あらゆるソースが同じPostgresの埋め込みテーブルに着地する設計にした、と述べる。各データソースは「データの中身・接続方法・取得頻度」を定義するだけで、生成される埋め込み行は出所を問わず同じインターフェースに従う。この単純さのおかげで社内の別チームも自前のコネクタを追加できる、という。</p>
+<h2>Slackのハイブリッド検索</h2>
+<p>埋め込みだけでは不十分だったと著者は振り返る。Slackメッセージは情報密度の差が激しく（「hey yeah sure mike」と詳細な技術説明が同じ「1メッセージ」として扱われる）、短いメッセージがコサイン類似度で長い詳細な回答に勝ってしまう問題があった、という。そこで4つの検索手法を並走させる設計にした。</p>
+<ul>
+<li><strong>全文検索</strong>: エラー文字列やホスト名など、埋め込みがぼかしてしまう完全一致トークンを拾う</li>
+<li><strong>埋め込み検索</strong>: 語彙が異なる質問と回答（言い換え）を繋ぐ</li>
+<li><strong>IDF（逆文書頻度）</strong>: 稀少トークンを含む短いメッセージの順位を上げ、「ありがとう」のような定型句を除外する</li>
+<li><strong>鮮度減衰</strong>: 同じ質問に答える複数のスレッドがある場合、半年前より新しいスレッドを優先する</li>
+</ul>
+<p>これらのスコアは単独で信頼せず、クエリ時に融合する（RRFの節参照）、と著者は説明する。</p>
+<h2>Socket ModeによるSlack取り込みとdistillation</h2>
+<p>Slackボットをworkspaceにインストールし、Socket Modeで常時WebSocket接続を張ることでポーリングなしにリアルタイム更新を受け取る、と著者は説明する。メッセージイベントが届くと、そのメッセージ単体でなく所属スレッド全体（親メッセージ＋全返信）をSlack APIから再取得し、1行として書き戻す。そのため返信が1件来るたびにスレッド全体・参加者リスト・最終更新時刻が最新化される。</p>
+<p>生のSlackテキストはPostgresの全文検索（GIN）インデックスで即座に検索可能になるが、ベクトル検索の精度を上げるためLLMによる「distillation（蒸留）」を挟む。スレッド全体から (1) エンジニアが実際に検索しそうな1行の質問文、(2) 短い要約、(3) 解決策、(4) 言及されたシステム・コード参照、を抽出し、これらを埋め込んで保存する。元の会話ログそのものは埋め込まず、スレッドを一貫したフォーマットに正規化したことで精度が大きく上がった、と著者は述べる。</p>
+<h2>Bursting：スレッド要約からこぼれる情報を拾う</h2>
+<p>長いスレッド内の重要な発言がスレッド単位の要約に反映されないという問題に対し、著者らは「バースト」（同じ発言者による連続メッセージのまとまり）を個別に埋め込む仕組みを導入した。低品質なデータがDBに入らないよう、各バーストは (a) 相対的に稀少なトークンを含む（IDF 4.0以上）、(b) 合計200文字以上、(c) リアクションが付いている、というスコアリング条件の組み合わせで閾値をクリアしたもののみ埋め込む、という。</p>
+<h2>コードリポジトリの埋め込み</h2>
+<p>40GBを超えるリポジトリもある中、著者らは当初コード埋め込みの必要性に懐疑的だった（Claude Codeのような「grepで十分」というツールの台頭を踏まえて）が、Cursorのセマンティック検索に関する知見を参考に試すことにした、と述べる。オープンソースのドキュメント埋め込みフレームワークCocoIndexを採用し、言語ごとの正規表現境界（クラス→メソッド→小ブロックの順にフォールバック）でコードを分割、コミットごとに変更されたチャンクだけを再埋め込みする差分更新にした。</p>
+<h2>カスタムデータソースはプラグイン</h2>
+<p>自前のDBを持つチームがSlackやドキュメントシステムに移行せず既存データのまま同じクエリ面に参加できるよう、カスタムソースを「小さなPythonモジュール（プラグインスクリプト）」として扱う設計にした。共有スキーマに従って行を書き込みさえすれば、他の仕組みは変更なしで動く、という。</p>
+<h2>プランニングとツールのファンアウト</h2>
+<p>クエリごとにまずLLMが軽量な「プランニング」を行い、関連しそうなツール・データソースを選ぶ。主なツール群は subsystem_index（ファイル単位の要約）・search（全ソース横断のベクトルパイプライン）・search_slack・search_code（ripgrep）・recent_prs・who_knows（専門家特定）。プランナーが選んだツールを並列実行し、共通の証拠フォーマットに正規化した上で最終的な統合LLMに渡す、と著者は説明する。</p>
+<h2>RRFによるリランキング</h2>
+<p>複数の検索手法の結果リストは互換性がないため、まずReciprocal Rank Fusion（RRF）で統合する。各ドキュメントは、出現したリストごとに <code>weight / (60 + rank)</code> のスコアを加算され（デフォルトweight=1.0、平滑化定数60）、複数の検索手法で中位に安定して現れる文書が、1つの手法だけで1位の文書に勝てる設計になっている、と著者は述べる。重複チャンクを1ソースにマージし、ファイルごとの寄与上限を設けて多様性を確保した上位20件を小型のリランカーモデルに渡して0〜10点でスコアリングし、上位10件を残す。最終的に隣接セクションを補って文脈の欠落を防いだ「証拠パケット」を合成LLMに渡す。</p>
+<h2>MCPとWeb UI：同じプリミティブを2つの面で提供</h2>
+<p>MCP統合では、search・search_slack・search_code・who_knowsといった検索プリミティブをそのまま独立したツールとして公開し、「1つの質問応答エンドポイント」の裏に隠さない設計にした。各ツールはできるだけLLMを介さない単純な設計にし、Claude Codeなど任意のMCPクライアントが自らオーケストレーション役を担えるようにしている、と著者は説明する。一方Web UIでは同じツール群をプランナー→エグゼキューター→シンセサイザーという1本のパイプラインに固定して提供し、ユーザーからは「質問して答えが返る」だけに見える。</p>
+<h2>プロジェクト：全文検索の限界に対する組織的スコープ設計</h2>
+<p>コーパスが増えると「なんでも検索」は機能しなくなった、と著者は述べる。コンパイラチームのエンジニアはインフラのランブックを検索結果に含めたくない、という具合に、チームやイニシアチブに紐づく「プロジェクト」単位でSlackチャンネル・リポジトリ・DB・ドキュメントをまとめ、同じデータソースを複数プロジェクトから参照できる軽量な仕組みにした。</p>
+<h2>問い</h2>
+<ul>
+<li>このwikiのquery運用（wiki/index.mdを読んでページを開く）は、本記事の「全文検索＋埋め込み＋IDF＋鮮度減衰」のハイブリッド設計と比べてどこが手薄か。特に鮮度減衰（古い情報が新しい情報に負ける仕組み）は自分のwikiにあるか。</li>
+<li>「distillation（蒸留）で正規化してから埋め込む」という設計は、このwikiのページ構造（TL;DR＋本文＋観察ログ）にも当てはまる発想か。ソース生テキストでなく整形済みページを埋め込み対象にする設計と読み替えられるか。</li>
+<li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a>の6層設計と本記事のプロジェクト単位スコープは、どちらも「全部を1つの検索空間に置かない」という同じ結論に達しているのか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a> — 同時期に公開された別企業（OpenAI）の社内データエージェント設計。スキーマ＋RAGの限界という同じ出発点から6層コンテキストという別解に至る</li>
+<li><a href="../business/dinii-ask-anything.html">dinii-ask-anything</a> — RAGでは「過去に誰かが答えた問い」しか拾えないという同じ限界を、read-only調査型エージェントで補う日本の実装事例</li>
+<li><a href="../tools/slack-bolt.html">slack-bolt</a> — Socket ModeによるリアルタイムSlack取り込みの実装基盤</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — 全ツール・全ソースを単一の共有層に集約するという設計思想が共通</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/dinii-ask-anything.html">dinii-ask-anything</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li>
+<li><a href="../tools/slack-bolt.html">slack-bolt</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2077822555159945507" rel="noopener" target="_blank">https://x.com/i/web/status/2077822555159945507</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Cerebrasの社内知識ベース設計
+
+&gt; **TL;DR**: Cerebrasが3ヶ月で社内定着させた知識ベースは、全データソースを単一の埋め込みテーブルに正規化し、Slackは全文検索＋埋め込み＋IDF＋鮮度減衰のハイブリッドで検索した上でRRF融合とリランキングを行い、MCPで検索プリミティブをそのままツールとして公開する設計だ。
+
+&gt; 📌 X bookmark: 12,615（2026-07-24 時点）
+
+```mermaid
+flowchart LR
+  Sources[&quot;Slack/Code/Docs/DB&quot;] --&gt; Distill[&quot;Distillation (LLM)&quot;] --&gt; Embed[&quot;Embeddings Table (Postgres)&quot;]
+  Embed --&gt; Plan[&quot;Planner&quot;] --&gt; Fanout[&quot;Tool Fan-out&quot;] --&gt; RRF[&quot;RRF + Rerank&quot;] --&gt; Synth[&quot;Synthesis LLM&quot;]
+```
+
+Cerebrasの従業員は1日1万5000件以上の質問をこの社内知識ベースに投げており、公開から3ヶ月で社内で最も定着したツールの一つになった、と著者（@hi_im_isaac_、@learnwdaniel、@gaozenghao）は説明する。四半期ごとに「全情報を1つのプラットフォームに集約しよう」という提案が出ては実現しないという組織あるあるを踏まえ、Cerebrasのチームは情報を発生源（Slack・GitHub・Jira・ドキュメント）に置いたまま、抽出側だけを工夫する設計を選んだ、と述べる。
+
+## アーキテクチャの中核：単一埋め込みテーブル
+
+著者らは、Slackスレッドからネットリスト（チップ設計データ）まで、あらゆるソースが同じPostgresの埋め込みテーブルに着地する設計にした、と述べる。各データソースは「データの中身・接続方法・取得頻度」を定義するだけで、生成される埋め込み行は出所を問わず同じインターフェースに従う。この単純さのおかげで社内の別チームも自前のコネクタを追加できる、という。
+
+## Slackのハイブリッド検索
+
+埋め込みだけでは不十分だったと著者は振り返る。Slackメッセージは情報密度の差が激しく（「hey yeah sure mike」と詳細な技術説明が同じ「1メッセージ」として扱われる）、短いメッセージがコサイン類似度で長い詳細な回答に勝ってしまう問題があった、という。そこで4つの検索手法を並走させる設計にした。
+
+- **全文検索**: エラー文字列やホスト名など、埋め込みがぼかしてしまう完全一致トークンを拾う
+- **埋め込み検索**: 語彙が異なる質問と回答（言い換え）を繋ぐ
+- **IDF（逆文書頻度）**: 稀少トークンを含む短いメッセージの順位を上げ、「ありがとう」のような定型句を除外する
+- **鮮度減衰**: 同じ質問に答える複数のスレッドがある場合、半年前より新しいスレッドを優先する
+
+これらのスコアは単独で信頼せず、クエリ時に融合する（RRFの節参照）、と著者は説明する。
+
+## Socket ModeによるSlack取り込みとdistillation
+
+Slackボットをworkspaceにインストールし、Socket Modeで常時WebSocket接続を張ることでポーリングなしにリアルタイム更新を受け取る、と著者は説明する。メッセージイベントが届くと、そのメッセージ単体でなく所属スレッド全体（親メッセージ＋全返信）をSlack APIから再取得し、1行として書き戻す。そのため返信が1件来るたびにスレッド全体・参加者リスト・最終更新時刻が最新化される。
+
+生のSlackテキストはPostgresの全文検索（GIN）インデックスで即座に検索可能になるが、ベクトル検索の精度を上げるためLLMによる「distillation（蒸留）」を挟む。スレッド全体から (1) エンジニアが実際に検索しそうな1行の質問文、(2) 短い要約、(3) 解決策、(4) 言及されたシステム・コード参照、を抽出し、これらを埋め込んで保存する。元の会話ログそのものは埋め込まず、スレッドを一貫したフォーマットに正規化したことで精度が大きく上がった、と著者は述べる。
+
+## Bursting：スレッド要約からこぼれる情報を拾う
+
+長いスレッド内の重要な発言がスレッド単位の要約に反映されないという問題に対し、著者らは「バースト」（同じ発言者による連続メッセージのまとまり）を個別に埋め込む仕組みを導入した。低品質なデータがDBに入らないよう、各バーストは (a) 相対的に稀少なトークンを含む（IDF 4.0以上）、(b) 合計200文字以上、(c) リアクションが付いている、というスコアリング条件の組み合わせで閾値をクリアしたもののみ埋め込む、という。
+
+## コードリポジトリの埋め込み
+
+40GBを超えるリポジトリもある中、著者らは当初コード埋め込みの必要性に懐疑的だった（Claude Codeのような「grepで十分」というツールの台頭を踏まえて）が、Cursorのセマンティック検索に関する知見を参考に試すことにした、と述べる。オープンソースのドキュメント埋め込みフレームワークCocoIndexを採用し、言語ごとの正規表現境界（クラス→メソッド→小ブロックの順にフォールバック）でコードを分割、コミットごとに変更されたチャンクだけを再埋め込みする差分更新にした。
+
+## カスタムデータソースはプラグイン
+
+自前のDBを持つチームがSlackやドキュメントシステムに移行せず既存データのまま同じクエリ面に参加できるよう、カスタムソースを「小さなPythonモジュール（プラグインスクリプト）」として扱う設計にした。共有スキーマに従って行を書き込みさえすれば、他の仕組みは変更なしで動く、という。
+
+## プランニングとツールのファンアウト
+
+クエリごとにまずLLMが軽量な「プランニング」を行い、関連しそうなツール・データソースを選ぶ。主なツール群は subsystem_index（ファイル単位の要約）・search（全ソース横断のベクトルパイプライン）・search_slack・search_code（ripgrep）・recent_prs・who_knows（専門家特定）。プランナーが選んだツールを並列実行し、共通の証拠フォーマットに正規化した上で最終的な統合LLMに渡す、と著者は説明する。
+
+## RRFによるリランキング
+
+複数の検索手法の結果リストは互換性がないため、まずReciprocal Rank Fusion（RRF）で統合する。各ドキュメントは、出現したリストごとに `weight / (60 + rank)` のスコアを加算され（デフォルトweight=1.0、平滑化定数60）、複数の検索手法で中位に安定して現れる文書が、1つの手法だけで1位の文書に勝てる設計になっている、と著者は述べる。重複チャンクを1ソースにマージし、ファイルごとの寄与上限を設けて多様性を確保した上位20件を小型のリランカーモデルに渡して0〜10点でスコアリングし、上位10件を残す。最終的に隣接セクションを補って文脈の欠落を防いだ「証拠パケット」を合成LLMに渡す。
+
+## MCPとWeb UI：同じプリミティブを2つの面で提供
+
+MCP統合では、search・search_slack・search_code・who_knowsといった検索プリミティブをそのまま独立したツールとして公開し、「1つの質問応答エンドポイント」の裏に隠さない設計にした。各ツールはできるだけLLMを介さない単純な設計にし、Claude Codeなど任意のMCPクライアントが自らオーケストレーション役を担えるようにしている、と著者は説明する。一方Web UIでは同じツール群をプランナー→エグゼキューター→シンセサイザーという1本のパイプラインに固定して提供し、ユーザーからは「質問して答えが返る」だけに見える。
+
+## プロジェクト：全文検索の限界に対する組織的スコープ設計
+
+コーパスが増えると「なんでも検索」は機能しなくなった、と著者は述べる。コンパイラチームのエンジニアはインフラのランブックを検索結果に含めたくない、という具合に、チームやイニシアチブに紐づく「プロジェクト」単位でSlackチャンネル・リポジトリ・DB・ドキュメントをまとめ、同じデータソースを複数プロジェクトから参照できる軽量な仕組みにした。
+
+## 問い
+
+- このwikiのquery運用（wiki/index.mdを読んでページを開く）は、本記事の「全文検索＋埋め込み＋IDF＋鮮度減衰」のハイブリッド設計と比べてどこが手薄か。特に鮮度減衰（古い情報が新しい情報に負ける仕組み）は自分のwikiにあるか。
+- 「distillation（蒸留）で正規化してから埋め込む」という設計は、このwikiのページ構造（TL;DR＋本文＋観察ログ）にも当てはまる発想か。ソース生テキストでなく整形済みページを埋め込み対象にする設計と読み替えられるか。
+- [[concepts/openai-data-agent-context-layers]]の6層設計と本記事のプロジェクト単位スコープは、どちらも「全部を1つの検索空間に置かない」という同じ結論に達しているのか。
+
+## 関連
+
+- [[concepts/openai-data-agent-context-layers]] — 同時期に公開された別企業（OpenAI）の社内データエージェント設計。スキーマ＋RAGの限界という同じ出発点から6層コンテキストという別解に至る
+- [[business/dinii-ask-anything]] — RAGでは「過去に誰かが答えた問い」しか拾えないという同じ限界を、read-only調査型エージェントで補う日本の実装事例
+- [[tools/slack-bolt]] — Socket ModeによるリアルタイムSlack取り込みの実装基盤
+- [[concepts/agent-memory-layer]] — 全ツール・全ソースを単一の共有層に集約するという設計思想が共通
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

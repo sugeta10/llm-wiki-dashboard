@@ -66,3 +66,4 @@ flowchart LR
 - [[concepts/claude-code-context-hierarchy]] — Claude Codeの4層コンテキスト階層（Enterprise/Global/Project shared/Project just me）。スコープ軸での層分けという点で類似
 - [[companies/openai]] — 本記事の発信元
 - [[tools/google-knowledge-catalog]] — Google Cloudが提供するマネージド版のメタデータ→エンリッチ→検証済みクエリのパイプライン
+- [[concepts/cerebras-knowledge-base]] — 同時期に公開された別企業（Cerebras）の社内知識ベース設計。プロジェクト単位のスコープ分割という同じ結論に達している

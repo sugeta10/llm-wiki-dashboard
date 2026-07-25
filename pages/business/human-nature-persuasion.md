@@ -40,3 +40,4 @@ Koe は persuasion を道具として位置づけ、「倫理的かどうかは�
 - [[concepts/output-first-learning]] — 「知識は現実でテストしないと意味がない＝出力して反応を見る」学習観で重なる
 - [[concepts/mendokusasa-barrier]] — 人が変わらない本音は「面倒くさい（着手コスト）」＝レバー5「最初の一歩を与える」で下げる着手障壁と同じ心理
 - [[concepts/organizational-maneuvering]] — 「褒めて味方を作る」「上司の不安を先に消す」立ち回りは、生存の緊張を鎮めアイデンティティを満たす心理レバーの実装例
+- [[concepts/creativity-recovery-protocol]] — 同著者Dan Koeによる、創造性の回復を7日間プロトコルで扱う実践論

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>creativity-recovery-protocol - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>creativity-recovery-protocol</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="creativity-recovery-protocol.md">Markdownで表示</a></div>
+  <div class="meta">concepts/creativity-recovery-protocol · concepts · <span title="2026-07-25">今日</span></div>
+  <article><h1>7日間クリエイティビティ回復プロトコル</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 創造性の枯渇は才能の欠如でなく、条件づけ・生産性優先・情報過多という3つの「心を狭める要因」の蓄積であり、7日間の入力遮断→消化→再興味付け→創造というプロトコルで意識的に元へ戻せる、というDan Koe（@thedankoe）の実践論。</p>
+<p>📌 X bookmark: 15,406（2026-07-23 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  D12[&quot;Day1-2 入力遮断&quot;] --&gt; D34[&quot;Day3-4 消化&quot;] --&gt; D56[&quot;Day5-6 再興味付け&quot;] --&gt; D7[&quot;Day7 創造&quot;]</pre>
+<p>Koe は自身が数週間「脳が焼き切れた」状態に陥り、直前の月まで楽に書けていた文章が急に出てこなくなった経験から出発する。原因をAIの多用（vibe codingのスロットマシン的消費）・執筆ルーティンの崩壊・ストレスの複合と自己分析し、創造性を「才能」でなく特定の「意識の状態」として再定義する。</p>
+<h2>心を狭める3つの要因</h2>
+<p>Koe は創造性が失われる原因を3つの「心の狭窄要因（Narrowers of the Mind）」に分解する。</p>
+<ul>
+<li><strong>条件づけ（Conditioning）</strong>: 子供は自由な発想をするが、親・教師・SNSからの否定的フィードバックの蓄積により、20歳を迎える頃には大多数が「他人と同じ考え・信念」に収束していく、とKoeは言う。創造性には信念を緩く持ち、アイデアを即座に否定・断罪しない態度が要る。</li>
+<li><strong>生産性優先（Productivity as a priority）</strong>: 産業化以降、生産性が最上位の価値になり、誰もが「パズルの一片」だけを知る専門家になった。常時締め切りに追われるストレス下の脳は生存モードに入り、新しい繋がりを見出せなくなる、とKoeは主張する。</li>
+<li><strong>無限の入力とゼロの処理時間</strong>: 食べ過ぎが体を鈍らせるように、情報の摂りすぎは「精神の代謝」の処理能力を超えてしまう。創造性は入力の不足でなく処理時間の不足が問題だ、とKoeは言う。</li>
+</ul>
+<h2>真の退屈がもたらす3つの効果</h2>
+<p>Koe は、多くの人が「退屈している」と感じている状態は実際には過剰刺激（overstimulation）であり、真の退屈はその離脱期間の先にあると整理する。真の退屈がもたらす効果として次の3つを挙げる。</p>
+<ul>
+<li><strong>新奇性への入口</strong>: Carl Jung のシャドウワーク（自分の不快な側面と向き合う作業）になぞらえ、退屈に座ることで無意識の洞察が浮上し、外的条件づけの下にある本当の欲求が見えてくる、とKoeは言う。</li>
+<li><strong>ドーパミン受容体の再感作</strong>: 快楽を断つと「快楽の踏み車（hedonic treadmill）」が逆回転し、単純な喜び（散歩中の空の色、料理の香り）が再び鮮明に感じられるようになる。</li>
+<li><strong>明晰さ</strong>: Naval Ravikant の「一人静かに部屋に座っていられないことが人類の全問題の根源」という言葉を引用し、退屈は経験を処理・統合する「センスメイキング」の時間を作ると説明する。</li>
+</ul>
+<h2>7日間プロトコル</h2>
+<ul>
+<li><strong>Day1-2 入力を減らす</strong>: 労働時間を1日4時間程度に区切りアラームで強制終了する。最も無意識に頼っている情報源（通勤中のポッドキャスト、寝る前のスクロール等）を1つ選び断つ。ヘッドホンなし・スマホなしで散歩する。</li>
+<li><strong>Day3-4 すでにあるものを消化する</strong>: 本を1章だけゆっくり読み、引っかかった一文で立ち止まる。10分間何もせず座る（瞑想アプリは使わない）。散歩を続け、これまで気づかなかったディテールに注意を向ける。</li>
+<li><strong>Day5-6 再び人生に興味を持つ</strong>: アイデアが浮かんでもメモを取るのを我慢し、その思考の流れに乗り続ける。5分の「近況報告」ではない本物の会話を1つ持つ。</li>
+<li><strong>Day7 生まれたもので創造する</strong>: 計画を立てずに何かを作る(執筆・絵・20分の音声メモ・レシピなしの料理)。作ったものはすぐ公開せず、最低24時間置いてから判断する。</li>
+</ul>
+<p>Koe はこの7日間の設計を、アイデアを生む「生成的思考」とそれを判断・編集する「評価的思考」を意図的に分離する仕組みだと位置づける。両者を同時に行うと、生成側の潜在力が抑え込まれるという。</p>
+<h2>プロジェクトを持つことの重要性</h2>
+<p>Koe は最後に、意味のある「取り組む対象（プロジェクト）」がなければ、7日間プロトコルで凪いだ心もただ漂うだけだと述べる。良いプロジェクトの条件として (1) 自分にとってまだ未解決である、(2) 本気で気にかけている、(3) 文章・コード・会話など何らかの形で共有可能である、の3つを挙げる。プロジェクトを持つと、街で耳にした会話や本の一文までもが「創造の燃料」に変わる、とKoeは言う。</p>
+<h2>問い</h2>
+<ul>
+<li>3つの狭窄要因（条件づけ・生産性優先・情報過多）は自分のwiki運用（毎日のingest・大量情報の処理）にも当てはまるか。真の退屈を意図的に作る時間をどこに置けるか。</li>
+<li>「生成的思考と評価的思考を分離する」という発想は、Weekly Insightsの執筆プロセス（情報収集→統合）にも応用できるか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/mental-conditioning.html">mental-conditioning</a> — 同じく「休息」を意志力でなく構造で設計する発想。ただしこちらは不安の鎮静が目的、本ページは創造性の回復が目的</li>
+<li><a href="../business/human-nature-persuasion.html">human-nature-persuasion</a> — 同著者Dan Koe（@thedankoe）による人間本性理解のメタスキル論</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/human-nature-persuasion.html">human-nature-persuasion</a></li>
+<li><a href="../concepts/mental-conditioning.html">mental-conditioning</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2036824811712942576" rel="noopener" target="_blank">https://x.com/i/web/status/2036824811712942576</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 7日間クリエイティビティ回復プロトコル
+
+&gt; **TL;DR**: 創造性の枯渇は才能の欠如でなく、条件づけ・生産性優先・情報過多という3つの「心を狭める要因」の蓄積であり、7日間の入力遮断→消化→再興味付け→創造というプロトコルで意識的に元へ戻せる、というDan Koe（@thedankoe）の実践論。
+
+&gt; 📌 X bookmark: 15,406（2026-07-23 時点）
+
+```mermaid
+flowchart LR
+  D12[&quot;Day1-2 入力遮断&quot;] --&gt; D34[&quot;Day3-4 消化&quot;] --&gt; D56[&quot;Day5-6 再興味付け&quot;] --&gt; D7[&quot;Day7 創造&quot;]
+```
+
+Koe は自身が数週間「脳が焼き切れた」状態に陥り、直前の月まで楽に書けていた文章が急に出てこなくなった経験から出発する。原因をAIの多用（vibe codingのスロットマシン的消費）・執筆ルーティンの崩壊・ストレスの複合と自己分析し、創造性を「才能」でなく特定の「意識の状態」として再定義する。
+
+## 心を狭める3つの要因
+
+Koe は創造性が失われる原因を3つの「心の狭窄要因（Narrowers of the Mind）」に分解する。
+
+- **条件づけ（Conditioning）**: 子供は自由な発想をするが、親・教師・SNSからの否定的フィードバックの蓄積により、20歳を迎える頃には大多数が「他人と同じ考え・信念」に収束していく、とKoeは言う。創造性には信念を緩く持ち、アイデアを即座に否定・断罪しない態度が要る。
+- **生産性優先（Productivity as a priority）**: 産業化以降、生産性が最上位の価値になり、誰もが「パズルの一片」だけを知る専門家になった。常時締め切りに追われるストレス下の脳は生存モードに入り、新しい繋がりを見出せなくなる、とKoeは主張する。
+- **無限の入力とゼロの処理時間**: 食べ過ぎが体を鈍らせるように、情報の摂りすぎは「精神の代謝」の処理能力を超えてしまう。創造性は入力の不足でなく処理時間の不足が問題だ、とKoeは言う。
+
+## 真の退屈がもたらす3つの効果
+
+Koe は、多くの人が「退屈している」と感じている状態は実際には過剰刺激（overstimulation）であり、真の退屈はその離脱期間の先にあると整理する。真の退屈がもたらす効果として次の3つを挙げる。
+
+- **新奇性への入口**: Carl Jung のシャドウワーク（自分の不快な側面と向き合う作業）になぞらえ、退屈に座ることで無意識の洞察が浮上し、外的条件づけの下にある本当の欲求が見えてくる、とKoeは言う。
+- **ドーパミン受容体の再感作**: 快楽を断つと「快楽の踏み車（hedonic treadmill）」が逆回転し、単純な喜び（散歩中の空の色、料理の香り）が再び鮮明に感じられるようになる。
+- **明晰さ**: Naval Ravikant の「一人静かに部屋に座っていられないことが人類の全問題の根源」という言葉を引用し、退屈は経験を処理・統合する「センスメイキング」の時間を作ると説明する。
+
+## 7日間プロトコル
+
+- **Day1-2 入力を減らす**: 労働時間を1日4時間程度に区切りアラームで強制終了する。最も無意識に頼っている情報源（通勤中のポッドキャスト、寝る前のスクロール等）を1つ選び断つ。ヘッドホンなし・スマホなしで散歩する。
+- **Day3-4 すでにあるものを消化する**: 本を1章だけゆっくり読み、引っかかった一文で立ち止まる。10分間何もせず座る（瞑想アプリは使わない）。散歩を続け、これまで気づかなかったディテールに注意を向ける。
+- **Day5-6 再び人生に興味を持つ**: アイデアが浮かんでもメモを取るのを我慢し、その思考の流れに乗り続ける。5分の「近況報告」ではない本物の会話を1つ持つ。
+- **Day7 生まれたもので創造する**: 計画を立てずに何かを作る(執筆・絵・20分の音声メモ・レシピなしの料理)。作ったものはすぐ公開せず、最低24時間置いてから判断する。
+
+Koe はこの7日間の設計を、アイデアを生む「生成的思考」とそれを判断・編集する「評価的思考」を意図的に分離する仕組みだと位置づける。両者を同時に行うと、生成側の潜在力が抑え込まれるという。
+
+## プロジェクトを持つことの重要性
+
+Koe は最後に、意味のある「取り組む対象（プロジェクト）」がなければ、7日間プロトコルで凪いだ心もただ漂うだけだと述べる。良いプロジェクトの条件として (1) 自分にとってまだ未解決である、(2) 本気で気にかけている、(3) 文章・コード・会話など何らかの形で共有可能である、の3つを挙げる。プロジェクトを持つと、街で耳にした会話や本の一文までもが「創造の燃料」に変わる、とKoeは言う。
+
+## 問い
+
+- 3つの狭窄要因（条件づけ・生産性優先・情報過多）は自分のwiki運用（毎日のingest・大量情報の処理）にも当てはまるか。真の退屈を意図的に作る時間をどこに置けるか。
+- 「生成的思考と評価的思考を分離する」という発想は、Weekly Insightsの執筆プロセス（情報収集→統合）にも応用できるか。
+
+## 関連
+
+- [[concepts/mental-conditioning]] — 同じく「休息」を意志力でなく構造で設計する発想。ただしこちらは不安の鎮静が目的、本ページは創造性の回復が目的
+- [[business/human-nature-persuasion]] — 同著者Dan Koe（@thedankoe）による人間本性理解のメタスキル論
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>
