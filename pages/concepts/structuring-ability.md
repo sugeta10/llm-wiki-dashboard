@@ -49,3 +49,4 @@ flowchart LR
 - [[business/org-design-intelligence]] — 組織を目標→評価→基準で設計し直す議論。本ページの「組織の内部構造の分解」と同じ対象を組織設計の側から扱う
 - [[concepts/output-first-learning]] — 学びを構造化して他者に届く形へ昇華する実践。構造化力の出力面と地続き
 - [[concepts/agent-reflection-layer]] — 同著者(@kenichiota0711)のメタ認知連載。判断を言語化し構造（垂直の層）として外に出す設計論
+- [[concepts/linguistic-hedging]] — 「〜な感じ」を事実・推測・感情・状態に分解する話し方の矯正法。曖昧な概念を要素分解する「分けて見る」操作の実践例

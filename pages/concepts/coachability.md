@@ -36,3 +36,4 @@
 - [[concepts/output-first-learning]]（素直に学ぶ人が取る具体的学習法）
 - [[concepts/mental-conditioning]]（恐れを扱うメンタルコンディショニング）
 - [[concepts/team-leader-transition]]（フィードバックを"与える"側・心理的安全性を率直さの設計として使う新任リーダー論）
+- [[concepts/linguistic-hedging]]（言い切って外れた責任を引き受ける率直さと、コーチャビリティが要求する正直さの表裏関係）
