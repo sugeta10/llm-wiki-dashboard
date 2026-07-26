@@ -36,3 +36,4 @@ before next run, read the last 10
 - [[design/ai-skills-design]] — AIエージェントのスキル概念とデザイン職のスキルが交差する現状考察
 - [[concepts/skill-self-improving-loop]] — 本パターンを別セッション・別スキルに外部化した3段ループ（会話履歴→Issue→Routines→triage→PR）
 - [[concepts/agent-reflection-layer]] — decisions-log＋週次パターン昇格でエージェントに省察層を持たせる設計。本パターンをメタ認知の枠組みで一般化したもの
+- [[concepts/agent-skill-eight-layer-design]] — 「成功した会話からSkillを抽出する」プロンプトはGotcha蓄積を事後ログでなく初回設計時に一括抽出する変種

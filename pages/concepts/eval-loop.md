@@ -78,3 +78,4 @@ eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
 - [[concepts/loop-anatomy]] — ループ1ターンの5ムーブ分解。検証ムーブの設計指針（行動する評価器・maker–checker 停止判定・デフォルトは疑い）が eval loop の実装ヒント
 - [[concepts/parallel-e2e-testing]] — E2Eテストの「Iron Law」明文化＋AIスキルでの機械的強制。テスト領域での同型の品質ゲート実装
 - [[tools/no-ai-slop]] — 編集後に`eval.md`で自己採点する、文章生成領域での同型の自己検査ゲート
+- [[concepts/agent-skill-eight-layer-design]] — Checker層（生成役と評価役の分離、証拠付きJSON評価）が本ページのeval loopと同型構造

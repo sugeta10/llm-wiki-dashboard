@@ -63,3 +63,4 @@ Anthropic社内では数百のスキルが実運用されており、その分�
 - [[tools/ui-skills]] — UIエンジニア向け専門スキルカタログ（アクセシビリティ・アニメーション・Tailwind）の実例
 - [[concepts/agent-skill-management-system]] — 本ページの「作り方」が前提とする、増加後の管理問題（発見・ライフサイクル・ガバナンス・合成・評価）
 - [[concepts/parallel-e2e-testing]] — 「Product verification」カテゴリの実例。E2E作成スキルでflaky対策チェックリストを機械強制する実践
+- [[concepts/agent-skill-eight-layer-design]] — 海外実務家による別の切り口（8層アーキテクチャ＋ループ強度3段階）。本ページの9カテゴリ分類と併用できる
