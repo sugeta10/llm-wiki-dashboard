@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>end-of-task-assignment - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>end-of-task-assignment</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="end-of-task-assignment.md">Markdownで表示</a></div>
+  <div class="meta">business/end-of-task-assignment · business · <span title="2026-07-27">今日</span></div>
+  <article><h1>タスク切り出し・割り振りの終焉</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 要件をタスクへ切り出し人に割り振るという開発の分業構造そのものがAIエージェントに吸収されつつあり、残る人間の役割は「パイプラインを組む人」と「レビューする人」の2つに収束するという論。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;要件定義&quot;] --&gt; B[&quot;設計&quot;] --&gt; C[&quot;タスク切り出し・割り振り&quot;] --&gt; D[&quot;実装・PR&quot;] --&gt; E[&quot;レビュー・マージ&quot;]
+  C -.AIエージェントが吸収.-&gt; F[&quot;パイプラインを組む人&quot;]
+  D -.AIエージェントが吸収.-&gt; F
+  E --&gt; G[&quot;レビューする人&quot;]</pre>
+<p>象徴的な事例としてSpotifyが挙げられる。同社は社内のバックグラウンドコーディングエージェントで既に1,500件超のAI生成PRをマージしており、その基盤である全社的な変更管理の仕組みは2024年だけで約65万件の自動PRを処理し、多くは人間レビューを介さず自動マージされている。awesome_kou氏（Zenn、2026-07）は、この事例の本質を「優秀なエンジニアを大量に雇って細かいタスクを割り振ることではなく、エージェントが安全に走り続けるパイプラインを整備すること」だったと分析し、Spotifyが決算で語った「最も優秀なエンジニアは去年の12月以降、一行もコードを書いていない」という発言を、コードを書くのをやめてパイプラインを設計しレビューする側に回った証拠として引用する。</p>
+<p>著者はこの構造変化を、あらゆる工程に人間を挟み込むhuman-in-the-loopから、エージェントに実行を任せて要所だけを人間が監督するhuman-on-the-loopへの重心移動と位置づける。パイプラインを組む人が踏まえるべき制約として「35分問題」を紹介しており、人間がやれば35分を超える長さのタスクになるとエージェントの成功率が急落するという観測を挙げ、これを「ループエンジニアリング」——プロンプトを一発ずつ手で打つのでなく、エージェントが検証されながら走り続けるループそのものを設計すること——という言葉で言い換えている。</p>
+<p>この構造変化は個人だけでなく、実装にかかる人月を稼ぎの源にする受託開発会社・SES企業にも同じ圧力をかけると著者は指摘する。SESは「エンジニアの時間」を、受託は「工数見積もりに基づく成果物」を売っているが、値付けの土台がどちらも「実装にかかる人月」である以上、実装が安く速く大量にこなせるようになるほど両者とも利幅を削られる。著者は、割り振り型の開発ではコストが仕事量にほぼ比例する変動費であるのに対し、エージェント前提のチームはパイプライン整備というほぼ固定費に置き換えており、規模が大きくなるほどこのコスト差が開くと論じる。割り振り型に依存してきた組織ほど検証ゲート・テスト基盤・標準化への投資を先送りしてきた分、移行の出発点で出遅れているとも指摘する。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-07-27: 「AIを本格導入したチームでジュニア開発者の需要が40%減少した」という分析結果（出典・調査主体は本記事内で未特定）</li>
+<li>2026-07-27: 「タスクの所要時間が倍になると失敗率はおよそ4倍になる」という35分問題の倍率則（出典未特定）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>Spotifyの事例は「魔法ではなく15年分のインフラ投資の産物」とされる。自組織や自分のwiki運用がパイプラインに投資できていない場合、どこから着手すべきか</li>
+<li>「パイプラインを組む人」と「レビューする人」は本当に排他的な2つの役割なのか、それとも同一人物が両方を兼ねる形が主流になっていくのか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a> — 受託・SI業界への影響という同じ問題意識をfladdict氏が別の類比（コンビニPB戦略）で論じる</li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> — 「エンジニアがコードを書かなくなった」という同型の観測をAnthropic内部でも報告</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — 本記事が言及する「ループエンジニアリング」という言葉の詳細な系譜・構成要素</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/awesome_kou/articles/end-of-task-assignment-dev" rel="noopener" target="_blank">https://zenn.dev/awesome_kou/articles/end-of-task-assignment-dev</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># タスク切り出し・割り振りの終焉
+
+&gt; **TL;DR**: 要件をタスクへ切り出し人に割り振るという開発の分業構造そのものがAIエージェントに吸収されつつあり、残る人間の役割は「パイプラインを組む人」と「レビューする人」の2つに収束するという論。
+
+```mermaid
+flowchart LR
+  A[&quot;要件定義&quot;] --&gt; B[&quot;設計&quot;] --&gt; C[&quot;タスク切り出し・割り振り&quot;] --&gt; D[&quot;実装・PR&quot;] --&gt; E[&quot;レビュー・マージ&quot;]
+  C -.AIエージェントが吸収.-&gt; F[&quot;パイプラインを組む人&quot;]
+  D -.AIエージェントが吸収.-&gt; F
+  E --&gt; G[&quot;レビューする人&quot;]
+```
+
+象徴的な事例としてSpotifyが挙げられる。同社は社内のバックグラウンドコーディングエージェントで既に1,500件超のAI生成PRをマージしており、その基盤である全社的な変更管理の仕組みは2024年だけで約65万件の自動PRを処理し、多くは人間レビューを介さず自動マージされている。awesome_kou氏（Zenn、2026-07）は、この事例の本質を「優秀なエンジニアを大量に雇って細かいタスクを割り振ることではなく、エージェントが安全に走り続けるパイプラインを整備すること」だったと分析し、Spotifyが決算で語った「最も優秀なエンジニアは去年の12月以降、一行もコードを書いていない」という発言を、コードを書くのをやめてパイプラインを設計しレビューする側に回った証拠として引用する。
+
+著者はこの構造変化を、あらゆる工程に人間を挟み込むhuman-in-the-loopから、エージェントに実行を任せて要所だけを人間が監督するhuman-on-the-loopへの重心移動と位置づける。パイプラインを組む人が踏まえるべき制約として「35分問題」を紹介しており、人間がやれば35分を超える長さのタスクになるとエージェントの成功率が急落するという観測を挙げ、これを「ループエンジニアリング」——プロンプトを一発ずつ手で打つのでなく、エージェントが検証されながら走り続けるループそのものを設計すること——という言葉で言い換えている。
+
+この構造変化は個人だけでなく、実装にかかる人月を稼ぎの源にする受託開発会社・SES企業にも同じ圧力をかけると著者は指摘する。SESは「エンジニアの時間」を、受託は「工数見積もりに基づく成果物」を売っているが、値付けの土台がどちらも「実装にかかる人月」である以上、実装が安く速く大量にこなせるようになるほど両者とも利幅を削られる。著者は、割り振り型の開発ではコストが仕事量にほぼ比例する変動費であるのに対し、エージェント前提のチームはパイプライン整備というほぼ固定費に置き換えており、規模が大きくなるほどこのコスト差が開くと論じる。割り振り型に依存してきた組織ほど検証ゲート・テスト基盤・標準化への投資を先送りしてきた分、移行の出発点で出遅れているとも指摘する。
+
+## 観察ログ（未検証）
+
+- 2026-07-27: 「AIを本格導入したチームでジュニア開発者の需要が40%減少した」という分析結果（出典・調査主体は本記事内で未特定）
+- 2026-07-27: 「タスクの所要時間が倍になると失敗率はおよそ4倍になる」という35分問題の倍率則（出典未特定）
+
+## 問い
+
+- Spotifyの事例は「魔法ではなく15年分のインフラ投資の産物」とされる。自組織や自分のwiki運用がパイプラインに投資できていない場合、どこから着手すべきか
+- 「パイプラインを組む人」と「レビューする人」は本当に排他的な2つの役割なのか、それとも同一人物が両方を兼ねる形が主流になっていくのか
+
+## 関連
+
+- [[business/ai-vertical-integration]] — 受託・SI業界への影響という同じ問題意識をfladdict氏が別の類比（コンビニPB戦略）で論じる
+- [[concepts/recursive-self-improvement]] — 「エンジニアがコードを書かなくなった」という同型の観測をAnthropic内部でも報告
+- [[concepts/loop-engineering]] — 本記事が言及する「ループエンジニアリング」という言葉の詳細な系譜・構成要素
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

@@ -94,3 +94,4 @@ NTT・ソフトバンク・KDDI・NEC・[[companies/fujitsu]]・SCSK・TIS・ア
 - [[concepts/palantir-ontology]] — FDEが組み上げる企業の世界モデル
 - [[business/ai-income-retirement-strategy]] — 個人レベルのAI×資本戦略
 - [[people/fladdict]] — 著者プロフィール
+- [[business/end-of-task-assignment]] — 同じ受託・SES業界への影響を、Spotify事例とhuman-on-the-loopという別の切り口で論じる

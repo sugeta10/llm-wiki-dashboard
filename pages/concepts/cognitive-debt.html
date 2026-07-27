@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cognitive-debt - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>cognitive-debt</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cognitive-debt.md">Markdownで表示</a></div>
+  <div class="meta">concepts/cognitive-debt · concepts · <span title="2026-07-27">今日</span></div>
+  <article><h1>認知的負債（Cognitive Debt）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIの生成速度に人間の理解が追いつかないとき、その理解不足は開発者の頭の中に蓄積する「認知的負債」になる——shin1x1氏は「説明できないものは出さない」という個人的なリリース基準でこれに対抗する。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;成果物を事前に想像&quot;] --&gt; B[&quot;生成結果と答え合わせ&quot;]
+  B --&gt;|一致| C[&quot;想像が確信に→理解深化&quot;]
+  B --&gt;|ズレ| D[&quot;違和感→質問・裏取り&quot;]
+  D --&gt; C
+  C --&gt; A</pre>
+<p>AIエージェントに実装を任せると、人間が確認する待ち時間を省くほど成果物のペースはエージェントの生成速度そのものになる。だが shin1x1 氏（個人ブログ、2026-07）は、この理解を手放して得られる速度よりも、失う三つのもの——違和感に気づく検証能力、触ることへの恐怖が膨らまない変更のしやすさ、システムを改善していくための元手——の方が大きいと述べ、止まってでも理解を確保する運用に至っている。</p>
+<p>理解には粒度や抽象度があり、0か1かの二択ではない、と shin1x1 氏は指摘する。成果物を事前に想像しておけば生成結果との答え合わせができ、ズレがあれば違和感として質問が生まれ、一致すれば想像が確信に変わる。どちらに転んでも理解は深まる。逆に理解を手放すと答え合わせ自体ができず、判断の根拠がないまま成果物が積み上がり、理解しないままの成果物が増えるほど次の成果物はさらに想像できなくなるという自己強化ループが働く。</p>
+<p>同種の問題意識は他の論者にも見られる。Geoffrey Litt氏は「Understanding is the new bottleneck」というエントリで、AIがコードを書く速度が上がるほど人間がシステムを理解する速度が新しいボトルネックになると指摘する。Margaret-Anne Storey氏は「How Generative and Agentic AI Shift Concern from Technical Debt to Cognitive Debt」というエントリで、生成AI・エージェントの普及によって懸念はコードに宿る技術的負債から開発者の頭の中に宿る認知的負債へシフトすると論じ、緩和策の一つとして「AIが生成した変更は、リリース前に少なくとも一人の人間が完全に理解していることを必須にする」を挙げている。Storey氏が引くPeter Naurの「プログラムとは、ソースコードそのものではなく、開発者の頭の中に生きる理論（theory）である」という言葉を借りれば、理解を手放さないとはこの理論を持ち続けることだとshin1x1氏は述べる。</p>
+<p>実践面では、変更の目的・実現方法の骨子・影響範囲と検証方法の三点を自分の言葉で説明できることを理解の目安とし、AIの説明は出典に自ら当たって裏取りし、動くコードやコマンドで挙動を確かめ、「何を聞くべきか」自体をエージェントに出させる、といった手段で理解を補っているとshin1x1氏は述べる。なお本エントリの前提として、ある程度成果物を想像できるだけの経験があることを挙げており、経験が浅いうちは並列で回さず一つのタスクをAIと一緒に進めながら理解を作ることを勧めている。</p>
+<h2>問い</h2>
+<ul>
+<li>「理解の抽象度をどの粒度で握るか」という基準を、自分のwiki運用やスクリプト開発にどう適用しているか。ingest結果やvalidate_wiki.pyの出力をどこまで自分の言葉で説明できるか</li>
+<li>Geoffrey Litt氏・Storey氏の「認知的負債」という言葉は今後どう定着していくか、他の論者の言及を追いたい</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> — 「人間のコードレビューが新たなボトルネックになった」というAmdahlの法則の観測と、本ページの「理解がボトルネックになる」という指摘は同じ現象の別側面</li>
+<li><a href="../people/uncle-bob-martin.html">uncle-bob-martin</a> — 「エージェントが書いたコードは一切読まない」という対極の戦略を明言する実践者。理解を手放す方に賭けた事例として対比になる</li>
+<li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a> — AI開発は速さでなく品質のスケールが本質という論点と接続</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-quality-amplification.html">ai-quality-amplification</a></li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li>
+<li><a href="../people/uncle-bob-martin.html">uncle-bob-martin</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://blog.shin1x1.com/entry/dont-let-go-of-understanding" rel="noopener" target="_blank">https://blog.shin1x1.com/entry/dont-let-go-of-understanding</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 認知的負債（Cognitive Debt）
+
+&gt; **TL;DR**: AIの生成速度に人間の理解が追いつかないとき、その理解不足は開発者の頭の中に蓄積する「認知的負債」になる——shin1x1氏は「説明できないものは出さない」という個人的なリリース基準でこれに対抗する。
+
+```mermaid
+flowchart LR
+  A[&quot;成果物を事前に想像&quot;] --&gt; B[&quot;生成結果と答え合わせ&quot;]
+  B --&gt;|一致| C[&quot;想像が確信に→理解深化&quot;]
+  B --&gt;|ズレ| D[&quot;違和感→質問・裏取り&quot;]
+  D --&gt; C
+  C --&gt; A
+```
+
+AIエージェントに実装を任せると、人間が確認する待ち時間を省くほど成果物のペースはエージェントの生成速度そのものになる。だが shin1x1 氏（個人ブログ、2026-07）は、この理解を手放して得られる速度よりも、失う三つのもの——違和感に気づく検証能力、触ることへの恐怖が膨らまない変更のしやすさ、システムを改善していくための元手——の方が大きいと述べ、止まってでも理解を確保する運用に至っている。
+
+理解には粒度や抽象度があり、0か1かの二択ではない、と shin1x1 氏は指摘する。成果物を事前に想像しておけば生成結果との答え合わせができ、ズレがあれば違和感として質問が生まれ、一致すれば想像が確信に変わる。どちらに転んでも理解は深まる。逆に理解を手放すと答え合わせ自体ができず、判断の根拠がないまま成果物が積み上がり、理解しないままの成果物が増えるほど次の成果物はさらに想像できなくなるという自己強化ループが働く。
+
+同種の問題意識は他の論者にも見られる。Geoffrey Litt氏は「Understanding is the new bottleneck」というエントリで、AIがコードを書く速度が上がるほど人間がシステムを理解する速度が新しいボトルネックになると指摘する。Margaret-Anne Storey氏は「How Generative and Agentic AI Shift Concern from Technical Debt to Cognitive Debt」というエントリで、生成AI・エージェントの普及によって懸念はコードに宿る技術的負債から開発者の頭の中に宿る認知的負債へシフトすると論じ、緩和策の一つとして「AIが生成した変更は、リリース前に少なくとも一人の人間が完全に理解していることを必須にする」を挙げている。Storey氏が引くPeter Naurの「プログラムとは、ソースコードそのものではなく、開発者の頭の中に生きる理論（theory）である」という言葉を借りれば、理解を手放さないとはこの理論を持ち続けることだとshin1x1氏は述べる。
+
+実践面では、変更の目的・実現方法の骨子・影響範囲と検証方法の三点を自分の言葉で説明できることを理解の目安とし、AIの説明は出典に自ら当たって裏取りし、動くコードやコマンドで挙動を確かめ、「何を聞くべきか」自体をエージェントに出させる、といった手段で理解を補っているとshin1x1氏は述べる。なお本エントリの前提として、ある程度成果物を想像できるだけの経験があることを挙げており、経験が浅いうちは並列で回さず一つのタスクをAIと一緒に進めながら理解を作ることを勧めている。
+
+## 問い
+
+- 「理解の抽象度をどの粒度で握るか」という基準を、自分のwiki運用やスクリプト開発にどう適用しているか。ingest結果やvalidate_wiki.pyの出力をどこまで自分の言葉で説明できるか
+- Geoffrey Litt氏・Storey氏の「認知的負債」という言葉は今後どう定着していくか、他の論者の言及を追いたい
+
+## 関連
+
+- [[concepts/recursive-self-improvement]] — 「人間のコードレビューが新たなボトルネックになった」というAmdahlの法則の観測と、本ページの「理解がボトルネックになる」という指摘は同じ現象の別側面
+- [[people/uncle-bob-martin]] — 「エージェントが書いたコードは一切読まない」という対極の戦略を明言する実践者。理解を手放す方に賭けた事例として対比になる
+- [[concepts/ai-quality-amplification]] — AI開発は速さでなく品質のスケールが本質という論点と接続
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

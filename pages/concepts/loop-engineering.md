@@ -157,3 +157,4 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[concepts/fable-sprint-strategy]] — 週50%制限下で「ループ設計が腕の見せ所」になる実践記録（Planner/Evaluator=Fable・Generator=下位モデル・@AI_masaou）
 - [[concepts/dynamic-agent-org]] — 「loopがエージェント単体を、graphがエージェント組織構造をプログラム可能にする」という次の抽象化レイヤー（@Saboo_Shubham_）。Stage 5のループ階層化と軸が異なる、組織図そのものの可変性
 - [[concepts/graph-engineering]] — ループのさらに一段上の抽象化レイヤー。同じ@0xCodezによるハーネス→ループ→グラフ3部作の最終層
+- [[business/end-of-task-assignment]] — 「35分問題」への言及とともに、ループ設計を割り振り型開発の終焉というキャリア論の文脈に位置づける

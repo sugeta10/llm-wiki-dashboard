@@ -36,3 +36,4 @@ AIは各品質特性の**作り込み速度**を上げる増幅器として機�
 - [[concepts/recursive-self-improvement]] — Claude製コードが人間と「概ね同等」へ、人間レビューが新ボトルネック化という対応する観測
 - [[concepts/ai-era-good-engineer]] — 「AIは増幅器」を含むLayerXのAI時代エンジニア像
 - [[business/talent-to-value-ai]] — 「AIで価値を増幅できる人をどう見極めるか」を人材戦略に落としたマッキンゼーのフレーム
+- [[concepts/cognitive-debt]] — 品質のスケールには人間の理解が必要という論点を「理解を手放さない」実践論として展開
