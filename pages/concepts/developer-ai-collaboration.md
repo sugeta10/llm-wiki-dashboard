@@ -66,3 +66,4 @@ Agent Skill を自己改善させることで処理能力を継続向上。失�
 - [[concepts/self-refining-skills]]
 - [[concepts/vibe-coding]]
 - [[concepts/ai-quality-amplification]] — AIは増幅器であり、品質をスケールする視点
+- [[people/uncle-bob-martin]] — 「結果は形名参同で厳密に確認する」本ページの原則と対比になる「コードを一切読まない」極端な信頼モデル

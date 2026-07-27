@@ -23,3 +23,4 @@
 - [[agentic-engineering-workflow]] — 人間が手をやめてシグナルになる委譲側の総合スタック
 - [[claude-code-orchestration]] — 複数エージェントの並列運用フレーム。高速制御ループとは逆方向のスタイル
 - [[agentic-coding]] — エージェントが計画・実装・検証を自律ループする開発スタイル
+- [[people/uncle-bob-martin]] — 「エージェントのコードを一切読まない」という委譲低速ループの極端な実例

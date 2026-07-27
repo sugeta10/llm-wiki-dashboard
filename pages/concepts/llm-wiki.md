@@ -140,3 +140,4 @@ tsurubee が運用で感じた根本的な限界。LLM が概念ページを綺�
 - [[concepts/output-first-learning]] — 「理解のボトルネック」対策と通じる、読んだものを自分の理解に再構成する血肉化法
 - [[tools/notebooklm]] — 要約特化の代替。tsurubeeは「サマリーだけなら NotebookLM で足りる、差は概念ページの繋げる力」とする
 - [[concepts/second-brain-operations]] — 本思想を「維持ループのモデルティア振り分け・skeptic付きリサーチ・pay-per-read」まで含むフル運用設計に落とした実装ガイド（@EXM7777）
+- [[tools/hermes-agent-personal-vault]] — 「メモリは索引、知識はファイルに」という本思想をHermes Agent向け6プロンプトに具体化した個人生活ナレッジベース構築ガイド

@@ -99,3 +99,4 @@ Hermesを「チャットアプリ」として使うと機能の90%を残すこ�
 - [[tools/hermes-agent-self-evolution]] — GEPAによるスキル/プロンプト/コードのオフライン進化を担う独立リポ（5フェーズ計画・ガードレール5項目）
 - [[tools/hermes-agent-research-department]] — プロファイル分離を使った3エージェント（Scout/Analyst/Briefer）リサーチ部門の具体的構築ガイド
 - [[business/startups-for-agents]] — 本ツールがエージェントの動く「ハーネス」の例として名指しされた投資テーゼ（@gregisenberg）
+- [[tools/hermes-agent-personal-vault]] — メモリ2.2k字上限を回避しObsidianボルトを個人生活ナレッジベース化する6プロンプト構築ガイド

@@ -80,3 +80,4 @@ OpenAI・Anthropic・ThoughtWorksが調整なく同じ壁にぶつかり、異�
 - [[concepts/loop-anatomy]] — 1階上のループを5ムーブに解剖した枠組み。本ページの Generator/Evaluator 分離（Rajasekaran）を検証ムーブの中核として詳述
 - [[business/startups-for-agents]] — ハーネスがデフォルトで読み込むツールになれば「golden」という投資テーゼ（@gregisenberg）。ハーネスをビジネス機会の側から見る視点
 - [[tools/oh-my-openagent]] — Hashline（The Harness Problem / Can Bölük）を実装したエージェント基盤。「失敗はモデルでなく編集ツールのせい」という具体的打ち手
+- [[people/uncle-bob-martin]] — 「エージェントのコードは読まず極端な制約で囲む」という著名実践者による体現事例

@@ -71,3 +71,4 @@ vaultは読むコストがリターンを下回るときだけ長期に機能す
 - [[concepts/claude-code-instruction-methods]] — CLAUDE.md 200行未満・索引に徹せの公式フレーム
 - [[concepts/token-management]] — 読むコストを経営イシューとして扱う同系の視点
 - [[concepts/llm-model-selection-strategy]] — ルーチンは安モデル・シンセシスのみ上位モデルという工程分解の一般形
+- [[tools/hermes-agent-personal-vault]] — 別著者・別ツールでas_of日付・supersede運用・「直さず報告するだけの週次監査」という骨格が独立収斂した事例
