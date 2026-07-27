@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-W31 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb9a0"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-W31</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="2026-W31.md">Markdownで表示</a></div>
+  <div class="meta">weekly/2026-W31 · weekly · <span title="2026-07-27">今日</span></div>
+  <article><h1>Weekly Insights: 2026-W31（2026-07-27〜08-02）</h1>
+<h2>今週のホットトピック</h2>
+<p><img alt="infographic-hot-topics.png" src="2026-W31/infographic-hot-topics.png"></p>
+<ul>
+<li><strong><a href="../concepts/agent-skill-eight-layer-design.html">agent-skill-eight-layer-design</a> Agent Skillの生成役と評価役を分離する8層設計</strong> — 「高品質に作ってください」という曖昧な指示を、HARD GATES/DEFAULTS/PREFERENCESという検査可能な契約とMaker/Checkerの分離に変換するフレームワーク。</li>
+<li><strong><a href="../design/ochiai-ai-design-method.html">ochiai-ai-design-method</a> AIデザインは「別AIに監査させる」ことで凡庸さを抜ける</strong> — 落合式7原理の要は、制作と採点を同じAIにさせず、却下理由そのものを次の生成条件として蓄積すること。</li>
+<li><strong><a href="../tools/no-ai-slop.html">no-ai-slop</a> AIスロップを機械的パターンで検出し自己採点するスキル</strong> — 20種以上の「AIっぽさ」パターンをカタログ化し、生成後に自身の作業をeval.mdの基準で検査するゲートを内蔵する（X bookmark 9,690）。</li>
+<li><strong><a href="../concepts/creativity-recovery-protocol.html">creativity-recovery-protocol</a> 創造性回復の核心は生成的思考と評価的思考の分離</strong> — Dan Koeの7日間プロトコルは、入力遮断と消化の期間を置くことで「作る」判断と「評価する」判断を意図的に切り離す仕組みだ（X bookmark 15,406）。</li>
+</ul>
+<h3>深掘り</h3>
+<p><strong><a href="../concepts/agent-skill-eight-layer-design.html">agent-skill-eight-layer-design</a> Agent Skillの生成役と評価役を分離する8層設計</strong>
+8層パイプラインの要は第6層Checker——生成した本人に自己採点させると「大きな問題ではない」と甘くなりやすいため、可能ならクリーンな文脈で別途起動し、評価結果を感想でなく criterion_id / expected / observed / evidence / severity を含む証拠付きJSONで返させる。この分離は、すべての指示をHARD GATES（違反したら不合格にする絶対条件）・DEFAULTS・PREFERENCESの3段階に変換する第4層Rule Compilerとセットで機能し、「ダミー実装は禁止」を「クリックしても状態が変化しない主要ボタンがあれば不合格」のような検査可能な条件へ書き換える。</p>
+<p><strong><a href="../design/ochiai-ai-design-method.html">ochiai-ai-design-method</a> AIデザインは「別AIに監査させる」ことで凡庸さを抜ける</strong>
+7原理の最後「一つのAIに制作と採点をさせない」は、目的整理・方向出し・監査・粗探しを別々のAIに分担させる実践フローの第5〜6ステップに直結する。特徴的なのは「採用理由でなく却下理由を保存する」という指摘だ——うまくいった理由は再現しにくいが、却下理由（「主役が二つ存在し視線が分散している」等の具体的な設計変数）は次の生成条件として確実に効くため、機械的に蓄積できる資産になるという。</p>
+<p><strong><a href="../tools/no-ai-slop.html">no-ai-slop</a> AIスロップを機械的パターンで検出し自己採点するスキル</strong>
+Peter Yangが公開したこのスキルは、二項対立・弱い帰属・見せかけの強い動詞といった20種以上のパターンを検出・除去した上で、編集後に自身の作業をeval.mdのPass/Fail基準に照らして検査するゲートを内蔵する。「良い文章を書け」という指示でなく検査可能なパターンリストへ落とし込むことで、生成と評価を同じ呼び出しの中でも構造的に分離している点が<a href="../concepts/eval-loop.html">eval-loop</a>と同型。</p>
+<p><strong><a href="../concepts/creativity-recovery-protocol.html">creativity-recovery-protocol</a> 創造性回復の核心は生成的思考と評価的思考の分離</strong>
+Dan Koeが7日間プロトコルの核として明かすのは、アイデアを生む「生成的思考」とそれを判断・編集する「評価的思考」を意図的に分離する仕組みだという位置づけだ。両者を同時に行うと生成側の潜在力が抑え込まれるとし、Day5-6では「アイデアが浮かんでもメモを取るのを我慢し、その思考の流れに乗り続ける」という、評価を意図的に先送りする具体的な作法を挙げる。対象がAIワークフローでなく人間の思考であるという点だけが、他の3トピックと違う。</p>
+<h2>今週の中心テーマ</h2>
+<p><strong>生成と評価を同じ主体・同じ瞬間に行わない、という一つの設計原則が、Agent SkillのMaker/Checker分離からAIデザインの「別AIに監査させる」原則、no-ai-slopの自己検査ゲート、そしてDan Koeが創造性回復の核に据えた「生成的思考と評価的思考の分離」まで、対象がAIワークフローか人間の思考かが違うだけで同じ形で今週現れた。</strong></p>
+<p><img alt="infographic-theme.png" src="2026-W31/infographic-theme.png"></p>
+<h2>根拠ページ</h2>
+<ul>
+<li><a href="../concepts/agent-skill-eight-layer-design.html">agent-skill-eight-layer-design</a>（→ 今週のホットトピック#1）</li>
+<li><a href="../design/ochiai-ai-design-method.html">ochiai-ai-design-method</a>（→ 今週のホットトピック#2）</li>
+<li><a href="../tools/no-ai-slop.html">no-ai-slop</a>（→ 今週のホットトピック#3）</li>
+<li><a href="../concepts/creativity-recovery-protocol.html">creativity-recovery-protocol</a>（→ 今週のホットトピック#4）</li>
+<li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a> — Cerebrasの社内知識ベース。単一埋め込みテーブル＋全文検索/埋め込み/IDF/鮮度減衰のハイブリッド検索でSlack・コード・DBを横断する（X bookmark 12,615、今週最大の注目シグナルだが中心テーマとは別軸）</li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a> — エージェント間の依存関係を「これは本当にエッジか」「バリアは要るか」という機械判定可能な語彙で設計する規律</li>
+<li><a href="../concepts/linguistic-hedging.html">linguistic-hedging</a> — 「〜な感じ」という曖昧語は、話者が負うべき定義コストを聞き手に丸投げする行為だという指摘</li>
+<li><a href="../concepts/parallel-e2e-testing.html">parallel-e2e-testing</a> — E2Eテストのflaky対策を「Iron Law」として個人の力量に依存させず機械強制する実践</li>
+<li><a href="../design/vibe-coding-design-gap.html">vibe-coding-design-gap</a> — Vibe Codingだけでは「使われるプロダクト」にならない、という現場デザイナーの問題提起</li>
+<li><a href="../tools/knowledge-work-plugins.html">knowledge-work-plugins</a> — Claude Desktop向け業務別公式プラグイン10種の紹介</li>
+<li><a href="../concepts/html-output-format.html">html-output-format</a> — Anthropic公式のHTML出力フォーマット実例集</li>
+<li><a href="../tools/video-shotcraft.html">video-shotcraft</a> — Claude Code/Codexをモーションデザインスタジオに変えるショットレシピ集スキル</li>
+</ul>
+<h2>既存wikiとの接続</h2>
+<ul>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 「生成→基準採点→閾値未満は出荷前に止める」という品質ゲートの一般形。今週の4トピックはいずれもこの型の異なるドメイン（Skill運用・AIデザイン制作・文章生成・人間の創造的思考）での実装にあたる</li>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a> — Anthropic社内知見が「Product verification」を最高ROIのカテゴリと位置づける主張。agent-skill-eight-layer-designのChecker層・no-ai-slopのeval.mdは、この主張を具体的な機構へ落とし込んだ実装といえる</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — マルチエージェント設計パターンの一般形。Maker/Checkerの分離、落合式の「別AIに監査させる」原則は、いずれもこのハブが扱う役割分担パターンの具体化</li>
+</ul>
+<h2>sugeta-san への問い</h2>
+<p><strong>wiki-ingestスキルのカテゴリ判定・ページ生成は、生成した本人（同じ呼び出し内の同じモデル）がその出来を自己評価する構造になっていますか。それとも生成と評価が別の主体・別のタイミングに分かれていますか。</strong></p>
+<p>→ 現状のwiki-ingestはTier判定・カテゴリ判定・ページ生成を一括で行い、生成後に内容面の質を検査するChecker相当のステップは持ちません。<code>validate_wiki.py</code> によるlintは孤立ページやfrontmatter欠落といった構造的チェックに留まり、内容の質は見ません。もし内容面の質を上げたいなら、agent-skill-eight-layer-designのChecker層やno-ai-slopのeval.mdのように、生成後に軽量な検査ステップを足す余地はあります。ただしこのリポジトリは過去に独立審判（別モデルによる再採点）を誤検知支配で撤去した経緯があり（<a href="../tools/adversarial-panel.html">adversarial-panel</a>の問いにも同種の記録あり）、同じ轍を踏まない設計が要ります。</p>
+<h2>今週の小アクション（5分）</h2>
+<p><code>.claude/skills/wiki-ingest/SKILL.md</code> を開き、カテゴリ判定・ページ生成・インターリンクの各ステップの後に、生成物を検査する工程（Checker相当）が明文化されているか、それとも生成だけで完結しているかを5分で確認する。</p>
+<h2>いますぐAIと一緒に(コピペ)</h2>
+<p>以下をそのまま Claude Code に貼って、wiki-ingestスキルの生成と評価の分離状況を点検してください。</p>
+<pre><code>.claude/skills/wiki-ingest/SKILL.md を読み、以下を判定してください。
+
+1. カテゴリ判定・ページ生成・インターリンクの各ステップのうち、
+   生成した本人が同じ呼び出し内で自己評価している箇所はどこか
+2. 生成と評価を分離する余地があるとして、
+   wiki/concepts/agent-skill-eight-layer-design.md のChecker層
+   （証拠付きJSON: criterion_id/expected/observed/evidence/severity）
+   相当の軽量な検査ステップを追加する価値がある箇所はどこか
+3. このリポジトリは過去に「独立審判（別モデル再採点）」を誤検知支配で
+   撤去した経緯がある。再導入せずに済む、もっと軽量な検査手段はあるか
+
+参照: .claude/skills/wiki-ingest/SKILL.md, wiki/concepts/agent-skill-eight-layer-design.md
+</code></pre>
+<h2>さらに読むべきページ</h2>
+<ul>
+<li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a> — 今週最大の注目シグナル（X bookmark 12,615）。自分のwiki query運用に「鮮度減衰」「ハイブリッド検索」という手薄な部分を照らす実例として読む価値がある</li>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a> — Anthropic社内知見の9カテゴリ分類。agent-skill-eight-layer-designの8層設計と比較すると、Checker層の位置づけの違いが見える</li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a> — エージェントオーケストレーションをノード/エッジ語彙で設計する規律。今週のwiki-ingest/lint/reviewの各ステップに当てはめると、どこが本当のバリアでどこがただのコード変換かを判定する材料になる</li>
+</ul>
+<h2>今週の音声ニュース</h2>
+<audio controls style="width:100%;margin:1rem 0"><source src="2026-W31/audio.mp3" type="audio/mpeg"></audio>
+<p><a href="https://notebooklm.google.com/notebook/201ad21a-522b-48d3-90f2-8a1831ec47ca">NotebookLM で開く →</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-skill-eight-layer-design.html">agent-skill-eight-layer-design</a></li>
+<li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a></li>
+<li><a href="../concepts/creativity-recovery-protocol.html">creativity-recovery-protocol</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Weekly Insights: 2026-W31（2026-07-27〜08-02）
+
+## 今週のホットトピック
+
+![[2026-W31/infographic-hot-topics.png]]
+
+- **[[concepts/agent-skill-eight-layer-design]] Agent Skillの生成役と評価役を分離する8層設計** — 「高品質に作ってください」という曖昧な指示を、HARD GATES/DEFAULTS/PREFERENCESという検査可能な契約とMaker/Checkerの分離に変換するフレームワーク。
+- **[[design/ochiai-ai-design-method]] AIデザインは「別AIに監査させる」ことで凡庸さを抜ける** — 落合式7原理の要は、制作と採点を同じAIにさせず、却下理由そのものを次の生成条件として蓄積すること。
+- **[[tools/no-ai-slop]] AIスロップを機械的パターンで検出し自己採点するスキル** — 20種以上の「AIっぽさ」パターンをカタログ化し、生成後に自身の作業をeval.mdの基準で検査するゲートを内蔵する（X bookmark 9,690）。
+- **[[concepts/creativity-recovery-protocol]] 創造性回復の核心は生成的思考と評価的思考の分離** — Dan Koeの7日間プロトコルは、入力遮断と消化の期間を置くことで「作る」判断と「評価する」判断を意図的に切り離す仕組みだ（X bookmark 15,406）。
+
+### 深掘り
+
+**[[concepts/agent-skill-eight-layer-design]] Agent Skillの生成役と評価役を分離する8層設計**
+8層パイプラインの要は第6層Checker——生成した本人に自己採点させると「大きな問題ではない」と甘くなりやすいため、可能ならクリーンな文脈で別途起動し、評価結果を感想でなく criterion_id / expected / observed / evidence / severity を含む証拠付きJSONで返させる。この分離は、すべての指示をHARD GATES（違反したら不合格にする絶対条件）・DEFAULTS・PREFERENCESの3段階に変換する第4層Rule Compilerとセットで機能し、「ダミー実装は禁止」を「クリックしても状態が変化しない主要ボタンがあれば不合格」のような検査可能な条件へ書き換える。
+
+**[[design/ochiai-ai-design-method]] AIデザインは「別AIに監査させる」ことで凡庸さを抜ける**
+7原理の最後「一つのAIに制作と採点をさせない」は、目的整理・方向出し・監査・粗探しを別々のAIに分担させる実践フローの第5〜6ステップに直結する。特徴的なのは「採用理由でなく却下理由を保存する」という指摘だ——うまくいった理由は再現しにくいが、却下理由（「主役が二つ存在し視線が分散している」等の具体的な設計変数）は次の生成条件として確実に効くため、機械的に蓄積できる資産になるという。
+
+**[[tools/no-ai-slop]] AIスロップを機械的パターンで検出し自己採点するスキル**
+Peter Yangが公開したこのスキルは、二項対立・弱い帰属・見せかけの強い動詞といった20種以上のパターンを検出・除去した上で、編集後に自身の作業をeval.mdのPass/Fail基準に照らして検査するゲートを内蔵する。「良い文章を書け」という指示でなく検査可能なパターンリストへ落とし込むことで、生成と評価を同じ呼び出しの中でも構造的に分離している点が[[concepts/eval-loop]]と同型。
+
+**[[concepts/creativity-recovery-protocol]] 創造性回復の核心は生成的思考と評価的思考の分離**
+Dan Koeが7日間プロトコルの核として明かすのは、アイデアを生む「生成的思考」とそれを判断・編集する「評価的思考」を意図的に分離する仕組みだという位置づけだ。両者を同時に行うと生成側の潜在力が抑え込まれるとし、Day5-6では「アイデアが浮かんでもメモを取るのを我慢し、その思考の流れに乗り続ける」という、評価を意図的に先送りする具体的な作法を挙げる。対象がAIワークフローでなく人間の思考であるという点だけが、他の3トピックと違う。
+
+## 今週の中心テーマ
+
+**生成と評価を同じ主体・同じ瞬間に行わない、という一つの設計原則が、Agent SkillのMaker/Checker分離からAIデザインの「別AIに監査させる」原則、no-ai-slopの自己検査ゲート、そしてDan Koeが創造性回復の核に据えた「生成的思考と評価的思考の分離」まで、対象がAIワークフローか人間の思考かが違うだけで同じ形で今週現れた。**
+
+![[2026-W31/infographic-theme.png]]
+
+## 根拠ページ
+
+- [[concepts/agent-skill-eight-layer-design]]（→ 今週のホットトピック#1）
+- [[design/ochiai-ai-design-method]]（→ 今週のホットトピック#2）
+- [[tools/no-ai-slop]]（→ 今週のホットトピック#3）
+- [[concepts/creativity-recovery-protocol]]（→ 今週のホットトピック#4）
+- [[concepts/cerebras-knowledge-base]] — Cerebrasの社内知識ベース。単一埋め込みテーブル＋全文検索/埋め込み/IDF/鮮度減衰のハイブリッド検索でSlack・コード・DBを横断する（X bookmark 12,615、今週最大の注目シグナルだが中心テーマとは別軸）
+- [[concepts/graph-engineering]] — エージェント間の依存関係を「これは本当にエッジか」「バリアは要るか」という機械判定可能な語彙で設計する規律
+- [[concepts/linguistic-hedging]] — 「〜な感じ」という曖昧語は、話者が負うべき定義コストを聞き手に丸投げする行為だという指摘
+- [[concepts/parallel-e2e-testing]] — E2Eテストのflaky対策を「Iron Law」として個人の力量に依存させず機械強制する実践
+- [[design/vibe-coding-design-gap]] — Vibe Codingだけでは「使われるプロダクト」にならない、という現場デザイナーの問題提起
+- [[tools/knowledge-work-plugins]] — Claude Desktop向け業務別公式プラグイン10種の紹介
+- [[concepts/html-output-format]] — Anthropic公式のHTML出力フォーマット実例集
+- [[tools/video-shotcraft]] — Claude Code/Codexをモーションデザインスタジオに変えるショットレシピ集スキル
+
+## 既存wikiとの接続
+
+- [[concepts/eval-loop]] — 「生成→基準採点→閾値未満は出荷前に止める」という品質ゲートの一般形。今週の4トピックはいずれもこの型の異なるドメイン（Skill運用・AIデザイン制作・文章生成・人間の創造的思考）での実装にあたる
+- [[concepts/skill-building-best-practices]] — Anthropic社内知見が「Product verification」を最高ROIのカテゴリと位置づける主張。agent-skill-eight-layer-designのChecker層・no-ai-slopのeval.mdは、この主張を具体的な機構へ落とし込んだ実装といえる
+- [[concepts/multi-agent-patterns]] — マルチエージェント設計パターンの一般形。Maker/Checkerの分離、落合式の「別AIに監査させる」原則は、いずれもこのハブが扱う役割分担パターンの具体化
+
+## sugeta-san への問い
+
+**wiki-ingestスキルのカテゴリ判定・ページ生成は、生成した本人（同じ呼び出し内の同じモデル）がその出来を自己評価する構造になっていますか。それとも生成と評価が別の主体・別のタイミングに分かれていますか。**
+
+→ 現状のwiki-ingestはTier判定・カテゴリ判定・ページ生成を一括で行い、生成後に内容面の質を検査するChecker相当のステップは持ちません。`validate_wiki.py` によるlintは孤立ページやfrontmatter欠落といった構造的チェックに留まり、内容の質は見ません。もし内容面の質を上げたいなら、agent-skill-eight-layer-designのChecker層やno-ai-slopのeval.mdのように、生成後に軽量な検査ステップを足す余地はあります。ただしこのリポジトリは過去に独立審判（別モデルによる再採点）を誤検知支配で撤去した経緯があり（[[tools/adversarial-panel]]の問いにも同種の記録あり）、同じ轍を踏まない設計が要ります。
+
+## 今週の小アクション（5分）
+
+`.claude/skills/wiki-ingest/SKILL.md` を開き、カテゴリ判定・ページ生成・インターリンクの各ステップの後に、生成物を検査する工程（Checker相当）が明文化されているか、それとも生成だけで完結しているかを5分で確認する。
+
+## いますぐAIと一緒に(コピペ)
+
+以下をそのまま Claude Code に貼って、wiki-ingestスキルの生成と評価の分離状況を点検してください。
+
+```
+.claude/skills/wiki-ingest/SKILL.md を読み、以下を判定してください。
+
+1. カテゴリ判定・ページ生成・インターリンクの各ステップのうち、
+   生成した本人が同じ呼び出し内で自己評価している箇所はどこか
+2. 生成と評価を分離する余地があるとして、
+   wiki/concepts/agent-skill-eight-layer-design.md のChecker層
+   （証拠付きJSON: criterion_id/expected/observed/evidence/severity）
+   相当の軽量な検査ステップを追加する価値がある箇所はどこか
+3. このリポジトリは過去に「独立審判（別モデル再採点）」を誤検知支配で
+   撤去した経緯がある。再導入せずに済む、もっと軽量な検査手段はあるか
+
+参照: .claude/skills/wiki-ingest/SKILL.md, wiki/concepts/agent-skill-eight-layer-design.md
+```
+
+## さらに読むべきページ
+
+- [[concepts/cerebras-knowledge-base]] — 今週最大の注目シグナル（X bookmark 12,615）。自分のwiki query運用に「鮮度減衰」「ハイブリッド検索」という手薄な部分を照らす実例として読む価値がある
+- [[concepts/skill-building-best-practices]] — Anthropic社内知見の9カテゴリ分類。agent-skill-eight-layer-designの8層設計と比較すると、Checker層の位置づけの違いが見える
+- [[concepts/graph-engineering]] — エージェントオーケストレーションをノード/エッジ語彙で設計する規律。今週のwiki-ingest/lint/reviewの各ステップに当てはめると、どこが本当のバリアでどこがただのコード変換かを判定する材料になる
+
+## 今週の音声ニュース
+
+![[2026-W31/audio.mp3]]
+
+[NotebookLM で開く →](https://notebooklm.google.com/notebook/201ad21a-522b-48d3-90f2-8a1831ec47ca)
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
