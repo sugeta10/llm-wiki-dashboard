@@ -37,3 +37,4 @@
 - [[concepts/output-first-learning]] — 書いて蓄積する側の「学習法」（出力を強制関数に知識を血肉化）。同一著者@eng_khairallah1繋がりの別概念は [[concepts/claude-projects-blueprint]]
 - [[concepts/frontier-model-extraction]] — deep researchを原子ノート化してvaultへマイニングする型3の実践先（「要約でなく原子化せよ」）
 - [[concepts/second-brain-operations]] — 同領域の「維持ループ×コスト設計」重心の姉妹ページ（raw/entities/concepts/INDEXの4ピース構造・@EXM7777）
+- [[concepts/personal-intelligence-os]] — 同領域の姉妹ページ。検索起点設計・Knowledge ROI・Decision Note第一級化が重心（@ai_ai_ailover）

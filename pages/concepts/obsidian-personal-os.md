@@ -2,7 +2,7 @@
 
 ObsidianをAI自動化による「崩壊しないパーソナルオペレーティングシステム」として設計するアーキテクチャパターン（@cyrilXBT 提唱）。**Storage（Obsidian）→ Intelligence（Claude Code + MCP）→ Automation（N8N）**の3層構造で、生産性システムが壊れる3要因（手動メンテ負担・複雑化・知性ゼロ）を解決する。
 
-関連: [[tools/claude-code-obsidian-project]] / [[tools/obsidian-skills]] / [[concepts/llm-wiki]] / [[concepts/claude-code-work-folder]]（Claude Code単体・初心者向けに最小化した同思想） / [[concepts/modular-research-pipeline]]（Obsidianを記憶層に使う研究ワークフローの具体例） / [[concepts/obsidian-claude-second-brain]]（プラグイン/ワークフロー網羅型のlisticle視点） / [[concepts/obsidian-second-brain-setup]]（install→autopilotの初心者向け構築手順視点）
+関連: [[tools/claude-code-obsidian-project]] / [[tools/obsidian-skills]] / [[concepts/llm-wiki]] / [[concepts/claude-code-work-folder]]（Claude Code単体・初心者向けに最小化した同思想） / [[concepts/modular-research-pipeline]]（Obsidianを記憶層に使う研究ワークフローの具体例） / [[concepts/obsidian-claude-second-brain]]（プラグイン/ワークフロー網羅型のlisticle視点） / [[concepts/obsidian-second-brain-setup]]（install→autopilotの初心者向け構築手順視点） / [[concepts/personal-intelligence-os]]（検索経路設計・Knowledge ROI・Decision Note第一級化が重心の姉妹ページ）
 
 ## 観察ログ（未検証）
 
