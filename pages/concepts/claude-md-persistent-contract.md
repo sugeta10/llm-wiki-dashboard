@@ -37,3 +37,4 @@
 - [[tools/ccmd]] — CLAUDE.md をKarpathy 12ルールで静的採点するツール
 - [[concepts/claude-code-context-hierarchy]]
 - [[concepts/claude-projects-blueprint]] — Identity/Rulesを「永続契約」として設計するClaude Projects版の応用
+- [[concepts/context-engineering]] — Anthropic Claude Codeチームによる公式の逆張り。新モデルでは明示ルールの列挙より判断への委任が効くという実践報告

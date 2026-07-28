@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>context-engineering - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>context-engineering</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="context-engineering.md">Markdownで表示</a></div>
+  <div class="meta">concepts/context-engineering · concepts · <span title="2026-07-28">今日</span></div>
+  <article><h1>コンテキストエンジニアリング（Context Engineering for Claude 5 models）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: モデルの判断力向上に合わせてClaude Codeのシステムプロンプトを80%以上削減した経験から、Anthropicが「ルールを与える→判断に委ねる」など6つの逆転（Then→Now）で示すコンテキスト設計原則。</p>
+<p>📌 X bookmark: 23,351（2026-07-25 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  SP[&quot;System Prompt&quot;] --&gt; CTX[&quot;Assembled Context&quot;]
+  CM[&quot;CLAUDE.md / AGENTS.md&quot;] --&gt; CTX
+  SK[&quot;Skills&quot;] --&gt; CTX
+  MEM[&quot;Memory\n(auto-memory)&quot;] --&gt; CTX
+  REF[&quot;References\n(files / tests / rubrics)&quot;] --&gt; CTX
+  CTX --&gt; OUT[&quot;Claudeの応答&quot;]</pre>
+<p>新しいモデル世代が出るたびに「以前は効いていた制約が今は逆に足枷になる」という発見が起きる、とAnthropic Claude CodeチームのThariq（@trq212）は述べる。Claude Code初期はファイル削除のような最悪シナリオを避けるため強いルールをシステムプロンプトに書き込んでいたが、Opus 5・Fable 5世代では判断力が上がり、同じ制約がむしろ矛盾する指示同士の衝突を増やすだけになった。社内の使用ログを読むと「必要に応じてドキュメントを残せ」と「コメントは絶対に書くな」のようにシステムプロンプト・スキル・ユーザー要求が食い違うケースが頻発していたとThariqは報告する。</p>
+<h2>6つの逆転（Then → Now）</h2>
+<table>
+<thead>
+<tr>
+<th>かつて</th>
+<th>今</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ルールを与える</td>
+<td>判断に委ねる</td>
+<td>新モデルは矛盾する指示から意図を汲み取れる</td>
+</tr>
+<tr>
+<td>例を与える</td>
+<td>インターフェースを設計する</td>
+<td>例は探索空間を狭める。パラメータ設計の表現力を上げる方が効く</td>
+</tr>
+<tr>
+<td>全部前もって渡す</td>
+<td>プログレッシブディスクロージャー</td>
+<td>検証・レビュー手順は専用スキルへ、ツールは遅延ロードへ分離する</td>
+</tr>
+<tr>
+<td>繰り返し言う</td>
+<td>シンプルなツール記述</td>
+<td>システムプロンプトとツール説明の二重記載をやめ、ツール説明側に一本化する</td>
+</tr>
+<tr>
+<td>CLAUDE.mdに記憶させる</td>
+<td>auto-memoryに任せる</td>
+<td>ユーザーが手動で書く運用から、Claudeが関連メモリを自動保存する運用へ</td>
+</tr>
+<tr>
+<td>シンプルな仕様書</td>
+<td>リッチな参照資料</td>
+<td>Markdownの仕様書から、HTMLアーティファクト・コード・テストスイート・ルーブリックへ拡張する</td>
+</tr>
+</tbody>
+</table>
+<p>各逆転についてThariqが挙げる具体例:</p>
+<ul>
+<li><strong>ルール→判断</strong>: 過去のシステムプロンプトは「コードではデフォルトでコメントを書くな。複数行のドキュメント文字列や複数行コメントブロックを書くな」のように強く縛っていた。新しいシステムプロンプトでは「周辺コードのコメント密度・命名・イディオムに合わせて書け」という一文に置き換わったとThariqは説明する。</li>
+<li><strong>例→インターフェース設計</strong>: ツールの使い方を教えるなら例を積むのでなく、パラメータの表現力を設計せよとThariqは言う。Todoツールのstatusをpending/in_progress/completedのenumにするだけで、Claudeはどう使うべきかを自然に理解する。</li>
+<li><strong>前もって全部→プログレッシブディスクロージャー</strong>: 検証・コードレビューの詳細手順はシステムプロンプトから切り離し、必要な時だけ呼ばれる専用スキルへ移した。ツールにも「deferred loading」という仕組みがあり、エージェントは検索してから完全な定義を取得してから使う設計になっているとThariqは述べる。これにより、すぐには使わない大量のツールがコンテキストを圧迫しなくなる。CLAUDE.mdやSKILL.mdについても「既知のすべての慣行を詰め込む中央リポジトリにする」という発想は誤りで、必要な時にロードされるファイルの木構造にすべきだとThariqは述べる。</li>
+<li><strong>繰り返す→シンプルなツール記述</strong>: 旧世代モデルは指示を繰り返さないと聞き逃すことがあったため、システムプロンプト内にツールへの言及とツール説明側の指示が重複していた。新モデルではこの重複を削り、ツールの使い方はツール説明側に一本化したとThariqは説明する。</li>
+<li><strong>CLAUDE.md記憶→auto-memory</strong>: 以前はユーザーがホットキーでCLAUDE.mdへ手動で書き込む運用を推奨していたが、今はClaudeが作業や利用者に関連するメモリを自動的に保存する、とThariqは述べる。</li>
+<li><strong>シンプルな仕様書→リッチな参照資料</strong>: plan modeのMarkdownファイルやコードベース内の仕様書という従来のベストプラクティスに対し、Thariqはartifacts機能で作られたHTMLアーティファクトのような複雑な参照も渡せるようになったと述べる。コードそのもの（別コードベースの関数、詳細なテストスイート）も仕様になり得る。ルーブリック（良いAPI設計とは何か、のような基準）も参照の一形態で、動的ワークフローと検証エージェントを組み合わせてClaudeに好みを判定させられるとThariqは述べる。</li>
+</ul>
+<h2>各層への適用ガイド</h2>
+<p>Thariqは、システムプロンプト・CLAUDE.md・スキル・参照資料という4層それぞれに実践的な指針を示す。</p>
+<ul>
+<li><strong>システムプロンプト</strong>: プロダクトの文脈そのものに強く結びつく層。Claude Codeを使う限り基本的に触ることはないが、独自のエージェントハーネスを作るならここに最も時間を使うべき層になる。</li>
+<li><strong>CLAUDE.md</strong>: リポジトリの目的を軽く説明する程度に留め、大半のトークンは「コードベース固有の落とし穴」に使う。ファイルシステムやリポジトリを見れば分かる「自明なこと」は書かない。検証手順のような詳細が複数あるならスキルへ切り出しCLAUDE.mdから参照する。</li>
+<li><strong>スキル</strong>: Claudeが必要な時に見つけられる軽量ガイドとして設計する。重要な領域を除き過剰な制約を避ける。長いスキルはプログレッシブディスクロージャーを徹底し、複数ファイルへ分割する。自分・チーム・プロダクト固有の意見や知見をエンコードするのに向く。</li>
+<li><strong>参照資料</strong>: <code>@</code>メンションでファイルを含められる。仕様・モックアップ・コードベース全体を渡せるが、一般に説明文やスクリーンショットより「コードで書かれたファイル」の方が高精度な指示になる。HTMLモックアップはデザインの説明文より良い結果を生む、とThariqは述べる。</li>
+</ul>
+<p>Anthropicはこの簡略化を自動化する<code>claude doctor</code>コマンドをリリースし、システムプロンプト・スキル・CLAUDE.mdを自動で適正サイズへ調整する支援をするとThariqは紹介する。</p>
+<h2>検証済み事実</h2>
+<ul>
+<li>2026-07-24: Anthropic Claude CodeチームのThariq（@trq212）が、Claude Opus 5・Fable 5世代でシステムプロンプトの80%以上を削減し、コーディング評価に測定可能な劣化がなかったと公表。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultのCLAUDE.mdは既にこの記事のガイドに沿っているか。「自明なことを書いていないか」「進捗ドキュメントを溜め込んでいないか」を照らして棚卸しする価値があるか</li>
+<li>プログレッシブディスクロージャー原則を<code>.claude/skills/wiki-ingest/SKILL.md</code>に当てはめると、どの節を分割・遅延ロード化できるか</li>
+<li>「シンプルな仕様書→リッチな参照資料」の転換を、wiki自体をClaudeへの参照資料として機能させる方向に応用できるか（現状はMarkdownテキストのみ）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — Karpathy由来の12条ルール体系。本記事の「ルールを与える→判断に委ねる」逆転が対象化する旧来ベストプラクティスそのもの</li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a> — 同じ「明示ルールの列挙」アプローチの非エンジニア向け再構成。本記事の指摘（過剰制約のリスク）が直接当てはまる</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — スキル設計論。本記事の「プログレッシブディスクロージャーとしてのスキル」という位置づけを補強</li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> — auto-memoryと肥大化したCLAUDE.mdの関係を扱う。本記事の「CLAUDE.md記憶→auto-memory」の逆転と同じ問題意識</li>
+<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> — 4層（Memory/Slash commands/Permissions/MCP）の「どこに置くか」の構造。本記事は「何を置くべきか」という上位の設計思想</li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a> — エンジニアリングスタックの一段上、複数ループを束ねる調整層（@akshay_pachaar）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2080710971228918066" rel="noopener" target="_blank">https://x.com/i/web/status/2080710971228918066</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># コンテキストエンジニアリング（Context Engineering for Claude 5 models）
+
+&gt; **TL;DR**: モデルの判断力向上に合わせてClaude Codeのシステムプロンプトを80%以上削減した経験から、Anthropicが「ルールを与える→判断に委ねる」など6つの逆転（Then→Now）で示すコンテキスト設計原則。
+
+&gt; 📌 X bookmark: 23,351（2026-07-25 時点）
+
+```mermaid
+flowchart LR
+  SP[&quot;System Prompt&quot;] --&gt; CTX[&quot;Assembled Context&quot;]
+  CM[&quot;CLAUDE.md / AGENTS.md&quot;] --&gt; CTX
+  SK[&quot;Skills&quot;] --&gt; CTX
+  MEM[&quot;Memory\n(auto-memory)&quot;] --&gt; CTX
+  REF[&quot;References\n(files / tests / rubrics)&quot;] --&gt; CTX
+  CTX --&gt; OUT[&quot;Claudeの応答&quot;]
+```
+
+新しいモデル世代が出るたびに「以前は効いていた制約が今は逆に足枷になる」という発見が起きる、とAnthropic Claude CodeチームのThariq（@trq212）は述べる。Claude Code初期はファイル削除のような最悪シナリオを避けるため強いルールをシステムプロンプトに書き込んでいたが、Opus 5・Fable 5世代では判断力が上がり、同じ制約がむしろ矛盾する指示同士の衝突を増やすだけになった。社内の使用ログを読むと「必要に応じてドキュメントを残せ」と「コメントは絶対に書くな」のようにシステムプロンプト・スキル・ユーザー要求が食い違うケースが頻発していたとThariqは報告する。
+
+## 6つの逆転（Then → Now）
+
+| かつて | 今 | 理由 |
+|---|---|---|
+| ルールを与える | 判断に委ねる | 新モデルは矛盾する指示から意図を汲み取れる |
+| 例を与える | インターフェースを設計する | 例は探索空間を狭める。パラメータ設計の表現力を上げる方が効く |
+| 全部前もって渡す | プログレッシブディスクロージャー | 検証・レビュー手順は専用スキルへ、ツールは遅延ロードへ分離する |
+| 繰り返し言う | シンプルなツール記述 | システムプロンプトとツール説明の二重記載をやめ、ツール説明側に一本化する |
+| CLAUDE.mdに記憶させる | auto-memoryに任せる | ユーザーが手動で書く運用から、Claudeが関連メモリを自動保存する運用へ |
+| シンプルな仕様書 | リッチな参照資料 | Markdownの仕様書から、HTMLアーティファクト・コード・テストスイート・ルーブリックへ拡張する |
+
+各逆転についてThariqが挙げる具体例:
+
+- **ルール→判断**: 過去のシステムプロンプトは「コードではデフォルトでコメントを書くな。複数行のドキュメント文字列や複数行コメントブロックを書くな」のように強く縛っていた。新しいシステムプロンプトでは「周辺コードのコメント密度・命名・イディオムに合わせて書け」という一文に置き換わったとThariqは説明する。
+- **例→インターフェース設計**: ツールの使い方を教えるなら例を積むのでなく、パラメータの表現力を設計せよとThariqは言う。Todoツールのstatusをpending/in_progress/completedのenumにするだけで、Claudeはどう使うべきかを自然に理解する。
+- **前もって全部→プログレッシブディスクロージャー**: 検証・コードレビューの詳細手順はシステムプロンプトから切り離し、必要な時だけ呼ばれる専用スキルへ移した。ツールにも「deferred loading」という仕組みがあり、エージェントは検索してから完全な定義を取得してから使う設計になっているとThariqは述べる。これにより、すぐには使わない大量のツールがコンテキストを圧迫しなくなる。CLAUDE.mdやSKILL.mdについても「既知のすべての慣行を詰め込む中央リポジトリにする」という発想は誤りで、必要な時にロードされるファイルの木構造にすべきだとThariqは述べる。
+- **繰り返す→シンプルなツール記述**: 旧世代モデルは指示を繰り返さないと聞き逃すことがあったため、システムプロンプト内にツールへの言及とツール説明側の指示が重複していた。新モデルではこの重複を削り、ツールの使い方はツール説明側に一本化したとThariqは説明する。
+- **CLAUDE.md記憶→auto-memory**: 以前はユーザーがホットキーでCLAUDE.mdへ手動で書き込む運用を推奨していたが、今はClaudeが作業や利用者に関連するメモリを自動的に保存する、とThariqは述べる。
+- **シンプルな仕様書→リッチな参照資料**: plan modeのMarkdownファイルやコードベース内の仕様書という従来のベストプラクティスに対し、Thariqはartifacts機能で作られたHTMLアーティファクトのような複雑な参照も渡せるようになったと述べる。コードそのもの（別コードベースの関数、詳細なテストスイート）も仕様になり得る。ルーブリック（良いAPI設計とは何か、のような基準）も参照の一形態で、動的ワークフローと検証エージェントを組み合わせてClaudeに好みを判定させられるとThariqは述べる。
+
+## 各層への適用ガイド
+
+Thariqは、システムプロンプト・CLAUDE.md・スキル・参照資料という4層それぞれに実践的な指針を示す。
+
+- **システムプロンプト**: プロダクトの文脈そのものに強く結びつく層。Claude Codeを使う限り基本的に触ることはないが、独自のエージェントハーネスを作るならここに最も時間を使うべき層になる。
+- **CLAUDE.md**: リポジトリの目的を軽く説明する程度に留め、大半のトークンは「コードベース固有の落とし穴」に使う。ファイルシステムやリポジトリを見れば分かる「自明なこと」は書かない。検証手順のような詳細が複数あるならスキルへ切り出しCLAUDE.mdから参照する。
+- **スキル**: Claudeが必要な時に見つけられる軽量ガイドとして設計する。重要な領域を除き過剰な制約を避ける。長いスキルはプログレッシブディスクロージャーを徹底し、複数ファイルへ分割する。自分・チーム・プロダクト固有の意見や知見をエンコードするのに向く。
+- **参照資料**: `@`メンションでファイルを含められる。仕様・モックアップ・コードベース全体を渡せるが、一般に説明文やスクリーンショットより「コードで書かれたファイル」の方が高精度な指示になる。HTMLモックアップはデザインの説明文より良い結果を生む、とThariqは述べる。
+
+Anthropicはこの簡略化を自動化する`claude doctor`コマンドをリリースし、システムプロンプト・スキル・CLAUDE.mdを自動で適正サイズへ調整する支援をするとThariqは紹介する。
+
+## 検証済み事実
+
+- 2026-07-24: Anthropic Claude CodeチームのThariq（@trq212）が、Claude Opus 5・Fable 5世代でシステムプロンプトの80%以上を削減し、コーディング評価に測定可能な劣化がなかったと公表。
+
+## 問い
+
+- このvaultのCLAUDE.mdは既にこの記事のガイドに沿っているか。「自明なことを書いていないか」「進捗ドキュメントを溜め込んでいないか」を照らして棚卸しする価値があるか
+- プログレッシブディスクロージャー原則を`.claude/skills/wiki-ingest/SKILL.md`に当てはめると、どの節を分割・遅延ロード化できるか
+- 「シンプルな仕様書→リッチな参照資料」の転換を、wiki自体をClaudeへの参照資料として機能させる方向に応用できるか（現状はMarkdownテキストのみ）
+
+## 関連
+
+- [[concepts/claude-md-rules]] — Karpathy由来の12条ルール体系。本記事の「ルールを与える→判断に委ねる」逆転が対象化する旧来ベストプラクティスそのもの
+- [[concepts/claude-md-persistent-contract]] — 同じ「明示ルールの列挙」アプローチの非エンジニア向け再構成。本記事の指摘（過剰制約のリスク）が直接当てはまる
+- [[concepts/claude-skills]] — スキル設計論。本記事の「プログレッシブディスクロージャーとしてのスキル」という位置づけを補強
+- [[concepts/skills-over-memory]] — auto-memoryと肥大化したCLAUDE.mdの関係を扱う。本記事の「CLAUDE.md記憶→auto-memory」の逆転と同じ問題意識
+- [[concepts/claude-code-context-hierarchy]] — 4層（Memory/Slash commands/Permissions/MCP）の「どこに置くか」の構造。本記事は「何を置くべきか」という上位の設計思想
+- [[concepts/graph-engineering]] — エンジニアリングスタックの一段上、複数ループを束ねる調整層（@akshay_pachaar）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

@@ -58,3 +58,4 @@ flowchart TD
 - [[concepts/managed-agents-dreams]] — メモリストアの重複削除・矛盾解消・陳腐化処理。pull ストアも腐るという注意への自動pruning側の答え
 - [[concepts/self-refining-skills]] — LESSONS.md 方式の自己改善ループ。教訓をスキルへ畳み込む実装パターン
 - [[tools/compound-engineering]] — 著者が「既存の良いスキルを見せて同じ形でコピーさせる」起点に挙げるスキル群
+- [[concepts/context-engineering]] — Anthropic Claude Codeチーム公式の「CLAUDE.mdに記憶させる→auto-memoryに任せる」逆転。本ページのpush/pull区分と同じ問題意識を公式側から裏付ける

@@ -107,3 +107,4 @@ Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → �
 - [[concepts/agent-reflection-layer]] — 確信度の自己申告（モニタリング）と失敗の可視化（Rule 12）を省察層としてCLAUDE.mdに組み込む設計
 - [[concepts/semantic-generation-skill]] — 独自語を先に置いて設計を進める失敗への対策（@u1）。Rule 7（競合の表面化）・Rule 11（慣習優先）に近い、言葉の定義レベルでの規律
 - [[concepts/parallel-e2e-testing]] — 「Iron Law」としてflaky対策を明文化しスキルで機械的に強制する実践。CLAUDE.mdルール強制の別ドメイン版
+- [[concepts/context-engineering]] — Anthropic Claude Codeチーム（@trq212）が「新モデルはルールより判断力に委ねる方が効く」とシステムプロンプトを80%削減した経験。本ページの明示ルール偏重への反証として読める

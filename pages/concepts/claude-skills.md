@@ -106,3 +106,4 @@ Claude.ai と Claude Code は同じ仕組みでスキルを動作させる。
 - [[papers/2026-li-skillsbench]] — Skillが実際どれだけ効くかを対試験で測るベンチマーク（curatedで平均+16.6pp、compact・少数精鋭が網羅的散文に勝つ）
 - [[papers/2026-hao-skill-mining]] — GUI軌跡からSKILL.mdを自動採掘する診断研究。可読でも転移せず頻度ベースラインに負けるという負の結果
 - [[tools/emil-kowalski-skills]] — デザインエンジニアの専門性（taste）をスキル化した実例（/apple-design・「AIは専門性を置き換えず増幅する」）
+- [[concepts/context-engineering]] — Anthropic Claude Codeチーム公式のコンテキスト設計原則。スキルを「必要な時だけロードされる軽量ガイド」と位置づける
