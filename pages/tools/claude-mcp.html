@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-mcp</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-mcp.md">Markdownで表示</a></div>
-  <div class="meta">tools/claude-mcp · tools · <span title="2026-06-19">1ヶ月前</span></div>
+  <div class="meta">tools/claude-mcp · tools · <span title="2026-07-29">今日</span></div>
   <article><h1>Claude MCP（Model Context Protocol）</h1>
 <p><strong>MCP（Model Context Protocol）</strong> は <a href="../companies/anthropic.html">anthropic</a> が策定した、LLMと外部ツール・データソースを接続するためのオープンプロトコル。</p>
 <h2>主な用途</h2>
@@ -53,21 +53,41 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>対応エージェント: Claude Code / Codex / Cursor / Windsurf 等</p>
 <h2>Enterprise-Managed Auth（組織管理認証）</h2>
 <p>MCPの <strong>Enterprise-Managed Auth 拡張</strong>に対応した（<a href="../companies/anthropic.html">anthropic</a> 公式 @ClaudeDevs 発表、2026-06-18）。管理者が組織全体のMCPコネクタを中央で認可でき、ユーザーは初回ログイン時に必要なツールとデータがすべて接続済みの状態で使い始められる。個々のユーザーが手動でコネクタを設定する必要がなくなり、組織展開時の接続漏れや設定のばらつきを防ぐ。これは <a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> が扱う「MCP認可をどこで・誰が制御するか」という論点に対し、Anthropic公式が組織アドミン主導の中央認可レイヤーを提供する動きにあたる。</p>
+<h2>MCP 2026-07-28スペックとClaudeでの展開</h2>
+<p><a href="../companies/anthropic.html">anthropic</a> は2026-07-28、MCPの5回目のスペックリリース「MCP 2026-07-28」を発表した。MCPは今年だけで月間SDKダウンロード数が4倍の400M超に伸び、AIエージェントとアプリケーションを繋ぐ業界標準になったとAnthropicは位置づける。今回のスペックは3点を変更する。</p>
+<ul>
+<li><strong>ステートレス化</strong>: MCPを双方向ステートフルなプロトコルからリクエスト/レスポンス型のステートレスコアへ移行。サーバーをサーバーレス・エッジ基盤にデプロイしやすくなる</li>
+<li><strong>拡張機能の標準化</strong>: MCP AppsとTasksがバージョン管理された拡張フレームワークの下で正式仕様になり、コア仕様を変えずにインタラクティブUIや長時間実行処理を追加できるようになった</li>
+<li><strong>認可の強化</strong>: OAuth 2.0・OIDCの本番運用に合わせ、Entra・OktaなどエンタープライズIDシステムへ回避策なしで接続できるようにした</li>
+</ul>
+<p>Claude製品側でも対応する機能が揃った。Anthropicは、コネクタディレクトリに950以上のMCPサーバーが並び日々数百万人に使われている状況を踏まえ、以下を挙げる。</p>
+<ul>
+<li><strong>Observability</strong>: コネクタディレクトリに公開したMCPサーバーの採用状況・エラー・レイテンシを追跡できる、開発者向けダッシュボード機能</li>
+<li><strong>MCP tunnels（research preview）</strong>: プライベートネットワーク内のMCPサーバーを、インバウンドのファイアウォール開放や公開エンドポイントなしにClaudeへ接続する機能。<a href="../tools/openai-mcp-tunnel.html">openai-mcp-tunnel</a>（OpenAI Secure MCP Tunnel）と同種のアウトバウンドトンネル型アプローチ</li>
+</ul>
+<p>MCP Appsは<a href="../concepts/generative-ui.html">generative-ui</a>が扱うOpen-endedパターンの実装にあたり、Enterprise-managed authは本ページ上記の節を参照。</p>
+<h2>問い</h2>
+<ul>
+<li>ステートレスコア化は既存のMCPサーバー実装にどの程度の移行コストを強いるか？</li>
+<li>MCP tunnelsと<a href="../tools/openai-mcp-tunnel.html">openai-mcp-tunnel</a>は今後どちらが標準になるか、それとも共存するか？</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a>（MCP認可の限界と外部ポリシーレイヤリング）</li>
+<li><a href="../concepts/generative-ui.html">generative-ui</a>（MCP AppsのOpen-endedパターン）</li>
 <li><a href="../tools/openai-mcp-tunnel.html">openai-mcp-tunnel</a> — OpenAIのSecure MCP Tunnel（プライベートMCPサーバーをトンネル経由でOpenAI製品に接続）</li>
 <li><a href="../tools/claude-tag.html">claude-tag</a> — SlackにClaudeをチームメイトとして常駐させる製品（ツール/チャンネルアクセスの付与を伴う）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
+<li><a href="../concepts/generative-ui.html">generative-ui</a></li>
 <li><a href="../tools/claude-tag.html">claude-tag</a></li>
-<li><a href="../tools/openai-mcp-tunnel.html">openai-mcp-tunnel</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/1872590573934399550" rel="noopener" target="_blank">https://x.com/i/web/status/1872590573934399550</a></li>
+<li><a href="../tools/openai-mcp-tunnel.html">openai-mcp-tunnel</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/1872590573934399550" rel="noopener" target="_blank">https://x.com/i/web/status/1872590573934399550</a></li>
 <li><a href="https://x.com/i/web/status/2049456963042557994" rel="noopener" target="_blank">https://x.com/i/web/status/2049456963042557994</a></li>
-<li><a href="https://x.com/i/web/status/2067655887662272723" rel="noopener" target="_blank">https://x.com/i/web/status/2067655887662272723</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2067655887662272723" rel="noopener" target="_blank">https://x.com/i/web/status/2067655887662272723</a></li>
+<li><a href="https://claude.com/blog/bringing-mcp-2026-07-28-to-claude" rel="noopener" target="_blank">https://claude.com/blog/bringing-mcp-2026-07-28-to-claude</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -121,12 +141,33 @@ npx add-mcp &lt;server-name&gt;
 
 MCPの **Enterprise-Managed Auth 拡張**に対応した（[[companies/anthropic]] 公式 @ClaudeDevs 発表、2026-06-18）。管理者が組織全体のMCPコネクタを中央で認可でき、ユーザーは初回ログイン時に必要なツールとデータがすべて接続済みの状態で使い始められる。個々のユーザーが手動でコネクタを設定する必要がなくなり、組織展開時の接続漏れや設定のばらつきを防ぐ。これは [[concepts/ai-agent-governance]] が扱う「MCP認可をどこで・誰が制御するか」という論点に対し、Anthropic公式が組織アドミン主導の中央認可レイヤーを提供する動きにあたる。
 
+## MCP 2026-07-28スペックとClaudeでの展開
+
+[[companies/anthropic]] は2026-07-28、MCPの5回目のスペックリリース「MCP 2026-07-28」を発表した。MCPは今年だけで月間SDKダウンロード数が4倍の400M超に伸び、AIエージェントとアプリケーションを繋ぐ業界標準になったとAnthropicは位置づける。今回のスペックは3点を変更する。
+
+- **ステートレス化**: MCPを双方向ステートフルなプロトコルからリクエスト/レスポンス型のステートレスコアへ移行。サーバーをサーバーレス・エッジ基盤にデプロイしやすくなる
+- **拡張機能の標準化**: MCP AppsとTasksがバージョン管理された拡張フレームワークの下で正式仕様になり、コア仕様を変えずにインタラクティブUIや長時間実行処理を追加できるようになった
+- **認可の強化**: OAuth 2.0・OIDCの本番運用に合わせ、Entra・OktaなどエンタープライズIDシステムへ回避策なしで接続できるようにした
+
+Claude製品側でも対応する機能が揃った。Anthropicは、コネクタディレクトリに950以上のMCPサーバーが並び日々数百万人に使われている状況を踏まえ、以下を挙げる。
+
+- **Observability**: コネクタディレクトリに公開したMCPサーバーの採用状況・エラー・レイテンシを追跡できる、開発者向けダッシュボード機能
+- **MCP tunnels（research preview）**: プライベートネットワーク内のMCPサーバーを、インバウンドのファイアウォール開放や公開エンドポイントなしにClaudeへ接続する機能。[[tools/openai-mcp-tunnel]]（OpenAI Secure MCP Tunnel）と同種のアウトバウンドトンネル型アプローチ
+
+MCP Appsは[[concepts/generative-ui]]が扱うOpen-endedパターンの実装にあたり、Enterprise-managed authは本ページ上記の節を参照。
+
+## 問い
+
+- ステートレスコア化は既存のMCPサーバー実装にどの程度の移行コストを強いるか？
+- MCP tunnelsと[[tools/openai-mcp-tunnel]]は今後どちらが標準になるか、それとも共存するか？
+
 ## 関連
 
 - [[companies/anthropic]]
 - [[tools/claude-code]]
 - [[concepts/agentic-coding]]
 - [[concepts/ai-agent-governance]]（MCP認可の限界と外部ポリシーレイヤリング）
+- [[concepts/generative-ui]]（MCP AppsのOpen-endedパターン）
 - [[tools/openai-mcp-tunnel]] — OpenAIのSecure MCP Tunnel（プライベートMCPサーバーをトンネル経由でOpenAI製品に接続）
 - [[tools/claude-tag]] — SlackにClaudeをチームメイトとして常駐させる製品（ツール/チャンネルアクセスの付与を伴う）
 </script>
