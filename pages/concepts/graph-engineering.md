@@ -69,6 +69,7 @@ flowchart TD
 
 - 2026-07-20 @0xCodez: 本記事は同著者が2026-06-03に投稿した「6パターン・14ステップ」の二次まとめ（[[concepts/claude-code-dynamic-workflows]] の観察ログに既記録）を、フルコースとして展開したもの。X bookmark 3,057 / imp 557,563（2026-07-21時点）
 - 2026-07-25 @akshay_pachaar: Anthropicの「単体エージェント約4倍・マルチエージェント約15倍のトークン消費」「マルチエージェント・リサーチシステムが単体Opusエージェントを90.2%上回った」という数値は同記事からの孫引きで、Anthropic一次資料に当たって未検証。X bookmark 1,513 / imp 279,645（2026-07-28時点）
+- 2026-07-27 @kazunori_279: グラフエンジニアリングを「ループエンジニアリングの発展系で、エージェントの試行錯誤の軌跡（trajectory）の構成手法」と要約しつつ、それが本質的に有用かはしばらく見定める必要があると留保。X bookmark 1,161（2026-07-28時点）
 
 ## 問い
 
@@ -87,3 +88,4 @@ flowchart TD
 - [[concepts/multi-agent-patterns]] — Fan-Out/Orchestrator-subagent等、個々のパターンの実装詳細
 - [[concepts/llm-model-selection-strategy]] — 工程分解型モデル選択の一般論。本記事のノード別モデル階層化と同型
 - [[concepts/context-engineering]] — スタックの一段下、「モデルに何を見せるか」の設計原則（@trq212／Anthropic Claude Codeチーム）
+- [[tools/claude-code-ultracode]] — トリガーワード「ultracode」の仕様・使い分け基準の詳細解説（@ren_aivest）

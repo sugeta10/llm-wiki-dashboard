@@ -90,3 +90,4 @@
 - [[tools/claude-code-goal]] — `/goal` との組み合わせ（ハード完了要件）
 - [[concepts/claude-code-loop-types]] — 公式4類型。Proactive ループの合成部品として本機能を位置づける
 - [[concepts/graph-engineering]] — 本機能をノード/エッジ/契約というグラフ語彙で捉え直し、バリアの要否を判定するスメルテストまで踏み込んだ実践論（@0xCodez）
+- [[tools/claude-code-ultracode]] — トリガーワード「ultracode」自体の仕様（最大16並行・合計1000体上限）と`/goal`との組み合わせ方の解説

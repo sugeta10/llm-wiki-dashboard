@@ -98,6 +98,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li>2026-07-20 @0xCodez: 本記事は同著者が2026-06-03に投稿した「6パターン・14ステップ」の二次まとめ（<a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> の観察ログに既記録）を、フルコースとして展開したもの。X bookmark 3,057 / imp 557,563（2026-07-21時点）</li>
 <li>2026-07-25 @akshay_pachaar: Anthropicの「単体エージェント約4倍・マルチエージェント約15倍のトークン消費」「マルチエージェント・リサーチシステムが単体Opusエージェントを90.2%上回った」という数値は同記事からの孫引きで、Anthropic一次資料に当たって未検証。X bookmark 1,513 / imp 279,645（2026-07-28時点）</li>
+<li>2026-07-27 @kazunori_279: グラフエンジニアリングを「ループエンジニアリングの発展系で、エージェントの試行錯誤の軌跡（trajectory）の構成手法」と要約しつつ、それが本質的に有用かはしばらく見定める必要があると留保。X bookmark 1,161（2026-07-28時点）</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -116,13 +117,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Fan-Out/Orchestrator-subagent等、個々のパターンの実装詳細</li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 工程分解型モデル選択の一般論。本記事のノード別モデル階層化と同型</li>
 <li><a href="../concepts/context-engineering.html">context-engineering</a> — スタックの一段下、「モデルに何を見せるか」の設計原則（@trq212／Anthropic Claude Codeチーム）</li>
+<li><a href="../tools/claude-code-ultracode.html">claude-code-ultracode</a> — トリガーワード「ultracode」の仕様・使い分け基準の詳細解説（@ren_aivest）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../concepts/context-engineering.html">context-engineering</a></li>
 <li><a href="../concepts/dynamic-agent-org.html">dynamic-agent-org</a></li>
 <li><a href="../concepts/harness-engineering-roadmap.html">harness-engineering-roadmap</a></li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2079165300625330317" rel="noopener" target="_blank">https://x.com/i/web/status/2079165300625330317</a></li>
 <li><a href="https://x.com/i/web/status/2081089131808243999" rel="noopener" target="_blank">https://x.com/i/web/status/2081089131808243999</a></li>
-<li><a href="https://x.com/i/web/status/2081356379026280677" rel="noopener" target="_blank">https://x.com/i/web/status/2081356379026280677</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2081356379026280677" rel="noopener" target="_blank">https://x.com/i/web/status/2081356379026280677</a></li>
+<li><a href="https://x.com/i/web/status/2081833717006536782" rel="noopener" target="_blank">https://x.com/i/web/status/2081833717006536782</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -214,6 +217,7 @@ flowchart TD
 
 - 2026-07-20 @0xCodez: 本記事は同著者が2026-06-03に投稿した「6パターン・14ステップ」の二次まとめ（[[concepts/claude-code-dynamic-workflows]] の観察ログに既記録）を、フルコースとして展開したもの。X bookmark 3,057 / imp 557,563（2026-07-21時点）
 - 2026-07-25 @akshay_pachaar: Anthropicの「単体エージェント約4倍・マルチエージェント約15倍のトークン消費」「マルチエージェント・リサーチシステムが単体Opusエージェントを90.2%上回った」という数値は同記事からの孫引きで、Anthropic一次資料に当たって未検証。X bookmark 1,513 / imp 279,645（2026-07-28時点）
+- 2026-07-27 @kazunori_279: グラフエンジニアリングを「ループエンジニアリングの発展系で、エージェントの試行錯誤の軌跡（trajectory）の構成手法」と要約しつつ、それが本質的に有用かはしばらく見定める必要があると留保。X bookmark 1,161（2026-07-28時点）
 
 ## 問い
 
@@ -232,6 +236,7 @@ flowchart TD
 - [[concepts/multi-agent-patterns]] — Fan-Out/Orchestrator-subagent等、個々のパターンの実装詳細
 - [[concepts/llm-model-selection-strategy]] — 工程分解型モデル選択の一般論。本記事のノード別モデル階層化と同型
 - [[concepts/context-engineering]] — スタックの一段下、「モデルに何を見せるか」の設計原則（@trq212／Anthropic Claude Codeチーム）
+- [[tools/claude-code-ultracode]] — トリガーワード「ultracode」の仕様・使い分け基準の詳細解説（@ren_aivest）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
