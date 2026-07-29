@@ -65,3 +65,4 @@ Anthropicはこの簡略化を自動化する`claude doctor`コマンドをリ�
 - [[concepts/skills-over-memory]] — auto-memoryと肥大化したCLAUDE.mdの関係を扱う。本記事の「CLAUDE.md記憶→auto-memory」の逆転と同じ問題意識
 - [[concepts/claude-code-context-hierarchy]] — 4層（Memory/Slash commands/Permissions/MCP）の「どこに置くか」の構造。本記事は「何を置くべきか」という上位の設計思想
 - [[concepts/graph-engineering]] — エンジニアリングスタックの一段上、複数ループを束ねる調整層（@akshay_pachaar）
+- [[concepts/lean-prompt-rules-adaptation]] — 本記事が示すlean prompt化を利用者側から実測した続報。応答形式規定の消失で旧rulesが噛み合わなくなる実害と3つの書き直し対策（@u1）

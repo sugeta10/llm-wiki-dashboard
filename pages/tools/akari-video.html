@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ai-effort-rotation - LLM Wiki</title>
+<title>akari-video - LLM Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -24,25 +24,29 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </style>
 </head>
 <body>
-<div class="cat-band" style="background:#bc8cff"></div>
+<div class="cat-band" style="background:#58a6ff"></div>
 <main class="wrap">
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
-  <h1>ai-effort-rotation</h1>
-  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-effort-rotation.md">Markdownで表示</a></div>
-  <div class="meta">concepts/ai-effort-rotation · concepts · <span title="2026-07-15">2週間前</span></div>
-  <article><h1>努力の回転数（AI活用の設計思想）</h1>
-<blockquote>
-<p><strong>TL;DR</strong>: AIは努力を代行して減らす道具ではなく、同じ時間で試せる仮説・試作・失敗の「回転数」を上げる道具である——複数AIの並列運用・段階的実装・反対監査・却下理由のログ化・道具化という7段階の反復ワークフームでこれを実現する（@ai_ai_ailoverが落合陽一の公開事例を分析した枠組み）。</p>
-</blockquote>
-<p>```mermaid
-flowchart LR
-  A["未整理な発話&lt;br/&gt;音声で回収"] --&gt; B["並列調査&lt;br/&gt;複数AIに役割分担"]
-  B --&gt; C["試作&lt;br/&gt;別形式へ変換"]
-  C --&gt; D["反対監査&lt;br/&gt;別AIに壊させる"]
-  D --&gt; E["改善ログ&lt;br/&gt;却下理由を記録"]
-  E --&gt; F["道具化&lt;br/&gt;繰り返す不便を自動化"]
-  F --&gt; G["現実へ持ち出す"]
-  G -.再調査.-&gt; A</p><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2076515159581794584" rel="noopener" target="_blank">https://x.com/i/web/status/2076515159581794584</a></li></ul></section></article>
+  <h1>akari-video</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="akari-video.md">Markdownで表示</a></div>
+  <div class="meta">tools/akari-video · tools · <span title="2026-07-29">今日</span></div>
+  <article><h1>Akari Video</h1>
+<p><a href="../tools/claude-code.html">claude-code</a>やCodexのようなコーディングハーネスをフル活用して動画編集を最大8割自動化することを狙う、オープンソースのAIネイティブ動画編集ツール。開発者の@ryoma_nakajimaが2026-07-26にプレリリースを発表した。</p>
+<p><a href="../tools/video-use.html">video-use</a>（素材フォルダを渡してClaude Codeと会話しながら編集する既存OSS）と同じ「コーディングエージェントを動画編集に転用する」系譜に位置するが、Akari Videoは自動化率という具体的な数値目標（最大8割）を打ち出している点が特徴。</p>
+<h2>問い</h2>
+<ul>
+<li>「最大8割自動化」の内訳（カット・字幕・カラー調整のどこまでを指すか）はプレリリース時点では未公開。リポジトリ本体を確認する価値があるか</li>
+<li><a href="../tools/video-use.html">video-use</a>・<a href="../tools/openmontage.html">openmontage</a>と比べて何が差別化点か（対応フォーマット・UIの有無等）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/video-use.html">video-use</a> — 先行する同系統OSS（素材フォルダ→final.mp4）</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — フル活用するハーネスの一つ</li>
+<li><a href="../tools/video-shotcraft.html">video-shotcraft</a> — Remotion系の新規制作特化スキル（Akari Videoは既存素材の編集寄り）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/video-use.html">video-use</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/openmontage.html">openmontage</a></li>
+<li><a href="../tools/video-shotcraft.html">video-shotcraft</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2081339289137549422" rel="noopener" target="_blank">https://x.com/i/web/status/2081339289137549422</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -63,19 +67,22 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
   pre.appendChild(btn);
 });
 </script>
-<script id="page-markdown" type="text/plain"># 努力の回転数（AI活用の設計思想）
+<script id="page-markdown" type="text/plain"># Akari Video
 
-&gt; **TL;DR**: AIは努力を代行して減らす道具ではなく、同じ時間で試せる仮説・試作・失敗の「回転数」を上げる道具である——複数AIの並列運用・段階的実装・反対監査・却下理由のログ化・道具化という7段階の反復ワークフームでこれを実現する（@ai_ai_ailoverが落合陽一の公開事例を分析した枠組み）。
+[[tools/claude-code]]や[[tools/openai-codex|Codex]]のようなコーディングハーネスをフル活用して動画編集を最大8割自動化することを狙う、オープンソースのAIネイティブ動画編集ツール。開発者の@ryoma_nakajimaが2026-07-26にプレリリースを発表した。
 
-```mermaid
-flowchart LR
-  A[&quot;未整理な発話&lt;br/&gt;音声で回収&quot;] --&gt; B[&quot;並列調査&lt;br/&gt;複数AIに役割分担&quot;]
-  B --&gt; C[&quot;試作&lt;br/&gt;別形式へ変換&quot;]
-  C --&gt; D[&quot;反対監査&lt;br/&gt;別AIに壊させる&quot;]
-  D --&gt; E[&quot;改善ログ&lt;br/&gt;却下理由を記録&quot;]
-  E --&gt; F[&quot;道具化&lt;br/&gt;繰り返す不便を自動化&quot;]
-  F --&gt; G[&quot;現実へ持ち出す&quot;]
-  G -.再調査.-&gt; A
+[[tools/video-use]]（素材フォルダを渡してClaude Codeと会話しながら編集する既存OSS）と同じ「コーディングエージェントを動画編集に転用する」系譜に位置するが、Akari Videoは自動化率という具体的な数値目標（最大8割）を打ち出している点が特徴。
+
+## 問い
+
+- 「最大8割自動化」の内訳（カット・字幕・カラー調整のどこまでを指すか）はプレリリース時点では未公開。リポジトリ本体を確認する価値があるか
+- [[tools/video-use]]・[[tools/openmontage]]と比べて何が差別化点か（対応フォーマット・UIの有無等）
+
+## 関連
+
+- [[tools/video-use]] — 先行する同系統OSS（素材フォルダ→final.mp4）
+- [[tools/claude-code]] — フル活用するハーネスの一つ
+- [[tools/video-shotcraft]] — Remotion系の新規制作特化スキル（Akari Videoは既存素材の編集寄り）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

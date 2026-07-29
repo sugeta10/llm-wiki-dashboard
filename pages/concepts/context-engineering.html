@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>context-engineering</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="context-engineering.md">Markdownで表示</a></div>
-  <div class="meta">concepts/context-engineering · concepts · <span title="2026-07-28">今日</span></div>
+  <div class="meta">concepts/context-engineering · concepts · <span title="2026-07-28">1日前</span></div>
   <article><h1>コンテキストエンジニアリング（Context Engineering for Claude 5 models）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: モデルの判断力向上に合わせてClaude Codeのシステムプロンプトを80%以上削減した経験から、Anthropicが「ルールを与える→判断に委ねる」など6つの逆転（Then→Now）で示すコンテキスト設計原則。</p>
@@ -121,6 +121,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> — auto-memoryと肥大化したCLAUDE.mdの関係を扱う。本記事の「CLAUDE.md記憶→auto-memory」の逆転と同じ問題意識</li>
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> — 4層（Memory/Slash commands/Permissions/MCP）の「どこに置くか」の構造。本記事は「何を置くべきか」という上位の設計思想</li>
 <li><a href="../concepts/graph-engineering.html">graph-engineering</a> — エンジニアリングスタックの一段上、複数ループを束ねる調整層（@akshay_pachaar）</li>
+<li><a href="../concepts/lean-prompt-rules-adaptation.html">lean-prompt-rules-adaptation</a> — 本記事が示すlean prompt化を利用者側から実測した続報。応答形式規定の消失で旧rulesが噛み合わなくなる実害と3つの書き直し対策（@u1）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
 <li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
 <li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
@@ -213,6 +214,7 @@ Anthropicはこの簡略化を自動化する`claude doctor`コマンドをリ�
 - [[concepts/skills-over-memory]] — auto-memoryと肥大化したCLAUDE.mdの関係を扱う。本記事の「CLAUDE.md記憶→auto-memory」の逆転と同じ問題意識
 - [[concepts/claude-code-context-hierarchy]] — 4層（Memory/Slash commands/Permissions/MCP）の「どこに置くか」の構造。本記事は「何を置くべきか」という上位の設計思想
 - [[concepts/graph-engineering]] — エンジニアリングスタックの一段上、複数ループを束ねる調整層（@akshay_pachaar）
+- [[concepts/lean-prompt-rules-adaptation]] — 本記事が示すlean prompt化を利用者側から実測した続報。応答形式規定の消失で旧rulesが噛み合わなくなる実害と3つの書き直し対策（@u1）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

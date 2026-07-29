@@ -62,3 +62,4 @@ mindmap
 - [[concepts/loop-engineering]] — 「最小のAGENTS.mdが正義」（@rsensui引用のETH Zurich研究: 肥大で成功率低下・推論コスト+20%超）として本ページの「CLAUDE.mdは200行未満」基準を別ルートで裏付け
 - [[concepts/skills-over-memory]] — メモリと CLAUDE.md を同じ「常時ロードの肥大」問題として束ね、教訓はスキルへPRせよと説く実践論。本ページの格納先決定フレームの動機側
 - [[concepts/claude-code-compact-recovery]] — 「hooks はコンパクションをバイパスする」性質を復旧経路として使う実践例（state file 退避＋marker 経由で圧縮直後に判断構造を復元）
+- [[concepts/lean-prompt-rules-adaptation]] — 本ページの分類軸を実測で裏付けた実践例。output styleでは止まらなかった「進め方」の癖が、行動直前に毎回届くUserPromptSubmit hookで止まったという届け方の検証（@u1）

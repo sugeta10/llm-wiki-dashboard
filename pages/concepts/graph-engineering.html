@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>graph-engineering</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="graph-engineering.md">Markdownで表示</a></div>
-  <div class="meta">concepts/graph-engineering · concepts · <span title="2026-07-28">今日</span></div>
+  <div class="meta">concepts/graph-engineering · concepts · <span title="2026-07-29">今日</span></div>
   <article><h1>グラフエンジニアリング（Graph Engineering with Claude）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェント間のオーケストレーションを「ノード（仕事）」と「エッジ（実際に流れるデータ）」という語彙で捉え直し、"これは本当にエッジか" "バリアは要るか" を機械的に判定できるようにする設計規律。</p>
@@ -52,7 +52,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p><strong>手で描けない仕事は自己ルーティングに任せる</strong>。事前にグラフの形を計画できないタスクでは、プロンプトに「workflow」という語を含める、または <code>ultracode</code> を有効にすると、Claudeがオーケストレーションスクリプト自体を書く。うまくいった実行は <code>s</code> キーで <code>.claude/workflows/</code> に保存でき、以降は名前で再実行できるバージョン管理された資産になる。</p>
 <h2>エンジニアリングスタック：各層が前の層を包む</h2>
 <p>2026年7月18日、Peter Steinberger（<a href="../tools/openclaw.html">openclaw</a> 開発者）が「まだループの話してる？それとももうグラフに移った？」と9語で問いかけた数時間後、Hamel Husainが「Loop Engineering Is Dead. Enter Graph Engineering」という記事を公開した。@akshay_pachaarはこの応酬を「半分は冗談だが、核心を突いている」と評する——複数のループが協調する必要が生じた瞬間、それは調整問題であり、エンジニアはずっとグラフで調整を記述してきたからだ、と述べる。</p>
-<p>@akshay_pachaarは、AI開発の重心がモデルそのものから離れ続けるたびに新しい名前が付いてきたと整理する。各層は1つ前の層を包み込む入れ子構造で、下の層を飛ばすとグラフはより複雑な形で失敗するだけだと述べる。</p>
+<p>@akshay_pachaarは、AI開発の重心がモデルそのものから離れ続けるたびに新しい名前が付いてきたと整理する。各層は1つ前の層を包み込む入れ子構造で、下の層を飛ばすとグラフはより複雑な形で失敗するだけだと述べる。用語は増え続け新しい用語が出るたびに前の用語の置き換えとして扱われがちだが、実際には置き換えでなく包含であり、各層を見分けるいちばんクリーンな方法は「1つの作業単位（unit of work）がどこまでを指すか」を問うことだと@akshay_pachaarは述べる。</p>
 <table>
 <thead>
 <tr>
@@ -121,7 +121,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/dynamic-agent-org.html">dynamic-agent-org</a></li>
 <li><a href="../concepts/harness-engineering-roadmap.html">harness-engineering-roadmap</a></li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2079165300625330317" rel="noopener" target="_blank">https://x.com/i/web/status/2079165300625330317</a></li>
-<li><a href="https://x.com/i/web/status/2081089131808243999" rel="noopener" target="_blank">https://x.com/i/web/status/2081089131808243999</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2081089131808243999" rel="noopener" target="_blank">https://x.com/i/web/status/2081089131808243999</a></li>
+<li><a href="https://x.com/i/web/status/2081356379026280677" rel="noopener" target="_blank">https://x.com/i/web/status/2081356379026280677</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -177,7 +178,7 @@ flowchart TD
 
 2026年7月18日、Peter Steinberger（[[tools/openclaw]] 開発者）が「まだループの話してる？それとももうグラフに移った？」と9語で問いかけた数時間後、Hamel Husainが「Loop Engineering Is Dead. Enter Graph Engineering」という記事を公開した。@akshay_pachaarはこの応酬を「半分は冗談だが、核心を突いている」と評する——複数のループが協調する必要が生じた瞬間、それは調整問題であり、エンジニアはずっとグラフで調整を記述してきたからだ、と述べる。
 
-@akshay_pachaarは、AI開発の重心がモデルそのものから離れ続けるたびに新しい名前が付いてきたと整理する。各層は1つ前の層を包み込む入れ子構造で、下の層を飛ばすとグラフはより複雑な形で失敗するだけだと述べる。
+@akshay_pachaarは、AI開発の重心がモデルそのものから離れ続けるたびに新しい名前が付いてきたと整理する。各層は1つ前の層を包み込む入れ子構造で、下の層を飛ばすとグラフはより複雑な形で失敗するだけだと述べる。用語は増え続け新しい用語が出るたびに前の用語の置き換えとして扱われがちだが、実際には置き換えでなく包含であり、各層を見分けるいちばんクリーンな方法は「1つの作業単位（unit of work）がどこまでを指すか」を問うことだと@akshay_pachaarは述べる。
 
 | 層 | 対象 |
 |----|------|

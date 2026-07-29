@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>lean-prompt-rules-adaptation - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>lean-prompt-rules-adaptation</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="lean-prompt-rules-adaptation.md">Markdownで表示</a></div>
+  <div class="meta">concepts/lean-prompt-rules-adaptation · concepts · <span title="2026-07-29">今日</span></div>
+  <article><h1>lean system prompt時代のrules設計（応答形式規定の消失と3対策）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: モデル更新でシステムプロンプトから応答形式の規定が消えると、その空白を埋めるのは手元のrulesでなくモデルが訓練で内在化した既定の振る舞いになり、rulesは「本体原文の名指し上書き」「禁止でなく望ましい動きの明記」「行動直前への短い毎回注入」という3対策で書き直さないと効かなくなるという実測記録。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  A[&quot;モデル更新&quot;] --&gt; B[&quot;system promptの応答形式規定が消失&quot;]
+  B --&gt; C[&quot;旧rulesが噛み合わなくなる&quot;]
+  C --&gt; D[&quot;症状: 散文化・原因分解1層止まり・無断で作業着手&quot;]
+  D --&gt; E[&quot;対策1: 本体原文を名指しで上書き&quot;]
+  D --&gt; F[&quot;対策2: 禁止でなく望ましい動きを明記&quot;]
+  D --&gt; G[&quot;対策3: 行動直前に短く毎回注入&quot;]</pre>
+<p><a href="../concepts/context-engineering.html">context-engineering</a> がAnthropic公式の立場として示す「Claude 5世代でシステムプロンプトが80%以上削減された」という変化を、rulesを運用する側から実際に踏み抜いた記録が@u1による本記事である。<a href="../tools/claude-code.html">claude-code</a> を<a href="../models/claude-opus-5.html">claude-opus-5</a>に切り替えた直後、同一セッション・同一rulesのまま、状況説明が見出しも区分もないフラットな長文になる、原因説明が症状の並列列挙で止まり「なぜ」を掘らない、複数案に評価軸が付かない、発話に返答せず先にツール実行へ入る、といった症状が急に出たと@u1は報告する。指摘し直しても浅い思考のまま噛み合わなくなり、対話を通じた検討そのものが成立しなくなったという。</p>
+<p>同じrulesでもOpus 4.7や<a href="../models/claude-fable-5.html">claude-fable-5</a>では症状が出ない、という手がかりから、@u1は「rules側の劣化」ではなく「rulesが前提にしている環境」——実際にモデルへ配られているsystem prompt——の変化を疑った。output style等の注入を無効化した状態でOpus 5自身に自分のsystem promptを原文引用させて実測したところ、旧世代で濃く書かれていた応答形式の規定（散文か構造か、見出しや表の使い方、簡潔さ）が丸ごと存在せず、代わりに"When you have enough information to act, act."「網羅より推奨を」という自律方針が入っていたと@u1は述べる。</p>
+<p>@u1はここで「規定が空白ならこちらのrulesがむしろよく効くのでは」という予想は外れたと振り返る。空白は利用者に委ねられた余白ではなく、モデルに訓練で焼き込まれた既定の動作へ委ねられたものであり、旧rulesは応答形式の規定が濃かった旧世代promptと並んで読まれる前提で書かれていたため、訓練された既定を覆すには書き方も届き方も弱すぎたという。</p>
+<h2>対策1: 本体原文を名指しで上書きする</h2>
+<p>@u1は全rulesを新system promptと突き合わせ、逆のことを言っている箇所を洗い出し、上書きしたいrulesは本体の原文をそのまま引用して名指しで優先を宣言する形に書き直したと述べる。「複数案には評価軸を付けて書くこと」のような一般論の追記では、本体の"give a recommendation, not an exhaustive survey"と並んだときにどちらを優先するかの手がかりがなく効かなかったという。発火条件も「重要な変更のときは」のような自己分類頼みの書き方から、「interruptを受けた」のような解釈の余地がない観測記述へ書き換えたと@u1は説明する。</p>
+<h2>対策2: 禁止ではなく望ましい動きを書く</h2>
+<p>旧rulesは「〜するな」の蓄積で、禁止は違反の検知には使えても代わりに何をすべきかを運ばず、新方針と衝突したときにモデルへ「禁止を避けつつ本体方針に従う」抜け道を与えてしまうと@u1は指摘する。「テスト未完了の状態でcommitを提案するな」を「commitを提案する時は、その成果物を使う人の操作手順で動かした結果を本文に書く」に変換する、というのが例に挙がっている。</p>
+<h2>対策3: 指示を届ける層を選ぶ</h2>
+<p>@u1はClaude Codeに指示を届ける経路が複数あり、実測すると効き方が違うと述べる（<a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a>が示す「ロード時点×圧縮生存×権威×コスト」の分類軸と対応する）。output styleは書き方の規定（構造で書く、評価軸を付ける）には改善が見られたが、進め方（発話にまず返答してから作業する）は止まらず、最終的にはUserPromptSubmit hookで毎発話の直後に短い1行を注入する方法で止まったという。コストはwrapper込みで1発話あたり約50 token。@u1が導く一般則は「変えたい行動の直前に、短く、毎回届ける指示がいちばん効く」というものである。</p>
+<h2>Fable 5・Opus 4.7で症状が出ない理由</h2>
+<p>@u1が条件を揃えて（headless mode・output style無効）各モデルに自身のsystem promptを原文引用させて比較した結果、Opus 4.7はlean prompt適用対象外のため旧世代の長いpromptのまま動いており、旧rulesと噛み合っていたという。一方Fable 5は同じClaude 5世代でも実測するとOpus 5とは別のpromptが配られており、"a simple question gets a direct answer in prose, not headers and sections"のような散文方針を含む応答形式の規範を持っていたため出力の形が崩れにくかったと@u1は述べる。</p>
+<h2>観察ログ(未検証)</h2>
+<ul>
+<li>対策実施後、状況説明・原因説明に区分が戻る傾向が見られたが、セッション序盤はフラットな出力が残ることがあり継続観察中と@u1は述べる</li>
+<li>「返答せず作業に入る」癖はoutput style単独では直らず、毎発話注入の導入で止まったが導入直後のため効果は観察中と@u1は述べる</li>
+<li>「同じpromptに対する指示追従の容量がモデルごとに違う」という当初の仮説は、実測でprompt自体が別物と分かり撤回したと@u1は述べる。モデル固有の追従性の寄与度はprompt条件を揃えた比較をしていないため分離できていない</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultのCLAUDE.mdやスキル群は、モデル世代が変わった際に「本体system promptとの矛盾」を点検する手順を持っているか</li>
+<li>対策3の「行動直前への短い毎回注入」パターンは、このリポのUserPromptSubmit hook設計に転用できるか</li>
+<li>Opus 5とFable 5でsystem prompt自体が別物という発見は、<a href="../concepts/context-engineering.html">context-engineering</a>の「4層それぞれへの適用ガイド」とどう整合するか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/context-engineering.html">context-engineering</a> — Anthropic公式が示す「ルールより判断力に委ねる」lean prompt化の設計思想。本記事はその実害と対策を利用者側から実測した続報</li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a> — 本記事が新system promptと噛み合わなくなったと指摘する「旧世代前提の明示ルール」体系そのもの</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 指示を届ける7手段の公式フレーム。本記事の「output style vs hook」という届け方の実測はこのフレームの実践的検証にあたる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
+<li><a href="../concepts/context-engineering.html">context-engineering</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../models/claude-opus-5.html">claude-opus-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2081158397052035090" rel="noopener" target="_blank">https://x.com/i/web/status/2081158397052035090</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># lean system prompt時代のrules設計（応答形式規定の消失と3対策）
+
+&gt; **TL;DR**: モデル更新でシステムプロンプトから応答形式の規定が消えると、その空白を埋めるのは手元のrulesでなくモデルが訓練で内在化した既定の振る舞いになり、rulesは「本体原文の名指し上書き」「禁止でなく望ましい動きの明記」「行動直前への短い毎回注入」という3対策で書き直さないと効かなくなるという実測記録。
+
+```mermaid
+flowchart TD
+  A[&quot;モデル更新&quot;] --&gt; B[&quot;system promptの応答形式規定が消失&quot;]
+  B --&gt; C[&quot;旧rulesが噛み合わなくなる&quot;]
+  C --&gt; D[&quot;症状: 散文化・原因分解1層止まり・無断で作業着手&quot;]
+  D --&gt; E[&quot;対策1: 本体原文を名指しで上書き&quot;]
+  D --&gt; F[&quot;対策2: 禁止でなく望ましい動きを明記&quot;]
+  D --&gt; G[&quot;対策3: 行動直前に短く毎回注入&quot;]
+```
+
+[[concepts/context-engineering]] がAnthropic公式の立場として示す「Claude 5世代でシステムプロンプトが80%以上削減された」という変化を、rulesを運用する側から実際に踏み抜いた記録が@u1による本記事である。[[tools/claude-code]] を[[models/claude-opus-5]]に切り替えた直後、同一セッション・同一rulesのまま、状況説明が見出しも区分もないフラットな長文になる、原因説明が症状の並列列挙で止まり「なぜ」を掘らない、複数案に評価軸が付かない、発話に返答せず先にツール実行へ入る、といった症状が急に出たと@u1は報告する。指摘し直しても浅い思考のまま噛み合わなくなり、対話を通じた検討そのものが成立しなくなったという。
+
+同じrulesでもOpus 4.7や[[models/claude-fable-5]]では症状が出ない、という手がかりから、@u1は「rules側の劣化」ではなく「rulesが前提にしている環境」——実際にモデルへ配られているsystem prompt——の変化を疑った。output style等の注入を無効化した状態でOpus 5自身に自分のsystem promptを原文引用させて実測したところ、旧世代で濃く書かれていた応答形式の規定（散文か構造か、見出しや表の使い方、簡潔さ）が丸ごと存在せず、代わりに&quot;When you have enough information to act, act.&quot;「網羅より推奨を」という自律方針が入っていたと@u1は述べる。
+
+@u1はここで「規定が空白ならこちらのrulesがむしろよく効くのでは」という予想は外れたと振り返る。空白は利用者に委ねられた余白ではなく、モデルに訓練で焼き込まれた既定の動作へ委ねられたものであり、旧rulesは応答形式の規定が濃かった旧世代promptと並んで読まれる前提で書かれていたため、訓練された既定を覆すには書き方も届き方も弱すぎたという。
+
+## 対策1: 本体原文を名指しで上書きする
+
+@u1は全rulesを新system promptと突き合わせ、逆のことを言っている箇所を洗い出し、上書きしたいrulesは本体の原文をそのまま引用して名指しで優先を宣言する形に書き直したと述べる。「複数案には評価軸を付けて書くこと」のような一般論の追記では、本体の&quot;give a recommendation, not an exhaustive survey&quot;と並んだときにどちらを優先するかの手がかりがなく効かなかったという。発火条件も「重要な変更のときは」のような自己分類頼みの書き方から、「interruptを受けた」のような解釈の余地がない観測記述へ書き換えたと@u1は説明する。
+
+## 対策2: 禁止ではなく望ましい動きを書く
+
+旧rulesは「〜するな」の蓄積で、禁止は違反の検知には使えても代わりに何をすべきかを運ばず、新方針と衝突したときにモデルへ「禁止を避けつつ本体方針に従う」抜け道を与えてしまうと@u1は指摘する。「テスト未完了の状態でcommitを提案するな」を「commitを提案する時は、その成果物を使う人の操作手順で動かした結果を本文に書く」に変換する、というのが例に挙がっている。
+
+## 対策3: 指示を届ける層を選ぶ
+
+@u1はClaude Codeに指示を届ける経路が複数あり、実測すると効き方が違うと述べる（[[concepts/claude-code-instruction-methods]]が示す「ロード時点×圧縮生存×権威×コスト」の分類軸と対応する）。output styleは書き方の規定（構造で書く、評価軸を付ける）には改善が見られたが、進め方（発話にまず返答してから作業する）は止まらず、最終的にはUserPromptSubmit hookで毎発話の直後に短い1行を注入する方法で止まったという。コストはwrapper込みで1発話あたり約50 token。@u1が導く一般則は「変えたい行動の直前に、短く、毎回届ける指示がいちばん効く」というものである。
+
+## Fable 5・Opus 4.7で症状が出ない理由
+
+@u1が条件を揃えて（headless mode・output style無効）各モデルに自身のsystem promptを原文引用させて比較した結果、Opus 4.7はlean prompt適用対象外のため旧世代の長いpromptのまま動いており、旧rulesと噛み合っていたという。一方Fable 5は同じClaude 5世代でも実測するとOpus 5とは別のpromptが配られており、&quot;a simple question gets a direct answer in prose, not headers and sections&quot;のような散文方針を含む応答形式の規範を持っていたため出力の形が崩れにくかったと@u1は述べる。
+
+## 観察ログ(未検証)
+
+- 対策実施後、状況説明・原因説明に区分が戻る傾向が見られたが、セッション序盤はフラットな出力が残ることがあり継続観察中と@u1は述べる
+- 「返答せず作業に入る」癖はoutput style単独では直らず、毎発話注入の導入で止まったが導入直後のため効果は観察中と@u1は述べる
+- 「同じpromptに対する指示追従の容量がモデルごとに違う」という当初の仮説は、実測でprompt自体が別物と分かり撤回したと@u1は述べる。モデル固有の追従性の寄与度はprompt条件を揃えた比較をしていないため分離できていない
+
+## 問い
+
+- このvaultのCLAUDE.mdやスキル群は、モデル世代が変わった際に「本体system promptとの矛盾」を点検する手順を持っているか
+- 対策3の「行動直前への短い毎回注入」パターンは、このリポのUserPromptSubmit hook設計に転用できるか
+- Opus 5とFable 5でsystem prompt自体が別物という発見は、[[concepts/context-engineering]]の「4層それぞれへの適用ガイド」とどう整合するか
+
+## 関連
+
+- [[concepts/context-engineering]] — Anthropic公式が示す「ルールより判断力に委ねる」lean prompt化の設計思想。本記事はその実害と対策を利用者側から実測した続報
+- [[concepts/claude-md-rules]] — 本記事が新system promptと噛み合わなくなったと指摘する「旧世代前提の明示ルール」体系そのもの
+- [[concepts/claude-code-instruction-methods]] — 指示を届ける7手段の公式フレーム。本記事の「output style vs hook」という届け方の実測はこのフレームの実践的検証にあたる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>
