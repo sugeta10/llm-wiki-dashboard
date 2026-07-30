@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code.md">Markdownで表示</a></div>
-  <div class="meta">tools/claude-code · tools · <span title="2026-06-20">1ヶ月前</span></div>
+  <div class="meta">tools/claude-code · tools · <span title="2026-07-30">今日</span></div>
   <article><h1>Claude Code</h1>
 <p><strong>Claude Code</strong> は <a href="../companies/anthropic.html">anthropic</a> が開発したAIコーディング CLI ツール。ターミナルから直接コードの生成・編集・実行を行える。</p>
 <p>Obsidian Vault との組み合わせ設計については <a href="../tools/claude-code-obsidian-project.html">claude-code-obsidian-project</a> を参照。言語別コスト・速度ベンチマークは <a href="../concepts/ai-coding-lang-benchmark.html">ai-coding-lang-benchmark</a> を参照。技術書をスキルに自動変換するには <a href="../tools/book-to-skill.html">book-to-skill</a> を参照。</p>
@@ -617,6 +617,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p><strong>使い分け</strong>: セッションが長くなったら <code>/compact</code>（文脈を保ちたい場合）または <code>/clear</code>（完全リセットしたい場合）。新タスク開始時は必ずどちらかを使う。</p>
 </blockquote>
+<h3>セッション名の自動リネーム</h3>
+<p>OpenAI社員が広めた「20分ごとにセッション名を自動リネームする」テクニックを、@kotetsu_0321 がClaude Codeでもプロンプト1発で再現できたと報告。タスクの分岐・脱線で乱雑になりがちなセッション名を、常に「今の作業内容＋絵文字」の形に更新し続ける運用で、セッションを溜め込みがちな人に向くという。</p>
+<blockquote>
+<p>具体的な仕組み・プロンプトは元ポストのリンク先（動画）にあり、本文からは未確認。</p>
+</blockquote>
 <h2>GitHub連携ツール5選（無料）</h2>
 <p><code>@kirillk_web3</code>（2026-05-14）の記事「5 GitHub Tools That Will Change How You Use Claude Code — All Free.」で紹介されたGitHub上の無料ツール群。Claude Codeの使い方を変える実用ツールとして注目を集めている。</p>
 <p>詳細はソース記事（X記事形式）を参照。</p>
@@ -676,7 +681,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="https://github.com/anthropics/claude-code" rel="noopener" target="_blank">https://github.com/anthropics/claude-code</a></li>
 <li><a href="https://www.tohoho-web.com/ai/claude-code.html?fbclid=IwdGRleARyyyBleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAo2NjI4NTY4Mzc5AAEeDHycUh12onxd4PmtGi_IS2Svb2kOEV4JJIXynqVoWFigeC7EVSnY_8IKMsI_aem_K-1Ob8EQrwQsoXyV2QT5Cw" rel="noopener" target="_blank">https://www.tohoho-web.com/ai/claude-code.html?fbclid=IwdGRleARyyyBleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAo2NjI4NTY4Mzc5AAEeDHycUh12onxd4PmtGi_IS2Svb2kOEV4JJIXynqVoWFigeC7EVSnY_8IKMsI_aem_K-1Ob8EQrwQsoXyV2QT5Cw</a></li>
 <li><a href="https://x.com/i/web/status/2054861434140373368" rel="noopener" target="_blank">https://x.com/i/web/status/2054861434140373368</a></li>
-<li><a href="https://x.com/i/web/status/2067671912038240487" rel="noopener" target="_blank">https://x.com/i/web/status/2067671912038240487</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2067671912038240487" rel="noopener" target="_blank">https://x.com/i/web/status/2067671912038240487</a></li>
+<li><a href="https://x.com/i/web/status/2081658444554326425" rel="noopener" target="_blank">https://x.com/i/web/status/2081658444554326425</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -1078,6 +1084,12 @@ Boris Cherny ワークショップで言及済みの主要コマンドに加え�
 | `/doctor` | インストールや設定状況を診断 |
 
 &gt; **使い分け**: セッションが長くなったら `/compact`（文脈を保ちたい場合）または `/clear`（完全リセットしたい場合）。新タスク開始時は必ずどちらかを使う。
+
+### セッション名の自動リネーム
+
+OpenAI社員が広めた「20分ごとにセッション名を自動リネームする」テクニックを、@kotetsu_0321 がClaude Codeでもプロンプト1発で再現できたと報告。タスクの分岐・脱線で乱雑になりがちなセッション名を、常に「今の作業内容＋絵文字」の形に更新し続ける運用で、セッションを溜め込みがちな人に向くという。
+
+&gt; 具体的な仕組み・プロンプトは元ポストのリンク先（動画）にあり、本文からは未確認。
 
 ## GitHub連携ツール5選（無料）
 
