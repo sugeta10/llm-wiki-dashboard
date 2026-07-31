@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>company-brain - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>company-brain</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="company-brain.md">Markdownで表示</a></div>
+  <div class="meta">concepts/company-brain · concepts · <span title="2026-07-31">今日</span></div>
+  <article><h1>Company Brain（企業の共有状態層）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: システムオブレコードが機能ごとに分断してきた企業データを、provenance・permissions・鮮度・関係性を保持する単一の状態層（factual memory / semantic file system）に統合し、役割ごとに異なるレンズ（ontology）で読み出す設計思想。</p>
+</blockquote>
+<p>Sentraに在籍する Ashwin Gopalakrishnan（@ashwingop）は、CRM・チケット・ドキュメントといったシステムオブレコードが分断してきたのは単なるベンダー乱立ではなく、営業・サポート・プロダクト・財務・法務・経営がそれぞれ同じ顧客対応の出来事から異なる構造（ontology）を必要とした結果だと論じる。1通のクレーム対応メールは、営業には解約リスク、カスタマーサクセスにはエスカレーション、プロダクトにはロードマップシグナル、経営には運用プロセスの綻びとして映る。事実は同じでも、有用な真実は見る立場で変わる。</p>
+<h2>Company Brain: semantics と ontology の分離</h2>
+<p>同氏は Company Brain を「ストレージ」ではなく、エンティティ・関係・コミットメント・意思決定・provenance・矛盾・権限・結果を保持する生きた構造化状態として定義する。ここでの semantics（意味）は「これは何か」を示し、ontology（オントロジー）は「それが誰にとってなぜ重要か」を示す——同じアーティファクトを複数の妥当なレンズで読める点が、機能ごとに別ツールへ真実を分割してきた従来のシステムオブレコードとの違いだとする。</p>
+<p>もう一つの主張は、LLM自体を「脳」として扱うべきではないというものだ。モデルは文脈に対して有用な続きを生成するよう訓練されているが、企業の永続的な真実は役割ごとに異なる解釈を安全に配れる、検査・修正・バージョン管理・権限管理・評価が可能な状態層を必要とする。RAMを恒久ストレージ扱いするようなものだ、と同氏は比喩する。推論はLLMが担い、状態はCompany Brainが保持する——両者を分離することで、モデルはプロンプトに貼られた断片からではなく、会社の現在の現実に対して推論できるようになる。</p>
+<pre class="mermaid">flowchart TD
+  CRM[&quot;CRM&quot;] --&gt; SoR[&quot;Systems of Record\n(機能ごとに分断)&quot;]
+  Tickets[&quot;Tickets/Support&quot;] --&gt; SoR
+  Docs[&quot;Docs/Slack/Meetings&quot;] --&gt; SoR
+  SoR --&gt; CB[&quot;Company Brain\n(単一state層)&quot;]
+  CB --&gt; Sales[&quot;Salesのレンズ&quot;]
+  CB --&gt; Product[&quot;Productのレンズ&quot;]
+  CB --&gt; Leadership[&quot;Leadershipのレンズ&quot;]</pre>
+<h2>第一層としてのFactual Memory：semantic file system</h2>
+<p>同氏はCompany Brainの三層（factual memory・interaction memory・action memory）のうち、factual memory を第一層と位置づける。「これは何か・何が起きたか・出典はどこか・誰が所有するか・いつ変わったか・どう機能するか」という基本的な問いに答える層である。これは単なるRAGでは足りないと同氏は指摘する。RAGは断片を検索できるが、企業には provenance（出所）・permissions（権限）・ownership（所有者）・freshness（鮮度）・source-of-truth の境界・アーティファクト間の関係という永続構造が要る。この関係性を持つメモリ層を同氏は「semantic file system」と呼び、顧客の通話がアカウントに、アカウントが未解決チケットに、チケットがプロダクト領域に、プロダクト領域が担当者に、担当者が意思決定につながるといった連鎖の質が、そのままメモリの質を決めるとする。</p>
+<h2>個人の記憶から会社の記憶への「創発」</h2>
+<p>Company Brainは中央集権的なリポジトリとして構築すべきではない、というのが同氏のもう一つの主張だ。人はドキュメント・Slack・会議・チケット・ローカルメモ・スプレッドシートで自然に働いており、中央アーカイブへの入力を強いる設計は失敗する。個人メモがチームドキュメントになり、チームドキュメントがロードマップの意思決定になり、意思決定が顧客への約束になる——この遷移を通じて会社の記憶は個人の外側へ「創発」していくべきで、一部の成果物は個人のまま残り、一部がチーム共有記憶になり、さらに小さな一部が会社の記憶になる、と同氏は説明する。</p>
+<h2>パーソナライズされた応答</h2>
+<p>同氏は、同じ質問でも役割によって返す答えが変わるべきだとする。ICが「請求連携を引き継ぐが何を知るべきか」と聞けば仕様・過去のチケット・既知のリスク・担当者・顧客への約束・最近のインシデント・未解決の意思決定を統合した答えを、マネージャーが「オンボーディングを阻んでいるのは何か」と聞けばチケット・ステータス・オーナーシップ・エスカレーション・未解決の依存関係を、経営層が「エンタープライズの解約について何を知っているか」と聞けばCRM・サポート・更新メモ・通話要約・アカウント履歴・ダッシュボード指標を、それぞれ重み付けを変えて統合すべきだとする。さらにCompany Brainは検索ボックスで待つのではなく、顧客通話の前に未解決の約束を、ロードマップ編集時に関連する顧客要望を、チケット割当時に過去のインシデントを、プロアクティブに差し出すべきだとする——これが「待つ」ナレッジベースと「参加する」メモリの違いだと同氏は結論づける。</p>
+<h2>問い</h2>
+<ul>
+<li>Company Brainの「state層とreasoning層の分離」は、このLLM wiki（<code>sources/</code>不変＋<code>wiki/</code>生成物）の設計と同型か。frontmatterの<code>sources</code>/<code>updated</code>はprovenance/freshnessの代替になっているか</li>
+<li><a href="../concepts/palantir-ontology.html">palantir-ontology</a>の「動詞（アクション）」に相当する書き戻し機能をCompany Brainは持つか、それとも読み取り専用の意味層に留まるか</li>
+<li>個人ワークスペース→チーム→会社という「創発」モデルは、<a href="../concepts/agent-memory-layer.html">agent-memory-layer</a>が指摘する「到達点の保存に偏り過程が失われる」問題にどう答えるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/palantir-ontology.html">palantir-ontology</a> — 「データとAIの間に業務文脈を保持する中間層」という同型の発想。Palantirは名詞＋動詞、Company Brainはsemantics＋ontologyで構造化</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — 全エージェントの下に単一メモリ層を敷く設計思想。個人版のCompany Brainとも言える</li>
+<li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a> — スキーマ＋RAGの限界という同じ出発点から6層コンテキストという別解に至った企業事例</li>
+<li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a> — 全ソースを単一埋め込みテーブルに正規化する社内知識ベースの実装例。Company Brainの「semantic file system」の一実装形態と読める</li>
+<li><a href="../business/dinii-ask-anything.html">dinii-ask-anything</a> — 社内問い合わせ代行という形でfactual memoryの一部を先取り実装した日本企業の事例</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/dinii-ask-anything.html">dinii-ask-anything</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a></li>
+<li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li>
+<li><a href="../concepts/palantir-ontology.html">palantir-ontology</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2049885545288077720" rel="noopener" target="_blank">https://x.com/i/web/status/2049885545288077720</a></li>
+<li><a href="https://x.com/i/web/status/2053173547393331318" rel="noopener" target="_blank">https://x.com/i/web/status/2053173547393331318</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Company Brain（企業の共有状態層）
+
+&gt; **TL;DR**: システムオブレコードが機能ごとに分断してきた企業データを、provenance・permissions・鮮度・関係性を保持する単一の状態層（factual memory / semantic file system）に統合し、役割ごとに異なるレンズ（ontology）で読み出す設計思想。
+
+Sentraに在籍する Ashwin Gopalakrishnan（@ashwingop）は、CRM・チケット・ドキュメントといったシステムオブレコードが分断してきたのは単なるベンダー乱立ではなく、営業・サポート・プロダクト・財務・法務・経営がそれぞれ同じ顧客対応の出来事から異なる構造（ontology）を必要とした結果だと論じる。1通のクレーム対応メールは、営業には解約リスク、カスタマーサクセスにはエスカレーション、プロダクトにはロードマップシグナル、経営には運用プロセスの綻びとして映る。事実は同じでも、有用な真実は見る立場で変わる。
+
+## Company Brain: semantics と ontology の分離
+
+同氏は Company Brain を「ストレージ」ではなく、エンティティ・関係・コミットメント・意思決定・provenance・矛盾・権限・結果を保持する生きた構造化状態として定義する。ここでの semantics（意味）は「これは何か」を示し、ontology（オントロジー）は「それが誰にとってなぜ重要か」を示す——同じアーティファクトを複数の妥当なレンズで読める点が、機能ごとに別ツールへ真実を分割してきた従来のシステムオブレコードとの違いだとする。
+
+もう一つの主張は、LLM自体を「脳」として扱うべきではないというものだ。モデルは文脈に対して有用な続きを生成するよう訓練されているが、企業の永続的な真実は役割ごとに異なる解釈を安全に配れる、検査・修正・バージョン管理・権限管理・評価が可能な状態層を必要とする。RAMを恒久ストレージ扱いするようなものだ、と同氏は比喩する。推論はLLMが担い、状態はCompany Brainが保持する——両者を分離することで、モデルはプロンプトに貼られた断片からではなく、会社の現在の現実に対して推論できるようになる。
+
+```mermaid
+flowchart TD
+  CRM[&quot;CRM&quot;] --&gt; SoR[&quot;Systems of Record\n(機能ごとに分断)&quot;]
+  Tickets[&quot;Tickets/Support&quot;] --&gt; SoR
+  Docs[&quot;Docs/Slack/Meetings&quot;] --&gt; SoR
+  SoR --&gt; CB[&quot;Company Brain\n(単一state層)&quot;]
+  CB --&gt; Sales[&quot;Salesのレンズ&quot;]
+  CB --&gt; Product[&quot;Productのレンズ&quot;]
+  CB --&gt; Leadership[&quot;Leadershipのレンズ&quot;]
+```
+
+## 第一層としてのFactual Memory：semantic file system
+
+同氏はCompany Brainの三層（factual memory・interaction memory・action memory）のうち、factual memory を第一層と位置づける。「これは何か・何が起きたか・出典はどこか・誰が所有するか・いつ変わったか・どう機能するか」という基本的な問いに答える層である。これは単なるRAGでは足りないと同氏は指摘する。RAGは断片を検索できるが、企業には provenance（出所）・permissions（権限）・ownership（所有者）・freshness（鮮度）・source-of-truth の境界・アーティファクト間の関係という永続構造が要る。この関係性を持つメモリ層を同氏は「semantic file system」と呼び、顧客の通話がアカウントに、アカウントが未解決チケットに、チケットがプロダクト領域に、プロダクト領域が担当者に、担当者が意思決定につながるといった連鎖の質が、そのままメモリの質を決めるとする。
+
+## 個人の記憶から会社の記憶への「創発」
+
+Company Brainは中央集権的なリポジトリとして構築すべきではない、というのが同氏のもう一つの主張だ。人はドキュメント・Slack・会議・チケット・ローカルメモ・スプレッドシートで自然に働いており、中央アーカイブへの入力を強いる設計は失敗する。個人メモがチームドキュメントになり、チームドキュメントがロードマップの意思決定になり、意思決定が顧客への約束になる——この遷移を通じて会社の記憶は個人の外側へ「創発」していくべきで、一部の成果物は個人のまま残り、一部がチーム共有記憶になり、さらに小さな一部が会社の記憶になる、と同氏は説明する。
+
+## パーソナライズされた応答
+
+同氏は、同じ質問でも役割によって返す答えが変わるべきだとする。ICが「請求連携を引き継ぐが何を知るべきか」と聞けば仕様・過去のチケット・既知のリスク・担当者・顧客への約束・最近のインシデント・未解決の意思決定を統合した答えを、マネージャーが「オンボーディングを阻んでいるのは何か」と聞けばチケット・ステータス・オーナーシップ・エスカレーション・未解決の依存関係を、経営層が「エンタープライズの解約について何を知っているか」と聞けばCRM・サポート・更新メモ・通話要約・アカウント履歴・ダッシュボード指標を、それぞれ重み付けを変えて統合すべきだとする。さらにCompany Brainは検索ボックスで待つのではなく、顧客通話の前に未解決の約束を、ロードマップ編集時に関連する顧客要望を、チケット割当時に過去のインシデントを、プロアクティブに差し出すべきだとする——これが「待つ」ナレッジベースと「参加する」メモリの違いだと同氏は結論づける。
+
+## 問い
+
+- Company Brainの「state層とreasoning層の分離」は、このLLM wiki（`sources/`不変＋`wiki/`生成物）の設計と同型か。frontmatterの`sources`/`updated`はprovenance/freshnessの代替になっているか
+- [[concepts/palantir-ontology]]の「動詞（アクション）」に相当する書き戻し機能をCompany Brainは持つか、それとも読み取り専用の意味層に留まるか
+- 個人ワークスペース→チーム→会社という「創発」モデルは、[[concepts/agent-memory-layer]]が指摘する「到達点の保存に偏り過程が失われる」問題にどう答えるか
+
+## 関連
+
+- [[concepts/palantir-ontology]] — 「データとAIの間に業務文脈を保持する中間層」という同型の発想。Palantirは名詞＋動詞、Company Brainはsemantics＋ontologyで構造化
+- [[concepts/agent-memory-layer]] — 全エージェントの下に単一メモリ層を敷く設計思想。個人版のCompany Brainとも言える
+- [[concepts/openai-data-agent-context-layers]] — スキーマ＋RAGの限界という同じ出発点から6層コンテキストという別解に至った企業事例
+- [[concepts/cerebras-knowledge-base]] — 全ソースを単一埋め込みテーブルに正規化する社内知識ベースの実装例。Company Brainの「semantic file system」の一実装形態と読める
+- [[business/dinii-ask-anything]] — 社内問い合わせ代行という形でfactual memoryの一部を先取り実装した日本企業の事例
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

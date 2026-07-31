@@ -67,3 +67,4 @@ flowchart LR
 - [[companies/openai]] — 本記事の発信元
 - [[tools/google-knowledge-catalog]] — Google Cloudが提供するマネージド版のメタデータ→エンリッチ→検証済みクエリのパイプライン
 - [[concepts/cerebras-knowledge-base]] — 同時期に公開された別企業（Cerebras）の社内知識ベース設計。プロジェクト単位のスコープ分割という同じ結論に達している
+- [[concepts/company-brain]] — 「スキーマ＋RAGでは足りない」という同じ出発点から、6層コンテキストでなくfactual memory/semantic file systemという状態層の分離で解こうとする設計思想（@ashwingop）

@@ -54,3 +54,4 @@ LLMが見るのはデータベースではなくオントロジー。データ�
 - [[concepts/llm-wiki]] — リンクグラフによる知識構造化
 - [[concepts/openai-data-agent-context-layers]] — データとAIの間に文脈を保持する中間層という同型の発想（6層構造で表現）
 - [[business/talent-to-value-ai]] — 役割を名詞でなく動詞単位に分解して人とAIへ割り当てる発想が同型
+- [[concepts/company-brain]] — 「データとAIの間に業務文脈を保持する中間層」という同型の発想をsemantics/ontologyの語彙で再構成した設計思想（@ashwingop）
