@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>company-brain</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="company-brain.md">Markdownで表示</a></div>
-  <div class="meta">concepts/company-brain · concepts · <span title="2026-07-31">今日</span></div>
+  <div class="meta">concepts/company-brain · concepts · <span title="2026-07-31">1日前</span></div>
   <article><h1>Company Brain（企業の共有状態層）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: システムオブレコードが機能ごとに分断してきた企業データを、provenance・permissions・鮮度・関係性を保持する単一の状態層（factual memory / semantic file system）に統合し、役割ごとに異なるレンズ（ontology）で読み出す設計思想。</p>
@@ -52,11 +52,22 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>Company Brainは中央集権的なリポジトリとして構築すべきではない、というのが同氏のもう一つの主張だ。人はドキュメント・Slack・会議・チケット・ローカルメモ・スプレッドシートで自然に働いており、中央アーカイブへの入力を強いる設計は失敗する。個人メモがチームドキュメントになり、チームドキュメントがロードマップの意思決定になり、意思決定が顧客への約束になる——この遷移を通じて会社の記憶は個人の外側へ「創発」していくべきで、一部の成果物は個人のまま残り、一部がチーム共有記憶になり、さらに小さな一部が会社の記憶になる、と同氏は説明する。</p>
 <h2>パーソナライズされた応答</h2>
 <p>同氏は、同じ質問でも役割によって返す答えが変わるべきだとする。ICが「請求連携を引き継ぐが何を知るべきか」と聞けば仕様・過去のチケット・既知のリスク・担当者・顧客への約束・最近のインシデント・未解決の意思決定を統合した答えを、マネージャーが「オンボーディングを阻んでいるのは何か」と聞けばチケット・ステータス・オーナーシップ・エスカレーション・未解決の依存関係を、経営層が「エンタープライズの解約について何を知っているか」と聞けばCRM・サポート・更新メモ・通話要約・アカウント履歴・ダッシュボード指標を、それぞれ重み付けを変えて統合すべきだとする。さらにCompany Brainは検索ボックスで待つのではなく、顧客通話の前に未解決の約束を、ロードマップ編集時に関連する顧客要望を、チケット割当時に過去のインシデントを、プロアクティブに差し出すべきだとする——これが「待つ」ナレッジベースと「参加する」メモリの違いだと同氏は結論づける。</p>
+<h2>実務運用の5層モデル（Single Grainの場合）</h2>
+<p>マーケティング代理店Single GrainのCEO Eric Siu（@ericosiu）は、同社が社内エージェントフリートを構築する過程で辿り着いた実務者視点のCompany Brain論を公開している。同氏は「メモリを増やせば賢くなる」という初期仮説が約3週間で行き詰まったと述べる。永続メモリファイルがコンテキストウィンドウの約40%を占めるようになり、情報は増えたのに必要な情報を必要な時に引き出せず、システムは技術的には賢くなったが運用上はむしろ混乱したという。そこで同氏は「メモリは原材料、検索（retrieval）は稼働層」という発想に切り替え、Company Brainを次の5層で構成し直した。</p>
+<ol>
+<li><strong>Capture（捕捉）</strong>: 通話・CRM活動・コンテンツ判断・社内SOP・エージェント出力・日次ログ・人間による訂正を記録する層。同氏はここで止まる実装を「脳ではなくストレージユニット」と評する。</li>
+<li><strong>Retrieval（検索）</strong>: エージェントは会社の全履歴でなく、目の前のタスクに必要な少数の文脈だけを取り出す。同氏の例では、営業メール起草ならICP・オファー・過去の反論・過去キャンペーン成績・ブランドボイス・現行キャンペーン目標の6点に絞る。</li>
+<li><strong>Source truth（情報源の真実性）</strong>: 営業通話・CRMフィールド・Slackでの訂正・古いSOP・最新の週次報告のうちどれを優先するかを事前に決めておく。同氏はこれを決めないままだと「フォーマットの良い自信満々の嘘つき」になると表現する。</li>
+<li><strong>Permissions（権限）</strong>: マーケティングエージェントが人事情報を、コンテンツエージェントが顧客財務情報を見る必要はない。同氏はエージェンシー業態では顧客文脈・社内文脈・見込み客文脈・財務文脈・戦略文脈が隣接しているため、権限境界を早期に設計しないと情報漏洩か機能停止のどちらかに陥ると指摘する。</li>
+<li><strong>Feedback loops（訂正の学習化）</strong>: 人間がエージェント出力を訂正するたびに、その訂正をボイスルール・情報源ルール・パイプライン監視ルールなど将来の挙動そのものに反映させる層。同氏はこの層がなければ「ソフトウェアの子守り」に留まると述べる。</li>
+</ol>
+<p>同社では2,862件のGong通話記録を運用プレイブックへ変換した実例があり、ある日次取り込みでは15件の通話から390件のインサイト・470件のファクト・125件のフレームワークを抽出したという（単一ソース・未確認）。週次レポーティングも、従来は約25分のデータ抽出に加え人手での解釈・上長への確認往復で数時間を要していたが、Company Brainが正しい文脈を持った後は60秒未満で回答が返るようになったと同氏は主張する。</p>
 <h2>問い</h2>
 <ul>
 <li>Company Brainの「state層とreasoning層の分離」は、このLLM wiki（<code>sources/</code>不変＋<code>wiki/</code>生成物）の設計と同型か。frontmatterの<code>sources</code>/<code>updated</code>はprovenance/freshnessの代替になっているか</li>
 <li><a href="../concepts/palantir-ontology.html">palantir-ontology</a>の「動詞（アクション）」に相当する書き戻し機能をCompany Brainは持つか、それとも読み取り専用の意味層に留まるか</li>
 <li>個人ワークスペース→チーム→会社という「創発」モデルは、<a href="../concepts/agent-memory-layer.html">agent-memory-layer</a>が指摘する「到達点の保存に偏り過程が失われる」問題にどう答えるか</li>
+<li>Eric Siuの5層モデル（capture/retrieval/source truth/permissions/feedback loops）と@ashwingopの3層モデル（factual/interaction/action memory）は、同じ問題への別の切り口か、それとも一方がもう一方を包含するか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -70,7 +81,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a></li>
 <li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li>
 <li><a href="../concepts/palantir-ontology.html">palantir-ontology</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2049885545288077720" rel="noopener" target="_blank">https://x.com/i/web/status/2049885545288077720</a></li>
-<li><a href="https://x.com/i/web/status/2053173547393331318" rel="noopener" target="_blank">https://x.com/i/web/status/2053173547393331318</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2053173547393331318" rel="noopener" target="_blank">https://x.com/i/web/status/2053173547393331318</a></li>
+<li><a href="https://x.com/i/web/status/2060415100603781497" rel="noopener" target="_blank">https://x.com/i/web/status/2060415100603781497</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -126,11 +138,24 @@ Company Brainは中央集権的なリポジトリとして構築すべきでは�
 
 同氏は、同じ質問でも役割によって返す答えが変わるべきだとする。ICが「請求連携を引き継ぐが何を知るべきか」と聞けば仕様・過去のチケット・既知のリスク・担当者・顧客への約束・最近のインシデント・未解決の意思決定を統合した答えを、マネージャーが「オンボーディングを阻んでいるのは何か」と聞けばチケット・ステータス・オーナーシップ・エスカレーション・未解決の依存関係を、経営層が「エンタープライズの解約について何を知っているか」と聞けばCRM・サポート・更新メモ・通話要約・アカウント履歴・ダッシュボード指標を、それぞれ重み付けを変えて統合すべきだとする。さらにCompany Brainは検索ボックスで待つのではなく、顧客通話の前に未解決の約束を、ロードマップ編集時に関連する顧客要望を、チケット割当時に過去のインシデントを、プロアクティブに差し出すべきだとする——これが「待つ」ナレッジベースと「参加する」メモリの違いだと同氏は結論づける。
 
+## 実務運用の5層モデル（Single Grainの場合）
+
+マーケティング代理店Single GrainのCEO Eric Siu（@ericosiu）は、同社が社内エージェントフリートを構築する過程で辿り着いた実務者視点のCompany Brain論を公開している。同氏は「メモリを増やせば賢くなる」という初期仮説が約3週間で行き詰まったと述べる。永続メモリファイルがコンテキストウィンドウの約40%を占めるようになり、情報は増えたのに必要な情報を必要な時に引き出せず、システムは技術的には賢くなったが運用上はむしろ混乱したという。そこで同氏は「メモリは原材料、検索（retrieval）は稼働層」という発想に切り替え、Company Brainを次の5層で構成し直した。
+
+1. **Capture（捕捉）**: 通話・CRM活動・コンテンツ判断・社内SOP・エージェント出力・日次ログ・人間による訂正を記録する層。同氏はここで止まる実装を「脳ではなくストレージユニット」と評する。
+2. **Retrieval（検索）**: エージェントは会社の全履歴でなく、目の前のタスクに必要な少数の文脈だけを取り出す。同氏の例では、営業メール起草ならICP・オファー・過去の反論・過去キャンペーン成績・ブランドボイス・現行キャンペーン目標の6点に絞る。
+3. **Source truth（情報源の真実性）**: 営業通話・CRMフィールド・Slackでの訂正・古いSOP・最新の週次報告のうちどれを優先するかを事前に決めておく。同氏はこれを決めないままだと「フォーマットの良い自信満々の嘘つき」になると表現する。
+4. **Permissions（権限）**: マーケティングエージェントが人事情報を、コンテンツエージェントが顧客財務情報を見る必要はない。同氏はエージェンシー業態では顧客文脈・社内文脈・見込み客文脈・財務文脈・戦略文脈が隣接しているため、権限境界を早期に設計しないと情報漏洩か機能停止のどちらかに陥ると指摘する。
+5. **Feedback loops（訂正の学習化）**: 人間がエージェント出力を訂正するたびに、その訂正をボイスルール・情報源ルール・パイプライン監視ルールなど将来の挙動そのものに反映させる層。同氏はこの層がなければ「ソフトウェアの子守り」に留まると述べる。
+
+同社では2,862件のGong通話記録を運用プレイブックへ変換した実例があり、ある日次取り込みでは15件の通話から390件のインサイト・470件のファクト・125件のフレームワークを抽出したという（単一ソース・未確認）。週次レポーティングも、従来は約25分のデータ抽出に加え人手での解釈・上長への確認往復で数時間を要していたが、Company Brainが正しい文脈を持った後は60秒未満で回答が返るようになったと同氏は主張する。
+
 ## 問い
 
 - Company Brainの「state層とreasoning層の分離」は、このLLM wiki（`sources/`不変＋`wiki/`生成物）の設計と同型か。frontmatterの`sources`/`updated`はprovenance/freshnessの代替になっているか
 - [[concepts/palantir-ontology]]の「動詞（アクション）」に相当する書き戻し機能をCompany Brainは持つか、それとも読み取り専用の意味層に留まるか
 - 個人ワークスペース→チーム→会社という「創発」モデルは、[[concepts/agent-memory-layer]]が指摘する「到達点の保存に偏り過程が失われる」問題にどう答えるか
+- Eric Siuの5層モデル（capture/retrieval/source truth/permissions/feedback loops）と@ashwingopの3層モデル（factual/interaction/action memory）は、同じ問題への別の切り口か、それとも一方がもう一方を包含するか
 
 ## 関連
 

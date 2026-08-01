@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agent-memory-layer</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-memory-layer.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agent-memory-layer · concepts · <span title="2026-07-25">6日前</span></div>
+  <div class="meta">concepts/agent-memory-layer · concepts · <span title="2026-07-31">1日前</span></div>
   <article><h1>共有エージェントメモリ層（One Memory Layer）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 各AIエージェントに独立した記憶を持たせるのではなく、ユーザーが所有する単一のメモリ層を全エージェントの下に敷く設計思想。あるエージェントが学んだことを即座に他のエージェントも使えるようにする。</p>
@@ -42,6 +42,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>2026-05-31: @pejmanjohn のエッセイ "Stop Giving Every Agent Its Own Skull"。自身は OpenClaw（個人アシスタント・アイデア発展）/ Codex（実装）/ Claude Code（デザイン・執筆）を役割分担で使い分けるが、アイデアを生んだ推論が OpenClaw に取り残され、他エージェントは「有能だが文脈盲目（competent and context-blind）」な出力を返すと指摘。</li>
 <li>2026-05-31: 関連プロジェクトとして @garrytan の <strong>GBrain</strong>（MCPの背後に共有ナレッジグラフを置き、各エージェントが自前メモリを持たず共有グラフをクエリする）と、@doodlestein の <strong>CASS</strong>（Codex/Claude Code/OpenClaw/Cursor/Aider 等のローカルセッション履歴を横断検索可能にし、リポジトリが取りこぼす推論を拾う）を「答えの重要なピースが見え始めた兆候」として挙げる。</li>
 <li>2026-05-31: 企業版の例えとして「10の会議に同時出席するAI版リーダー」を提示。価格への顧客の混乱・製品チームの価格議論・営業の失注理由が、人間なら数日〜数週かかる点の接続を会議進行中に衝突させられる、と主張。</li>
+<li>2026-06-04: @shannholmberg が自社エージェンシー内に構築したgBrainの階層構造を公開。Agency gBrain → Orchestrator <a href="../tools/hermes-agent.html">hermes-agent</a> → Department verticals → Specialist agents → Scoped sub-agentsという5段構成で、<a href="../tools/hermes-agent.html">hermes-agent</a>をオーケストレーター（各部門・専門エージェントを統括する上位層）として据える具体例。</li>
+<li>2026-06-05: Y Combinator President の @garrytan がこの投稿を引用し「GBrainはあなたの会社の脳」と賛同。GBrainが個人の一開発者コミュニティに留まらない注目を集めている兆候</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -54,7 +56,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a></li>
 <li><a href="../concepts/company-brain.html">company-brain</a></li>
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
-<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061091767030825003" rel="noopener" target="_blank">https://x.com/i/web/status/2061091767030825003</a></li></ul></section></article>
+<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061091767030825003" rel="noopener" target="_blank">https://x.com/i/web/status/2061091767030825003</a></li>
+<li><a href="https://x.com/i/web/status/2062652746508173796" rel="noopener" target="_blank">https://x.com/i/web/status/2062652746508173796</a></li>
+<li><a href="https://x.com/i/web/status/2062887689939300841" rel="noopener" target="_blank">https://x.com/i/web/status/2062887689939300841</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -90,6 +94,8 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - 2026-05-31: @pejmanjohn のエッセイ &quot;Stop Giving Every Agent Its Own Skull&quot;。自身は OpenClaw（個人アシスタント・アイデア発展）/ Codex（実装）/ Claude Code（デザイン・執筆）を役割分担で使い分けるが、アイデアを生んだ推論が OpenClaw に取り残され、他エージェントは「有能だが文脈盲目（competent and context-blind）」な出力を返すと指摘。
 - 2026-05-31: 関連プロジェクトとして @garrytan の **GBrain**（MCPの背後に共有ナレッジグラフを置き、各エージェントが自前メモリを持たず共有グラフをクエリする）と、@doodlestein の **CASS**（Codex/Claude Code/OpenClaw/Cursor/Aider 等のローカルセッション履歴を横断検索可能にし、リポジトリが取りこぼす推論を拾う）を「答えの重要なピースが見え始めた兆候」として挙げる。
 - 2026-05-31: 企業版の例えとして「10の会議に同時出席するAI版リーダー」を提示。価格への顧客の混乱・製品チームの価格議論・営業の失注理由が、人間なら数日〜数週かかる点の接続を会議進行中に衝突させられる、と主張。
+- 2026-06-04: @shannholmberg が自社エージェンシー内に構築したgBrainの階層構造を公開。Agency gBrain → Orchestrator [[tools/hermes-agent]] → Department verticals → Specialist agents → Scoped sub-agentsという5段構成で、[[tools/hermes-agent]]をオーケストレーター（各部門・専門エージェントを統括する上位層）として据える具体例。
+- 2026-06-05: Y Combinator President の @garrytan がこの投稿を引用し「GBrainはあなたの会社の脳」と賛同。GBrainが個人の一開発者コミュニティに留まらない注目を集めている兆候
 
 ## 問い
 

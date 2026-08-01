@@ -13,6 +13,8 @@
 - 2026-05-31: @pejmanjohn のエッセイ "Stop Giving Every Agent Its Own Skull"。自身は OpenClaw（個人アシスタント・アイデア発展）/ Codex（実装）/ Claude Code（デザイン・執筆）を役割分担で使い分けるが、アイデアを生んだ推論が OpenClaw に取り残され、他エージェントは「有能だが文脈盲目（competent and context-blind）」な出力を返すと指摘。
 - 2026-05-31: 関連プロジェクトとして @garrytan の **GBrain**（MCPの背後に共有ナレッジグラフを置き、各エージェントが自前メモリを持たず共有グラフをクエリする）と、@doodlestein の **CASS**（Codex/Claude Code/OpenClaw/Cursor/Aider 等のローカルセッション履歴を横断検索可能にし、リポジトリが取りこぼす推論を拾う）を「答えの重要なピースが見え始めた兆候」として挙げる。
 - 2026-05-31: 企業版の例えとして「10の会議に同時出席するAI版リーダー」を提示。価格への顧客の混乱・製品チームの価格議論・営業の失注理由が、人間なら数日〜数週かかる点の接続を会議進行中に衝突させられる、と主張。
+- 2026-06-04: @shannholmberg が自社エージェンシー内に構築したgBrainの階層構造を公開。Agency gBrain → Orchestrator [[tools/hermes-agent]] → Department verticals → Specialist agents → Scoped sub-agentsという5段構成で、[[tools/hermes-agent]]をオーケストレーター（各部門・専門エージェントを統括する上位層）として据える具体例。
+- 2026-06-05: Y Combinator President の @garrytan がこの投稿を引用し「GBrainはあなたの会社の脳」と賛同。GBrainが個人の一開発者コミュニティに留まらない注目を集めている兆候
 
 ## 問い
 
