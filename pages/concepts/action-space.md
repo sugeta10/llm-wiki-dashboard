@@ -28,3 +28,4 @@
 - [[concepts/career-advice-ai-age]] — Phil Chen の同テーマ論考。「解く力のコモディティ化→問題選択と資本配分に価値」という同型の主張を米国側から
 - [[concepts/ai-era-good-engineer]] — LayerX の「実装のコモディティ化→ドメイン理解・論点発見へ」。エンジニア職能に絞った同じ構図
 - [[business/talent-to-value-ai]] — 価値の単位が個人から「人＋エージェントのシステム」へ移るという組織側の同型命題
+- [[concepts/career-agency-variables]] — @ysk_motoyamaの「何をやるか/どうやるか/なぜやるか」3変数論。本論考が環境選択（アクション空間）に焦点を当てるのに対し、こちらは個人の意思決定様式に焦点を当てる対の視点

@@ -40,3 +40,4 @@
 - [[concepts/team-leader-transition]] — フィードバックの「型」（状況→行動→結果→次）を他者に与える側の実装
 - [[concepts/chokkan-karte]] — AIを自己批判の鏡でなく自己解剖の翻訳機に使う隣接実践（直感素材から本音を言語化）
 - [[concepts/linguistic-hedging]] — 同著者(@ysk_motoyama)。「〜な感じ」というぼかし言葉を知的怠慢と断じる別テーマの記事
+- [[concepts/career-agency-variables]] — 同著者(@ysk_motoyama)。何をやるか/どうやるか/なぜやるかの3変数でキャリアの自己決定権を論じる別テーマの記事

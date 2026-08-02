@@ -49,3 +49,4 @@ Koe は最後に、意味のある「取り組む対象（プロジェクト）�
 
 - [[concepts/mental-conditioning]] — 同じく「休息」を意志力でなく構造で設計する発想。ただしこちらは不安の鎮静が目的、本ページは創造性の回復が目的
 - [[business/human-nature-persuasion]] — 同著者Dan Koe（@thedankoe）による人間本性理解のメタスキル論
+- [[concepts/dopamine-detox]] — 「ドーパミン受容体の再感作」と重なる観察を持つ、@antoshia2nの10種デトックス実践論

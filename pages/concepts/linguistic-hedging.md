@@ -33,3 +33,4 @@ flowchart TD
 - [[concepts/structuring-ability]] — 曖昧な概念を要素分解し定義し直す行為は、構造化力の「分けて見る」操作の実践形
 - [[concepts/self-evaluation-gap]] — 同著者（@ysk_motoyama）。「仕事への姿勢の甘え」を指摘する点で同根のテーマ
 - [[concepts/coachability]] — 言い切って間違いを認める率直さは、コーチャビリティが要求する正直さ・謙虚さと表裏の関係
+- [[concepts/career-agency-variables]] — 同著者(@ysk_motoyama)。何をやるか/どうやるか/なぜやるかの3変数でキャリアの自己決定権を論じる別テーマの記事

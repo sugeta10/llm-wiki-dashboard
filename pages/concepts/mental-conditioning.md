@@ -32,3 +32,4 @@
 - [[concepts/performance-habits-40s]] — 「紙に書き出す」＝認知的アンローディングを8習慣の1つとして実装する自己管理論
 - [[concepts/slack-time-at-work]] — 「何もしない」を個人の回復でなく働き方の稼働率設計（80%）として扱う隣接概念
 - [[concepts/creativity-recovery-protocol]] — 同じく「休息」を意志力でなく構造で設計する発想。ただしこちらは不安の鎮静でなく創造性の回復が目的
+- [[concepts/dopamine-detox]] — 意志力でなく物理的な仕組み（配置・時間固定）で刺激への反射を断つ発想が共通
