@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>llm-wiki-vs-company-brain - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>llm-wiki-vs-company-brain</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="llm-wiki-vs-company-brain.md">Markdownで表示</a></div>
+  <div class="meta">concepts/llm-wiki-vs-company-brain · concepts · <span title="2026-08-03">今日</span></div>
+  <article><h1>LLM Wiki と Company Brain の境界線</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: KarpathyのLLM Wiki（個人向け・書き手1人・静的ソース）とCompany Brain（企業向け・複数書き手・動的データ）の分岐点は権限・鮮度・意味の強制・複数の書き手・実行と監査の5点で、4つの質問に全部イエスならMarkdownとGitで足りるとKiKi@AIx個人開発が整理する。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  Q1{&quot;書き手は実質1人か&quot;} --&gt;|No| CB[&quot;Company Brain圏内&quot;]
+  Q1 --&gt;|Yes| Q2{&quot;知識は静的か&quot;}
+  Q2 --&gt;|No| CB
+  Q2 --&gt;|Yes| Q3{&quot;全員が閲覧可か&quot;}
+  Q3 --&gt;|No| CB
+  Q3 --&gt;|Yes| Q4{&quot;読むだけで実行はしないか&quot;}
+  Q4 --&gt;|No| CB
+  Q4 --&gt;|Yes| LW[&quot;Markdown+Gitで十分&quot;]</pre>
+<p>2026年4月に<a href="../people/andrej-karpathy.html">andrej-karpathy</a>が<a href="../concepts/llm-wiki.html">llm-wiki</a>のgistを公開して以来、X上ではLLM Wiki v2（確信度スコア・記憶の階層化・忘却曲線を追加）や<a href="../concepts/agent-memory-layer.html">agent-memory-layer</a>（GBrain・CASS）といった派生が相次いだ。KiKi@AIx個人開発はExtency Teamの分析を引いて、これらが設計思想は違っても保存形式ではそろってGit管理のMarkdownフォルダを選んでいると指摘し、ファイル形式の勝負はXの開発者コミュニティの中ではすでに決着していると評する。一方で同じ時期、Y Combinatorは2026年夏のRequests for StartupsでMonzo共同創業者のTom Blomfieldが「Company Brain」を重点テーマの1つに指名し、Sierra・Glean・Brain Co.・Hyperといった企業が同じ言葉を掲げ始めた。KiKi@AIx個人開発は、この2つの潮流は同じ問題を扱うようでいて守備範囲が違うとし、その境界線を引く記事を書いている。</p>
+<h2>5つの境界線</h2>
+<p>KiKi@AIx個人開発は、Karpathy式が前提とする「書き手が1人・ソースが静的・読者が自分とエージェントだけ」という3条件が崩れる場所を、そのままCompany Brainの出番だとして次の5点を挙げる。</p>
+<ul>
+<li><strong>権限</strong>: Markdownのリポジトリには閲覧制御がなく、複数ソースから合成された記憶は元のどの文書より機密性が高くなり得る</li>
+<li><strong>鮮度</strong>: CRMや在庫やチケットは時間単位で変わるが、取り込み時に一度だけ編集する方式では取り込んだ瞬間から現実とずれ始める</li>
+<li><strong>意味の強制</strong>: 「ARRの定義」のような指標は散文では強制できず、部門ごとにエージェントが違う数字を答える事故は統制された定義の層でしか防げない</li>
+<li><strong>複数の書き手</strong>: 司書が1人なら矛盾は起きないが、書き手が部門の数だけいれば矛盾の検出と調停・所有権・訂正の履歴が必要になる</li>
+<li><strong>実行と監査</strong>: Company Brainは読むだけでなく返金や予約などの行動に接続されるため、誰が何を根拠に実行したかを追跡できなければ業務には使えない</li>
+</ul>
+<p>この5点はいずれもモデルの性能では解決しないガバナンスの問題だとKiKi@AIx個人開発は結論づける。</p>
+<h2>3層メモリ論との接続</h2>
+<p>記事はSentraのAshwin Gopinathによる3層メモリ論（事実の記憶・やり取りの記憶・行動の記憶）を、Company Brain側の理論的支柱として引用する。詳細は<a href="../concepts/company-brain.html">company-brain</a>に譲るが、KiKi@AIx個人開発が強調するのは「知識ベースは待つ。記憶は参加する」という区別で、検索窓の前で質問を待つのが知識ベース、顧客との電話の前に未達の約束を先回りして出すのが記憶だとする点である。この区別が、Karpathy式の「取り込み時に一度だけ編纂する」モデルとCompany Brainの間に横たわる本質的な差だと位置づけられる。</p>
+<h2>個人・小チームはKarpathy式で足りる</h2>
+<p>境界線を裏返すと判断基準になる。KiKi@AIx個人開発は「書き手は実質1人か」「知識は静的か」「全員がすべて見てよいか」「エージェントは読むだけで実行はしないか」の4問全部にイエスならMarkdownとGitで十分だとし、1つでもノーが混ざればその項目だけ外部の仕組みを足し、全部ノーになったらCompany Brain製品の検討圏内になるとする。GBrainのような企業向け製品ですら内部形式にMarkdownを選び始めている点を挙げ、Markdownで始めても後で無駄にはならないと述べる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-04: KarpathyのGitHub gist「llm-wiki」が公開から数日で5,000超のスターと数千のフォークを集めたとVentureBeatが報道（単一ソース数字）</li>
+<li>2026-06-05: Garry TanのGBrain紹介ポスト「GBrain is your company brain」が12万超のインプレッション</li>
+<li>2026-06: マーケターのericosiuが「12ヶ月以内にすべての企業がCompany Brainを動かす」と投稿し15万超のインプレッションを集めた（大胆な予測、楽観の先行を割り引く必要ありとKiKi@AIx個人開発自身が留保）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のこのvaultは4つの質問に全部イエスで答えられるか。書き手は実質1人（自分＋エージェント）で、扱う知識は静的で、読むだけで外部実行はしていない——境界線に近づいたら何を最初に足すべきか</li>
+<li>Company Brain側の<a href="../concepts/company-brain.html">company-brain</a>の実務5層モデル（capture/retrieval/source truth/permissions/feedback loops）は、この4質問モデルの「Noが1つ」段階に部分導入できる粒度か、それとも全部ノーになって初めて意味を持つ設計か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a> — この記事が起点として扱うKarpathyのオリジナル構想</li>
+<li><a href="../concepts/company-brain.html">company-brain</a> — Sentraの3層メモリ論・Single Grainの5層実務モデルなどCompany Brain側の詳細</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — GBrain/CASSが登場する個人〜チーム規模の共有メモリ層の議論</li>
+<li><a href="../tools/glean.html">glean</a> — Company Brainを製品として実装する代表例の1つ</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/company-brain.html">company-brain</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../tools/glean.html">glean</a></li>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/_kihonushi/n/n0ad4b43cc91f" rel="noopener" target="_blank">https://note.com/_kihonushi/n/n0ad4b43cc91f</a></li>
+<li><a href="https://extency.com/blog/markdown-versioned-folders-agent-brain-2026" rel="noopener" target="_blank">https://extency.com/blog/markdown-versioned-folders-agent-brain-2026</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># LLM Wiki と Company Brain の境界線
+
+&gt; **TL;DR**: KarpathyのLLM Wiki（個人向け・書き手1人・静的ソース）とCompany Brain（企業向け・複数書き手・動的データ）の分岐点は権限・鮮度・意味の強制・複数の書き手・実行と監査の5点で、4つの質問に全部イエスならMarkdownとGitで足りるとKiKi@AIx個人開発が整理する。
+
+```mermaid
+flowchart TD
+  Q1{&quot;書き手は実質1人か&quot;} --&gt;|No| CB[&quot;Company Brain圏内&quot;]
+  Q1 --&gt;|Yes| Q2{&quot;知識は静的か&quot;}
+  Q2 --&gt;|No| CB
+  Q2 --&gt;|Yes| Q3{&quot;全員が閲覧可か&quot;}
+  Q3 --&gt;|No| CB
+  Q3 --&gt;|Yes| Q4{&quot;読むだけで実行はしないか&quot;}
+  Q4 --&gt;|No| CB
+  Q4 --&gt;|Yes| LW[&quot;Markdown+Gitで十分&quot;]
+```
+
+2026年4月に[[people/andrej-karpathy]]が[[concepts/llm-wiki]]のgistを公開して以来、X上ではLLM Wiki v2（確信度スコア・記憶の階層化・忘却曲線を追加）や[[concepts/agent-memory-layer]]（GBrain・CASS）といった派生が相次いだ。KiKi@AIx個人開発はExtency Teamの分析を引いて、これらが設計思想は違っても保存形式ではそろってGit管理のMarkdownフォルダを選んでいると指摘し、ファイル形式の勝負はXの開発者コミュニティの中ではすでに決着していると評する。一方で同じ時期、Y Combinatorは2026年夏のRequests for StartupsでMonzo共同創業者のTom Blomfieldが「Company Brain」を重点テーマの1つに指名し、Sierra・Glean・Brain Co.・Hyperといった企業が同じ言葉を掲げ始めた。KiKi@AIx個人開発は、この2つの潮流は同じ問題を扱うようでいて守備範囲が違うとし、その境界線を引く記事を書いている。
+
+## 5つの境界線
+
+KiKi@AIx個人開発は、Karpathy式が前提とする「書き手が1人・ソースが静的・読者が自分とエージェントだけ」という3条件が崩れる場所を、そのままCompany Brainの出番だとして次の5点を挙げる。
+
+- **権限**: Markdownのリポジトリには閲覧制御がなく、複数ソースから合成された記憶は元のどの文書より機密性が高くなり得る
+- **鮮度**: CRMや在庫やチケットは時間単位で変わるが、取り込み時に一度だけ編集する方式では取り込んだ瞬間から現実とずれ始める
+- **意味の強制**: 「ARRの定義」のような指標は散文では強制できず、部門ごとにエージェントが違う数字を答える事故は統制された定義の層でしか防げない
+- **複数の書き手**: 司書が1人なら矛盾は起きないが、書き手が部門の数だけいれば矛盾の検出と調停・所有権・訂正の履歴が必要になる
+- **実行と監査**: Company Brainは読むだけでなく返金や予約などの行動に接続されるため、誰が何を根拠に実行したかを追跡できなければ業務には使えない
+
+この5点はいずれもモデルの性能では解決しないガバナンスの問題だとKiKi@AIx個人開発は結論づける。
+
+## 3層メモリ論との接続
+
+記事はSentraのAshwin Gopinathによる3層メモリ論（事実の記憶・やり取りの記憶・行動の記憶）を、Company Brain側の理論的支柱として引用する。詳細は[[concepts/company-brain]]に譲るが、KiKi@AIx個人開発が強調するのは「知識ベースは待つ。記憶は参加する」という区別で、検索窓の前で質問を待つのが知識ベース、顧客との電話の前に未達の約束を先回りして出すのが記憶だとする点である。この区別が、Karpathy式の「取り込み時に一度だけ編纂する」モデルとCompany Brainの間に横たわる本質的な差だと位置づけられる。
+
+## 個人・小チームはKarpathy式で足りる
+
+境界線を裏返すと判断基準になる。KiKi@AIx個人開発は「書き手は実質1人か」「知識は静的か」「全員がすべて見てよいか」「エージェントは読むだけで実行はしないか」の4問全部にイエスならMarkdownとGitで十分だとし、1つでもノーが混ざればその項目だけ外部の仕組みを足し、全部ノーになったらCompany Brain製品の検討圏内になるとする。GBrainのような企業向け製品ですら内部形式にMarkdownを選び始めている点を挙げ、Markdownで始めても後で無駄にはならないと述べる。
+
+## 観察ログ（未検証）
+
+- 2026-04: KarpathyのGitHub gist「llm-wiki」が公開から数日で5,000超のスターと数千のフォークを集めたとVentureBeatが報道（単一ソース数字）
+- 2026-06-05: Garry TanのGBrain紹介ポスト「GBrain is your company brain」が12万超のインプレッション
+- 2026-06: マーケターのericosiuが「12ヶ月以内にすべての企業がCompany Brainを動かす」と投稿し15万超のインプレッションを集めた（大胆な予測、楽観の先行を割り引く必要ありとKiKi@AIx個人開発自身が留保）
+
+## 問い
+
+- 自分のこのvaultは4つの質問に全部イエスで答えられるか。書き手は実質1人（自分＋エージェント）で、扱う知識は静的で、読むだけで外部実行はしていない——境界線に近づいたら何を最初に足すべきか
+- Company Brain側の[[concepts/company-brain]]の実務5層モデル（capture/retrieval/source truth/permissions/feedback loops）は、この4質問モデルの「Noが1つ」段階に部分導入できる粒度か、それとも全部ノーになって初めて意味を持つ設計か
+
+## 関連
+
+- [[concepts/llm-wiki]] — この記事が起点として扱うKarpathyのオリジナル構想
+- [[concepts/company-brain]] — Sentraの3層メモリ論・Single Grainの5層実務モデルなどCompany Brain側の詳細
+- [[concepts/agent-memory-layer]] — GBrain/CASSが登場する個人〜チーム規模の共有メモリ層の議論
+- [[tools/glean]] — Company Brainを製品として実装する代表例の1つ
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>
