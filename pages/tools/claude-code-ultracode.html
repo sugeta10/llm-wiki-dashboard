@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-ultracode</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-ultracode.md">Markdownで表示</a></div>
-  <div class="meta">tools/claude-code-ultracode · tools · <span title="2026-07-29">4日前</span></div>
+  <div class="meta">tools/claude-code-ultracode · tools · <span title="2026-08-02">1日前</span></div>
   <article><h1>Claude Code ultracode（総力戦モード）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: プロンプトに「ultracode」と書くか<code>/effort ultracode</code>を指定すると起動する<a href="../tools/claude-code.html">claude-code</a>のモード。推論を最深レベルへ切り替え、タスク専用のオーケストレーションプログラムを自動生成し、最大16並行・合計1000体上限のサブエージェント編成を組む（@ren_aivest解説、v2.1.203以降）。</p>
@@ -51,6 +51,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-07-28 @ren_aivest: 「/goalはv2.1.139以降・ultracodeはv2.1.203以降の機能」という対応バージョンは、記事の出典節でClaude Code公式ドキュメント（code.claude.com/docs）に基づくとされているが、公式ドキュメント自体は未確認</li>
+<li>2026-08-02 @usedhonda: Claude Code/Codexを併用する運用者向けにエージェント向け設定ファイル全般を再設計したと投稿し「Fable5、/model ultracodeがよさそう」と短評（プロンプト本文はスレッド取得範囲外で未確認。「/model」表記は本ページの「/effort」表記と一致せず、原文ママ記録）</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -66,7 +67,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../concepts/graph-engineering.html">graph-engineering</a></li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2081900706005717219" rel="noopener" target="_blank">https://x.com/i/web/status/2081900706005717219</a></li></ul></section></article>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2081900706005717219" rel="noopener" target="_blank">https://x.com/i/web/status/2081900706005717219</a></li>
+<li><a href="https://x.com/i/web/status/2083766508107514007" rel="noopener" target="_blank">https://x.com/i/web/status/2083766508107514007</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -116,6 +118,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 ## 観察ログ（未検証）
 
 - 2026-07-28 @ren_aivest: 「/goalはv2.1.139以降・ultracodeはv2.1.203以降の機能」という対応バージョンは、記事の出典節でClaude Code公式ドキュメント（code.claude.com/docs）に基づくとされているが、公式ドキュメント自体は未確認
+- 2026-08-02 @usedhonda: Claude Code/Codexを併用する運用者向けにエージェント向け設定ファイル全般を再設計したと投稿し「Fable5、/model ultracodeがよさそう」と短評（プロンプト本文はスレッド取得範囲外で未確認。「/model」表記は本ページの「/effort」表記と一致せず、原文ママ記録）
 
 ## 問い
 
