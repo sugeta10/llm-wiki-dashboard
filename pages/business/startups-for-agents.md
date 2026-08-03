@@ -20,3 +20,4 @@
 - [[concepts/harness-engineering]] — エージェント＝モデル＋ハーネスの全体論。本ポストが名指しする「ハーネス」の設計論
 - [[tools/hermes-agent]] — ポスト本文で例に挙がったハーネス（Nous Research製OSSエージェント基盤）
 - [[business/ai-agent-era-strategy]] — AIエージェント時代の企業戦略（ToA・Authorize権限設計・器を大きくする思考・梶谷健人）
+- [[business/yc-request-for-startups-fall-2026]] — YC公式RFSのMultiplayer AI/A Cloud for Small Softwareが本テーゼの具体形

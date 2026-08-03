@@ -61,3 +61,4 @@
 - [[concepts/agentic-coding]] — 自律ループを支えるエージェント開発スタイル
 - [[business/frontier-ecosystem]] — 学習ループを企業のIPと捉え人的資本/トークン資本を複利させるNadellaの論
 - [[business/founders-playbook]] — 同じAIネイティブ思想をゼロから起業する個人向けに当てたAnthropic公式プレイブック
+- [[business/yc-request-for-startups-fall-2026]] — 同じYC発信。Self-Maintaining APIsが夜間自動MR生成と同型のパターンを社外プロバイダー起点で一般化
