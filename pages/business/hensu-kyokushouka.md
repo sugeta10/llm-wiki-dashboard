@@ -20,3 +20,4 @@
 
 - [[concepts/output-first-learning]] — 同作者（@shinkaron）の学習・発信戦略と設計哲学が共鳴
 - [[business/ai-income-retirement-strategy]] — 一人・自動収益化でのFIを目指す文脈との接続
+- [[business/roi-qualification-sales]] — 投資対効果が成立しない案件を断って絞り込むという、扱う変数（案件）を選別する発想が重なる
