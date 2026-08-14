@@ -42,7 +42,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>Day 7（改善ループ）</strong>: 毎週金曜に全ワークフローのアウトプット品質を1〜10点で評価し、弱い出力の原因を診断してプロンプトを更新する。</li>
 </ul>
 <p><strong>5つのAIスタッフ原型</strong>: Content Engine（コンテンツ研究・下書き）、Operations Manager（メール／ファイル／請求処理）、Code Reviewer（PR／バグ／ドキュメント）、Research Analyst（競合／市場／ニュース）、Customer Support Agent（チケットトリアージ／下書き）。著者は、Managed Agents の Dreaming 機能を使えば、AIスタッフ自身が自分のアウトプットを評価し改善するメタワークフローをセッション間で自動実行できるとする（<a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a>）。</p>
-<p>関連: <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> / <a href="../tools/claude-managed-agents.html">claude-managed-agents</a> / <a href="../concepts/claude-best-practices.html">claude-best-practices</a> / <a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></p>
+<p>関連: <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> / <a href="../tools/claude-managed-agents.html">claude-managed-agents</a> / <a href="../concepts/claude-best-practices.html">claude-best-practices</a> / <a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> / <a href="../concepts/workflow-cloning.html">workflow-cloning</a>（自動化対象を Clone Score で選ぶ監査工程を先頭に置いた姉妹手順）</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-05-12: 日次・週次・イベント・オンデマンドの4ワークフローを揃えると週4〜10時間の節約になると著者は試算（単一ソースの効果見積もり）</li>
@@ -50,7 +50,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>検証済み事実</h2>
 <ul>
 <li>2026-05-12: Claude Proは月$20、Claude Maxは月$100〜$200（Anthropic公式価格）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-best-practices.html">claude-best-practices</a></li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/workflow-cloning.html">workflow-cloning</a></li>
+<li><a href="../concepts/claude-best-practices.html">claude-best-practices</a></li>
 <li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054132051536961540" rel="noopener" target="_blank">https://x.com/i/web/status/2054132051536961540</a></li></ul></section></article>
@@ -88,7 +89,7 @@ Claudeを完全自律動作する「AIスタッフ」として機能させるた
 
 **5つのAIスタッフ原型**: Content Engine（コンテンツ研究・下書き）、Operations Manager（メール／ファイル／請求処理）、Code Reviewer（PR／バグ／ドキュメント）、Research Analyst（競合／市場／ニュース）、Customer Support Agent（チケットトリアージ／下書き）。著者は、Managed Agents の Dreaming 機能を使えば、AIスタッフ自身が自分のアウトプットを評価し改善するメタワークフローをセッション間で自動実行できるとする（[[concepts/managed-agents-dreams]]）。
 
-関連: [[concepts/managed-agents-dreams]] / [[tools/claude-managed-agents]] / [[concepts/claude-best-practices]] / [[concepts/multi-agent-patterns]]
+関連: [[concepts/managed-agents-dreams]] / [[tools/claude-managed-agents]] / [[concepts/claude-best-practices]] / [[concepts/multi-agent-patterns]] / [[concepts/workflow-cloning]]（自動化対象を Clone Score で選ぶ監査工程を先頭に置いた姉妹手順）
 
 ## 観察ログ（未検証）
 

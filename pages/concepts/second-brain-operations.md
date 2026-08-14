@@ -73,3 +73,4 @@ vaultは読むコストがリターンを下回るときだけ長期に機能す
 - [[concepts/llm-model-selection-strategy]] — ルーチンは安モデル・シンセシスのみ上位モデルという工程分解の一般形
 - [[tools/hermes-agent-personal-vault]] — 別著者・別ツールでas_of日付・supersede運用・「直さず報告するだけの週次監査」という骨格が独立収斂した事例
 - [[concepts/personal-intelligence-os]] — 同領域の姉妹ページ。本ページの維持ループ・コスト設計に対し、Knowledge ROI・6 KPI・Decision Note第一級化という測定・意思決定側の重心
+- [[concepts/workflow-cloning]] — 同じ「vaultは手入れが要るから死ぬ」問題への逆向きの回答（@milesdeutscher）。維持ループを設計するのでなく、ノートでなく手順を保存してエージェントに実行させる

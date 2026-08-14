@@ -89,3 +89,4 @@ flowchart TD
 - [[concepts/llm-model-selection-strategy]] — 工程分解型モデル選択の一般論。本記事のノード別モデル階層化と同型
 - [[concepts/context-engineering]] — スタックの一段下、「モデルに何を見せるか」の設計原則（@trq212／Anthropic Claude Codeチーム）
 - [[tools/claude-code-ultracode]] — トリガーワード「ultracode」の仕様・使い分け基準の詳細解説（@ren_aivest）
+- [[concepts/agent-autonomy-levels]] — agent/loop/graphを積み上げとして提示する入門側（@Mahaximus_）。偽エッジの判定・新鮮なコンテキストの検査役が別ソースで独立に同じ結論へ到達している

@@ -51,3 +51,4 @@ flowchart TD
 - [[concepts/eval-loop]] — 生成→採点→閾値未満を止める品質ゲート（本ページの「検証」ブロックの実装）
 - [[concepts/agent-memory-layer]] — 短期/長期記憶を支える共有メモリ層の設計
 - [[tools/claude-mcp]] — 「AIツールのUSB規格」として挙げられたツール連携標準
+- [[concepts/agent-autonomy-levels]] — 別著者(@Mahaximus_)による4段の梯子。本ページの3段階に「どう起動されるか」という運用レベルを足した版で、記憶ブロックの破綻を3型に分けている

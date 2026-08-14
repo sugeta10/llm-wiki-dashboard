@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>workflow-cloning - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>workflow-cloning</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="workflow-cloning.md">Markdownで表示</a></div>
+  <div class="meta">concepts/workflow-cloning · concepts · <span title="2026-08-14">今日</span></div>
+  <article><h1>ワークフロー・クローニング（手順を保存して自分を複製する）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 第二の脳が壊れるのは人間の手入れを前提にしているから——ノート（何を知っているか）でなく手順（どうやるか）を仕様とスキルとして保存し、エージェントに実行させる5工程の設計。</p>
+</blockquote>
+<p>Notion も Obsidian も機能しないわけではない、と @milesdeutscher は前置きする。問題は維持コストのほうにある——ノートを追加するのをやめた瞬間に Obsidian は役に立たなくなり、顧客管理やデータベースを更新するのをやめた瞬間に Notion は役に立たなくなる。忙しい人間が更新の担い手である限り、システムは人間より先に止まる。そこで彼が数週間かけて組んだのは、作業をするそばから自ら育ち、文脈を恒久的に持ち越し、手順についてのノートでなく実際の手順そのものを保持するシステムだと述べる。</p>
+<pre class="mermaid">flowchart LR
+  A[&quot;I. ワークフロー監査&lt;br&gt;AIに自分をインタビューさせる&quot;] --&gt; B[&quot;II. Clone Score&lt;br&gt;時間×反復性で優先度付け&quot;]
+  B --&gt; C[&quot;III. 仕様とスキル&lt;br&gt;口頭説明 or 作業録画&quot;]
+  C --&gt; D[&quot;IV. フォルダと可視化&lt;br&gt;business brain + specs + マインドマップ&quot;]
+  D --&gt; E[&quot;V. デプロイ&lt;br&gt;エージェント / ループ&quot;]</pre>
+<h2>I. ワークフロー監査——特定していないものは自動化できない</h2>
+<p>最初にやるのは、自分が実際に何をしているかの棚卸しになる。@milesdeutscher の方法は、AIに自分をインタビューさせて生活と事業の反復タスクを列挙させ、そのうえで自動化する価値の高い順に並べ替えさせるというもの。着手前にまず自分の「プロフィール」を作らせて文脈を渡しておくと精度が上がるとしている。1回のセッションで全タスクは出ないが、それでよく、土台を作って後から足していけばよいと彼は書く。</p>
+<h2>II. Clone Score——時間を食い、かつ繰り返すものから</h2>
+<p>洗い出したタスクは Clone Score で順位づけされる。論理は単純で、時間を食うものほど、そして反復性が高いものほど、先に自動化する価値が上がる。</p>
+<p>ここで重要なのは、判定の粒度をワークフローでなく<strong>工程</strong>に置くことだと @milesdeutscher は自身のスポンサー獲得パイプラインを例に説明する。「案件を取る」は表面上ひとつの仕事に見えるが、実際には7つの独立した工程からなり、自動化できるものとできないものが混在している——リサーチと連絡先の収集は完全に自動化できるが、最終交渉とコンテンツの納品はできない。監査の目的は日々のワークフローを見つけることだけでなく、その内側のどの工程が自動化されるべきかを特定することにある、というのが彼の主張の核心になる。</p>
+<h2>III. 仕様とスキルを作る2つのルート</h2>
+<p>自動化する対象が決まったら、エージェントが実際に走らせられる仕様（spec）とスキルに分解する。ルートは2つ。</p>
+<p><strong>話して作る</strong>——工程を口で説明できるならこれが最速だとし、スキル作成機能を開いてワークフローを一通り話す。@milesdeutscher はタイプでなく音声入力（Whispr Flow）を使う。話すほうが自然に説明できるからだという。<strong>作業を録画して作る</strong>——Claude デスクトップの「Record a skill」で自分の作業を記録させ、再利用可能なスキルを自動生成させる。彼が気に入っている点は Claude が声も拾うことで、たとえばツイートの書き方をスキルにしたいなら、実際にツイートを1本書きながら思考過程をそのまま喋ればよい。「従業員に、自分ならこうやるという手順を教えているのに本当に近い」と彼は表現する。この段階のゴールは、満足できるスキルが数本ある状態にすることであって、全部を揃えることではない。</p>
+<h2>IV. フォルダと可視化——人間は markdown を読まない</h2>
+<p>作った仕様には置き場所と、全体を見渡す手段が要る。@milesdeutscher のフォルダは2部構成で、<strong>business brain</strong>（会議・財務など、エージェントに知っていてほしいものを何でも入れる）と <strong>specs</strong>（前段で作った仕様・スキル・手順書を置く）に分かれる。</p>
+<p>そのうえで彼が強調するのは、エージェントは markdown の仕様ファイルを問題なく読めるが、自分では読まないという非対称性だ。走らせているスキルとワークフローの数が増えるほど全体の把握が難しくなるため、彼は全ワークフローを視覚的なマインドマップにしている。仕様ファイルやフォルダを Claude Cowork に渡し、マップ生成用のプロンプトを貼るだけで作れる。この可視化は見栄えの話に見えて実務的な強制力を持つ、と彼は言う——AIを実際にどこで使っているのかを直視させ、手順書を段階ごとに書き出させ、必要なら層を足せるようにする。出力したHTMLはローカルに置いてもホスティングに載せてもよい。</p>
+<h2>V. デプロイ</h2>
+<p>最後の工程は最も簡単だと彼は書く。仕様ファイルを Claude のターミナルに渡してエージェントを走らせる、Hermes agent に仕様フォルダを食わせる、Claude Code の <code>/loop</code> で自動化ループを回す——どれでもよく、組み合わせても構わない。最終アドバイスは、いきなり数十個を自動化しようとせず、レバレッジの高い日次タスクから数本だけ始めて時間をかけて足していくこと。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-08-07 @milesdeutscher: AIエージェントで自分の生活の80%以上を自動化し「Claudeで自分をクローンした」と主張。動画の台本作成・伸びるコンテンツの発掘・案件のクロージングなど、頭の中にあった処理を移したとするが、80%という数字の測り方は記事内に未記載</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultは「ノートを貯める」側に厚く、ingest・weekly・lintは手順化済み。まだ仕様化されていない反復作業（記事の書き起こし・調査の進め方・意思決定の型）のうち Clone Score が高いのはどれか</li>
+<li>工程単位の自動化可否判定を wiki 運用に当てると、「最終交渉」に相当する自動化してはいけない工程はどこか（カテゴリ判定か、公開判断か）</li>
+<li>全スキルのマインドマップ可視化は、このvaultではカタログページとスキル一覧で足りているか。それとも「自分がどこでAIを使っているか」は別の図が要るか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/second-brain-operations.html">second-brain-operations</a> — 第二の脳を維持ループとモデルティア配分で回し続ける設計（@EXM7777）。本ページは「維持を人間がやめる」ために手順そのものを資産化する側で、同じ問題への逆向きの回答</li>
+<li><a href="../concepts/personal-intelligence-os.html">personal-intelligence-os</a> — 保存量でなく変換速度でvaultを測る設計。Clone Score は同じ「測って優先する」発想を自動化対象に当てたもの</li>
+<li><a href="../concepts/obsidian-claude-second-brain.html">obsidian-claude-second-brain</a> — Obsidian+Claudeの網羅カタログ。本ページが「手入れが要る」と批判する対象そのもの</li>
+<li><a href="../concepts/ai-employee-workflow.html">ai-employee-workflow</a> — 7日間でAIスタッフを立ち上げる姉妹手順（役割定義→インターフェース→ワークフロー→メモリ→ツール→ルーティン→改善ループ）</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — 仕様・スキルの実体（永続的な職務定義ファイル）</li>
+<li><a href="../concepts/skill-building-best-practices.html">skill-building-best-practices</a> — スキルをどう書くとエージェントが正しく発火させるかのAnthropic社内知見</li>
+<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a> — business brain / specs の2部構成に対応するフォルダ設計の一般形</li>
+<li><a href="../concepts/html-output-format.html">html-output-format</a> — 仕様のマインドマップを自己完結型HTMLで出す発想の設計論</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — デプロイ先の1つ <code>/loop</code> の背景理論。4条件テストは Clone Score の判定と役割が重なる</li>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a> — 仕様フォルダを渡すデプロイ先として挙げられているエージェント基盤</li>
+<li><a href="../concepts/agent-autonomy-levels.html">agent-autonomy-levels</a> — 監査で切り出した工程をどこまで自律化するかの梯子（レベル1〜4）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-employee-workflow.html">ai-employee-workflow</a></li>
+<li><a href="../concepts/personal-intelligence-os.html">personal-intelligence-os</a></li>
+<li><a href="../concepts/second-brain-operations.html">second-brain-operations</a></li>
+<li><a href="../concepts/agent-autonomy-levels.html">agent-autonomy-levels</a></li>
+<li><a href="../concepts/claude-code-work-folder.html">claude-code-work-folder</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2085736739973533708" rel="noopener" target="_blank">https://x.com/i/web/status/2085736739973533708</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># ワークフロー・クローニング（手順を保存して自分を複製する）
+
+&gt; **TL;DR**: 第二の脳が壊れるのは人間の手入れを前提にしているから——ノート（何を知っているか）でなく手順（どうやるか）を仕様とスキルとして保存し、エージェントに実行させる5工程の設計。
+
+Notion も Obsidian も機能しないわけではない、と @milesdeutscher は前置きする。問題は維持コストのほうにある——ノートを追加するのをやめた瞬間に Obsidian は役に立たなくなり、顧客管理やデータベースを更新するのをやめた瞬間に Notion は役に立たなくなる。忙しい人間が更新の担い手である限り、システムは人間より先に止まる。そこで彼が数週間かけて組んだのは、作業をするそばから自ら育ち、文脈を恒久的に持ち越し、手順についてのノートでなく実際の手順そのものを保持するシステムだと述べる。
+
+```mermaid
+flowchart LR
+  A[&quot;I. ワークフロー監査&lt;br&gt;AIに自分をインタビューさせる&quot;] --&gt; B[&quot;II. Clone Score&lt;br&gt;時間×反復性で優先度付け&quot;]
+  B --&gt; C[&quot;III. 仕様とスキル&lt;br&gt;口頭説明 or 作業録画&quot;]
+  C --&gt; D[&quot;IV. フォルダと可視化&lt;br&gt;business brain + specs + マインドマップ&quot;]
+  D --&gt; E[&quot;V. デプロイ&lt;br&gt;エージェント / ループ&quot;]
+```
+
+## I. ワークフロー監査——特定していないものは自動化できない
+
+最初にやるのは、自分が実際に何をしているかの棚卸しになる。@milesdeutscher の方法は、AIに自分をインタビューさせて生活と事業の反復タスクを列挙させ、そのうえで自動化する価値の高い順に並べ替えさせるというもの。着手前にまず自分の「プロフィール」を作らせて文脈を渡しておくと精度が上がるとしている。1回のセッションで全タスクは出ないが、それでよく、土台を作って後から足していけばよいと彼は書く。
+
+## II. Clone Score——時間を食い、かつ繰り返すものから
+
+洗い出したタスクは Clone Score で順位づけされる。論理は単純で、時間を食うものほど、そして反復性が高いものほど、先に自動化する価値が上がる。
+
+ここで重要なのは、判定の粒度をワークフローでなく**工程**に置くことだと @milesdeutscher は自身のスポンサー獲得パイプラインを例に説明する。「案件を取る」は表面上ひとつの仕事に見えるが、実際には7つの独立した工程からなり、自動化できるものとできないものが混在している——リサーチと連絡先の収集は完全に自動化できるが、最終交渉とコンテンツの納品はできない。監査の目的は日々のワークフローを見つけることだけでなく、その内側のどの工程が自動化されるべきかを特定することにある、というのが彼の主張の核心になる。
+
+## III. 仕様とスキルを作る2つのルート
+
+自動化する対象が決まったら、エージェントが実際に走らせられる仕様（spec）とスキルに分解する。ルートは2つ。
+
+**話して作る**——工程を口で説明できるならこれが最速だとし、スキル作成機能を開いてワークフローを一通り話す。@milesdeutscher はタイプでなく音声入力（Whispr Flow）を使う。話すほうが自然に説明できるからだという。**作業を録画して作る**——Claude デスクトップの「Record a skill」で自分の作業を記録させ、再利用可能なスキルを自動生成させる。彼が気に入っている点は Claude が声も拾うことで、たとえばツイートの書き方をスキルにしたいなら、実際にツイートを1本書きながら思考過程をそのまま喋ればよい。「従業員に、自分ならこうやるという手順を教えているのに本当に近い」と彼は表現する。この段階のゴールは、満足できるスキルが数本ある状態にすることであって、全部を揃えることではない。
+
+## IV. フォルダと可視化——人間は markdown を読まない
+
+作った仕様には置き場所と、全体を見渡す手段が要る。@milesdeutscher のフォルダは2部構成で、**business brain**（会議・財務など、エージェントに知っていてほしいものを何でも入れる）と **specs**（前段で作った仕様・スキル・手順書を置く）に分かれる。
+
+そのうえで彼が強調するのは、エージェントは markdown の仕様ファイルを問題なく読めるが、自分では読まないという非対称性だ。走らせているスキルとワークフローの数が増えるほど全体の把握が難しくなるため、彼は全ワークフローを視覚的なマインドマップにしている。仕様ファイルやフォルダを Claude Cowork に渡し、マップ生成用のプロンプトを貼るだけで作れる。この可視化は見栄えの話に見えて実務的な強制力を持つ、と彼は言う——AIを実際にどこで使っているのかを直視させ、手順書を段階ごとに書き出させ、必要なら層を足せるようにする。出力したHTMLはローカルに置いてもホスティングに載せてもよい。
+
+## V. デプロイ
+
+最後の工程は最も簡単だと彼は書く。仕様ファイルを Claude のターミナルに渡してエージェントを走らせる、Hermes agent に仕様フォルダを食わせる、Claude Code の `/loop` で自動化ループを回す——どれでもよく、組み合わせても構わない。最終アドバイスは、いきなり数十個を自動化しようとせず、レバレッジの高い日次タスクから数本だけ始めて時間をかけて足していくこと。
+
+## 観察ログ（未検証）
+
+- 2026-08-07 @milesdeutscher: AIエージェントで自分の生活の80%以上を自動化し「Claudeで自分をクローンした」と主張。動画の台本作成・伸びるコンテンツの発掘・案件のクロージングなど、頭の中にあった処理を移したとするが、80%という数字の測り方は記事内に未記載
+
+## 問い
+
+- このvaultは「ノートを貯める」側に厚く、ingest・weekly・lintは手順化済み。まだ仕様化されていない反復作業（記事の書き起こし・調査の進め方・意思決定の型）のうち Clone Score が高いのはどれか
+- 工程単位の自動化可否判定を wiki 運用に当てると、「最終交渉」に相当する自動化してはいけない工程はどこか（カテゴリ判定か、公開判断か）
+- 全スキルのマインドマップ可視化は、このvaultではカタログページとスキル一覧で足りているか。それとも「自分がどこでAIを使っているか」は別の図が要るか
+
+## 関連
+
+- [[concepts/second-brain-operations]] — 第二の脳を維持ループとモデルティア配分で回し続ける設計（@EXM7777）。本ページは「維持を人間がやめる」ために手順そのものを資産化する側で、同じ問題への逆向きの回答
+- [[concepts/personal-intelligence-os]] — 保存量でなく変換速度でvaultを測る設計。Clone Score は同じ「測って優先する」発想を自動化対象に当てたもの
+- [[concepts/obsidian-claude-second-brain]] — Obsidian+Claudeの網羅カタログ。本ページが「手入れが要る」と批判する対象そのもの
+- [[concepts/ai-employee-workflow]] — 7日間でAIスタッフを立ち上げる姉妹手順（役割定義→インターフェース→ワークフロー→メモリ→ツール→ルーティン→改善ループ）
+- [[concepts/claude-skills]] — 仕様・スキルの実体（永続的な職務定義ファイル）
+- [[concepts/skill-building-best-practices]] — スキルをどう書くとエージェントが正しく発火させるかのAnthropic社内知見
+- [[concepts/claude-code-work-folder]] — business brain / specs の2部構成に対応するフォルダ設計の一般形
+- [[concepts/html-output-format]] — 仕様のマインドマップを自己完結型HTMLで出す発想の設計論
+- [[concepts/loop-engineering]] — デプロイ先の1つ `/loop` の背景理論。4条件テストは Clone Score の判定と役割が重なる
+- [[tools/hermes-agent]] — 仕様フォルダを渡すデプロイ先として挙げられているエージェント基盤
+- [[concepts/agent-autonomy-levels]] — 監査で切り出した工程をどこまで自律化するかの梯子（レベル1〜4）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

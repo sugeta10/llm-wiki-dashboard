@@ -48,3 +48,4 @@ AIにVaultの全ノートを自由編集させる運用を「監査されてい�
 - [[concepts/agent-reflection-layer]] — エージェント自身の判断を確信度つきでdecisions-logに残す設計。本ページのDecision Note（人間の意思決定記録）と対になる
 - [[tools/openclaw-agent-skills]] — 正本1箇所＋symlink/vendor配布という同型のSkill同期パターン（別ツール圏での収斂）
 - [[tools/hermes-agent-personal-vault]] — 別ツール（Hermes Agent）でObsidian vaultを個人知識ベース化する姉妹実践
+- [[concepts/workflow-cloning]] — 測って優先する発想を「知識の取り出し」でなく「業務の自動化対象」に当てた版（Clone Score・@milesdeutscher）

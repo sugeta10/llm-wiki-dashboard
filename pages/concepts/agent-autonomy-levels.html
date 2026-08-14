@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>agent-autonomy-levels - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>agent-autonomy-levels</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-autonomy-levels.md">Markdownで表示</a></div>
+  <div class="meta">concepts/agent-autonomy-levels · concepts · <span title="2026-08-14">今日</span></div>
+  <article><h1>エージェント自律度の4レベル</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: エージェントかどうかは有無でなく4段の梯子であり、段を上げるのはモデルの乗り換えでなくツール・記憶・ループを1つずつ足すこと。</p>
+</blockquote>
+<p>「この記事を要約して」はチャットであり、「このトピックで最も引用された論文3本を探し、各々の主要な主張を抜き出し、相互に突き合わせ、1ページのブリーフィングにまとめて」を途中で一度も手を触れずに走らせればエージェントになる。@Mahaximus_ はこの差を生むのはモデルではなくモデルの周囲の構造だとし、チャットが持たない3つを挙げる——自分の判断で呼べるツール、タスクを跨いで残る記憶、1回の応答でなく仕事が終わるまで回るループ。</p>
+<pre class="mermaid">flowchart LR
+  L1[&quot;Level 1&lt;br&gt;チャット&lt;br&gt;人間がエンジン&quot;] --&gt;|&quot;+ ツール&quot;| L2[&quot;Level 2&lt;br&gt;ツール付き&lt;br&gt;答える前に自分で確かめる&quot;]
+  L2 --&gt;|&quot;+ ループ&quot;| L3[&quot;Level 3&lt;br&gt;マルチステップ&lt;br&gt;ゴールを渡すと最後まで&quot;]
+  L3 --&gt;|&quot;+ トリガー / 記憶&quot;| L4[&quot;Level 4&lt;br&gt;完全自律&lt;br&gt;起動も監視も人間なし&quot;]</pre>
+<p><strong>Level 1（チャット）</strong> は、聞いて答えてセッションが終わる状態。ツールも記憶も継続するゴールもなく、人間がエンジンでモデルは手の中の道具にすぎない。<strong>Level 2（ツール付き）</strong> は、答える前に検索する・ファイルを読む・自分の答えを確かめるためにコードを走らせる状態で、手順を指定していないのにモデルが必要だと判断してそうしている時点で、すでに部分的にエージェント的だと @Mahaximus_ は言う。<strong>Level 3（マルチステップ）</strong> はゴールを渡すとモデルが工程に分解し、各工程を実行し、結果を確認して完成物を返す状態で、工程の間に人間は入らない。<strong>Level 4（完全自律）</strong> はスケジュールやトリガーで起動し、入力を監視し、外部サービスを呼んで完了まで走る状態で、人間はゴールを一度設定して出力を確認するだけになる。</p>
+<p>レベル1と4を隔てているのは別のモデルではなく、モデルを取り巻くもの——ツール・記憶・ループだと @Mahaximus_ は述べる。梯子として書く実用上の意味は、1段上げるのに必要なのが「もっと賢いモデル」でなく「足りていない1要素」だと特定できる点にある。</p>
+<h2>記憶が壊れる3つの形と、共通の1つの対策</h2>
+<p>エージェントが最もよく破綻するのは記憶で、しかも壊れ方は3通りある、と @Mahaximus_ は整理する。第一に、タスクが長引いて冒頭が落ちる——当初のゴール・すでに下した決定・課した制約がコンテキスト窓から溢れ、エージェントは働き続けながら何に向かっていたかを静かに忘れる。第二に、セッションを閉じて新しく開くとゼロから始まる。第三に、途中で中断されると、どこで止まったか・何を試したか・何が失敗したかの記録が残らない。</p>
+<p>3つとも対策は同じで、<strong>エージェント自身に自分の記憶を書かせる</strong>。作業の途中で進捗記録を作らせる、セッションが長くなってきたら要約させる、新しいセッションの冒頭でそれを読ませて文脈を復元させる、という3つの差し込みで塞ぐ。加えて、定期的に走らせるエージェントについては、常に必要な事実をシステムプロンプトに直接書いておくことを @Mahaximus_ は勧める。システムプロンプトは毎セッションの冒頭で読まれるため、会話がどれだけ伸びてもそこにある情報だけは常にコンテキストに残るからだ。</p>
+<h2>上の2層との関係</h2>
+<p>@Mahaximus_ は agent・loop・graph を置き換えの列でなく積み上げとして提示する——エージェントはモデルに指示でなくゴールを渡して自力で進ませ、ループはその仕事を信頼できるものにし（自己採点し、失敗を記録し、基準を超えるまで続ける）、グラフは並列ワーカーで速くする。全部のタスクに3つとも要るわけではなく、目の前のタスクがどれを必要としているかを見分けられるようになった時点で、「もっと頑張る」から「もっとうまく設計する」へ移ると述べる。</p>
+<p>ループ側について同記事が挙げる要点は、検査（check）が実際に失敗しうるものであること、停止条件を「完了」と「上限回数」の2本立てにすること、そして採算を「使った回数」でなく「実際に採用した出力の割合」で測ることの3点で、詳細は <a href="../concepts/loop-engineering.html">loop-engineering</a> と <a href="../concepts/loop-anatomy.html">loop-anatomy</a> に厚い記述がある。グラフ側で挙げる要点は、順番と依存を混同しない（前の工程の出力を次が実際に読まないなら、その矢印は消せて並列化できる）、独立ジョブを並走させ最後に1つへ集約するダイヤモンド型、そして検査役には作業者と別の新鮮なコンテキストを与えることの3点で、こちらは <a href="../concepts/graph-engineering.html">graph-engineering</a> と <a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> が対応する。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-08-05 @Mahaximus_: ループの採算ラインを「10回走らせて6回の結果を捨てたなら4回分のために10回払っている」と説明し、キープ率50%を下回るとループは自分でやるより高くつくと主張。<a href="../concepts/loop-engineering.html">loop-engineering</a> の <em>cost per accepted change</em>（採用率50%以下なら赤字）と別著者・別記事で同じ閾値が出ている</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultのlaunchd ingestとWeekly Insights生成はレベル4に見えるが、実際には「起動トリガーがあるだけのレベル3」ではないか。入力を監視して自分で起動判断をしている箇所はあるか</li>
+<li>記憶破綻の3型のうち、②セッション跨ぎは <code>.claude/handovers/</code> と auto-memory で、③中断は state file で塞いでいる。①長時間でゴールを見失う型に対する仕組みはこのvaultにあるか</li>
+<li>「常に必要な事実はシステムプロンプトへ」は CLAUDE.md 200行未満・索引に徹せという <a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> の指針と競合する。何を常駐させ何を pay-per-read にするかの線はどこか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a> — Plain AI / AI Agent / Agentic AI の3段階＋5ブロック（@sairahul1）。本ページの梯子は「どう起動されるか」という運用面まで刻んだ4段版</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — レベル3→4を支える機構。4条件テスト・採用率の経済性・失敗パターンの詳細</li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a> — 並列ノード・偽エッジの判定・新鮮なコンテキストを持つ検査役の詳細</li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — 「いつ止まるか」と「自分がその場にいるか」で動詞を選ぶ分類軸（@mvanhorn）。レベル3と4の境目と同じ切り口</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — ダイヤモンド型（fan out → converge）の実装パターン</li>
+<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a> — セッション跨ぎの記憶破綻に対する引き継ぎ設計</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — 記憶をエージェントごとでなくユーザー所有の共有層に置く設計</li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — プロンプトに「workflow」の一語を含めると並列オーケストレーションが起動する機能の詳細</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a></li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2085024744387092973" rel="noopener" target="_blank">https://x.com/i/web/status/2085024744387092973</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># エージェント自律度の4レベル
+
+&gt; **TL;DR**: エージェントかどうかは有無でなく4段の梯子であり、段を上げるのはモデルの乗り換えでなくツール・記憶・ループを1つずつ足すこと。
+
+「この記事を要約して」はチャットであり、「このトピックで最も引用された論文3本を探し、各々の主要な主張を抜き出し、相互に突き合わせ、1ページのブリーフィングにまとめて」を途中で一度も手を触れずに走らせればエージェントになる。@Mahaximus_ はこの差を生むのはモデルではなくモデルの周囲の構造だとし、チャットが持たない3つを挙げる——自分の判断で呼べるツール、タスクを跨いで残る記憶、1回の応答でなく仕事が終わるまで回るループ。
+
+```mermaid
+flowchart LR
+  L1[&quot;Level 1&lt;br&gt;チャット&lt;br&gt;人間がエンジン&quot;] --&gt;|&quot;+ ツール&quot;| L2[&quot;Level 2&lt;br&gt;ツール付き&lt;br&gt;答える前に自分で確かめる&quot;]
+  L2 --&gt;|&quot;+ ループ&quot;| L3[&quot;Level 3&lt;br&gt;マルチステップ&lt;br&gt;ゴールを渡すと最後まで&quot;]
+  L3 --&gt;|&quot;+ トリガー / 記憶&quot;| L4[&quot;Level 4&lt;br&gt;完全自律&lt;br&gt;起動も監視も人間なし&quot;]
+```
+
+**Level 1（チャット）** は、聞いて答えてセッションが終わる状態。ツールも記憶も継続するゴールもなく、人間がエンジンでモデルは手の中の道具にすぎない。**Level 2（ツール付き）** は、答える前に検索する・ファイルを読む・自分の答えを確かめるためにコードを走らせる状態で、手順を指定していないのにモデルが必要だと判断してそうしている時点で、すでに部分的にエージェント的だと @Mahaximus_ は言う。**Level 3（マルチステップ）** はゴールを渡すとモデルが工程に分解し、各工程を実行し、結果を確認して完成物を返す状態で、工程の間に人間は入らない。**Level 4（完全自律）** はスケジュールやトリガーで起動し、入力を監視し、外部サービスを呼んで完了まで走る状態で、人間はゴールを一度設定して出力を確認するだけになる。
+
+レベル1と4を隔てているのは別のモデルではなく、モデルを取り巻くもの——ツール・記憶・ループだと @Mahaximus_ は述べる。梯子として書く実用上の意味は、1段上げるのに必要なのが「もっと賢いモデル」でなく「足りていない1要素」だと特定できる点にある。
+
+## 記憶が壊れる3つの形と、共通の1つの対策
+
+エージェントが最もよく破綻するのは記憶で、しかも壊れ方は3通りある、と @Mahaximus_ は整理する。第一に、タスクが長引いて冒頭が落ちる——当初のゴール・すでに下した決定・課した制約がコンテキスト窓から溢れ、エージェントは働き続けながら何に向かっていたかを静かに忘れる。第二に、セッションを閉じて新しく開くとゼロから始まる。第三に、途中で中断されると、どこで止まったか・何を試したか・何が失敗したかの記録が残らない。
+
+3つとも対策は同じで、**エージェント自身に自分の記憶を書かせる**。作業の途中で進捗記録を作らせる、セッションが長くなってきたら要約させる、新しいセッションの冒頭でそれを読ませて文脈を復元させる、という3つの差し込みで塞ぐ。加えて、定期的に走らせるエージェントについては、常に必要な事実をシステムプロンプトに直接書いておくことを @Mahaximus_ は勧める。システムプロンプトは毎セッションの冒頭で読まれるため、会話がどれだけ伸びてもそこにある情報だけは常にコンテキストに残るからだ。
+
+## 上の2層との関係
+
+@Mahaximus_ は agent・loop・graph を置き換えの列でなく積み上げとして提示する——エージェントはモデルに指示でなくゴールを渡して自力で進ませ、ループはその仕事を信頼できるものにし（自己採点し、失敗を記録し、基準を超えるまで続ける）、グラフは並列ワーカーで速くする。全部のタスクに3つとも要るわけではなく、目の前のタスクがどれを必要としているかを見分けられるようになった時点で、「もっと頑張る」から「もっとうまく設計する」へ移ると述べる。
+
+ループ側について同記事が挙げる要点は、検査（check）が実際に失敗しうるものであること、停止条件を「完了」と「上限回数」の2本立てにすること、そして採算を「使った回数」でなく「実際に採用した出力の割合」で測ることの3点で、詳細は [[concepts/loop-engineering]] と [[concepts/loop-anatomy]] に厚い記述がある。グラフ側で挙げる要点は、順番と依存を混同しない（前の工程の出力を次が実際に読まないなら、その矢印は消せて並列化できる）、独立ジョブを並走させ最後に1つへ集約するダイヤモンド型、そして検査役には作業者と別の新鮮なコンテキストを与えることの3点で、こちらは [[concepts/graph-engineering]] と [[concepts/multi-agent-patterns]] が対応する。
+
+## 観察ログ（未検証）
+
+- 2026-08-05 @Mahaximus_: ループの採算ラインを「10回走らせて6回の結果を捨てたなら4回分のために10回払っている」と説明し、キープ率50%を下回るとループは自分でやるより高くつくと主張。[[concepts/loop-engineering]] の *cost per accepted change*（採用率50%以下なら赤字）と別著者・別記事で同じ閾値が出ている
+
+## 問い
+
+- このvaultのlaunchd ingestとWeekly Insights生成はレベル4に見えるが、実際には「起動トリガーがあるだけのレベル3」ではないか。入力を監視して自分で起動判断をしている箇所はあるか
+- 記憶破綻の3型のうち、②セッション跨ぎは `.claude/handovers/` と auto-memory で、③中断は state file で塞いでいる。①長時間でゴールを見失う型に対する仕組みはこのvaultにあるか
+- 「常に必要な事実はシステムプロンプトへ」は CLAUDE.md 200行未満・索引に徹せという [[concepts/claude-code-instruction-methods]] の指針と競合する。何を常駐させ何を pay-per-read にするかの線はどこか
+
+## 関連
+
+- [[concepts/ai-agent-building-blocks]] — Plain AI / AI Agent / Agentic AI の3段階＋5ブロック（@sairahul1）。本ページの梯子は「どう起動されるか」という運用面まで刻んだ4段版
+- [[concepts/loop-engineering]] — レベル3→4を支える機構。4条件テスト・採用率の経済性・失敗パターンの詳細
+- [[concepts/graph-engineering]] — 並列ノード・偽エッジの判定・新鮮なコンテキストを持つ検査役の詳細
+- [[concepts/goal-loop-routine]] — 「いつ止まるか」と「自分がその場にいるか」で動詞を選ぶ分類軸（@mvanhorn）。レベル3と4の境目と同じ切り口
+- [[concepts/multi-agent-patterns]] — ダイヤモンド型（fan out → converge）の実装パターン
+- [[concepts/ai-session-handover]] — セッション跨ぎの記憶破綻に対する引き継ぎ設計
+- [[concepts/agent-memory-layer]] — 記憶をエージェントごとでなくユーザー所有の共有層に置く設計
+- [[concepts/claude-code-dynamic-workflows]] — プロンプトに「workflow」の一語を含めると並列オーケストレーションが起動する機能の詳細
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

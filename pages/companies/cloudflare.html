@@ -68,7 +68,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>チャンネル</strong> — チャット/Eメール/音声/Slack/Webhookで入力・出力を受け取る</li>
 </ul>
 <h2>Cloudflare OS（2026-08-05 発表）</h2>
-<p>Cloudflare公式アカウントが2026年8月5日に発表したオープンソースのプラットフォーム。同社の説明では、社内の誰もがアプリを作り、業務を自動化し、社内システムへ安全にアクセスできるようにするもので、その形は「組織が何を知っていて、どう仕事をしているか」に沿って決まるとしている。ここまでの層（Workers/Durable Objects/Agents SDK）が開発者向けの部品だったのに対し、Cloudflare OSは非開発者を含む全社員を対象にしている点が位置づけの違いになる。詳細は同社ブログ（blog.cloudflare.com/cloudflare-os/）にあり、本ページ作成時点ではポストの記述のみを反映している。</p>
+<p>Cloudflare公式アカウントが2026年8月5日に発表したオープンソースのプラットフォーム。同社の説明では、社内の誰もがアプリを作り、業務を自動化し、社内システムへ安全にアクセスできるようにするもので、その形は「組織が何を知っていて、どう仕事をしているか」に沿って決まるとしている。ここまでの層（Workers/Durable Objects/Agents SDK）が開発者向けの部品だったのに対し、Cloudflare OSは非開発者を含む全社員を対象にしている点が位置づけの違いになる。詳細は同社ブログ（blog.cloudflare.com/cloudflare-os/）にあり、本ページ作成時点ではポストと発表動画の記述のみを反映している。</p>
+<p>@commteは発表動画の内容を、社員一人ひとりに専用のエージェントとワークスペースを与え、その会社独自の業務のやり方・社内の知識・既存システムに合わせて動かすものだと要約する。権限モデルについては、エージェントは最初どこにもアクセスできず、許可したリソースにだけ手が届くという既定拒否（deny by default）の設計だと説明している。@commte はこれを「AIを社内に入れられない理由を潰せるかも」と評価しており、企業導入の障壁が機能でなくアクセス制御の設計にあるという見立てが背景にある。<a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a> が整理する組織側の壁（ガバナンス・権限）に対して、プラットフォーム側から答えを出そうとする位置づけになる。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-06-15（yusukebe / Cloudflare社員 Zenn記事）: V8 IsolateがコンテナよりAIエージェントに向いているというCloudflareの立場</li>
@@ -90,13 +91,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Agents SDKのチャンネル設計・状態管理はマルチエージェントパターンと交差する</li>
 <li><a href="../concepts/ai-native-cloud-selection.html">ai-native-cloud-selection</a> — 「AIエージェントがCLI/APIで操作しやすいか」でクラウドを選ぶ基準。その筆頭としてCloudflareを挙げる論</li>
 <li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a> — Cloudflare Accessを使い人間とAIを同一身元で社内システムへ通す設計。Cloudflare OSの「社内システムへ安全にアクセス」に対応する既存の実装パターン</li>
+<li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a> — 企業のエージェント導入で詰まる7つの壁。Cloudflare OSの既定拒否の権限モデルはこのうちガバナンス・可視化の壁への回答にあたる</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-native-cloud-selection.html">ai-native-cloud-selection</a></li>
 <li><a href="../concepts/generative-ui.html">generative-ui</a></li>
 <li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../companies/openai.html">openai</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/yusukebe/articles/ccb1f953e48ee1" rel="noopener" target="_blank">https://zenn.dev/yusukebe/articles/ccb1f953e48ee1</a></li>
 <li><a href="https://x.com/i/web/status/2066347872115933526" rel="noopener" target="_blank">https://x.com/i/web/status/2066347872115933526</a></li>
-<li><a href="https://x.com/i/web/status/2085003017590349918" rel="noopener" target="_blank">https://x.com/i/web/status/2085003017590349918</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2085003017590349918" rel="noopener" target="_blank">https://x.com/i/web/status/2085003017590349918</a></li>
+<li><a href="https://x.com/i/web/status/2085200259240882260" rel="noopener" target="_blank">https://x.com/i/web/status/2085200259240882260</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -166,7 +169,9 @@ WorkersとDurable Objectsを隠蔽してAIエージェント開発をシンプ�
 
 ## Cloudflare OS（2026-08-05 発表）
 
-Cloudflare公式アカウントが2026年8月5日に発表したオープンソースのプラットフォーム。同社の説明では、社内の誰もがアプリを作り、業務を自動化し、社内システムへ安全にアクセスできるようにするもので、その形は「組織が何を知っていて、どう仕事をしているか」に沿って決まるとしている。ここまでの層（Workers/Durable Objects/Agents SDK）が開発者向けの部品だったのに対し、Cloudflare OSは非開発者を含む全社員を対象にしている点が位置づけの違いになる。詳細は同社ブログ（blog.cloudflare.com/cloudflare-os/）にあり、本ページ作成時点ではポストの記述のみを反映している。
+Cloudflare公式アカウントが2026年8月5日に発表したオープンソースのプラットフォーム。同社の説明では、社内の誰もがアプリを作り、業務を自動化し、社内システムへ安全にアクセスできるようにするもので、その形は「組織が何を知っていて、どう仕事をしているか」に沿って決まるとしている。ここまでの層（Workers/Durable Objects/Agents SDK）が開発者向けの部品だったのに対し、Cloudflare OSは非開発者を含む全社員を対象にしている点が位置づけの違いになる。詳細は同社ブログ（blog.cloudflare.com/cloudflare-os/）にあり、本ページ作成時点ではポストと発表動画の記述のみを反映している。
+
+@commteは発表動画の内容を、社員一人ひとりに専用のエージェントとワークスペースを与え、その会社独自の業務のやり方・社内の知識・既存システムに合わせて動かすものだと要約する。権限モデルについては、エージェントは最初どこにもアクセスできず、許可したリソースにだけ手が届くという既定拒否（deny by default）の設計だと説明している。@commte はこれを「AIを社内に入れられない理由を潰せるかも」と評価しており、企業導入の障壁が機能でなくアクセス制御の設計にあるという見立てが背景にある。[[concepts/agent-adoption-walls]] が整理する組織側の壁（ガバナンス・権限）に対して、プラットフォーム側から答えを出そうとする位置づけになる。
 
 ## 観察ログ（未検証）
 
@@ -189,6 +194,7 @@ Cloudflare公式アカウントが2026年8月5日に発表したオープンソ�
 - [[concepts/multi-agent-patterns]] — Agents SDKのチャンネル設計・状態管理はマルチエージェントパターンと交差する
 - [[concepts/ai-native-cloud-selection]] — 「AIエージェントがCLI/APIで操作しやすいか」でクラウドを選ぶ基準。その筆頭としてCloudflareを挙げる論
 - [[concepts/idp-shared-cli-mcp]] — Cloudflare Accessを使い人間とAIを同一身元で社内システムへ通す設計。Cloudflare OSの「社内システムへ安全にアクセス」に対応する既存の実装パターン
+- [[concepts/agent-adoption-walls]] — 企業のエージェント導入で詰まる7つの壁。Cloudflare OSの既定拒否の権限モデルはこのうちガバナンス・可視化の壁への回答にあたる
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
