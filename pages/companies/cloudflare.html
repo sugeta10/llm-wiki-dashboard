@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>cloudflare</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cloudflare.md">Markdownで表示</a></div>
-  <div class="meta">companies/cloudflare · companies · <span title="2026-06-16">1ヶ月前</span></div>
+  <div class="meta">companies/cloudflare · companies · <span title="2026-08-14">今日</span></div>
   <article><blockquote>
 <p><strong>TL;DR</strong>: CloudflareはV8 Isolate技術を基盤に、AIエージェントに必要な「推論モデル・サンドボックス・実行環境」を一気通貫で提供するプラットフォームとして2026年に整備された。</p>
 </blockquote>
@@ -67,6 +67,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>ハイバネーション</strong> — アイドル時に休止・再リクエストで起動（使った時のみ課金）</li>
 <li><strong>チャンネル</strong> — チャット/Eメール/音声/Slack/Webhookで入力・出力を受け取る</li>
 </ul>
+<h2>Cloudflare OS（2026-08-05 発表）</h2>
+<p>Cloudflare公式アカウントが2026年8月5日に発表したオープンソースのプラットフォーム。同社の説明では、社内の誰もがアプリを作り、業務を自動化し、社内システムへ安全にアクセスできるようにするもので、その形は「組織が何を知っていて、どう仕事をしているか」に沿って決まるとしている。ここまでの層（Workers/Durable Objects/Agents SDK）が開発者向けの部品だったのに対し、Cloudflare OSは非開発者を含む全社員を対象にしている点が位置づけの違いになる。詳細は同社ブログ（blog.cloudflare.com/cloudflare-os/）にあり、本ページ作成時点ではポストの記述のみを反映している。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-06-15（yusukebe / Cloudflare社員 Zenn記事）: V8 IsolateがコンテナよりAIエージェントに向いているというCloudflareの立場</li>
@@ -87,12 +89,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — Code Modeは型定義ファイル（.d.ts）を中間記法として使う設計の実例</li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Agents SDKのチャンネル設計・状態管理はマルチエージェントパターンと交差する</li>
 <li><a href="../concepts/ai-native-cloud-selection.html">ai-native-cloud-selection</a> — 「AIエージェントがCLI/APIで操作しやすいか」でクラウドを選ぶ基準。その筆頭としてCloudflareを挙げる論</li>
+<li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a> — Cloudflare Accessを使い人間とAIを同一身元で社内システムへ通す設計。Cloudflare OSの「社内システムへ安全にアクセス」に対応する既存の実装パターン</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-native-cloud-selection.html">ai-native-cloud-selection</a></li>
 <li><a href="../concepts/generative-ui.html">generative-ui</a></li>
+<li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a></li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
-<li><a href="../companies/openai.html">openai</a></li>
-<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/yusukebe/articles/ccb1f953e48ee1" rel="noopener" target="_blank">https://zenn.dev/yusukebe/articles/ccb1f953e48ee1</a></li>
-<li><a href="https://x.com/i/web/status/2066347872115933526" rel="noopener" target="_blank">https://x.com/i/web/status/2066347872115933526</a></li></ul></section></article>
+<li><a href="../companies/openai.html">openai</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/yusukebe/articles/ccb1f953e48ee1" rel="noopener" target="_blank">https://zenn.dev/yusukebe/articles/ccb1f953e48ee1</a></li>
+<li><a href="https://x.com/i/web/status/2066347872115933526" rel="noopener" target="_blank">https://x.com/i/web/status/2066347872115933526</a></li>
+<li><a href="https://x.com/i/web/status/2085003017590349918" rel="noopener" target="_blank">https://x.com/i/web/status/2085003017590349918</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -160,6 +164,10 @@ WorkersとDurable Objectsを隠蔽してAIエージェント開発をシンプ�
 - **ハイバネーション** — アイドル時に休止・再リクエストで起動（使った時のみ課金）
 - **チャンネル** — チャット/Eメール/音声/Slack/Webhookで入力・出力を受け取る
 
+## Cloudflare OS（2026-08-05 発表）
+
+Cloudflare公式アカウントが2026年8月5日に発表したオープンソースのプラットフォーム。同社の説明では、社内の誰もがアプリを作り、業務を自動化し、社内システムへ安全にアクセスできるようにするもので、その形は「組織が何を知っていて、どう仕事をしているか」に沿って決まるとしている。ここまでの層（Workers/Durable Objects/Agents SDK）が開発者向けの部品だったのに対し、Cloudflare OSは非開発者を含む全社員を対象にしている点が位置づけの違いになる。詳細は同社ブログ（blog.cloudflare.com/cloudflare-os/）にあり、本ページ作成時点ではポストの記述のみを反映している。
+
 ## 観察ログ（未検証）
 
 - 2026-06-15（yusukebe / Cloudflare社員 Zenn記事）: V8 IsolateがコンテナよりAIエージェントに向いているというCloudflareの立場
@@ -180,6 +188,7 @@ WorkersとDurable Objectsを隠蔽してAIエージェント開発をシンプ�
 - [[concepts/intermediate-notation-pattern]] — Code Modeは型定義ファイル（.d.ts）を中間記法として使う設計の実例
 - [[concepts/multi-agent-patterns]] — Agents SDKのチャンネル設計・状態管理はマルチエージェントパターンと交差する
 - [[concepts/ai-native-cloud-selection]] — 「AIエージェントがCLI/APIで操作しやすいか」でクラウドを選ぶ基準。その筆頭としてCloudflareを挙げる論
+- [[concepts/idp-shared-cli-mcp]] — Cloudflare Accessを使い人間とAIを同一身元で社内システムへ通す設計。Cloudflare OSの「社内システムへ安全にアクセス」に対応する既存の実装パターン
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

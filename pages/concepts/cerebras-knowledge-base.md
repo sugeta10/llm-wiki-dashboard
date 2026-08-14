@@ -74,3 +74,4 @@ MCP統合では、search・search_slack・search_code・who_knowsといった検
 - [[tools/slack-bolt]] — Socket ModeによるリアルタイムSlack取り込みの実装基盤
 - [[concepts/agent-memory-layer]] — 全ツール・全ソースを単一の共有層に集約するという設計思想が共通
 - [[concepts/company-brain]] — 単一埋め込みテーブルという本記事の実装が体現する「semantic file system」を、provenance/permissions/freshness込みで一般化した設計思想（@ashwingop）
+- [[concepts/knowledge-graph-llm]] — 同じ「回答のゆらぎ・説明不能・社内知識の欠如」をナレッジグラフ側から解こうとする対案

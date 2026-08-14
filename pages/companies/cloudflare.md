@@ -45,6 +45,10 @@ WorkersとDurable Objectsを隠蔽してAIエージェント開発をシンプ�
 - **ハイバネーション** — アイドル時に休止・再リクエストで起動（使った時のみ課金）
 - **チャンネル** — チャット/Eメール/音声/Slack/Webhookで入力・出力を受け取る
 
+## Cloudflare OS（2026-08-05 発表）
+
+Cloudflare公式アカウントが2026年8月5日に発表したオープンソースのプラットフォーム。同社の説明では、社内の誰もがアプリを作り、業務を自動化し、社内システムへ安全にアクセスできるようにするもので、その形は「組織が何を知っていて、どう仕事をしているか」に沿って決まるとしている。ここまでの層（Workers/Durable Objects/Agents SDK）が開発者向けの部品だったのに対し、Cloudflare OSは非開発者を含む全社員を対象にしている点が位置づけの違いになる。詳細は同社ブログ（blog.cloudflare.com/cloudflare-os/）にあり、本ページ作成時点ではポストの記述のみを反映している。
+
 ## 観察ログ（未検証）
 
 - 2026-06-15（yusukebe / Cloudflare社員 Zenn記事）: V8 IsolateがコンテナよりAIエージェントに向いているというCloudflareの立場
@@ -65,3 +69,4 @@ WorkersとDurable Objectsを隠蔽してAIエージェント開発をシンプ�
 - [[concepts/intermediate-notation-pattern]] — Code Modeは型定義ファイル（.d.ts）を中間記法として使う設計の実例
 - [[concepts/multi-agent-patterns]] — Agents SDKのチャンネル設計・状態管理はマルチエージェントパターンと交差する
 - [[concepts/ai-native-cloud-selection]] — 「AIエージェントがCLI/APIで操作しやすいか」でクラウドを選ぶ基準。その筆頭としてCloudflareを挙げる論
+- [[concepts/idp-shared-cli-mcp]] — Cloudflare Accessを使い人間とAIを同一身元で社内システムへ通す設計。Cloudflare OSの「社内システムへ安全にアクセス」に対応する既存の実装パターン

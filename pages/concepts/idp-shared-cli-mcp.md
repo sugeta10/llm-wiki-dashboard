@@ -42,3 +42,4 @@ flowchart LR
 - [[concepts/claude-code-security]] — Claude Codeのセキュリティ設定と組織展開
 - [[tools/openai-mcp-tunnel]] — ファイアウォール開放なしでプライベートMCPサーバーを接続するアウトバウンドトンネル（境界設計の別解）
 - [[tools/claude-mcp]] — Model Context Protocol（CLIと並ぶAIの入口）
+- [[companies/cloudflare]] — Cloudflare Accessの提供元。2026-08-05発表のCloudflare OSは同じ「社内システムへの安全なアクセス」を製品として束ねる動き

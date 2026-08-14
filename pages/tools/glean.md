@@ -39,3 +39,4 @@ Gleanはエンタープライズ知識グラフを個人ごとのPersonal Graph�
 
 - [[concepts/company-brain]] — Gleanが実装する「company brain」という言葉の理論的背景
 - [[concepts/llm-wiki-vs-company-brain]] — 個人向けKarpathy式との対比で、Gleanのような企業向け製品がどこで必要になるかを判定する枠組み
+- [[concepts/knowledge-graph-llm]] — GleanがKnowledge Graphで解こうとしている課題群（回答のゆらぎ・説明不能・社内知識の欠如）の概念側の整理

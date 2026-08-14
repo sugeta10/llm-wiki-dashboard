@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>knowledge-graph-llm - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>knowledge-graph-llm</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="knowledge-graph-llm.md">Markdownで表示</a></div>
+  <div class="meta">concepts/knowledge-graph-llm · concepts · <span title="2026-08-14">今日</span></div>
+  <article><h1>ナレッジグラフでLLMを補強する</h1>
+<p>@takanorisuzuki が Zenn の Book 形式で『LLMをもっと賢くする：ナレッジグラフ実践入門』を公開した。同氏は、このBookが答えようとする課題として次の5つを挙げる。</p>
+<ul>
+<li>AIが毎回違う回答をしてくる</li>
+<li>RAGの回答のゆらぎ</li>
+<li>説明不能</li>
+<li>社内知識の欠如</li>
+<li>長期記憶がない</li>
+</ul>
+<p>この5点は、埋め込みベクトルの近さで文書の断片を引く標準的なRAG構成が共通して抱える弱点として並べられていると考えられる。断片は実体（エンティティ）とその関係を保持しないため、引かれる断片が入れ替われば答えも入れ替わり、どの事実からどう辿ってその結論に至ったかを提示できない。ナレッジグラフは実体をノード・関係をエッジとして明示的に持つので、この「経路を示せるか」が対比の軸になる。ただし各課題に対する具体的な解法はBook本体（zenn.dev/knowledge_graph/books/knowledge-graph-llm-guide）にあり、本ページ作成時点では未読。</p>
+<h2>用語の注意: 「グラフ」の二義</h2>
+<p>このwikiの <a href="../concepts/graph-engineering.html">graph-engineering</a> にも「グラフ」が出てくるが、そちらのノード・エッジは複数エージェントの実行順序とデータの流れを指す。ナレッジグラフのノード・エッジは知識の実体と関係を指す。同じ語で別の対象を指しているため、両ページを混ぜて読まない。</p>
+<h2>問い</h2>
+<ul>
+<li>このwiki自体（Markdown＋<code></code>リンク）は既に粗いナレッジグラフだが、同一実体の名寄せ（エンティティ解決）の仕組みが無い。どこまでKGとして機能し、どこから足りないか</li>
+<li>5課題のうち「回答のゆらぎ」「説明不能」は、KGを足さずとも決定論的な検索とのハイブリッド（<a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a> の全文検索＋IDF＋鮮度減衰）で緩和できる部分がある。KG導入の損益分岐点はどこか</li>
+<li>Book本体を読み、KG構築の実務コスト（スキーマ設計・実体抽出・更新運用）の見積もりを取る</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a> — 同じ「RAGでは社内知識に届かない」問題への別解。KGでなく単一埋め込みテーブル＋ハイブリッド検索で解く</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — 「長期記憶がない」への別アプローチ。知識の構造でなく所有と共有の単位で解く</li>
+<li><a href="../tools/glean.html">glean</a> — 権限継承付きKnowledge Graphを製品として実装したエンタープライズ事例</li>
+<li><a href="../concepts/company-brain.html">company-brain</a> — 企業の知識を単一state層に持つ設計思想。ontologyという語でKGに近い層を扱う</li>
+<li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a> — 知識を「サービス」でなく「フォーマット」で相互運用可能にする対案（Markdown＋YAML）</li>
+<li><a href="../tools/understand-anything.html">understand-anything</a> — コードベースという限定ドメインでナレッジグラフを自動構築するツール</li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a> — 同じ「グラフ」の語を使うが対象が違う（エージェント実行順序のグラフ）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a></li>
+<li><a href="../tools/glean.html">glean</a></li>
+<li><a href="../concepts/company-brain.html">company-brain</a></li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2034455630602555749" rel="noopener" target="_blank">https://x.com/i/web/status/2034455630602555749</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># ナレッジグラフでLLMを補強する
+
+@takanorisuzuki が Zenn の Book 形式で『LLMをもっと賢くする：ナレッジグラフ実践入門』を公開した。同氏は、このBookが答えようとする課題として次の5つを挙げる。
+
+- AIが毎回違う回答をしてくる
+- RAGの回答のゆらぎ
+- 説明不能
+- 社内知識の欠如
+- 長期記憶がない
+
+この5点は、埋め込みベクトルの近さで文書の断片を引く標準的なRAG構成が共通して抱える弱点として並べられていると考えられる。断片は実体（エンティティ）とその関係を保持しないため、引かれる断片が入れ替われば答えも入れ替わり、どの事実からどう辿ってその結論に至ったかを提示できない。ナレッジグラフは実体をノード・関係をエッジとして明示的に持つので、この「経路を示せるか」が対比の軸になる。ただし各課題に対する具体的な解法はBook本体（zenn.dev/knowledge_graph/books/knowledge-graph-llm-guide）にあり、本ページ作成時点では未読。
+
+## 用語の注意: 「グラフ」の二義
+
+このwikiの [[concepts/graph-engineering]] にも「グラフ」が出てくるが、そちらのノード・エッジは複数エージェントの実行順序とデータの流れを指す。ナレッジグラフのノード・エッジは知識の実体と関係を指す。同じ語で別の対象を指しているため、両ページを混ぜて読まない。
+
+## 問い
+
+- このwiki自体（Markdown＋`[[ ]]`リンク）は既に粗いナレッジグラフだが、同一実体の名寄せ（エンティティ解決）の仕組みが無い。どこまでKGとして機能し、どこから足りないか
+- 5課題のうち「回答のゆらぎ」「説明不能」は、KGを足さずとも決定論的な検索とのハイブリッド（[[concepts/cerebras-knowledge-base]] の全文検索＋IDF＋鮮度減衰）で緩和できる部分がある。KG導入の損益分岐点はどこか
+- Book本体を読み、KG構築の実務コスト（スキーマ設計・実体抽出・更新運用）の見積もりを取る
+
+## 関連
+
+- [[concepts/cerebras-knowledge-base]] — 同じ「RAGでは社内知識に届かない」問題への別解。KGでなく単一埋め込みテーブル＋ハイブリッド検索で解く
+- [[concepts/agent-memory-layer]] — 「長期記憶がない」への別アプローチ。知識の構造でなく所有と共有の単位で解く
+- [[tools/glean]] — 権限継承付きKnowledge Graphを製品として実装したエンタープライズ事例
+- [[concepts/company-brain]] — 企業の知識を単一state層に持つ設計思想。ontologyという語でKGに近い層を扱う
+- [[concepts/open-knowledge-format]] — 知識を「サービス」でなく「フォーマット」で相互運用可能にする対案（Markdown＋YAML）
+- [[tools/understand-anything]] — コードベースという限定ドメインでナレッジグラフを自動構築するツール
+- [[concepts/graph-engineering]] — 同じ「グラフ」の語を使うが対象が違う（エージェント実行順序のグラフ）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
