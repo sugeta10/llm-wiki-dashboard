@@ -29,3 +29,4 @@ CLAUDE.md / AGENTS.md がエージェントの**行動ルール**を与えるの
 - [[tools/emil-kowalski-skills]] — 「エージェントにはtasteがない」問題をスキル（誤りリスト＋直し方）で解く同系アプローチ。/apple-designはWWDCデザイン原則の.md化
 - [[design/ui-pattern-dictionary]] — 同じ「デザインパターンを体系化して参照可能にする」発想を、AI向けコンテキストファイルでなく人間向けの名称辞典として実装したもの
 - [[design/ochiai-ai-design-method]] — 同じ「AIデザインが凡庸になる」問題への別解。既存仕様の参照でなく形容詞をオブジェクトへ分解する指示設計側からのアプローチ（落合陽一の方法論を@kimuai08が再構成）
+- [[tools/diagram-design]] — 同じ問題の「図」版。デザイン仕様ファイルでなく対象サイトを読んで色・フォントを寄せる

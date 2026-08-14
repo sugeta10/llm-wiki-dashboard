@@ -36,3 +36,4 @@ Cloudflareがこの軸で強いのは、Wrangler CLIひとつでWorkers・D1・R
 - [[concepts/intermediate-notation-pattern]] — AIにGUIでなく操作可能な記法/インターフェースを渡す設計思想。クラウド選定への応用元
 - [[concepts/agentic-coding]] — AIエージェントが自律的にコードを書く開発スタイル。CLI操作性が効く前提
 - [[concepts/idp-shared-cli-mcp]] — Cloudflare Accessで人間とAIを同一身元にする設計（Cloudflare文脈の隣接事例）
+- [[tools/cloudflare-os]] — Cloudflare公式の社内AIプラットフォーム。個人が知識ベースを載せた場合のコスト実測も含む

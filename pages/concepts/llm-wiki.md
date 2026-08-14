@@ -145,4 +145,5 @@ tsurubee が運用で感じた根本的な限界。LLM が概念ページを綺�
 - [[tools/notebooklm]] — 要約特化の代替。tsurubeeは「サマリーだけなら NotebookLM で足りる、差は概念ページの繋げる力」とする
 - [[concepts/second-brain-operations]] — 本思想を「維持ループのモデルティア振り分け・skeptic付きリサーチ・pay-per-read」まで含むフル運用設計に落とした実装ガイド（@EXM7777）
 - [[tools/hermes-agent-personal-vault]] — 「メモリは索引、知識はファイルに」という本思想をHermes Agent向け6プロンプトに具体化した個人生活ナレッジベース構築ガイド
+- [[tools/cloudflare-os]] — GitHub正本のMarkdown知識ベースをクラウド側エージェントにも参照させた実践例と、その月額コストの実測（Markdown約400件で実質0円）
 - [[concepts/llm-wiki-vs-company-brain]] — 個人・小チーム向けのKarpathy式と企業向けCompany Brainの分岐点を権限・鮮度等の5点で整理し、4つの質問による判定基準を提示

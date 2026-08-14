@@ -59,15 +59,31 @@ Cloudflareがこの製品を作った理由として挙げるのは、フィー�
 
 コアの `cloudflare/cloudflare-os` と、Cloudflare社内の運用に基づく実例デプロイ `cloudflare/cloudflare-os-starter` の2リポジトリが公開されている。デプロイ側リポジトリはコアをパッチせずに取り込み、設定・カスタムUI・社内連携・分析・デプロイパイプラインの置き場になる。自社のCloudflareアカウントに配置し、自社のAccessポリシー・AI Gateway設定・データ・連携先で動かせる。同社は「我々の社内デプロイはCloudflareのシステム・用語・ポリシー・仕事のやり方を反映している。あなたのものはあなたの組織を反映すべきだ」と書く。導入支援としてPresidioとHappy Cogを戦略パートナーに挙げ、共有スキルと組織知のキュレーション・カスタムUI・Gatekeeper／MCP Server Portals経由の社内システム接続・セキュリティとコスト制御の設定を担うとしている。今後の予定として、Cloudflareダッシュボードでのフルマネージド提供・開発ワークフロー向けコンテナ・Slack等チャットツールへのワークスペース展開を挙げる。
 
+## 個人が知識ベースを載せた場合のコスト（実践者の報告）
+
+@shotovim は、ローカルで育てていたAI用の長期記憶をCloudflare OSに載せ、その構成と月額コストを公開している。構成は**ナレッジ原本をGitHubリポジトリに置き、ローカルからは [[tools/claude-code]] が、クラウドからはCloudflare OSのContext Libraryが同じ原本を参照する**という形で、`git push` だけで同期させる部分はArtifactsの承認待ちだという。アクセス制御にはCloudflare Accessを使う（[[concepts/idp-shared-cli-mcp]] と同じ入口の設計）。このvaultの構成——GitHubリポジトリを正本とし、ローカルのClaude Codeが読む——とほぼ同型であり、[[concepts/llm-wiki]] をクラウド側のエージェントにも読ませたい場合の先行事例にあたる。
+
+同氏によるコストの内訳は3層に分かれる。
+
+1. **Context Library自体は実質0円** — Markdown約400件（計1.6MB）を管理してみたところ、保存先のKVとDurable Objectsの無料枠に余裕で収まる規模で、課金要素はほぼないという
+2. **土台のWorkersも手動運用なら0円** — 置き場（KV・Durable Objects・R2）はすべて無料枠内。Workers Paid（$5/月）が要るのは、GitHub自動同期に使う新サービス**Artifacts（クローズドベータ）**を有効化する場合だけだとする
+3. **AI推論だけがモデル次第** — Workers AIは1日10,000 Neuronsまで無料。Neuronsは同社独自の従量単位で、8Bクラスのモデルなら1,000トークンの応答が約75 Neurons、つまり無料枠だけで1日130回分にあたるという。超過分は $0.011/1,000 Neurons（応答1回あたり0.1円程度）。ClaudeなどをAPIキーで繋ぐ場合は通常のAPI従量がそのまま乗る
+
+同氏の結論は「個人なら手動同期で固定0円、自動同期を足しても月750円ほど。推論は使うモデル次第」であり、**ナレッジを載せること自体にはお金がかからない**という点を強調する。本文で述べたGatekeeperや観測ログはこの試算に現れていないため、この数字は「個人が知識ベース置き場として使う」範囲のものだと考えられる。
+
 ## 観察ログ（未検証）
 
 - 2026-08-08: Cloudflareは第1版を2026年5月に全社配布し「あらゆる職能の数千人が毎日使っている」と述べる（自社公表・外部検証なし）
+- 2026-08-09: @shotovim の実測——Markdown約400件/1.6MBはKV・Durable Objectsの無料枠内、個人利用は手動同期で月0円・自動同期込みで月750円ほど（単一ソース、Cloudflareの料金表と突き合わせて未確認）
+- 2026-08-09: Workers AI は1日10,000 Neurons無料、8Bクラスで1,000トークン応答が約75 Neurons＝1日130回分、超過は $0.011/1,000 Neurons（@shotovim の記述・一次未確認）
 
 ## 問い
 
 - Gatekeeperはサービスごとに書くWorkerであり、MCPサーバーを立てるより手間が重い。この追加コストを正当化する境界はどこか（観測ログによる下流制御が要る機微データの有無か）
 - 「エージェントが観測したリソースを記録し共有時に再検証する」モデルは、このvaultの公開サイト生成にも適用しうるか。`sources:` は観測ログの原始形と言えるか
 - 「各ファイルがアプリ」というモデルは個人の知識ベースでは過剰か。ドキュメントとアプリの境界をどこに置くと運用が破綻しないか
+- このvaultのwiki（Markdown・GitHub正本）をContext Libraryに載せると、ローカルのClaude Codeとクラウド側エージェントで同じ知識を共有できる。@shotovim の構成との差分は何か（当vaultは `sources/` の生ソースも同居しており、1.6MBでは収まらない可能性がある）
+- 自動同期に必要なArtifactsはクローズドベータであり、開放時期も本番の料金体系も未知である。月750円という試算はいつ崩れるか
 
 ## 関連
 
@@ -77,3 +93,5 @@ Cloudflareがこの製品を作った理由として挙げるのは、フィー�
 - [[concepts/company-brain]] — 会社の知識をprovenance・permissions付きの単一state層に統合する設計思想。観測ログはpermissions層を実行時に追跡する具体策
 - [[concepts/agent-adoption-walls]] — 企業のエージェント導入で詰まる7つの壁。ガバナンス・可視化・トークン資本の透明性にプラットフォーム側から答える位置づけ
 - [[concepts/idp-shared-cli-mcp]] — Cloudflare Accessで人間とAIを同一身元に載せる設計。Cloudflare OSの入口の認証と同じ系譜
+- [[concepts/llm-wiki]] — GitHubリポジトリのMarkdownを正本にする個人知識ベース。@shotovim はこれをContext Libraryに載せてローカル/クラウド両方から参照させている
+- [[concepts/ai-native-cloud-selection]] — 「AIエージェントがCLI/APIで操作しきれるか」でクラウドを選ぶ論。無料枠の広さもこの選定に効く要素

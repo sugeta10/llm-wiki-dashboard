@@ -38,3 +38,4 @@ flowchart LR
 - [[concepts/eval-loop]] — 「良いを判定可能な形にする」を機構として実装したもの。本ページの選別工程にあたる
 - [[concepts/recursive-self-improvement]] — 生成が加速し人間レビューがボトルネック化するというAmdahl構造をAnthropic内部データで論じる
 - [[business/end-of-task-assignment]] — 「パイプラインを組む人とレビューする人だけが残る」という同型の結論をSpotify事例で論じる
+- [[concepts/output-outcome-impact]] — 生成量（アウトプット）でなくアウトカムで測るプロダクト論。生成が安くなるほど判定側が効くという本ページの構図の指標版

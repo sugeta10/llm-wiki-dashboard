@@ -49,3 +49,4 @@
 - [[tools/claude-code]] — 著者 Boris Cherny が作者。本ページのアーキタイプは Claude Code チームの観察から生まれた
 - [[companies/anthropic]] — アーキタイプが観察された組織。職能とアーキタイプが一致しないという指摘の母体
 - [[concepts/forward-deployed-engineer]] — ドメイン理解とワークフロー構築を中心に置く、職能横断で融け合う役割の別の具体像
+- [[concepts/output-outcome-impact]] — 人でなくプロダクトの価値を「作った量」で測らない側の枠組み（Jeff Patton）。予算と指標を出荷時点に紐づける罠

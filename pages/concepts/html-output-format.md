@@ -25,3 +25,4 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 - [[concepts/llm-doc-management]] — 同じHTML活用でも逆方向：LLMへの入力（コードベース文書化）としてHTML+JSONを使うパターン
 - [[design/claude-design-workflow]] — HTML視覚化を制作物のデザイン叩き台に使う実践
 - [[tools/hyperframes]] — HTML+data-*属性を決定論的な動画生成の入力として使う応用例
+- [[tools/diagram-design]] — HTML+SVGだけで27種類の図を出しブランドの色・フォントまで寄せるリポジトリ。図版をHTMLで作る応用例

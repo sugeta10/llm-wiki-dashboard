@@ -99,3 +99,4 @@ HeyGenの本業はAIアバター動画だが「アバターは動画の半分」
 - [[tools/openmontage]] — エージェント型動画制作システム。Hyperframesをモーショングラフィックス向けレンダラとして採用
 - [[companies/anthropic]]
 - [[concepts/html-output-format]] — Anthropic公式のHTML出力実例集。HyperframesはHTMLを動画レンダリングの入力に使う応用形
+- [[tools/diagram-design]] — HTML+SVGを図版の最終出力に使うリポジトリ。HTMLを成果物フォーマットに据える同系（出力は動画でなく静止図）

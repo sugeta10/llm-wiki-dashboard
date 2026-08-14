@@ -29,3 +29,4 @@ AI駆動開発が浸透すると、コーディングが速くなるほど上流
 - [[concepts/ai-quality-amplification]] — AIは品質増幅器：速さでなく品質のスケールが本質という主張と整合
 - [[concepts/ai-persona-interview]] — 「何を作るか」の決断を支える入力：心理次元付きAI擬似インタビューと複数ペルソナの収束シグナル
 - [[concepts/structuring-ability]] — 整理・文書化をAIに渡したあと人間に残る「構造化力」：全体と部分の入れ子を組み立て他者と擦り合わせる思考力
+- [[concepts/output-outcome-impact]] — 「何を作らないか」を選ぶ根拠になる価値の三段。少ないアウトプットで多くのアウトカムを狙うJeff Pattonの枠組み

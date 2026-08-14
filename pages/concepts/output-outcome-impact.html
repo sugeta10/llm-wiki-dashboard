@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>output-outcome-impact - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>output-outcome-impact</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="output-outcome-impact.md">Markdownで表示</a></div>
+  <div class="meta">concepts/output-outcome-impact · concepts · <span title="2026-08-15">今日</span></div>
+  <article><h1>アウトプット・アウトカム・インパクト</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 「少ないアウトプットで、多くのアウトカムを、そしてインパクトを」——Jeff Patton由来のプロダクト価値の三段。『ユーザーストーリーマッピング』日本語版はアウトプットとアウトカムを訳し分けられず、監訳者がそれを後悔として公表した。</p>
+</blockquote>
+<p>監訳者の川口恭伸（@kawaguti）は、この考え方を初めて聴いたのは著者Jeff Pattonからだったと述べる。川口はオライリー・ジャパン刊『ユーザーストーリーマッピング』の8刷決定にあたり、翻訳当時は「アウトカム」という言葉がまだ普及しておらず<strong>すべて「成果」と訳した</strong>ことを唯一の後悔として挙げ、「日和ってしまった」と書いている。訳語の話に見えて、失われるのは主張そのものだと考えられる——アウトプット（作ったもの）とアウトカム（それによって起きたこと）を「成果」の一語に畳むと、「少ないアウトプットで多くのアウトカムを」という命題は「少ない成果で多くの成果を」となり、意味をなさなくなる。</p>
+<h2>RSGT2025 基調講演3部作（Jeff Patton・字幕付き）</h2>
+<p>川口は書籍と合わせて聴くものとして、Jeff Patton本人のRSGT2025基調講演3部作を挙げる。以下は川口による各回の紹介。</p>
+<ul>
+<li><strong>Part 1「あなたのプロダクトの価値はなんですか?」</strong> — アウトプット・アウトカム・インパクトを<strong>一枚の図で整理</strong>する。手描き資料をリアルタイムで描いていくPattonならではのスタイルも見どころだという（<a href="https://youtu.be/B34jOZ3r130">動画</a>）</li>
+<li><strong>Part 2「プロダクト・トポロジー」</strong> — 「プロダクトとは何か?」の答えは「何でも」。<strong>玉ねぎモデル</strong>でプロダクトを分解してチームを配置し、<strong>プロジェクトではなくプロダクトに資金を提供する</strong>という話（<a href="https://youtu.be/FVpYwUTw0hA">動画</a>）</li>
+<li><strong>Part 3「価値の測定とプロダクト指標」</strong> — ARRやNPSは<strong>遅行指標</strong>であり、まず測るべきはユーザーが使っているかどうか。ユーザージャーニーの山登りと海賊指標AARRR、そして「重要な一つの指標」へ（<a href="https://youtu.be/sD6inuN0GUA">動画</a>）</li>
+</ul>
+<p>Part 2の「プロジェクトでなくプロダクトに資金を提供する」とPart 3の「ARR/NPSは遅行指標」は、どちらも同じ一点を別角度から突いていると読める。予算も指標も、出荷という<strong>アウトプットの完了時点</strong>に紐づけると、アウトカムが現れるより前に評価が閉じてしまう。</p>
+<h2>問い</h2>
+<ul>
+<li>AIで生成量が跳ね上がる状況では、アウトプット指標の無効化がさらに進むはずである。<a href="../concepts/development-as-agriculture.html">development-as-agriculture</a> の「生成は課金で増やせるが確認速度は増やせない」と重ねると、ボトルネックは「アウトカムを判定する速度」になるのではないか</li>
+<li>このvaultでの相似形は何か。ingestしたページ数（アウトプット）でなく、Query/Weeklyで実際に判断が変わった回数（アウトカム）を数えられるか</li>
+<li>原著の "outcome" を日本語wikiで扱うとき、自分はどう訳すか。カタカナのまま置くか、「行動変化」等の訳語を当てるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/product-role-archetypes.html">product-role-archetypes</a> — Boris Chernyの5アーキタイプ。職能でなく価値創出の局面で人を見るという、同じ「作った量で測らない」系譜のプロダクト論</li>
+<li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a> — 整理・文書化はAIが担い人間は「何を作るか/捨てるか」を決断する工程へ。「少ないアウトプット」を選ぶ側の議論</li>
+<li><a href="../concepts/development-as-agriculture.html">development-as-agriculture</a> — 生成量が安くなり選別が価値になるという深津貴之の整理。アウトプット過剰時代のアウトカム判定コスト</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 出荷前に基準で採点して止めるループ。アウトカムに先立つ品質ゲートの機構化</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a></li>
+<li><a href="../concepts/development-as-agriculture.html">development-as-agriculture</a></li>
+<li><a href="../concepts/product-role-archetypes.html">product-role-archetypes</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2085850290021175345" rel="noopener" target="_blank">https://x.com/i/web/status/2085850290021175345</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># アウトプット・アウトカム・インパクト
+
+&gt; **TL;DR**: 「少ないアウトプットで、多くのアウトカムを、そしてインパクトを」——Jeff Patton由来のプロダクト価値の三段。『ユーザーストーリーマッピング』日本語版はアウトプットとアウトカムを訳し分けられず、監訳者がそれを後悔として公表した。
+
+監訳者の川口恭伸（@kawaguti）は、この考え方を初めて聴いたのは著者Jeff Pattonからだったと述べる。川口はオライリー・ジャパン刊『ユーザーストーリーマッピング』の8刷決定にあたり、翻訳当時は「アウトカム」という言葉がまだ普及しておらず**すべて「成果」と訳した**ことを唯一の後悔として挙げ、「日和ってしまった」と書いている。訳語の話に見えて、失われるのは主張そのものだと考えられる——アウトプット（作ったもの）とアウトカム（それによって起きたこと）を「成果」の一語に畳むと、「少ないアウトプットで多くのアウトカムを」という命題は「少ない成果で多くの成果を」となり、意味をなさなくなる。
+
+## RSGT2025 基調講演3部作（Jeff Patton・字幕付き）
+
+川口は書籍と合わせて聴くものとして、Jeff Patton本人のRSGT2025基調講演3部作を挙げる。以下は川口による各回の紹介。
+
+- **Part 1「あなたのプロダクトの価値はなんですか?」** — アウトプット・アウトカム・インパクトを**一枚の図で整理**する。手描き資料をリアルタイムで描いていくPattonならではのスタイルも見どころだという（[動画](https://youtu.be/B34jOZ3r130)）
+- **Part 2「プロダクト・トポロジー」** — 「プロダクトとは何か?」の答えは「何でも」。**玉ねぎモデル**でプロダクトを分解してチームを配置し、**プロジェクトではなくプロダクトに資金を提供する**という話（[動画](https://youtu.be/FVpYwUTw0hA)）
+- **Part 3「価値の測定とプロダクト指標」** — ARRやNPSは**遅行指標**であり、まず測るべきはユーザーが使っているかどうか。ユーザージャーニーの山登りと海賊指標AARRR、そして「重要な一つの指標」へ（[動画](https://youtu.be/sD6inuN0GUA)）
+
+Part 2の「プロジェクトでなくプロダクトに資金を提供する」とPart 3の「ARR/NPSは遅行指標」は、どちらも同じ一点を別角度から突いていると読める。予算も指標も、出荷という**アウトプットの完了時点**に紐づけると、アウトカムが現れるより前に評価が閉じてしまう。
+
+## 問い
+
+- AIで生成量が跳ね上がる状況では、アウトプット指標の無効化がさらに進むはずである。[[concepts/development-as-agriculture]] の「生成は課金で増やせるが確認速度は増やせない」と重ねると、ボトルネックは「アウトカムを判定する速度」になるのではないか
+- このvaultでの相似形は何か。ingestしたページ数（アウトプット）でなく、Query/Weeklyで実際に判断が変わった回数（アウトカム）を数えられるか
+- 原著の &quot;outcome&quot; を日本語wikiで扱うとき、自分はどう訳すか。カタカナのまま置くか、「行動変化」等の訳語を当てるか
+
+## 関連
+
+- [[concepts/product-role-archetypes]] — Boris Chernyの5アーキタイプ。職能でなく価値創出の局面で人を見るという、同じ「作った量で測らない」系譜のプロダクト論
+- [[concepts/ai-requirements-definition]] — 整理・文書化はAIが担い人間は「何を作るか/捨てるか」を決断する工程へ。「少ないアウトプット」を選ぶ側の議論
+- [[concepts/development-as-agriculture]] — 生成量が安くなり選別が価値になるという深津貴之の整理。アウトプット過剰時代のアウトカム判定コスト
+- [[concepts/eval-loop]] — 出荷前に基準で採点して止めるループ。アウトカムに先立つ品質ゲートの機構化
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
