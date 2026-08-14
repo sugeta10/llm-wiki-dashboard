@@ -79,3 +79,4 @@ eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
 - [[concepts/parallel-e2e-testing]] — E2Eテストの「Iron Law」明文化＋AIスキルでの機械的強制。テスト領域での同型の品質ゲート実装
 - [[tools/no-ai-slop]] — 編集後に`eval.md`で自己採点する、文章生成領域での同型の自己検査ゲート
 - [[concepts/agent-skill-eight-layer-design]] — Checker層（生成役と評価役の分離、証拠付きJSON評価）が本ページのeval loopと同型構造
+- [[concepts/development-as-agriculture]] — 「良いを判定可能な形にするeval設計」を、大量生成した候補から選抜する農業の比喩で位置づける論

@@ -61,3 +61,4 @@ Company Brainは中央集権的なリポジトリとして構築すべきでは�
 - [[business/dinii-ask-anything]] — 社内問い合わせ代行という形でfactual memoryの一部を先取り実装した日本企業の事例
 - [[concepts/llm-wiki-vs-company-brain]] — Karpathy式LLM Wikiとの間に権限・鮮度・意味の強制・複数の書き手・実行と監査という5つの境界線を引く整理
 - [[tools/glean]] — 権限継承付きKnowledge Graphとpersonal graphの融合でCompany Brainを製品として実装する代表例
+- [[tools/cloudflare-os]] — permissions層を「エージェントが観測したリソースの記録」として実行時に追跡し、共有時に再検証する実装

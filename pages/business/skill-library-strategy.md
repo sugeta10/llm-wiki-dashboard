@@ -53,3 +53,4 @@
 - [[concepts/agent-skill-management-system]] — 私有資産化したスキルが増えた後の管理問題（知識的負債・5機能）
 - [[business/frontier-ecosystem]] — 「モデルでなく私有の学習ループが資産」を企業戦略スケールで論じるNadellaの論
 - [[papers/2026-zhou-colleague-skill]] — 専門家の判断を作業痕跡から自動蒸留する研究。本論の「私有スキルライブラリ」を生成する技術的手段にあたる
+- [[tools/cloudflare-os]] — 共有スキル／文脈ライブラリを全社員のエージェント作業空間に載せた製品実装（Cloudflare社内運用のOSS化）

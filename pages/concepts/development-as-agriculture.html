@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>development-as-agriculture - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>development-as-agriculture</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="development-as-agriculture.md">Markdownで表示</a></div>
+  <div class="meta">concepts/development-as-agriculture · concepts · <span title="2026-08-14">今日</span></div>
+  <article><h1>開発の農業化（Development as an Agriculture）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 生成コストが下がるほど開発は「一本を丁寧に編集する工芸」から「大量に植えて良いものを選抜する大規模農業」へ寄る——深津貴之（note CXO）が土壌・種・栽培環境の対応表で示した見立て。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;土壌&lt;br/&gt;コードベース・文脈・ツール・パイプライン&quot;] --&gt; C[&quot;栽培環境&lt;br/&gt;テスト・eval・ガードレール・観測基盤&quot;]
+  B[&quot;種&lt;br/&gt;顧客課題・仕様・アイデア&quot;] --&gt; C
+  C --&gt; D[&quot;大量に植える&lt;br/&gt;候補を並行生成（課金でスケール）&quot;]
+  D --&gt; E[&quot;選別・レビュー&lt;br/&gt;人間の注意力がボトルネック&quot;]
+  E --&gt; F[&quot;収穫・流通&lt;br/&gt;市場へ届け反応を得る&quot;]</pre>
+<p>工芸から農業へという比喩が効くのは、AI駆動開発でスケールする工程としない工程が分かれるからである。深津貴之は開発の構成要素を農場の語彙に割り当てる——<strong>土壌</strong>はコードベース・コンテキスト・ツール・パイプライン、<strong>種</strong>は顧客課題・仕様・アイデア、<strong>栽培環境</strong>はテスト・eval・ガードレール・観測基盤。つくるのはAIであり、人間の仕事は「何を育てるかを決め、育つ環境を設計し、結果を選別すること」になると同氏は述べる。</p>
+<p>生成コストが下がるほど、一つの案を丁寧に編集するより複数の候補を並行して育てて良いものを選ぶほうが合理的になる。この帰結として深津は道具立ての変化を2つ挙げる。開発ツールのUIは「一つの出力を編集するUI」から「複数の候補を比較し、選抜するUI」へ移り、バージョン管理にはコードの差分だけでなく<strong>どのモデル・文脈・指示・評価を経て生まれたかという生成の系譜</strong>が加わる。生産能力も人数だけでは決まらず、課金で押し切れる部分が出てくる。</p>
+<p>ただし出荷量を決めるのは評価・統合・レビュー・ユーザーからの反応を処理できるパートであり、そこにはレバレッジが効きにくい（消費者はスケールしないため）と同氏は指摘する。結果、<strong>生成は増やせても、正しさや価値を確認する速度は無限には増やせない</strong>というパラドックスが残る。深津はここにビジネスチャンスがあると見る。この非対称は <a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> で Anthropic が報告した「人間レビューが新ボトルネック」（Amdahlの法則）と同じ形をしており、<a href="../concepts/eval-loop.html">eval-loop</a> のような機械側の品質ゲートは、その確認速度を上げる打ち手として読める。</p>
+<p>希少になるのは選ぶ力だと同氏は言う。生成能力が誰でも買えるほどコモディティ化した生成物の値段はゼロに近づき、価値が上がるのは——何をつくるべきかを定義する力、「良い」を判定可能な形にする eval 設計、大量の候補から価値を見抜く目利き、固有のデータ・文脈・顧客理解、市場へ届けて反応を得る信頼と流通——の側になる。組織にも対応する3つの役割が残ると整理する：<strong>土壌をつくる人</strong>（コンテキスト・基盤・ツール・ガードレールを整える）、<strong>選別基準をつくる人</strong>（品質・価値・安全性を評価できる仕組みにする）、<strong>最終判断をする人</strong>（数字だけでは決められない例外と出荷品質を判断する）。</p>
+<p>この見立てでは 10x エンジニアの定義も変わる。AIツールを使えること自体は参加費にすぎず、差がつくのは「同じ計算資源と人間の時間から10倍の価値を収穫できるか」になる。深津が挙げるイケてるエンジニア（あるいはPM）の条件は、<strong>人間の限られた注意力でレビューするに値する、最大の価値を収穫できる生産系をつくること</strong>である。同氏はテック業界が大規模農業の成功事例や設計を真面目に学ぶべきだと締めくくる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-08-05: 「コモディティ化した生成物の値段はゼロに近づき、需要のある非生成物の価値は無限に値上がりする（需要のない非生成物はゼロ）」という深津の予測</li>
+<li>2026-08-05: 「純粋に実装量をこなす仕事は減り、環境設計・評価・統合・運用へ仕事が移る」という予測</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「大量に植えて選抜する」を自分のwiki運用に当てはめると、選抜工程（ingest品質の判定）が明らかにボトルネックになる。選別基準を機械可読にする最小の一歩はどこか</li>
+<li>深津が言う「生成の系譜」をバージョン管理に載せる実装は既に存在するか（どのモデル・文脈・指示・評価で生まれたかの記録）。このvaultの <code>log.jsonl</code>・<code>tier_log.jsonl</code> はその原始形か</li>
+<li>「確認速度は無限には増やせない」がビジネスチャンスだとして、確認を売る商品は何になるのか（eval設計の受託か、選別済みの候補集合か）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../people/fladdict.html">fladdict</a> — 著者。AI時代の産業構造・キャリア分析を継続的に発信</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 「良いを判定可能な形にする」を機構として実装したもの。本ページの選別工程にあたる</li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> — 生成が加速し人間レビューがボトルネック化するというAmdahl構造をAnthropic内部データで論じる</li>
+<li><a href="../business/end-of-task-assignment.html">end-of-task-assignment</a> — 「パイプラインを組む人とレビューする人だけが残る」という同型の結論をSpotify事例で論じる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/end-of-task-assignment.html">end-of-task-assignment</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li>
+<li><a href="../people/fladdict.html">fladdict</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/fladdict/n/nd10afb769a62" rel="noopener" target="_blank">https://note.com/fladdict/n/nd10afb769a62</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 開発の農業化（Development as an Agriculture）
+
+&gt; **TL;DR**: 生成コストが下がるほど開発は「一本を丁寧に編集する工芸」から「大量に植えて良いものを選抜する大規模農業」へ寄る——深津貴之（note CXO）が土壌・種・栽培環境の対応表で示した見立て。
+
+```mermaid
+flowchart LR
+  A[&quot;土壌&lt;br/&gt;コードベース・文脈・ツール・パイプライン&quot;] --&gt; C[&quot;栽培環境&lt;br/&gt;テスト・eval・ガードレール・観測基盤&quot;]
+  B[&quot;種&lt;br/&gt;顧客課題・仕様・アイデア&quot;] --&gt; C
+  C --&gt; D[&quot;大量に植える&lt;br/&gt;候補を並行生成（課金でスケール）&quot;]
+  D --&gt; E[&quot;選別・レビュー&lt;br/&gt;人間の注意力がボトルネック&quot;]
+  E --&gt; F[&quot;収穫・流通&lt;br/&gt;市場へ届け反応を得る&quot;]
+```
+
+工芸から農業へという比喩が効くのは、AI駆動開発でスケールする工程としない工程が分かれるからである。深津貴之は開発の構成要素を農場の語彙に割り当てる——**土壌**はコードベース・コンテキスト・ツール・パイプライン、**種**は顧客課題・仕様・アイデア、**栽培環境**はテスト・eval・ガードレール・観測基盤。つくるのはAIであり、人間の仕事は「何を育てるかを決め、育つ環境を設計し、結果を選別すること」になると同氏は述べる。
+
+生成コストが下がるほど、一つの案を丁寧に編集するより複数の候補を並行して育てて良いものを選ぶほうが合理的になる。この帰結として深津は道具立ての変化を2つ挙げる。開発ツールのUIは「一つの出力を編集するUI」から「複数の候補を比較し、選抜するUI」へ移り、バージョン管理にはコードの差分だけでなく**どのモデル・文脈・指示・評価を経て生まれたかという生成の系譜**が加わる。生産能力も人数だけでは決まらず、課金で押し切れる部分が出てくる。
+
+ただし出荷量を決めるのは評価・統合・レビュー・ユーザーからの反応を処理できるパートであり、そこにはレバレッジが効きにくい（消費者はスケールしないため）と同氏は指摘する。結果、**生成は増やせても、正しさや価値を確認する速度は無限には増やせない**というパラドックスが残る。深津はここにビジネスチャンスがあると見る。この非対称は [[concepts/recursive-self-improvement]] で Anthropic が報告した「人間レビューが新ボトルネック」（Amdahlの法則）と同じ形をしており、[[concepts/eval-loop]] のような機械側の品質ゲートは、その確認速度を上げる打ち手として読める。
+
+希少になるのは選ぶ力だと同氏は言う。生成能力が誰でも買えるほどコモディティ化した生成物の値段はゼロに近づき、価値が上がるのは——何をつくるべきかを定義する力、「良い」を判定可能な形にする eval 設計、大量の候補から価値を見抜く目利き、固有のデータ・文脈・顧客理解、市場へ届けて反応を得る信頼と流通——の側になる。組織にも対応する3つの役割が残ると整理する：**土壌をつくる人**（コンテキスト・基盤・ツール・ガードレールを整える）、**選別基準をつくる人**（品質・価値・安全性を評価できる仕組みにする）、**最終判断をする人**（数字だけでは決められない例外と出荷品質を判断する）。
+
+この見立てでは 10x エンジニアの定義も変わる。AIツールを使えること自体は参加費にすぎず、差がつくのは「同じ計算資源と人間の時間から10倍の価値を収穫できるか」になる。深津が挙げるイケてるエンジニア（あるいはPM）の条件は、**人間の限られた注意力でレビューするに値する、最大の価値を収穫できる生産系をつくること**である。同氏はテック業界が大規模農業の成功事例や設計を真面目に学ぶべきだと締めくくる。
+
+## 観察ログ（未検証）
+
+- 2026-08-05: 「コモディティ化した生成物の値段はゼロに近づき、需要のある非生成物の価値は無限に値上がりする（需要のない非生成物はゼロ）」という深津の予測
+- 2026-08-05: 「純粋に実装量をこなす仕事は減り、環境設計・評価・統合・運用へ仕事が移る」という予測
+
+## 問い
+
+- 「大量に植えて選抜する」を自分のwiki運用に当てはめると、選抜工程（ingest品質の判定）が明らかにボトルネックになる。選別基準を機械可読にする最小の一歩はどこか
+- 深津が言う「生成の系譜」をバージョン管理に載せる実装は既に存在するか（どのモデル・文脈・指示・評価で生まれたかの記録）。このvaultの `log.jsonl`・`tier_log.jsonl` はその原始形か
+- 「確認速度は無限には増やせない」がビジネスチャンスだとして、確認を売る商品は何になるのか（eval設計の受託か、選別済みの候補集合か）
+
+## 関連
+
+- [[people/fladdict]] — 著者。AI時代の産業構造・キャリア分析を継続的に発信
+- [[concepts/eval-loop]] — 「良いを判定可能な形にする」を機構として実装したもの。本ページの選別工程にあたる
+- [[concepts/recursive-self-improvement]] — 生成が加速し人間レビューがボトルネック化するというAmdahl構造をAnthropic内部データで論じる
+- [[business/end-of-task-assignment]] — 「パイプラインを組む人とレビューする人だけが残る」という同型の結論をSpotify事例で論じる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

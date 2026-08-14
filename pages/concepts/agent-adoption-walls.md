@@ -49,3 +49,4 @@ mindmap
 - [[business/backoffice-ai-implementation]] — 管理部門でのエージェント実装の実践記録（現場の壁の実例）
 - [[business/talent-to-value-ai]] — 価値の単位を「人＋エージェントのシステム」へ移す組織論
 - [[companies/linear]] — 壁を越えた側の対照例。LLMが開発ほぼ全工程に組み込まれエンジニアが依存するレベルまで定着
+- [[tools/cloudflare-os]] — ④トークン資本の透明性（AI Gatewayでの帰属・予算）と⑤ガバナンス（Gatekeeper・観測ログ）にプラットフォーム側から答える製品

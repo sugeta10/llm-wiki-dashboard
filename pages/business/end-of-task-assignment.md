@@ -31,3 +31,4 @@ flowchart LR
 - [[business/ai-vertical-integration]] — 受託・SI業界への影響という同じ問題意識をfladdict氏が別の類比（コンビニPB戦略）で論じる
 - [[concepts/recursive-self-improvement]] — 「エンジニアがコードを書かなくなった」という同型の観測をAnthropic内部でも報告
 - [[concepts/loop-engineering]] — 本記事が言及する「ループエンジニアリング」という言葉の詳細な系譜・構成要素
+- [[concepts/development-as-agriculture]] — 残る役割を「土壌をつくる人／選別基準をつくる人／最終判断をする人」の3つに整理する同型の議論（深津貴之）

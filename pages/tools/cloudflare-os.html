@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cloudflare-os - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>cloudflare-os</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cloudflare-os.md">Markdownで表示</a></div>
+  <div class="meta">tools/cloudflare-os · tools · <span title="2026-08-14">今日</span></div>
+  <article><h1>Cloudflare OS</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 全社員にエージェント作業空間を配り、「エージェントが何を観測したか」を記録して共有時に相手の権限を再検証するオープンソースの社内AIプラットフォーム（Cloudflare公式・2026-08-05にOSS公開）。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  U[&quot;社員（非開発者含む）&quot;] --&gt; WS[&quot;Agent Workspace&lt;br/&gt;会社の文脈＋共有スキル&quot;]
+  WS --&gt; APP[&quot;アプリ・ドキュメント&lt;br/&gt;Dynamic Worker + DO Facet&quot;]
+  WS --&gt;|&quot;capability: env.PROJECT&quot;| GK[&quot;Gatekeeper&lt;br/&gt;OAuth・ポリシー・記録&quot;]
+  APP --&gt; GK
+  GK --&gt; SVC[&quot;社内システム&lt;br/&gt;GitHub / DWH / SaaS&quot;]
+  GK --&gt; OBS[&quot;観測ログ&lt;br/&gt;どのリソースを読んだか&quot;]
+  OBS --&gt;|&quot;共有・引き渡し時に再検証&quot;| GK
+  WS --&gt; AIG[&quot;AI Gateway&lt;br/&gt;モデル選択・予算・帰属&quot;]</pre>
+<p>Cloudflareがこの製品を作った理由として挙げるのは、フィードバックループの有無である。コードは動くか動かないかが判定できるため、エージェントは過去2年でその判定に支えられて開発者向けの成果を出した。それ以外の職種に同じレバレッジを持ち込むのは難しく、エージェントが会社の文脈（用語・手順・システム・基準）を理解し、人が仕事に使っているシステムへ到達できる必要がある——同社はそこを埋めるものとしてCloudflare OSを位置づける。製品は<strong>エージェント作業空間</strong>・<strong>セキュリティ／ガバナンス基盤</strong>・<strong>個人が改造できるアプリの基盤</strong>の3部からなる。</p>
+<p>同社は2026年5月に第1版を社内全員へ配り、エンジニア以外を含む数千人が日々ドキュメントやスライドの作成・反復作業の自動化・データ可視化用の小さなアプリ作りに使っていると述べる。第1版は個人が私的なワークスペースでエージェントと作業する形が中心で、アプリは社内システムに繋がった生きたソフトウェアでなく静的だった。さらに決定論的でよいジョブまでスキルを再実行してトークンを消費していた。そして協働を始めた段階でより根本的な問題が露出したという——<strong><a href="../tools/claude-mcp.html">claude-mcp</a>（MCP）へのアクセス権は「エージェントがどのツールを呼べるか」は決めるが、「エージェントが実際にどのリソースを観測したか」は教えてくれない</strong>。ワークスペース・アプリ・出力を共有し始めると、本来見せてはいけない情報が共有経路で漏れうる。同社はこの問題を解くために基盤を作り直し、セキュリティを各利用者の実装責任でなくプラットフォーム側の責務にしたと説明する。</p>
+<h2>エージェント作業空間</h2>
+<p>ブラウザ上の会話から始まる点は他のAIツールと同じで、違いは各会話が組織のキュレーションした文脈とスキルに接地していることだと同社は言う。ワークスペースはエージェントセッション・永続状態・成果物とファイル・リソースアクセス・コードを書いて実行できる隔離ランタイムを束ねたもの。<strong>誰かが良いやり方を見つけたら、他の全員がそれを使える</strong>（同じ手順・用語・ベストプラクティスを毎回モデルに説明し直さなくてよい）という共有スキル／文脈ライブラリが最初から載る。この「私有スキルライブラリが企業の資産になる」構図は <a href="../business/skill-library-strategy.html">skill-library-strategy</a> の主張と一致する。</p>
+<p>できることとして4つが挙げられている。</p>
+<ol>
+<li><strong>調査と質問</strong> — データセット全体をコンテキストウィンドウへ流し込む代わりに、エージェントがコードを書いて検索・絞り込み・結合・分析する</li>
+<li><strong>ドキュメント／スライド／スプレッドシートの作成</strong> — 出力は静的ファイルに固定されず、生きたデータに接続したまま更新でき、Google Drive等の慣れた形式へ書き出せる</li>
+<li><strong>チーム向けの協働アプリ</strong> — ドキュメントで足りない場合、独自のUI・ロジック・状態を持つアプリをエージェントが構築する</li>
+<li><strong>決定論的ワークフロー</strong> — 手順が既知の仕事は予測可能な部分をコードで回し、判断が要る箇所にだけモデルを使う。オンデマンド・スケジュール・接続システムのイベントで起動できる</li>
+</ol>
+<p>既存のMCPサーバーは MCP Server Portals 経由で接続できる。</p>
+<h2>Gatekeeper と観測ログ（セキュリティ基盤）</h2>
+<p>同社は、社内システムのAPIキーを人やエージェントに配る運用を「広範で長期の権限を渡すことになり、制約・安全な共有・監査のいずれも難しい」と否定する。MCPサーバーが資格情報を保持してツールだけを露出する方式は前進だが、それだけでは<strong>どのリソースを観測したかが分からず、エージェントは複数システムの情報を組み合わせて制約の緩い場所へ持ち出せてしまう</strong>。同社は「認可はデータが次にどこへ行けるかまで考慮しなければならない」と述べる。これは <a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> が整理した「MCP認可はゲートウェイの認可にすぎず、業務上の操作可否は別レイヤー」という論点の、データフロー側からの延長にあたる。</p>
+<p>実装は3層になっている。</p>
+<ul>
+<li><strong>既定は何も持たない</strong> — 誰がCloudflare OSに入れるかは Cloudflare Access が制御し、内側ではすべてのエージェント・アプリがアクセス権ゼロから始まる。エージェントが特定リソースへのアクセスを要求し、人が許可または拒否する。許可されると生成コードには <code>env.PROJECT</code> のような型付きバインディングとして渡る。これは「特定のポリシー下で特定リソースを使う権限」を表す capability であり、資格情報自体はエージェントと生成コードから完全に隔離される。サーバコードは外向きネットワークを無効化した Dynamic Worker で、クライアントコードはブラウザのサンドボックス化フレームで動き、明示的に与えた capability 以外でインターネットへ出られない</li>
+<li><strong>Gatekeeper がリソースと操作を統治する</strong> — Gatekeeper はCloudflare OSと外部サービスの間に立つサービス固有のWorkerで、そのAPI・リソース・可能な操作を理解している。GitHubアカウント全体を渡す代わりに、単一リポジトリに限る／issueは読めるがソースコードは読めない／特定フィールドをマスクする／レート制限をかける／プルリクエストのマージ前に承認を要求する、といった粒度で絞れる。エージェント側からは小さなTypeScript APIだけが見え、OAuth・資格情報保持・ポリシー強制・読んだものの記録・外部から見える副作用の仲介はGatekeeperが担う</li>
+<li><strong>ポリシーが観測に追従する</strong> — 初回の読み取りを制御するだけでは足りない。データウェアハウスの機微なテーブルを読んでダッシュボードを作った場合、そのダッシュボードの共有がテーブルの共有になってはいけない。Cloudflare OSはエージェントが観測したリソースをすべて記録し、その観測記録をエージェントと成果物に紐づけ続ける。他の人がワークスペースを開く・エージェントと対話する・成果物を見るときに、Gatekeeperがその人の観測済みリソースへのアクセス権を検証する。同じ観測ログは外向きリクエストの可否判断にも使われ、機微データの読み取りが「他ソースへの書き込み・新しい共同編集者の招待・別エージェントへの引き渡し・外部リクエスト」を封じることができる</li>
+</ul>
+<h2>アプリは1つずつがWorker</h2>
+<p>多くの生産性スイートが固定のアプリ群（ドキュメント・表計算・プレゼン）を与えるのに対し、Cloudflare OSでは<strong>各「ファイル」がそれ自体アプリケーション</strong>になり、一人・一プロジェクト・一チームのためにエージェントが書く。プロトタイプではなくクライアントコード・サーバコード・API・永続状態を備えたフルスタックアプリで、既定は非公開、ドキュメントのように共有できる。</p>
+<p>サーバは必要に応じて <a href="https://developers.cloudflare.com/dynamic-workers/">Dynamic Worker</a> としてロードされ、Durable Object Facet として実体化する（同社はどちらもこのプロジェクトのために作った機能だと述べる）。facet によりアプリはCloudflare OSランタイムとは別の自前SQLiteデータベースを持つ。Dynamic Workers は軽量なV8 isolateなので、専用サーバやコンテナを常駐させずにアプリごとの隔離ランタイムを用意できる（V8 isolate基盤の詳細は <a href="../companies/cloudflare.html">cloudflare</a>）。</p>
+<p>ブラウザのクライアントとサーバの通信には、Cloudflareのオープンソースのobject-capability RPCである Cap'n Web を使う。クライアントからサーバメソッドを通常のJavaScript関数のように呼べるが、特筆すべきは<strong>同じメソッドをエージェントも呼べる</strong>点だと同社は言う。すなわち「自分でその仕事をする道具を作れるなら、自分が居ないときにエージェントがその道具で仕事をできる」。</p>
+<p>共有は2通りある。アプリ自体を共有すると同じ状態を使ったリアルタイム協働になり、<strong>blueprint</strong>を共有すると相手は自分のコピーを作れる。blueprint から作ったアプリは元のコードを含むが、SQLiteのデータ・会話履歴・資格情報・接続リソースは含まず、独立した状態とリソースで始まる。チームに配ったアプリは、機能要望を出して作者にアサインする代わりに、各自がAIで改造できる。</p>
+<h2>モデルとコストの制御</h2>
+<p>任意のモデルを使え、すべての推論呼び出しは Cloudflare AI Gateway を通る。どのモデルを使えるようにするか、どの仕事をどのモデルに割り当てるかを一箇所で決められる。同社は「毎朝の未読メール要約に最も高価なフロンティアモデルを使いたくはないはずだ」と述べ、高価なモデルを最も難しい仕事にだけ充てる制御を強調する。リクエストは人・チーム・ワークスペース単位で帰属され、管理者は推論支出の内訳を見て予算とレート制限を設定し、上限到達時の挙動を決められる。</p>
+<h2>OSSとしての配布</h2>
+<p>コアの <code>cloudflare/cloudflare-os</code> と、Cloudflare社内の運用に基づく実例デプロイ <code>cloudflare/cloudflare-os-starter</code> の2リポジトリが公開されている。デプロイ側リポジトリはコアをパッチせずに取り込み、設定・カスタムUI・社内連携・分析・デプロイパイプラインの置き場になる。自社のCloudflareアカウントに配置し、自社のAccessポリシー・AI Gateway設定・データ・連携先で動かせる。同社は「我々の社内デプロイはCloudflareのシステム・用語・ポリシー・仕事のやり方を反映している。あなたのものはあなたの組織を反映すべきだ」と書く。導入支援としてPresidioとHappy Cogを戦略パートナーに挙げ、共有スキルと組織知のキュレーション・カスタムUI・Gatekeeper／MCP Server Portals経由の社内システム接続・セキュリティとコスト制御の設定を担うとしている。今後の予定として、Cloudflareダッシュボードでのフルマネージド提供・開発ワークフロー向けコンテナ・Slack等チャットツールへのワークスペース展開を挙げる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-08-08: Cloudflareは第1版を2026年5月に全社配布し「あらゆる職能の数千人が毎日使っている」と述べる（自社公表・外部検証なし）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>Gatekeeperはサービスごとに書くWorkerであり、MCPサーバーを立てるより手間が重い。この追加コストを正当化する境界はどこか（観測ログによる下流制御が要る機微データの有無か）</li>
+<li>「エージェントが観測したリソースを記録し共有時に再検証する」モデルは、このvaultの公開サイト生成にも適用しうるか。<code>sources:</code> は観測ログの原始形と言えるか</li>
+<li>「各ファイルがアプリ」というモデルは個人の知識ベースでは過剰か。ドキュメントとアプリの境界をどこに置くと運用が破綻しないか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../companies/cloudflare.html">cloudflare</a> — 提供元。Workers / Durable Objects / Dynamic Workers / AI Gateway というCloudflare OSの土台</li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — MCP認可の限界と外部ポリシーによる実行制御。Gatekeeperと観測ログはその「データが次にどこへ行くか」まで拡張した実装</li>
+<li><a href="../business/skill-library-strategy.html">skill-library-strategy</a> — 共有スキル／文脈ライブラリが企業の私有資産になるという戦略論。Cloudflare OSはそれを製品として実装した形</li>
+<li><a href="../concepts/company-brain.html">company-brain</a> — 会社の知識をprovenance・permissions付きの単一state層に統合する設計思想。観測ログはpermissions層を実行時に追跡する具体策</li>
+<li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a> — 企業のエージェント導入で詰まる7つの壁。ガバナンス・可視化・トークン資本の透明性にプラットフォーム側から答える位置づけ</li>
+<li><a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a> — Cloudflare Accessで人間とAIを同一身元に載せる設計。Cloudflare OSの入口の認証と同じ系譜</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/skill-library-strategy.html">skill-library-strategy</a></li>
+<li><a href="../companies/cloudflare.html">cloudflare</a></li>
+<li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a></li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
+<li><a href="../concepts/company-brain.html">company-brain</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://blog.cloudflare.com/cloudflare-os/?utm_campaign=cf_blog&amp;utm_content=20260805&amp;utm_medium=organic_social&amp;utm_source=twitter" rel="noopener" target="_blank">https://blog.cloudflare.com/cloudflare-os/?utm_campaign=cf_blog&amp;utm_content=20260805&amp;utm_medium=organic_social&amp;utm_source=twitter</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Cloudflare OS
+
+&gt; **TL;DR**: 全社員にエージェント作業空間を配り、「エージェントが何を観測したか」を記録して共有時に相手の権限を再検証するオープンソースの社内AIプラットフォーム（Cloudflare公式・2026-08-05にOSS公開）。
+
+```mermaid
+flowchart LR
+  U[&quot;社員（非開発者含む）&quot;] --&gt; WS[&quot;Agent Workspace&lt;br/&gt;会社の文脈＋共有スキル&quot;]
+  WS --&gt; APP[&quot;アプリ・ドキュメント&lt;br/&gt;Dynamic Worker + DO Facet&quot;]
+  WS --&gt;|&quot;capability: env.PROJECT&quot;| GK[&quot;Gatekeeper&lt;br/&gt;OAuth・ポリシー・記録&quot;]
+  APP --&gt; GK
+  GK --&gt; SVC[&quot;社内システム&lt;br/&gt;GitHub / DWH / SaaS&quot;]
+  GK --&gt; OBS[&quot;観測ログ&lt;br/&gt;どのリソースを読んだか&quot;]
+  OBS --&gt;|&quot;共有・引き渡し時に再検証&quot;| GK
+  WS --&gt; AIG[&quot;AI Gateway&lt;br/&gt;モデル選択・予算・帰属&quot;]
+```
+
+Cloudflareがこの製品を作った理由として挙げるのは、フィードバックループの有無である。コードは動くか動かないかが判定できるため、エージェントは過去2年でその判定に支えられて開発者向けの成果を出した。それ以外の職種に同じレバレッジを持ち込むのは難しく、エージェントが会社の文脈（用語・手順・システム・基準）を理解し、人が仕事に使っているシステムへ到達できる必要がある——同社はそこを埋めるものとしてCloudflare OSを位置づける。製品は**エージェント作業空間**・**セキュリティ／ガバナンス基盤**・**個人が改造できるアプリの基盤**の3部からなる。
+
+同社は2026年5月に第1版を社内全員へ配り、エンジニア以外を含む数千人が日々ドキュメントやスライドの作成・反復作業の自動化・データ可視化用の小さなアプリ作りに使っていると述べる。第1版は個人が私的なワークスペースでエージェントと作業する形が中心で、アプリは社内システムに繋がった生きたソフトウェアでなく静的だった。さらに決定論的でよいジョブまでスキルを再実行してトークンを消費していた。そして協働を始めた段階でより根本的な問題が露出したという——**[[tools/claude-mcp]]（MCP）へのアクセス権は「エージェントがどのツールを呼べるか」は決めるが、「エージェントが実際にどのリソースを観測したか」は教えてくれない**。ワークスペース・アプリ・出力を共有し始めると、本来見せてはいけない情報が共有経路で漏れうる。同社はこの問題を解くために基盤を作り直し、セキュリティを各利用者の実装責任でなくプラットフォーム側の責務にしたと説明する。
+
+## エージェント作業空間
+
+ブラウザ上の会話から始まる点は他のAIツールと同じで、違いは各会話が組織のキュレーションした文脈とスキルに接地していることだと同社は言う。ワークスペースはエージェントセッション・永続状態・成果物とファイル・リソースアクセス・コードを書いて実行できる隔離ランタイムを束ねたもの。**誰かが良いやり方を見つけたら、他の全員がそれを使える**（同じ手順・用語・ベストプラクティスを毎回モデルに説明し直さなくてよい）という共有スキル／文脈ライブラリが最初から載る。この「私有スキルライブラリが企業の資産になる」構図は [[business/skill-library-strategy]] の主張と一致する。
+
+できることとして4つが挙げられている。
+
+1. **調査と質問** — データセット全体をコンテキストウィンドウへ流し込む代わりに、エージェントがコードを書いて検索・絞り込み・結合・分析する
+2. **ドキュメント／スライド／スプレッドシートの作成** — 出力は静的ファイルに固定されず、生きたデータに接続したまま更新でき、Google Drive等の慣れた形式へ書き出せる
+3. **チーム向けの協働アプリ** — ドキュメントで足りない場合、独自のUI・ロジック・状態を持つアプリをエージェントが構築する
+4. **決定論的ワークフロー** — 手順が既知の仕事は予測可能な部分をコードで回し、判断が要る箇所にだけモデルを使う。オンデマンド・スケジュール・接続システムのイベントで起動できる
+
+既存のMCPサーバーは MCP Server Portals 経由で接続できる。
+
+## Gatekeeper と観測ログ（セキュリティ基盤）
+
+同社は、社内システムのAPIキーを人やエージェントに配る運用を「広範で長期の権限を渡すことになり、制約・安全な共有・監査のいずれも難しい」と否定する。MCPサーバーが資格情報を保持してツールだけを露出する方式は前進だが、それだけでは**どのリソースを観測したかが分からず、エージェントは複数システムの情報を組み合わせて制約の緩い場所へ持ち出せてしまう**。同社は「認可はデータが次にどこへ行けるかまで考慮しなければならない」と述べる。これは [[concepts/ai-agent-governance]] が整理した「MCP認可はゲートウェイの認可にすぎず、業務上の操作可否は別レイヤー」という論点の、データフロー側からの延長にあたる。
+
+実装は3層になっている。
+
+- **既定は何も持たない** — 誰がCloudflare OSに入れるかは Cloudflare Access が制御し、内側ではすべてのエージェント・アプリがアクセス権ゼロから始まる。エージェントが特定リソースへのアクセスを要求し、人が許可または拒否する。許可されると生成コードには `env.PROJECT` のような型付きバインディングとして渡る。これは「特定のポリシー下で特定リソースを使う権限」を表す capability であり、資格情報自体はエージェントと生成コードから完全に隔離される。サーバコードは外向きネットワークを無効化した Dynamic Worker で、クライアントコードはブラウザのサンドボックス化フレームで動き、明示的に与えた capability 以外でインターネットへ出られない
+- **Gatekeeper がリソースと操作を統治する** — Gatekeeper はCloudflare OSと外部サービスの間に立つサービス固有のWorkerで、そのAPI・リソース・可能な操作を理解している。GitHubアカウント全体を渡す代わりに、単一リポジトリに限る／issueは読めるがソースコードは読めない／特定フィールドをマスクする／レート制限をかける／プルリクエストのマージ前に承認を要求する、といった粒度で絞れる。エージェント側からは小さなTypeScript APIだけが見え、OAuth・資格情報保持・ポリシー強制・読んだものの記録・外部から見える副作用の仲介はGatekeeperが担う
+- **ポリシーが観測に追従する** — 初回の読み取りを制御するだけでは足りない。データウェアハウスの機微なテーブルを読んでダッシュボードを作った場合、そのダッシュボードの共有がテーブルの共有になってはいけない。Cloudflare OSはエージェントが観測したリソースをすべて記録し、その観測記録をエージェントと成果物に紐づけ続ける。他の人がワークスペースを開く・エージェントと対話する・成果物を見るときに、Gatekeeperがその人の観測済みリソースへのアクセス権を検証する。同じ観測ログは外向きリクエストの可否判断にも使われ、機微データの読み取りが「他ソースへの書き込み・新しい共同編集者の招待・別エージェントへの引き渡し・外部リクエスト」を封じることができる
+
+## アプリは1つずつがWorker
+
+多くの生産性スイートが固定のアプリ群（ドキュメント・表計算・プレゼン）を与えるのに対し、Cloudflare OSでは**各「ファイル」がそれ自体アプリケーション**になり、一人・一プロジェクト・一チームのためにエージェントが書く。プロトタイプではなくクライアントコード・サーバコード・API・永続状態を備えたフルスタックアプリで、既定は非公開、ドキュメントのように共有できる。
+
+サーバは必要に応じて [Dynamic Worker](https://developers.cloudflare.com/dynamic-workers/) としてロードされ、Durable Object Facet として実体化する（同社はどちらもこのプロジェクトのために作った機能だと述べる）。facet によりアプリはCloudflare OSランタイムとは別の自前SQLiteデータベースを持つ。Dynamic Workers は軽量なV8 isolateなので、専用サーバやコンテナを常駐させずにアプリごとの隔離ランタイムを用意できる（V8 isolate基盤の詳細は [[companies/cloudflare]]）。
+
+ブラウザのクライアントとサーバの通信には、Cloudflareのオープンソースのobject-capability RPCである Cap&#x27;n Web を使う。クライアントからサーバメソッドを通常のJavaScript関数のように呼べるが、特筆すべきは**同じメソッドをエージェントも呼べる**点だと同社は言う。すなわち「自分でその仕事をする道具を作れるなら、自分が居ないときにエージェントがその道具で仕事をできる」。
+
+共有は2通りある。アプリ自体を共有すると同じ状態を使ったリアルタイム協働になり、**blueprint**を共有すると相手は自分のコピーを作れる。blueprint から作ったアプリは元のコードを含むが、SQLiteのデータ・会話履歴・資格情報・接続リソースは含まず、独立した状態とリソースで始まる。チームに配ったアプリは、機能要望を出して作者にアサインする代わりに、各自がAIで改造できる。
+
+## モデルとコストの制御
+
+任意のモデルを使え、すべての推論呼び出しは Cloudflare AI Gateway を通る。どのモデルを使えるようにするか、どの仕事をどのモデルに割り当てるかを一箇所で決められる。同社は「毎朝の未読メール要約に最も高価なフロンティアモデルを使いたくはないはずだ」と述べ、高価なモデルを最も難しい仕事にだけ充てる制御を強調する。リクエストは人・チーム・ワークスペース単位で帰属され、管理者は推論支出の内訳を見て予算とレート制限を設定し、上限到達時の挙動を決められる。
+
+## OSSとしての配布
+
+コアの `cloudflare/cloudflare-os` と、Cloudflare社内の運用に基づく実例デプロイ `cloudflare/cloudflare-os-starter` の2リポジトリが公開されている。デプロイ側リポジトリはコアをパッチせずに取り込み、設定・カスタムUI・社内連携・分析・デプロイパイプラインの置き場になる。自社のCloudflareアカウントに配置し、自社のAccessポリシー・AI Gateway設定・データ・連携先で動かせる。同社は「我々の社内デプロイはCloudflareのシステム・用語・ポリシー・仕事のやり方を反映している。あなたのものはあなたの組織を反映すべきだ」と書く。導入支援としてPresidioとHappy Cogを戦略パートナーに挙げ、共有スキルと組織知のキュレーション・カスタムUI・Gatekeeper／MCP Server Portals経由の社内システム接続・セキュリティとコスト制御の設定を担うとしている。今後の予定として、Cloudflareダッシュボードでのフルマネージド提供・開発ワークフロー向けコンテナ・Slack等チャットツールへのワークスペース展開を挙げる。
+
+## 観察ログ（未検証）
+
+- 2026-08-08: Cloudflareは第1版を2026年5月に全社配布し「あらゆる職能の数千人が毎日使っている」と述べる（自社公表・外部検証なし）
+
+## 問い
+
+- Gatekeeperはサービスごとに書くWorkerであり、MCPサーバーを立てるより手間が重い。この追加コストを正当化する境界はどこか（観測ログによる下流制御が要る機微データの有無か）
+- 「エージェントが観測したリソースを記録し共有時に再検証する」モデルは、このvaultの公開サイト生成にも適用しうるか。`sources:` は観測ログの原始形と言えるか
+- 「各ファイルがアプリ」というモデルは個人の知識ベースでは過剰か。ドキュメントとアプリの境界をどこに置くと運用が破綻しないか
+
+## 関連
+
+- [[companies/cloudflare]] — 提供元。Workers / Durable Objects / Dynamic Workers / AI Gateway というCloudflare OSの土台
+- [[concepts/ai-agent-governance]] — MCP認可の限界と外部ポリシーによる実行制御。Gatekeeperと観測ログはその「データが次にどこへ行くか」まで拡張した実装
+- [[business/skill-library-strategy]] — 共有スキル／文脈ライブラリが企業の私有資産になるという戦略論。Cloudflare OSはそれを製品として実装した形
+- [[concepts/company-brain]] — 会社の知識をprovenance・permissions付きの単一state層に統合する設計思想。観測ログはpermissions層を実行時に追跡する具体策
+- [[concepts/agent-adoption-walls]] — 企業のエージェント導入で詰まる7つの壁。ガバナンス・可視化・トークン資本の透明性にプラットフォーム側から答える位置づけ
+- [[concepts/idp-shared-cli-mcp]] — Cloudflare Accessで人間とAIを同一身元に載せる設計。Cloudflare OSの入口の認証と同じ系譜
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

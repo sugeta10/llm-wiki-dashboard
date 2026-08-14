@@ -51,6 +51,8 @@ Cloudflare公式アカウントが2026年8月5日に発表したオープンソ�
 
 @commteは発表動画の内容を、社員一人ひとりに専用のエージェントとワークスペースを与え、その会社独自の業務のやり方・社内の知識・既存システムに合わせて動かすものだと要約する。権限モデルについては、エージェントは最初どこにもアクセスできず、許可したリソースにだけ手が届くという既定拒否（deny by default）の設計だと説明している。@commte はこれを「AIを社内に入れられない理由を潰せるかも」と評価しており、企業導入の障壁が機能でなくアクセス制御の設計にあるという見立てが背景にある。[[concepts/agent-adoption-walls]] が整理する組織側の壁（ガバナンス・権限）に対して、プラットフォーム側から答えを出そうとする位置づけになる。
 
+公式ブログ（2026-08-05公開）で明かされた製品構成——エージェント作業空間・Gatekeeperと観測ログによるガバナンス基盤・アプリ＝Workerの3部——は [[tools/cloudflare-os]] に分けて記載した。本ページの Dynamic Workers / Durable Objects / AI Gateway がそのまま土台として使われており、Durable Object Facet と Dynamic Workers はこのプロジェクトのために作った機能だと同社は述べている。
+
 ## 観察ログ（未検証）
 
 - 2026-06-15（yusukebe / Cloudflare社員 Zenn記事）: V8 IsolateがコンテナよりAIエージェントに向いているというCloudflareの立場
@@ -73,3 +75,4 @@ Cloudflare公式アカウントが2026年8月5日に発表したオープンソ�
 - [[concepts/ai-native-cloud-selection]] — 「AIエージェントがCLI/APIで操作しやすいか」でクラウドを選ぶ基準。その筆頭としてCloudflareを挙げる論
 - [[concepts/idp-shared-cli-mcp]] — Cloudflare Accessを使い人間とAIを同一身元で社内システムへ通す設計。Cloudflare OSの「社内システムへ安全にアクセス」に対応する既存の実装パターン
 - [[concepts/agent-adoption-walls]] — 企業のエージェント導入で詰まる7つの壁。Cloudflare OSの既定拒否の権限モデルはこのうちガバナンス・可視化の壁への回答にあたる
+- [[tools/cloudflare-os]] — 本ページの各層の上に載る社内AIプラットフォーム（OSS）。製品としての詳細はこちら

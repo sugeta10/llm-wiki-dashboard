@@ -43,3 +43,4 @@ flowchart LR
 - [[tools/openai-mcp-tunnel]] — ファイアウォール開放なしでプライベートMCPサーバーを接続するアウトバウンドトンネル（境界設計の別解）
 - [[tools/claude-mcp]] — Model Context Protocol（CLIと並ぶAIの入口）
 - [[companies/cloudflare]] — Cloudflare Accessの提供元。2026-08-05発表のCloudflare OSは同じ「社内システムへの安全なアクセス」を製品として束ねる動き
+- [[tools/cloudflare-os]] — Cloudflare Accessを入口に据え、その内側をcapabilityとGatekeeperで絞る製品版。本ページの二段JWT検証と同じ「人もAIも同一身元」の系譜

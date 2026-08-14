@@ -40,6 +40,40 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>長期記憶がない</li>
 </ul>
 <p>この5点は、埋め込みベクトルの近さで文書の断片を引く標準的なRAG構成が共通して抱える弱点として並べられていると考えられる。断片は実体（エンティティ）とその関係を保持しないため、引かれる断片が入れ替われば答えも入れ替わり、どの事実からどう辿ってその結論に至ったかを提示できない。ナレッジグラフは実体をノード・関係をエッジとして明示的に持つので、この「経路を示せるか」が対比の軸になる。ただし各課題に対する具体的な解法はBook本体（zenn.dev/knowledge_graph/books/knowledge-graph-llm-guide）にあり、本ページ作成時点では未読。</p>
+<h2>Book の構成（2026-08-05 時点・目次のみ確認）</h2>
+<p>Book のランディングページで著者が掲げる問いは「ChatGPTは賢いのに、なぜ業務では使いにくいのか」であり、その答えがナレッジグラフにあるとする。同氏は本書の射程を「RAGだけでは解けない問題の正体を明らかにし、ナレッジグラフがLLMに何をもたらすかを、入門から世界の活用事例、実装アーキテクチャ、AI Agentとの統合まで一気通貫で解説する」と説明し、「エンタープライズ規模でのKG実装は難しい。だからこそ、何が難しいのかを正確に理解することが第一歩」と位置づける。全文無料（0円）で約168,608字。</p>
+<p>ランディングページに露出している章タイトルは次の5つ（第1・5・6・8章は目次カード上に現れず未確認、各章の本文も未読）。</p>
+<table>
+<thead>
+<tr>
+<th>章</th>
+<th>タイトル</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>02</td>
+<td>ナレッジグラフとは何か：知識をつながりで表現する</td>
+</tr>
+<tr>
+<td>03</td>
+<td>LLMとRAGが抱える本当の問題：なぜ生成AIの95%が失敗するのか</td>
+</tr>
+<tr>
+<td>04</td>
+<td>世界はナレッジグラフをどう使っているか：業界別の活用事例</td>
+</tr>
+<tr>
+<td>07</td>
+<td>エンタープライズKGの設計：LLMを形式レイヤでサンドイッチする</td>
+</tr>
+<tr>
+<td>09</td>
+<td>スモールスタートで始めるKG実装：ローカル環境から本番への移行</td>
+</tr>
+</tbody>
+</table>
+<p>章立てから読み取れるのは、本書が「KGとは何か」の解説だけで終わらず、業界別事例・エンタープライズ設計・小さく始める移行手順という実装側に重心を置いていることである。特に第7章の「LLMを形式レイヤでサンドイッチする」は、LLMを単独で信じるのでなく入力側と出力側に形式的な構造（スキーマ・グラフ）を挟むという設計方針を指していると考えられるが、その具体は本文未読のため確認が必要。</p>
 <h2>用語の注意: 「グラフ」の二義</h2>
 <p>このwikiの <a href="../concepts/graph-engineering.html">graph-engineering</a> にも「グラフ」が出てくるが、そちらのノード・エッジは複数エージェントの実行順序とデータの流れを指す。ナレッジグラフのノード・エッジは知識の実体と関係を指す。同じ語で別の対象を指しているため、両ページを混ぜて読まない。</p>
 <h2>問い</h2>
@@ -47,6 +81,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>このwiki自体（Markdown＋<code></code>リンク）は既に粗いナレッジグラフだが、同一実体の名寄せ（エンティティ解決）の仕組みが無い。どこまでKGとして機能し、どこから足りないか</li>
 <li>5課題のうち「回答のゆらぎ」「説明不能」は、KGを足さずとも決定論的な検索とのハイブリッド（<a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a> の全文検索＋IDF＋鮮度減衰）で緩和できる部分がある。KG導入の損益分岐点はどこか</li>
 <li>Book本体を読み、KG構築の実務コスト（スキーマ設計・実体抽出・更新運用）の見積もりを取る</li>
+<li>第3章タイトルの「生成AIの95%が失敗する」は出典が章タイトルからは追えない。何の調査の数字で、失敗の定義は何か（PoC止まりか、業務精度か）を本文で確認する</li>
+<li>第7章「LLMを形式レイヤでサンドイッチする」は、<a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> の工程分解型サンドイッチ（モデルの大小）とは別物のはず。何を上下に挟むのかを確認する</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -61,7 +97,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a></li>
 <li><a href="../tools/glean.html">glean</a></li>
 <li><a href="../concepts/company-brain.html">company-brain</a></li>
-<li><a href="../concepts/graph-engineering.html">graph-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2034455630602555749" rel="noopener" target="_blank">https://x.com/i/web/status/2034455630602555749</a></li></ul></section></article>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2034455630602555749" rel="noopener" target="_blank">https://x.com/i/web/status/2034455630602555749</a></li>
+<li><a href="https://zenn.dev/knowledge_graph/books/knowledge-graph-llm-guide" rel="noopener" target="_blank">https://zenn.dev/knowledge_graph/books/knowledge-graph-llm-guide</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -94,6 +131,22 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 
 この5点は、埋め込みベクトルの近さで文書の断片を引く標準的なRAG構成が共通して抱える弱点として並べられていると考えられる。断片は実体（エンティティ）とその関係を保持しないため、引かれる断片が入れ替われば答えも入れ替わり、どの事実からどう辿ってその結論に至ったかを提示できない。ナレッジグラフは実体をノード・関係をエッジとして明示的に持つので、この「経路を示せるか」が対比の軸になる。ただし各課題に対する具体的な解法はBook本体（zenn.dev/knowledge_graph/books/knowledge-graph-llm-guide）にあり、本ページ作成時点では未読。
 
+## Book の構成（2026-08-05 時点・目次のみ確認）
+
+Book のランディングページで著者が掲げる問いは「ChatGPTは賢いのに、なぜ業務では使いにくいのか」であり、その答えがナレッジグラフにあるとする。同氏は本書の射程を「RAGだけでは解けない問題の正体を明らかにし、ナレッジグラフがLLMに何をもたらすかを、入門から世界の活用事例、実装アーキテクチャ、AI Agentとの統合まで一気通貫で解説する」と説明し、「エンタープライズ規模でのKG実装は難しい。だからこそ、何が難しいのかを正確に理解することが第一歩」と位置づける。全文無料（0円）で約168,608字。
+
+ランディングページに露出している章タイトルは次の5つ（第1・5・6・8章は目次カード上に現れず未確認、各章の本文も未読）。
+
+| 章 | タイトル |
+|---|---|
+| 02 | ナレッジグラフとは何か：知識をつながりで表現する |
+| 03 | LLMとRAGが抱える本当の問題：なぜ生成AIの95%が失敗するのか |
+| 04 | 世界はナレッジグラフをどう使っているか：業界別の活用事例 |
+| 07 | エンタープライズKGの設計：LLMを形式レイヤでサンドイッチする |
+| 09 | スモールスタートで始めるKG実装：ローカル環境から本番への移行 |
+
+章立てから読み取れるのは、本書が「KGとは何か」の解説だけで終わらず、業界別事例・エンタープライズ設計・小さく始める移行手順という実装側に重心を置いていることである。特に第7章の「LLMを形式レイヤでサンドイッチする」は、LLMを単独で信じるのでなく入力側と出力側に形式的な構造（スキーマ・グラフ）を挟むという設計方針を指していると考えられるが、その具体は本文未読のため確認が必要。
+
 ## 用語の注意: 「グラフ」の二義
 
 このwikiの [[concepts/graph-engineering]] にも「グラフ」が出てくるが、そちらのノード・エッジは複数エージェントの実行順序とデータの流れを指す。ナレッジグラフのノード・エッジは知識の実体と関係を指す。同じ語で別の対象を指しているため、両ページを混ぜて読まない。
@@ -103,6 +156,8 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - このwiki自体（Markdown＋`[[ ]]`リンク）は既に粗いナレッジグラフだが、同一実体の名寄せ（エンティティ解決）の仕組みが無い。どこまでKGとして機能し、どこから足りないか
 - 5課題のうち「回答のゆらぎ」「説明不能」は、KGを足さずとも決定論的な検索とのハイブリッド（[[concepts/cerebras-knowledge-base]] の全文検索＋IDF＋鮮度減衰）で緩和できる部分がある。KG導入の損益分岐点はどこか
 - Book本体を読み、KG構築の実務コスト（スキーマ設計・実体抽出・更新運用）の見積もりを取る
+- 第3章タイトルの「生成AIの95%が失敗する」は出典が章タイトルからは追えない。何の調査の数字で、失敗の定義は何か（PoC止まりか、業務精度か）を本文で確認する
+- 第7章「LLMを形式レイヤでサンドイッチする」は、[[concepts/llm-model-selection-strategy]] の工程分解型サンドイッチ（モデルの大小）とは別物のはず。何を上下に挟むのかを確認する
 
 ## 関連
 
