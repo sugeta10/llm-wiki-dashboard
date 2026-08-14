@@ -26,3 +26,4 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 - [[design/claude-design-workflow]] — HTML視覚化を制作物のデザイン叩き台に使う実践
 - [[tools/hyperframes]] — HTML+data-*属性を決定論的な動画生成の入力として使う応用例
 - [[tools/diagram-design]] — HTML+SVGだけで27種類の図を出しブランドの色・フォントまで寄せるリポジトリ。図版をHTMLで作る応用例
+- [[tools/html-share]] — 出力したHTMLの置き場所と配布経路（自分専用の一覧・期限付き共有URL・スマホでの承認）をセルフホストで用意するツール

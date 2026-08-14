@@ -38,3 +38,4 @@ AIがWebページやダッシュボードUIを生成する際、この原則を�
 - [[design/ai-slide-to-pptx]] — スライド資料のビジュアルを保ったまま編集可能化する手法（資料制作の周辺）
 - [[design/claude-premium-website-build]] — 視覚的階層・趣味の言語化をClaude Code制作ワークフローに組み込む実例
 - [[business/human-nature-persuasion]] — 数秒で「自分ごと」と感じさせる原則は、「まず問題を名指して注意を得る」persuasionレバーと同じ心理
+- [[design/lusion]] — 没入型の3D体験を売るスタジオ。「まず世界に入れる」ことを優先する設計は、1秒・3秒の壁とトレードオフの関係にある

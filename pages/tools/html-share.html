@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>html-share - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>html-share</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="html-share.md">Markdownで表示</a></div>
+  <div class="meta">tools/html-share · tools · <span title="2026-08-15">今日</span></div>
+  <article><h1>HTML共有くん（html-share）</h1>
+<p>minorun365が公開するセルフホスト型のHTML共有ツール。Claude Codeの生成物を見やすいHTMLに整え、自分専用の一覧にまとめ、スマホから確認・共有できるようにする。初回セットアップ後は日本語でClaude Codeに頼むだけで動く、というのが作者の説明である。</p>
+<p>セルフホスト型で、自分のAWSアカウント上で動かす。作者側にページや回答が送られない設計だと明記されている。</p>
+<h2>できること</h2>
+<ul>
+<li>メモや調査結果を、見やすいHTMLに整える</li>
+<li>作ったHTMLを自分専用の一覧へまとめる</li>
+<li>社内限定や期限付きのURLで共有する</li>
+<li>AIからの承認依頼をスマホで確認し、コメントを返す</li>
+<li>スマホから返した内容を、PC上の作業へ引き継ぐ</li>
+</ul>
+<h2>頼み方</h2>
+<p>コマンドを覚える必要はなく、Claude Codeへ日本語で頼むと登録・共有URL発行・スマホへの確認依頼まで進む、と作者は述べる。README掲載の例は次のとおり。</p>
+<blockquote>
+<p>このHTMLを共有くんに追加して
+この内容を見やすいHTMLにまとめて
+このページを社内限定で7日間共有して
+<code>/mobile</code> で、今の作業をスマホから確認できるようにして</p>
+</blockquote>
+<p>導入手順は同リポジトリの <code>docs/setup.md</code>、公開前に確認する仕組みは <code>docs/threat-model.md</code>（セキュリティ設計）にまとめられている。</p>
+<p>このツールが埋めているのは「LLMの出力をHTMLで受け取る」（<a href="../concepts/html-output-format.html">html-output-format</a>）と「PCの前を離れても作業を握り続ける」（<a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a>）の交差点にある隙間だと考えられる。承認待ちで人間がPCの前にいなければならない時間を、共有URLとスマホ側のコメント返しに置き換える発想になっている。</p>
+<h2>問い</h2>
+<ul>
+<li>スマホからのコメントをPC上の作業へ戻す経路は、Claude Codeのどの機構（hook・MCP・remote control）で実装されているか。<code>/mobile</code> はこのツールが追加するスラッシュコマンドか</li>
+<li>期限付き・社内限定URLの権限モデルは <code>docs/threat-model.md</code> でどこまで詰められているか。セルフホストなら共有範囲の責任は運用側に来る</li>
+<li>このvaultの <code>wiki/outputs/</code> に出すHTML（CLAUDE.mdのUC-2）を外に見せたいとき、同じ仕組みを使えるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/html-output-format.html">html-output-format</a> — LLMの出力フォーマットとしてHTMLを使うAnthropicの設計思想。HTML共有くんはその出力の置き場所と配布経路を用意する</li>
+<li><a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a> — スマホ・ブラウザからPC上のClaude Codeを操作する公式機能。こちらは操作そのものを遠隔化し、HTML共有くんは成果物の確認と承認を遠隔化する</li>
+<li><a href="../concepts/llm-doc-management.html">llm-doc-management</a> — HTML+JSONでアプリのフローを文書化しLLMのコンテキストに渡すパターン。同じHTMLでもこちらは入力側、HTML共有くんは出力側</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/html-output-format.html">html-output-format</a></li>
+<li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li>
+<li><a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/minorun365/html-share" rel="noopener" target="_blank">https://github.com/minorun365/html-share</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># HTML共有くん（html-share）
+
+minorun365が公開するセルフホスト型のHTML共有ツール。Claude Codeの生成物を見やすいHTMLに整え、自分専用の一覧にまとめ、スマホから確認・共有できるようにする。初回セットアップ後は日本語でClaude Codeに頼むだけで動く、というのが作者の説明である。
+
+セルフホスト型で、自分のAWSアカウント上で動かす。作者側にページや回答が送られない設計だと明記されている。
+
+## できること
+
+- メモや調査結果を、見やすいHTMLに整える
+- 作ったHTMLを自分専用の一覧へまとめる
+- 社内限定や期限付きのURLで共有する
+- AIからの承認依頼をスマホで確認し、コメントを返す
+- スマホから返した内容を、PC上の作業へ引き継ぐ
+
+## 頼み方
+
+コマンドを覚える必要はなく、Claude Codeへ日本語で頼むと登録・共有URL発行・スマホへの確認依頼まで進む、と作者は述べる。README掲載の例は次のとおり。
+
+&gt; このHTMLを共有くんに追加して
+&gt; この内容を見やすいHTMLにまとめて
+&gt; このページを社内限定で7日間共有して
+&gt; `/mobile` で、今の作業をスマホから確認できるようにして
+
+導入手順は同リポジトリの `docs/setup.md`、公開前に確認する仕組みは `docs/threat-model.md`（セキュリティ設計）にまとめられている。
+
+このツールが埋めているのは「LLMの出力をHTMLで受け取る」（[[concepts/html-output-format]]）と「PCの前を離れても作業を握り続ける」（[[tools/claude-code-remote-control]]）の交差点にある隙間だと考えられる。承認待ちで人間がPCの前にいなければならない時間を、共有URLとスマホ側のコメント返しに置き換える発想になっている。
+
+## 問い
+
+- スマホからのコメントをPC上の作業へ戻す経路は、Claude Codeのどの機構（hook・MCP・remote control）で実装されているか。`/mobile` はこのツールが追加するスラッシュコマンドか
+- 期限付き・社内限定URLの権限モデルは `docs/threat-model.md` でどこまで詰められているか。セルフホストなら共有範囲の責任は運用側に来る
+- このvaultの `wiki/outputs/` に出すHTML（CLAUDE.mdのUC-2）を外に見せたいとき、同じ仕組みを使えるか
+
+## 関連
+
+- [[concepts/html-output-format]] — LLMの出力フォーマットとしてHTMLを使うAnthropicの設計思想。HTML共有くんはその出力の置き場所と配布経路を用意する
+- [[tools/claude-code-remote-control]] — スマホ・ブラウザからPC上のClaude Codeを操作する公式機能。こちらは操作そのものを遠隔化し、HTML共有くんは成果物の確認と承認を遠隔化する
+- [[concepts/llm-doc-management]] — HTML+JSONでアプリのフローを文書化しLLMのコンテキストに渡すパターン。同じHTMLでもこちらは入力側、HTML共有くんは出力側
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

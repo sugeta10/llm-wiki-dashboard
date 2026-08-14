@@ -41,3 +41,4 @@ HTMLで全体像を確認し、JSONを次の依頼の最初に貼る、という
 - [[concepts/implementation-notes-prompt]] — 実装と並走でノートを生成させる関連手法
 - [[design/claude-design-workflow]] — HTMLでの視覚化をデザイン叩き台に使う実践（制作側からの裏付け）
 - [[concepts/html-output-format]] — 同じHTML活用でも逆方向：LLMの出力フォーマットとしてHTMLを使うAnthropic公式パターン
+- [[tools/html-share]] — 出力側のHTMLを一覧化・期限付き共有・スマホ承認まで運ぶセルフホストツール（minorun365製）

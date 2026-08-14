@@ -65,3 +65,4 @@
 - [[concepts/claude-skills]] — frontend-design / UI/UX Pro Max の基盤概念
 - [[tools/claude-code]]
 - [[concepts/vibe-coding]]
+- [[design/lusion]] — 「Motion」「Point of view」で振り切った3Dインタラクティブ制作スタジオ。参照集め（ステップ4）でストックする側の実例
