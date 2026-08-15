@@ -44,3 +44,4 @@
 - [[tools/headroom]] — 送信前のデータ圧縮でトークンを削減するライブラリ（入力側の最適化レバー）
 - [[concepts/claude-code-security]] — OTel可視化を「削減の種」発見につなげる組織展開playbook
 - [[concepts/agent-adoption-walls]] — 「④トークン資本の透明性」を含む企業エージェント導入の7つの壁
+- [[concepts/agent-command-wrappers]] — 定型操作をスクリプトに固定してターン数を削る削減レバー（gh実測でコスト24%減）。可視化の次に打つ具体策の1つ

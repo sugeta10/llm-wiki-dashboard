@@ -68,6 +68,23 @@ Fable 5 の分類器が**サイバーセキュリティ・生物化学・蒸留*
 - サイバー分類器は exploit だけでなく偵察・横展開を含む agentic hacking 全般をカバー。1,000時間超の外部bug bountyでもuniversal jailbreak は発見されず（UK AISI が初期テストで一部進展）
 - 生物化学は当面broadにOpusへフォールバック（Dyno Therapeutics の未公開AAVカプシド組立予測で protein language model を上回ったことが dual-use リスクの根拠）
 
+## プラン別の提供条件（プロモ終了後）
+
+Anthropic公式サポート記事によれば、週次の利用上限の50%までFable 5を追加費用なしで使える当初のプロモーションは **2026-07-19 23:59:59 PT で終了**し、以後はプランによって扱いが分かれる。Fable 5 自体は有料プラン（Pro / Max / Team / Enterprise）すべてで引き続き利用できるが、**プラン枠に含まれるか、従量課金のusage creditsで払うかが分かれる**というのが変更の骨子。無料プランでは利用できない。
+
+| プラン | Fable 5 の扱い |
+| --- | --- |
+| Max、Team の premium seat、seat-based Enterprise の premium seat | プラン標準に含まれる。週次上限の50%までは追加費用なし |
+| Pro、Team の standard seat | プラン上限に含まれず、最初からusage credits（従量課金）で動く |
+| seat-based Enterprise の standard seat | プラン上限に含まれない。組織がusage creditsを有効化していれば利用可 |
+| usage-based Enterprise、Claude API | 標準のAPI料金で課金 |
+
+**「50%まで」は上乗せ枠ではない**点をAnthropicは明記している。他モデルの利用も同じ週次上限から引かれるため、合計で週次上限を超えることはなく、両方を usage settings で追跡できる。またFable 5は他のClaudeモデルより上限を速く消費する。上限に達した後の選択肢は、usage creditsを使ってFable 5を続けるか、別モデルに切り替えてプラン枠内に留まるかの2つ。Pro とTeam standard seatは移行を緩和する一回限りのクレジット付与の対象になりうるが、seat-based Enterpriseのstandard seatは対象外とされている。
+
+利用できる面は Claude on the web / Mobile / Desktop / Cowork / Claude Code / Claude Design / Claude for Microsoft 365 / [[tools/claude-tag]]。Web・Desktop・Mobileではモデルピッカーで「Fable 5」を選ぶ。**Claude Code では v2.1.170 以降**が必要で、Cowork では最新版の Claude Desktop が要る。アクセスできない場合の確認項目として、有料プランか・Claude Codeのバージョン・Coworkのデスクトップ版・組織側でFable 5が有効化されているか、が挙げられている。
+
+この変更は、期間限定の全力運用を前提にした [[concepts/fable-sprint-strategy]] の週50%制限や、サブスク枠から従量課金への移行を織り込む [[concepts/frontier-model-extraction]] の前提が、恒常的な課金構造として固定されたことを意味すると考えられる。
+
 ## 観察ログ（未検証）
 
 - 2026-06-17 @kmizu（水島宏太）: 「言語の庭」生成の代償でトークン消費が突出し、Claude Max 20x でも数時間で当日の usage limit に到達したと報告。Fable 5 は1ゴールから大量タスクを並列展開して自走するため消費が桁違いという主張（単一ソース・実体験。運用はモデルスタッキング推奨 [[concepts/llm-model-selection-strategy]]）
@@ -101,4 +118,5 @@ Fable 5 の分類器が**サイバーセキュリティ・生物化学・蒸留*
 - [[concepts/advisor-executor-pattern]] — Fable 5＋Sonnet 5を役割で分ける3つの連携パターン（Advisor/Orchestrator/Fable Sandwich）
 - [[concepts/claude-code-model-effort]] — Fable=専門医の比喩と「どの effort でも他モデルが届かないジョブを完了する」公式解説（モデル vs effort の使い分け）
 - [[business/ai-strategy-officer]] — 「考えるAI」への転換を根拠に市場選定・戦略立案を丸ごと委任するAI副業論（@AInokuhaku）
+- [[concepts/fable-sprint-strategy]] — 期間限定開放中の全力運用記。週50%制限下のPlanner/Generator/Evaluator配分は、プロモ終了後もMax・premium seatではそのまま前提として生きる
 - [[concepts/delegation-management-style]] — Devin Fusion実験：Fable 5主導はOpus 4.8主導よりトークン単価が高くても総コストが安くなるという逆転（Cognition社・3,000セッション）

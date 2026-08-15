@@ -40,4 +40,5 @@ flowchart LR
 
 - [[concepts/advisor-executor-pattern]] — モデル配分3パターン（Advisor/Orchestrator/Fable Sandwich）の体系側。本ページはその実践者版のP/G/E配分
 - [[concepts/frontier-model-extraction]] — 同じ期間限定Fable週間への向き合い方。あちらは「去る前に判断を抽出する」、こちらは「開放中に全力で運用する」
+- [[models/claude-fable-5]] — 本ページの前提だった「週次上限の50%まで無償」プロモは2026-07-19に終了し、Max・premium seatではプラン標準、Pro・standard seatでは従量課金という恒常構造に移行した（プラン別の提供条件の節）
 - [[concepts/loop-engineering]] — 「雑にトークンを燃やせない環境ではループ設計が腕の見せ所」という本ページの前提の一般論側

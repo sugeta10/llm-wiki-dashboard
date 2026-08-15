@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>agent-command-wrappers - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>agent-command-wrappers</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-command-wrappers.md">Markdownで表示</a></div>
+  <div class="meta">concepts/agent-command-wrappers · concepts · <span title="2026-08-15">今日</span></div>
+  <article><h1>エージェント向けコマンドラッパー（定型操作の固定化）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: エージェントに毎回コマンドを組み立てさせず、定型操作を数十行のスクリプトに固めて1行で呼ばせる。効き目の正体は試行錯誤の削減ではなく<strong>ターン数の削減</strong>で、ステートレスなLLM APIではターンが増えるたびに全コンテキストが再送されるため。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  Ask[&quot;エージェントへの依頼&quot;] --&gt; Q{&quot;定型操作か&quot;}
+  Q --&gt;|&quot;As Is: 毎回生成&quot;| G1[&quot;CLIの使い方を思い出す / --help&quot;]
+  G1 --&gt; G2[&quot;コマンドを組み立てて実行&quot;]
+  G2 --&gt; G3[&quot;出力が違えばフラグ・jq式を直して再実行&quot;]
+  G3 --&gt; G4[&quot;生JSONを読んで整形&quot;]
+  G4 --&gt; Cost[&quot;ターン増 → 毎ターン全コンテキスト再送&quot;]
+  Q --&gt;|&quot;To Be: ラッパー呼び出し&quot;| W1[&quot;my-tasks --json を1回実行&quot;]
+  W1 --&gt; W2[&quot;絞り込み済みテキストを読む&quot;]
+  W2 --&gt; Save[&quot;ターン減 → コスト減・知見はコードに残る&quot;]</pre>
+<p>同じ調査をエージェントに何度もやらせると、タスクの本質と無関係な往復が毎セッション繰り返される。CLIで何ができるか思い出す、フラグやjq式を直して再実行する、といった手順がそれにあたる（jq式＝JSONを絞り込むフィルタの記法）。会話が終わればその試行錯誤はコンテキストごと消えるため、知見は次のセッションに残らない。この記事の筆者は、往復を消す手段としてシェルスクリプトやgh拡張へのラッパー化を挙げ、効き目の中心は試行錯誤そのものではなく<strong>ターン数</strong>にあると論じる（Sun* のZennパブリケーション掲載、記事ソースのリポジトリは <code>UtakataKyosui/MyZenns</code>）。</p>
+<h2>なぜターン数がコストになるのか</h2>
+<p>LLMのAPIはステートレスで、ターンが増えるたびにシステムプロンプトと過去の全コンテキストが入力として再送される。再送分の単価はプロンプトキャッシュで下がるが、ゼロにはならない。筆者はAnthropicのドキュメント記載として次の倍率を引く。</p>
+<table>
+<thead>
+<tr>
+<th>トークンの種類</th>
+<th>TTL</th>
+<th>基本入力単価に対する倍率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>キャッシュ読み出し</td>
+<td>—</td>
+<td>0.1 倍</td>
+</tr>
+<tr>
+<td>キャッシュ書き込み</td>
+<td>5 分</td>
+<td>1.25 倍</td>
+</tr>
+<tr>
+<td>キャッシュ書き込み</td>
+<td>1 時間</td>
+<td>2 倍</td>
+</tr>
+</tbody>
+</table>
+<p>合計入力トークンは <code>cache_read_input_tokens + cache_creation_input_tokens + input_tokens</code> の和として毎リクエスト計上される。キャッシュに載っていてもコンテキストはリクエストに含めて送るため、<strong>コンテキストが大きいほどターン1つ追加のコストが高くつく</strong>。仕組みの詳細は <a href="../concepts/prompt-caching.html">prompt-caching</a> にある。</p>
+<h2>実測: ghラッパーで24%減</h2>
+<p>筆者は <code>claude -p --output-format json</code>（Claude Codeを非対話で実行し、レスポンスに <code>total_cost_usd</code> とモデル別コスト内訳を含める形式）を使い、「自分がauthorのopen PRとassigneeのopen Issueを一覧して報告する」という同一タスクをラッパーなし・ありで比較している。</p>
+<table>
+<thead>
+<tr>
+<th>指標</th>
+<th>ラッパーなし</th>
+<th>ラッパーあり</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ターン数</td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr>
+<td>出力トークン</td>
+<td>1,203</td>
+<td>919</td>
+</tr>
+<tr>
+<td>入力処理量の合計</td>
+<td>約151,800</td>
+<td>約151,100</td>
+</tr>
+<tr>
+<td>コスト</td>
+<td>$1.67</td>
+<td>$1.26</td>
+</tr>
+</tbody>
+</table>
+<p>筆者はこの結果を「ghのようにモデルが熟知したツールではコマンド組み立てが1回でほぼ正解し、試行錯誤の往復は起きない。それでもコストは24%下がった。差を生んだのはターン数だ」と読む。裏を返せば、効果が大きくなる条件も構造から導ける。</p>
+<ul>
+<li><strong>モデルが知らない対象</strong>を扱う場合。社内APIや自作サービスでは、ghでは起きなかった試行錯誤の往復が実際に発生し、そのたびにターンが増える</li>
+<li><strong>出力が大きい操作</strong>の場合。生JSONがコンテキストに載ると、以降の全ターンで再処理コストとして残り続ける</li>
+<li><strong>1タスクの中で何度も呼ばれる操作</strong>の場合。ターン削減の効果が呼び出し回数分だけ倍加する</li>
+</ul>
+<h2>作り方: 薄いシェルスクリプトから</h2>
+<p>特別な仕組みは要らず、<code>gh</code> と <code>jq</code> を組み合わせた数十行で足りると筆者は述べる。</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+# my-tasks: 自分が担当している open な Issue と PR を一覧する
+set -euo pipefail
+
+echo &quot;## PRs (author: @me)&quot;
+gh pr list --author &quot;@me&quot; --state open \
+  --json number,title,reviewDecision,url \
+  --jq '.[] | &quot;#\(.number) \(.title) [\(.reviewDecision // &quot;PENDING&quot;)]&quot;'
+
+echo &quot;## Issues (assignee: @me)&quot;
+gh issue list --assignee &quot;@me&quot; --state open \
+  --json number,title,labels,url \
+  --jq '.[] | &quot;#\(.number) \(.title) [\(.labels | map(.name) | join(&quot;,&quot;))]&quot;'
+</code></pre>
+<p>設計のポイントは3つ。<strong>出力を人間とエージェントの両方が読める最小限のテキストに絞る</strong>（生JSONを垂れ流さない）、<strong><code>--jq</code> のフィルタをスクリプト側に埋め込む</strong>（エージェントにjq式を毎回考えさせない）、<strong><code>PATH</code> の通った場所に置き CLAUDE.md にコマンド名と用途を1行書く</strong>（エージェントが迷わず呼べる）。筆者はこの1行の常駐コストを30トークン程度と見積もり、毎回の試行錯誤数千トークンと比べれば無視できるとする。どの指示をどこへ置くかの判断軸は <a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> のフレームと接続する。</p>
+<p>スクリプトが増えたらgh拡張として束ねると、<code>gh extension install owner/repo</code> で別マシンへ配布でき、ghの認証をそのまま使えるためトークン管理を書かずに済む。このとき筆者は、絞り込み条件を <code>--jq</code> のような汎用フィルタに逃がさず<strong>よく使うものから専用フラグに昇格させる</strong>ことを勧める。jq式を書かせるとエージェントはフィールド名やデータ構造を毎回推測することになり、試行錯誤を減らすというラッパーの目的に反するため。専用フラグなら <code>--help</code> の1行を読むだけで正しく呼べる。人間がTUIで使う入口とエージェントがJSONで使う入口を同じコマンドに持たせるのがコツだという。</p>
+<h2>どこまでラッパーにするか</h2>
+<p>判断基準は再利用の見込み、と筆者は切る。</p>
+<table>
+<thead>
+<tr>
+<th>ラッパーにする価値がある</th>
+<th>そのまま生成させてよい</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>週1回以上繰り返す定型操作</td>
+<td>一度きりのアドホックな調査</td>
+</tr>
+<tr>
+<td>出力が大きくフィルタしないとコンテキストを圧迫する操作</td>
+<td>対象や条件が毎回大きく変わる操作</td>
+</tr>
+<tr>
+<td>フラグやAPI仕様を調べ直す必要があり毎回試行錯誤が発生する操作</td>
+<td><code>git status</code> のように1コマンドで済み間違えようのない操作</td>
+</tr>
+</tbody>
+</table>
+<p>運用ルールとしては「<strong>同じコマンド列をエージェントが2回組み立てたのを見た時点で切り出す</strong>」がわかりやすい。2回目が発生した操作は3回目も発生する、というのがその根拠。ラッパーを書くコスト自体もエージェントに払わせれば初回投資は数回の利用で回収できる、とも述べている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-08-14: 筆者の試算では、毎朝1回の実行・ラッパー作成の初回投資$2という仮定で1年（240回）に約+$96.4の節約。1件の実測差 $0.41 の線形外挿であり、モデル更新や単価改定で崩れうる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このリポの定型操作（inbox取り込み・lint・weekly生成）で、エージェントが2回以上同じコマンド列を組み立てている箇所はどこか。切り出し候補を洗い出せるか</li>
+<li>ラッパー化の判断基準「再利用の見込み」は、このリポの決定論的自動化とAI自動化の線引きと同じ線か。違うなら何が違うか</li>
+<li>ターン削減という効き目は、同じ操作を独立コンテキストのサブエージェントへ切り出した場合（<a href="../tools/claude-code-subagents.html">claude-code-subagents</a>）と比べてどちらが大きいか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a> — 再送分の単価を下げる仕組み。本ページの「ターン1つ追加のコスト」を決める土台</li>
+<li><a href="../concepts/token-management.html">token-management</a> — トークン消費を可視化して配分する経営側の視点。本ページはその削減レバーの1つ（操作のプログラム化）</li>
+<li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a> — 同じくコストの損益分岐を扱うが、あちらはモデル間の委譲、こちらは操作をコードに固定する軸</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — CLAUDE.mdにコマンド名1行を置く判断の格納先フレーム（常駐トークンコストの評価軸を共有）</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — ラッパーを呼ぶ側。<code>claude -p --output-format json</code> はコスト実測の計測手段でもある</li>
+<li><a href="../concepts/claude-code-task-delegation.html">claude-code-task-delegation</a> — 「毎回うまく指示する」から「指示なしでも結果が出る環境を設計する」への発想転換。ラッパー整備はその環境設計の具体策</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
+<li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
+<li><a href="../concepts/token-management.html">token-management</a></li>
+<li><a href="../concepts/claude-code-task-delegation.html">claude-code-task-delegation</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/sun_asterisk/articles/token-saving-command-wrappers" rel="noopener" target="_blank">https://zenn.dev/sun_asterisk/articles/token-saving-command-wrappers</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># エージェント向けコマンドラッパー（定型操作の固定化）
+
+&gt; **TL;DR**: エージェントに毎回コマンドを組み立てさせず、定型操作を数十行のスクリプトに固めて1行で呼ばせる。効き目の正体は試行錯誤の削減ではなく**ターン数の削減**で、ステートレスなLLM APIではターンが増えるたびに全コンテキストが再送されるため。
+
+```mermaid
+flowchart TD
+  Ask[&quot;エージェントへの依頼&quot;] --&gt; Q{&quot;定型操作か&quot;}
+  Q --&gt;|&quot;As Is: 毎回生成&quot;| G1[&quot;CLIの使い方を思い出す / --help&quot;]
+  G1 --&gt; G2[&quot;コマンドを組み立てて実行&quot;]
+  G2 --&gt; G3[&quot;出力が違えばフラグ・jq式を直して再実行&quot;]
+  G3 --&gt; G4[&quot;生JSONを読んで整形&quot;]
+  G4 --&gt; Cost[&quot;ターン増 → 毎ターン全コンテキスト再送&quot;]
+  Q --&gt;|&quot;To Be: ラッパー呼び出し&quot;| W1[&quot;my-tasks --json を1回実行&quot;]
+  W1 --&gt; W2[&quot;絞り込み済みテキストを読む&quot;]
+  W2 --&gt; Save[&quot;ターン減 → コスト減・知見はコードに残る&quot;]
+```
+
+同じ調査をエージェントに何度もやらせると、タスクの本質と無関係な往復が毎セッション繰り返される。CLIで何ができるか思い出す、フラグやjq式を直して再実行する、といった手順がそれにあたる（jq式＝JSONを絞り込むフィルタの記法）。会話が終わればその試行錯誤はコンテキストごと消えるため、知見は次のセッションに残らない。この記事の筆者は、往復を消す手段としてシェルスクリプトやgh拡張へのラッパー化を挙げ、効き目の中心は試行錯誤そのものではなく**ターン数**にあると論じる（Sun* のZennパブリケーション掲載、記事ソースのリポジトリは `UtakataKyosui/MyZenns`）。
+
+## なぜターン数がコストになるのか
+
+LLMのAPIはステートレスで、ターンが増えるたびにシステムプロンプトと過去の全コンテキストが入力として再送される。再送分の単価はプロンプトキャッシュで下がるが、ゼロにはならない。筆者はAnthropicのドキュメント記載として次の倍率を引く。
+
+| トークンの種類 | TTL | 基本入力単価に対する倍率 |
+| --- | --- | --- |
+| キャッシュ読み出し | — | 0.1 倍 |
+| キャッシュ書き込み | 5 分 | 1.25 倍 |
+| キャッシュ書き込み | 1 時間 | 2 倍 |
+
+合計入力トークンは `cache_read_input_tokens + cache_creation_input_tokens + input_tokens` の和として毎リクエスト計上される。キャッシュに載っていてもコンテキストはリクエストに含めて送るため、**コンテキストが大きいほどターン1つ追加のコストが高くつく**。仕組みの詳細は [[concepts/prompt-caching]] にある。
+
+## 実測: ghラッパーで24%減
+
+筆者は `claude -p --output-format json`（Claude Codeを非対話で実行し、レスポンスに `total_cost_usd` とモデル別コスト内訳を含める形式）を使い、「自分がauthorのopen PRとassigneeのopen Issueを一覧して報告する」という同一タスクをラッパーなし・ありで比較している。
+
+| 指標 | ラッパーなし | ラッパーあり |
+| --- | --- | --- |
+| ターン数 | 3 | 2 |
+| 出力トークン | 1,203 | 919 |
+| 入力処理量の合計 | 約151,800 | 約151,100 |
+| コスト | $1.67 | $1.26 |
+
+筆者はこの結果を「ghのようにモデルが熟知したツールではコマンド組み立てが1回でほぼ正解し、試行錯誤の往復は起きない。それでもコストは24%下がった。差を生んだのはターン数だ」と読む。裏を返せば、効果が大きくなる条件も構造から導ける。
+
+- **モデルが知らない対象**を扱う場合。社内APIや自作サービスでは、ghでは起きなかった試行錯誤の往復が実際に発生し、そのたびにターンが増える
+- **出力が大きい操作**の場合。生JSONがコンテキストに載ると、以降の全ターンで再処理コストとして残り続ける
+- **1タスクの中で何度も呼ばれる操作**の場合。ターン削減の効果が呼び出し回数分だけ倍加する
+
+## 作り方: 薄いシェルスクリプトから
+
+特別な仕組みは要らず、`gh` と `jq` を組み合わせた数十行で足りると筆者は述べる。
+
+```bash
+#!/usr/bin/env bash
+# my-tasks: 自分が担当している open な Issue と PR を一覧する
+set -euo pipefail
+
+echo &quot;## PRs (author: @me)&quot;
+gh pr list --author &quot;@me&quot; --state open \
+  --json number,title,reviewDecision,url \
+  --jq &#x27;.[] | &quot;#\(.number) \(.title) [\(.reviewDecision // &quot;PENDING&quot;)]&quot;&#x27;
+
+echo &quot;## Issues (assignee: @me)&quot;
+gh issue list --assignee &quot;@me&quot; --state open \
+  --json number,title,labels,url \
+  --jq &#x27;.[] | &quot;#\(.number) \(.title) [\(.labels | map(.name) | join(&quot;,&quot;))]&quot;&#x27;
+```
+
+設計のポイントは3つ。**出力を人間とエージェントの両方が読める最小限のテキストに絞る**（生JSONを垂れ流さない）、**`--jq` のフィルタをスクリプト側に埋め込む**（エージェントにjq式を毎回考えさせない）、**`PATH` の通った場所に置き CLAUDE.md にコマンド名と用途を1行書く**（エージェントが迷わず呼べる）。筆者はこの1行の常駐コストを30トークン程度と見積もり、毎回の試行錯誤数千トークンと比べれば無視できるとする。どの指示をどこへ置くかの判断軸は [[concepts/claude-code-instruction-methods]] のフレームと接続する。
+
+スクリプトが増えたらgh拡張として束ねると、`gh extension install owner/repo` で別マシンへ配布でき、ghの認証をそのまま使えるためトークン管理を書かずに済む。このとき筆者は、絞り込み条件を `--jq` のような汎用フィルタに逃がさず**よく使うものから専用フラグに昇格させる**ことを勧める。jq式を書かせるとエージェントはフィールド名やデータ構造を毎回推測することになり、試行錯誤を減らすというラッパーの目的に反するため。専用フラグなら `--help` の1行を読むだけで正しく呼べる。人間がTUIで使う入口とエージェントがJSONで使う入口を同じコマンドに持たせるのがコツだという。
+
+## どこまでラッパーにするか
+
+判断基準は再利用の見込み、と筆者は切る。
+
+| ラッパーにする価値がある | そのまま生成させてよい |
+| --- | --- |
+| 週1回以上繰り返す定型操作 | 一度きりのアドホックな調査 |
+| 出力が大きくフィルタしないとコンテキストを圧迫する操作 | 対象や条件が毎回大きく変わる操作 |
+| フラグやAPI仕様を調べ直す必要があり毎回試行錯誤が発生する操作 | `git status` のように1コマンドで済み間違えようのない操作 |
+
+運用ルールとしては「**同じコマンド列をエージェントが2回組み立てたのを見た時点で切り出す**」がわかりやすい。2回目が発生した操作は3回目も発生する、というのがその根拠。ラッパーを書くコスト自体もエージェントに払わせれば初回投資は数回の利用で回収できる、とも述べている。
+
+## 観察ログ（未検証）
+
+- 2026-08-14: 筆者の試算では、毎朝1回の実行・ラッパー作成の初回投資$2という仮定で1年（240回）に約+$96.4の節約。1件の実測差 $0.41 の線形外挿であり、モデル更新や単価改定で崩れうる
+
+## 問い
+
+- このリポの定型操作（inbox取り込み・lint・weekly生成）で、エージェントが2回以上同じコマンド列を組み立てている箇所はどこか。切り出し候補を洗い出せるか
+- ラッパー化の判断基準「再利用の見込み」は、このリポの決定論的自動化とAI自動化の線引きと同じ線か。違うなら何が違うか
+- ターン削減という効き目は、同じ操作を独立コンテキストのサブエージェントへ切り出した場合（[[tools/claude-code-subagents]]）と比べてどちらが大きいか
+
+## 関連
+
+- [[concepts/prompt-caching]] — 再送分の単価を下げる仕組み。本ページの「ターン1つ追加のコスト」を決める土台
+- [[concepts/token-management]] — トークン消費を可視化して配分する経営側の視点。本ページはその削減レバーの1つ（操作のプログラム化）
+- [[concepts/cost-effective-harness]] — 同じくコストの損益分岐を扱うが、あちらはモデル間の委譲、こちらは操作をコードに固定する軸
+- [[concepts/claude-code-instruction-methods]] — CLAUDE.mdにコマンド名1行を置く判断の格納先フレーム（常駐トークンコストの評価軸を共有）
+- [[tools/claude-code]] — ラッパーを呼ぶ側。`claude -p --output-format json` はコスト実測の計測手段でもある
+- [[concepts/claude-code-task-delegation]] — 「毎回うまく指示する」から「指示なしでも結果が出る環境を設計する」への発想転換。ラッパー整備はその環境設計の具体策
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>
