@@ -47,3 +47,4 @@ Book のランディングページで著者が掲げる問いは「ChatGPTは�
 - [[concepts/open-knowledge-format]] — 知識を「サービス」でなく「フォーマット」で相互運用可能にする対案（Markdown＋YAML）
 - [[tools/understand-anything]] — コードベースという限定ドメインでナレッジグラフを自動構築するツール
 - [[concepts/graph-engineering]] — 同じ「グラフ」の語を使うが対象が違う（エージェント実行順序のグラフ）
+- [[concepts/context-graph-retrieval]] — 同じ「RAGでは届かない」問題を、チャンクからトリプル抽出・正規化・provenance・経路ランキングへ至る9ステップの実装手順として示した記事（@0xMorlex）

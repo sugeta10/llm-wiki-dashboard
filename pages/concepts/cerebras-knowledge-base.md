@@ -75,3 +75,4 @@ MCP統合では、search・search_slack・search_code・who_knowsといった検
 - [[concepts/agent-memory-layer]] — 全ツール・全ソースを単一の共有層に集約するという設計思想が共通
 - [[concepts/company-brain]] — 単一埋め込みテーブルという本記事の実装が体現する「semantic file system」を、provenance/permissions/freshness込みで一般化した設計思想（@ashwingop）
 - [[concepts/knowledge-graph-llm]] — 同じ「回答のゆらぎ・説明不能・社内知識の欠如」をナレッジグラフ側から解こうとする対案
+- [[concepts/context-graph-retrieval]] — 埋め込みを捨ててエンティティと関係の走査に置き換える対案。本ページのハイブリッド検索が「似た文書を上手く引く」方向なのに対し、あちらは「経路を返す」方向へ振り切る
