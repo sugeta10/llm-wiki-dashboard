@@ -81,11 +81,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — マルチエージェント設計パターン全般</li>
 <li><a href="../tools/claude-code.html">claude-code</a> — Hooks 機能の基盤</li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a> — エージェント協調設計の文脈</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> — 同じPostToolUseを文章品質の検査に使う運用。サブエージェント起動ではなく正規表現照合の結果を警告としてエージェント自身へ返し、処理を止めずに書き直させる（@yugen_matuni）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
 <li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/claude-code-plugins.html">claude-code-plugins</a></li>
-<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059758293414023464" rel="noopener" target="_blank">https://x.com/i/web/status/2059758293414023464</a></li></ul></section></article>
+<li><a href="../tools/claude-code-plugins.html">claude-code-plugins</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2059758293414023464" rel="noopener" target="_blank">https://x.com/i/web/status/2059758293414023464</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -148,6 +149,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[concepts/multi-agent-patterns]] — マルチエージェント設計パターン全般
 - [[tools/claude-code]] — Hooks 機能の基盤
 - [[concepts/agentic-coding]] — エージェント協調設計の文脈
+- [[concepts/llm-japanese-style-hooks]] — 同じPostToolUseを文章品質の検査に使う運用。サブエージェント起動ではなく正規表現照合の結果を警告としてエージェント自身へ返し、処理を止めずに書き直させる（@yugen_matuni）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

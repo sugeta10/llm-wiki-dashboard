@@ -34,3 +34,4 @@ flowchart TD
 - [[concepts/self-evaluation-gap]] — 同著者（@ysk_motoyama）。「仕事への姿勢の甘え」を指摘する点で同根のテーマ
 - [[concepts/coachability]] — 言い切って間違いを認める率直さは、コーチャビリティが要求する正直さ・謙虚さと表裏の関係
 - [[concepts/career-agency-variables]] — 同著者(@ysk_motoyama)。何をやるか/どうやるか/なぜやるかの3変数でキャリアの自己決定権を論じる別テーマの記事
+- [[concepts/introvert-networking-strategy]] — 同著者(@ysk_motoyama)。反省メモを発信の原材料に変える人脈戦略。書く力を対人関係の武器として使う側の記事

@@ -28,3 +28,4 @@
 - [[concepts/manager-director-gap]] — 「ウェットな対人力・根回しで人を動かす」部長の力と重なる。正面から実力でねじ伏せず関係性で通す立ち回り
 - [[business/human-nature-persuasion]] — 「褒めて味方を作る」「不安を消す」は心理レバー（生存の緊張を鎮め、アイデンティティを満たす）の具体的実装
 - [[concepts/career-advice-ai-age]] — 「独立は在職中の仕込みの結果」というキャリア設計の隣接論
+- [[concepts/introvert-networking-strategy]] — @ysk_motoyamaの人脈戦略。「正面から挑まず裏口を探す」「名前を先に育てておく」という構えが共通し、対象が社外である点が異なる

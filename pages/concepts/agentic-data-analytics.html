@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agentic-data-analytics</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agentic-data-analytics.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agentic-data-analytics · concepts · <span title="2026-06-17">1ヶ月前</span></div>
+  <div class="meta">concepts/agentic-data-analytics · concepts · <span title="2026-08-16">今日</span></div>
   <article><h1>LLMを使った業務分析エージェントの設計</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: LLMを使った業務分析エージェントの正確性は「コード生成」でなく「コンテキストとデータ品質の問題」。エンティティ曖昧性・データ陳腐化・検索失敗の3失敗モードを直接攻撃する4層スタックを構築することで、精度を21%から95%超に引き上げることができる（Anthropic社内実績）。</p>
@@ -105,6 +105,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 - <strong>アドバーサリアルレビュー</strong>: サブエージェントが全前提仮定を積極的に検証し、最終回答前にブロッキング問題を修正する。精度+6%（ただしトークン+32%、レイテンシ+72%）
 - <strong>プロバナンスフッター</strong>: 全レスポンスにデータソース階層・鮮度・所有チームを添付。「Raw table、freshness unknown」は上流に転送する前に要検証のサインとして機能する
 - <strong>アクティブ修正ハーベスティング</strong>: スケジュールエージェントがSlackを定期スキャンして修正コメントを検出→参照ドキュメントの修正PRを自動起票→マージ後に全サーフェスへ自動同期</p>
+<h2>行政データでの公開実装例（デジタル庁）</h2>
+<p>デジタル庁が、行政手続等調査データ（約75,000件）を<a href="../tools/claude-mcp.html">claude-mcp</a>経由で対話的に自然言語分析する実装をGitHubで公開し、Techブログで解説している。同庁は技術検証目的の簡易的な実装と位置づけたうえで、<strong>AIの誤った補完・推測を減らす</strong>ことと、MCP AppsによるチャットUI表示（<a href="../concepts/generative-ui.html">generative-ui</a>のOpen-endedパターンにあたる）の試作を狙いとして挙げている。本ページが扱うエンティティ曖昧性への対処を、社内データではなく公開された行政データで実演した事例にあたる。</p>
+<p>本Wikiが取り込んだのは@keitaro_aigcによる紹介ポストで、デジタル庁のTechブログ本文とリポジトリは未読である。データ基盤・情報源・スキルの各層をどう作っているかは未確認のため、上記以外の設計内容は本ページでは扱わない。</p>
 <h2>検証済み事実</h2>
 <ul>
 <li>2026-06-16: Anthropicのデータサイエンス・データエンジニアリングチーム（Chen Chang, Clement Peng, Justin Leder, Johanne Jiao, Josh Cherry）が社内実績とベストプラクティスを公開。業務分析クエリの95%をClaudeで自動化し、総合精度~95%を達成している</li>
@@ -122,6 +125,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>Anthropicが「うまくいかなかった」と明言した「LLMによるセマンティック層自動生成」は、なぜ精度にネガティブだったか？曖昧性の「封じ込め」と「排除」の違いは何か？</li>
 <li>スキル保守コストをゼロに近づけるには何が必要か？スキルとモデル定義を同一PRに含めるCIルールはその答えのひとつだが、ドメインオーナーが薄い組織ではどう代替するか？</li>
 <li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a>の「コードエンリッチメント（Layer 3）」とAnthropicの「コロケーション」アプローチは何が違い、どちらが保守しやすいか？</li>
+<li>デジタル庁の公開実装は、本ページの4層のうちどこまでを実装しているか。公開リポジトリを読めば「セマンティック層を人間が所有する」という原則が公共データでどう実現されているか確認できるはず</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -131,12 +135,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — 本ページのスキル層（Claude Codeスキルフォルダ）の概念的基盤</li>
 <li><a href="../companies/anthropic.html">anthropic</a> — 本記事の発信元</li>
 <li><a href="../tools/google-knowledge-catalog.html">google-knowledge-catalog</a> — Google Cloudが同型のパイプライン（メタデータ収集→エンリッチ→検証済みクエリ）をマネージド製品として提供</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a> — デジタル庁の実装が分析インターフェースとして採用したプロトコル</li>
+<li><a href="../concepts/generative-ui.html">generative-ui</a> — デジタル庁が試作したMCP AppsによるチャットUIの位置づけ</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/generative-ui.html">generative-ui</a></li>
+<li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
 <li><a href="../tools/google-knowledge-catalog.html">google-knowledge-catalog</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li>
-<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
-<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude" rel="noopener" target="_blank">https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude</a></li>
-<li><a href="https://x.com/i/web/status/2066416854302880128" rel="noopener" target="_blank">https://x.com/i/web/status/2066416854302880128</a></li></ul></section></article>
+<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude" rel="noopener" target="_blank">https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude</a></li>
+<li><a href="https://x.com/i/web/status/2066416854302880128" rel="noopener" target="_blank">https://x.com/i/web/status/2066416854302880128</a></li>
+<li><a href="https://x.com/i/web/status/2088241263560753363" rel="noopener" target="_blank">https://x.com/i/web/status/2088241263560753363</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -227,6 +234,12 @@ flowchart LR
 - **プロバナンスフッター**: 全レスポンスにデータソース階層・鮮度・所有チームを添付。「Raw table、freshness unknown」は上流に転送する前に要検証のサインとして機能する
 - **アクティブ修正ハーベスティング**: スケジュールエージェントがSlackを定期スキャンして修正コメントを検出→参照ドキュメントの修正PRを自動起票→マージ後に全サーフェスへ自動同期
 
+## 行政データでの公開実装例（デジタル庁）
+
+デジタル庁が、行政手続等調査データ（約75,000件）を[[tools/claude-mcp]]経由で対話的に自然言語分析する実装をGitHubで公開し、Techブログで解説している。同庁は技術検証目的の簡易的な実装と位置づけたうえで、**AIの誤った補完・推測を減らす**ことと、MCP AppsによるチャットUI表示（[[concepts/generative-ui]]のOpen-endedパターンにあたる）の試作を狙いとして挙げている。本ページが扱うエンティティ曖昧性への対処を、社内データではなく公開された行政データで実演した事例にあたる。
+
+本Wikiが取り込んだのは@keitaro_aigcによる紹介ポストで、デジタル庁のTechブログ本文とリポジトリは未読である。データ基盤・情報源・スキルの各層をどう作っているかは未確認のため、上記以外の設計内容は本ページでは扱わない。
+
 ## 検証済み事実
 
 - 2026-06-16: Anthropicのデータサイエンス・データエンジニアリングチーム（Chen Chang, Clement Peng, Justin Leder, Johanne Jiao, Josh Cherry）が社内実績とベストプラクティスを公開。業務分析クエリの95%をClaudeで自動化し、総合精度~95%を達成している
@@ -244,6 +257,7 @@ flowchart LR
 - Anthropicが「うまくいかなかった」と明言した「LLMによるセマンティック層自動生成」は、なぜ精度にネガティブだったか？曖昧性の「封じ込め」と「排除」の違いは何か？
 - スキル保守コストをゼロに近づけるには何が必要か？スキルとモデル定義を同一PRに含めるCIルールはその答えのひとつだが、ドメインオーナーが薄い組織ではどう代替するか？
 - [[concepts/openai-data-agent-context-layers]]の「コードエンリッチメント（Layer 3）」とAnthropicの「コロケーション」アプローチは何が違い、どちらが保守しやすいか？
+- デジタル庁の公開実装は、本ページの4層のうちどこまでを実装しているか。公開リポジトリを読めば「セマンティック層を人間が所有する」という原則が公共データでどう実現されているか確認できるはず
 
 ## 関連
 
@@ -253,6 +267,8 @@ flowchart LR
 - [[concepts/claude-skills]] — 本ページのスキル層（Claude Codeスキルフォルダ）の概念的基盤
 - [[companies/anthropic]] — 本記事の発信元
 - [[tools/google-knowledge-catalog]] — Google Cloudが同型のパイプライン（メタデータ収集→エンリッチ→検証済みクエリ）をマネージド製品として提供
+- [[tools/claude-mcp]] — デジタル庁の実装が分析インターフェースとして採用したプロトコル
+- [[concepts/generative-ui]] — デジタル庁が試作したMCP AppsによるチャットUIの位置づけ
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

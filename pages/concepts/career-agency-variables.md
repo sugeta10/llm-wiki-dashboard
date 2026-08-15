@@ -32,4 +32,5 @@
 
 - [[concepts/self-evaluation-gap]] — 同著者（@ysk_motoyama）。自己評価と他者評価の乖離を論じた別テーマの記事
 - [[concepts/linguistic-hedging]] — 同著者（@ysk_motoyama）。「〜な感じ」というぼかし言葉の知的怠慢を論じた記事
+- [[concepts/introvert-networking-strategy]] — 同著者（@ysk_motoyama）。人脈づくりを「話しかけてもらう」側へ反転させる戦略。本ページの「どうやるか＝仕事の手順を自分でハンドリングする」を人付き合いに適用した形
 - [[concepts/action-space]] — 上野山勝也/James Rineyの「どの環境がアクション空間を広げるか」というキャリア論。本記事の「どうやるか」が個人の意思決定様式に焦点を当てるのに対し、こちらは環境選択に焦点を当てる対の視点

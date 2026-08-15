@@ -40,3 +40,4 @@
 - [[concepts/multi-agent-patterns]] — マルチエージェント設計パターン全般
 - [[tools/claude-code]] — Hooks 機能の基盤
 - [[concepts/agentic-coding]] — エージェント協調設計の文脈
+- [[concepts/llm-japanese-style-hooks]] — 同じPostToolUseを文章品質の検査に使う運用。サブエージェント起動ではなく正規表現照合の結果を警告としてエージェント自身へ返し、処理を止めずに書き直させる（@yugen_matuni）

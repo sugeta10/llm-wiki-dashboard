@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>no-ai-slop</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="no-ai-slop.md">Markdownで表示</a></div>
-  <div class="meta">tools/no-ai-slop · tools · <span title="2026-07-26">2週間前</span></div>
+  <div class="meta">tools/no-ai-slop · tools · <span title="2026-07-26">3週間前</span></div>
   <article><h1>no-ai-slop</h1>
 <p><strong>no-ai-slop</strong> はAI文章に典型的な「AIスロップ」パターンを20種類以上検出し除去するClaude Code/Codexスキル。作者Peter Yangによれば<code>/no-ai-slop</code>で下書きを渡すと最小限の編集を加えて返し、<code>/no-ai-slop is this AI slop?</code>で検出のみも行える。</p>
 <h2>検出パターン</h2>
@@ -104,7 +104,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/slop-grenade.html">slop-grenade</a> — AI生成長文をコミュニケーションの場に無造作に貼る行為への命名。no-ai-slopはその発生源となる文章パターンへの対策</li>
 <li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a> — 日本語版の同種の文章規範スキル（鹿野桂一郎）</li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a> — 「生成→基準で採点→閾値未満を止める」品質ゲート。no-ai-slopの<code>eval.md</code>自己検査は同型の実装</li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> — 日本語版の同種の取り組みをスキル起動でなくPostToolUse Hookの常時検査として実装した運用例（NGルール500本超・グッドパターン対）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
 <li><a href="../concepts/slop-grenade.html">slop-grenade</a></li>
 <li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li>
 <li><a href="../weekly/2026-W31.html">2026-W31</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/petergyang/no-ai-slop" rel="noopener" target="_blank">https://github.com/petergyang/no-ai-slop</a></li>
@@ -168,6 +170,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[concepts/slop-grenade]] — AI生成長文をコミュニケーションの場に無造作に貼る行為への命名。no-ai-slopはその発生源となる文章パターンへの対策
 - [[tools/japanese-tech-writing]] — 日本語版の同種の文章規範スキル（鹿野桂一郎）
 - [[concepts/eval-loop]] — 「生成→基準で採点→閾値未満を止める」品質ゲート。no-ai-slopの`eval.md`自己検査は同型の実装
+- [[concepts/llm-japanese-style-hooks]] — 日本語版の同種の取り組みをスキル起動でなくPostToolUse Hookの常時検査として実装した運用例（NGルール500本超・グッドパターン対）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

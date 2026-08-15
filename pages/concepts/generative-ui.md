@@ -78,3 +78,4 @@ Wada はさらに、3パターンに加え「**Dynamic**」を4番目のアプ�
 - [[concepts/intermediate-notation-pattern]] — Declarative/A2UIが体現する「GUIでなくスキーマを操作させる」設計思想
 - [[design/fastview-design]] — エージェント生成UIにも適用できるUI設計原則
 - [[companies/cloudflare]] — Dynamic Workers上でReact SSRするGenerativeUI第4アプローチ「Dynamic」の実行環境
+- [[concepts/agentic-data-analytics]] — デジタル庁が行政データのMCP分析でMCP AppsによるチャットUI表示を試作した事例。Open-endedパターンを公共データの分析インターフェースに適用した実装

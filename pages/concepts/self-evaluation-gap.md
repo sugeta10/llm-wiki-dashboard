@@ -41,3 +41,4 @@
 - [[concepts/chokkan-karte]] — AIを自己批判の鏡でなく自己解剖の翻訳機に使う隣接実践（直感素材から本音を言語化）
 - [[concepts/linguistic-hedging]] — 同著者(@ysk_motoyama)。「〜な感じ」というぼかし言葉を知的怠慢と断じる別テーマの記事
 - [[concepts/career-agency-variables]] — 同著者(@ysk_motoyama)。何をやるか/どうやるか/なぜやるかの3変数でキャリアの自己決定権を論じる別テーマの記事
+- [[concepts/introvert-networking-strategy]] — 同著者(@ysk_motoyama)。社交の量で戦わず準備工程に投資する人脈戦略。自己評価でなく他者からどう見つけてもらうかを扱う別テーマの記事

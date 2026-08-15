@@ -36,3 +36,4 @@
 - [[concepts/recursive-self-improvement]] — AIがAI開発を加速する論考。本ページはその「スキル改善」版のミニチュア実装
 - [[concepts/skill-building-best-practices]] — スキルの書き方ベストプラクティス（gotchas蓄積・on-demandフック）
 - [[concepts/loop-engineering]] — L4ヒルクライミングループ（trace分析→ハーネス書き換え）の具体実装として位置づく
+- [[concepts/llm-japanese-style-hooks]] — 指摘のたびにSkillがNGルールを登録し、週1で会話履歴を分析して繰り返し直している表現をまとめて登録する運用。本ページの会話履歴→ルール化ループを文章規範に適用した形（@yugen_matuni）

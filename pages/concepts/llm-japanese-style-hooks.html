@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>llm-japanese-style-hooks - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>llm-japanese-style-hooks</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="llm-japanese-style-hooks.md">Markdownで表示</a></div>
+  <div class="meta">concepts/llm-japanese-style-hooks · concepts · <span title="2026-08-16">今日</span></div>
+  <article><h1>LLMの日本語の癖をHookで機械検査する</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIが書く日本語の癖は指示では消えないので、ファイル書き込み直後のHookで500本超のNGルールと突き合わせ、グッドパターン付きの警告をエージェント自身に返して文ごと書き直させる、という@yugen_matuniの運用。</p>
+</blockquote>
+<p>書く前の注意で直らない理由を、@yugen_matuniは3つ挙げる。会話が長くなると指示は薄まる一方であること、モデルが変われば癖の出方も変わること、注意書きを増やすほど今度は別の場所で別の癖が出てくることである。著者はシステムプロンプトやCLAUDE.mdのような規約ファイルに「この表現は使わない」と書き並べたが、同じ表現が頻発したという。そこで軸を「書く前の注意」から「書いた後の機械検査」へ移し、Claude CodeやCodexが備えるHooks（エージェントの動作の節目に自作スクリプトを差し込む仕組み）のうち、ファイル編集の直後に発火するPostToolUseに検査を載せた。</p>
+<pre class="mermaid">flowchart LR
+  W[&quot;ファイル書き込み&quot;] --&gt; H[&quot;PostToolUse Hook&quot;]
+  H --&gt; M[&quot;NGルール照合&lt;br/&gt;（正規表現・500本超）&quot;]
+  M --&gt;|該当あり| A[&quot;警告＋グッドパターンを&lt;br/&gt;エージェントへ返す&quot;]
+  A --&gt; R[&quot;該当文を丸ごと書き直す&quot;]
+  R --&gt; W
+  M --&gt;|該当なし| S[&quot;セッション終了時に全体を再検査&quot;]
+  S --&gt;|重大な違反が残存| R
+  S --&gt;|クリア| E[&quot;完了報告&quot;]</pre>
+<p>止めずに直させるのが特徴だと著者は書く。検出時は処理をブロックせず警告だけを返し、書き直された内容にはもう一度検査がかかる。一方でセッション終了時には全体を再検査し、重大な違反が残っていればエージェントは該当文を書き直すまで完了報告できない。日常の書き込みは緩く、最後のゲートだけ固くする二段構えになっている。</p>
+<p>なお、著者が挙げる癖の実例は「効果の中身を書かずに『効く』の一語で済ませる」「頼んでいない対比で『AではなくB』と否定から入る」「主語や助詞が抜けて誰が何をするのか読めない」「同じ文末が続いて単調になる」の4つである。</p>
+<h2>語だけ差し替えさせない</h2>
+<p>こだわった点として、著者は語のみの置き換えを禁止していると明かす。NGワードだけを別の語へ差し替えると、同じ問題が別の語形で残り、文章が破綻するからだ。そのため警告文は「検出箇所を含む文を丸ごと書き直す」ことを求める文面にしてある。検査対象は語だが、修正単位は文というずらし方になる。</p>
+<h2>グッドパターンを対で持たせる</h2>
+<p>もうひとつのこだわりが、エラー検出だけで終わらせない設計である。500本のNGルールはすべて「こう書き直す」というグッドパターンと対になっており、検出時の警告には引っかかった語と一緒にそのグッドパターンが返る。「効く」を検出したら「真価は〜にある」「本領を発揮するのは〜」が返り、「AではなくB」の対比なら「不要なら肯定形で直接書く」が返る。</p>
+<p>禁止だけを並べるとエージェントは避け方が分からず不自然な回避文を書きがちで、グッドパターンを添えてから書き直しの精度が上がった、と著者は述べる。これは<a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a>の作者・鹿野桂一郎が「例文を取り除いたので、そこまで強くは効かないかもしれない」と留保した点に対する、運用側からの回答にあたると考えられる。規範の拘束力は禁止事項の数ではなく、良い形の提示とセットになっているかで決まる、という読みである。</p>
+<h2>ルールは指摘のたびに増える</h2>
+<p>500本超というルール数は、一度にまとめて作ったものではない。著者がエージェントの日本語へ指摘を入れるたびに増えていったもので、指摘をルールへ登録するSkillを用意してあるため、指摘すると半ば勝手に登録されていくという。加えて週に1回ほど、会話履歴をエージェント自身に分析させ、繰り返し直している表現をまとめて登録している。指摘した瞬間にルール化すれば次からは機械が代わりに指摘してくれる、という点が同じ指摘を繰り返さない仕掛けになっている（<a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a>の会話履歴→ルール化のループと同型）。</p>
+<p>検出カウントを集計すると上位に来るのは「効く」と「AではなくB」のような対比構文で、モデルや会話が違ってもLLMの日本語には共通の癖がある、と著者は書く。</p>
+<h2>単語照合で拾えない癖は文書全体の集計で見る</h2>
+<p>正規表現の照合では拾えない癖があるため、著者は文書全体の集計による検出も併用している。</p>
+<ul>
+<li>同じ文末（ます・です・ました等）が3文以上続いたら検出する</li>
+<li>です・ます調と常体の混在を、文末の分布を集計して検出する</li>
+<li>比喩表現が同じ行や同じ文書内に重なったら、重ね使いとして警告する</li>
+</ul>
+<p>「ますが連続する」ような単調さは、1文ずつ見ても違反とは言えない。文書全体で文末の種類を数えて、はじめて指摘できる、と著者は説明する。ここは正規表現とは別に、スクリプトで文末を数えて判定している。ルール表現の粒度（語 / 文 / 文書）と検査機構が対応している設計である。</p>
+<p>さらに、シーンごとにルールのオンオフも変えている。造語（「◯◯メソッド」のような自作の言葉）の検査は、ビジネス文書ではオンにし小説ではオフにする。造語は創作では技法だから、というのが理由である。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-08-14: ルール数500本超、および検出上位が「効く」と対比構文だという集計は著者の自己申告で、集計期間・対象文書数は示されていない</li>
+<li>2026-08-14: 「私が日本語を直す回数は目に見えて減った。とはいえゼロにはなっていない」と著者。導入前後の定量比較はない</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultのCLAUDE.md「文章スタイル」節（補足の括弧は文末に置く・術語に一言添える・主張に主体を明記）のうち、どれが正規表現で書けてどれが書けないか。書けないものは文書全体の集計側に回せるか</li>
+<li>500本のNGルールは、<a href="../tools/no-ai-slop.html">no-ai-slop</a>の20+パターンや<a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a>の10カテゴリとどれだけ重なるか。日本語特有の癖はどこか</li>
+<li>文末連続・文体混在の集計判定を、weekly生成やwikiページ生成の品質ゲートに移植できるか。<a href="../concepts/eval-loop.html">eval-loop</a>のように出荷前に止める形にすべきか、本ページのように止めずに直させる形にすべきか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/no-ai-slop.html">no-ai-slop</a> — 英語圏のAIスロップ20+パターンを検出・除去するスキル。パターンの列挙という点は共通だが、あちらはスキル起動時の一括推敲、本ページは書き込み直後のHookによる常時検査という違いがある</li>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a> — 鹿野桂一郎の日本語文章規範SKILL.md。禁止事項の体系という点で本ページのNGルールと対応し、グッドパターンを対で持つ設計はその「例文を外すと効きが落ちる」という留保への回答にあたる</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 生成→採点→閾値未満を止める品質ゲート。本ページはセッション終了時の再検査でブロックする点が同型で、日常の書き込みでは止めない点が異なる</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — Claude Codeの指示7手段を「決定論的強制はhook/permission」と振り分ける公式フレーム。本ページはその振り分けを文章品質に適用した実例</li>
+<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> — 会話履歴から自分のスキルを育てる自己改善ループ。本ページの「指摘のたびにSkillがルールを登録する」仕組みと同型</li>
+<li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a> — Hooksの別の使い方（非同期サブエージェント起動）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a></li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a></li>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2088251220452679951" rel="noopener" target="_blank">https://x.com/i/web/status/2088251220452679951</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># LLMの日本語の癖をHookで機械検査する
+
+&gt; **TL;DR**: AIが書く日本語の癖は指示では消えないので、ファイル書き込み直後のHookで500本超のNGルールと突き合わせ、グッドパターン付きの警告をエージェント自身に返して文ごと書き直させる、という@yugen_matuniの運用。
+
+書く前の注意で直らない理由を、@yugen_matuniは3つ挙げる。会話が長くなると指示は薄まる一方であること、モデルが変われば癖の出方も変わること、注意書きを増やすほど今度は別の場所で別の癖が出てくることである。著者はシステムプロンプトやCLAUDE.mdのような規約ファイルに「この表現は使わない」と書き並べたが、同じ表現が頻発したという。そこで軸を「書く前の注意」から「書いた後の機械検査」へ移し、Claude CodeやCodexが備えるHooks（エージェントの動作の節目に自作スクリプトを差し込む仕組み）のうち、ファイル編集の直後に発火するPostToolUseに検査を載せた。
+
+```mermaid
+flowchart LR
+  W[&quot;ファイル書き込み&quot;] --&gt; H[&quot;PostToolUse Hook&quot;]
+  H --&gt; M[&quot;NGルール照合&lt;br/&gt;（正規表現・500本超）&quot;]
+  M --&gt;|該当あり| A[&quot;警告＋グッドパターンを&lt;br/&gt;エージェントへ返す&quot;]
+  A --&gt; R[&quot;該当文を丸ごと書き直す&quot;]
+  R --&gt; W
+  M --&gt;|該当なし| S[&quot;セッション終了時に全体を再検査&quot;]
+  S --&gt;|重大な違反が残存| R
+  S --&gt;|クリア| E[&quot;完了報告&quot;]
+```
+
+止めずに直させるのが特徴だと著者は書く。検出時は処理をブロックせず警告だけを返し、書き直された内容にはもう一度検査がかかる。一方でセッション終了時には全体を再検査し、重大な違反が残っていればエージェントは該当文を書き直すまで完了報告できない。日常の書き込みは緩く、最後のゲートだけ固くする二段構えになっている。
+
+なお、著者が挙げる癖の実例は「効果の中身を書かずに『効く』の一語で済ませる」「頼んでいない対比で『AではなくB』と否定から入る」「主語や助詞が抜けて誰が何をするのか読めない」「同じ文末が続いて単調になる」の4つである。
+
+## 語だけ差し替えさせない
+
+こだわった点として、著者は語のみの置き換えを禁止していると明かす。NGワードだけを別の語へ差し替えると、同じ問題が別の語形で残り、文章が破綻するからだ。そのため警告文は「検出箇所を含む文を丸ごと書き直す」ことを求める文面にしてある。検査対象は語だが、修正単位は文というずらし方になる。
+
+## グッドパターンを対で持たせる
+
+もうひとつのこだわりが、エラー検出だけで終わらせない設計である。500本のNGルールはすべて「こう書き直す」というグッドパターンと対になっており、検出時の警告には引っかかった語と一緒にそのグッドパターンが返る。「効く」を検出したら「真価は〜にある」「本領を発揮するのは〜」が返り、「AではなくB」の対比なら「不要なら肯定形で直接書く」が返る。
+
+禁止だけを並べるとエージェントは避け方が分からず不自然な回避文を書きがちで、グッドパターンを添えてから書き直しの精度が上がった、と著者は述べる。これは[[tools/japanese-tech-writing]]の作者・鹿野桂一郎が「例文を取り除いたので、そこまで強くは効かないかもしれない」と留保した点に対する、運用側からの回答にあたると考えられる。規範の拘束力は禁止事項の数ではなく、良い形の提示とセットになっているかで決まる、という読みである。
+
+## ルールは指摘のたびに増える
+
+500本超というルール数は、一度にまとめて作ったものではない。著者がエージェントの日本語へ指摘を入れるたびに増えていったもので、指摘をルールへ登録するSkillを用意してあるため、指摘すると半ば勝手に登録されていくという。加えて週に1回ほど、会話履歴をエージェント自身に分析させ、繰り返し直している表現をまとめて登録している。指摘した瞬間にルール化すれば次からは機械が代わりに指摘してくれる、という点が同じ指摘を繰り返さない仕掛けになっている（[[concepts/skill-self-improving-loop]]の会話履歴→ルール化のループと同型）。
+
+検出カウントを集計すると上位に来るのは「効く」と「AではなくB」のような対比構文で、モデルや会話が違ってもLLMの日本語には共通の癖がある、と著者は書く。
+
+## 単語照合で拾えない癖は文書全体の集計で見る
+
+正規表現の照合では拾えない癖があるため、著者は文書全体の集計による検出も併用している。
+
+- 同じ文末（ます・です・ました等）が3文以上続いたら検出する
+- です・ます調と常体の混在を、文末の分布を集計して検出する
+- 比喩表現が同じ行や同じ文書内に重なったら、重ね使いとして警告する
+
+「ますが連続する」ような単調さは、1文ずつ見ても違反とは言えない。文書全体で文末の種類を数えて、はじめて指摘できる、と著者は説明する。ここは正規表現とは別に、スクリプトで文末を数えて判定している。ルール表現の粒度（語 / 文 / 文書）と検査機構が対応している設計である。
+
+さらに、シーンごとにルールのオンオフも変えている。造語（「◯◯メソッド」のような自作の言葉）の検査は、ビジネス文書ではオンにし小説ではオフにする。造語は創作では技法だから、というのが理由である。
+
+## 観察ログ（未検証）
+
+- 2026-08-14: ルール数500本超、および検出上位が「効く」と対比構文だという集計は著者の自己申告で、集計期間・対象文書数は示されていない
+- 2026-08-14: 「私が日本語を直す回数は目に見えて減った。とはいえゼロにはなっていない」と著者。導入前後の定量比較はない
+
+## 問い
+
+- このvaultのCLAUDE.md「文章スタイル」節（補足の括弧は文末に置く・術語に一言添える・主張に主体を明記）のうち、どれが正規表現で書けてどれが書けないか。書けないものは文書全体の集計側に回せるか
+- 500本のNGルールは、[[tools/no-ai-slop]]の20+パターンや[[tools/japanese-tech-writing]]の10カテゴリとどれだけ重なるか。日本語特有の癖はどこか
+- 文末連続・文体混在の集計判定を、weekly生成やwikiページ生成の品質ゲートに移植できるか。[[concepts/eval-loop]]のように出荷前に止める形にすべきか、本ページのように止めずに直させる形にすべきか
+
+## 関連
+
+- [[tools/no-ai-slop]] — 英語圏のAIスロップ20+パターンを検出・除去するスキル。パターンの列挙という点は共通だが、あちらはスキル起動時の一括推敲、本ページは書き込み直後のHookによる常時検査という違いがある
+- [[tools/japanese-tech-writing]] — 鹿野桂一郎の日本語文章規範SKILL.md。禁止事項の体系という点で本ページのNGルールと対応し、グッドパターンを対で持つ設計はその「例文を外すと効きが落ちる」という留保への回答にあたる
+- [[concepts/eval-loop]] — 生成→採点→閾値未満を止める品質ゲート。本ページはセッション終了時の再検査でブロックする点が同型で、日常の書き込みでは止めない点が異なる
+- [[concepts/claude-code-instruction-methods]] — Claude Codeの指示7手段を「決定論的強制はhook/permission」と振り分ける公式フレーム。本ページはその振り分けを文章品質に適用した実例
+- [[concepts/skill-self-improving-loop]] — 会話履歴から自分のスキルを育てる自己改善ループ。本ページの「指摘のたびにSkillがルールを登録する」仕組みと同型
+- [[concepts/claude-code-hooks-async]] — Hooksの別の使い方（非同期サブエージェント起動）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

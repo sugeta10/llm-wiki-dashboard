@@ -37,3 +37,4 @@
 - [[concepts/slop-grenade]] — AI生成長文をコミュニケーションの場に無造作に貼る行為への命名。no-ai-slopはその発生源となる文章パターンへの対策
 - [[tools/japanese-tech-writing]] — 日本語版の同種の文章規範スキル（鹿野桂一郎）
 - [[concepts/eval-loop]] — 「生成→基準で採点→閾値未満を止める」品質ゲート。no-ai-slopの`eval.md`自己検査は同型の実装
+- [[concepts/llm-japanese-style-hooks]] — 日本語版の同種の取り組みをスキル起動でなくPostToolUse Hookの常時検査として実装した運用例（NGルール500本超・グッドパターン対）

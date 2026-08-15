@@ -36,3 +36,4 @@
 - [[concepts/claude-skills]] — 永続的職務定義ファイルとしてのスキルの概念。本ページはその文章規範特化の実例
 - [[concepts/self-refining-skills]] — スキルに自己改善ループを組み込む設計。例文を運用の中で育てる発想と接続
 - [[tools/no-ai-slop]] — 英語版の同種の文章規範スキル（Peter Yang）。20+のAIスロップパターンを検出・除去
+- [[concepts/llm-japanese-style-hooks]] — @yugen_matuniのHook運用。全NGルールにグッドパターンを対で持たせた結果、書き直しの精度が上がったとしており、本ページの「例文を外すと強くは効かないかもしれない」という留保への実践的な回答にあたる
