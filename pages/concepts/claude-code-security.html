@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-security</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-security.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-code-security · concepts · <span title="2026-07-15">1ヶ月前</span></div>
+  <div class="meta">concepts/claude-code-security · concepts · <span title="2026-08-15">今日</span></div>
   <article><h1>Claude Code セキュリティ設定と組織展開</h1>
 <p>メルカリ AI Security Team による <a href="../tools/claude-code.html">claude-code</a> の組織展開戦略。エンジニアと非エンジニアの双方が安全かつ生産性高く利用できる設定を MDM で配布する方法論。</p>
 <h2>Claude Code のリスク</h2>
@@ -168,6 +168,45 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <blockquote>
 <p>観察ログ（未検証）: 実機 v2.1.165 で bypass が弾かれ、ダメなツール呼び出しが防がれること、<code>/status</code> 表示を確認した、と著者が報告。6/5 の managed settings 移行という事実は Anthropic 当事者発信ではなく実践者の観察。</p>
 </blockquote>
+<h2>3ヶ月後の広がり方：4層フレームと一次情報への回帰</h2>
+<p>AI導入支援のコンサルタント@AIEducationlaboが2026-08-11に公開した記事は、発表の中身より「なぜこれだけ広く参照されたのか」に軸を置く。同じスライドを題材にした記事が複数の書き手から出ていることを挙げ、1社の社内発表がここまで参照されるのは珍しいと書く。彼の見立てでは、刺さった理由はAIの性質変化にある。対話型のAIなら変な出力が来てもコピペ前に人間が止められるが、自律型のAIは気づいた時点で既に手を動かし終えている。だから「便利なのは分かるが何がどこまで起こり得るか分からない」という漠然とした不安に、実際の設定という具体で答えたことが効いた、という整理である。</p>
+<p><strong>この記事が持ち込んだ層の視点</strong>。金融機関でAI推進に携わるエンジニアがZennで示した整理として、@AIEducationlaboは次の4層を紹介する。メルカリの発表がカバーしているのは最下層だけで、業界によってはその上を自社で積む必要がある、という枠組みである。</p>
+<table>
+<thead>
+<tr>
+<th>層</th>
+<th>中身</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>端末・設定層</td>
+<td>MDMでの設定配布など。メルカリの発表の範囲</td>
+</tr>
+<tr>
+<td>インフラ・契約層</td>
+<td>どの経路でAIに接続するか。海外サーバー直結を避け国内リージョンを経由する構成など</td>
+</tr>
+<tr>
+<td>監査・コンプライアンス層</td>
+<td>誰が・いつ・何をAIに入力したかを何年分残すか</td>
+</tr>
+<tr>
+<td>ガバナンス層</td>
+<td>経営レベルの承認体制と規制当局への説明責任</td>
+</tr>
+</tbody>
+</table>
+<p>今日やるべきなのは最下層だけで十分だが、上に何があるかを知っておくと、事業が育ったときや扱うデータの機密性が上がったときに何を足すか判断しやすい、と@AIEducationlaboは述べる。</p>
+<p><strong>Claude Code自体の脆弱性</strong>。同記事は、セキュリティ専門機関Check Point Researchが2026年に公表した脆弱性として、悪意ある第三者が用意したリポジトリを開くだけで確認画面の前に不正コードが実行される問題と、接続先設定の書き換えで認証情報が外部サーバーへ送られる経路の2つを挙げる。いずれも修正版が配布済みだという。ただしこれは二次情報で、Check Point側の公表原文はこのvaultでは未確認である。プロンプトインジェクションの防御率については、著者自身が「一次の論文までは確認しきれていないので正確な数値として鵜呑みにしていない」と留保した上で、「AIが自力で悪意ある指示を見抜いてくれる」という期待は今の時点では持たないほうがいい、という方向性だけは複数の情報源で一致すると書く。</p>
+<p><strong>二次情報の劣化という落とし穴</strong>。@AIEducationlaboは、同じ「確認スキップ禁止」の設定でも記事によってキー名の書き方が違っていたと報告し、公式ドキュメントに載っているのは <code>disableBypassPermissionsMode</code> だと確認した上で、最後は必ず一次情報で裏を取るよう勧めている。皮肉なことに、この記事自体もX上の表示ではグロブのアスタリスクが落ちており、<code>Bash(curl:)</code> <code>Read(.env.)</code> のような動かない形になっている。転記のたびに設定が壊れるという著者の指摘を、記事自身が実演している。上記「実装例：settings.json の具体的な書き方」の版が正しい形である。</p>
+<p>あわせて彼は、メルカリがやっているから安全だという思考停止を避けること、設定という物理的な鍵と判断力を育てる教育は両輪であり配って終わりにしないことの2点を注意として挙げている。</p>
+<h2>問い</h2>
+<ul>
+<li>Check Point Researchの公表原文に当たり、上記2件の脆弱性の影響バージョンと修正版を特定する。二次情報のまま運用判断の根拠にしない</li>
+<li>4層フレームのうち、個人vaultで意味を持つのはどこか。監査・コンプライアンス層は「誰が入力したか」でなく「どのソースをどのTierで取り込んだか」に読み替えられる（<a href="../concepts/ai-agent-governance.html">ai-agent-governance</a>）</li>
+<li>MDMを持たない規模では、属性別の配り分けを何で代替するか。設定ファイルの配布に強制力がない以上、denyリストの厚みで差をつける以外の手段があるか</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
@@ -183,7 +222,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">https://x.com/i/web/status/2056571858242404578</a></li>
 <li><a href="https://github.com/anthropics/claude-code/blob/b7339920b69f4a395c28727a1e2305dc5b122cb2/plugins/security-guidance/hooks/hooks.json#L63" rel="noopener" target="_blank">https://github.com/anthropics/claude-code/blob/b7339920b69f4a395c28727a1e2305dc5b122cb2/plugins/security-guidance/hooks/hooks.json#L63</a></li>
 <li><a href="https://x.com/i/web/status/2063105741976952929" rel="noopener" target="_blank">https://x.com/i/web/status/2063105741976952929</a></li>
-<li><a href="https://x.com/i/web/status/2076895490957066612" rel="noopener" target="_blank">https://x.com/i/web/status/2076895490957066612</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2076895490957066612" rel="noopener" target="_blank">https://x.com/i/web/status/2076895490957066612</a></li>
+<li><a href="https://x.com/i/web/status/2087092697807180160" rel="noopener" target="_blank">https://x.com/i/web/status/2087092697807180160</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -322,6 +362,33 @@ MDMを持たない中小企業でも、上記5点の最小セットを1枚の`se
 **③ Hooks で最後の砦** — Hook も管理設定から全社強制でき、`allowManagedHooksOnly: true` で利用者の勝手な Hook を禁止できる。`PreToolUse` でコマンドの中身を検査して止める。上記「公式security-guidanceプラグインのフック構造」と同じ機構を、組織側から強制適用する形。
 
 &gt; 観察ログ（未検証）: 実機 v2.1.165 で bypass が弾かれ、ダメなツール呼び出しが防がれること、`/status` 表示を確認した、と著者が報告。6/5 の managed settings 移行という事実は Anthropic 当事者発信ではなく実践者の観察。
+
+## 3ヶ月後の広がり方：4層フレームと一次情報への回帰
+
+AI導入支援のコンサルタント@AIEducationlaboが2026-08-11に公開した記事は、発表の中身より「なぜこれだけ広く参照されたのか」に軸を置く。同じスライドを題材にした記事が複数の書き手から出ていることを挙げ、1社の社内発表がここまで参照されるのは珍しいと書く。彼の見立てでは、刺さった理由はAIの性質変化にある。対話型のAIなら変な出力が来てもコピペ前に人間が止められるが、自律型のAIは気づいた時点で既に手を動かし終えている。だから「便利なのは分かるが何がどこまで起こり得るか分からない」という漠然とした不安に、実際の設定という具体で答えたことが効いた、という整理である。
+
+**この記事が持ち込んだ層の視点**。金融機関でAI推進に携わるエンジニアがZennで示した整理として、@AIEducationlaboは次の4層を紹介する。メルカリの発表がカバーしているのは最下層だけで、業界によってはその上を自社で積む必要がある、という枠組みである。
+
+| 層 | 中身 |
+| --- | --- |
+| 端末・設定層 | MDMでの設定配布など。メルカリの発表の範囲 |
+| インフラ・契約層 | どの経路でAIに接続するか。海外サーバー直結を避け国内リージョンを経由する構成など |
+| 監査・コンプライアンス層 | 誰が・いつ・何をAIに入力したかを何年分残すか |
+| ガバナンス層 | 経営レベルの承認体制と規制当局への説明責任 |
+
+今日やるべきなのは最下層だけで十分だが、上に何があるかを知っておくと、事業が育ったときや扱うデータの機密性が上がったときに何を足すか判断しやすい、と@AIEducationlaboは述べる。
+
+**Claude Code自体の脆弱性**。同記事は、セキュリティ専門機関Check Point Researchが2026年に公表した脆弱性として、悪意ある第三者が用意したリポジトリを開くだけで確認画面の前に不正コードが実行される問題と、接続先設定の書き換えで認証情報が外部サーバーへ送られる経路の2つを挙げる。いずれも修正版が配布済みだという。ただしこれは二次情報で、Check Point側の公表原文はこのvaultでは未確認である。プロンプトインジェクションの防御率については、著者自身が「一次の論文までは確認しきれていないので正確な数値として鵜呑みにしていない」と留保した上で、「AIが自力で悪意ある指示を見抜いてくれる」という期待は今の時点では持たないほうがいい、という方向性だけは複数の情報源で一致すると書く。
+
+**二次情報の劣化という落とし穴**。@AIEducationlaboは、同じ「確認スキップ禁止」の設定でも記事によってキー名の書き方が違っていたと報告し、公式ドキュメントに載っているのは `disableBypassPermissionsMode` だと確認した上で、最後は必ず一次情報で裏を取るよう勧めている。皮肉なことに、この記事自体もX上の表示ではグロブのアスタリスクが落ちており、`Bash(curl:)` `Read(.env.)` のような動かない形になっている。転記のたびに設定が壊れるという著者の指摘を、記事自身が実演している。上記「実装例：settings.json の具体的な書き方」の版が正しい形である。
+
+あわせて彼は、メルカリがやっているから安全だという思考停止を避けること、設定という物理的な鍵と判断力を育てる教育は両輪であり配って終わりにしないことの2点を注意として挙げている。
+
+## 問い
+
+- Check Point Researchの公表原文に当たり、上記2件の脆弱性の影響バージョンと修正版を特定する。二次情報のまま運用判断の根拠にしない
+- 4層フレームのうち、個人vaultで意味を持つのはどこか。監査・コンプライアンス層は「誰が入力したか」でなく「どのソースをどのTierで取り込んだか」に読み替えられる（[[concepts/ai-agent-governance]]）
+- MDMを持たない規模では、属性別の配り分けを何で代替するか。設定ファイルの配布に強制力がない以上、denyリストの厚みで差をつける以外の手段があるか
 
 ## 関連
 

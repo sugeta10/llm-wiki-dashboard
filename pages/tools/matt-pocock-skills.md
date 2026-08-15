@@ -47,3 +47,4 @@ Pragmatic ProgrammerやDomain-Driven Designの古典的知見をAIエージェ�
 - [[tools/shaping-skills]] — Shape Up由来の補完的計画スキル群
 - [[concepts/spec-driven-development]] — 仕様先行開発との接続
 - [[tools/superpowers]] — @LinearUncleが並べて挙げたobra製の開発方法論スキルライブラリ
+- [[tools/show-me]] — HumanLayerのDex Horthyが、このコレクションの `/teach` が生成するHTML explainerを良い先行例として挙げたスキル

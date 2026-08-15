@@ -33,6 +33,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <article><h1>HTML共有くん（html-share）</h1>
 <p>minorun365が公開するセルフホスト型のHTML共有ツール。Claude Codeの生成物を見やすいHTMLに整え、自分専用の一覧にまとめ、スマホから確認・共有できるようにする。初回セットアップ後は日本語でClaude Codeに頼むだけで動く、というのが作者の説明である。</p>
 <p>セルフホスト型で、自分のAWSアカウント上で動かす。作者側にページや回答が送られない設計だと明記されている。</p>
+<p>作った動機を、minorun365は2026-08-13の公開告知で「Claude Codeからの作業報告、マークダウンでばーっと出力されても見づらい」の一文に置いている。そのうえでこのツールを「AIエージェントと自分専用のポータル」と位置づける。同じ告知によれば <code>/mobile</code> はこのツールに同梱されるスキルで、専用のインボックスとセットになっている。PCで始めた作業をスマホへ送り、移動中に非同期で対応する導線を作るのが狙いだという。</p>
 <h2>できること</h2>
 <ul>
 <li>メモや調査結果を、見やすいHTMLに整える</li>
@@ -53,7 +54,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>このツールが埋めているのは「LLMの出力をHTMLで受け取る」（<a href="../concepts/html-output-format.html">html-output-format</a>）と「PCの前を離れても作業を握り続ける」（<a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a>）の交差点にある隙間だと考えられる。承認待ちで人間がPCの前にいなければならない時間を、共有URLとスマホ側のコメント返しに置き換える発想になっている。</p>
 <h2>問い</h2>
 <ul>
-<li>スマホからのコメントをPC上の作業へ戻す経路は、Claude Codeのどの機構（hook・MCP・remote control）で実装されているか。<code>/mobile</code> はこのツールが追加するスラッシュコマンドか</li>
+<li><code>/mobile</code> が同梱スキルであることは作者の告知で確定した。残る疑問は、スマホから返したコメントをPC上の作業へ戻す経路がClaude Codeのどの機構（hook・MCP・remote control）で実装されているか。専用インボックスはその中継点か</li>
+<li>マークダウンが読みづらいという同じ動機に対し、HumanLayerの<a href="../tools/show-me.html">show-me</a>はHTMLより軽い視覚表現で応答自体を変える解を採った。出力を作り直す解と、出力の置き場所を作る解のどちらが自分の詰まりに効くか</li>
 <li>期限付き・社内限定URLの権限モデルは <code>docs/threat-model.md</code> でどこまで詰められているか。セルフホストなら共有範囲の責任は運用側に来る</li>
 <li>このvaultの <code>wiki/outputs/</code> に出すHTML（CLAUDE.mdのUC-2）を外に見せたいとき、同じ仕組みを使えるか</li>
 </ul>
@@ -62,9 +64,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/html-output-format.html">html-output-format</a> — LLMの出力フォーマットとしてHTMLを使うAnthropicの設計思想。HTML共有くんはその出力の置き場所と配布経路を用意する</li>
 <li><a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a> — スマホ・ブラウザからPC上のClaude Codeを操作する公式機能。こちらは操作そのものを遠隔化し、HTML共有くんは成果物の確認と承認を遠隔化する</li>
 <li><a href="../concepts/llm-doc-management.html">llm-doc-management</a> — HTML+JSONでアプリのフローを文書化しLLMのコンテキストに渡すパターン。同じHTMLでもこちらは入力側、HTML共有くんは出力側</li>
+<li><a href="../tools/show-me.html">show-me</a> — 「エージェントの報告が読めない」という同じ動機から出たHumanLayer製スキル。あちらは応答の表現そのものを軽い図に変え、こちらは出力の置き場所と共有経路を作る</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/html-output-format.html">html-output-format</a></li>
 <li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li>
-<li><a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/minorun365/html-share" rel="noopener" target="_blank">https://github.com/minorun365/html-share</a></li></ul></section></article>
+<li><a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a></li>
+<li><a href="../tools/show-me.html">show-me</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/minorun365/html-share" rel="noopener" target="_blank">https://github.com/minorun365/html-share</a></li>
+<li><a href="https://x.com/i/web/status/2087913653433696451" rel="noopener" target="_blank">https://x.com/i/web/status/2087913653433696451</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -91,6 +96,8 @@ minorun365が公開するセルフホスト型のHTML共有ツール。Claude Co
 
 セルフホスト型で、自分のAWSアカウント上で動かす。作者側にページや回答が送られない設計だと明記されている。
 
+作った動機を、minorun365は2026-08-13の公開告知で「Claude Codeからの作業報告、マークダウンでばーっと出力されても見づらい」の一文に置いている。そのうえでこのツールを「AIエージェントと自分専用のポータル」と位置づける。同じ告知によれば `/mobile` はこのツールに同梱されるスキルで、専用のインボックスとセットになっている。PCで始めた作業をスマホへ送り、移動中に非同期で対応する導線を作るのが狙いだという。
+
 ## できること
 
 - メモや調査結果を、見やすいHTMLに整える
@@ -114,7 +121,8 @@ minorun365が公開するセルフホスト型のHTML共有ツール。Claude Co
 
 ## 問い
 
-- スマホからのコメントをPC上の作業へ戻す経路は、Claude Codeのどの機構（hook・MCP・remote control）で実装されているか。`/mobile` はこのツールが追加するスラッシュコマンドか
+- `/mobile` が同梱スキルであることは作者の告知で確定した。残る疑問は、スマホから返したコメントをPC上の作業へ戻す経路がClaude Codeのどの機構（hook・MCP・remote control）で実装されているか。専用インボックスはその中継点か
+- マークダウンが読みづらいという同じ動機に対し、HumanLayerの[[tools/show-me]]はHTMLより軽い視覚表現で応答自体を変える解を採った。出力を作り直す解と、出力の置き場所を作る解のどちらが自分の詰まりに効くか
 - 期限付き・社内限定URLの権限モデルは `docs/threat-model.md` でどこまで詰められているか。セルフホストなら共有範囲の責任は運用側に来る
 - このvaultの `wiki/outputs/` に出すHTML（CLAUDE.mdのUC-2）を外に見せたいとき、同じ仕組みを使えるか
 
@@ -123,6 +131,7 @@ minorun365が公開するセルフホスト型のHTML共有ツール。Claude Co
 - [[concepts/html-output-format]] — LLMの出力フォーマットとしてHTMLを使うAnthropicの設計思想。HTML共有くんはその出力の置き場所と配布経路を用意する
 - [[tools/claude-code-remote-control]] — スマホ・ブラウザからPC上のClaude Codeを操作する公式機能。こちらは操作そのものを遠隔化し、HTML共有くんは成果物の確認と承認を遠隔化する
 - [[concepts/llm-doc-management]] — HTML+JSONでアプリのフローを文書化しLLMのコンテキストに渡すパターン。同じHTMLでもこちらは入力側、HTML共有くんは出力側
+- [[tools/show-me]] — 「エージェントの報告が読めない」という同じ動機から出たHumanLayer製スキル。あちらは応答の表現そのものを軽い図に変え、こちらは出力の置き場所と共有経路を作る
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
