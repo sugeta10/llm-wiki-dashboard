@@ -147,3 +147,4 @@ tsurubee が運用で感じた根本的な限界。LLM が概念ページを綺�
 - [[tools/hermes-agent-personal-vault]] — 「メモリは索引、知識はファイルに」という本思想をHermes Agent向け6プロンプトに具体化した個人生活ナレッジベース構築ガイド
 - [[tools/cloudflare-os]] — GitHub正本のMarkdown知識ベースをクラウド側エージェントにも参照させた実践例と、その月額コストの実測（Markdown約400件で実質0円）
 - [[concepts/llm-wiki-vs-company-brain]] — 個人・小チーム向けのKarpathy式と企業向けCompany Brainの分岐点を権限・鮮度等の5点で整理し、4つの質問による判定基準を提示
+- [[concepts/evergreen-notes-claude-md]] — 同じMarkdown＋ウィキリンクの型を、ingest/query/lintの3操作でなく「回答直後にノート化を提案させる」会話起点の成長で回す実装（tokuhirom / 64p.org）

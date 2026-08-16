@@ -74,3 +74,4 @@ vaultは読むコストがリターンを下回るときだけ長期に機能す
 - [[tools/hermes-agent-personal-vault]] — 別著者・別ツールでas_of日付・supersede運用・「直さず報告するだけの週次監査」という骨格が独立収斂した事例
 - [[concepts/personal-intelligence-os]] — 同領域の姉妹ページ。本ページの維持ループ・コスト設計に対し、Knowledge ROI・6 KPI・Decision Note第一級化という測定・意思決定側の重心
 - [[concepts/workflow-cloning]] — 同じ「vaultは手入れが要るから死ぬ」問題への逆向きの回答（@milesdeutscher）。維持ループを設計するのでなく、ノートでなく手順を保存してエージェントに実行させる
+- [[concepts/evergreen-notes-claude-md]] — 維持ループを別の場所に置いた実例（tokuhirom）。週次監査でなく、質問への回答直後と新規ノート作成直後にAIから提案させて成長させる

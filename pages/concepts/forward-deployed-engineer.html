@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>forward-deployed-engineer</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="forward-deployed-engineer.md">Markdownで表示</a></div>
-  <div class="meta">concepts/forward-deployed-engineer · concepts · <span title="2026-06-08">2ヶ月前</span></div>
+  <div class="meta">concepts/forward-deployed-engineer · concepts · <span title="2026-08-16">今日</span></div>
   <article><h1>FDE（Forward Deployed Engineer）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 顧客組織の中に物理的に常駐し、その企業の業務を理解してAIソリューションを作り込むエンジニア。エージェント時代に「バズる新職種」として再注目されている。</p>
@@ -50,6 +50,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>モデルの賢さがコモディティ化するほど、競争優位は「顧客の世界をどれだけ深く知っているか」に移り、その深さを作るのがFDE。</li>
 <li>ビッグテックの垂直統合（<a href="../business/ai-vertical-integration.html">ai-vertical-integration</a>）の実行部隊でもある。<a href="../companies/openai.html">openai</a> は DeployCo（FDE常駐・$40億超投資・Tomoro買収で約150名のFDE獲得）を設立。</li>
 </ul>
+<h2>必要な能力は「業務モデリングスキル」</h2>
+<p>FDEに必要な能力を業務モデリングスキルだと名指しするのは、実務者の@gura105である。takeshi_teshimaの概念設計論（<a href="../concepts/concept-design.html">concept-design</a>）を、その必要性・重要性が非常に理解しやすい解説として挙げ、<strong>単一アプリケーションの開発時</strong>と<strong>複数のSoR（System of Record）をまとめたオントロジー構築時</strong>のどちらにおいても、概念設計や業務モデリングのスキルは必須になると述べる。</p>
+<p>この2つはFDEの仕事の両端にあたると考えられる。顧客業務の一部を型として切り分ける作業と、<a href="../concepts/palantir-ontology.html">palantir-ontology</a> のような組織横断の世界モデルを組み上げる作業は、粒度が違うだけで「現実の何と何を同じものとして扱い、何と何を別のものとして扱うか」という同じ問いに答えている。上の「なぜ今FDEか」で挙げた業務文脈の写し取りは、実務上はこの切り分けの巧拙として現れる。</p>
 <h2>FDEの収益モデルとしての側面</h2>
 <p>FDEは単なる職種ではなく、エンタープライズAI時代の収益モデルの中核装置でもある。共通戦略は「モデル＋実行責任」をパッケージで売り、自社プロダクトを顧客業務の「心臓部（止めると事業が止まる領域）」に埋め込むこと。これにより「使い続けるほど価値が増え、抜けることが経営判断として非現実的になる」構造的ロックインが生まれる。OpenAI Deployment Company設立時の「モデルを売る会社から、成果を売る会社に変わる」という言葉がこの転換を象徴する。</p>
 <p>労働集約型のコンサル／SIerとの決定的な差は「抽象化」。Palantir型FDEは現場の個別課題を解くだけでなく、それを汎用化してプラットフォーム機能に還元する（「100の現場を回るとプロダクトが100倍進化する」設計）。一方AI企業型FDEは導入支援とトークン消費拡大が主眼で、現場知見を自社モデルにフィードバックする。出自が違うため「どちらのFDEと組むか」で得られる戦闘力の源泉が変わる——これが <a href="../business/ai-vertical-integration.html">ai-vertical-integration</a> の垂直統合とも連動する。</p>
@@ -69,13 +72,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a> — 「整理から決断へ」の能力転換がFDE像に収斂するという論考</li>
 <li><a href="../business/google-calendar-ai-database.html">google-calendar-ai-database</a> — FDEが顧客組織に入ってまず行う業務データ構造化の具体例（GoogleカレンダーDB化）</li>
 <li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a> — FDEアプローチで企業にエージェントを導入する際に共通して詰まる7つの壁（@kzkhykw）</li>
+<li><a href="../concepts/concept-design.html">concept-design</a> — FDEの中核能力とされる業務モデリングを、1アプリの型設計というスケールで具体化した設計論（@gura105 が必要性の解説として推す）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-vertical-integration.html">ai-vertical-integration</a></li>
 <li><a href="../business/google-calendar-ai-database.html">google-calendar-ai-database</a></li>
 <li><a href="../companies/openai.html">openai</a></li>
 <li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a></li>
 <li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2061477558693384395" rel="noopener" target="_blank">https://x.com/i/web/status/2061477558693384395</a></li>
 <li><a href="https://x.com/i/web/status/2061460782844694831" rel="noopener" target="_blank">https://x.com/i/web/status/2061460782844694831</a></li>
-<li><a href="https://note.com/yfujihara/n/n792f30cf7997" rel="noopener" target="_blank">https://note.com/yfujihara/n/n792f30cf7997</a></li></ul></section></article>
+<li><a href="https://note.com/yfujihara/n/n792f30cf7997" rel="noopener" target="_blank">https://note.com/yfujihara/n/n792f30cf7997</a></li>
+<li><a href="https://x.com/i/web/status/2088596845085991378" rel="noopener" target="_blank">https://x.com/i/web/status/2088596845085991378</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -117,6 +122,12 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - モデルの賢さがコモディティ化するほど、競争優位は「顧客の世界をどれだけ深く知っているか」に移り、その深さを作るのがFDE。
 - ビッグテックの垂直統合（[[business/ai-vertical-integration]]）の実行部隊でもある。[[companies/openai]] は DeployCo（FDE常駐・$40億超投資・Tomoro買収で約150名のFDE獲得）を設立。
 
+## 必要な能力は「業務モデリングスキル」
+
+FDEに必要な能力を業務モデリングスキルだと名指しするのは、実務者の@gura105である。takeshi_teshimaの概念設計論（[[concepts/concept-design]]）を、その必要性・重要性が非常に理解しやすい解説として挙げ、**単一アプリケーションの開発時**と**複数のSoR（System of Record）をまとめたオントロジー構築時**のどちらにおいても、概念設計や業務モデリングのスキルは必須になると述べる。
+
+この2つはFDEの仕事の両端にあたると考えられる。顧客業務の一部を型として切り分ける作業と、[[concepts/palantir-ontology]] のような組織横断の世界モデルを組み上げる作業は、粒度が違うだけで「現実の何と何を同じものとして扱い、何と何を別のものとして扱うか」という同じ問いに答えている。上の「なぜ今FDEか」で挙げた業務文脈の写し取りは、実務上はこの切り分けの巧拙として現れる。
+
 ## FDEの収益モデルとしての側面
 
 FDEは単なる職種ではなく、エンタープライズAI時代の収益モデルの中核装置でもある。共通戦略は「モデル＋実行責任」をパッケージで売り、自社プロダクトを顧客業務の「心臓部（止めると事業が止まる領域）」に埋め込むこと。これにより「使い続けるほど価値が増え、抜けることが経営判断として非現実的になる」構造的ロックインが生まれる。OpenAI Deployment Company設立時の「モデルを売る会社から、成果を売る会社に変わる」という言葉がこの転換を象徴する。
@@ -140,6 +151,7 @@ FDEは単なる職種ではなく、エンタープライズAI時代の収益モ
 - [[concepts/ai-requirements-definition]] — 「整理から決断へ」の能力転換がFDE像に収斂するという論考
 - [[business/google-calendar-ai-database]] — FDEが顧客組織に入ってまず行う業務データ構造化の具体例（GoogleカレンダーDB化）
 - [[concepts/agent-adoption-walls]] — FDEアプローチで企業にエージェントを導入する際に共通して詰まる7つの壁（@kzkhykw）
+- [[concepts/concept-design]] — FDEの中核能力とされる業務モデリングを、1アプリの型設計というスケールで具体化した設計論（@gura105 が必要性の解説として推す）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

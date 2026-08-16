@@ -171,11 +171,12 @@ Obsidian でグラフ可視化・検索
 <li><a href="../tools/hermes-agent-personal-vault.html">hermes-agent-personal-vault</a> — 「メモリは索引、知識はファイルに」という本思想をHermes Agent向け6プロンプトに具体化した個人生活ナレッジベース構築ガイド</li>
 <li><a href="../tools/cloudflare-os.html">cloudflare-os</a> — GitHub正本のMarkdown知識ベースをクラウド側エージェントにも参照させた実践例と、その月額コストの実測（Markdown約400件で実質0円）</li>
 <li><a href="../concepts/llm-wiki-vs-company-brain.html">llm-wiki-vs-company-brain</a> — 個人・小チーム向けのKarpathy式と企業向けCompany Brainの分岐点を権限・鮮度等の5点で整理し、4つの質問による判定基準を提示</li>
+<li><a href="../concepts/evergreen-notes-claude-md.html">evergreen-notes-claude-md</a> — 同じMarkdown＋ウィキリンクの型を、ingest/query/lintの3操作でなく「回答直後にノート化を提案させる」会話起点の成長で回す実装（tokuhirom / 64p.org）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/evergreen-notes-claude-md.html">evergreen-notes-claude-md</a></li>
 <li><a href="../concepts/llm-wiki-vs-company-brain.html">llm-wiki-vs-company-brain</a></li>
 <li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a></li>
-<li><a href="../concepts/output-first-learning.html">output-first-learning</a></li>
-<li><a href="../concepts/second-brain-operations.html">second-brain-operations</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://dev.classmethod.jp/articles/karpathy-llm-knowledge-base/" rel="noopener" target="_blank">https://dev.classmethod.jp/articles/karpathy-llm-knowledge-base/</a></li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://dev.classmethod.jp/articles/karpathy-llm-knowledge-base/" rel="noopener" target="_blank">https://dev.classmethod.jp/articles/karpathy-llm-knowledge-base/</a></li>
 <li><a href="https://zenn.dev/tsurubee/articles/llm-wiki-connecting-knowledge" rel="noopener" target="_blank">https://zenn.dev/tsurubee/articles/llm-wiki-connecting-knowledge</a></li>
 <li><a href="https://x.com/i/web/status/2052235121416188114" rel="noopener" target="_blank">https://x.com/i/web/status/2052235121416188114</a></li>
 <li><a href="https://x.com/i/web/status/2043873607731024164" rel="noopener" target="_blank">https://x.com/i/web/status/2043873607731024164</a></li>
@@ -355,6 +356,7 @@ tsurubee が運用で感じた根本的な限界。LLM が概念ページを綺�
 - [[tools/hermes-agent-personal-vault]] — 「メモリは索引、知識はファイルに」という本思想をHermes Agent向け6プロンプトに具体化した個人生活ナレッジベース構築ガイド
 - [[tools/cloudflare-os]] — GitHub正本のMarkdown知識ベースをクラウド側エージェントにも参照させた実践例と、その月額コストの実測（Markdown約400件で実質0円）
 - [[concepts/llm-wiki-vs-company-brain]] — 個人・小チーム向けのKarpathy式と企業向けCompany Brainの分岐点を権限・鮮度等の5点で整理し、4つの質問による判定基準を提示
+- [[concepts/evergreen-notes-claude-md]] — 同じMarkdown＋ウィキリンクの型を、ingest/query/lintの3操作でなく「回答直後にノート化を提案させる」会話起点の成長で回す実装（tokuhirom / 64p.org）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
