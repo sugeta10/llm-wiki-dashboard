@@ -37,3 +37,4 @@ AIは各品質特性の**作り込み速度**を上げる増幅器として機�
 - [[concepts/ai-era-good-engineer]] — 「AIは増幅器」を含むLayerXのAI時代エンジニア像
 - [[business/talent-to-value-ai]] — 「AIで価値を増幅できる人をどう見極めるか」を人材戦略に落としたマッキンゼーのフレーム
 - [[concepts/cognitive-debt]] — 品質のスケールには人間の理解が必要という論点を「理解を手放さない」実践論として展開
+- [[concepts/concept-design]] — 増幅される前段の土台。仙塲大也『良いコード／悪いコード』を命名の参考文献に挙げ、概念の切り分けが保守性を決めると論じる

@@ -40,3 +40,4 @@
 - [[concepts/multi-agent-patterns]] — 5ペルソナ並行実行はFan-Outパターンに相当
 - [[design/ai-ux-methods]] — AI時代のUX・コンバージョン設計
 - [[concepts/ai-persona-interview]] — 心理次元付きペルソナでニーズを発見する手法（本スキルは発見後の購買障壁検証側）
+- [[concepts/ai-chat-deeplink]] — プロンプト事前入力リンクを「AIに相談する」CTAとして置く手法。その効きを検証する側が本スキル

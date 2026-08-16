@@ -55,3 +55,4 @@ LLMが見るのはデータベースではなくオントロジー。データ�
 - [[concepts/openai-data-agent-context-layers]] — データとAIの間に文脈を保持する中間層という同型の発想（6層構造で表現）
 - [[business/talent-to-value-ai]] — 役割を名詞でなく動詞単位に分解して人とAIへ割り当てる発想が同型
 - [[concepts/company-brain]] — 「データとAIの間に業務文脈を保持する中間層」という同型の発想をsemantics/ontologyの語彙で再構成した設計思想（@ashwingop）
+- [[concepts/concept-design]] — 「その世界に何が存在するか（名詞）」から出発する同じ問いを、1アプリケーションの型設計のスケールで論じたもの（Order/Fulfillment）

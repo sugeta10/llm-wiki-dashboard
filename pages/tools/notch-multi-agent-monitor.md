@@ -18,3 +18,4 @@
 - [[tools/claude-code]]
 - [[tools/openai-codex]]
 - [[tools/cursor]]
+- [[tools/html-share]] — 並列稼働の状況把握という同じ課題への別解。あちらは成果物のHTMLをスマホから読ませ、こちらは通知と復帰導線に振る

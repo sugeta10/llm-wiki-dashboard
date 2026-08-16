@@ -79,3 +79,4 @@ Idle → 貨幣投入 → Paid → 商品選択 → Dropping → 商品排出 �
 - [[concepts/vibe-coding]] — 仕様なしにAIにコードを書かせるスタイル（振る舞い仕様の反省点）
 - [[concepts/agentic-coding]] — AIエージェントが自律的にコードを書く開発スタイル
 - [[concepts/implementation-notes-prompt]] — Spec-anchored実践：AIに実装ノートを並走させるプロンプト
+- [[concepts/concept-design]] — 仕様を書く一段手前で「その世界に何が存在するか」を切り分ける層。振る舞い仕様が実装の正誤を判定するのに対し、概念テストは仕様が既存概念と矛盾せず語れるかを判定する

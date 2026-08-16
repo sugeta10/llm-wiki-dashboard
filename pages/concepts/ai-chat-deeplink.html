@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-chat-deeplink - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-chat-deeplink</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-chat-deeplink.md">Markdownで表示</a></div>
+  <div class="meta">concepts/ai-chat-deeplink · concepts · <span title="2026-08-16">今日</span></div>
+  <article><h1>AIチャットのプロンプト事前入力リンク</h1>
+<p>主要なチャットAIは、URLのクエリパラメータにプロンプトを載せた状態で起動できる。自分のサイトからユーザーを送り出すのに、APIキーもチャットUIの実装も要らない、というのがこの手法の要点である。@seltzerは2026-08-15に「てっきりAPIとつなぐしかないと思っていた」と前置きしたうえでこれを紹介した。</p>
+<p>ソースで確認できるエンドポイントは次の2つ。</p>
+<table>
+<thead>
+<tr>
+<th>サービス</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ChatGPT</td>
+<td><code>https://chatgpt.com/?prompt=</code></td>
+</tr>
+<tr>
+<td>Claude</td>
+<td><code>https://claude.ai/new?q=</code></td>
+</tr>
+</tbody>
+</table>
+<p>Perplexityにも同種のリンクがあると@seltzerは書いているが、ソースに残っているリンク展開は <code>https://www.perplexity.ai/</code> までで、パラメータ名は確認できない。Geminiについては@seltzer自身が「Geminiにはない？」と疑問形で置いており、対応の有無は未確認である。</p>
+<h2>何が嬉しいのか</h2>
+<p>@seltzerの投稿は、@marikkadayoの「普段使ってるAIに相談できる機能つけたらAI経由の流入増えていい感じ」という投稿を引用する形で出ている。つまり動機は技術デモではなく<strong>導線</strong>にある。サイト側にチャットUIを持たせると、実装・モデル費用・会話ログの管理がすべて自分に乗る。プロンプト事前入力リンクはそれを丸ごと相手側へ寄せ、リンク1本に落とす。訪問者は自分が普段使っているAIの、ログイン済みの、課金済みの環境で相談を始めることになる。</p>
+<p>裏返せば、渡せるのは最初の1プロンプトだけである。自社のドキュメントや在庫データを参照させたいなら、プロンプト本文に埋め込むか、結局はAPIやMCPが要る。この手法が効くのは「相談の入口を作る」ところまでだと考えられる。</p>
+<h2>問い</h2>
+<ul>
+<li>このvaultの公開サイト（<code>wiki/public-site/</code>）の各ページに「このページについてAIに聞く」リンクを置いたら、ページ本文の要約をプロンプトへ埋め込む形にすべきか、URLだけ渡して読ませるべきか。後者はAI側のfetch能力に依存する</li>
+<li>URLエンコードされた長いプロンプトは、どのサービスでどこまで通るのか（文字数上限・改行・日本語）。ソースは短い例しか示していない</li>
+<li>流入計測はどうなるのか。リンクをクリックした先はAIサービスのドメインで、そこから自サイトへ戻ってくる保証はない。「AI経由の流入が増えた」を何で測るのか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/blume.html">blume</a> — 自動SEO/AEO対応を謳うドキュメントサイトFW。あちらはAI検索から人を呼び込む向き、こちらは自サイトからAIへ送り出す逆向きの導線</li>
+<li><a href="../tools/buy-or-bounce.html">buy-or-bounce</a> — LP・メール・広告のコンバージョン障壁をペルソナ並行シミュレーションで検証するスキル。「AIに相談する」ボタンをCTAの一種として置くなら、その効きを事前に見る道具になる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/blume.html">blume</a></li>
+<li><a href="../tools/buy-or-bounce.html">buy-or-bounce</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2088541705855238444" rel="noopener" target="_blank">https://x.com/i/web/status/2088541705855238444</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AIチャットのプロンプト事前入力リンク
+
+主要なチャットAIは、URLのクエリパラメータにプロンプトを載せた状態で起動できる。自分のサイトからユーザーを送り出すのに、APIキーもチャットUIの実装も要らない、というのがこの手法の要点である。@seltzerは2026-08-15に「てっきりAPIとつなぐしかないと思っていた」と前置きしたうえでこれを紹介した。
+
+ソースで確認できるエンドポイントは次の2つ。
+
+| サービス | URL |
+|---|---|
+| ChatGPT | `https://chatgpt.com/?prompt=` |
+| Claude | `https://claude.ai/new?q=` |
+
+Perplexityにも同種のリンクがあると@seltzerは書いているが、ソースに残っているリンク展開は `https://www.perplexity.ai/` までで、パラメータ名は確認できない。Geminiについては@seltzer自身が「Geminiにはない？」と疑問形で置いており、対応の有無は未確認である。
+
+## 何が嬉しいのか
+
+@seltzerの投稿は、@marikkadayoの「普段使ってるAIに相談できる機能つけたらAI経由の流入増えていい感じ」という投稿を引用する形で出ている。つまり動機は技術デモではなく**導線**にある。サイト側にチャットUIを持たせると、実装・モデル費用・会話ログの管理がすべて自分に乗る。プロンプト事前入力リンクはそれを丸ごと相手側へ寄せ、リンク1本に落とす。訪問者は自分が普段使っているAIの、ログイン済みの、課金済みの環境で相談を始めることになる。
+
+裏返せば、渡せるのは最初の1プロンプトだけである。自社のドキュメントや在庫データを参照させたいなら、プロンプト本文に埋め込むか、結局はAPIやMCPが要る。この手法が効くのは「相談の入口を作る」ところまでだと考えられる。
+
+## 問い
+
+- このvaultの公開サイト（`wiki/public-site/`）の各ページに「このページについてAIに聞く」リンクを置いたら、ページ本文の要約をプロンプトへ埋め込む形にすべきか、URLだけ渡して読ませるべきか。後者はAI側のfetch能力に依存する
+- URLエンコードされた長いプロンプトは、どのサービスでどこまで通るのか（文字数上限・改行・日本語）。ソースは短い例しか示していない
+- 流入計測はどうなるのか。リンクをクリックした先はAIサービスのドメインで、そこから自サイトへ戻ってくる保証はない。「AI経由の流入が増えた」を何で測るのか
+
+## 関連
+
+- [[tools/blume]] — 自動SEO/AEO対応を謳うドキュメントサイトFW。あちらはAI検索から人を呼び込む向き、こちらは自サイトからAIへ送り出す逆向きの導線
+- [[tools/buy-or-bounce]] — LP・メール・広告のコンバージョン障壁をペルソナ並行シミュレーションで検証するスキル。「AIに相談する」ボタンをCTAの一種として置くなら、その効きを事前に見る道具になる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

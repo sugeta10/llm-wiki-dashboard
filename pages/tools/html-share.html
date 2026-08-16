@@ -29,11 +29,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>html-share</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="html-share.md">Markdownで表示</a></div>
-  <div class="meta">tools/html-share · tools · <span title="2026-08-15">1日前</span></div>
+  <div class="meta">tools/html-share · tools · <span title="2026-08-16">今日</span></div>
   <article><h1>HTML共有くん（html-share）</h1>
 <p>minorun365が公開するセルフホスト型のHTML共有ツール。Claude Codeの生成物を見やすいHTMLに整え、自分専用の一覧にまとめ、スマホから確認・共有できるようにする。初回セットアップ後は日本語でClaude Codeに頼むだけで動く、というのが作者の説明である。</p>
 <p>セルフホスト型で、自分のAWSアカウント上で動かす。作者側にページや回答が送られない設計だと明記されている。</p>
 <p>作った動機を、minorun365は2026-08-13の公開告知で「Claude Codeからの作業報告、マークダウンでばーっと出力されても見づらい」の一文に置いている。そのうえでこのツールを「AIエージェントと自分専用のポータル」と位置づける。同じ告知によれば <code>/mobile</code> はこのツールに同梱されるスキルで、専用のインボックスとセットになっている。PCで始めた作業をスマホへ送り、移動中に非同期で対応する導線を作るのが狙いだという。</p>
+<p>公開2日後の2026-08-15、minorun365は自分の使い方を「Claude Codeを8並列でフル稼働させながら外出して、スマホで作業状況を見やすく追える」と報告している。当初の告知が挙げていた「作業報告が読みづらい」という動機に、<strong>並列数が増えるほど状況把握が破綻する</strong>という第二の動機が重なっていることになる。1セッションの報告を読みやすくする話と、8セッション分の状況を1画面で追う話では、必要になる集約の度合いが違うためである。</p>
 <h2>できること</h2>
 <ul>
 <li>メモや調査結果を、見やすいHTMLに整える</li>
@@ -65,11 +66,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a> — スマホ・ブラウザからPC上のClaude Codeを操作する公式機能。こちらは操作そのものを遠隔化し、HTML共有くんは成果物の確認と承認を遠隔化する</li>
 <li><a href="../concepts/llm-doc-management.html">llm-doc-management</a> — HTML+JSONでアプリのフローを文書化しLLMのコンテキストに渡すパターン。同じHTMLでもこちらは入力側、HTML共有くんは出力側</li>
 <li><a href="../tools/show-me.html">show-me</a> — 「エージェントの報告が読めない」という同じ動機から出たHumanLayer製スキル。あちらは応答の表現そのものを軽い図に変え、こちらは出力の置き場所と共有経路を作る</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/html-output-format.html">html-output-format</a></li>
+<li><a href="../tools/notch-multi-agent-monitor.html">notch-multi-agent-monitor</a> — 並列稼働中のエージェントの状態を1箇所に集約する別解。あちらはMacのノッチに常駐して「完了・要承認」を通知し、こちらは成果物そのものをスマホから読める形で置く</li>
+<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — 8並列という運用の前提側。subagent／agent teams／worktreeの使い分けで並列数を増やすほど、状況把握の集約手段が要る</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li>
+<li><a href="../concepts/html-output-format.html">html-output-format</a></li>
 <li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li>
 <li><a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a></li>
-<li><a href="../tools/show-me.html">show-me</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/minorun365/html-share" rel="noopener" target="_blank">https://github.com/minorun365/html-share</a></li>
-<li><a href="https://x.com/i/web/status/2087913653433696451" rel="noopener" target="_blank">https://x.com/i/web/status/2087913653433696451</a></li></ul></section></article>
+<li><a href="../tools/notch-multi-agent-monitor.html">notch-multi-agent-monitor</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/minorun365/html-share" rel="noopener" target="_blank">https://github.com/minorun365/html-share</a></li>
+<li><a href="https://x.com/i/web/status/2087913653433696451" rel="noopener" target="_blank">https://x.com/i/web/status/2087913653433696451</a></li>
+<li><a href="https://x.com/i/web/status/2088522288241233947" rel="noopener" target="_blank">https://x.com/i/web/status/2088522288241233947</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -97,6 +102,8 @@ minorun365が公開するセルフホスト型のHTML共有ツール。Claude Co
 セルフホスト型で、自分のAWSアカウント上で動かす。作者側にページや回答が送られない設計だと明記されている。
 
 作った動機を、minorun365は2026-08-13の公開告知で「Claude Codeからの作業報告、マークダウンでばーっと出力されても見づらい」の一文に置いている。そのうえでこのツールを「AIエージェントと自分専用のポータル」と位置づける。同じ告知によれば `/mobile` はこのツールに同梱されるスキルで、専用のインボックスとセットになっている。PCで始めた作業をスマホへ送り、移動中に非同期で対応する導線を作るのが狙いだという。
+
+公開2日後の2026-08-15、minorun365は自分の使い方を「Claude Codeを8並列でフル稼働させながら外出して、スマホで作業状況を見やすく追える」と報告している。当初の告知が挙げていた「作業報告が読みづらい」という動機に、**並列数が増えるほど状況把握が破綻する**という第二の動機が重なっていることになる。1セッションの報告を読みやすくする話と、8セッション分の状況を1画面で追う話では、必要になる集約の度合いが違うためである。
 
 ## できること
 
@@ -132,6 +139,8 @@ minorun365が公開するセルフホスト型のHTML共有ツール。Claude Co
 - [[tools/claude-code-remote-control]] — スマホ・ブラウザからPC上のClaude Codeを操作する公式機能。こちらは操作そのものを遠隔化し、HTML共有くんは成果物の確認と承認を遠隔化する
 - [[concepts/llm-doc-management]] — HTML+JSONでアプリのフローを文書化しLLMのコンテキストに渡すパターン。同じHTMLでもこちらは入力側、HTML共有くんは出力側
 - [[tools/show-me]] — 「エージェントの報告が読めない」という同じ動機から出たHumanLayer製スキル。あちらは応答の表現そのものを軽い図に変え、こちらは出力の置き場所と共有経路を作る
+- [[tools/notch-multi-agent-monitor]] — 並列稼働中のエージェントの状態を1箇所に集約する別解。あちらはMacのノッチに常駐して「完了・要承認」を通知し、こちらは成果物そのものをスマホから読める形で置く
+- [[concepts/claude-code-orchestration]] — 8並列という運用の前提側。subagent／agent teams／worktreeの使い分けで並列数を増やすほど、状況把握の集約手段が要る
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
