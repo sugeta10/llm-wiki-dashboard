@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>evergreen-notes-claude-md</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="evergreen-notes-claude-md.md">Markdownで表示</a></div>
-  <div class="meta">concepts/evergreen-notes-claude-md · concepts · <span title="2026-08-16">今日</span></div>
+  <div class="meta">concepts/evergreen-notes-claude-md · concepts · <span title="2026-08-16">1日前</span></div>
   <article><h1>エバーグリーンノートをCLAUDE.mdで育てる（tokuhirom / 64p.org）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 調べ物に答えた直後に「これをノートに残すか」をAIから聞かせる一条を置くと、日々の質問がそのまま個人ノート網の成長に変わる。</p>
@@ -73,11 +73,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>説明を読むだけでなく実際にマシン上でコードを書いて動かしてから書け、という条文もある。ネットワーク・カーネル周りは動かさないと理解が浅くなりがちなため最小限の実験コードを優先的に検討する、という理由づけが添えられている。ただし実験の記録は概念ノートに混ぜ込まず <code>&lt;トピック&gt;-experiment.md</code> として切り出し、概念ノート側からリンクする（原則1の原子性）。実験ノートには目的・使った素材・躓いた点と対処・実行結果・コードから読み取れることを書き、感想ではなく再現可能な記録にする。実行前には何を試すかを説明してユーザーの許可を取る。</p>
 <h2>決定論的な足回りをAIに任せない</h2>
 <p>日付とリンク整合性は人間にもAIにも書かせていない。<code>git commit</code> 時にlefthookのpre-commitフック（<code>update-note-dates.pl</code>）がステージされた <code>notes/src/*.md</code> のfrontmatterに <code>created</code> / <code>updated</code> を付与・更新する。ファイルの <code>stat()</code> のmtimeには依存させていない——新規cloneやCIのビルドではmtimeが壊れるためで、frontmatterが無い場合のみmtimeへフォールバックする。ビルドの <code>regen-index.pl</code> がHTML・タグページ・バックリンク（「🔗 リンクされているノート」）を自動生成し、存在しないファイル名へのウィキリンクはビルド時に警告が出るので気づける。生成物は <code>.gitignore</code> され、GitHub Actionsがデプロイのたびに再生成する。mdのみの変更はPRを作らず直接masterへpushしてよく、テンプレートやビルドロジックに手を入れたときだけPRを作る、という運用の軽重も条文化されている。</p>
+<h2>記法を増やすほど誤爆する問題を、仕様側で潰す</h2>
+<p>ウィキリンク・タグ・図・数式と記法を足していくと、本文中のただの記号がリンクやタグに化ける事故が増える。64p.orgのCLAUDE.mdは、その境界を仕様として明文化している。</p>
+<p>タグは <code>#</code> の直後が英字または日本語（Unicodeの「文字」全般）で始まるものだけを認識し、<strong>数字・アンダースコア始まりは弾く</strong>。これは <code>#1234</code> のようなIssue/PR番号や <code>#40262</code> のような参照番号をタグと誤認しないための制約だと理由まで書かれており、日付や連番をタグに使わないことも併記されている。<code>foo#bar</code> のように直前が英数字の場合も、URLフラグメント（<code>...#section</code>）やC#のような固有名詞と区別できないため無視する。一方で句読点や括弧の直後（<code>文末。#tag</code>）は認識するので、日本語の文はスペースなしでタグを続けられる。見出し行 <code># タイトル</code> が誤認識されないのは、<code>#</code> の直前が空白か行頭であることを要求しているためである。英字タグは小文字へ正規化される（<code>#AI</code> と <code>#ai</code> は同一）が、<strong>日本語タグは正規化されない</strong>ため表記ゆれがそのまま別タグになる、という副作用も明示されている。</p>
+<p>そして <code>...</code>・<code>#tag</code>・<code>$$...$$</code>・<code>\(...\)</code> のいずれも、コードブロック・インラインコード・数式ブロックの中では解釈されない。<code>#include</code> や <code>#!/usr/bin/env</code>、シェルの <code>$$</code> を含むコード例を安全に貼れる。図と数式はビルド時に mermaid のフェンスを <code>&lt;div class="mermaid"&gt;</code> へ、TeX記法を <code>&lt;div class="math-display"&gt;</code> / <code>&lt;span class="math-inline"&gt;</code> へ変換し、閲覧時にmermaid.jsとKaTeXをjsdelivr CDNから遅延読み込みしてクライアントサイドでレンダリングする。<strong>図や数式を含むノートのページだけがライブラリを読み込む</strong>ので他ページには影響せず、mermaidはダーク/ライトテーマの切替にも追従して再レンダリングされる。ネットワーク構成図・シーケンス図・状態遷移はASCIIアートで代用せず図で、数学・信号処理・物理の式はユニコード文字で代用せずTeX記法で書け、と使いどころまで指定されている。ハブノートに付ける <code>#moc</code> タグは、<code>/notes/tags/moc.html</code> でハブノート一覧を一望するための約束事である。</p>
 <h2>問い</h2>
 <ul>
 <li>このvaultのCLAUDE.mdのQuery操作には「新しい洞察があれば追記」とあるが、回答後に<strong>ノート化するかを聞く</strong>という一手は無い。提案を挟む方が実際に育つのか、それとも聞かれること自体が摩擦になるか</li>
 <li>原子性（1ノート1概念・積極的に切り出す）と、このvaultのingestの粒度判定（既存ページへ統合する方に倒しがち）はどちらが後のQueryに効くか。tokuhiromは切り出し側、こちらは統合側に倒している</li>
 <li>「一般的に見える質問にも最低1回は裏取り」を全質問に課すコストは見合うか。裏取りの有無を質問の種類で分ける基準は作れるか</li>
+<li>このvaultはタグをfrontmatterの <code>tags:</code> に置き本文に <code>#tag</code> を書かないので、ウィキリンク以外のフラットな関連付け手段を持っていない。64p.orgの <code>#tag</code> に相当する横串（例: <code>#moc</code> でハブノートを一望する類）は必要か、それともindex.mdが代替しているか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -87,7 +92,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
 <li><a href="../concepts/second-brain-operations.html">second-brain-operations</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2088766750263533870" rel="noopener" target="_blank">https://x.com/i/web/status/2088766750263533870</a></li>
-<li><a href="https://github.com/tokuhirom/64p.org/blob/master/CLAUDE.md" rel="noopener" target="_blank">https://github.com/tokuhirom/64p.org/blob/master/CLAUDE.md</a></li></ul></section></article>
+<li><a href="https://github.com/tokuhirom/64p.org/blob/master/CLAUDE.md" rel="noopener" target="_blank">https://github.com/tokuhirom/64p.org/blob/master/CLAUDE.md</a></li>
+<li><a href="https://x.com/tokuhirom/status/2088766750263533870?s=46&amp;amp;t=uYCC1wkFBP2PqJcfrzbQww" rel="noopener" target="_blank">https://x.com/tokuhirom/status/2088766750263533870?s=46&amp;amp;t=uYCC1wkFBP2PqJcfrzbQww</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -166,11 +172,20 @@ CLAUDE.mdはノートの設計原則を6つ挙げている。
 
 日付とリンク整合性は人間にもAIにも書かせていない。`git commit` 時にlefthookのpre-commitフック（`update-note-dates.pl`）がステージされた `notes/src/*.md` のfrontmatterに `created` / `updated` を付与・更新する。ファイルの `stat()` のmtimeには依存させていない——新規cloneやCIのビルドではmtimeが壊れるためで、frontmatterが無い場合のみmtimeへフォールバックする。ビルドの `regen-index.pl` がHTML・タグページ・バックリンク（「🔗 リンクされているノート」）を自動生成し、存在しないファイル名へのウィキリンクはビルド時に警告が出るので気づける。生成物は `.gitignore` され、GitHub Actionsがデプロイのたびに再生成する。mdのみの変更はPRを作らず直接masterへpushしてよく、テンプレートやビルドロジックに手を入れたときだけPRを作る、という運用の軽重も条文化されている。
 
+## 記法を増やすほど誤爆する問題を、仕様側で潰す
+
+ウィキリンク・タグ・図・数式と記法を足していくと、本文中のただの記号がリンクやタグに化ける事故が増える。64p.orgのCLAUDE.mdは、その境界を仕様として明文化している。
+
+タグは `#` の直後が英字または日本語（Unicodeの「文字」全般）で始まるものだけを認識し、**数字・アンダースコア始まりは弾く**。これは `#1234` のようなIssue/PR番号や `#40262` のような参照番号をタグと誤認しないための制約だと理由まで書かれており、日付や連番をタグに使わないことも併記されている。`foo#bar` のように直前が英数字の場合も、URLフラグメント（`...#section`）やC#のような固有名詞と区別できないため無視する。一方で句読点や括弧の直後（`文末。#tag`）は認識するので、日本語の文はスペースなしでタグを続けられる。見出し行 `# タイトル` が誤認識されないのは、`#` の直前が空白か行頭であることを要求しているためである。英字タグは小文字へ正規化される（`#AI` と `#ai` は同一）が、**日本語タグは正規化されない**ため表記ゆれがそのまま別タグになる、という副作用も明示されている。
+
+そして `[[...]]`・`#tag`・`$$...$$`・`\(...\)` のいずれも、コードブロック・インラインコード・数式ブロックの中では解釈されない。`#include` や `#!/usr/bin/env`、シェルの `$$` を含むコード例を安全に貼れる。図と数式はビルド時に mermaid のフェンスを `&lt;div class=&quot;mermaid&quot;&gt;` へ、TeX記法を `&lt;div class=&quot;math-display&quot;&gt;` / `&lt;span class=&quot;math-inline&quot;&gt;` へ変換し、閲覧時にmermaid.jsとKaTeXをjsdelivr CDNから遅延読み込みしてクライアントサイドでレンダリングする。**図や数式を含むノートのページだけがライブラリを読み込む**ので他ページには影響せず、mermaidはダーク/ライトテーマの切替にも追従して再レンダリングされる。ネットワーク構成図・シーケンス図・状態遷移はASCIIアートで代用せず図で、数学・信号処理・物理の式はユニコード文字で代用せずTeX記法で書け、と使いどころまで指定されている。ハブノートに付ける `#moc` タグは、`/notes/tags/moc.html` でハブノート一覧を一望するための約束事である。
+
 ## 問い
 
 - このvaultのCLAUDE.mdのQuery操作には「新しい洞察があれば追記」とあるが、回答後に**ノート化するかを聞く**という一手は無い。提案を挟む方が実際に育つのか、それとも聞かれること自体が摩擦になるか
 - 原子性（1ノート1概念・積極的に切り出す）と、このvaultのingestの粒度判定（既存ページへ統合する方に倒しがち）はどちらが後のQueryに効くか。tokuhiromは切り出し側、こちらは統合側に倒している
 - 「一般的に見える質問にも最低1回は裏取り」を全質問に課すコストは見合うか。裏取りの有無を質問の種類で分ける基準は作れるか
+- このvaultはタグをfrontmatterの `tags:` に置き本文に `#tag` を書かないので、ウィキリンク以外のフラットな関連付け手段を持っていない。64p.orgの `#tag` に相当する横串（例: `#moc` でハブノートを一望する類）は必要か、それともindex.mdが代替しているか
 
 ## 関連
 
