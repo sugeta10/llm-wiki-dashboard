@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>graph-reliability-design - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>graph-reliability-design</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="graph-reliability-design.md">Markdownで表示</a></div>
+  <div class="meta">concepts/graph-reliability-design · concepts · <span title="2026-08-17">今日</span></div>
+  <article><h1>本番グラフの信頼性設計（状態・失敗・ルーティング権限）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: ノードとエッジの図が隠しているのは状態と失敗であり、@0xwhrrariは、耐久する状態・アーティファクト参照での受け渡し・ノード単位の失敗方針・決定論的に許可されたルートが揃って初めてグラフはデモから本番になると論じる。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Scope[&quot;scope\n問い・読者・完了条件&quot;] --&gt; Decomp[&quot;decomposition\n独立レーンに分解&quot;]
+  Decomp --&gt; R1[&quot;research 1\n独立コンテキスト&quot;]
+  Decomp --&gt; R2[&quot;research 2&quot;]
+  Decomp --&gt; R3[&quot;research N&quot;]
+  R1 &amp; R2 &amp; R3 --&gt; Dedup[&quot;決定論コード\n重複排除・出典正規化&quot;]
+  Dedup --&gt; Draft[&quot;draft\n構造化された根拠から執筆&quot;]
+  Draft --&gt; Check[&quot;checker\n主張・引用・体裁・欠落節&quot;]
+  Check --&gt;|&quot;不合格の節だけ&quot;| Repair[&quot;repair&quot;]
+  Repair --&gt; Check
+  Check --&gt; Human[&quot;人間の承認\n公開前の最後のyes&quot;]</pre>
+<p>箱と矢印の図が綺麗に見えるのは、システムがクラッシュから復帰しなければならなくなるまでの話だと@0xwhrrariは述べる。ノードとエッジの語彙、偽エッジの切断、ノードの契約、ダイヤモンド型、検査役の分離といった設計語彙は <a href="../concepts/graph-engineering.html">graph-engineering</a> に厚く記述があり、@0xwhrrariも同じ結論に独立に到達している。本ページはそこに含まれない層——<strong>実行が中断したあと何が残っているか、1ノードが死んだとき損害がどこで止まるか、ルートを決める権限を誰が持つか</strong>——を扱う。@0xwhrrariの言葉では「プロンプトエンジニアリングは指示を改善し、コンテキストエンジニアリングはモデルが見るものを制御し、ハーネスエンジニアリングはモデルの周囲の環境を作り、ループエンジニアリングは1つの作業単位をフィードバックで改善し、グラフエンジニアリングは仕事全体を調整する。モデルはノードの1つにすぎず、プロダクトはその周囲のシステムだ」となる。</p>
+<h2>状態は図がいちばん隠す部分</h2>
+<p>本番のグラフには<strong>耐久する状態（durable state）</strong>が要る、と@0xwhrrariは述べる。そして受け渡しの原則を1つ挙げる——<strong>巨大なトランスクリプトをノード間で動かさず、アーティファクトへの参照を動かす</strong>。リサーチノードはレポートを保存してパス・ID・構造化サマリーを返し、レビュアーはそのアーティファクトを直接読む。3体のエージェントを経由した圧縮された語り直しを受け取るのではない。これでコンテキストの損失が減り、遷移が監査可能になると@0xwhrrariは述べる。記事はさらに「グラフはどの瞬間にも3つの問いに答えられるべきで、答えられないならそれはまだデモだ」と続けるが、その3問は記事内の図に置かれており本文テキストには含まれていない（元記事の図は未取得のため、ここでは列挙しない）。</p>
+<p>この論点は <a href="../concepts/12-factor-agents.html">12-factor-agents</a> の Factor 5（実行状態とビジネス状態を分離しない）・Factor 6（シンプルなAPIで起動・一時停止・再開）を単体エージェントからノード群へ持ち上げたものと考えられる。</p>
+<h2>失敗はローカルなイベントとして設計する</h2>
+<p>鎖では1つ壊れたステップがワークフロー全体を凍らせる。グラフでは失敗を可能な限り小さい境界の内側に留めるべきだと@0xwhrrariは述べ、具体策を挙げる。</p>
+<ul>
+<li><strong>高価なノードの後にチェックポイントを置く</strong></li>
+<li><strong>書き込みを冪等にする</strong>（リトライが副作用を二重に発生させないため）</li>
+<li><strong>ファイルを変更する並列ワーカーには隔離されたワークスペースを与える</strong></li>
+<li><strong>すべてのルーティング決定を、それを生んだ状態と一緒に記録する</strong></li>
+</ul>
+<p>そして「信頼性は全ノードが成功することを願うところからは来ない。1つが成功しなかったときグラフが何をするかを決めるところから来る」とまとめる。ノードごとの失敗方針の一覧は記事内の図にあり本文には展開されていない。</p>
+<h2>ルーティングを検査可能にする</h2>
+<p><strong>モデルは判断を下してよいが、その判断が何を起動できるかはグラフが強制する</strong>。@0xwhrrariはこれを「分類器は確率的、許可されたルートは決定論的」と定式化する。これによりモデルの柔軟性を得ながら、システムに対する無制限の制御をモデルに渡さずに済む。OpenAIのビジュアルなAgent Builderは、エージェントの挙動が隠れたプロンプト連鎖ではなく検査可能なワークフローとして設計される方向への転換を可視化した例だと@0xwhrrariは位置づける。</p>
+<p>同じ立場は <a href="../concepts/graph-engineering.html">graph-engineering</a> の難所3（GoogleのADK 2.0の設計ルール）にも記録されており、別著者が独立に同じ結論へ到達している。</p>
+<h2>エッジはデータ契約であり、配線にモデルを使わない</h2>
+<p>エッジの意味は「BがAの後に来る」ではなく「AがBの消費を許されたデータを生んだ」だと@0xwhrrariは述べる。この区別が効くのは、ワークフローの配線（plumbing）の多くがモデル呼び出しを必要としないからだ——配列の平坦化・重複除去・nullのフィルタ・ステータスの確認・レコードの結合はいずれも決定論的な操作である。<strong>モデル呼び出しは判断のために取っておき、配線はコードでやる</strong>。「すべてのエッジが別のエージェントになっているグラフは、自分の配線にトークンを払っている」と@0xwhrrariは書く。</p>
+<p>ノードの契約についても、@0xwhrrariは4点を要求する——<strong>1つの仕事・明示的な入力・構造化された出力・明確な失敗状態</strong>。自由テキストは次のノードに何が起きたかを推測させる。契約が保たれる限りモデル・プロンプト・ツールを差し替えてもシステム全体を作り直さずに済むため、契約はノードの交換可能性そのものだと述べる。</p>
+<h2>ほとんどのグラフは4つの形の組み合わせ</h2>
+<p>50個のパターンは要らないと@0xwhrrariは述べ、本番のグラフはおおむね次の4つの形の組み合わせだとする。</p>
+<table>
+<thead>
+<tr>
+<th>形</th>
+<th>使いどき</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>鎖（chain）</strong></td>
+<td>各ステップが本当に前の出力を必要とする場合。単純で予測可能、しばしば必要以上に遅い</td>
+</tr>
+<tr>
+<td><strong>ダイヤモンド（diamond）</strong></td>
+<td>1つの仕事を独立した枝に分け、並走させ、結果を統合する。リサーチ・コードレビュー・デューデリジェンス・市場調査の主力</td>
+</tr>
+<tr>
+<td><strong>ルーター（router）</strong></td>
+<td>状態を見てタスクが必要とする経路だけを選ぶ。小さい仕事は安く済み、リスクの高い仕事は深いグラフへ回る</td>
+</tr>
+<tr>
+<td><strong>制御されたサイクル（controlled cycle）</strong></td>
+<td>結果が不完全だと証拠が示すときだけ繰り返す。ハードな停止・予算・収束ルールが毎回必要</td>
+</tr>
+</tbody>
+</table>
+<p>fan-outについては、並列化はいちばん理解しやすい利点でありいちばん濫用されやすい利点だと@0xwhrrariは注意する。5ノードが独立なら並走させる。ただし<strong>各ステージの後にバリアを置いてはいけない</strong>——joinが待つ価値を持つのは次のノードが完全な集合を必要とするときだけで、その例はソース横断の重複排除・全候補のランキング・選択肢の比較・カバレッジが十分かの判定である。各アイテムが独立に進めるならグラフはストリーミングのままにする。「並列は自動的に速いわけではない。トポロジーがシステムがどこで待つかを決める」。</p>
+<p>サイクルには測定可能な収束が要る。「良くなるまで繰り返す」は停止条件ではないと@0xwhrrariは述べ、制御されたサイクルに必要なものとして<strong>完了テスト・最大ラウンド数・トークンまたはコストの予算・過去の試行の記録・収束に失敗したときのエスカレーション経路</strong>を挙げる。重複排除の対象は検証を通った発見だけでなく<strong>これまでに見た全て</strong>にする。そうしないと却下されたアイデアが戻り続け、グラフは同じ行き止まりを再発見するために永遠に課金する。</p>
+<h2>検証はエッジに置く</h2>
+<p>グラフでいちばんレバレッジの高いノードは、しばしば何も新しく生み出さないノードだと@0xwhrrariは述べる。その仕事は弱い成果物が下流へ進むのを止めることだ。検査役が確認できるものとして、すべての主張に出典があるか・引用された出典が主張を支持しているか・コードがテストを通るか・結果が要求されたスキーマに合っているか・独立した別経路が同じ結論に達するか、を挙げる。<strong>1つのコンテキストの中で生成・承認・公開を同じエージェントにやらせない</strong>。役割・プロンプト・失敗境界をそれぞれ分離する。Anthropicの本番リサーチシステムも同じ論理をより大きなスケールで踏んでいると@0xwhrrariは紹介する——リードエージェントが並列サブエージェントを調整し、発見が統合され、専用の引用ステージが根拠を付けてから結果がユーザーに届く。</p>
+<h2>トポロジーがコストモデル</h2>
+<p>グラフは1体のエージェントより自動的に安いわけではなく、あらゆるタスクが艦隊を生むならはるかに多くのトークンを燃やしうると@0xwhrrariは述べる。形がレイテンシとコストの両方を決める。境界の明確な抽出・分類・整形には安いモデルを、分解・統合・難しい検証には強いモデルを使い、単純なタスクは短い経路へ流し、フルのグラフはそれに値する仕事のために取っておく。Anthropicはマルチエージェントのリサーチが幅優先の仕事で単体エージェントを実質的に上回りうると報告しているが、同時にはるかに多くのトークンを使うとも報告していると@0xwhrrariは紹介する。「グラフエンジニアリングはエージェントの数を最大化することではない。並列性・専門分化・独立した検証が十分な価値を生む場所にだけ調整コストを払うことだ」。</p>
+<h2>グラフが誤答になるとき</h2>
+<p>@0xwhrrariの判断基準は、既存の議論とほぼ一致する。1エージェント1ループに留めるのは、タスクが短い・1つのコンテキストが関連情報すべてを保持できる・独立した枝がない・失敗が安い・人間が最終結果を素早くレビューできる場合。グラフへ移るのは、仕事が並列に走れる・ノードごとに違うツールや権限が要る・出力に独立した検証が要る・中断後に再開できなければならない・複数のループが状態を共有する必要がある・コストと権限を経路ごとに制御しなければならない場合。「1つのループから始め、依存関係がそれを強いるときだけグラフを描け」と@0xwhrrariはまとめる。</p>
+<p>このうち<strong>中断後の再開</strong>と<strong>経路ごとの権限・コスト制御</strong>の2つは、他のグラフ論があまり前面に出さない移行条件であり、本ページの状態・失敗・ルーティング権限の3節がその裏側にある実装要件に当たると考えられる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-08-10 @0xwhrrari: Anthropicの「マルチエージェントのリサーチは幅優先の仕事で単体エージェントを実質的に上回るが、はるかに多くのトークンを使う」という報告は同記事からの孫引きで、Anthropic一次資料には当たっていない。X bookmark 1,740 / imp 1,738,952（2026-08-17時点）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分のwiki運用（ingest→lint→weekly生成）で、ノード間を渡っているのは「アーティファクトへの参照」か「トランスクリプトの語り直し」か。渡しているものを棚卸しすると、どこでコンテキストが失われているかが見えるのではないか</li>
+<li>「書き込みを冪等にする」をwiki-ingestに当てはめると、同一ソースを二度ingestしたときにページの節・観察ログ・index行が二重化しない保証はどこにあるか（今回のように同じパスが2回渡されるケースを含む）</li>
+<li>マージ段で入力数を期待値と突き合わせて欠落を報告する仕組みは、<code>/tmp/ingest_result.json</code> の <code>sources_count</code> と <code>reflected_count</code> の差分検査として既に成立しているか。成立していないなら沈黙する欠落ノードをどう検知するか</li>
+<li>「分類器は確率的、許可されたルートは決定論的」というルールは、カテゴリ判定（LLM）とTier判定（rule＋LLM併用）のどちらまで適用できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a> — ノード/エッジ/契約/偽エッジ判定/バリアのスメルテストという設計語彙の本体。本ページはその図が隠す状態・失敗・権限の層を扱う</li>
+<li><a href="../concepts/12-factor-agents.html">12-factor-agents</a> — Factor 5（実行状態とビジネス状態）・Factor 6（起動/一時停止/再開）。本ページの耐久状態はこれをノード群へ持ち上げたもの</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — フォールバック設計・Shared Stateの終了条件・古典的5パターン（Routing含む）。本ページの4つの形と対応する実装パターン集</li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — セッション再開・worktree隔離・ノード別モデル選択を実際に提供している実装。本ページの要件がそのまま機能として現れている</li>
+<li><a href="../concepts/loop-graph-grounding.html">loop-graph-grounding</a> — 相互参照だけの循環したグラフはアンカー（生の実測）なしに壊れるという議論。検証をエッジに置く話の一段先</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — スタックの一段下、モデル周囲のコードとしてのハーネス</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 検査役ノードの品質ゲートとしての具体実装</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/12-factor-agents.html">12-factor-agents</a></li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a></li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2086784668003598356" rel="noopener" target="_blank">https://x.com/i/web/status/2086784668003598356</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 本番グラフの信頼性設計（状態・失敗・ルーティング権限）
+
+&gt; **TL;DR**: ノードとエッジの図が隠しているのは状態と失敗であり、@0xwhrrariは、耐久する状態・アーティファクト参照での受け渡し・ノード単位の失敗方針・決定論的に許可されたルートが揃って初めてグラフはデモから本番になると論じる。
+
+```mermaid
+flowchart LR
+  Scope[&quot;scope\n問い・読者・完了条件&quot;] --&gt; Decomp[&quot;decomposition\n独立レーンに分解&quot;]
+  Decomp --&gt; R1[&quot;research 1\n独立コンテキスト&quot;]
+  Decomp --&gt; R2[&quot;research 2&quot;]
+  Decomp --&gt; R3[&quot;research N&quot;]
+  R1 &amp; R2 &amp; R3 --&gt; Dedup[&quot;決定論コード\n重複排除・出典正規化&quot;]
+  Dedup --&gt; Draft[&quot;draft\n構造化された根拠から執筆&quot;]
+  Draft --&gt; Check[&quot;checker\n主張・引用・体裁・欠落節&quot;]
+  Check --&gt;|&quot;不合格の節だけ&quot;| Repair[&quot;repair&quot;]
+  Repair --&gt; Check
+  Check --&gt; Human[&quot;人間の承認\n公開前の最後のyes&quot;]
+```
+
+箱と矢印の図が綺麗に見えるのは、システムがクラッシュから復帰しなければならなくなるまでの話だと@0xwhrrariは述べる。ノードとエッジの語彙、偽エッジの切断、ノードの契約、ダイヤモンド型、検査役の分離といった設計語彙は [[concepts/graph-engineering]] に厚く記述があり、@0xwhrrariも同じ結論に独立に到達している。本ページはそこに含まれない層——**実行が中断したあと何が残っているか、1ノードが死んだとき損害がどこで止まるか、ルートを決める権限を誰が持つか**——を扱う。@0xwhrrariの言葉では「プロンプトエンジニアリングは指示を改善し、コンテキストエンジニアリングはモデルが見るものを制御し、ハーネスエンジニアリングはモデルの周囲の環境を作り、ループエンジニアリングは1つの作業単位をフィードバックで改善し、グラフエンジニアリングは仕事全体を調整する。モデルはノードの1つにすぎず、プロダクトはその周囲のシステムだ」となる。
+
+## 状態は図がいちばん隠す部分
+
+本番のグラフには**耐久する状態（durable state）**が要る、と@0xwhrrariは述べる。そして受け渡しの原則を1つ挙げる——**巨大なトランスクリプトをノード間で動かさず、アーティファクトへの参照を動かす**。リサーチノードはレポートを保存してパス・ID・構造化サマリーを返し、レビュアーはそのアーティファクトを直接読む。3体のエージェントを経由した圧縮された語り直しを受け取るのではない。これでコンテキストの損失が減り、遷移が監査可能になると@0xwhrrariは述べる。記事はさらに「グラフはどの瞬間にも3つの問いに答えられるべきで、答えられないならそれはまだデモだ」と続けるが、その3問は記事内の図に置かれており本文テキストには含まれていない（元記事の図は未取得のため、ここでは列挙しない）。
+
+この論点は [[concepts/12-factor-agents]] の Factor 5（実行状態とビジネス状態を分離しない）・Factor 6（シンプルなAPIで起動・一時停止・再開）を単体エージェントからノード群へ持ち上げたものと考えられる。
+
+## 失敗はローカルなイベントとして設計する
+
+鎖では1つ壊れたステップがワークフロー全体を凍らせる。グラフでは失敗を可能な限り小さい境界の内側に留めるべきだと@0xwhrrariは述べ、具体策を挙げる。
+
+- **高価なノードの後にチェックポイントを置く**
+- **書き込みを冪等にする**（リトライが副作用を二重に発生させないため）
+- **ファイルを変更する並列ワーカーには隔離されたワークスペースを与える**
+- **すべてのルーティング決定を、それを生んだ状態と一緒に記録する**
+
+そして「信頼性は全ノードが成功することを願うところからは来ない。1つが成功しなかったときグラフが何をするかを決めるところから来る」とまとめる。ノードごとの失敗方針の一覧は記事内の図にあり本文には展開されていない。
+
+## ルーティングを検査可能にする
+
+**モデルは判断を下してよいが、その判断が何を起動できるかはグラフが強制する**。@0xwhrrariはこれを「分類器は確率的、許可されたルートは決定論的」と定式化する。これによりモデルの柔軟性を得ながら、システムに対する無制限の制御をモデルに渡さずに済む。OpenAIのビジュアルなAgent Builderは、エージェントの挙動が隠れたプロンプト連鎖ではなく検査可能なワークフローとして設計される方向への転換を可視化した例だと@0xwhrrariは位置づける。
+
+同じ立場は [[concepts/graph-engineering]] の難所3（GoogleのADK 2.0の設計ルール）にも記録されており、別著者が独立に同じ結論へ到達している。
+
+## エッジはデータ契約であり、配線にモデルを使わない
+
+エッジの意味は「BがAの後に来る」ではなく「AがBの消費を許されたデータを生んだ」だと@0xwhrrariは述べる。この区別が効くのは、ワークフローの配線（plumbing）の多くがモデル呼び出しを必要としないからだ——配列の平坦化・重複除去・nullのフィルタ・ステータスの確認・レコードの結合はいずれも決定論的な操作である。**モデル呼び出しは判断のために取っておき、配線はコードでやる**。「すべてのエッジが別のエージェントになっているグラフは、自分の配線にトークンを払っている」と@0xwhrrariは書く。
+
+ノードの契約についても、@0xwhrrariは4点を要求する——**1つの仕事・明示的な入力・構造化された出力・明確な失敗状態**。自由テキストは次のノードに何が起きたかを推測させる。契約が保たれる限りモデル・プロンプト・ツールを差し替えてもシステム全体を作り直さずに済むため、契約はノードの交換可能性そのものだと述べる。
+
+## ほとんどのグラフは4つの形の組み合わせ
+
+50個のパターンは要らないと@0xwhrrariは述べ、本番のグラフはおおむね次の4つの形の組み合わせだとする。
+
+| 形 | 使いどき |
+|---|---|
+| **鎖（chain）** | 各ステップが本当に前の出力を必要とする場合。単純で予測可能、しばしば必要以上に遅い |
+| **ダイヤモンド（diamond）** | 1つの仕事を独立した枝に分け、並走させ、結果を統合する。リサーチ・コードレビュー・デューデリジェンス・市場調査の主力 |
+| **ルーター（router）** | 状態を見てタスクが必要とする経路だけを選ぶ。小さい仕事は安く済み、リスクの高い仕事は深いグラフへ回る |
+| **制御されたサイクル（controlled cycle）** | 結果が不完全だと証拠が示すときだけ繰り返す。ハードな停止・予算・収束ルールが毎回必要 |
+
+fan-outについては、並列化はいちばん理解しやすい利点でありいちばん濫用されやすい利点だと@0xwhrrariは注意する。5ノードが独立なら並走させる。ただし**各ステージの後にバリアを置いてはいけない**——joinが待つ価値を持つのは次のノードが完全な集合を必要とするときだけで、その例はソース横断の重複排除・全候補のランキング・選択肢の比較・カバレッジが十分かの判定である。各アイテムが独立に進めるならグラフはストリーミングのままにする。「並列は自動的に速いわけではない。トポロジーがシステムがどこで待つかを決める」。
+
+サイクルには測定可能な収束が要る。「良くなるまで繰り返す」は停止条件ではないと@0xwhrrariは述べ、制御されたサイクルに必要なものとして**完了テスト・最大ラウンド数・トークンまたはコストの予算・過去の試行の記録・収束に失敗したときのエスカレーション経路**を挙げる。重複排除の対象は検証を通った発見だけでなく**これまでに見た全て**にする。そうしないと却下されたアイデアが戻り続け、グラフは同じ行き止まりを再発見するために永遠に課金する。
+
+## 検証はエッジに置く
+
+グラフでいちばんレバレッジの高いノードは、しばしば何も新しく生み出さないノードだと@0xwhrrariは述べる。その仕事は弱い成果物が下流へ進むのを止めることだ。検査役が確認できるものとして、すべての主張に出典があるか・引用された出典が主張を支持しているか・コードがテストを通るか・結果が要求されたスキーマに合っているか・独立した別経路が同じ結論に達するか、を挙げる。**1つのコンテキストの中で生成・承認・公開を同じエージェントにやらせない**。役割・プロンプト・失敗境界をそれぞれ分離する。Anthropicの本番リサーチシステムも同じ論理をより大きなスケールで踏んでいると@0xwhrrariは紹介する——リードエージェントが並列サブエージェントを調整し、発見が統合され、専用の引用ステージが根拠を付けてから結果がユーザーに届く。
+
+## トポロジーがコストモデル
+
+グラフは1体のエージェントより自動的に安いわけではなく、あらゆるタスクが艦隊を生むならはるかに多くのトークンを燃やしうると@0xwhrrariは述べる。形がレイテンシとコストの両方を決める。境界の明確な抽出・分類・整形には安いモデルを、分解・統合・難しい検証には強いモデルを使い、単純なタスクは短い経路へ流し、フルのグラフはそれに値する仕事のために取っておく。Anthropicはマルチエージェントのリサーチが幅優先の仕事で単体エージェントを実質的に上回りうると報告しているが、同時にはるかに多くのトークンを使うとも報告していると@0xwhrrariは紹介する。「グラフエンジニアリングはエージェントの数を最大化することではない。並列性・専門分化・独立した検証が十分な価値を生む場所にだけ調整コストを払うことだ」。
+
+## グラフが誤答になるとき
+
+@0xwhrrariの判断基準は、既存の議論とほぼ一致する。1エージェント1ループに留めるのは、タスクが短い・1つのコンテキストが関連情報すべてを保持できる・独立した枝がない・失敗が安い・人間が最終結果を素早くレビューできる場合。グラフへ移るのは、仕事が並列に走れる・ノードごとに違うツールや権限が要る・出力に独立した検証が要る・中断後に再開できなければならない・複数のループが状態を共有する必要がある・コストと権限を経路ごとに制御しなければならない場合。「1つのループから始め、依存関係がそれを強いるときだけグラフを描け」と@0xwhrrariはまとめる。
+
+このうち**中断後の再開**と**経路ごとの権限・コスト制御**の2つは、他のグラフ論があまり前面に出さない移行条件であり、本ページの状態・失敗・ルーティング権限の3節がその裏側にある実装要件に当たると考えられる。
+
+## 観察ログ（未検証）
+
+- 2026-08-10 @0xwhrrari: Anthropicの「マルチエージェントのリサーチは幅優先の仕事で単体エージェントを実質的に上回るが、はるかに多くのトークンを使う」という報告は同記事からの孫引きで、Anthropic一次資料には当たっていない。X bookmark 1,740 / imp 1,738,952（2026-08-17時点）
+
+## 問い
+
+- 自分のwiki運用（ingest→lint→weekly生成）で、ノード間を渡っているのは「アーティファクトへの参照」か「トランスクリプトの語り直し」か。渡しているものを棚卸しすると、どこでコンテキストが失われているかが見えるのではないか
+- 「書き込みを冪等にする」をwiki-ingestに当てはめると、同一ソースを二度ingestしたときにページの節・観察ログ・index行が二重化しない保証はどこにあるか（今回のように同じパスが2回渡されるケースを含む）
+- マージ段で入力数を期待値と突き合わせて欠落を報告する仕組みは、`/tmp/ingest_result.json` の `sources_count` と `reflected_count` の差分検査として既に成立しているか。成立していないなら沈黙する欠落ノードをどう検知するか
+- 「分類器は確率的、許可されたルートは決定論的」というルールは、カテゴリ判定（LLM）とTier判定（rule＋LLM併用）のどちらまで適用できるか
+
+## 関連
+
+- [[concepts/graph-engineering]] — ノード/エッジ/契約/偽エッジ判定/バリアのスメルテストという設計語彙の本体。本ページはその図が隠す状態・失敗・権限の層を扱う
+- [[concepts/12-factor-agents]] — Factor 5（実行状態とビジネス状態）・Factor 6（起動/一時停止/再開）。本ページの耐久状態はこれをノード群へ持ち上げたもの
+- [[concepts/multi-agent-patterns]] — フォールバック設計・Shared Stateの終了条件・古典的5パターン（Routing含む）。本ページの4つの形と対応する実装パターン集
+- [[concepts/claude-code-dynamic-workflows]] — セッション再開・worktree隔離・ノード別モデル選択を実際に提供している実装。本ページの要件がそのまま機能として現れている
+- [[concepts/loop-graph-grounding]] — 相互参照だけの循環したグラフはアンカー（生の実測）なしに壊れるという議論。検証をエッジに置く話の一段先
+- [[concepts/harness-engineering]] — スタックの一段下、モデル周囲のコードとしてのハーネス
+- [[concepts/eval-loop]] — 検査役ノードの品質ゲートとしての具体実装
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

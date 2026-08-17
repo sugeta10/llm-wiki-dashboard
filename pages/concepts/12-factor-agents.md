@@ -72,3 +72,4 @@ Context Engineeringはプロンプトエンジニアリングの上位概念。�
 - [[concepts/spec-driven-development]] — 仕様駆動開発：AIの信頼性への別アプローチ
 - [[concepts/prompt-engineering]] — Factor 2・3の基盤となるプロンプト設計技術
 - [[tools/show-me]] — 同じDex Horthy／HumanLayerによるAgent Skill。エージェントから人間への出力を散文でなく視覚表現にする
+- [[concepts/graph-reliability-design]] — Factor 5・6（実行状態の統合／起動・一時停止・再開）を単体エージェントから複数ノードのグラフへ持ち上げた議論（@0xwhrrari）

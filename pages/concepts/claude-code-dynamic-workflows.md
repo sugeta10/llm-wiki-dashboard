@@ -91,3 +91,4 @@
 - [[concepts/claude-code-loop-types]] — 公式4類型。Proactive ループの合成部品として本機能を位置づける
 - [[concepts/graph-engineering]] — 本機能をノード/エッジ/契約というグラフ語彙で捉え直し、バリアの要否を判定するスメルテストまで踏み込んだ実践論（@0xCodez）
 - [[tools/claude-code-ultracode]] — トリガーワード「ultracode」自体の仕様（最大16並行・合計1000体上限）と`/goal`との組み合わせ方の解説
+- [[concepts/graph-reliability-design]] — セッション再開・worktree隔離・ノード別モデル選択が「本番グラフに要る要件」として要求される側の議論（@0xwhrrari）
