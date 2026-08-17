@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-W34 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb9a0"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-W34</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="2026-W34.md">Markdownで表示</a></div>
+  <div class="meta">weekly/2026-W34 · weekly · <span title="2026-08-17">今日</span></div>
+  <article><h1>Weekly Insights: 2026-W34（2026-08-17〜08-23）</h1>
+<h2>今週のホットトピック</h2>
+<p><img alt="infographic-hot-topics.png" src="2026-W34/infographic-hot-topics.png"></p>
+<ul>
+<li><strong><a href="../tools/xirp.html">xirp</a> Spotifyのエージェント開発環境が外部ベータへ</strong> — 「AIエージェントが誤るのは知識が無いからでなく取り出せないから」と同社は問題を立て直し、サービスの所有者・依存関係・設計判断を毎セッションの初期文脈に載せる。</li>
+<li><strong><a href="../tools/show-me.html">show-me</a> エージェントの応答を9つの視覚表現で返させる</strong> — HumanLayer創業者のDex Horthyが、散文の壁を型シグネチャ・コールスタック・コンポーネント木へ置き換えるAgent Skillとして公開した。</li>
+<li><strong><a href="../concepts/concept-design.html">concept-design</a> 概念設計——何を置いたかが、後から書ける仕様を決める</strong> — Zennのtakeshi_teshimaが、同じ仕様を満たす2つの実装の運命を分けるのは実装力でなく「システムの中に何という概念を置いたか」だと論じる。</li>
+<li><strong><a href="../concepts/workflow-cloning.html">workflow-cloning</a> ノートでなく手順を保存して自分を複製する</strong> — @milesdeutscherは、第二の脳が壊れるのは人間の手入れを前提にしているからだとし、知識でなく作業手順を仕様とスキルに固める5工程を示す。</li>
+</ul>
+<h3>深掘り</h3>
+<p><strong><a href="../tools/xirp.html">xirp</a> Spotifyのエージェント開発環境が外部ベータへ</strong>
+Spotifyの言い分で効くのは製品説明より問題の立て方です。エージェントは「技術的には正しいが運用上は誤った判断」を高速かつ自信満々に下すが、直すのに必要な知識は誰も見つけられないSlackスレッドと2021年にそのサービスを作った3人の頭の中に既にあった——だからこれはドキュメントの問題でなく取り出しの問題だ、と切る。打ち手は文脈の調達元を「編集中のファイル」から「そのファイルが属するシステム」へ移すことで、開発者ポータルPortalからサービスの所有者・依存・アーキテクチャ決定を毎セッションに注入します。ただし2026-08時点ではベータ登録の導線のみで、1,300名超の社内利用も「Spotifyで実戦検証済み」も同社の自己申告であり、外部の裏付けはソースの範囲にありません。</p>
+<p><strong><a href="../tools/show-me.html">show-me</a> エージェントの応答を9つの視覚表現で返させる</strong>
+Dex Horthyの観察は、モデルは指標の上では賢くなったのに読める度合いではむしろ悪くなった、というものです。彼の解はエージェントに言い直させることでなく出力のモードごと変えることで、component tree・call stack・型シグネチャ・file layout など9形式を用意し、いちばん効くのはコードを書き始める前に「コードの形」を合意する設計フェーズだと述べます。今週の素材の中でこれが際立つのは、視覚化を見栄えの話でなく人間の注意力の配分の話として扱っている点で、生成量が増えるほど確認が詰まるという <a href="../concepts/development-as-agriculture.html">development-as-agriculture</a> の構図に対する具体的な打ち手になっています。</p>
+<p><strong><a href="../concepts/concept-design.html">concept-design</a> 概念設計——何を置いたかが、後から書ける仕様を決める</strong>
+takeshi_teshimaのECサイトの例は、注文明細に配送状態まで持たせた世界線と、売買（Order）と履行（Fulfillment）を別概念に切った世界線を並べます。後者では破損時の再送も分割発送も、コードを一行も変えずに表現できる。理由づけが鋭くて、人が思いつく仕様はその人が現実をどう認識しているかの範囲内で自然なものになるので、概念が現実の捉え方と噛み合っていれば未来の仕様が既に実装済みになるのはむしろ当然だ、と説明します。もう一つの効果は、交換品が「購入ではないもの」としてOrderの外に出るため、<code>SELECT SUM(quantity)</code> のようなごく自然なクエリが間違えなくなること——正しさを後続コードを書く人の注意力に委ねなくてよくなる点です。</p>
+<p><strong><a href="../concepts/workflow-cloning.html">workflow-cloning</a> ノートでなく手順を保存して自分を複製する</strong>
+@milesdeutscherの前提は身も蓋もありません。Obsidianはノートを追加するのをやめた瞬間に、Notionはデータベースを更新するのをやめた瞬間に役に立たなくなる。忙しい人間が更新の担い手である限り、システムは人間より先に止まります。彼の対処は保存対象を「何を知っているか」から「どうやるか」へ移すことで、判定の粒度をワークフローでなく工程に置く点が核心です。自身のスポンサー獲得を7工程に割り、リサーチと連絡先収集は完全に自動化できるが最終交渉と納品はできない、と混在を認めた上で切り分けています。</p>
+<h2>今週の中心テーマ</h2>
+<p><strong>今週の素材が揃って突いているのは精度でも能力でもなく「何を1つの単位として持つか」で、その切り方が、あとから問えることと問えないことを先に決めてしまう。</strong></p>
+<p><img alt="infographic-theme.png" src="2026-W34/infographic-theme.png"></p>
+<p>同じ形が層をまたいで4回出てきます。売買と履行を1つの型に畳むと再送を表現できない（<a href="../concepts/concept-design.html">concept-design</a>）。文書をチャンクに畳むと「Redisが落ちたら何が壊れるか」に経路で答えられない（<a href="../concepts/context-graph-retrieval.html">context-graph-retrieval</a>）。アウトプットとアウトカムを「成果」の一語に畳むと「少ないアウトプットで多くのアウトカムを」という命題そのものが消える——監訳者の川口恭伸がこれを唯一の後悔として公表しました（<a href="../concepts/output-outcome-impact.html">output-outcome-impact</a>）。権限をツール単位で持つと「エージェントが実際にどのリソースを観測したか」が分からず、共有経路で漏れる（<a href="../tools/cloudflare-os.html">cloudflare-os</a>）。畳んだ側はどれも動きます。動くのに問えなくなる、というのが共通の症状です。</p>
+<p>見落としやすい前提を1つ。単位を細かく切るのは無料ではありません。<a href="../concepts/concept-design.html">concept-design</a> は自らKISS/YAGNI違反という反論を扱い、「まず現実を無理なく表現できる概念を置き、その制約の内側で最もシンプルな実装を選ぶ」と順序で整理していますし、<a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a> が示す判断基準は「再利用の見込み」——同じコマンド列をエージェントが2回組み立てたのを見た時点で切り出す、という実務的な線です。切る基準を持たずに細かくするのは、畳むのと別方向に同じだけ損をします。</p>
+<p>なお、<a href="../weekly/2026-W23.html">2026-W23</a> で扱った「中間記法」とは軸が違います。あちらはAIに渡すときの書き方（記法）の話で、今週は何と何を別物として持つか（境界）の話です。同じ記法でも境界の切り方は変えられます。</p>
+<h2>根拠ページ</h2>
+<ul>
+<li><a href="../tools/xirp.html">xirp</a>（→ 今週のホットトピック#1）</li>
+<li><a href="../tools/show-me.html">show-me</a>（→ 今週のホットトピック#2）</li>
+<li><a href="../concepts/concept-design.html">concept-design</a>（→ 今週のホットトピック#3）</li>
+<li><a href="../concepts/workflow-cloning.html">workflow-cloning</a>（→ 今週のホットトピック#4）</li>
+<li><a href="../concepts/context-graph-retrieval.html">context-graph-retrieval</a> — @0xMorlexによる、検索の単位をチャンクからエンティティと関係へ変え、答えを引用付きの経路として返す9ステップ。3つのゲートは正規化・provenance・経路ランキング</li>
+<li><a href="../concepts/knowledge-graph-llm.html">knowledge-graph-llm</a> — @takanorisuzukiのZenn Book。RAGが抱える5つの弱点（回答のゆらぎ・説明不能・社内知識の欠如ほか）をナレッジグラフで解く入門書。全文無料・約168,608字</li>
+<li><a href="../tools/cloudflare-os.html">cloudflare-os</a> — Cloudflareが2026-08-05にOSS公開した社内AIプラットフォーム。エージェントが観測したリソースを記録し、共有時に相手の権限を再検証する</li>
+<li><a href="../concepts/output-outcome-impact.html">output-outcome-impact</a> — Jeff Patton由来のプロダクト価値の三段。『ユーザーストーリーマッピング』日本語版が訳し分けられなかった経緯を監訳者の川口恭伸が公表</li>
+<li><a href="../concepts/development-as-agriculture.html">development-as-agriculture</a> — 深津貴之による、生成コストが下がるほど開発は工芸から大規模農業へ寄るという見立て。生成は課金で増やせるが確認速度は増やせない</li>
+<li><a href="../concepts/agent-autonomy-levels.html">agent-autonomy-levels</a> — @Mahaximus_によるエージェント自律度の4段の梯子。段を上げるのはモデルの乗り換えでなくツール・記憶・ループを1つずつ足すこと</li>
+<li><a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a> — 定型操作を数十行のスクリプトに固めて1行で呼ばせる手法。効き目の正体はターン数の削減で、ghラッパーの実測で24%減</li>
+<li><a href="../concepts/evergreen-notes-claude-md.html">evergreen-notes-claude-md</a> — tokuhiromが64p.orgのCLAUDE.mdで実装する、回答直後に「ノートに残すか」を聞かせる一条。原子性・密度の高いリンク・MOCの6原則</li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> — @yugen_matuniによる、AIの日本語の癖を500本超のNGルールとグッドパターンでPostToolUse Hookから機械検査する運用</li>
+<li><a href="../tools/html-share.html">html-share</a> — minorun365のセルフホスト型HTML共有ツール。Claude Codeの作業報告をスマホから追える形にする。8並列運用が第二の動機</li>
+<li><a href="../tools/diagram-design.html">diagram-design</a> — AIが描く図が「全部よくある箱」になる問題に絞ったリポジトリ。27種類の図をHTML+SVGで出し、対象サイトの色とフォントに寄せる</li>
+<li><a href="../concepts/ai-chat-deeplink.html">ai-chat-deeplink</a> — チャットAIをプロンプト事前入力状態で起動するURLパラメータ。APIもチャットUIも持たずに相談の入口だけ作る導線</li>
+<li><a href="../design/lusion.html">lusion</a> — 3Dインタラクティブ体験の制作スタジオ。Markdown化するとほぼ何も残らないという観察自体が、参照事例のストック方法を規定する</li>
+<li><a href="../concepts/introvert-networking-strategy.html">introvert-networking-strategy</a> — @ysk_motoyamaによる、人脈づくりを「話しかける」から「話しかけてもらう」へ反転させる戦略。消耗しない準備工程に投資する</li>
+<li><a href="../weekly/2026-W23.html">2026-W23</a> — 中間記法の週。今週の「境界」と軸が違うことの参照先</li>
+</ul>
+<h2>既存wikiとの接続</h2>
+<ul>
+<li><a href="../concepts/palantir-ontology.html">palantir-ontology</a> — 「その世界に何が存在するか」から出発する同じ問いを、1アプリの型設計でなく組織横断の世界モデルとして実装した中間層。今週の中心テーマの企業スケール版にあたる</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 生成→採点→閾値未満を止める品質ゲート。「生成は増やせるが確認速度は増やせない」という今週の構図に対して、確認側を機械化する既存の打ち手</li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a> — このvault自身の単位設計。<code>sources</code> / <code>wiki</code> / <code>outputs</code> の切り分けと、ページの <code>sources:</code> がページ単位でチャンク単位でないという制約が、今週の議論の適用対象になる</li>
+</ul>
+<h2>sugeta-san への問い</h2>
+<p><strong>このvaultで、あなたがいま「問えなくなっている」のはどこですか。</strong></p>
+<p>→ 具体的な候補が2つあります。1つは根拠の粒度で、ページの <code>sources:</code> はページ単位のため「この一文の出典はどれか」を辿れません。<a href="../concepts/context-graph-retrieval.html">context-graph-retrieval</a> のステップ06が言う provenance（各エッジが由来チャンクを運ぶ）に相当する層が欠けています。もう1つは <code>wiki/</code> が知識ページと機械生成物（<code>log.jsonl</code>・<code>tier_log.jsonl</code>・<code>weekly/</code>）の二役を背負っている点で、<a href="../concepts/concept-design.html">concept-design</a> の言い方をすれば「知識ではないもの」が知識の置き場に入り込んでいる状態です。どちらも今は動いているので、切るかどうかは「後からどの問いを投げたいか」次第になります。</p>
+<h2>今週の小アクション（5分）</h2>
+<p><a href="../concepts/concept-design.html">concept-design</a> の<strong>概念テスト</strong>を1回だけ回す。<code>wiki/weekly/</code> に置いてあるものを、既存概念の言葉で言い直してみてください——「Weeklyは wiki のページか、それとも wiki を入力として作られた出力（<code>outputs/</code> 側）か」。どちらで言い直しても不自然さが残らないなら概念は足りていて、片方が明らかに苦しいなら置き場所が間違っています。判断に実装は要りません。</p>
+<h2>いますぐAIと一緒に（コピペ）</h2>
+<p>以下をそのまま Claude / Claude Code に貼って、今週の「単位の切り方」を自分のvaultに当ててください。</p>
+<pre><code>このリポジトリで「1つの型・1つのフォルダ・1つの記録が二役を背負っている箇所」を探して、
+概念設計の観点でレビューしてください。
+
+1. wiki/ 配下のディレクトリとファイル種別を一覧し、それぞれが何を表す概念かを1行で言語化する
+2. 同じ場所に「別々の主体が、別々の理由で、別々のタイミングに変更するもの」が同居している箇所を挙げる
+3. 各候補について「切ると何が問えるようになるか / 切らないと何が問えないままか」を対で書く
+4. 切るコストが見合わないものは、その理由も添えて「切らない」と明示する
+
+判断基準は wiki/concepts/concept-design.md（概念テストと境界の2つの手掛かり）と
+wiki/concepts/agent-command-wrappers.md（再利用の見込みで切る基準）を参照してください。
+</code></pre>
+<h2>さらに読むべきページ</h2>
+<ul>
+<li><a href="../concepts/agent-autonomy-levels.html">agent-autonomy-levels</a> — このvaultのlaunchd ingestとWeekly生成が「レベル4」なのか「起動トリガーがあるだけのレベル3」なのかを判定できる4段の梯子。記憶が壊れる3つの型と共通の対策も実務的</li>
+<li><a href="../tools/cloudflare-os.html">cloudflare-os</a> — 観測ログという単位を持つと下流の共有制御まで効く、という今週のテーマの最も踏み込んだ実装。@shotovimによる個人利用の月額試算（手動同期なら0円）も併載</li>
+<li><a href="../concepts/evergreen-notes-claude-md.html">evergreen-notes-claude-md</a> — 「回答直後にノート化を提案させる」一条でノート網が育つtokuhiromの実装。このvaultのQuery操作に無い一手であり、原子性か統合かという粒度判断が今週のテーマと直結する</li>
+</ul>
+<h2>今週の音声ニュース</h2>
+<audio controls style="width:100%;margin:1rem 0"><source src="2026-W34/audio.mp3" type="audio/mpeg"></audio>
+<p><a href="https://notebooklm.google.com/notebook/2c680b76-fc36-4683-9f65-26b2f4773c59">NotebookLM で開く →</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-autonomy-levels.html">agent-autonomy-levels</a></li>
+<li><a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a></li>
+<li><a href="../concepts/ai-chat-deeplink.html">ai-chat-deeplink</a></li>
+<li><a href="../concepts/concept-design.html">concept-design</a></li>
+<li><a href="../concepts/context-graph-retrieval.html">context-graph-retrieval</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Weekly Insights: 2026-W34（2026-08-17〜08-23）
+
+## 今週のホットトピック
+
+![[2026-W34/infographic-hot-topics.png]]
+
+- **[[tools/xirp]] Spotifyのエージェント開発環境が外部ベータへ** — 「AIエージェントが誤るのは知識が無いからでなく取り出せないから」と同社は問題を立て直し、サービスの所有者・依存関係・設計判断を毎セッションの初期文脈に載せる。
+- **[[tools/show-me]] エージェントの応答を9つの視覚表現で返させる** — HumanLayer創業者のDex Horthyが、散文の壁を型シグネチャ・コールスタック・コンポーネント木へ置き換えるAgent Skillとして公開した。
+- **[[concepts/concept-design]] 概念設計——何を置いたかが、後から書ける仕様を決める** — Zennのtakeshi_teshimaが、同じ仕様を満たす2つの実装の運命を分けるのは実装力でなく「システムの中に何という概念を置いたか」だと論じる。
+- **[[concepts/workflow-cloning]] ノートでなく手順を保存して自分を複製する** — @milesdeutscherは、第二の脳が壊れるのは人間の手入れを前提にしているからだとし、知識でなく作業手順を仕様とスキルに固める5工程を示す。
+
+### 深掘り
+
+**[[tools/xirp]] Spotifyのエージェント開発環境が外部ベータへ**
+Spotifyの言い分で効くのは製品説明より問題の立て方です。エージェントは「技術的には正しいが運用上は誤った判断」を高速かつ自信満々に下すが、直すのに必要な知識は誰も見つけられないSlackスレッドと2021年にそのサービスを作った3人の頭の中に既にあった——だからこれはドキュメントの問題でなく取り出しの問題だ、と切る。打ち手は文脈の調達元を「編集中のファイル」から「そのファイルが属するシステム」へ移すことで、開発者ポータルPortalからサービスの所有者・依存・アーキテクチャ決定を毎セッションに注入します。ただし2026-08時点ではベータ登録の導線のみで、1,300名超の社内利用も「Spotifyで実戦検証済み」も同社の自己申告であり、外部の裏付けはソースの範囲にありません。
+
+**[[tools/show-me]] エージェントの応答を9つの視覚表現で返させる**
+Dex Horthyの観察は、モデルは指標の上では賢くなったのに読める度合いではむしろ悪くなった、というものです。彼の解はエージェントに言い直させることでなく出力のモードごと変えることで、component tree・call stack・型シグネチャ・file layout など9形式を用意し、いちばん効くのはコードを書き始める前に「コードの形」を合意する設計フェーズだと述べます。今週の素材の中でこれが際立つのは、視覚化を見栄えの話でなく人間の注意力の配分の話として扱っている点で、生成量が増えるほど確認が詰まるという [[concepts/development-as-agriculture]] の構図に対する具体的な打ち手になっています。
+
+**[[concepts/concept-design]] 概念設計——何を置いたかが、後から書ける仕様を決める**
+takeshi_teshimaのECサイトの例は、注文明細に配送状態まで持たせた世界線と、売買（Order）と履行（Fulfillment）を別概念に切った世界線を並べます。後者では破損時の再送も分割発送も、コードを一行も変えずに表現できる。理由づけが鋭くて、人が思いつく仕様はその人が現実をどう認識しているかの範囲内で自然なものになるので、概念が現実の捉え方と噛み合っていれば未来の仕様が既に実装済みになるのはむしろ当然だ、と説明します。もう一つの効果は、交換品が「購入ではないもの」としてOrderの外に出るため、`SELECT SUM(quantity)` のようなごく自然なクエリが間違えなくなること——正しさを後続コードを書く人の注意力に委ねなくてよくなる点です。
+
+**[[concepts/workflow-cloning]] ノートでなく手順を保存して自分を複製する**
+@milesdeutscherの前提は身も蓋もありません。Obsidianはノートを追加するのをやめた瞬間に、Notionはデータベースを更新するのをやめた瞬間に役に立たなくなる。忙しい人間が更新の担い手である限り、システムは人間より先に止まります。彼の対処は保存対象を「何を知っているか」から「どうやるか」へ移すことで、判定の粒度をワークフローでなく工程に置く点が核心です。自身のスポンサー獲得を7工程に割り、リサーチと連絡先収集は完全に自動化できるが最終交渉と納品はできない、と混在を認めた上で切り分けています。
+
+## 今週の中心テーマ
+
+**今週の素材が揃って突いているのは精度でも能力でもなく「何を1つの単位として持つか」で、その切り方が、あとから問えることと問えないことを先に決めてしまう。**
+
+![[2026-W34/infographic-theme.png]]
+
+同じ形が層をまたいで4回出てきます。売買と履行を1つの型に畳むと再送を表現できない（[[concepts/concept-design]]）。文書をチャンクに畳むと「Redisが落ちたら何が壊れるか」に経路で答えられない（[[concepts/context-graph-retrieval]]）。アウトプットとアウトカムを「成果」の一語に畳むと「少ないアウトプットで多くのアウトカムを」という命題そのものが消える——監訳者の川口恭伸がこれを唯一の後悔として公表しました（[[concepts/output-outcome-impact]]）。権限をツール単位で持つと「エージェントが実際にどのリソースを観測したか」が分からず、共有経路で漏れる（[[tools/cloudflare-os]]）。畳んだ側はどれも動きます。動くのに問えなくなる、というのが共通の症状です。
+
+見落としやすい前提を1つ。単位を細かく切るのは無料ではありません。[[concepts/concept-design]] は自らKISS/YAGNI違反という反論を扱い、「まず現実を無理なく表現できる概念を置き、その制約の内側で最もシンプルな実装を選ぶ」と順序で整理していますし、[[concepts/agent-command-wrappers]] が示す判断基準は「再利用の見込み」——同じコマンド列をエージェントが2回組み立てたのを見た時点で切り出す、という実務的な線です。切る基準を持たずに細かくするのは、畳むのと別方向に同じだけ損をします。
+
+なお、[[weekly/2026-W23]] で扱った「中間記法」とは軸が違います。あちらはAIに渡すときの書き方（記法）の話で、今週は何と何を別物として持つか（境界）の話です。同じ記法でも境界の切り方は変えられます。
+
+## 根拠ページ
+
+- [[tools/xirp]]（→ 今週のホットトピック#1）
+- [[tools/show-me]]（→ 今週のホットトピック#2）
+- [[concepts/concept-design]]（→ 今週のホットトピック#3）
+- [[concepts/workflow-cloning]]（→ 今週のホットトピック#4）
+- [[concepts/context-graph-retrieval]] — @0xMorlexによる、検索の単位をチャンクからエンティティと関係へ変え、答えを引用付きの経路として返す9ステップ。3つのゲートは正規化・provenance・経路ランキング
+- [[concepts/knowledge-graph-llm]] — @takanorisuzukiのZenn Book。RAGが抱える5つの弱点（回答のゆらぎ・説明不能・社内知識の欠如ほか）をナレッジグラフで解く入門書。全文無料・約168,608字
+- [[tools/cloudflare-os]] — Cloudflareが2026-08-05にOSS公開した社内AIプラットフォーム。エージェントが観測したリソースを記録し、共有時に相手の権限を再検証する
+- [[concepts/output-outcome-impact]] — Jeff Patton由来のプロダクト価値の三段。『ユーザーストーリーマッピング』日本語版が訳し分けられなかった経緯を監訳者の川口恭伸が公表
+- [[concepts/development-as-agriculture]] — 深津貴之による、生成コストが下がるほど開発は工芸から大規模農業へ寄るという見立て。生成は課金で増やせるが確認速度は増やせない
+- [[concepts/agent-autonomy-levels]] — @Mahaximus_によるエージェント自律度の4段の梯子。段を上げるのはモデルの乗り換えでなくツール・記憶・ループを1つずつ足すこと
+- [[concepts/agent-command-wrappers]] — 定型操作を数十行のスクリプトに固めて1行で呼ばせる手法。効き目の正体はターン数の削減で、ghラッパーの実測で24%減
+- [[concepts/evergreen-notes-claude-md]] — tokuhiromが64p.orgのCLAUDE.mdで実装する、回答直後に「ノートに残すか」を聞かせる一条。原子性・密度の高いリンク・MOCの6原則
+- [[concepts/llm-japanese-style-hooks]] — @yugen_matuniによる、AIの日本語の癖を500本超のNGルールとグッドパターンでPostToolUse Hookから機械検査する運用
+- [[tools/html-share]] — minorun365のセルフホスト型HTML共有ツール。Claude Codeの作業報告をスマホから追える形にする。8並列運用が第二の動機
+- [[tools/diagram-design]] — AIが描く図が「全部よくある箱」になる問題に絞ったリポジトリ。27種類の図をHTML+SVGで出し、対象サイトの色とフォントに寄せる
+- [[concepts/ai-chat-deeplink]] — チャットAIをプロンプト事前入力状態で起動するURLパラメータ。APIもチャットUIも持たずに相談の入口だけ作る導線
+- [[design/lusion]] — 3Dインタラクティブ体験の制作スタジオ。Markdown化するとほぼ何も残らないという観察自体が、参照事例のストック方法を規定する
+- [[concepts/introvert-networking-strategy]] — @ysk_motoyamaによる、人脈づくりを「話しかける」から「話しかけてもらう」へ反転させる戦略。消耗しない準備工程に投資する
+- [[weekly/2026-W23]] — 中間記法の週。今週の「境界」と軸が違うことの参照先
+
+## 既存wikiとの接続
+
+- [[concepts/palantir-ontology]] — 「その世界に何が存在するか」から出発する同じ問いを、1アプリの型設計でなく組織横断の世界モデルとして実装した中間層。今週の中心テーマの企業スケール版にあたる
+- [[concepts/eval-loop]] — 生成→採点→閾値未満を止める品質ゲート。「生成は増やせるが確認速度は増やせない」という今週の構図に対して、確認側を機械化する既存の打ち手
+- [[concepts/llm-wiki]] — このvault自身の単位設計。`sources` / `wiki` / `outputs` の切り分けと、ページの `sources:` がページ単位でチャンク単位でないという制約が、今週の議論の適用対象になる
+
+## sugeta-san への問い
+
+**このvaultで、あなたがいま「問えなくなっている」のはどこですか。**
+
+→ 具体的な候補が2つあります。1つは根拠の粒度で、ページの `sources:` はページ単位のため「この一文の出典はどれか」を辿れません。[[concepts/context-graph-retrieval]] のステップ06が言う provenance（各エッジが由来チャンクを運ぶ）に相当する層が欠けています。もう1つは `wiki/` が知識ページと機械生成物（`log.jsonl`・`tier_log.jsonl`・`weekly/`）の二役を背負っている点で、[[concepts/concept-design]] の言い方をすれば「知識ではないもの」が知識の置き場に入り込んでいる状態です。どちらも今は動いているので、切るかどうかは「後からどの問いを投げたいか」次第になります。
+
+## 今週の小アクション（5分）
+
+[[concepts/concept-design]] の**概念テスト**を1回だけ回す。`wiki/weekly/` に置いてあるものを、既存概念の言葉で言い直してみてください——「Weeklyは wiki のページか、それとも wiki を入力として作られた出力（`outputs/` 側）か」。どちらで言い直しても不自然さが残らないなら概念は足りていて、片方が明らかに苦しいなら置き場所が間違っています。判断に実装は要りません。
+
+## いますぐAIと一緒に（コピペ）
+
+以下をそのまま Claude / Claude Code に貼って、今週の「単位の切り方」を自分のvaultに当ててください。
+
+```
+このリポジトリで「1つの型・1つのフォルダ・1つの記録が二役を背負っている箇所」を探して、
+概念設計の観点でレビューしてください。
+
+1. wiki/ 配下のディレクトリとファイル種別を一覧し、それぞれが何を表す概念かを1行で言語化する
+2. 同じ場所に「別々の主体が、別々の理由で、別々のタイミングに変更するもの」が同居している箇所を挙げる
+3. 各候補について「切ると何が問えるようになるか / 切らないと何が問えないままか」を対で書く
+4. 切るコストが見合わないものは、その理由も添えて「切らない」と明示する
+
+判断基準は wiki/concepts/concept-design.md（概念テストと境界の2つの手掛かり）と
+wiki/concepts/agent-command-wrappers.md（再利用の見込みで切る基準）を参照してください。
+```
+
+## さらに読むべきページ
+
+- [[concepts/agent-autonomy-levels]] — このvaultのlaunchd ingestとWeekly生成が「レベル4」なのか「起動トリガーがあるだけのレベル3」なのかを判定できる4段の梯子。記憶が壊れる3つの型と共通の対策も実務的
+- [[tools/cloudflare-os]] — 観測ログという単位を持つと下流の共有制御まで効く、という今週のテーマの最も踏み込んだ実装。@shotovimによる個人利用の月額試算（手動同期なら0円）も併載
+- [[concepts/evergreen-notes-claude-md]] — 「回答直後にノート化を提案させる」一条でノート網が育つtokuhiromの実装。このvaultのQuery操作に無い一手であり、原子性か統合かという粒度判断が今週のテーマと直結する
+
+## 今週の音声ニュース
+
+![[2026-W34/audio.mp3]]
+
+[NotebookLM で開く →](https://notebooklm.google.com/notebook/2c680b76-fc36-4683-9f65-26b2f4773c59)
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
