@@ -80,4 +80,5 @@ eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
 - [[tools/no-ai-slop]] — 編集後に`eval.md`で自己採点する、文章生成領域での同型の自己検査ゲート
 - [[concepts/agent-skill-eight-layer-design]] — Checker層（生成役と評価役の分離、証拠付きJSON評価）が本ページのeval loopと同型構造
 - [[concepts/development-as-agriculture]] — 「良いを判定可能な形にするeval設計」を、大量生成した候補から選抜する農業の比喩で位置づける論
+- [[concepts/ai-engineer-interview-questions]] — 「変更で何が壊れていないと言えるか」「AI評価者の偏りをどう扱うか」を面接の質問（Q3・Q4）にした版。eval loopを持っているかの外部診断
 - [[concepts/llm-japanese-style-hooks]] — 文章の癖をPostToolUse Hookで機械検査する実装。日常の書き込みでは止めず警告のみ返し、セッション終了時だけブロックする二段ゲート

@@ -67,4 +67,5 @@
 - [[concepts/claude-code-security]] — MDMによる組織展開・ロール別設定分離
 - [[tools/claude-code]] — Claude Code 全体リファレンス
 - [[concepts/openai-data-agent-context-layers]] — スコープ軸でコンテキストを層分けする発想の別実装（OpenAIデータエージェントの6層設計）
+- [[concepts/claude-code-launch-directory]] — 本ページの層構造と直交する軸：起動したフォルダが読まれる説明書と効く設定を決め、しかも設定だけは親から継承されない
 - [[concepts/context-engineering]] — 「どこに置くか」を扱う本ページに対し、「何を置くべきか」を扱う上位の設計思想（Anthropic Claude Codeチーム公式）

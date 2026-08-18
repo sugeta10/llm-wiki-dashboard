@@ -76,6 +76,7 @@
 - [[concepts/12-factor-agents]] — コンテキストエンジニアリング・ステートレス設計の原則
 - [[concepts/multi-agent-patterns]] — Anthropic5ワークフローパターン・サブエージェント設計
 - [[concepts/eval-loop]] — 生成→採点→ゲートの品質ループ（eval4種の基盤）
+- [[concepts/ai-engineer-interview-questions]] — 本ページの到達点（責任分離・回帰検知・予算・可観測性）を採用面接の10問という診断形式に落とした版
 - [[concepts/agentic-engineering-workflow]] — plan先行・大量並列の実践者総合スタック
 - [[concepts/skill-building-best-practices]] — スキル＋progressive disclosure
 - [[concepts/agentic-coding]]

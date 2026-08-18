@@ -96,3 +96,4 @@ fan-outについては、並列化はいちばん理解しやすい利点であ�
 - [[concepts/loop-graph-grounding]] — 相互参照だけの循環したグラフはアンカー（生の実測）なしに壊れるという議論。検証をエッジに置く話の一段先
 - [[concepts/harness-engineering]] — スタックの一段下、モデル周囲のコードとしてのハーネス
 - [[concepts/eval-loop]] — 検査役ノードの品質ゲートとしての具体実装
+- [[concepts/ai-engineer-interview-questions]] — 本ページの設計語彙（冪等・承認・予算・フォールバック）を「答えられるか」で測る面接10問。Q5〜Q7がここに対応する

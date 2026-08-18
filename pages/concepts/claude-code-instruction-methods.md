@@ -64,4 +64,5 @@ mindmap
 - [[concepts/claude-code-compact-recovery]] — 「hooks はコンパクションをバイパスする」性質を復旧経路として使う実践例（state file 退避＋marker 経由で圧縮直後に判断構造を復元）
 - [[concepts/agent-command-wrappers]] — CLAUDE.mdに置くべき最小の1行（コマンド名と用途、常駐30トークン程度）の具体例。手段の振り分けではなく「そもそも指示でなくプログラムに固める」という一段外側の選択肢
 - [[concepts/lean-prompt-rules-adaptation]] — 本ページの分類軸を実測で裏付けた実践例。output styleでは止まらなかった「進め方」の癖が、行動直前に毎回届くUserPromptSubmit hookで止まったという届け方の検証（@u1）
+- [[concepts/claude-code-launch-directory]] — 同じ「ロード時点×圧縮後の生存」を起動ディレクトリの側から見た版。CLAUDE.mdは親から継承されるが設定は継承されない、という手段の振り分け以前の落とし穴を扱う
 - [[concepts/llm-japanese-style-hooks]] — 「決定論的強制はhook」という振り分けを文章品質へ適用した実例。規約ファイルに書いても直らなかった日本語の癖を、書き込み直後のPostToolUse hookに移して抑えた（@yugen_matuni）

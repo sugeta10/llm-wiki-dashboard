@@ -63,4 +63,5 @@ hooks の主な用途は「止めるスクリプト」ではなく**セットア
 - [[concepts/claude-md-rules]] — CLAUDE.md行動ルール体系
 - [[concepts/claude-code-context-hierarchy]] — Memory/Permissions/MCP/Slash commandsの4層階層設計
 - [[concepts/agentic-coding]] — AIが自律的にコードを書くスタイル全般
+- [[concepts/claude-code-launch-directory]] — 本ページの「インデックスを作らない」「サブディレクトリで起動する」を非エンジニアの作業フォルダまで一般化し、圧縮後に下位CLAUDE.mdが戻らない挙動まで踏み込んだ版
 - [[concepts/self-refining-skills]] — 自己改善ループの設計パターン

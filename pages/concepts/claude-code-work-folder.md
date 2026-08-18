@@ -34,3 +34,4 @@ Claude CodeはチャットAIではなく「作業フォルダの中でファイ�
 - [[tools/claude-code]]（このフォルダ設計が前提とするツール・`~/.claude/`の実構造）
 - [[concepts/claude-md-rules]]（CLAUDE.mdへの行動ルール記述）
 - [[concepts/claude-code-task-delegation]]（同じ「環境を先に設計する」発想で業務フローを渡す活用法50選）
+- [[concepts/claude-code-launch-directory]]（この棚割りが効く理由：索引を持たない探索では名前が入口になり、どこで起動するかが読まれる説明書と効く設定を決める）
