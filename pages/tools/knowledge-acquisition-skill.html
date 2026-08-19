@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>knowledge-acquisition-skill - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>knowledge-acquisition-skill</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="knowledge-acquisition-skill.md">Markdownで表示</a></div>
+  <div class="meta">tools/knowledge-acquisition-skill · tools · <span title="2026-08-19">今日</span></div>
+  <article><h1>Knowledge Acquisition Skill</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AWS Samples の LLM Wiki 実装。NTT DATA TECH が資料1本の追加で既存ページ7件が書き換わり同一質問への回答構造まで変わることを差分で実測した一方、同梱 Web UI の Knowledge Graph は生成側のリンク表記と解決側の slug 規約が噛み合わず <code>0 edges</code> になった。</p>
+</blockquote>
+<p><code>aws-samples/sample-knowledge-acquisition-skill</code> は、PDF・論文・Web・GitHub から取り込んだ資料を相互リンク付きの Markdown Wiki として蓄積し、新しい資料を足すと既存ページも更新していく Kiro CLI 向けスキルである。リポジトリの README 自身がこの方式を「LLM Wiki」と呼び、問い合わせのたびに知識を再発見する RAG と対比して "persistent, compounding knowledge base"（持続的に蓄積する知識ベース）と説明している。Cloudscape ベースのローカル Web UI を同梱し、AWS へデプロイせずに Wiki と Knowledge Graph をブラウザで確認できる。</p>
+<p>このページの価値は、スキルの機能紹介ではなく <strong>NTT DATA TECH が Amazon Bedrock AgentCore を題材に行った Before / After 検証</strong> にある。<a href="../concepts/llm-wiki.html">llm-wiki</a> の中核主張「新しい資料が既存の知識まで再編集する」を、実際のファイル差分と数値で押さえた例は多くない。</p>
+<pre class="mermaid">flowchart LR
+  S123[&quot;Source 1-3&lt;br/&gt;AgentCore preview / GA / sample repo&quot;] --&gt; W0[&quot;初期Wiki&lt;br/&gt;16 files, wikilink 159&quot;]
+  W0 --&gt; QB[&quot;Before回答&lt;br/&gt;Runtime中心&quot;]
+  S4[&quot;Source 4&lt;br/&gt;harness GA記事&quot;] --&gt; W1[&quot;更新後Wiki&lt;br/&gt;18 files, wikilink 207&quot;]
+  W0 --&gt; W1
+  W1 --&gt; QA[&quot;After回答&lt;br/&gt;harnessを入口&quot;]</pre>
+<h2>検証設計：条件を固定して差分だけを見る</h2>
+<p>NTT DATA TECH は「最初から情報をたくさん与えない」ことを設計の要にしている。初期 Wiki は AgentCore の preview 発表記事・GA アナウンス・サンプルリポジトリの3資料だけで作り、その後 AgentCore harness の GA 記事を1本だけ投入した。比較条件として次を固定している。</p>
+<ul>
+<li>Kiro CLI のモデルを <code>claude-sonnet-4.5</code> に固定する（検証中に <code>auto</code> が利用不可になったため）</li>
+<li>Wiki 生成・資料追加・質問回答をそれぞれ別セッションで実行し、会話履歴の持ち越しを断つ</li>
+<li>質問回答時は Web 検索と新規資料取得を禁止し、Wiki 内の知識だけで答えさせる</li>
+<li>Before の Wiki をスナップショットとして保存し、<code>diff -ru</code> でファイル差分を実測する</li>
+</ul>
+<p>計測語の定義も切り分けている。<strong>wikilink occurrences</strong> は <code>concepts/</code> <code>entities/</code> <code>comparisons/</code> <code>queries/</code> の内容ページに現れる <code>...</code> の出現回数で、重複を含み <code>index.md</code> は集計対象外である。Web UI が表示する Graph の値とは母集団が違うため、両者を直接比較できないと明記している。</p>
+<h2>資料1本の追加で既存ページ7件が書き換わった</h2>
+<table>
+<thead>
+<tr>
+<th>指標</th>
+<th>Before</th>
+<th>After</th>
+<th>差分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Markdown files（<code>raw/</code> 除外）</td>
+<td>16</td>
+<td>18</td>
+<td>+2</td>
+</tr>
+<tr>
+<td>Concepts</td>
+<td>9</td>
+<td>10</td>
+<td>+1</td>
+</tr>
+<tr>
+<td>Comparisons</td>
+<td>1</td>
+<td>2</td>
+<td>+1</td>
+</tr>
+<tr>
+<td>wikilink occurrences（内容ページのみ・重複含む）</td>
+<td>159</td>
+<td>207</td>
+<td>+48</td>
+</tr>
+<tr>
+<td>Graph nodes</td>
+<td>16</td>
+<td>18</td>
+<td>+2</td>
+</tr>
+<tr>
+<td>Graph edges</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>新規作成は <code>concepts/agentcore-harness.md</code> と <code>comparisons/harness-vs-runtime.md</code> の2件。更新された既存ファイルは Gateway・Identity・Memory・Observability・Runtime の内容ページ5件に <code>index.md</code> / <code>log.md</code> を加えた7件だった。Runtime ページには「Harness vs Direct Runtime Use」の使い分け表と、harness で始めて設定だけでは足りなくなったら Runtime ベースのコードへ移る "graduation path" が追記され、Memory ページには harness 経由の3形態（Managed Memory / Bring Your Own Memory / Stateless Agent）が追記された。</p>
+<p>重要なのは、Kiro が harness を「既存サービスを置き換えるもの」ではなく既存 primitive を束ねる設定駆動の抽象化として統合し、この時点で明確な supersede 対象を報告しなかった点である。新資料の投入が既存記述の破棄ではなく関係の追記として現れている。</p>
+<h2>回答の構造まで変わった</h2>
+<p>Before と一字一句同じ質問を新規セッションで投げたところ、回答の骨格が変化した。Before は Runtime を中心に各サービスを直接組み合わせる説明だったのに対し、After は harness を統合レイヤーとして入口に置き、高度な要件では Runtime 側へ寄せる構成になった。この After 構成には harness 側の Agent Skills も含まれており、これは検証で導入した Kiro のスキルではなく AgentCore harness の構成要素を指す。</p>
+<p>ただし NTT DATA TECH は Before / After とも <strong>各1回（N=1）</strong> であることを繰り返し断り、「Source 4 を追加すれば必ず同じ構成になる」とは結論づけていない。</p>
+<h2>Knowledge Graph が 0 edges になった原因</h2>
+<p>内容ページに wikilink が207回出現しているのに、Web UI の Knowledge Graph は Before / After とも <code>0 edges</code>、全ノードが Orphan 扱いだった。NTT DATA TECH は検証時 commit の <code>webapp/dev-server.mjs</code> を読んで原因を特定している。</p>
+<ul>
+<li>ページの索引はファイル名の basename を slug として作られる（<code>concepts/agentcore-gateway.md</code> → <code>agentcore-gateway</code>）</li>
+<li><code>findWikilinks()</code> は <code>...</code> の中身をそのまま返し、途中で slug 化されない。変数名は <code>targetSlug</code> だが実体は生のリンク文字列である</li>
+<li>edge は <code>slugIndex</code> への完全一致で解決される</li>
+</ul>
+<p>生成された Wiki のリンクは <code>AgentCore Gateway</code> のようなタイトル形式であり、<code>slugIndex["AgentCore Gateway"]</code> は存在しない。さらに <code>Runtime</code> のような alias 付きリンクは <code>AgentCore Runtime|Runtime</code> という1つの文字列として扱われるため、これも一致しない。orphan 判定は inbound edge の有無を見るので、解決済み edge が0なら全ノードが Orphan になるのも実装と整合する。</p>
+<p>NTT DATA TECH はこれを「LLM が規約に違反した」とは断定せず、<strong>生成時の wikilink 表記と resolver が期待する slug 形式の契約が定義・共有されていない</strong>問題として整理している。検証時の <code>SKILL.md</code> は「最低2本の outbound wikilink を張れ」とは求めるが、target にファイル stem を書くのかページタイトルを書くのか、alias を許すのかまでは定めていなかった。</p>
+<p>これは <a href="../concepts/open-knowledge-format.html">open-knowledge-format</a> のリファレンス実装で観測された「SPEC 推奨の絶対パスリンクをビジュアライザが明示的にスキップして edge が0になる」現象と同型である。独立した2つの LLM Wiki 実装で、<strong>リンクを書く側と解決する側の規約が未定義なせいでグラフが空になる</strong>という同じ失敗が起きている。このwikiの <code>scripts/validate_wiki.py</code> は <code>LINK_PATTERN</code> が alias（<code>B</code>）を分割し、<code>SKIP_PAGES</code> で <code>index.md</code> を参照元・参照先の両方から除外しているため、この2つの落とし穴は現時点では踏んでいない。</p>
+<p>なお、Detail 画面の本文に露出していた <code>&lt;span style="color: #d13212; ..."&gt;</code> という HTML 文字列も Wiki の生成物ではなく Web UI の <code>DetailPage.tsx</code> が組み立てたものだった。NTT DATA TECH は「Markdown Wiki を正本、Web UI を可視化補助」として層を分けて評価するのが安全だと結論づけている。</p>
+<h2>生成物を原典と突き合わせる</h2>
+<p>LLM Wiki は原典の保存だけでなく複数の記述を統合して新しい説明へ再構成するため、NTT DATA TECH は代表3点を AWS 公式 Developer Guide / API Reference と事後照合している（照合に使った資料は Wiki には投入していない）。</p>
+<ul>
+<li>harness と Runtime の役割差 → 公式の「AgentCore harness vs. Runtime」と整合</li>
+<li>設定で足りなくなったときコードへ export する機能 → <code>agentcore export harness</code> として公式に存在</li>
+<li>Memory の3形態 → API Reference の <code>HarnessMemoryConfiguration</code> が定義する union（<code>managedMemoryConfiguration</code> / <code>agentCoreMemoryConfiguration</code> / <code>disabled</code>）と対応</li>
+</ul>
+<p>一方、生成 Wiki にあった「Prototyping / MVP なら Harness、Deep instrumentation なら Runtime」といったシナリオ別の表は <strong>AWS 公式表の転載ではなく、スキルが Source 4 と既存 Wiki から再構成したもの</strong>だと明示している。方向性は公式と整合するが、個々のラベルまで原典にあるわけではない。ここから「実運用では Git 差分レビューと重要事項の原典照合を前提にすべき」という運用結論を導いている。</p>
+<h2>指標そのものを撤回した：orphan = 0 の落とし穴</h2>
+<p>検証中に得た「orphan な内容ページ = 0」という値を、NTT DATA TECH は記事の主要指標から<strong>除外</strong>している。当時のチェッカーは参照元として <code>index.md</code> / <code>log.md</code> / <code>raw/</code> を含む全 Markdown を連結し、さらに <code>agentcore-runtime.md</code> のような拡張子付きファイル名がどこかに現れるだけでも「参照あり」と判定していた。<code>index.md</code> は全内容ページを wikilink で列挙しているので、この条件下の <code>orphan = 0</code> は <code>index.md</code> の網羅性とほぼ同義になり、内容ページ同士の相互参照性は測れていない。</p>
+<p>同様に、補助チェックで得た <code>unresolved unique wikilink targets = 63種</code> も <code>raw/</code> や <code>index.md</code> を収集対象に含む簡易実装だったとして主要指標から外している。63種には <code>Amazon Bedrock</code> <code>IAM</code> <code>LangGraph</code> など意図的に独立ページを作っていない外部名も含まれていた。</p>
+<p>自分で作った指標が何を測っているかを後から検算し、都合の良い数字（<code>orphan = 0</code>）を自ら取り下げているのがこの記事の最も参考になる点だと考えられる。孤立ページ数のような指標は、参照元の母集団を内容ページに限定しないと簡単に無意味になる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-08-19: 資料1本追加で wikilink 出現回数 159 → 207（約30%増）・Markdown files 16 → 18・既存ファイル7件更新。単一の検証環境・N=1 の実測値で、再現性は評価されていない</li>
+<li>2026-08-19: 回答構造の Before / After 変化（Runtime中心 → harness入口）も各1回の観測。同一質問の繰り返しによるブレ幅は未測定</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このwikiの ingest は「既存ページ7件が更新される」ような波及を実際に起こせているか。1ソースあたりの更新ファイル数を <code>log.jsonl</code> から集計すれば同種の指標が取れる</li>
+<li>公開サイトとダッシュボードのリンク解決は、タイトル形式・alias・大文字小文字のどれで壊れうるか。<code>validate_wiki.py</code> が通っても表示側で edge が落ちる経路がないか確認する</li>
+<li>自分が使っている指標（orphan 数・リンク数）も、参照元の母集団を数え直すと <code>index.md</code> の網羅性を測っているだけになっていないか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a> — 本スキルが実装している知識ベースの型そのもの。「既存ページまで更新される」主張の実測例として対応する</li>
+<li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a> — 同じくリンク表記とビジュアライザの解決規約の不一致で edge が0になる現象が観測されている</li>
+<li><a href="../concepts/llm-wiki-vs-company-brain.html">llm-wiki-vs-company-brain</a> — Git 差分レビューと人間の承認を前提にする運用は、個人向けと企業向けの分岐点の議論と接続する</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../concepts/llm-wiki-vs-company-brain.html">llm-wiki-vs-company-brain</a></li>
+<li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/nttdata_tech/articles/07fffb40940e5c" rel="noopener" target="_blank">https://zenn.dev/nttdata_tech/articles/07fffb40940e5c</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Knowledge Acquisition Skill
+
+&gt; **TL;DR**: AWS Samples の LLM Wiki 実装。NTT DATA TECH が資料1本の追加で既存ページ7件が書き換わり同一質問への回答構造まで変わることを差分で実測した一方、同梱 Web UI の Knowledge Graph は生成側のリンク表記と解決側の slug 規約が噛み合わず `0 edges` になった。
+
+`aws-samples/sample-knowledge-acquisition-skill` は、PDF・論文・Web・GitHub から取り込んだ資料を相互リンク付きの Markdown Wiki として蓄積し、新しい資料を足すと既存ページも更新していく Kiro CLI 向けスキルである。リポジトリの README 自身がこの方式を「LLM Wiki」と呼び、問い合わせのたびに知識を再発見する RAG と対比して &quot;persistent, compounding knowledge base&quot;（持続的に蓄積する知識ベース）と説明している。Cloudscape ベースのローカル Web UI を同梱し、AWS へデプロイせずに Wiki と Knowledge Graph をブラウザで確認できる。
+
+このページの価値は、スキルの機能紹介ではなく **NTT DATA TECH が Amazon Bedrock AgentCore を題材に行った Before / After 検証** にある。[[concepts/llm-wiki]] の中核主張「新しい資料が既存の知識まで再編集する」を、実際のファイル差分と数値で押さえた例は多くない。
+
+```mermaid
+flowchart LR
+  S123[&quot;Source 1-3&lt;br/&gt;AgentCore preview / GA / sample repo&quot;] --&gt; W0[&quot;初期Wiki&lt;br/&gt;16 files, wikilink 159&quot;]
+  W0 --&gt; QB[&quot;Before回答&lt;br/&gt;Runtime中心&quot;]
+  S4[&quot;Source 4&lt;br/&gt;harness GA記事&quot;] --&gt; W1[&quot;更新後Wiki&lt;br/&gt;18 files, wikilink 207&quot;]
+  W0 --&gt; W1
+  W1 --&gt; QA[&quot;After回答&lt;br/&gt;harnessを入口&quot;]
+```
+
+## 検証設計：条件を固定して差分だけを見る
+
+NTT DATA TECH は「最初から情報をたくさん与えない」ことを設計の要にしている。初期 Wiki は AgentCore の preview 発表記事・GA アナウンス・サンプルリポジトリの3資料だけで作り、その後 AgentCore harness の GA 記事を1本だけ投入した。比較条件として次を固定している。
+
+- Kiro CLI のモデルを `claude-sonnet-4.5` に固定する（検証中に `auto` が利用不可になったため）
+- Wiki 生成・資料追加・質問回答をそれぞれ別セッションで実行し、会話履歴の持ち越しを断つ
+- 質問回答時は Web 検索と新規資料取得を禁止し、Wiki 内の知識だけで答えさせる
+- Before の Wiki をスナップショットとして保存し、`diff -ru` でファイル差分を実測する
+
+計測語の定義も切り分けている。**wikilink occurrences** は `concepts/` `entities/` `comparisons/` `queries/` の内容ページに現れる `[[...]]` の出現回数で、重複を含み `index.md` は集計対象外である。Web UI が表示する Graph の値とは母集団が違うため、両者を直接比較できないと明記している。
+
+## 資料1本の追加で既存ページ7件が書き換わった
+
+| 指標 | Before | After | 差分 |
+|---|---|---|---|
+| Markdown files（`raw/` 除外） | 16 | 18 | +2 |
+| Concepts | 9 | 10 | +1 |
+| Comparisons | 1 | 2 | +1 |
+| wikilink occurrences（内容ページのみ・重複含む） | 159 | 207 | +48 |
+| Graph nodes | 16 | 18 | +2 |
+| Graph edges | 0 | 0 | 0 |
+
+新規作成は `concepts/agentcore-harness.md` と `comparisons/harness-vs-runtime.md` の2件。更新された既存ファイルは Gateway・Identity・Memory・Observability・Runtime の内容ページ5件に `index.md` / `log.md` を加えた7件だった。Runtime ページには「Harness vs Direct Runtime Use」の使い分け表と、harness で始めて設定だけでは足りなくなったら Runtime ベースのコードへ移る &quot;graduation path&quot; が追記され、Memory ページには harness 経由の3形態（Managed Memory / Bring Your Own Memory / Stateless Agent）が追記された。
+
+重要なのは、Kiro が harness を「既存サービスを置き換えるもの」ではなく既存 primitive を束ねる設定駆動の抽象化として統合し、この時点で明確な supersede 対象を報告しなかった点である。新資料の投入が既存記述の破棄ではなく関係の追記として現れている。
+
+## 回答の構造まで変わった
+
+Before と一字一句同じ質問を新規セッションで投げたところ、回答の骨格が変化した。Before は Runtime を中心に各サービスを直接組み合わせる説明だったのに対し、After は harness を統合レイヤーとして入口に置き、高度な要件では Runtime 側へ寄せる構成になった。この After 構成には harness 側の Agent Skills も含まれており、これは検証で導入した Kiro のスキルではなく AgentCore harness の構成要素を指す。
+
+ただし NTT DATA TECH は Before / After とも **各1回（N=1）** であることを繰り返し断り、「Source 4 を追加すれば必ず同じ構成になる」とは結論づけていない。
+
+## Knowledge Graph が 0 edges になった原因
+
+内容ページに wikilink が207回出現しているのに、Web UI の Knowledge Graph は Before / After とも `0 edges`、全ノードが Orphan 扱いだった。NTT DATA TECH は検証時 commit の `webapp/dev-server.mjs` を読んで原因を特定している。
+
+- ページの索引はファイル名の basename を slug として作られる（`concepts/agentcore-gateway.md` → `agentcore-gateway`）
+- `findWikilinks()` は `[[...]]` の中身をそのまま返し、途中で slug 化されない。変数名は `targetSlug` だが実体は生のリンク文字列である
+- edge は `slugIndex` への完全一致で解決される
+
+生成された Wiki のリンクは `[[AgentCore Gateway]]` のようなタイトル形式であり、`slugIndex[&quot;AgentCore Gateway&quot;]` は存在しない。さらに `[[AgentCore Runtime|Runtime]]` のような alias 付きリンクは `AgentCore Runtime|Runtime` という1つの文字列として扱われるため、これも一致しない。orphan 判定は inbound edge の有無を見るので、解決済み edge が0なら全ノードが Orphan になるのも実装と整合する。
+
+NTT DATA TECH はこれを「LLM が規約に違反した」とは断定せず、**生成時の wikilink 表記と resolver が期待する slug 形式の契約が定義・共有されていない**問題として整理している。検証時の `SKILL.md` は「最低2本の outbound wikilink を張れ」とは求めるが、target にファイル stem を書くのかページタイトルを書くのか、alias を許すのかまでは定めていなかった。
+
+これは [[concepts/open-knowledge-format]] のリファレンス実装で観測された「SPEC 推奨の絶対パスリンクをビジュアライザが明示的にスキップして edge が0になる」現象と同型である。独立した2つの LLM Wiki 実装で、**リンクを書く側と解決する側の規約が未定義なせいでグラフが空になる**という同じ失敗が起きている。このwikiの `scripts/validate_wiki.py` は `LINK_PATTERN` が alias（`[[A|B]]`）を分割し、`SKIP_PAGES` で `index.md` を参照元・参照先の両方から除外しているため、この2つの落とし穴は現時点では踏んでいない。
+
+なお、Detail 画面の本文に露出していた `&lt;span style=&quot;color: #d13212; ...&quot;&gt;` という HTML 文字列も Wiki の生成物ではなく Web UI の `DetailPage.tsx` が組み立てたものだった。NTT DATA TECH は「Markdown Wiki を正本、Web UI を可視化補助」として層を分けて評価するのが安全だと結論づけている。
+
+## 生成物を原典と突き合わせる
+
+LLM Wiki は原典の保存だけでなく複数の記述を統合して新しい説明へ再構成するため、NTT DATA TECH は代表3点を AWS 公式 Developer Guide / API Reference と事後照合している（照合に使った資料は Wiki には投入していない）。
+
+- harness と Runtime の役割差 → 公式の「AgentCore harness vs. Runtime」と整合
+- 設定で足りなくなったときコードへ export する機能 → `agentcore export harness` として公式に存在
+- Memory の3形態 → API Reference の `HarnessMemoryConfiguration` が定義する union（`managedMemoryConfiguration` / `agentCoreMemoryConfiguration` / `disabled`）と対応
+
+一方、生成 Wiki にあった「Prototyping / MVP なら Harness、Deep instrumentation なら Runtime」といったシナリオ別の表は **AWS 公式表の転載ではなく、スキルが Source 4 と既存 Wiki から再構成したもの**だと明示している。方向性は公式と整合するが、個々のラベルまで原典にあるわけではない。ここから「実運用では Git 差分レビューと重要事項の原典照合を前提にすべき」という運用結論を導いている。
+
+## 指標そのものを撤回した：orphan = 0 の落とし穴
+
+検証中に得た「orphan な内容ページ = 0」という値を、NTT DATA TECH は記事の主要指標から**除外**している。当時のチェッカーは参照元として `index.md` / `log.md` / `raw/` を含む全 Markdown を連結し、さらに `agentcore-runtime.md` のような拡張子付きファイル名がどこかに現れるだけでも「参照あり」と判定していた。`index.md` は全内容ページを wikilink で列挙しているので、この条件下の `orphan = 0` は `index.md` の網羅性とほぼ同義になり、内容ページ同士の相互参照性は測れていない。
+
+同様に、補助チェックで得た `unresolved unique wikilink targets = 63種` も `raw/` や `index.md` を収集対象に含む簡易実装だったとして主要指標から外している。63種には `[[Amazon Bedrock]]` `[[IAM]]` `[[LangGraph]]` など意図的に独立ページを作っていない外部名も含まれていた。
+
+自分で作った指標が何を測っているかを後から検算し、都合の良い数字（`orphan = 0`）を自ら取り下げているのがこの記事の最も参考になる点だと考えられる。孤立ページ数のような指標は、参照元の母集団を内容ページに限定しないと簡単に無意味になる。
+
+## 観察ログ（未検証）
+
+- 2026-08-19: 資料1本追加で wikilink 出現回数 159 → 207（約30%増）・Markdown files 16 → 18・既存ファイル7件更新。単一の検証環境・N=1 の実測値で、再現性は評価されていない
+- 2026-08-19: 回答構造の Before / After 変化（Runtime中心 → harness入口）も各1回の観測。同一質問の繰り返しによるブレ幅は未測定
+
+## 問い
+
+- このwikiの ingest は「既存ページ7件が更新される」ような波及を実際に起こせているか。1ソースあたりの更新ファイル数を `log.jsonl` から集計すれば同種の指標が取れる
+- 公開サイトとダッシュボードのリンク解決は、タイトル形式・alias・大文字小文字のどれで壊れうるか。`validate_wiki.py` が通っても表示側で edge が落ちる経路がないか確認する
+- 自分が使っている指標（orphan 数・リンク数）も、参照元の母集団を数え直すと `index.md` の網羅性を測っているだけになっていないか
+
+## 関連
+
+- [[concepts/llm-wiki]] — 本スキルが実装している知識ベースの型そのもの。「既存ページまで更新される」主張の実測例として対応する
+- [[concepts/open-knowledge-format]] — 同じくリンク表記とビジュアライザの解決規約の不一致で edge が0になる現象が観測されている
+- [[concepts/llm-wiki-vs-company-brain]] — Git 差分レビューと人間の承認を前提にする運用は、個人向けと企業向けの分岐点の議論と接続する
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

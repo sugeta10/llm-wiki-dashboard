@@ -53,3 +53,4 @@ KiKi@AIx個人開発は、Karpathy式が前提とする「書き手が1人・ソ
 - [[concepts/company-brain]] — Sentraの3層メモリ論・Single Grainの5層実務モデルなどCompany Brain側の詳細
 - [[concepts/agent-memory-layer]] — GBrain/CASSが登場する個人〜チーム規模の共有メモリ層の議論
 - [[tools/glean]] — Company Brainを製品として実装する代表例の1つ
+- [[tools/knowledge-acquisition-skill]] — AWS Samples の LLM Wiki 実装。Git差分レビューと原典照合を前提にする運用結論が、企業利用側の要件と接続する

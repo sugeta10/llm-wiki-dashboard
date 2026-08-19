@@ -72,3 +72,4 @@ OKFは既存の仕組みと競合せず「積み重なる（stack）」関係に
 - [[concepts/obsidian-personal-os]] — ObsidianボルトはOKFの主要なコンシューマー候補
 - [[concepts/agent-memory-layer]] — エージェントが共有知識層にアクセスする設計思想と連動
 - [[companies/google]] — OKFの発案・公開元
+- [[tools/knowledge-acquisition-skill]] — 別実装でも「生成側のリンク表記と可視化側の解決規約が噛み合わずグラフが0 edgesになる」同型の現象が観測されている

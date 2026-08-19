@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>llm-wiki</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="llm-wiki.md">Markdownで表示</a></div>
-  <div class="meta">concepts/llm-wiki · concepts · <span title="2026-07-31">2週間前</span></div>
+  <div class="meta">concepts/llm-wiki · concepts · <span title="2026-08-19">今日</span></div>
   <article><h1>LLM Wiki</h1>
 <p><a href="../people/andrej-karpathy.html">andrej-karpathy</a> が提案した、LLM が継続的にメンテナンスする Markdown ベースの知識ベース。ベクトル DB を使わず、Markdown ファイルだけで運用する。</p>
 <h2>核心概念</h2>
@@ -147,6 +147,9 @@ Obsidian でグラフ可視化・検索
 <p>いずれも、LLM が新ソースを ingest するたびに過去ページを読み返して整合性を取り直すから成立する。人間が3ヶ月前のノートに戻って書き換える行為はほぼ発生しない。</p>
 <h3>課題：繋げた先に「理解」のボトルネックがある</h3>
 <p>tsurubee が運用で感じた根本的な限界。LLM が概念ページを綺麗に整理しても、<strong>人間が読んで自分の理解として消化しないと「自分の知識」にはならない</strong>。Karpathy 流の「人間はほとんど直接編集しない」設計を徹底すると、人間側のドメイン理解が深まらない懸念がある。対策として tsurubee は、(1) ingest するソースを<strong>自分の手で選ぶ</strong>（arXiv 新着の自動 ingest はしない。勝手に育った概念ページは「いつの間にこんなページが」状態になり理解ボトルネックを悪化させる。量より質でまず wiki を溢れさせない）、(2) wiki を辞書的に消費するだけでなく概念ページを能動的に読み返して自分の理解として再構成する、の2点を挙げる。習慣化の方法は本人もまだ未解決としている。</p>
+<h2>「既存ページまで更新される」を差分で実測した検証（NTT DATA TECH）</h2>
+<p>NTT DATA TECH は AWS Samples の <a href="../tools/knowledge-acquisition-skill.html">knowledge-acquisition-skill</a> を使い、Amazon Bedrock AgentCore の3資料だけで初期 Wiki を作ってから資料を1本だけ追加する Before / After 検証を行っている。結果は、新規内容ページ2件に加えて<strong>既存ファイル7件（内容ページ5件と index / log）が更新</strong>され、内容ページ群の wikilink 出現回数が159回から207回へ増えた。さらに Before と一字一句同じ質問への回答構造が「Runtime 中心」から「harness を入口とした構成」へ変化した。モデル固定・別セッション・Web検索禁止で条件を揃えた上での観測だが、Before / After とも各1回（N=1）である。</p>
+<p>この検証が示すのは、LLM Wiki の中核主張である「新資料が既存知識を再編集する」が、ファイル差分という検証可能な形で観測できるということである。同時に NTT DATA TECH は、生成された記述に原典の要約だけでなく LLM による再構成が混ざる点を挙げ、実運用では Git 差分レビューと重要事項の原典照合を前提にすべきだとしている。</p>
 <h2>派生プロジェクト:「LLM Wiki v2」（未検証）</h2>
 <p>@heynavtoor は、Karpathy の LLM Wiki が公開48時間で反響を呼んだ後、それを拡張した「LLM Wiki v2」という派生プロジェクトが登場したと投稿している。挙げられている追加機能はメモリライフサイクル管理・確信度スコアリング・知識グラフ・自動フック・忘却曲線の5つ。ただし投稿には実装者名やリポジトリへのリンクが含まれておらず、機能語の実体（設計・コード）は本ソースだけでは確認できない。</p>
 <h2>問い</h2>
@@ -172,6 +175,7 @@ Obsidian でグラフ可視化・検索
 <li><a href="../tools/cloudflare-os.html">cloudflare-os</a> — GitHub正本のMarkdown知識ベースをクラウド側エージェントにも参照させた実践例と、その月額コストの実測（Markdown約400件で実質0円）</li>
 <li><a href="../concepts/llm-wiki-vs-company-brain.html">llm-wiki-vs-company-brain</a> — 個人・小チーム向けのKarpathy式と企業向けCompany Brainの分岐点を権限・鮮度等の5点で整理し、4つの質問による判定基準を提示</li>
 <li><a href="../concepts/evergreen-notes-claude-md.html">evergreen-notes-claude-md</a> — 同じMarkdown＋ウィキリンクの型を、ingest/query/lintの3操作でなく「回答直後にノート化を提案させる」会話起点の成長で回す実装（tokuhirom / 64p.org）</li>
+<li><a href="../tools/knowledge-acquisition-skill.html">knowledge-acquisition-skill</a> — AWS Samples の実装。「資料1本追加で既存ページ7件が更新され回答構造も変わる」をファイル差分で実測した検証例</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
 <li><a href="../concepts/evergreen-notes-claude-md.html">evergreen-notes-claude-md</a></li>
 <li><a href="../concepts/llm-wiki-vs-company-brain.html">llm-wiki-vs-company-brain</a></li>
@@ -186,7 +190,8 @@ Obsidian でグラフ可視化・検索
 <li><a href="https://x.com/i/web/status/2051558251016433869" rel="noopener" target="_blank">https://x.com/i/web/status/2051558251016433869</a></li>
 <li><a href="https://x.com/i/web/status/2039609049092923655" rel="noopener" target="_blank">https://x.com/i/web/status/2039609049092923655</a></li>
 <li><a href="https://x.com/i/web/status/2040448463540830705" rel="noopener" target="_blank">https://x.com/i/web/status/2040448463540830705</a></li>
-<li><a href="https://x.com/i/web/status/2043321909971202403" rel="noopener" target="_blank">https://x.com/i/web/status/2043321909971202403</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2043321909971202403" rel="noopener" target="_blank">https://x.com/i/web/status/2043321909971202403</a></li>
+<li><a href="https://zenn.dev/nttdata_tech/articles/07fffb40940e5c" rel="noopener" target="_blank">https://zenn.dev/nttdata_tech/articles/07fffb40940e5c</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -330,6 +335,12 @@ LLM Wiki を1ヶ月運用した tsurubee は、LLM の真価は要約ではな�
 
 tsurubee が運用で感じた根本的な限界。LLM が概念ページを綺麗に整理しても、**人間が読んで自分の理解として消化しないと「自分の知識」にはならない**。Karpathy 流の「人間はほとんど直接編集しない」設計を徹底すると、人間側のドメイン理解が深まらない懸念がある。対策として tsurubee は、(1) ingest するソースを**自分の手で選ぶ**（arXiv 新着の自動 ingest はしない。勝手に育った概念ページは「いつの間にこんなページが」状態になり理解ボトルネックを悪化させる。量より質でまず wiki を溢れさせない）、(2) wiki を辞書的に消費するだけでなく概念ページを能動的に読み返して自分の理解として再構成する、の2点を挙げる。習慣化の方法は本人もまだ未解決としている。
 
+## 「既存ページまで更新される」を差分で実測した検証（NTT DATA TECH）
+
+NTT DATA TECH は AWS Samples の [[tools/knowledge-acquisition-skill]] を使い、Amazon Bedrock AgentCore の3資料だけで初期 Wiki を作ってから資料を1本だけ追加する Before / After 検証を行っている。結果は、新規内容ページ2件に加えて**既存ファイル7件（内容ページ5件と index / log）が更新**され、内容ページ群の wikilink 出現回数が159回から207回へ増えた。さらに Before と一字一句同じ質問への回答構造が「Runtime 中心」から「harness を入口とした構成」へ変化した。モデル固定・別セッション・Web検索禁止で条件を揃えた上での観測だが、Before / After とも各1回（N=1）である。
+
+この検証が示すのは、LLM Wiki の中核主張である「新資料が既存知識を再編集する」が、ファイル差分という検証可能な形で観測できるということである。同時に NTT DATA TECH は、生成された記述に原典の要約だけでなく LLM による再構成が混ざる点を挙げ、実運用では Git 差分レビューと重要事項の原典照合を前提にすべきだとしている。
+
 ## 派生プロジェクト:「LLM Wiki v2」（未検証）
 
 @heynavtoor は、Karpathy の LLM Wiki が公開48時間で反響を呼んだ後、それを拡張した「LLM Wiki v2」という派生プロジェクトが登場したと投稿している。挙げられている追加機能はメモリライフサイクル管理・確信度スコアリング・知識グラフ・自動フック・忘却曲線の5つ。ただし投稿には実装者名やリポジトリへのリンクが含まれておらず、機能語の実体（設計・コード）は本ソースだけでは確認できない。
@@ -357,6 +368,7 @@ tsurubee が運用で感じた根本的な限界。LLM が概念ページを綺�
 - [[tools/cloudflare-os]] — GitHub正本のMarkdown知識ベースをクラウド側エージェントにも参照させた実践例と、その月額コストの実測（Markdown約400件で実質0円）
 - [[concepts/llm-wiki-vs-company-brain]] — 個人・小チーム向けのKarpathy式と企業向けCompany Brainの分岐点を権限・鮮度等の5点で整理し、4つの質問による判定基準を提示
 - [[concepts/evergreen-notes-claude-md]] — 同じMarkdown＋ウィキリンクの型を、ingest/query/lintの3操作でなく「回答直後にノート化を提案させる」会話起点の成長で回す実装（tokuhirom / 64p.org）
+- [[tools/knowledge-acquisition-skill]] — AWS Samples の実装。「資料1本追加で既存ページ7件が更新され回答構造も変わる」をファイル差分で実測した検証例
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
