@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>codex-agent-loop</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="codex-agent-loop.md">Markdownで表示</a></div>
-  <div class="meta">concepts/codex-agent-loop · concepts · <span title="2026-05-22">2ヶ月前</span></div>
+  <div class="meta">concepts/codex-agent-loop · concepts · <span title="2026-05-22">3ヶ月前</span></div>
   <article><h1>Codex エージェントループ</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: openai-codex の Codex CLI が「ユーザー入力→プロンプト構築→Responses API 推論→ツールコール or アシスタントメッセージ」を繰り返す中核ループ。完全ステートレス設計とプロンプトキャッシュ保護を両立させるため、<code>input</code> 配列を末尾追記のみで成長させるのが設計の肝。</p>

@@ -29,10 +29,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>scientific-asset-building</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="scientific-asset-building.md">Markdownで表示</a></div>
-  <div class="meta">business/scientific-asset-building · business · <span title="2026-07-28">3週間前</span></div>
+  <div class="meta">business/scientific-asset-building · business · <span title="2026-08-21">今日</span></div>
   <article><h1>科学的な資産形成（Scientific Asset Building）</h1>
 <blockquote>
-<p>孤立理由: AI/LLM領域と直接の接点を持たない個人の資産形成メソッドで、既存wikiページ（AI活用の副業・退職戦略など）とは対象が異なるため強い関連は見つからなかった</p>
 <p><strong>TL;DR</strong>: 「未来の価格を確実に当てる方法は存在しない」という前提から出発し、才能や相場予想でなく「入金力の確保→生活防衛資金→税制優遇口座→広く安く長く分散保有→行動の自動化」という順序に沿って資産を育てる設計思想。核心は「予測」でなく「設計」。</p>
 </blockquote>
 <p>@aibijo_aoiは、資産形成の王道が地味であることを純資産の増加式で示す。<strong>純資産の増加 ＝ 税引後収入 − 支出 ＋ 投資収益 − 税金・手数料 − 大きな損失</strong>という式では、投資利回りは一要素にすぎず、資産がまだ少ない時期は「毎月いくら残せるか」の方が利回りより影響が大きいと述べる。資産形成には入金力・運用利回り・時間という3つのエンジンがあり、若いうちは入金力と時間、資産が大きくなるにつれ利回りの影響が増えるため、初期と後期では力点を変えるべきだとする。</p>
@@ -48,13 +47,21 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>日本のNISAは口座内の売却益・配当が非課税で、2024年から非課税保有期間が無期限・制度も恒久化された。@aibijo_aoiによれば2026年7月時点の年間投資枠はつみたて投資枠120万円・成長投資枠240万円の併用で年間360万円、生涯非課税保有限度額は合計1800万円（うち成長投資枠1200万円まで）。iDeCoは掛金が全額所得控除・運用益非課税だが原則60歳まで引き出せないため、生活防衛資金→NISA→iDeCoの順で検討するのが理解しやすいとする。</p>
 <h2>何をしないか</h2>
 <p>@aibijo_aoiは、テランス・オデアンとブラッド・バーバーによる米国6万6465世帯の証券口座分析として、最も頻繁に取引した家計の年率リターンが11.4%、同期間の市場リターンが17.9%だったという研究を引用し、頻繁な売買を避けるべき根拠とする。直近で上昇したものを追いかけない、レバレッジを資産形成の中核にしない、「元本保証で高利回り」のような話に近づかないことも挙げる。国民生活センターが「必ずもうかる」投資はあり得ないと注意喚起している点にも触れる。</p>
+<h2>AIに運用役を演じさせるプロンプトの流通（2026-08）</h2>
+<p>@yuno_miyako2 は、日本株のファンダメンタル投資家兼ポートフォリオマネージャーを演じさせるプロンプトを公開し、その目的を「単に良い会社・割安株・高配当株を探すことではありません」と、探す対象の否定から定義している。引用元の投稿は運用成績のスクリーンショットに「強くない？ 計測期間短いけど」と本人が計測期間の短さを添えたもので、プロンプト本体は画像として投稿されているため、ブックマークから取得できたのは冒頭の役割設定2文のみ。</p>
+<p>短い計測期間の成績からは有効性を判断できないという、このページが引用する研究群（頻繁に売買した家計が市場を下回った、費用控除後の平均アクティブ運用が平均パッシブ運用を下回る）の論点は、銘柄選択の実行主体が人からAIに替わっても変わらないと考えられる。AIに運用の役割を分業させる実装としては <a href="../tools/autohedge.html">autohedge</a>（Director/Quant/Risk/Execution の4エージェント）があるが、こちらも運用成績は公開されていない。</p>
 <h2>問い</h2>
 <ul>
 <li>ここで引用される研究（ベッセムビンダー・シャープ・セイラー&amp;ベナルチ・オデアン&amp;バーバー）は実際に存在する著名な研究だが、本記事自体が一次資料へのリンクを示していない。数値を実務判断に使う前に一次資料を確認する価値があるか</li>
 <li>NISA・iDeCoの枠・限度額は制度改正で変わりうる。実行時には最新の公式情報（金融庁・国税庁）で再確認する必要がある</li>
+<li>AIに運用役を演じさせるプロンプトの成績を、短期スクリーンショットでなく何で判定すべきか（同一期間のベンチマーク比較・売買回数・費用込みの実質リターン）</li>
 </ul>
 <h2>関連</h2>
-<p>（現時点で強い関連を持つ既存ページなし）</p><section class="related"><h2>Related Pages</h2><ul><li><a href="../weekly/2026-W32.html">2026-W32</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2080871296942936485" rel="noopener" target="_blank">https://x.com/i/web/status/2080871296942936485</a></li></ul></section></article>
+<ul>
+<li><a href="../tools/autohedge.html">autohedge</a> — 4つのAIエージェントに投資テーゼ生成・検証・リスク・執行を分業させる自律型ヘッジファンドOSS</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/autohedge.html">autohedge</a></li>
+<li><a href="../weekly/2026-W32.html">2026-W32</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2080871296942936485" rel="noopener" target="_blank">https://x.com/i/web/status/2080871296942936485</a></li>
+<li><a href="https://x.com/i/web/status/2090358792085213629" rel="noopener" target="_blank">https://x.com/i/web/status/2090358792085213629</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -76,8 +83,6 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 });
 </script>
 <script id="page-markdown" type="text/plain"># 科学的な資産形成（Scientific Asset Building）
-
-&gt; 孤立理由: AI/LLM領域と直接の接点を持たない個人の資産形成メソッドで、既存wikiページ（AI活用の副業・退職戦略など）とは対象が異なるため強い関連は見つからなかった
 
 &gt; **TL;DR**: 「未来の価格を確実に当てる方法は存在しない」という前提から出発し、才能や相場予想でなく「入金力の確保→生活防衛資金→税制優遇口座→広く安く長く分散保有→行動の自動化」という順序に沿って資産を育てる設計思想。核心は「予測」でなく「設計」。
 
@@ -107,14 +112,21 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 
 @aibijo_aoiは、テランス・オデアンとブラッド・バーバーによる米国6万6465世帯の証券口座分析として、最も頻繁に取引した家計の年率リターンが11.4%、同期間の市場リターンが17.9%だったという研究を引用し、頻繁な売買を避けるべき根拠とする。直近で上昇したものを追いかけない、レバレッジを資産形成の中核にしない、「元本保証で高利回り」のような話に近づかないことも挙げる。国民生活センターが「必ずもうかる」投資はあり得ないと注意喚起している点にも触れる。
 
+## AIに運用役を演じさせるプロンプトの流通（2026-08）
+
+@yuno_miyako2 は、日本株のファンダメンタル投資家兼ポートフォリオマネージャーを演じさせるプロンプトを公開し、その目的を「単に良い会社・割安株・高配当株を探すことではありません」と、探す対象の否定から定義している。引用元の投稿は運用成績のスクリーンショットに「強くない？ 計測期間短いけど」と本人が計測期間の短さを添えたもので、プロンプト本体は画像として投稿されているため、ブックマークから取得できたのは冒頭の役割設定2文のみ。
+
+短い計測期間の成績からは有効性を判断できないという、このページが引用する研究群（頻繁に売買した家計が市場を下回った、費用控除後の平均アクティブ運用が平均パッシブ運用を下回る）の論点は、銘柄選択の実行主体が人からAIに替わっても変わらないと考えられる。AIに運用の役割を分業させる実装としては [[tools/autohedge]]（Director/Quant/Risk/Execution の4エージェント）があるが、こちらも運用成績は公開されていない。
+
 ## 問い
 
 - ここで引用される研究（ベッセムビンダー・シャープ・セイラー&amp;ベナルチ・オデアン&amp;バーバー）は実際に存在する著名な研究だが、本記事自体が一次資料へのリンクを示していない。数値を実務判断に使う前に一次資料を確認する価値があるか
 - NISA・iDeCoの枠・限度額は制度改正で変わりうる。実行時には最新の公式情報（金融庁・国税庁）で再確認する必要がある
+- AIに運用役を演じさせるプロンプトの成績を、短期スクリーンショットでなく何で判定すべきか（同一期間のベンチマーク比較・売買回数・費用込みの実質リターン）
 
 ## 関連
 
-（現時点で強い関連を持つ既存ページなし）
+- [[tools/autohedge]] — 4つのAIエージェントに投資テーゼ生成・検証・リスク・執行を分業させる自律型ヘッジファンドOSS
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

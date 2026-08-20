@@ -95,3 +95,4 @@ NTT・ソフトバンク・KDDI・NEC・[[companies/fujitsu]]・SCSK・TIS・ア
 - [[business/ai-income-retirement-strategy]] — 個人レベルのAI×資本戦略
 - [[people/fladdict]] — 著者プロフィール
 - [[business/end-of-task-assignment]] — 同じ受託・SES業界への影響を、Spotify事例とhuman-on-the-loopという別の切り口で論じる
+- [[people/pieter-levels]] — 「大手AIがインディーハッカーのアプリを食う」と個人開発者側から同じ地形を語る実践者のアーカイブ

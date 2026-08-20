@@ -22,6 +22,11 @@ Pythonで構築された**自律型ヘッジファンド**のOSS。役割分担�
 ## 問い
 
 - 「ライブで動作する」の実態（実弾運用かペーパートレードか）と、4エージェント分業が単一エージェントより意思決定品質を上げているかは未検証。
+
+## 関連
+
+- [[concepts/multi-agent-patterns]] — 役割特化エージェントの分業（Specialist Team）パターンの元ページ
+- [[business/scientific-asset-building]] — 運用をAIに任せる前段にある資産形成の基礎設計（分散・費用・売買頻度）と、成績をどう判定すべきかの論点
 - [[tools/claude-finance-agents]]（Anthropic公式の金融10エージェント）と役割設計を比較できるか。
 
 ## 関連
