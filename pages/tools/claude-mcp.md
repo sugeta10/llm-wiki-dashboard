@@ -60,4 +60,5 @@ MCP Appsは[[concepts/generative-ui]]が扱うOpen-endedパターンの実装に
 - [[concepts/generative-ui]]（MCP AppsのOpen-endedパターン）
 - [[tools/openai-mcp-tunnel]] — OpenAIのSecure MCP Tunnel（プライベートMCPサーバーをトンネル経由でOpenAI製品に接続）
 - [[tools/claude-tag]] — SlackにClaudeをチームメイトとして常駐させる製品（ツール/チャンネルアクセスの付与を伴う）
+- [[tools/claude-academy]] — Anthropic公式の無料学習サイト。Claude Platform トラックが API・Console・MCP を扱う
 - [[concepts/agentic-data-analytics]] — MCPを業務データ分析の接続層として使う設計論。デジタル庁が行政手続等調査データ約75,000件をMCP経由で自然言語分析する実装をGitHub公開した事例を含む

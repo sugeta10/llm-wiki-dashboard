@@ -30,3 +30,4 @@ Claudeが使う「ツール」へのアクセスは、外部サービスとの�
 - [[companies/anthropic]]
 - [[tools/claude-mcp]] — Claudeが外部ツール・データに接続するためのプロトコル層
 - [[concepts/claude-code-task-delegation]] — 人に振るようにAIにタスクを委任する実践
+- [[tools/claude-academy]] — Anthropic公式の無料学習サイト。Claude Tag の使い方も製品別トラックの1つとして扱われている

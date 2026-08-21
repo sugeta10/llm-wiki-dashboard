@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-academy - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-academy</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-academy.md">Markdownで表示</a></div>
+  <div class="meta">tools/claude-academy · tools · <span title="2026-08-21">今日</span></div>
+  <article><h1>Claude Academy</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Anthropic が 2026-08-20 に公開した無料の公式学習サイト（academy.claude.com）。「製品ごとの使い方」と「AIそのものの基礎（AI Fluency）」の2本立てで、AIを触ったことがない人から日常的にClaudeを使う人まで同じ入口から入れる構成になっている。</p>
+<p>📌 X bookmark: 27,399（2026-08-21 時点。like 24,074 / RT 2,638 / impression 4,308,644）</p>
+</blockquote>
+<p>Anthropic の公式アカウント @claudeai は公開告知で「AIとは何かを探っている段階の人でも、すでに毎日Claudeを使っている人でも、その人がいる場所で出会える学習パスがある」と述べ、コースとチュートリアルはすべて無料で誰にでも開かれていると明言した。ここで注目すべきは、教材の構成が<strong>製品カタログではなく学習パス</strong>として切られている点である。5つの製品ごとに「何ができるか」ではなく「何を学ぶか」で入口が分かれ、その手前に製品非依存のAI基礎コース群が置かれている。ツールの使い方を覚えるだけでは委任の質が上がらない、という前提が設計に出ていると考えられる。</p>
+<h2>製品別の学習トラック</h2>
+<p>サイトの「Learn the Claude products」節では、5製品それぞれに1行の学習目標が添えられている（以下はサイト記載の転記）。</p>
+<table>
+<thead>
+<tr>
+<th>トラック</th>
+<th>学ぶこと</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude.ai</td>
+<td>問題を考え抜く・文書を起草する・データを分析することを、Claudeとの対話で行う</td>
+</tr>
+<tr>
+<td>Claude Cowork</td>
+<td>タスクを丸ごと渡し、仕上がった成果物を受け取る（自分用・チーム用の両方）</td>
+</tr>
+<tr>
+<td>Claude Code</td>
+<td>ターミナル・IDE・ブラウザでビルド／デバッグ／出荷する</td>
+</tr>
+<tr>
+<td>Claude Tag</td>
+<td>チームのチャンネルにClaudeをタグ付けし、全員が追える形で仕事を渡す</td>
+</tr>
+<tr>
+<td>Claude Platform</td>
+<td>API・Claude Console・MCP を使って自社プロダクトにClaudeを組み込む</td>
+</tr>
+</tbody>
+</table>
+<p>この5分割は <a href="../business/founders-playbook.html">founders-playbook</a> に出てくる Anthropic 公式の Chat / Cowork / Code 製品マトリクスを、チーム向けの <a href="../tools/claude-tag.html">claude-tag</a> と開発者向けの Platform まで広げた形になっている。</p>
+<h2>AI Fluency（製品非依存のAI基礎）</h2>
+<p>「Learn AI fundamentals with AI Fluency」節には AI Fluency というコレクションが置かれ、キャッシュ時点で以下の3本が掲載されている。</p>
+<table>
+<thead>
+<tr>
+<th>教材</th>
+<th>形式</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI Fluency: Framework &amp; Foundations</td>
+<td>コース（14レッスン・クイズ1・4時間）</td>
+<td><strong>4Dフレームワーク</strong>（Delegation / Description / Discernment / Diligence）でAIと効果的・効率的・倫理的・安全に協働する</td>
+</tr>
+<tr>
+<td>The 4 Properties of AI</td>
+<td>チュートリアル（7分）</td>
+<td>AIの4つの性質の概観。AIが得意な状況と限界のある状況を分ける要因のクイックリファレンス</td>
+</tr>
+<tr>
+<td>AI Capabilities and Limitations</td>
+<td>コース（13レッスン・クイズ1・3.5時間）</td>
+<td>次トークン予測・知識・ワーキングメモリ・ステアラビリティ・コンテキスト制限から、LLMにできること／できないことの正確なメンタルモデルを作る</td>
+</tr>
+</tbody>
+</table>
+<p>4Dの4語（委任・記述・見極め・入念さ）は、このwikiで扱ってきた委任設計の論点——何をどこまで渡すか（<a href="../concepts/goal-loop-routine.html">goal-loop-routine</a>）、どう記述するか（<a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a>）、出力をどう検証するか（<a href="../concepts/eval-loop.html">eval-loop</a>）——を1つの語彙に畳んだものと読める。Anthropic自身が「AIリテラシー」を製品の使い方と分離して教材化した点が、この公開の実質だと考えられる。</p>
+<p>なお、このwikiが持つサイトのキャッシュはトップページの冒頭部分のみで、上記より下のコース一覧は取得できていない。教材の総数・難易度体系は未確認。</p>
+<h2>問い</h2>
+<ul>
+<li>4Dフレームワーク（Delegation / Description / Discernment / Diligence）は、このwikiのingest→weekly生成ループのどの工程に対応するか。Discernment（見極め）が最も薄い工程はどこか</li>
+<li>「AI Capabilities and Limitations」のワーキングメモリ／コンテキスト制限の説明は、実運用での圧縮・引き継ぎ設計（<a href="../concepts/ai-session-handover.html">ai-session-handover</a>）とどこまで一致するか</li>
+<li>Claude Platform トラックの教材は、<a href="../tools/claude-mcp.html">claude-mcp</a> の設計判断（何をMCPサーバーにし、何をスキルにするか）まで踏み込んでいるか。踏み込んでいなければ、それは公式が「まだ定石がない」と見ている領域という可能性がある</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../companies/anthropic.html">anthropic</a> — 提供元。公式アカウント @claudeai が公開を告知</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — 製品別トラックの1つ（ターミナル／IDE／ブラウザでの開発）</li>
+<li><a href="../tools/claude-tag.html">claude-tag</a> — 製品別トラックの1つ（Slackチャンネル常駐でチームに仕事を渡す）</li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a> — Claude Platform トラックが扱う接続層（API・Console・MCP）</li>
+<li><a href="../business/founders-playbook.html">founders-playbook</a> — 同じくAnthropic公式の学習コンテンツ。製品マトリクス（Chat/Cowork/Code）が本サイトの製品別トラックと対応する</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/founders-playbook.html">founders-playbook</a></li>
+<li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../tools/claude-tag.html">claude-tag</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2090518650251804742" rel="noopener" target="_blank">https://x.com/i/web/status/2090518650251804742</a></li>
+<li><a href="https://academy.claude.com" rel="noopener" target="_blank">https://academy.claude.com</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Academy
+
+&gt; **TL;DR**: Anthropic が 2026-08-20 に公開した無料の公式学習サイト（academy.claude.com）。「製品ごとの使い方」と「AIそのものの基礎（AI Fluency）」の2本立てで、AIを触ったことがない人から日常的にClaudeを使う人まで同じ入口から入れる構成になっている。
+
+&gt; 📌 X bookmark: 27,399（2026-08-21 時点。like 24,074 / RT 2,638 / impression 4,308,644）
+
+Anthropic の公式アカウント @claudeai は公開告知で「AIとは何かを探っている段階の人でも、すでに毎日Claudeを使っている人でも、その人がいる場所で出会える学習パスがある」と述べ、コースとチュートリアルはすべて無料で誰にでも開かれていると明言した。ここで注目すべきは、教材の構成が**製品カタログではなく学習パス**として切られている点である。5つの製品ごとに「何ができるか」ではなく「何を学ぶか」で入口が分かれ、その手前に製品非依存のAI基礎コース群が置かれている。ツールの使い方を覚えるだけでは委任の質が上がらない、という前提が設計に出ていると考えられる。
+
+## 製品別の学習トラック
+
+サイトの「Learn the Claude products」節では、5製品それぞれに1行の学習目標が添えられている（以下はサイト記載の転記）。
+
+| トラック | 学ぶこと |
+|---|---|
+| Claude.ai | 問題を考え抜く・文書を起草する・データを分析することを、Claudeとの対話で行う |
+| Claude Cowork | タスクを丸ごと渡し、仕上がった成果物を受け取る（自分用・チーム用の両方） |
+| Claude Code | ターミナル・IDE・ブラウザでビルド／デバッグ／出荷する |
+| Claude Tag | チームのチャンネルにClaudeをタグ付けし、全員が追える形で仕事を渡す |
+| Claude Platform | API・Claude Console・MCP を使って自社プロダクトにClaudeを組み込む |
+
+この5分割は [[business/founders-playbook]] に出てくる Anthropic 公式の Chat / Cowork / Code 製品マトリクスを、チーム向けの [[tools/claude-tag]] と開発者向けの Platform まで広げた形になっている。
+
+## AI Fluency（製品非依存のAI基礎）
+
+「Learn AI fundamentals with AI Fluency」節には AI Fluency というコレクションが置かれ、キャッシュ時点で以下の3本が掲載されている。
+
+| 教材 | 形式 | 内容 |
+|---|---|---|
+| AI Fluency: Framework &amp; Foundations | コース（14レッスン・クイズ1・4時間） | **4Dフレームワーク**（Delegation / Description / Discernment / Diligence）でAIと効果的・効率的・倫理的・安全に協働する |
+| The 4 Properties of AI | チュートリアル（7分） | AIの4つの性質の概観。AIが得意な状況と限界のある状況を分ける要因のクイックリファレンス |
+| AI Capabilities and Limitations | コース（13レッスン・クイズ1・3.5時間） | 次トークン予測・知識・ワーキングメモリ・ステアラビリティ・コンテキスト制限から、LLMにできること／できないことの正確なメンタルモデルを作る |
+
+4Dの4語（委任・記述・見極め・入念さ）は、このwikiで扱ってきた委任設計の論点——何をどこまで渡すか（[[concepts/goal-loop-routine]]）、どう記述するか（[[concepts/claude-code-instruction-methods]]）、出力をどう検証するか（[[concepts/eval-loop]]）——を1つの語彙に畳んだものと読める。Anthropic自身が「AIリテラシー」を製品の使い方と分離して教材化した点が、この公開の実質だと考えられる。
+
+なお、このwikiが持つサイトのキャッシュはトップページの冒頭部分のみで、上記より下のコース一覧は取得できていない。教材の総数・難易度体系は未確認。
+
+## 問い
+
+- 4Dフレームワーク（Delegation / Description / Discernment / Diligence）は、このwikiのingest→weekly生成ループのどの工程に対応するか。Discernment（見極め）が最も薄い工程はどこか
+- 「AI Capabilities and Limitations」のワーキングメモリ／コンテキスト制限の説明は、実運用での圧縮・引き継ぎ設計（[[concepts/ai-session-handover]]）とどこまで一致するか
+- Claude Platform トラックの教材は、[[tools/claude-mcp]] の設計判断（何をMCPサーバーにし、何をスキルにするか）まで踏み込んでいるか。踏み込んでいなければ、それは公式が「まだ定石がない」と見ている領域という可能性がある
+
+## 関連
+
+- [[companies/anthropic]] — 提供元。公式アカウント @claudeai が公開を告知
+- [[tools/claude-code]] — 製品別トラックの1つ（ターミナル／IDE／ブラウザでの開発）
+- [[tools/claude-tag]] — 製品別トラックの1つ（Slackチャンネル常駐でチームに仕事を渡す）
+- [[tools/claude-mcp]] — Claude Platform トラックが扱う接続層（API・Console・MCP）
+- [[business/founders-playbook]] — 同じくAnthropic公式の学習コンテンツ。製品マトリクス（Chat/Cowork/Code）が本サイトの製品別トラックと対応する
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

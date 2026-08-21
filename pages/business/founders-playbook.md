@@ -43,3 +43,4 @@
 - [[tools/claude-code]] — プロダクトマトリクスの一角（MVP/Scaleのコーディング担当）
 - [[business/talent-to-value-ai]] — 価値の単位が「人＋エージェントのシステム」へ移る論（創業者=オーケストレーター化と接続）
 - [[business/yc-request-for-startups-fall-2026]] — YC公式RFS。本プレイブックの「どう作るか」に対し「何を作るか」を扱う対
+- [[tools/claude-academy]] — 同じくAnthropic公式の学習コンテンツ。Chat/Cowork/Code のマトリクスが製品別トラックとして教材化されている

@@ -68,3 +68,4 @@ Anthropicが公開したマルチエージェント構成では：
 - [[tools/claude-tag]]（SlackにClaudeをチームメイトとして常駐させる製品・2026-06-23発表）
 - [[business/founders-playbook]]（AIネイティブ・スタートアップ構築の公式プレイブック・Chat/Cowork/Code製品マトリクス）
 - [[concepts/product-role-archetypes]]（Boris Cherny が Anthropic 内で観察した職能横断の5アーキタイプ）
+- [[tools/claude-academy]]（公式の無料学習サイト・2026-08-20公開。製品別5トラック＋AI Fluency）
