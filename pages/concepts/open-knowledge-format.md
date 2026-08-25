@@ -58,6 +58,7 @@ OKFは既存の仕組みと競合せず「積み重なる（stack）」関係に
 - 2026-06-15 (Sam McVeety & Amir Hormati, Google Cloud): OKF v0.1として発表。「答えは別の知識サービスでなくフォーマット」と明言。Obsidian/Notion/Hugo/Jekyllなど既存ツールはMarkdown+YAMLフロントマターをすでに話せるため、追加UI不要でバンドルを閲覧・編集可能と説明
 - 2026-06-17 (せーの, classmethod / dev.classmethod.jp): 手書きの最小バンドル＋ビジュアライザで検証したハンズオン所見。リファレンス実装のビジュアライザ v0.1 は SPEC §5.1推奨の `/` 始まり絶対パスリンクを `viewer/generator.py` で明示的にスキップしており（`if "://" in target or target.startswith("/"): continue`）、絶対パスで書くとedgeが0になる。相対パス（`./customers.md` 等）に直すと正常にグラフ化された。SPEC推奨と実装のあいだにv0.1段階のギャップがある（単一ソースの実測）
 - 2026-06-17 (せーの): 自身のObsidian Vault 812ファイルを検査したところ25.4%（206件）が意図せずOKF v0.1準拠（frontmatter＋非空type）だった。既存のtype値（memo 55・knowledge 25・meeting 19件など）がそのままOKFのtype値として機能。残り606件はtypeを足すだけで準拠可能、との単一ソースの測定
+- 2026-08-21 (@openknowledge): 「任意の知識ベース・LLM wikiをOKF準拠にできる」とするサードパーティのOKFプラグインをXで告知。仕様公開から約2ヶ月でGoogle以外からエコシステムのツールが出始めたシグナルだが、プラグインの対象プラットフォームと提供元組織の素性はポスト単体からは確認できない（リンク先未取得）
 
 ## 問い
 

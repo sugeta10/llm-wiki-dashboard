@@ -37,3 +37,4 @@
 - [[concepts/self-refining-skills]] — スキルに自己改善ループを組み込む設計。例文を運用の中で育てる発想と接続
 - [[tools/no-ai-slop]] — 英語版の同種の文章規範スキル（Peter Yang）。20+のAIスロップパターンを検出・除去
 - [[concepts/llm-japanese-style-hooks]] — @yugen_matuniのHook運用。全NGルールにグッドパターンを対で持たせた結果、書き直しの精度が上がったとしており、本ページの「例文を外すと強くは効かないかもしれない」という留保への実践的な回答にあたる
+- [[tools/suiko]] — 本ページが規範を指示側（SKILL.md）に置くのに対し、同種の規範（翻訳調・定型対比・リズム）を検査側の決定論的CLIに置いた日本語文書診断ツール（nwiizo製）

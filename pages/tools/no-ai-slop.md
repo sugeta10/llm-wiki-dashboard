@@ -38,3 +38,4 @@
 - [[tools/japanese-tech-writing]] — 日本語版の同種の文章規範スキル（鹿野桂一郎）
 - [[concepts/eval-loop]] — 「生成→基準で採点→閾値未満を止める」品質ゲート。no-ai-slopの`eval.md`自己検査は同型の実装
 - [[concepts/llm-japanese-style-hooks]] — 日本語版の同種の取り組みをスキル起動でなくPostToolUse Hookの常時検査として実装した運用例（NGルール500本超・グッドパターン対）
+- [[tools/suiko]] — 日本語のAI文体検出を、LLMスキルの推敲でなく形態素解析ベースの決定論的CLIとして実装したツール（nwiizo製・baseline差分・CI gate/SARIF対応）
