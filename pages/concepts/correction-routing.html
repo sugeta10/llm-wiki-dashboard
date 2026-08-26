@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>correction-routing - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>correction-routing</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="correction-routing.md">Markdownで表示</a></div>
+  <div class="meta">concepts/correction-routing · concepts · <span title="2026-08-26">今日</span></div>
+  <article><h1>訂正のルーティング（Company Brainを賢くする帰還ループ）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: チームがAIに与えた訂正・決定・うまくいった手順を個人チャットに閉じ込めず、「事実→会社知識／戦略選択→決定記録／繰り返す好み→ポリシー／実証済み手技→スキル／反復手順→ワーカー／危険操作→機械的ゲート」の6分類で書き戻し先を選び、人間レビューを経て全員の共有知に昇格させるcompany brain構築法（@VibeMarketer_）。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  W[&quot;仕事の実行&quot;] --&gt; C[&quot;訂正が発生&quot;]
+  C --&gt; R[&quot;6分類で書き戻し先を選ぶ&lt;br/&gt;事実/決定/ポリシー/スキル/ワーカー/ゲート&quot;]
+  R --&gt; Rev[&quot;人間レビュー&quot;]
+  Rev --&gt; Sh[&quot;共有知へ反映&quot;]
+  Sh --&gt; W</pre>
+<p>マーケター VibeMarketer（@VibeMarketer_）が解こうとする問題は、社内で最も賢いAIが「特定の1人のためだけに働いている」状態である。営業リードが決め手の反論を教え、マーケターが古い製品主張を直し、創業者が同じ文を5回書き直す——会社は毎日AIに考え方を教えているのに、その学習のほぼすべてがプライベートチャットの中で消え、各人が「少しずつ違うバージョンの会社」と働くことになる、と同氏は述べる。</p>
+<p>同氏の中心的な主張は、<strong>出力の修正より訂正そのものの方が価値が高い</strong>という点にある。提案書の古いポジショニングをその場で直せば文書は良くなるが、他は何も良くならない。問うべきは「なぜ古いポジショニングがまだそこにあったのか」であり、原因の層（会社概要が古い・決定が記録されていない・古いキャンペーンが承認済みの表現より上位に来る）を直せば、訂正は提案書を超えて生き残る。</p>
+<p>また同氏は、会議メモや過去資料を集めて検索箱を載せる従来型ナレッジ基盤を「AIに情報は与えるが判断は与えない」と退け、有用なcompany brainは<strong>Memory（今効いている事実と決定）・Judgment（良い仕事を形づくるルールと基準）・Capability（再実行できるスキルとワーカー）・Learning（レビュー済みの訂正）</strong>の4つを接続して持つべきだとする。</p>
+<h2>訂正の振り分け表</h2>
+<p>同氏が示す書き戻し先の対応は以下（原文からの転記）。</p>
+<table>
+<thead>
+<tr>
+<th>訂正の種類</th>
+<th>書き戻し先</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欠けている・古くなった事実</td>
+<td>会社知識（company knowledge）</td>
+</tr>
+<tr>
+<td>新しい戦略的選択</td>
+<td>決定記録（decision record）</td>
+</tr>
+<tr>
+<td>繰り返し現れる好み</td>
+<td>ポリシー</td>
+</tr>
+<tr>
+<td>実証済みの手技</td>
+<td>スキル</td>
+</tr>
+<tr>
+<td>反復可能な手順</td>
+<td>ワーカー</td>
+</tr>
+<tr>
+<td>危険な操作</td>
+<td>機械的ゲート</td>
+</tr>
+</tbody>
+</table>
+<p>振り分けた変更は共有前に人間がレビューする。ループは「仕事→訂正→ルーティング→レビュー→共有→より良い次の仕事」で、これを回し続ければすべてのプロジェクトが会社を少しずつ賢くして終わる、と同氏は述べる。</p>
+<h2>地図を先に渡し、詳細は仕事に引かせる</h2>
+<p>構築面で同氏が最初に置くのは、全エージェントが最初に読む小さな「company map」ファイルである。会社の一段落説明・今の優先事項3つ・情報源の優先順位（source order）・各フォルダへの案内・行動ルールだけを書き、タスクごとに必要な部屋（コンテンツ用なら承認済み主張とボイス、コーディング用ならアーキテクチャ決定）へ入らせる。コンテキストは増やすほど混乱も増える——古いキャンペーンが現行ポジショニングと競合し、履歴がポリシーに見え始める——ため、<strong>解決策はプロンプトに記憶を積むことではなくナビゲーションの改善だ</strong>と同氏は主張する。mapのルールにある「推測を会社知識にしない（never turn a guess into company knowledge）」は、書き戻しループの品質を守る側の規律にあたる。</p>
+<p>初期構成も最小でよいとする。company-brief・priorities・decisions・people・projects・policies・skills・workers・learnings の9要素を挙げつつ、維持できないものは空のままにし、「誰も使わない美しいアーカイブより、毎週の痛いミスを1つ消す小さな脳」から始めることを勧める。なお同氏はチーム展開の受け皿として自社製品HQ（hqforwork.com）を提示しており、記事全体がその導線を兼ねる点は割り引いて読む必要がある。</p>
+<h2>問い</h2>
+<ul>
+<li>このvaultの書き分け（LESSONS.md／memory／CLAUDE.md／スキル本体）は6分類のどれに対応するか。「危険な操作→機械的ゲート」に相当する層（hook・permission）への昇格ルートは自分の運用に明示されているか</li>
+<li>「推測を会社知識にしない」はこのwikiの「根拠なし追記は不可」と同じ規律だが、共有前の人間レビュー工程は個人wikiには無い。一人運用でレビューの代わりになる仕組み（Tierログ・検証済み事実節）で足りているか</li>
+<li>HQのような専用製品なしに、gitリポ＋PRレビューでこのループはどこまで代替できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/company-brain.html">company-brain</a> — 同名概念の理論・状態層設計側（semantics/ontology分離・provenance/permissions/freshness）。本ページはその「作り方」の最小実装と訂正ループに焦点</li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> — 「各教訓はどこに住むべきか」という同じ仕分け問題の個人エージェント版。好み→ポリシー／手技→スキルの振り分けが対応する</li>
+<li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a> — 判断ログ→週次レビュー→パターン昇格という同型の「レビューを経た昇格」ループ。本ページはそれを個人からチーム横断へ広げた形</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a></li>
+<li><a href="../concepts/company-brain.html">company-brain</a></li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2092243372929151135" rel="noopener" target="_blank">https://x.com/i/web/status/2092243372929151135</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 訂正のルーティング（Company Brainを賢くする帰還ループ）
+
+&gt; **TL;DR**: チームがAIに与えた訂正・決定・うまくいった手順を個人チャットに閉じ込めず、「事実→会社知識／戦略選択→決定記録／繰り返す好み→ポリシー／実証済み手技→スキル／反復手順→ワーカー／危険操作→機械的ゲート」の6分類で書き戻し先を選び、人間レビューを経て全員の共有知に昇格させるcompany brain構築法（@VibeMarketer_）。
+
+```mermaid
+flowchart LR
+  W[&quot;仕事の実行&quot;] --&gt; C[&quot;訂正が発生&quot;]
+  C --&gt; R[&quot;6分類で書き戻し先を選ぶ&lt;br/&gt;事実/決定/ポリシー/スキル/ワーカー/ゲート&quot;]
+  R --&gt; Rev[&quot;人間レビュー&quot;]
+  Rev --&gt; Sh[&quot;共有知へ反映&quot;]
+  Sh --&gt; W
+```
+
+マーケター VibeMarketer（@VibeMarketer_）が解こうとする問題は、社内で最も賢いAIが「特定の1人のためだけに働いている」状態である。営業リードが決め手の反論を教え、マーケターが古い製品主張を直し、創業者が同じ文を5回書き直す——会社は毎日AIに考え方を教えているのに、その学習のほぼすべてがプライベートチャットの中で消え、各人が「少しずつ違うバージョンの会社」と働くことになる、と同氏は述べる。
+
+同氏の中心的な主張は、**出力の修正より訂正そのものの方が価値が高い**という点にある。提案書の古いポジショニングをその場で直せば文書は良くなるが、他は何も良くならない。問うべきは「なぜ古いポジショニングがまだそこにあったのか」であり、原因の層（会社概要が古い・決定が記録されていない・古いキャンペーンが承認済みの表現より上位に来る）を直せば、訂正は提案書を超えて生き残る。
+
+また同氏は、会議メモや過去資料を集めて検索箱を載せる従来型ナレッジ基盤を「AIに情報は与えるが判断は与えない」と退け、有用なcompany brainは**Memory（今効いている事実と決定）・Judgment（良い仕事を形づくるルールと基準）・Capability（再実行できるスキルとワーカー）・Learning（レビュー済みの訂正）**の4つを接続して持つべきだとする。
+
+## 訂正の振り分け表
+
+同氏が示す書き戻し先の対応は以下（原文からの転記）。
+
+| 訂正の種類 | 書き戻し先 |
+|---|---|
+| 欠けている・古くなった事実 | 会社知識（company knowledge） |
+| 新しい戦略的選択 | 決定記録（decision record） |
+| 繰り返し現れる好み | ポリシー |
+| 実証済みの手技 | スキル |
+| 反復可能な手順 | ワーカー |
+| 危険な操作 | 機械的ゲート |
+
+振り分けた変更は共有前に人間がレビューする。ループは「仕事→訂正→ルーティング→レビュー→共有→より良い次の仕事」で、これを回し続ければすべてのプロジェクトが会社を少しずつ賢くして終わる、と同氏は述べる。
+
+## 地図を先に渡し、詳細は仕事に引かせる
+
+構築面で同氏が最初に置くのは、全エージェントが最初に読む小さな「company map」ファイルである。会社の一段落説明・今の優先事項3つ・情報源の優先順位（source order）・各フォルダへの案内・行動ルールだけを書き、タスクごとに必要な部屋（コンテンツ用なら承認済み主張とボイス、コーディング用ならアーキテクチャ決定）へ入らせる。コンテキストは増やすほど混乱も増える——古いキャンペーンが現行ポジショニングと競合し、履歴がポリシーに見え始める——ため、**解決策はプロンプトに記憶を積むことではなくナビゲーションの改善だ**と同氏は主張する。mapのルールにある「推測を会社知識にしない（never turn a guess into company knowledge）」は、書き戻しループの品質を守る側の規律にあたる。
+
+初期構成も最小でよいとする。company-brief・priorities・decisions・people・projects・policies・skills・workers・learnings の9要素を挙げつつ、維持できないものは空のままにし、「誰も使わない美しいアーカイブより、毎週の痛いミスを1つ消す小さな脳」から始めることを勧める。なお同氏はチーム展開の受け皿として自社製品HQ（hqforwork.com）を提示しており、記事全体がその導線を兼ねる点は割り引いて読む必要がある。
+
+## 問い
+
+- このvaultの書き分け（LESSONS.md／memory／CLAUDE.md／スキル本体）は6分類のどれに対応するか。「危険な操作→機械的ゲート」に相当する層（hook・permission）への昇格ルートは自分の運用に明示されているか
+- 「推測を会社知識にしない」はこのwikiの「根拠なし追記は不可」と同じ規律だが、共有前の人間レビュー工程は個人wikiには無い。一人運用でレビューの代わりになる仕組み（Tierログ・検証済み事実節）で足りているか
+- HQのような専用製品なしに、gitリポ＋PRレビューでこのループはどこまで代替できるか
+
+## 関連
+
+- [[concepts/company-brain]] — 同名概念の理論・状態層設計側（semantics/ontology分離・provenance/permissions/freshness）。本ページはその「作り方」の最小実装と訂正ループに焦点
+- [[concepts/skills-over-memory]] — 「各教訓はどこに住むべきか」という同じ仕分け問題の個人エージェント版。好み→ポリシー／手技→スキルの振り分けが対応する
+- [[concepts/agent-reflection-layer]] — 判断ログ→週次レビュー→パターン昇格という同型の「レビューを経た昇格」ループ。本ページはそれを個人からチーム横断へ広げた形
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

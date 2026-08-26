@@ -48,3 +48,4 @@ flowchart TD
 - [[concepts/structuring-ability]] — 同著者(@kenichiota0711)の構造化力論（全体と部分の入れ子を整理する）
 - [[concepts/loop-engineering]] — 観察→調整の学習ループをエージェント運用工学として一般化した上位概念
 - [[concepts/semantic-generation-skill]] — 「書く前に構造化させる」という同じ設計思想を、判断ログでなく独自語の定義に適用したもの（@u1）
+- [[concepts/correction-routing]] — 判断→レビュー→昇格の同型ループを、個人の省察でなくチームの訂正ルーティング（6分類の書き戻し先）として実装する構築法（@VibeMarketer_）

@@ -142,11 +142,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/attention.html">attention</a> — キャッシュ対象となる Key/Value はアテンション機構が計算するベクトル</li>
 <li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a> — マルチエージェント委譲でキャッシュミスが協調コストを暴発させる実例側（同一ワーカーへのルーティングでキャッシュを蓄積）</li>
 <li><a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a> — キャッシュがあっても再送は残るため、ターン数そのものを減らすという設計側。倍率表（読み出し0.1倍・書き込み1.25/2倍）を実測コストの説明に使っている</li>
+<li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a> — キャッシングの導入場面・効果・注意点を採用面接で問う質問例（第2弾Q2）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a></li>
+<li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a></li>
 <li><a href="../concepts/attention.html">attention</a></li>
 <li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
-<li><a href="../concepts/prompt-cache-prewarm.html">prompt-cache-prewarm</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache</a></li></ul></section></article>
+<li><a href="../concepts/prompt-cache-prewarm.html">prompt-cache-prewarm</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -263,6 +264,7 @@ response = client.messages.create(
 - [[concepts/attention]] — キャッシュ対象となる Key/Value はアテンション機構が計算するベクトル
 - [[concepts/cost-effective-harness]] — マルチエージェント委譲でキャッシュミスが協調コストを暴発させる実例側（同一ワーカーへのルーティングでキャッシュを蓄積）
 - [[concepts/agent-command-wrappers]] — キャッシュがあっても再送は残るため、ターン数そのものを減らすという設計側。倍率表（読み出し0.1倍・書き込み1.25/2倍）を実測コストの説明に使っている
+- [[concepts/ai-engineer-interview-questions]] — キャッシングの導入場面・効果・注意点を採用面接で問う質問例（第2弾Q2）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

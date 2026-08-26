@@ -63,3 +63,4 @@ Company Brainは中央集権的なリポジトリとして構築すべきでは�
 - [[tools/glean]] — 権限継承付きKnowledge Graphとpersonal graphの融合でCompany Brainを製品として実装する代表例
 - [[tools/cloudflare-os]] — permissions層を「エージェントが観測したリソースの記録」として実行時に追跡し、共有時に再検証する実装
 - [[tools/xirp]] — 同じ「分断された組織知を単一の層に集めて読み出す」発想を、読み手をコーディングエージェントに絞って実装したSpotifyの製品（サービス所有者・依存・アーキ決定をセッション開始時に注入）
+- [[concepts/correction-routing]] — Company Brainの「作り方」側：訂正を事実/決定/ポリシー/スキル/ワーカー/ゲートの6分類でレビュー経由の共有知へ書き戻す構築ループ（@VibeMarketer_）。Eric Siuの第5層（feedback loops）を独立した方法論に展開した形
