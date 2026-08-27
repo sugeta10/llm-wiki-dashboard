@@ -33,3 +33,4 @@ Kowalski氏の問題意識は「Agents don't have great taste」。enterアニ�
 - [[design/design-md]] — 有名サービスのデザイン規範を.md化してエージェントに参照させる同系の「taste を参照仕様で渡す」発想
 - [[companies/apple]] — 17原則の出所であるWWDCデザイントークの発信元
 - [[design/ai-skills-design]] — AIエージェントのSkillsとデザイン職のスキルが交差する現状の論考
+- [[tools/taste-skill]] — 同じ「agents don't have taste / anti-slop」問題意識のフロントエンド特化スキル集（ダイヤル調整・画像生成系統つき）

@@ -33,4 +33,4 @@ AIエージェントがコードを自律生成・レビューする [[concepts/
 
 ## 関連
 
-関連: [[concepts/spec-driven-development]], [[concepts/agentic-coding]], [[tools/claude-code]], [[concepts/claude-skills]]
+関連: [[concepts/spec-driven-development]], [[concepts/agentic-coding]], [[tools/claude-code]], [[concepts/claude-skills]], [[tools/addyosmani-agent-skills]]（本指針のプラクティスを24スキルへ焼き込んだと明言するスキルパック）

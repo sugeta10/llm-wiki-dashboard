@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-md-rules</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-md-rules.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-md-rules · concepts · <span title="2026-06-15">2ヶ月前</span></div>
+  <div class="meta">concepts/claude-md-rules · concepts · <span title="2026-08-28">今日</span></div>
   <article><h1>CLAUDE.md 行動ルール設計</h1>
 <p><strong>CLAUDE.md</strong> は <a href="../tools/claude-code.html">claude-code</a> の動作を規定する行動契約ファイル。ウィッシュリストではなく、「この命令でどの失敗モードを閉じるか」を根拠に記述する。</p>
 <h2>Karpathy 発端</h2>
@@ -66,6 +66,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>→ 未管理セッションの失敗モードの約40%を閉じる効果。</p>
+<h2>正本リポジトリ（multica-ai/andrej-karpathy-skills）</h2>
+<p>Forrest Chang（@jiayuan_jy）が4ルールを配布するリポジトリの現在の正本は GitHub の multica-ai/andrej-karpathy-skills（旧 forrestchang/andrej-karpathy-skills。READMEのインストールコマンドは旧パスを併記）。単一の CLAUDE.md として書かれ、導入は Claude Code プラグイン・CLAUDE.md の直接ダウンロード/追記・Cursor project rule（<code>.cursor/rules/karpathy-guidelines.mdc</code> を同梱）の3形態。</p>
+<p>READMEは各ルールに判定テストを添える。Rule 2 は「シニアエンジニアが過剰複雑と言うか？ならシンプル化」、Rule 3 は「変更した全行がユーザーの依頼へ直接遡れること」。dead code の扱いも線引きされており、自分の変更が生んだ孤児（未使用import等）は消し、既存の dead code は指摘に留めて消さない。Rule 4 の源泉としては Karpathy の発言「LLMs are exceptionally good at looping until they meet specific goals... Don't tell it what to do, give it success criteria and watch it go」を引き、命令的指示を検証可能なゴールへ変換する対応表（「バグを直せ」→「再現テストを書いてから通せ」）を載せる。</p>
+<p>効きの観測指標（How to Know It's Working）として作者は、diffに依頼外の変更が現れない・過剰複雑化による書き直しが減る・明確化の質問が実装後でなく実装前に来る・drive-byリファクタのない小さなPR、の4つを挙げる。Tradeoff Note では「このガイドラインは速度より慎重さに寄せてある。typo修正のような trivial なタスクには full rigor を適用せず判断せよ」と明記しており、目的は「非trivialな作業での高くつくミスの削減」だと位置づけている。</p>
 <h2>追加8ルール（May 2026 対応）</h2>
 <p>30コードベース × 6週間のテストから導出。Karpathy の4ルールが対象としなかった <strong>エージェント運用・マルチステップ問題</strong> に対応。</p>
 <table>
@@ -197,6 +201,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>MEMORY.md</strong>: セッション間で持ち越したい意思決定ログ（「PrismaではなくDrizzleを選んだ理由」等）</li>
 <li><strong>ERRORS.md</strong>: 過去の失敗パターン記録（Claudeが再度同じ誤提案をするのを防ぐ）</li>
 </ul>
+<h2>問い</h2>
+<ul>
+<li>ルール列挙型の本アプローチは、システムプロンプト縮小と判断委任へ振れたClaude 5世代（<a href="../concepts/context-engineering.html">context-engineering</a>・<a href="../concepts/lean-prompt-rules-adaptation.html">lean-prompt-rules-adaptation</a>）でも初期値として有効か——4原則だけ残して追加8ルールを落とす選択はあるか</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li>
@@ -220,7 +228,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2053116311132155938" rel="noopener" target="_blank">https://x.com/i/web/status/2053116311132155938</a></li>
 <li><a href="https://x.com/i/web/status/2055999112470839383" rel="noopener" target="_blank">https://x.com/i/web/status/2055999112470839383</a></li>
 <li><a href="https://x.com/i/web/status/2057643942980751527" rel="noopener" target="_blank">https://x.com/i/web/status/2057643942980751527</a></li>
-<li><a href="https://x.com/i/web/status/2065026899861229870" rel="noopener" target="_blank">https://x.com/i/web/status/2065026899861229870</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2065026899861229870" rel="noopener" target="_blank">https://x.com/i/web/status/2065026899861229870</a></li>
+<li><a href="https://github.com/multica-ai/andrej-karpathy-skills" rel="noopener" target="_blank">https://github.com/multica-ai/andrej-karpathy-skills</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -264,6 +273,14 @@ Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → �
 | **Rule 4: Goal-Driven Execution** | 成功基準を定義し達成まで繰り返す。手順指示ではなく成功形を与える |
 
 → 未管理セッションの失敗モードの約40%を閉じる効果。
+
+## 正本リポジトリ（multica-ai/andrej-karpathy-skills）
+
+Forrest Chang（@jiayuan_jy）が4ルールを配布するリポジトリの現在の正本は GitHub の multica-ai/andrej-karpathy-skills（旧 forrestchang/andrej-karpathy-skills。READMEのインストールコマンドは旧パスを併記）。単一の CLAUDE.md として書かれ、導入は Claude Code プラグイン・CLAUDE.md の直接ダウンロード/追記・Cursor project rule（`.cursor/rules/karpathy-guidelines.mdc` を同梱）の3形態。
+
+READMEは各ルールに判定テストを添える。Rule 2 は「シニアエンジニアが過剰複雑と言うか？ならシンプル化」、Rule 3 は「変更した全行がユーザーの依頼へ直接遡れること」。dead code の扱いも線引きされており、自分の変更が生んだ孤児（未使用import等）は消し、既存の dead code は指摘に留めて消さない。Rule 4 の源泉としては Karpathy の発言「LLMs are exceptionally good at looping until they meet specific goals... Don&#x27;t tell it what to do, give it success criteria and watch it go」を引き、命令的指示を検証可能なゴールへ変換する対応表（「バグを直せ」→「再現テストを書いてから通せ」）を載せる。
+
+効きの観測指標（How to Know It&#x27;s Working）として作者は、diffに依頼外の変更が現れない・過剰複雑化による書き直しが減る・明確化の質問が実装後でなく実装前に来る・drive-byリファクタのない小さなPR、の4つを挙げる。Tradeoff Note では「このガイドラインは速度より慎重さに寄せてある。typo修正のような trivial なタスクには full rigor を適用せず判断せよ」と明記しており、目的は「非trivialな作業での高くつくミスの削減」だと位置づけている。
 
 ## 追加8ルール（May 2026 対応）
 
@@ -335,6 +352,10 @@ Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → �
 
 - **MEMORY.md**: セッション間で持ち越したい意思決定ログ（「PrismaではなくDrizzleを選んだ理由」等）
 - **ERRORS.md**: 過去の失敗パターン記録（Claudeが再度同じ誤提案をするのを防ぐ）
+
+## 問い
+
+- ルール列挙型の本アプローチは、システムプロンプト縮小と判断委任へ振れたClaude 5世代（[[concepts/context-engineering]]・[[concepts/lean-prompt-rules-adaptation]]）でも初期値として有効か——4原則だけ残して追加8ルールを落とす選択はあるか
 
 ## 関連
 

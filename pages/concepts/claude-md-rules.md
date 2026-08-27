@@ -22,6 +22,14 @@ Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → �
 
 → 未管理セッションの失敗モードの約40%を閉じる効果。
 
+## 正本リポジトリ（multica-ai/andrej-karpathy-skills）
+
+Forrest Chang（@jiayuan_jy）が4ルールを配布するリポジトリの現在の正本は GitHub の multica-ai/andrej-karpathy-skills（旧 forrestchang/andrej-karpathy-skills。READMEのインストールコマンドは旧パスを併記）。単一の CLAUDE.md として書かれ、導入は Claude Code プラグイン・CLAUDE.md の直接ダウンロード/追記・Cursor project rule（`.cursor/rules/karpathy-guidelines.mdc` を同梱）の3形態。
+
+READMEは各ルールに判定テストを添える。Rule 2 は「シニアエンジニアが過剰複雑と言うか？ならシンプル化」、Rule 3 は「変更した全行がユーザーの依頼へ直接遡れること」。dead code の扱いも線引きされており、自分の変更が生んだ孤児（未使用import等）は消し、既存の dead code は指摘に留めて消さない。Rule 4 の源泉としては Karpathy の発言「LLMs are exceptionally good at looping until they meet specific goals... Don't tell it what to do, give it success criteria and watch it go」を引き、命令的指示を検証可能なゴールへ変換する対応表（「バグを直せ」→「再現テストを書いてから通せ」）を載せる。
+
+効きの観測指標（How to Know It's Working）として作者は、diffに依頼外の変更が現れない・過剰複雑化による書き直しが減る・明確化の質問が実装後でなく実装前に来る・drive-byリファクタのない小さなPR、の4つを挙げる。Tradeoff Note では「このガイドラインは速度より慎重さに寄せてある。typo修正のような trivial なタスクには full rigor を適用せず判断せよ」と明記しており、目的は「非trivialな作業での高くつくミスの削減」だと位置づけている。
+
 ## 追加8ルール（May 2026 対応）
 
 30コードベース × 6週間のテストから導出。Karpathy の4ルールが対象としなかった **エージェント運用・マルチステップ問題** に対応。
@@ -92,6 +100,10 @@ Forrest Chang がこの指摘を4ルールに変換して GitHub へ公開 → �
 
 - **MEMORY.md**: セッション間で持ち越したい意思決定ログ（「PrismaではなくDrizzleを選んだ理由」等）
 - **ERRORS.md**: 過去の失敗パターン記録（Claudeが再度同じ誤提案をするのを防ぐ）
+
+## 問い
+
+- ルール列挙型の本アプローチは、システムプロンプト縮小と判断委任へ振れたClaude 5世代（[[concepts/context-engineering]]・[[concepts/lean-prompt-rules-adaptation]]）でも初期値として有効か——4原則だけ残して追加8ルールを落とす選択はあるか
 
 ## 関連
 

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>taste-skill - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>taste-skill</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="taste-skill.md">Markdownで表示</a></div>
+  <div class="meta">tools/taste-skill · tools · <span title="2026-08-28">今日</span></div>
+  <article><h1>Taste Skill（anti-slop フロントエンドスキル集）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIエージェントが作るフロントエンドの「slop」（ボイラープレート的な没個性UI）を、レイアウト・タイポグラフィ・モーション・余白の強化で防ぐことに特化したAgent Skills集。コードを出す実装スキルと、参照画像だけを出す画像生成スキルの二系統を持つ（Leonxlnx製・MIT）。</p>
+</blockquote>
+<pre class="mermaid">mindmap
+  root((taste-skill))
+    実装スキル
+      design-taste-frontend v2
+      gpt-taste
+      redesign-existing-projects
+      スタイル変種
+        high-end-visual-design
+        minimalist-ui
+        industrial-brutalist-ui
+      full-output-enforcement
+      image-to-code
+    画像生成スキル
+      imagegen-frontend-web
+      imagegen-frontend-mobile
+      brandkit</pre>
+<p>作者 Leonxlnx が公開し、<code>npx skills add https://github.com/Leonxlnx/taste-skill</code> で Codex・Cursor・Claude Code に導入する（vercel-labs の agent-skills CLI 仕様互換をREADMEが明記）。デフォルトの taste-skill（インストール名 <code>design-taste-frontend</code>）は v2（experimental）で、READMEによれば、ブリーフを読んでデザイン言語を推論し、ファイル冒頭に置かれた3つのダイヤル——<strong>DESIGN_VARIANCE</strong>（レイアウトの実験度）・<strong>MOTION_INTENSITY</strong>（アニメーション深度）・<strong>VISUAL_DENSITY</strong>（1ビューポートの情報密度）——を1〜10で調整して出力を振る設計。em-dashの使用禁止（hard ban）・GSAPの正準コードスケルトン・redesign-audit プロトコル・出荷前チェックを含む。v1は挙動依存プロジェクト向けに <code>design-taste-frontend-v1</code> として温存されている。</p>
+<p>スキルは「1スキル1ジョブ」で分割される。コードを出力する実装スキル側には、GPT/Codex向けに規律を強めた <code>gpt-taste</code>、既存プロジェクトのUIを監査してから直す <code>redesign-existing-projects</code>、視覚方向が決まっているときに足すスタイル変種（<code>high-end-visual-design</code>＝静かで上質・<code>minimalist-ui</code>＝Notion/Linear風・<code>industrial-brutalist-ui</code>＝Swiss type の機械的言語）、途中で出力を切り上げるモデルに完全出力を強制する <code>full-output-enforcement</code> がある。<code>image-to-code</code> は「参照画像を生成→分析→フロントエンド実装」のパイプラインを1スキルで通す。画像生成スキル系統（web comps・モバイルフロー・ブランドキットボード）はコードを出さず参照画像のみを作り、ChatGPT Images 等で生成したフレームを Codex・Cursor・Claude Code に渡す前段として使う。</p>
+<p>問題意識は <a href="../tools/emil-kowalski-skills.html">emil-kowalski-skills</a> の「Agents don't have taste」と同型だが、あちらが著者の原則の蒸留（WWDC 17原則等）を渡すのに対し、taste-skill はダイヤルによる調整幅とスタイル別・モデル別の変種分割で対応する点が異なると考えられる。Kimi（Moonshot AI）ほか複数スポンサーが付き、専用サイト tasteskill.dev と changelog を持つ商業運営色のある個人OSS。</p>
+<h2>問い</h2>
+<ul>
+<li>3ダイヤルの数値調整と、<a href="../design/claude-premium-website-build.html">claude-premium-website-build</a> のような品質チェックリスト型では、どちらが出力の安定に効くか</li>
+<li>v2はexperimentalで積極的に書き換え中と作者が明記。v1固定とv2追従のどちらで運用すべきか</li>
+<li><a href="../tools/emil-kowalski-skills.html">emil-kowalski-skills</a>（原則蒸留）との併用は衝突しないか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/agent-skills-by-role.html">agent-skills-by-role</a> — PRODUCT DESIGNER枠で本リポを含む役割別6選</li>
+<li><a href="../tools/emil-kowalski-skills.html">emil-kowalski-skills</a> — 同じ「agents don't have taste」問題意識のデザインエンジニア版スキル集</li>
+<li><a href="../tools/ui-skills.html">ui-skills</a> — 同ジャンルのUI品質スキルカタログ（ui-ux-pro-max / impeccable 掲載）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/agent-skills-by-role.html">agent-skills-by-role</a></li>
+<li><a href="../tools/emil-kowalski-skills.html">emil-kowalski-skills</a></li>
+<li><a href="../tools/ui-skills.html">ui-skills</a></li>
+<li><a href="../design/claude-premium-website-build.html">claude-premium-website-build</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/Leonxlnx/taste-skill" rel="noopener" target="_blank">https://github.com/Leonxlnx/taste-skill</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Taste Skill（anti-slop フロントエンドスキル集）
+
+&gt; **TL;DR**: AIエージェントが作るフロントエンドの「slop」（ボイラープレート的な没個性UI）を、レイアウト・タイポグラフィ・モーション・余白の強化で防ぐことに特化したAgent Skills集。コードを出す実装スキルと、参照画像だけを出す画像生成スキルの二系統を持つ（Leonxlnx製・MIT）。
+
+```mermaid
+mindmap
+  root((taste-skill))
+    実装スキル
+      design-taste-frontend v2
+      gpt-taste
+      redesign-existing-projects
+      スタイル変種
+        high-end-visual-design
+        minimalist-ui
+        industrial-brutalist-ui
+      full-output-enforcement
+      image-to-code
+    画像生成スキル
+      imagegen-frontend-web
+      imagegen-frontend-mobile
+      brandkit
+```
+
+作者 Leonxlnx が公開し、`npx skills add https://github.com/Leonxlnx/taste-skill` で Codex・Cursor・Claude Code に導入する（vercel-labs の agent-skills CLI 仕様互換をREADMEが明記）。デフォルトの taste-skill（インストール名 `design-taste-frontend`）は v2（experimental）で、READMEによれば、ブリーフを読んでデザイン言語を推論し、ファイル冒頭に置かれた3つのダイヤル——**DESIGN_VARIANCE**（レイアウトの実験度）・**MOTION_INTENSITY**（アニメーション深度）・**VISUAL_DENSITY**（1ビューポートの情報密度）——を1〜10で調整して出力を振る設計。em-dashの使用禁止（hard ban）・GSAPの正準コードスケルトン・redesign-audit プロトコル・出荷前チェックを含む。v1は挙動依存プロジェクト向けに `design-taste-frontend-v1` として温存されている。
+
+スキルは「1スキル1ジョブ」で分割される。コードを出力する実装スキル側には、GPT/Codex向けに規律を強めた `gpt-taste`、既存プロジェクトのUIを監査してから直す `redesign-existing-projects`、視覚方向が決まっているときに足すスタイル変種（`high-end-visual-design`＝静かで上質・`minimalist-ui`＝Notion/Linear風・`industrial-brutalist-ui`＝Swiss type の機械的言語）、途中で出力を切り上げるモデルに完全出力を強制する `full-output-enforcement` がある。`image-to-code` は「参照画像を生成→分析→フロントエンド実装」のパイプラインを1スキルで通す。画像生成スキル系統（web comps・モバイルフロー・ブランドキットボード）はコードを出さず参照画像のみを作り、ChatGPT Images 等で生成したフレームを Codex・Cursor・Claude Code に渡す前段として使う。
+
+問題意識は [[tools/emil-kowalski-skills]] の「Agents don&#x27;t have taste」と同型だが、あちらが著者の原則の蒸留（WWDC 17原則等）を渡すのに対し、taste-skill はダイヤルによる調整幅とスタイル別・モデル別の変種分割で対応する点が異なると考えられる。Kimi（Moonshot AI）ほか複数スポンサーが付き、専用サイト tasteskill.dev と changelog を持つ商業運営色のある個人OSS。
+
+## 問い
+
+- 3ダイヤルの数値調整と、[[design/claude-premium-website-build]] のような品質チェックリスト型では、どちらが出力の安定に効くか
+- v2はexperimentalで積極的に書き換え中と作者が明記。v1固定とv2追従のどちらで運用すべきか
+- [[tools/emil-kowalski-skills]]（原則蒸留）との併用は衝突しないか
+
+## 関連
+
+- [[tools/agent-skills-by-role]] — PRODUCT DESIGNER枠で本リポを含む役割別6選
+- [[tools/emil-kowalski-skills]] — 同じ「agents don&#x27;t have taste」問題意識のデザインエンジニア版スキル集
+- [[tools/ui-skills]] — 同ジャンルのUI品質スキルカタログ（ui-ux-pro-max / impeccable 掲載）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

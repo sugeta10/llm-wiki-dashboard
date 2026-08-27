@@ -7,19 +7,19 @@
 | 役割 | スキル名 | リポジトリ |
 |------|---------|-----------|
 | SENIOR ENGINEER | Superpowers | github.com/obra/superpowers（[[tools/superpowers]]） |
-| SENIOR ENGINEER | Agent Skills | github.com/addyosmani/agent-skills |
-| SENIOR ENGINEER | Karpathy Skills | github.com/multica-ai/andrej-karpathy-skills |
+| SENIOR ENGINEER | Agent Skills | github.com/addyosmani/agent-skills（[[tools/addyosmani-agent-skills]]） |
+| SENIOR ENGINEER | Karpathy Skills | github.com/multica-ai/andrej-karpathy-skills（[[concepts/claude-md-rules]]の正本リポ） |
 | SENIOR ENGINEER | GStack | github.com/garrytan/gstack（[[tools/gstack]]） |
 | PRODUCT DESIGNER | UI UX Pro Max | github.com/nextlevelbuilder/ui-ux-pro-max-skill |
-| PRODUCT DESIGNER | Taste Skill | github.com/Leonxlnx/taste-skill |
+| PRODUCT DESIGNER | Taste Skill | github.com/Leonxlnx/taste-skill（[[tools/taste-skill]]） |
 
 ポストには7つ目として「Impeccable」の名前も挙がっているが、リンクはポスト内に記載がない。
 
-エンジニア側の4本のうち Superpowers（開発方法論のスキル化）と GStack（バーチャルエンジニアリングチーム化）は当wikiに詳細ページがある。デザイナー側の UI UX Pro Max は [[design/claude-premium-website-build]] の制作ワークフローで品質チェックに使われているスキルと同名で、同一リポジトリを指すと考えられる（ポスト側に説明がないため未確認）。
+エンジニア側の4本はすべて当wikiに詳細ページがある（Superpowers＝開発方法論のスキル化・GStack＝バーチャルエンジニアリングチーム化・Agent Skills＝[[tools/addyosmani-agent-skills]]・Karpathy Skills＝[[concepts/claude-md-rules]]の正本リポ）。デザイナー側の UI UX Pro Max は [[design/claude-premium-website-build]] の制作ワークフローで品質チェックに使われているスキルと同名で、同一リポジトリを指すと考えられる（ポスト側に説明がないため未確認）。
 
 ## 問い
 
-- addyosmani/agent-skills・Karpathy Skills・UI UX Pro Max・Taste Skill の中身は未読。個別ページ化する価値があるのはどれか（各リポのキャッシュ取得済み・個別ingest待ち）
+- UI UX Pro Max の中身は未読。個別ページ化する価値があるか（[[design/claude-premium-website-build]] で言及される同名スキルとの同一性確認を含む）
 - 「職能別」のキュレーション軸は [[tools/ui-skills]]（UIエンジニア特化カタログ）の職能特化とどう違うか——束ね方の軸として定着するか
 
 ## 関連

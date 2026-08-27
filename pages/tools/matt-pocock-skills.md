@@ -48,3 +48,4 @@ Pragmatic ProgrammerやDomain-Driven Designの古典的知見をAIエージェ�
 - [[concepts/spec-driven-development]] — 仕様先行開発との接続
 - [[tools/superpowers]] — @LinearUncleが並べて挙げたobra製の開発方法論スキルライブラリ
 - [[tools/show-me]] — HumanLayerのDex Horthyが、このコレクションの `/teach` が生成するHTML explainerを良い先行例として挙げたスキル
+- [[tools/addyosmani-agent-skills]] — 公式比較文書で本コレクション・Superpowersと三者比較される、Addy Osmani製24スキルパック

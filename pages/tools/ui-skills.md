@@ -33,3 +33,4 @@ UIエンジニア・デザインエンジニア向けのClaude Codeスキル専�
 - [[concepts/skill-building-best-practices]]
 - [[concepts/claude-skills]]
 - [[tools/emil-kowalski-skills]] — 掲載スキル `emil-design-eng` の作者Emil Kowalski本人のスキルリポジトリ（/apple-design等4スキル）
+- [[tools/taste-skill]] — anti-slop特化のフロントエンドスキル集（本カタログ掲載の ui-ux-pro-max / impeccable と同ジャンル・Leonxlnx製）
