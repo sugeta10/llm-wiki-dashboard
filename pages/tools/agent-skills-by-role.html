@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>agent-skills-by-role - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>agent-skills-by-role</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-skills-by-role.md">Markdownで表示</a></div>
+  <div class="meta">tools/agent-skills-by-role · tools · <span title="2026-08-27">今日</span></div>
+  <article><h1>役割別Agent Skillsコレクション6選</h1>
+<p>@RoundtableSpace が、エージェント用スキルのGitHubリポジトリを<strong>職種の役割別</strong>（SENIOR ENGINEER / PRODUCT DESIGNER）に分けて紹介した厳選リスト。ポスト本文はリポジトリ名とリンクのみの短文だが、「エンジニア向け」と「デザイナー向け」を分けて提示するキュレーション軸は、スキル集を機能別でなく<strong>使う人の職能別</strong>に束ねる見せ方で、<a href="../tools/claude-code-github-repos.html">claude-code-github-repos</a>（@heynavtoor の10選・順位型）とは切り口が異なると考えられる。</p>
+<p>紹介されたリポジトリ（ポストからの転記）:</p>
+<table>
+<thead>
+<tr>
+<th>役割</th>
+<th>スキル名</th>
+<th>リポジトリ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SENIOR ENGINEER</td>
+<td>Superpowers</td>
+<td>github.com/obra/superpowers（<a href="../tools/superpowers.html">superpowers</a>）</td>
+</tr>
+<tr>
+<td>SENIOR ENGINEER</td>
+<td>Agent Skills</td>
+<td>github.com/addyosmani/agent-skills</td>
+</tr>
+<tr>
+<td>SENIOR ENGINEER</td>
+<td>Karpathy Skills</td>
+<td>github.com/multica-ai/andrej-karpathy-skills</td>
+</tr>
+<tr>
+<td>SENIOR ENGINEER</td>
+<td>GStack</td>
+<td>github.com/garrytan/gstack（<a href="../tools/gstack.html">gstack</a>）</td>
+</tr>
+<tr>
+<td>PRODUCT DESIGNER</td>
+<td>UI UX Pro Max</td>
+<td>github.com/nextlevelbuilder/ui-ux-pro-max-skill</td>
+</tr>
+<tr>
+<td>PRODUCT DESIGNER</td>
+<td>Taste Skill</td>
+<td>github.com/Leonxlnx/taste-skill</td>
+</tr>
+</tbody>
+</table>
+<p>ポストには7つ目として「Impeccable」の名前も挙がっているが、リンクはポスト内に記載がない。</p>
+<p>エンジニア側の4本のうち Superpowers（開発方法論のスキル化）と GStack（バーチャルエンジニアリングチーム化）は当wikiに詳細ページがある。デザイナー側の UI UX Pro Max は <a href="../design/claude-premium-website-build.html">claude-premium-website-build</a> の制作ワークフローで品質チェックに使われているスキルと同名で、同一リポジトリを指すと考えられる（ポスト側に説明がないため未確認）。</p>
+<h2>問い</h2>
+<ul>
+<li>addyosmani/agent-skills・Karpathy Skills・UI UX Pro Max・Taste Skill の中身は未読。個別ページ化する価値があるのはどれか（各リポのキャッシュ取得済み・個別ingest待ち）</li>
+<li>「職能別」のキュレーション軸は <a href="../tools/ui-skills.html">ui-skills</a>（UIエンジニア特化カタログ）の職能特化とどう違うか——束ね方の軸として定着するか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/superpowers.html">superpowers</a> — リスト筆頭のSENIOR ENGINEER向けスキルライブラリ（obra製・開発方法論のスキル化）</li>
+<li><a href="../tools/gstack.html">gstack</a> — 同じくSENIOR ENGINEER枠のAIソフトウェアファクトリー（Garry Tan製）</li>
+<li><a href="../tools/claude-code-github-repos.html">claude-code-github-repos</a> — 同ジャンルの厳選リスト（@heynavtoor の10選・順位型キュレーション）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/claude-code-github-repos.html">claude-code-github-repos</a></li>
+<li><a href="../tools/gstack.html">gstack</a></li>
+<li><a href="../tools/superpowers.html">superpowers</a></li>
+<li><a href="../design/claude-premium-website-build.html">claude-premium-website-build</a></li>
+<li><a href="../tools/ui-skills.html">ui-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2092609257338200469" rel="noopener" target="_blank">https://x.com/i/web/status/2092609257338200469</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 役割別Agent Skillsコレクション6選
+
+@RoundtableSpace が、エージェント用スキルのGitHubリポジトリを**職種の役割別**（SENIOR ENGINEER / PRODUCT DESIGNER）に分けて紹介した厳選リスト。ポスト本文はリポジトリ名とリンクのみの短文だが、「エンジニア向け」と「デザイナー向け」を分けて提示するキュレーション軸は、スキル集を機能別でなく**使う人の職能別**に束ねる見せ方で、[[tools/claude-code-github-repos]]（@heynavtoor の10選・順位型）とは切り口が異なると考えられる。
+
+紹介されたリポジトリ（ポストからの転記）:
+
+| 役割 | スキル名 | リポジトリ |
+|------|---------|-----------|
+| SENIOR ENGINEER | Superpowers | github.com/obra/superpowers（[[tools/superpowers]]） |
+| SENIOR ENGINEER | Agent Skills | github.com/addyosmani/agent-skills |
+| SENIOR ENGINEER | Karpathy Skills | github.com/multica-ai/andrej-karpathy-skills |
+| SENIOR ENGINEER | GStack | github.com/garrytan/gstack（[[tools/gstack]]） |
+| PRODUCT DESIGNER | UI UX Pro Max | github.com/nextlevelbuilder/ui-ux-pro-max-skill |
+| PRODUCT DESIGNER | Taste Skill | github.com/Leonxlnx/taste-skill |
+
+ポストには7つ目として「Impeccable」の名前も挙がっているが、リンクはポスト内に記載がない。
+
+エンジニア側の4本のうち Superpowers（開発方法論のスキル化）と GStack（バーチャルエンジニアリングチーム化）は当wikiに詳細ページがある。デザイナー側の UI UX Pro Max は [[design/claude-premium-website-build]] の制作ワークフローで品質チェックに使われているスキルと同名で、同一リポジトリを指すと考えられる（ポスト側に説明がないため未確認）。
+
+## 問い
+
+- addyosmani/agent-skills・Karpathy Skills・UI UX Pro Max・Taste Skill の中身は未読。個別ページ化する価値があるのはどれか（各リポのキャッシュ取得済み・個別ingest待ち）
+- 「職能別」のキュレーション軸は [[tools/ui-skills]]（UIエンジニア特化カタログ）の職能特化とどう違うか——束ね方の軸として定着するか
+
+## 関連
+
+- [[tools/superpowers]] — リスト筆頭のSENIOR ENGINEER向けスキルライブラリ（obra製・開発方法論のスキル化）
+- [[tools/gstack]] — 同じくSENIOR ENGINEER枠のAIソフトウェアファクトリー（Garry Tan製）
+- [[tools/claude-code-github-repos]] — 同ジャンルの厳選リスト（@heynavtoor の10選・順位型キュレーション）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

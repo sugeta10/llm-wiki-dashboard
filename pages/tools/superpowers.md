@@ -51,3 +51,4 @@ Superpowersはマルチハーネス対応で、Claude Code・Antigravity・Codex
 - [[tools/gstack]] — 同じく並べて挙げられたAIソフトウェアファクトリー（Garry Tan製）
 - [[tools/claude-code-plugins]] — Claude Code公式マーケットプレイス（Superpowersもここから配信）
 - [[concepts/self-refining-skills]] — スキルに自己改善ループを組み込む発展パターン
+- [[tools/agent-skills-by-role]] — @RoundtableSpaceの役割別スキル6選でSENIOR ENGINEER枠の筆頭に名指し

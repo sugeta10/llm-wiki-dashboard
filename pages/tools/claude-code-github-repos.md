@@ -11,3 +11,4 @@ Claude Codeを「チャットボットからエンジニアリングチーム」
 - [[tools/obsidian-skills]]（kepano製 Obsidian向けAgent Skills集）
 - [[tools/gstack]]（Garry Tan製Claude Code拡張スキル集）
 - [[tools/google-agent-skills]]（Google製Agent Skills集）
+- [[tools/agent-skills-by-role]]（@RoundtableSpaceの役割別スキル6選・同ジャンルのキュレーション）

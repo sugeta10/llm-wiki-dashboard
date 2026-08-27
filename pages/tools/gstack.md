@@ -75,3 +75,4 @@ OpenAI Codex CLI, OpenCode, Cursor, Factory Droid, Slate, Kiro, Hermes, GBrain �
 - [[concepts/agentic-coding]]
 - [[concepts/vibe-coding]]
 - [[tools/superpowers]] — @LinearUncleが並べて挙げたobra製の開発方法論スキルライブラリ
+- [[tools/agent-skills-by-role]] — @RoundtableSpaceの役割別スキル6選でSENIOR ENGINEER枠に名指し
