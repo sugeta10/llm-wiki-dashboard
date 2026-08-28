@@ -37,4 +37,5 @@ mindmap
 
 - [[tools/agent-skills-by-role]] — PRODUCT DESIGNER枠で本リポを含む役割別6選
 - [[tools/emil-kowalski-skills]] — 同じ「agents don't have taste」問題意識のデザインエンジニア版スキル集
-- [[tools/ui-skills]] — 同ジャンルのUI品質スキルカタログ（ui-ux-pro-max / impeccable 掲載）
+- [[tools/ui-skills]] — 同ジャンルのUI品質スキルカタログ（[[tools/ui-ux-pro-max]] / impeccable 掲載）
+- [[tools/ui-ux-pro-max]] — 同じ6選のPRODUCT DESIGNER枠・構造化データベース内蔵型の対照アプローチ

@@ -23,7 +23,7 @@
 ## ワークフロー（要点）
 
 1. **Claude Code セットアップ** — 専用の空フォルダをワークスペースにする（Claudeは自分専用フォルダで最も良く動く）
-2. **2つのスキルで底上げ** — [[concepts/claude-skills]] を2本入れる。Anthropic製 **frontend-design**（バックグラウンドで動き、使い古されたAIフォント/レイアウトを禁止）と、コミュニティ製 **UI/UX Pro Max**（多数のUIスタイル・配色・フォントペアをオンデマンド呼び出し）
+2. **2つのスキルで底上げ** — [[concepts/claude-skills]] を2本入れる。Anthropic製 **frontend-design**（バックグラウンドで動き、使い古されたAIフォント/レイアウトを禁止）と、コミュニティ製 **UI/UX Pro Max**（[[tools/ui-ux-pro-max]]・多数のUIスタイル・配色・フォントペアをオンデマンド呼び出し）
 3. **auto mode** をオンにし、逐一の確認なしに作業させる
 4. **参照を集める** — Dribbble / Awwwards / Pinterest から好みのサイト3〜5枚をスクショ。趣味は言葉で説明するより見せる方が速い。**品質の8割はこの参照集めと次の明確化質問から生まれる**
 5. **1プロンプトで構築** — デザインスキルを呼び、ブリーフと参照画像を添え、最後に「**ask me clarifying questions**（明確化の質問をして）」で締める。Claudeは名前・スタイル方向・セクション・コピー担当・技術スタック・アニメ強度などを質問し、**3つのスタイル方向をメニュー提示**する。ここでの回答がサイト全体になる——最重要の瞬間
@@ -60,6 +60,7 @@
 ## 関連
 
 - [[design/design-md]] — AIデザインの凡庸さ回避の別解（デザイン仕様md参照）
+- [[tools/ui-ux-pro-max]] — ステップ2で併用するコミュニティ製スキルの詳細（79 UIスタイル・192配色・業種別推論ルール）
 - [[design/fastview-design]] — ファーストビュー/視覚的階層の設計原則
 - [[design/ai-ux-methods]] — AI時代のUX設計メソッド
 - [[concepts/claude-skills]] — frontend-design / UI/UX Pro Max の基盤概念
