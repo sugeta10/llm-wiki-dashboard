@@ -145,11 +145,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a> — スコープ軸でコンテキストを層分けする発想の別実装（OpenAIデータエージェントの6層設計）</li>
 <li><a href="../concepts/claude-code-launch-directory.html">claude-code-launch-directory</a> — 本ページの層構造と直交する軸：起動したフォルダが読まれる説明書と効く設定を決め、しかも設定だけは親から継承されない</li>
 <li><a href="../concepts/context-engineering.html">context-engineering</a> — 「どこに置くか」を扱う本ページに対し、「何を置くべきか」を扱う上位の設計思想（Anthropic Claude Codeチーム公式）</li>
+<li><a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a> — 階層ロードを前提に「常設契約/パス別Rules/遅延Skills/強制境界」へ役割分担する設計論。本ページの階層構造の使いこなし側</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li>
 <li><a href="../concepts/claude-code-launch-directory.html">claude-code-launch-directory</a></li>
+<li><a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a></li>
 <li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
-<li><a href="../concepts/context-engineering.html">context-engineering</a></li>
-<li><a href="../concepts/openai-data-agent-context-layers.html">openai-data-agent-context-layers</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b" rel="noopener" target="_blank">https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b</a></li></ul></section></article>
+<li><a href="../concepts/context-engineering.html">context-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b" rel="noopener" target="_blank">https://note.com/vueloo_blog/n/n9d3f08d86730?sub_rt=share_b</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -241,6 +242,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[concepts/openai-data-agent-context-layers]] — スコープ軸でコンテキストを層分けする発想の別実装（OpenAIデータエージェントの6層設計）
 - [[concepts/claude-code-launch-directory]] — 本ページの層構造と直交する軸：起動したフォルダが読まれる説明書と効く設定を決め、しかも設定だけは親から継承されない
 - [[concepts/context-engineering]] — 「どこに置くか」を扱う本ページに対し、「何を置くべきか」を扱う上位の設計思想（Anthropic Claude Codeチーム公式）
+- [[concepts/claude-md-multilayer-design]] — 階層ロードを前提に「常設契約/パス別Rules/遅延Skills/強制境界」へ役割分担する設計論。本ページの階層構造の使いこなし側
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

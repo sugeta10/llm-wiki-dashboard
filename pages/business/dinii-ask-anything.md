@@ -53,3 +53,4 @@ Claude Managed Agentsへ載せ替えた結果、自前コードは3種類に収�
 - [[companies/anthropic]] — Claude Managed Agents提供元
 - [[concepts/cerebras-knowledge-base]] — 同じ「RAGは過去の問いしか拾えない」限界への別解（ハイブリッド検索＋プロジェクトスコープで一次情報網羅性を上げる設計）
 - [[concepts/company-brain]] — 「いまのシステムを調査して答える」read-only botをfactual memoryの一実装形態として位置づけられる上位の設計思想（@ashwingop）
+- [[tools/line-harness]] — 「照会はAI・送信は人間承認」を個人のLINE運用Slack botで組んだ同型の承認設計

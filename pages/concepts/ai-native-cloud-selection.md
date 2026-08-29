@@ -37,3 +37,4 @@ Cloudflareがこの軸で強いのは、Wrangler CLIひとつでWorkers・D1・R
 - [[concepts/agentic-coding]] — AIエージェントが自律的にコードを書く開発スタイル。CLI操作性が効く前提
 - [[concepts/idp-shared-cli-mcp]] — Cloudflare Accessで人間とAIを同一身元にする設計（Cloudflare文脈の隣接事例）
 - [[tools/cloudflare-os]] — Cloudflare公式の社内AIプラットフォーム。個人が知識ベースを載せた場合のコスト実測も含む
+- [[tools/line-harness]] — 「AIに拡張させられるか」を軸に月額配信ツールをOSSへ置き換えた適用例（Cloudflare無料枠＋MCP同梱＋Claude Code運用）

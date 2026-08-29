@@ -64,3 +64,4 @@ crabbox stop blue-lobster
 - [[concepts/agentic-coding]] — AIエージェントがリモートコンピューティングリソースを使う文脈
 - [[tools/claude-code]] — Crabboxをオーケストレーター経由でClaude Codeと組み合わせ可能
 - [[tools/claude-code-remote-control]] — 計算をクラウドへ逃がすCrabboxに対し、自分のPCを出先から遠隔操作する逆方向のリモート運用
+- [[tools/herdr]] — 計算を送るCrabboxに対し、各マシンで既に動いているエージェントを束ねて集中管理する方向のツール

@@ -39,3 +39,4 @@
 - [[concepts/claude-projects-blueprint]] — Identity/Rulesを「永続契約」として設計するClaude Projects版の応用
 - [[concepts/context-engineering]] — Anthropic Claude Codeチームによる公式の逆張り。新モデルでは明示ルールの列挙より判断への委任が効くという実践報告
 - [[concepts/evergreen-notes-claude-md]] — 書き方・トーン・裏取り・許可取り・提案タイミングまで契約として書き切った公開CLAUDE.mdの実例（tokuhirom / 64p.org）
+- [[concepts/claude-md-multilayer-design]] — 同じ「契約」の捉え方を7層（Rules/Skills/Agents/Permission/Hooks）へ配線し、守らせたい境界をクライアント強制へ移す開発者向けの実装版

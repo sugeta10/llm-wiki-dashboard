@@ -71,3 +71,4 @@ flowchart TD
 - [[tools/claude-computer-use]] — ClaudeがリアルUIを操作する機能。こちらはClaudeが画面を操作する側、リモートコントロールは人間が遠隔からClaudeを操作する側
 - [[tools/notch-multi-agent-monitor]] — こちらはPCのノッチに複数ハーネスの状態を集約表示し「ワンクリックで戻る」体験を提供する点が近い。リモートコントロールはPC外から、notch監視はPC本体上での集約という違い
 - [[tools/html-share]] — 操作でなく「成果物の確認と承認」をスマホへ逃がすセルフホスト型ツール。承認待ちでPCに縛られる時間を共有URLとコメント返しに置き換える
+- [[tools/herdr]] — 複数マシン上のエージェントを集中管理し、Tailscale+Termius経由でスマホから束ねて操作するハーネス非依存の同目的構成

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-md-multilayer-design - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-md-multilayer-design</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-md-multilayer-design.md">Markdownで表示</a></div>
+  <div class="meta">concepts/claude-md-multilayer-design · concepts · <span title="2026-08-29">今日</span></div>
+  <article><h1>CLAUDE.md 多層設計</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: CLAUDE.md単体に全てを書くのをやめ、常設の契約（CLAUDE.md）・パス別Rules・遅延ロードSkills・独立Reviewer・Permission/Hooksの強制境界へ役割分担し、精神論を観測可能な契約文へ書き換える設計論。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  Rule[&quot;守らせたい事項&quot;] --&gt;|&quot;全タスクで常時必要&quot;| CMD[&quot;CLAUDE.md（契約・200行未満）&quot;]
+  Rule --&gt;|&quot;特定パスのみ&quot;| Rules[&quot;.claude/rules/（paths指定）&quot;]
+  Rule --&gt;|&quot;複数工程の手順&quot;| Skills[&quot;.claude/skills/（遅延ロード）&quot;]
+  Rule --&gt;|&quot;独立した調査・レビュー&quot;| Agents[&quot;.claude/agents/&quot;]
+  Rule --&gt;|&quot;絶対に破らせない境界&quot;| Perm[&quot;Permission + Hooks（クライアント強制）&quot;]
+  Rule --&gt;|&quot;個人の修正履歴・学習&quot;| Memory[&quot;Auto memory&quot;]</pre>
+<p>現行仕様ではCLAUDE.mdはシステムプロンプトの一部ではなくユーザーメッセージとして渡されるため、モデルは内容を尊重しようとするが厳密な順守は保証されない——だから必ず守らせたい境界はPermission・Sandbox・PreToolUse Hookなどクライアント側で強制される仕組みへ移す必要がある、と@ai_ai_ailoverが整理する（記事は2026年8月28日時点のAnthropic公式Docsを基準にしたと明記）。「あなたは世界最高のエンジニアです」型の人格盛りが弱いのは達成を観測できないからで、強いルールは「変更に最も近いテストを先に実行し、実行できなかった検証は成功と書かず未実行の理由を報告する」のように検査可能な契約の形をとる。<a href="../concepts/claude-md-rules.html">claude-md-rules</a>が測定値で示した方向を、書き換えの対比例（弱い設定→強い設定）として一般化したものと考えられる。</p>
+<p>もう一つの柱は「巨大CLAUDE.mdはむしろ弱い」で、長くなるほど重要な規則がノイズに埋もれる。対策は単なる短縮ではなく、常時必要な情報（目的・推測できないコマンド・非自明な設計判断・完了条件・重大な禁止）だけを常設し、それ以外を遅延ロードに逃がすことだと述べる。</p>
+<h2>7層の役割分担</h2>
+<p>@ai_ai_ailoverの推奨構成は次の7層で、比喩として「CLAUDE.mdが憲法、Rulesは部署別規程、Skillsは標準作業手順書、Subagentsは専門部署、Permission/Hooksは物理的な入退室管理」と表現される。</p>
+<ul>
+<li><code>~/.claude/CLAUDE.md</code> — 全案件共通の個人ルール</li>
+<li>プロジェクト直下 <code>CLAUDE.md</code> — リポジトリ固有の契約。実用上200行未満に抑える</li>
+<li><code>.claude/rules/</code> — pathsのglob指定で対象ファイルを扱ったときだけ適用される条件付きルール（認証・DB・フロントエンドなど）</li>
+<li><code>.claude/skills/</code> — 必要時だけ読み込まれる複数工程の手順。<code>disable-model-invocation: true</code> で人間の明示起動限定にもできる</li>
+<li><code>.claude/agents/</code> — 独立コンテキストの調査・レビュー担当</li>
+<li><code>.claude/settings.json</code> + Hooks — モデル判断に依存しない強制境界。Permissionはdeny→ask→allowの順で評価され、PreToolUse Hookの exit 2 はAllowルールより優先してブロックする</li>
+<li>Auto memory — 個人の修正履歴・学習の補助記憶。マシンローカルでありチーム規約の配布には使わない</li>
+</ul>
+<h2>証拠ベース完了と Writer/Reviewer 分離</h2>
+<p>同梱の汎用テンプレート「Project Contract」の最重要点は、人格でなく証拠ベース完了を定義していることだと著者は強調する。テストしたと言うならコマンドと結果、修正したと言うなら差分と再現条件、未実行なら未実行と明記させ、モデルの「成功しました」だけで完了判定しない。</p>
+<p>また、長時間実装したClaudeは自分が採用した前提に引っ張られるため、差分だけを見せる敵対的レビュアー（adversarial-reviewer）サブエージェントを分離し、要件・正しさ・セキュリティ・互換性・未検証事項に影響する実質的欠陥のみをBLOCKER/MATERIAL/OPTIONALで報告させる。「何か問題を見つけろ」とだけ命じると好みのスタイル指摘の量産と過剰実装を誘発する。組み込みのExplore/PlanエージェントはCLAUDE.mdを読み込まない仕様のため、プロジェクトルールを踏まえたレビューは専用のカスタムReviewerで行うべきだと記事は述べる。</p>
+<h2>入れてはいけない設定</h2>
+<p>著者は「何があっても質問するな」「すべての変更で詳細計画を作れ」「常に全テストを実行せよ」「好きにパッケージを追加してよい」「自動でCommit・Push・Deployまでやれ」「bypassPermissionsの普段使い」の6つを挙げ、いずれも自律性や速度の名の下に不可逆操作・信頼境界の変更を無防備にすると警告する。正しくは「安全で可逆な仮定は明示して進み、不可逆操作・外部副作用・セキュリティ境界変更だけを質問する」の形にする。</p>
+<h2>導入手順</h2>
+<p>現在のCLAUDE.mdの各行へ「この行を消すとClaudeは実際に間違えるか」を問い、Noなら削除する。残りを「コードから分かる→削除／特定パスだけ→Rules／複数工程→Skill／絶対禁止→Permission・Hook／今回だけ→プロンプト／個人だけ→CLAUDE.local.md」へ分類し、同じ修正を二回したら三回目に怒るのでなく仕組みへ昇格させる。設定後は /context・/memory・/permissions・/hooks・/doctor で「本当にロードされたか・禁止操作が実際に止まるか・完了報告に証拠が付くか」まで確認する。</p>
+<p><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a>（公式の7手段振り分けフレーム）と到達点はほぼ重なるが、本記事は振り分けた中身を検査可能な契約文へ書き換える対比例と、コピペ可能な実装物一式（Project Contract全文・adversarial-reviewer定義・settings.jsonのallow/ask/deny実例・破壊コマンド遮断のPreToolUse Hookスクリプト）を提供する点が実装ガイドとして独自。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-08-29: 記事がClaude Platform Docs由来と主張する仕様3点は一次未確認——①CLAUDE.md内のブロックHTMLコメントはコンテキスト注入前に除去される（コードブロック内は対象外）②4MiB超のCLAUDE.mdは読み飛ばされる ③組み込みExplore/PlanはCLAUDE.mdを読み込まない</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>観察ログの仕様3点を公式Docsで裏取りする。特にHTMLコメント除去が本当なら保守メモの置き場所の定石が変わる</li>
+<li>自分のグローバルCLAUDE.md・このvaultのCLAUDE.mdに「消すと間違えるか」テストを適用したら何行残るか</li>
+<li>「同じ修正を二回したら仕組みへ昇格」は、このvaultのLESSONS.md運用・auto memory運用とどう対応づくか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 公式フレーム版の7手段振り分け（ロード時点×圧縮生存×権威×コスト）。本ページは同じ結論を「検査可能な契約への書き換え」と実装テンプレートで補う</li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a> — CLAUDE.md=永続契約という同じ捉え直しの非エンジニア向け5領域版</li>
+<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> — 複数階層のCLAUDE.md結合・遅延ロードを階層構造の側から整理した公式仕様ページ</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2093168450726457702" rel="noopener" target="_blank">https://x.com/i/web/status/2093168450726457702</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># CLAUDE.md 多層設計
+
+&gt; **TL;DR**: CLAUDE.md単体に全てを書くのをやめ、常設の契約（CLAUDE.md）・パス別Rules・遅延ロードSkills・独立Reviewer・Permission/Hooksの強制境界へ役割分担し、精神論を観測可能な契約文へ書き換える設計論。
+
+```mermaid
+flowchart TD
+  Rule[&quot;守らせたい事項&quot;] --&gt;|&quot;全タスクで常時必要&quot;| CMD[&quot;CLAUDE.md（契約・200行未満）&quot;]
+  Rule --&gt;|&quot;特定パスのみ&quot;| Rules[&quot;.claude/rules/（paths指定）&quot;]
+  Rule --&gt;|&quot;複数工程の手順&quot;| Skills[&quot;.claude/skills/（遅延ロード）&quot;]
+  Rule --&gt;|&quot;独立した調査・レビュー&quot;| Agents[&quot;.claude/agents/&quot;]
+  Rule --&gt;|&quot;絶対に破らせない境界&quot;| Perm[&quot;Permission + Hooks（クライアント強制）&quot;]
+  Rule --&gt;|&quot;個人の修正履歴・学習&quot;| Memory[&quot;Auto memory&quot;]
+```
+
+現行仕様ではCLAUDE.mdはシステムプロンプトの一部ではなくユーザーメッセージとして渡されるため、モデルは内容を尊重しようとするが厳密な順守は保証されない——だから必ず守らせたい境界はPermission・Sandbox・PreToolUse Hookなどクライアント側で強制される仕組みへ移す必要がある、と@ai_ai_ailoverが整理する（記事は2026年8月28日時点のAnthropic公式Docsを基準にしたと明記）。「あなたは世界最高のエンジニアです」型の人格盛りが弱いのは達成を観測できないからで、強いルールは「変更に最も近いテストを先に実行し、実行できなかった検証は成功と書かず未実行の理由を報告する」のように検査可能な契約の形をとる。[[concepts/claude-md-rules]]が測定値で示した方向を、書き換えの対比例（弱い設定→強い設定）として一般化したものと考えられる。
+
+もう一つの柱は「巨大CLAUDE.mdはむしろ弱い」で、長くなるほど重要な規則がノイズに埋もれる。対策は単なる短縮ではなく、常時必要な情報（目的・推測できないコマンド・非自明な設計判断・完了条件・重大な禁止）だけを常設し、それ以外を遅延ロードに逃がすことだと述べる。
+
+## 7層の役割分担
+
+@ai_ai_ailoverの推奨構成は次の7層で、比喩として「CLAUDE.mdが憲法、Rulesは部署別規程、Skillsは標準作業手順書、Subagentsは専門部署、Permission/Hooksは物理的な入退室管理」と表現される。
+
+- `~/.claude/CLAUDE.md` — 全案件共通の個人ルール
+- プロジェクト直下 `CLAUDE.md` — リポジトリ固有の契約。実用上200行未満に抑える
+- `.claude/rules/` — pathsのglob指定で対象ファイルを扱ったときだけ適用される条件付きルール（認証・DB・フロントエンドなど）
+- `.claude/skills/` — 必要時だけ読み込まれる複数工程の手順。`disable-model-invocation: true` で人間の明示起動限定にもできる
+- `.claude/agents/` — 独立コンテキストの調査・レビュー担当
+- `.claude/settings.json` + Hooks — モデル判断に依存しない強制境界。Permissionはdeny→ask→allowの順で評価され、PreToolUse Hookの exit 2 はAllowルールより優先してブロックする
+- Auto memory — 個人の修正履歴・学習の補助記憶。マシンローカルでありチーム規約の配布には使わない
+
+## 証拠ベース完了と Writer/Reviewer 分離
+
+同梱の汎用テンプレート「Project Contract」の最重要点は、人格でなく証拠ベース完了を定義していることだと著者は強調する。テストしたと言うならコマンドと結果、修正したと言うなら差分と再現条件、未実行なら未実行と明記させ、モデルの「成功しました」だけで完了判定しない。
+
+また、長時間実装したClaudeは自分が採用した前提に引っ張られるため、差分だけを見せる敵対的レビュアー（adversarial-reviewer）サブエージェントを分離し、要件・正しさ・セキュリティ・互換性・未検証事項に影響する実質的欠陥のみをBLOCKER/MATERIAL/OPTIONALで報告させる。「何か問題を見つけろ」とだけ命じると好みのスタイル指摘の量産と過剰実装を誘発する。組み込みのExplore/PlanエージェントはCLAUDE.mdを読み込まない仕様のため、プロジェクトルールを踏まえたレビューは専用のカスタムReviewerで行うべきだと記事は述べる。
+
+## 入れてはいけない設定
+
+著者は「何があっても質問するな」「すべての変更で詳細計画を作れ」「常に全テストを実行せよ」「好きにパッケージを追加してよい」「自動でCommit・Push・Deployまでやれ」「bypassPermissionsの普段使い」の6つを挙げ、いずれも自律性や速度の名の下に不可逆操作・信頼境界の変更を無防備にすると警告する。正しくは「安全で可逆な仮定は明示して進み、不可逆操作・外部副作用・セキュリティ境界変更だけを質問する」の形にする。
+
+## 導入手順
+
+現在のCLAUDE.mdの各行へ「この行を消すとClaudeは実際に間違えるか」を問い、Noなら削除する。残りを「コードから分かる→削除／特定パスだけ→Rules／複数工程→Skill／絶対禁止→Permission・Hook／今回だけ→プロンプト／個人だけ→CLAUDE.local.md」へ分類し、同じ修正を二回したら三回目に怒るのでなく仕組みへ昇格させる。設定後は /context・/memory・/permissions・/hooks・/doctor で「本当にロードされたか・禁止操作が実際に止まるか・完了報告に証拠が付くか」まで確認する。
+
+[[concepts/claude-code-instruction-methods]]（公式の7手段振り分けフレーム）と到達点はほぼ重なるが、本記事は振り分けた中身を検査可能な契約文へ書き換える対比例と、コピペ可能な実装物一式（Project Contract全文・adversarial-reviewer定義・settings.jsonのallow/ask/deny実例・破壊コマンド遮断のPreToolUse Hookスクリプト）を提供する点が実装ガイドとして独自。
+
+## 観察ログ（未検証）
+
+- 2026-08-29: 記事がClaude Platform Docs由来と主張する仕様3点は一次未確認——①CLAUDE.md内のブロックHTMLコメントはコンテキスト注入前に除去される（コードブロック内は対象外）②4MiB超のCLAUDE.mdは読み飛ばされる ③組み込みExplore/PlanはCLAUDE.mdを読み込まない
+
+## 問い
+
+- 観察ログの仕様3点を公式Docsで裏取りする。特にHTMLコメント除去が本当なら保守メモの置き場所の定石が変わる
+- 自分のグローバルCLAUDE.md・このvaultのCLAUDE.mdに「消すと間違えるか」テストを適用したら何行残るか
+- 「同じ修正を二回したら仕組みへ昇格」は、このvaultのLESSONS.md運用・auto memory運用とどう対応づくか
+
+## 関連
+
+- [[concepts/claude-code-instruction-methods]] — 公式フレーム版の7手段振り分け（ロード時点×圧縮生存×権威×コスト）。本ページは同じ結論を「検査可能な契約への書き換え」と実装テンプレートで補う
+- [[concepts/claude-md-persistent-contract]] — CLAUDE.md=永続契約という同じ捉え直しの非エンジニア向け5領域版
+- [[concepts/claude-code-context-hierarchy]] — 複数階層のCLAUDE.md結合・遅延ロードを階層構造の側から整理した公式仕様ページ
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

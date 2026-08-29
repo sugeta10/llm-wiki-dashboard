@@ -66,3 +66,4 @@ mindmap
 - [[concepts/lean-prompt-rules-adaptation]] — 本ページの分類軸を実測で裏付けた実践例。output styleでは止まらなかった「進め方」の癖が、行動直前に毎回届くUserPromptSubmit hookで止まったという届け方の検証（@u1）
 - [[concepts/claude-code-launch-directory]] — 同じ「ロード時点×圧縮後の生存」を起動ディレクトリの側から見た版。CLAUDE.mdは親から継承されるが設定は継承されない、という手段の振り分け以前の落とし穴を扱う
 - [[concepts/llm-japanese-style-hooks]] — 「決定論的強制はhook」という振り分けを文章品質へ適用した実例。規約ファイルに書いても直らなかった日本語の癖を、書き込み直後のPostToolUse hookに移して抑えた（@yugen_matuni）
+- [[concepts/claude-md-multilayer-design]] — 同じ振り分けを「精神論→検査可能な契約への書き換え」とコピペ可能な実装物（Project Contract・adversarial-reviewer・settings.json・Hook）で補う実装ガイド版（@ai_ai_ailover）
