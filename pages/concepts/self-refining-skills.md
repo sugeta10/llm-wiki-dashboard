@@ -37,3 +37,4 @@ before next run, read the last 10
 - [[concepts/skill-self-improving-loop]] — 本パターンを別セッション・別スキルに外部化した3段ループ（会話履歴→Issue→Routines→triage→PR）
 - [[concepts/agent-reflection-layer]] — decisions-log＋週次パターン昇格でエージェントに省察層を持たせる設計。本パターンをメタ認知の枠組みで一般化したもの
 - [[concepts/agent-skill-eight-layer-design]] — 「成功した会話からSkillを抽出する」プロンプトはGotcha蓄積を事後ログでなく初回設計時に一括抽出する変種
+- [[concepts/improver-skill-pattern]] — Warpのinner/outerスキル型。フィードバック収集と改善提案を定期実行のimprover skillに外部化し、skill編集をPRで回す（Anthropic公式ブログ）

@@ -64,3 +64,4 @@ Anthropic社内では数百のスキルが実運用されており、その分�
 - [[concepts/agent-skill-management-system]] — 本ページの「作り方」が前提とする、増加後の管理問題（発見・ライフサイクル・ガバナンス・合成・評価）
 - [[concepts/parallel-e2e-testing]] — 「Product verification」カテゴリの実例。E2E作成スキルでflaky対策チェックリストを機械強制する実践
 - [[concepts/agent-skill-eight-layer-design]] — 海外実務家による別の切り口（8層アーキテクチャ＋ループ強度3段階）。本ページの9カテゴリ分類と併用できる
+- [[concepts/improver-skill-pattern]] — 「小さく保つ・progressive disclosure・スクリプト同梱」の原則を自己改善ループの文脈で裏付けるWarpの実践（Anthropic公式ブログ）
