@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>software-factory-cost-equation - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>software-factory-cost-equation</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="software-factory-cost-equation.md">Markdownで表示</a></div>
+  <div class="meta">concepts/software-factory-cost-equation · concepts · <span title="2026-09-01">今日</span></div>
+  <article><h1>ソフトウェアファクトリーのコスト方程式（Uber）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Uberはエージェントセッションのコストを方程式に分解し、Price/Token（モデル選択）・Tokens/Request（キャッシュ・CLI化・code-mode）・Requests/Turn（グラウンディング）の各項を独立に最適化。利用を7倍に伸ばしながらモデル固定比較でセッション単価を52%下げ、コスト制御の本丸を対話型セッションからmanaged agentsへ移した。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  subgraph Eq[&quot;コスト方程式の最適化3項&quot;]
+    PT[&quot;Price/Token&quot;]
+    TR[&quot;Tokens/Request&quot;]
+    RT[&quot;Requests/Turn&quot;]
+  end
+  Bench[&quot;ベンチマーク駆動モデル選択&lt;br&gt;+ サブエージェント既定弱モデル&quot;] --&gt; PT
+  Cache[&quot;キャッシュTTL設計&lt;br&gt;compaction 400k・effort Medium&quot;] --&gt; TR
+  CLI[&quot;MCPのCLI投影・Tool Search&lt;br&gt;code-modeバッチ実行&quot;] --&gt; TR
+  Graph[&quot;AI Context Graph&lt;br&gt;（グラウンディング）&quot;] --&gt; RT</pre>
+<p>Uberではプルリクエストの70%超がローカル/クラウドエージェント由来で、社内エージェントスキルは3,600個超・実行は1日3万回超に達する。この規模で2026年2月→8月に週次アクティブユーザーが7倍・週次エージェントリクエストが9.4倍に伸びる一方、AI総支出は4月以降ほぼ横ばい。モデルを1つに固定した比較では、1,000リクエストあたりコストがピーク比34%減・セッション単価が6月ピーク比52%減とUber Engineeringが公表している（Uber公式エンジニアリングブログ、著者はudaykiran）。方法論の核は「単価の安いモデルへ下げたり機能を削るのでなく、価値ゼロのトークン消費を消す」こと。エージェント利用を専用→汎用の4層に整理し（上の層ほどコスト・品質・モデル選択の制御が効く）、セッションコストを複数の項に分解して、採用・エンゲージメントを表す最初の2項は伸ばし、「エンジニアの依頼の上にエージェントが自分のために行う作業」にあたる中間の項を削る。</p>
+<h2>Price/Token: ベンチマーク駆動のモデル選択</h2>
+<p>トークン単価はベンダーが決めるが、どのワークロードにどのモデルを走らせるかは選べる。Uberはmanaged agentごとに「実作業からベンチマークを作る→任意のモデルを同一インターフェースで差し替えられるハーネスで走らせる→Pareto最適へ移り続ける（フロンティアは数週間ごとに動く）」という手順を踏む。全PRのAIコードレビューを担うuReviewでは、既知バグ入りの実PRを難易度3段階で採点するベンチマークを組み、モデル切替でF1を上げつつレビュー単価を大幅に下げたという。数千件の実PRから作った社内Uber SWE BenchmarkがSDLC全域のモデル選択を支える。</p>
+<p>対話型ハーネスでは既定値が消費配分を左右する。中でも<strong>サブエージェントの既定モデルを弱く安いモデルに固定する</strong>のが最も効くレバーだとUber Engineeringは述べる。サブエージェントは入力が明確な限定タスクを担いフロンティア級の推論を要さないため、主モデルがタスク分解と評価を担い、実作業は安いモデルに流す構図になる。</p>
+<h2>Tokens/Request: キャッシュ・CLI化・code-mode</h2>
+<p>毎ターン全履歴が再送されるため、リクエストあたりのペイロード削減はセッション全体に複利で効く。Uberの標準設定は、1Mコンテキストモデルでも400kトークンで自動compaction・reasoning effortの既定をMediumの2つ。</p>
+<p>プロンプトキャッシュはTTL経済（読み出し0.1倍・5分書き込み1.25倍・1時間書き込み2倍）に基づき、アイドル5分超が頻発する対話セッションは1時間TTLへ移行し、短命タスクのサブエージェントは5分TTLに据え置くという使い分けをする。仕組みの詳細は<a href="../concepts/prompt-caching.html">prompt-caching</a>にある。</p>
+<p>MCPは1,000超のサーバーを単一ゲートウェイに集約した上で、スキーマの事前ロード（100超のツールで初期プロンプトに約50〜70Kトークン）を避けるため、全MCPツールをCLIコマンドとして投影する方式とTool Search（必要なツールだけオンデマンドでロード）を併用する。さらにcode-modeでは複数アクションを1スクリプトに束ね、SQLポーリングのような多ターン往復をサブプロセス内のループに封じて要約だけを文脈に返す。同一セッションで同じSQLクエリ5本を両経路で流した実測で、最小の結果セットでもトークン50%超削減・バルク処理では90%超の削減になったとし、最頻アクセスのMCPサーバー向けに25本超のcode-modeスキルを事前配備している。効き目が「ターン数の削減」にあるという構造は<a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a>と同一で、こちらはそれを全社規模で実装した側にあたる。</p>
+<h2>Requests/Turn: AI Context Graphによるグラウンディング</h2>
+<p>グラウンディングされないエージェントは安く失敗せず、膨らみ続けるコンテキストを再送しながら「もう1箇所」を探し続ける。Uberは30超の社内システム（サービス・チーム・インシデント・PR・設計文書・デプロイ・データセット・テーブル利用履歴）を統合したAI Context Graph（ノード2,400万・エッジ8,000万・86ノード種別・117エッジ種別）を敷き、任意のエージェントが自然言語で照会できるようにした。記事の比較例では、グラウンディングされたエージェントが利用履歴から38秒で正しいテーブルに到達したのに対し、されていないエージェントは20分かけサブエージェント2体を起動しエラー3回の末に誤った結論を出した。</p>
+<h2>可視化と行動変容</h2>
+<p>強制上限でなく可視化とナッジで運用する。ハーネスのステータスラインに実費カウンターを常駐させ、想定支出の50/80/100%でSlack通知を送り、ティア昇格はマネージャー承認で素早く通す。さらにセッション分析ダッシュボードがセッショントレースを直接検査し、16種のアンチパターン（単純タスクへの上位モデル使用・大きなMCP応答の文脈残留・キャッシュ失効後の全額再構築・10万トークン級の初期化オーバーヘッドなど）を金額影響と改善策つきで提示する。</p>
+<p>結論としてUber Engineeringは、数千人の端末セッションを個別に最適化するより、評価ベンチマークとPareto最適モデルを対にしたmanaged agentsの艦隊を最適化する方が構造的に安くスケールすると総括する。</p>
+<h2>問い</h2>
+<ul>
+<li>「サブエージェントの既定モデルを弱くする」レバーは自分のClaude Code運用でも最有効か。ワークフロー/サブエージェント委譲の損益分岐（<a href="../concepts/cost-effective-harness.html">cost-effective-harness</a>）と突き合わせて検証したい</li>
+<li>「対話型の個別最適化よりmanaged agentsの艦隊最適化」という結論は<a href="../tools/stripe-minions.html">stripe-minions</a>（週1,300本のマシン生成PR）と同じ収斂か。個人規模での相似形はlaunchdのheadless ingestか</li>
+<li>AI Context Graphの「passageでなくpathを返す」方向は<a href="../concepts/context-graph-retrieval.html">context-graph-retrieval</a>の9ステップとどこまで一致するか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/token-management.html">token-management</a> — トークン消費を経営イシューとして可視化する問題提起側。本ページはUber自身による方程式分解×レバー実装の回答側</li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a> — TTL経済（0.1倍/1.25倍/2倍）の仕組みの正本。本ページはそれを艦隊規模の既定値に落とした実例</li>
+<li><a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a> — ターン削減がコストの実体という同一構造の個人規模側（gh実測24%減）。本ページのcode-mode/CLI投影は全社規模側</li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 工程分解型モデル選択の個人版。Uberはベンチマークで同じ配分を自動化する</li>
+<li><a href="../concepts/context-graph-retrieval.html">context-graph-retrieval</a> — コンテキストグラフ検索の設計手順側</li>
+<li><a href="../tools/stripe-minions.html">stripe-minions</a> — managed agentsパイプラインの他社実装（Stripe）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a></li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
+<li><a href="../concepts/token-management.html">token-management</a></li>
+<li><a href="../concepts/context-graph-retrieval.html">context-graph-retrieval</a></li>
+<li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2093444169037762840" rel="noopener" target="_blank">https://x.com/i/web/status/2093444169037762840</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># ソフトウェアファクトリーのコスト方程式（Uber）
+
+&gt; **TL;DR**: Uberはエージェントセッションのコストを方程式に分解し、Price/Token（モデル選択）・Tokens/Request（キャッシュ・CLI化・code-mode）・Requests/Turn（グラウンディング）の各項を独立に最適化。利用を7倍に伸ばしながらモデル固定比較でセッション単価を52%下げ、コスト制御の本丸を対話型セッションからmanaged agentsへ移した。
+
+```mermaid
+flowchart LR
+  subgraph Eq[&quot;コスト方程式の最適化3項&quot;]
+    PT[&quot;Price/Token&quot;]
+    TR[&quot;Tokens/Request&quot;]
+    RT[&quot;Requests/Turn&quot;]
+  end
+  Bench[&quot;ベンチマーク駆動モデル選択&lt;br&gt;+ サブエージェント既定弱モデル&quot;] --&gt; PT
+  Cache[&quot;キャッシュTTL設計&lt;br&gt;compaction 400k・effort Medium&quot;] --&gt; TR
+  CLI[&quot;MCPのCLI投影・Tool Search&lt;br&gt;code-modeバッチ実行&quot;] --&gt; TR
+  Graph[&quot;AI Context Graph&lt;br&gt;（グラウンディング）&quot;] --&gt; RT
+```
+
+Uberではプルリクエストの70%超がローカル/クラウドエージェント由来で、社内エージェントスキルは3,600個超・実行は1日3万回超に達する。この規模で2026年2月→8月に週次アクティブユーザーが7倍・週次エージェントリクエストが9.4倍に伸びる一方、AI総支出は4月以降ほぼ横ばい。モデルを1つに固定した比較では、1,000リクエストあたりコストがピーク比34%減・セッション単価が6月ピーク比52%減とUber Engineeringが公表している（Uber公式エンジニアリングブログ、著者はudaykiran）。方法論の核は「単価の安いモデルへ下げたり機能を削るのでなく、価値ゼロのトークン消費を消す」こと。エージェント利用を専用→汎用の4層に整理し（上の層ほどコスト・品質・モデル選択の制御が効く）、セッションコストを複数の項に分解して、採用・エンゲージメントを表す最初の2項は伸ばし、「エンジニアの依頼の上にエージェントが自分のために行う作業」にあたる中間の項を削る。
+
+## Price/Token: ベンチマーク駆動のモデル選択
+
+トークン単価はベンダーが決めるが、どのワークロードにどのモデルを走らせるかは選べる。Uberはmanaged agentごとに「実作業からベンチマークを作る→任意のモデルを同一インターフェースで差し替えられるハーネスで走らせる→Pareto最適へ移り続ける（フロンティアは数週間ごとに動く）」という手順を踏む。全PRのAIコードレビューを担うuReviewでは、既知バグ入りの実PRを難易度3段階で採点するベンチマークを組み、モデル切替でF1を上げつつレビュー単価を大幅に下げたという。数千件の実PRから作った社内Uber SWE BenchmarkがSDLC全域のモデル選択を支える。
+
+対話型ハーネスでは既定値が消費配分を左右する。中でも**サブエージェントの既定モデルを弱く安いモデルに固定する**のが最も効くレバーだとUber Engineeringは述べる。サブエージェントは入力が明確な限定タスクを担いフロンティア級の推論を要さないため、主モデルがタスク分解と評価を担い、実作業は安いモデルに流す構図になる。
+
+## Tokens/Request: キャッシュ・CLI化・code-mode
+
+毎ターン全履歴が再送されるため、リクエストあたりのペイロード削減はセッション全体に複利で効く。Uberの標準設定は、1Mコンテキストモデルでも400kトークンで自動compaction・reasoning effortの既定をMediumの2つ。
+
+プロンプトキャッシュはTTL経済（読み出し0.1倍・5分書き込み1.25倍・1時間書き込み2倍）に基づき、アイドル5分超が頻発する対話セッションは1時間TTLへ移行し、短命タスクのサブエージェントは5分TTLに据え置くという使い分けをする。仕組みの詳細は[[concepts/prompt-caching]]にある。
+
+MCPは1,000超のサーバーを単一ゲートウェイに集約した上で、スキーマの事前ロード（100超のツールで初期プロンプトに約50〜70Kトークン）を避けるため、全MCPツールをCLIコマンドとして投影する方式とTool Search（必要なツールだけオンデマンドでロード）を併用する。さらにcode-modeでは複数アクションを1スクリプトに束ね、SQLポーリングのような多ターン往復をサブプロセス内のループに封じて要約だけを文脈に返す。同一セッションで同じSQLクエリ5本を両経路で流した実測で、最小の結果セットでもトークン50%超削減・バルク処理では90%超の削減になったとし、最頻アクセスのMCPサーバー向けに25本超のcode-modeスキルを事前配備している。効き目が「ターン数の削減」にあるという構造は[[concepts/agent-command-wrappers]]と同一で、こちらはそれを全社規模で実装した側にあたる。
+
+## Requests/Turn: AI Context Graphによるグラウンディング
+
+グラウンディングされないエージェントは安く失敗せず、膨らみ続けるコンテキストを再送しながら「もう1箇所」を探し続ける。Uberは30超の社内システム（サービス・チーム・インシデント・PR・設計文書・デプロイ・データセット・テーブル利用履歴）を統合したAI Context Graph（ノード2,400万・エッジ8,000万・86ノード種別・117エッジ種別）を敷き、任意のエージェントが自然言語で照会できるようにした。記事の比較例では、グラウンディングされたエージェントが利用履歴から38秒で正しいテーブルに到達したのに対し、されていないエージェントは20分かけサブエージェント2体を起動しエラー3回の末に誤った結論を出した。
+
+## 可視化と行動変容
+
+強制上限でなく可視化とナッジで運用する。ハーネスのステータスラインに実費カウンターを常駐させ、想定支出の50/80/100%でSlack通知を送り、ティア昇格はマネージャー承認で素早く通す。さらにセッション分析ダッシュボードがセッショントレースを直接検査し、16種のアンチパターン（単純タスクへの上位モデル使用・大きなMCP応答の文脈残留・キャッシュ失効後の全額再構築・10万トークン級の初期化オーバーヘッドなど）を金額影響と改善策つきで提示する。
+
+結論としてUber Engineeringは、数千人の端末セッションを個別に最適化するより、評価ベンチマークとPareto最適モデルを対にしたmanaged agentsの艦隊を最適化する方が構造的に安くスケールすると総括する。
+
+## 問い
+
+- 「サブエージェントの既定モデルを弱くする」レバーは自分のClaude Code運用でも最有効か。ワークフロー/サブエージェント委譲の損益分岐（[[concepts/cost-effective-harness]]）と突き合わせて検証したい
+- 「対話型の個別最適化よりmanaged agentsの艦隊最適化」という結論は[[tools/stripe-minions]]（週1,300本のマシン生成PR）と同じ収斂か。個人規模での相似形はlaunchdのheadless ingestか
+- AI Context Graphの「passageでなくpathを返す」方向は[[concepts/context-graph-retrieval]]の9ステップとどこまで一致するか
+
+## 関連
+
+- [[concepts/token-management]] — トークン消費を経営イシューとして可視化する問題提起側。本ページはUber自身による方程式分解×レバー実装の回答側
+- [[concepts/prompt-caching]] — TTL経済（0.1倍/1.25倍/2倍）の仕組みの正本。本ページはそれを艦隊規模の既定値に落とした実例
+- [[concepts/agent-command-wrappers]] — ターン削減がコストの実体という同一構造の個人規模側（gh実測24%減）。本ページのcode-mode/CLI投影は全社規模側
+- [[concepts/llm-model-selection-strategy]] — 工程分解型モデル選択の個人版。Uberはベンチマークで同じ配分を自動化する
+- [[concepts/context-graph-retrieval]] — コンテキストグラフ検索の設計手順側
+- [[tools/stripe-minions]] — managed agentsパイプラインの他社実装（Stripe）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

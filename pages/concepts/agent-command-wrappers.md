@@ -100,3 +100,4 @@ gh issue list --assignee "@me" --state open \
 - [[concepts/claude-code-instruction-methods]] — CLAUDE.mdにコマンド名1行を置く判断の格納先フレーム（常駐トークンコストの評価軸を共有）
 - [[tools/claude-code]] — ラッパーを呼ぶ側。`claude -p --output-format json` はコスト実測の計測手段でもある
 - [[concepts/claude-code-task-delegation]] — 「毎回うまく指示する」から「指示なしでも結果が出る環境を設計する」への発想転換。ラッパー整備はその環境設計の具体策
+- [[concepts/software-factory-cost-equation]] — 同じターン削減をUberが全社規模で実装した側（1,000超のMCPツールをCLIに投影・code-modeで50%超、バルクで90%超の削減）

@@ -46,3 +46,4 @@
 - [[concepts/agent-adoption-walls]] — 「④トークン資本の透明性」を含む企業エージェント導入の7つの壁
 - [[concepts/ai-engineer-interview-questions]] — 「どのモデルで増えたかではなく、どの機能・顧客・処理段階で増えたか」を特定できるかを問う面接質問（Q9）。可視化の粒度を候補者の診断軸にした例
 - [[concepts/agent-command-wrappers]] — 定型操作をスクリプトに固定してターン数を削る削減レバー（gh実測でコスト24%減）。可視化の次に打つ具体策の1つ
+- [[concepts/software-factory-cost-equation]] — Uber自身によるコスト方程式分解×レバー実装の全社実例。観察ログの「4ヶ月で予算枯渇」への当事者側の回答（利用7倍とセッション単価52%減を両立）
