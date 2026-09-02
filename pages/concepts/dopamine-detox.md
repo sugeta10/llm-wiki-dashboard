@@ -33,3 +33,4 @@
 - [[concepts/performance-habits-40s]] — 同著者@antoshia2nによる「引き算」習慣論。悪習慣ループを断つ思想は共通だが、こちらは体力・エネルギー管理が主眼で本記事は刺激・報酬系が主眼
 - [[concepts/mental-conditioning]] — 意志力でなく物理的な仕組みで行動を変える設計思想が共通（香りのアンカリング・書き出しなど）
 - [[concepts/creativity-recovery-protocol]] — Dan Koeによる7日間の入力遮断プロトコル。「ドーパミン受容体の再感作」という重なる観察あり
+- [[concepts/thought-eliciting-questions]] — 同著者@antoshia2nによる質問フレーズ10選。こちらは刺激・報酬系、あちらは思考・対話が主題

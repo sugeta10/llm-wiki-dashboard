@@ -47,3 +47,4 @@ Claude Code の PostCompact hook は additionalContext を返せない仕様の�
 - [[concepts/claude-code-instruction-methods]] — 7手段を「圧縮生存」軸で振り分ける公式フレーム。hooks がコンパクションを完全にバイパスする性質を、本ページは復旧経路として活用している
 - [[concepts/codex-agent-loop]] — Codex 側の Compaction 実装（潜在表現を保持する圧縮）。テキスト要約ベースで判断構造が落ちる Claude Code compact との対比
 - [[concepts/semantic-generation-skill]] — 同著者（@u1）の別記事。こちらは判断構造の喪失でなく、対象の定まらない独自語の生成という別のCodex運用課題への対策
+- [[papers/2026-dairai-top-ai-papers-w35]] — 圧縮の喪失を定量化した研究「What Compaction Destroys」（Claude Code compactは安全ルールを1回で53%・5回で10%しか保持しない）。本ページのstate file退避の必要性を研究側から裏付ける

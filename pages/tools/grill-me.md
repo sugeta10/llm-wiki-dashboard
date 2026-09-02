@@ -40,3 +40,4 @@ AIが2〜5択形式で質問を繰り返し、1セッションで最大18〜24�
 - [[concepts/agentic-coding]] — AIと協調するコーディングスタイル全般
 - [[tools/matt-pocock-skills]] — grill-meを含むMatt Pocockのスキルコレクション全体
 - [[concepts/finding-unknowns]] — 実装前の「インタビュー」技法を含む unknown 発見フレーム（@trq212）。一問ずつの深掘りが同型
+- [[concepts/thought-eliciting-questions]] — 人間側の質問技術10フレーズ（@antoshia2n）。grill-meはAIに質問させる側で、問いが思考を引き出す機構が共通

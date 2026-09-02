@@ -53,3 +53,4 @@ flowchart TD
 - [[concepts/output-first-learning]] — 出力前提で読書を血肉化する学習法（読書術としての接続先）
 - [[concepts/ai-persona-interview]] — 複数ペルソナの独立収束を実装シグナルにする手法（賢人会議の質を測る観点）
 - [[concepts/ai-curriculum-builder]] — 本ページの書籍取り込みを、体系的カリキュラム＋学習者プロファイルへ発展させた方法論
+- [[concepts/thought-eliciting-questions]] — 「答えでなく問いが気づきを生む」という同じ設計思想の人間側の技術。思考を引き出す質問10フレーズ（@antoshia2n）

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-dairai-top-ai-papers-w35 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-dairai-top-ai-papers-w35</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="2026-dairai-top-ai-papers-w35.md">Markdownで表示</a></div>
+  <div class="meta">papers/2026-dairai-top-ai-papers-w35 · papers · <span title="2026-09-03">今日</span></div>
+  <article><h1>DAIR.AI 週間トップAI論文（2026-08-24〜30）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: DAIR.AI（@dair_ai）選定の週次トップ10論文。LLM-judge運用・スキル評価・コンテキスト管理・生成ハーネス・自己改善エージェントと、モデル本体でなく「エージェントの周辺系」の研究が10本中9本を占めた週。</p>
+</blockquote>
+<p>以下は各論文のdair_aiによる要約からの転記で、原論文は未参照。モデルアーキテクチャの新提案が1本もなく、判定器・ハーネス・メモリ・スキルライブラリといった運用層の研究で埋まった点に、研究の重心移動が表れていると考えられる。</p>
+<h2>10本の要旨</h2>
+<ol>
+<li><strong>Judges as a Lifecycle</strong>（Netflix） — LLM judgeを一度検証して終わりにせず、Birth（基準定義・人手ラベルのベンチマーク構築）→ Training（ルーブリック改善）→ Deployment → Monitoring（ドリフト監視・再チューニング）の4フェーズで運用する。メタジャッジがjudgeの推論出力を学習信号にするReasoning-Aligned Rubric Tuningで、人間との不一致をルーブリックの文言に遡って修正する。週数十万件の推薦説明文に適用し、数千万会員への5週間A/Bテストで未視聴コンテンツへの視聴シフトとbrowse-to-play成功増を確認したとdair_aiは紹介する。</li>
+<li><strong>Skill Lift</strong>（NVIDIA・ACES） — スキルの構造・スタイル・セキュリティを検査するスキャナーのスコアは、LLM-judge品質とSpearman rho 0.14でほぼ無相関。代わりに同一モデル・サンドボックス・スコアラーでスキルあり/なしを対で走らせ差分（Skill Lift）を測ることを提案。58本番スキル・947ペアケースを4ハーネス横断で採点し、軌跡をAgent Trajectory Interchange Formatで正規化して比較可能にした。<a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a>と同じ対試験パラダイム。</li>
+<li><strong>Scroll</strong>（Alibaba） — メモリスキーマを設計せず、コンテキスト構築をモデルのプログラミング問題として渡す。append-onlyイベントログ＋サンドボックス化された永続Pythonカーネルに状態を置き、モデルが書くコードで検索・変換し、明示的にprintした射影だけがプロンプトに入る。退避された領域も回復可能。Qwen3.8-MaxでLongMemEval_S 94.8%・BEAM_10M 73.1%（既存メモリシステム比+5.1pt）・LOCA_256K 86.7%。</li>
+<li><strong>JIT-Agent</strong> — 出力がハーネスそのものであるモデル。memory / planning / action protocol / tool orchestrationの4モジュールプロトコルの下でタスクごとにハーネスを合成し、実行中に修復、過去構成のアーカイブから自己進化する。DeepSeek-V4-FlashがDeepSearchQAでGPT-5.6を+9.1pt上回り、GLM-5.2は最大+20.2pt。生成ハーネスはOpenCodeやClaude Codeと性能競争力があるとdair_aiは紹介する。</li>
+<li><strong>Prime Agent</strong>（Prime Intellect） — 長期ホライズン作業向けのオープンソースハーネス。永続IPython REPLでモデルがコンテキストをコードで処理し、履歴・記憶・スキル・プロンプト・サブエージェント仕様が走行間で永続するContinual Harnessを持つ。ARC-AGI-3のRHAE Best@1がモデル据え置きで30%→95.5%。</li>
+<li><strong>What Compaction Destroys</strong> — 20の本番エージェント構成でコンテキスト圧縮が壊すものを測定。安全ルールとエピソードログが同じトークン予算を奪い合い等しく圧縮されるため、正確な文言を要する安全ルールが最初の犠牲になる。Claude Code compact（Sonnet 4.6）は1回で53%、5回で10%しか安全ルールを保持しない。対策のKnowledge Triageは知識を型分類し型別の保持ポリシーへルーティングして2〜4倍の保持と5ラウンド96% recallを達成。</li>
+<li><strong>Co-Scientist in Real Labs</strong>（Google DeepMind） — Co-Scientistを物理実験へ。MXenesの安全な前駆体ルートを設計し半自動CVD反応器を運転、単層MoS2等の単回試行成長を実現。HealthBench Hardでは発見した推論時スケーリングアーキテクチャが盲検医師レビュー下で6つのフロンティアモデルを上回った。30人の専門家が450本のレビューを書き、信頼性モジュールが幻覚と剽窃を測定可能に減らした。</li>
+<li><strong>Recuris</strong> — エージェントメモリをWorking Memory（タスク進捗）とExperiential Memory（スキル）に二分し、スキル選択を成長し続ける全履歴でなく現在のタスク状態に接地させる。固定Meta-Agentが失敗の証拠を検証ゲート付きのSkill Memory更新に変換。37構成中35で改善、tau-benchでGPT-5.6 Solに+17.8pt。</li>
+<li><strong>Meta^n</strong> — 自己編集システムは自らの編集機構の一部を固定せざるをえず実効メタ深度が約2で頭打ちになる問題に対し、メタ操作を固定して入力側に再帰させ、収束が深度を決める設計。8ベンチマークファミリー全てで先行自己改善エージェントを上回り、ARC-AGI-2で唯一ゼロ超えのスコア。</li>
+<li><strong>EvoMal</strong> — 共有スキルライブラリのマルウェア伝播を実証。植え込まれた悪性スキルは一度も呼び出されずとも著述テンプレートとして参照され、エージェントがペイロードを保存した新スキルを書いてライブラリに再投入する。6モデルで自己中毒率20.3〜41.8%、植えたスキルを全削除しても除去できず、バナー式コピーを抑止するカウンタープロンプトで6.7%まで低下。</li>
+</ol>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-03: 上記の数値はすべてdair_aiの二次要約からの転記で原論文未参照。特に「Claude Code compactの安全ルール保持53%→10%」と「EvoMal自己中毒率20〜42%」は自分の運用に直結するため原論文で確認する価値がある。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>EvoMalの「過去の産物をテンプレートに次を書く」自己中毒ループは、このvaultのLESSONS.md（過去の判定事例を作業記憶に入れて次を判定する）にも構造的に当てはまるか。誤った判定事例が混入したら増殖するか</li>
+<li>What Compaction Destroysの型別保持ポリシーは、CLAUDE.mdの「正確な文言を要する指示」と「経緯・物語」を分離せよという運用と同じ主張か</li>
+<li>Skill Liftの対試験を自作スキルにかける件は<a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a>の問いと同じ。2つの独立研究が同じ設計に収斂したことで優先度が上がったか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a> — Skillあり/なしの対試験でスキル効果を測る同パラダイムのベンチマーク。Skill Lift（NVIDIA ACES）が独立に同じ設計に到達し、構造スキャナーと品質の無相関（rho 0.14）という補強データを加えた</li>
+<li><a href="../concepts/claude-code-compact-recovery.html">claude-code-compact-recovery</a> — compactが判断構造を落とす問題への実践対策。What Compaction Destroysは同じ喪失を安全ルール保持率として定量化した研究側</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — エージェント=モデル+ハーネスの全体論。JIT-Agent（タスクごとにハーネスを合成）とPrime Agent（走行間で永続するContinual Harness）はハーネス自体を動的・蓄積的にする発展形</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-compact-recovery.html">claude-code-compact-recovery</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
+<li><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094085853026951319" rel="noopener" target="_blank">https://x.com/i/web/status/2094085853026951319</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># DAIR.AI 週間トップAI論文（2026-08-24〜30）
+
+&gt; **TL;DR**: DAIR.AI（@dair_ai）選定の週次トップ10論文。LLM-judge運用・スキル評価・コンテキスト管理・生成ハーネス・自己改善エージェントと、モデル本体でなく「エージェントの周辺系」の研究が10本中9本を占めた週。
+
+以下は各論文のdair_aiによる要約からの転記で、原論文は未参照。モデルアーキテクチャの新提案が1本もなく、判定器・ハーネス・メモリ・スキルライブラリといった運用層の研究で埋まった点に、研究の重心移動が表れていると考えられる。
+
+## 10本の要旨
+
+1. **Judges as a Lifecycle**（Netflix） — LLM judgeを一度検証して終わりにせず、Birth（基準定義・人手ラベルのベンチマーク構築）→ Training（ルーブリック改善）→ Deployment → Monitoring（ドリフト監視・再チューニング）の4フェーズで運用する。メタジャッジがjudgeの推論出力を学習信号にするReasoning-Aligned Rubric Tuningで、人間との不一致をルーブリックの文言に遡って修正する。週数十万件の推薦説明文に適用し、数千万会員への5週間A/Bテストで未視聴コンテンツへの視聴シフトとbrowse-to-play成功増を確認したとdair_aiは紹介する。
+2. **Skill Lift**（NVIDIA・ACES） — スキルの構造・スタイル・セキュリティを検査するスキャナーのスコアは、LLM-judge品質とSpearman rho 0.14でほぼ無相関。代わりに同一モデル・サンドボックス・スコアラーでスキルあり/なしを対で走らせ差分（Skill Lift）を測ることを提案。58本番スキル・947ペアケースを4ハーネス横断で採点し、軌跡をAgent Trajectory Interchange Formatで正規化して比較可能にした。[[papers/2026-li-skillsbench]]と同じ対試験パラダイム。
+3. **Scroll**（Alibaba） — メモリスキーマを設計せず、コンテキスト構築をモデルのプログラミング問題として渡す。append-onlyイベントログ＋サンドボックス化された永続Pythonカーネルに状態を置き、モデルが書くコードで検索・変換し、明示的にprintした射影だけがプロンプトに入る。退避された領域も回復可能。Qwen3.8-MaxでLongMemEval_S 94.8%・BEAM_10M 73.1%（既存メモリシステム比+5.1pt）・LOCA_256K 86.7%。
+4. **JIT-Agent** — 出力がハーネスそのものであるモデル。memory / planning / action protocol / tool orchestrationの4モジュールプロトコルの下でタスクごとにハーネスを合成し、実行中に修復、過去構成のアーカイブから自己進化する。DeepSeek-V4-FlashがDeepSearchQAでGPT-5.6を+9.1pt上回り、GLM-5.2は最大+20.2pt。生成ハーネスはOpenCodeやClaude Codeと性能競争力があるとdair_aiは紹介する。
+5. **Prime Agent**（Prime Intellect） — 長期ホライズン作業向けのオープンソースハーネス。永続IPython REPLでモデルがコンテキストをコードで処理し、履歴・記憶・スキル・プロンプト・サブエージェント仕様が走行間で永続するContinual Harnessを持つ。ARC-AGI-3のRHAE Best@1がモデル据え置きで30%→95.5%。
+6. **What Compaction Destroys** — 20の本番エージェント構成でコンテキスト圧縮が壊すものを測定。安全ルールとエピソードログが同じトークン予算を奪い合い等しく圧縮されるため、正確な文言を要する安全ルールが最初の犠牲になる。Claude Code compact（Sonnet 4.6）は1回で53%、5回で10%しか安全ルールを保持しない。対策のKnowledge Triageは知識を型分類し型別の保持ポリシーへルーティングして2〜4倍の保持と5ラウンド96% recallを達成。
+7. **Co-Scientist in Real Labs**（Google DeepMind） — Co-Scientistを物理実験へ。MXenesの安全な前駆体ルートを設計し半自動CVD反応器を運転、単層MoS2等の単回試行成長を実現。HealthBench Hardでは発見した推論時スケーリングアーキテクチャが盲検医師レビュー下で6つのフロンティアモデルを上回った。30人の専門家が450本のレビューを書き、信頼性モジュールが幻覚と剽窃を測定可能に減らした。
+8. **Recuris** — エージェントメモリをWorking Memory（タスク進捗）とExperiential Memory（スキル）に二分し、スキル選択を成長し続ける全履歴でなく現在のタスク状態に接地させる。固定Meta-Agentが失敗の証拠を検証ゲート付きのSkill Memory更新に変換。37構成中35で改善、tau-benchでGPT-5.6 Solに+17.8pt。
+9. **Meta^n** — 自己編集システムは自らの編集機構の一部を固定せざるをえず実効メタ深度が約2で頭打ちになる問題に対し、メタ操作を固定して入力側に再帰させ、収束が深度を決める設計。8ベンチマークファミリー全てで先行自己改善エージェントを上回り、ARC-AGI-2で唯一ゼロ超えのスコア。
+10. **EvoMal** — 共有スキルライブラリのマルウェア伝播を実証。植え込まれた悪性スキルは一度も呼び出されずとも著述テンプレートとして参照され、エージェントがペイロードを保存した新スキルを書いてライブラリに再投入する。6モデルで自己中毒率20.3〜41.8%、植えたスキルを全削除しても除去できず、バナー式コピーを抑止するカウンタープロンプトで6.7%まで低下。
+
+## 観察ログ（未検証）
+
+- 2026-09-03: 上記の数値はすべてdair_aiの二次要約からの転記で原論文未参照。特に「Claude Code compactの安全ルール保持53%→10%」と「EvoMal自己中毒率20〜42%」は自分の運用に直結するため原論文で確認する価値がある。
+
+## 問い
+
+- EvoMalの「過去の産物をテンプレートに次を書く」自己中毒ループは、このvaultのLESSONS.md（過去の判定事例を作業記憶に入れて次を判定する）にも構造的に当てはまるか。誤った判定事例が混入したら増殖するか
+- What Compaction Destroysの型別保持ポリシーは、CLAUDE.mdの「正確な文言を要する指示」と「経緯・物語」を分離せよという運用と同じ主張か
+- Skill Liftの対試験を自作スキルにかける件は[[papers/2026-li-skillsbench]]の問いと同じ。2つの独立研究が同じ設計に収斂したことで優先度が上がったか
+
+## 関連
+
+- [[papers/2026-li-skillsbench]] — Skillあり/なしの対試験でスキル効果を測る同パラダイムのベンチマーク。Skill Lift（NVIDIA ACES）が独立に同じ設計に到達し、構造スキャナーと品質の無相関（rho 0.14）という補強データを加えた
+- [[concepts/claude-code-compact-recovery]] — compactが判断構造を落とす問題への実践対策。What Compaction Destroysは同じ喪失を安全ルール保持率として定量化した研究側
+- [[concepts/harness-engineering]] — エージェント=モデル+ハーネスの全体論。JIT-Agent（タスクごとにハーネスを合成）とPrime Agent（走行間で永続するContinual Harness）はハーネス自体を動的・蓄積的にする発展形
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

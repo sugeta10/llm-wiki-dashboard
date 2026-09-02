@@ -11,6 +11,10 @@
 
 AIが「スキル」を持ち、それをCompose・管理する時代に、デザイナーが保有・強化すべきスキルとは何か？という問いへの考察。
 
+## 実例: デザイナー自身によるデザイン言語のSkill封装
+
+デザイナーの@yanliudreamerが2026年8月、自作の「Design Skills」制作を始めDemo dayで3つを共有したと発信。公開されたMono-color Skillは、単に画像を単色化する処理ではなく、編集デザインの言語・レトロ印刷の質感・抑制された視覚ルールの一式を繰り返し呼び出せるSkillとして封装したものだと本人が説明する（Skillが従う具体的なデザイン原則のリストは添付画像内にあり、本ページでは未捕捉）。上記の交差点の問いに対し、デザイナー側が自分のデザイン言語そのものをAgent Skill化して答えを出し始めた実例と考えられる。[[tools/emil-kowalski-skills]]の「Agents don't have taste」への応答が、tasteを持つ側によるtasteのSkill化として現れた形。
+
 ## 関連
 
 - [[concepts/self-refining-skills]] — LLMスキルに自己改善ループを組み込む設計パターン
