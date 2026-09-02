@@ -42,3 +42,4 @@ LLMのゴールはテキストの続きを予測すること。入力はトー�
 - [[people/andrej-karpathy]] — Transformer/LLM解説の追加学習先として推奨
 - [[concepts/prompt-caching]] — アテンションで計算した Key/Value をキャッシュし再利用する機能の基盤
 - [[concepts/linear-attention-evolution]] — 本ページのO(n²)ボトルネックに対する線形アテンション系列（DeltaNet・Gated DeltaNet・KDA）の進化史、Kimi K3が実装例
+- [[models/timesfm-3]] — 時系列基盤モデルでの応用例。因果的な時間方向アテンションと系列横断の全結合アテンションを交互に積み、多変量予測を1回の順伝播で出す（Google Research）

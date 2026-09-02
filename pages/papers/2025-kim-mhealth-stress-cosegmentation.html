@@ -32,7 +32,6 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <div class="meta">papers/2025-kim-mhealth-stress-cosegmentation · papers · <span title="2026-06-23">2ヶ月前</span></div>
   <article><h1>Co-Segmentation によるmHealthデータからの感情的ストレス期検出（Kim et al. 2025）</h1>
 <blockquote>
-<p>孤立理由: 本wikiはLLM/AIエンジニアリングと事業領域が中心で、変化点検出・生物統計・mHealth（モバイルヘルス）を扱う既存ページが存在しないため、現時点で意味のある相互リンク先がない。</p>
 <p><strong>TL;DR</strong>: パッシブセンシングデータの変化点で時系列をセグメント化し、各区間ごとに自己申告ストレスとの関連を検定して、関連が成立する「共セグメント（co-segment）」だけを使い感情的ストレス期を検出する手法。</p>
 </blockquote>
 <pre class="mermaid">flowchart LR
@@ -63,8 +62,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul>
 <h2>関連</h2>
 <ul>
-<li>現時点で本wiki内に直接の関連ページなし（孤立理由は冒頭参照）。</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://arxiv.org/abs/2502.10558" rel="noopener" target="_blank">https://arxiv.org/abs/2502.10558</a></li></ul></section></article>
+<li><a href="../models/timesfm-3.html">timesfm-3</a> — 多変量時系列を扱う別アプローチ。本論文は変化点でセグメント化して区間ごとに関連を検定する統計手法、TimesFM-3は基盤モデルによるゼロショット予測（Google Research）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../models/timesfm-3.html">timesfm-3</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://arxiv.org/abs/2502.10558" rel="noopener" target="_blank">https://arxiv.org/abs/2502.10558</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -86,8 +86,6 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 });
 </script>
 <script id="page-markdown" type="text/plain"># Co-Segmentation によるmHealthデータからの感情的ストレス期検出（Kim et al. 2025）
-
-&gt; 孤立理由: 本wikiはLLM/AIエンジニアリングと事業領域が中心で、変化点検出・生物統計・mHealth（モバイルヘルス）を扱う既存ページが存在しないため、現時点で意味のある相互リンク先がない。
 
 &gt; **TL;DR**: パッシブセンシングデータの変化点で時系列をセグメント化し、各区間ごとに自己申告ストレスとの関連を検定して、関連が成立する「共セグメント（co-segment）」だけを使い感情的ストレス期を検出する手法。
 
@@ -124,7 +122,7 @@ flowchart LR
 
 ## 関連
 
-- 現時点で本wiki内に直接の関連ページなし（孤立理由は冒頭参照）。
+- [[models/timesfm-3]] — 多変量時系列を扱う別アプローチ。本論文は変化点でセグメント化して区間ごとに関連を検定する統計手法、TimesFM-3は基盤モデルによるゼロショット予測（Google Research）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

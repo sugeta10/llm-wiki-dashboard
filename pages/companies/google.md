@@ -32,3 +32,4 @@ Googleの消費者向けAI戦略は、個別プロダクト課金ではなく**�
 - [[tools/notebooklm-py]] — NotebookLMの非公式Python API/CLI（Web UI非公開機能対応）
 - [[tools/google-ai-studio]] — 開発者/作り手側の無料化戦略（無料アプリ構築・デプロイ・pretty URL）
 - [[tools/google-knowledge-catalog]] — AIエージェント向けデータガバナンス製品（メタデータ収集・Geminiエンリッチ・検証済みクエリ）
+- [[models/timesfm-3]] — Google Researchの時系列基盤モデル第3世代（2026-08-31発表）。多変量予測をゼロショット・1回の順伝播で扱い、BigQueryへ統合予定

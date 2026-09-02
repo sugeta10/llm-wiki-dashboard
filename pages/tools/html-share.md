@@ -44,3 +44,4 @@ minorun365が公開するセルフホスト型のHTML共有ツール。Claude Co
 - [[tools/show-me]] — 「エージェントの報告が読めない」という同じ動機から出たHumanLayer製スキル。あちらは応答の表現そのものを軽い図に変え、こちらは出力の置き場所と共有経路を作る
 - [[tools/notch-multi-agent-monitor]] — 並列稼働中のエージェントの状態を1箇所に集約する別解。あちらはMacのノッチに常駐して「完了・要承認」を通知し、こちらは成果物そのものをスマホから読める形で置く
 - [[concepts/claude-code-orchestration]] — 8並列という運用の前提側。subagent／agent teams／worktreeの使い分けで並列数を増やすほど、状況把握の集約手段が要る
+- [[tools/slack-html]] — 同じHTML成果物を、自前サーバーでなくSlackへの添付で配る別解（@geeorgey）。単一ファイル・base64画像・モバイルは1MB超かつJS非依存という制約つき

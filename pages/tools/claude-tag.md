@@ -31,3 +31,4 @@ Claudeが使う「ツール」へのアクセスは、外部サービスとの�
 - [[tools/claude-mcp]] — Claudeが外部ツール・データに接続するためのプロトコル層
 - [[concepts/claude-code-task-delegation]] — 人に振るようにAIにタスクを委任する実践
 - [[tools/claude-academy]] — Anthropic公式の無料学習サイト。Claude Tag の使い方も製品別トラックの1つとして扱われている
+- [[tools/slack-html]] — Slackに1枚のHTMLを添付してアプリ内で展開する使い方。Slack常駐のボットにレポートをHTMLで作らせる発想はClaude Tagにも当てはまると考えられる（未確認）

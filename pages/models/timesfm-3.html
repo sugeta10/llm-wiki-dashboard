@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>timesfm-3 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb950"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>timesfm-3</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="timesfm-3.md">Markdownで表示</a></div>
+  <div class="meta">models/timesfm-3 · models · <span title="2026-09-03">今日</span></div>
+  <article><h1>TimesFM-3</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Google Researchの時系列基盤モデル第3世代。複数ターゲット・過去共変量・既知の未来共変量を含む多変量予測をゼロショットで扱い、予測ホライズン全体を1回の順伝播で出す。Gift-Eval・FEV-Bench・Timeの3ベンチマークで事前学習済み基盤モデル中1位だとGoogle Researchが公表した（2026-08-31）。</p>
+<p>📌 X bookmark: 10,927（2026-09-02 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;入力系列&lt;br&gt;ターゲット / 過去共変量 / 未来共変量&quot;] --&gt; B[&quot;パッチ化 (32ステップ)&lt;br&gt;＋系列別正規化&quot;]
+  B --&gt; C[&quot;トークン化&lt;br&gt;未来共変量は先読み連結&quot;]
+  C --&gt; D[&quot;交互アテンション層&lt;br&gt;時間方向(因果) ⇄ 系列横断(全結合)&quot;]
+  D --&gt; E[&quot;ホライズンの&lt;br&gt;マスクトークンを一括予測&quot;]
+  E --&gt; F[&quot;9分位点の予測&lt;br&gt;(10〜90パーセンタイル)&quot;]</pre>
+<p>TimesFM-2.5（2025年9月公開）までのTimesFMは単一系列の履歴だけから予測する単変量モデルだった。Google Researchはブログで、実世界の予測問題はほとんどが多変量だと述べる。小売チェーンのアイスクリーム売上を予測するなら、過去の売上だけでなく関連商品（コーン・シロップ）の売上、客足の履歴、天気予報・プロモーション・休日といった既知の未来イベントが揃って初めて良い予測になる、という例をGoogle Researchは挙げる。TimesFM-3はこの多変量シナリオをタスク別のファインチューニングなしで扱うことを狙って、多変量で事前学習された。</p>
+<h2>何が新しいか（Google Research公表）</h2>
+<ul>
+<li><strong>330Mパラメータ</strong>、実データと合成データを合わせた<strong>1兆時点超</strong>の時系列コーパスで事前学習</li>
+<li>ネイティブ対応する入力は3種類。<strong>複数ターゲット</strong>（関連する複数系列を同時に予測、点予測と分位点予測の両方）・<strong>過去共変量</strong>（過去の客足など履歴しか分からない特徴）・<strong>過去-未来（動的）共変量</strong>（プロモ計画や天気予報など未来が既知のイベント）</li>
+<li><strong>非自己回帰デコード</strong>: 従来のTimesFMは1パッチずつ生成していたため遅延・誤差累積・計算コストがあった。TimesFM-3はContiguous Patch Masking（arXiv 2505.23719）の戦略で、未来ホライズン分のマスク済みプレースホルダートークンを観測コンテキストに並べ、交互アテンション層で全マスクを同時に埋める。反復ループは不要</li>
+<li>各ターゲット系列の各ホライズンステップで<strong>9分位点</strong>（10〜90パーセンタイル）を出し、予測の不確かさを分布として返す</li>
+</ul>
+<h2>アーキテクチャ</h2>
+<p>Google Researchの説明では、前世代と同じdecoder-only Transformerを土台に、連続する32時点を1パッチにまとめ、スケールが大きく異なる系列を揃えるためTimesFM-2.5と同様の系列別正規化をかける。多変量化のために加わったのは次の2点。</p>
+<ul>
+<li><strong>多変量トークン構築</strong>: ターゲット系列と過去共変量は1パッチから1トークンを作る。過去-未来共変量は現在のパッチに未来のパッチを連結した「先読み」トークンにし、モデルが既知の未来シグナルを覗けるようにする</li>
+<li><strong>交互アテンション</strong>: トークンは2次元グリッドとして処理される。<strong>因果的な時間方向アテンション</strong>はトークンが自分の系列内の過去だけを見る（データ漏洩防止のため厳密に因果的）。<strong>系列横断の全結合アテンション</strong>は同じ時刻の全系列を見て、ある系列のプロモが別系列の売上に効くような相関を学ぶ。この2種を数層にわたって交互に積む</li>
+</ul>
+<h2>ベンチマーク（Google Research公表）</h2>
+<p>Gift-Eval・FEV-Bench・Timeの3つの公開ベンチマークで、点予測と確率予測の両指標とも、事前学習済み基盤モデルの中で平均ランク1位だとGoogle Researchは述べる。比較対象には多変量対応のChronos-2やToto 2.0ファミリー、前世代のTimesFM-2.5が含まれる。共変量も系列間情報も使わず各ターゲットを独立に扱う「単変量モード」でも競合と同等以上で、多変量モードに切り替えるとさらに伸びる、という2段構えの提示になっている。具体的なランク値はブログ内の図にのみあり本文には転記されていない。</p>
+<h2>提供形態</h2>
+<ul>
+<li>GitHub（google-research/timesfm）とHugging Face（google/timesfm-3.0-pytorch）で公開</li>
+<li><strong>BigQuery統合が数週間以内</strong>に着地するとGoogle Researchは予告。それまではTimesFM-2.5をBigQueryのAI.FORECAST関数で単変量タスクに試せる</li>
+<li>ブログ末尾の謝辞で、Yichen Zhou・Petros Mol・Abhimanyu Das・Samet Oymakとの共同研究と記されている</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-03: プロモ計画を過去-未来共変量として渡した説明例で「プロモ日ごとに約20%の売上増を予測した」とGoogle Researchは述べる。ベンチマーク値ではなくブログ図解1件の説明値</li>
+<li>2026-09-03: BigQuery統合「数週間以内」の予告（2026-08-31時点）。着地時期とAI.FORECASTでの多変量対応の有無を確認する</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の運用データ（トークン消費・ingest件数など）に休日や予定という既知の未来共変量を添えた予測は、TimesFM-3のゼロショットで意味のある精度になるか。BigQuery統合後にAI.FORECASTで試すのが最短か</li>
+<li>系列横断の全結合アテンションは系列数が増えると系列軸にも2乗コストが乗る。数百系列規模の多変量で実用速度を保てるか（<a href="../concepts/attention.html">attention</a>のO(n²)問題の系列版）</li>
+<li>Chronos-2・Toto 2.0との差は画像のみで数値未転記。Gift-Eval等の公開リーダーボードで実際の順位差を確認する</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/attention.html">attention</a> — 土台となるdecoder-only Transformerのアテンション機構。TimesFM-3は因果的な時間方向と全結合の系列方向を交互に積む変種</li>
+<li><a href="../companies/google.html">google</a> — 開発元（Google Research）</li>
+<li><a href="../tools/google-knowledge-catalog.html">google-knowledge-catalog</a> — 同じBigQuery生態系のAI向け製品。TimesFM-3はAI.FORECAST関数としてBigQueryへ統合予定</li>
+<li><a href="../papers/2025-kim-mhealth-stress-cosegmentation.html">2025-kim-mhealth-stress-cosegmentation</a> — 多変量時系列を扱うwiki内の先行ページ。あちらは変化点でセグメント化し区間ごとに関連を検定する統計手法、こちらは基盤モデルによるゼロショット予測</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/google.html">google</a></li>
+<li><a href="../concepts/attention.html">attention</a></li>
+<li><a href="../papers/2025-kim-mhealth-stress-cosegmentation.html">2025-kim-mhealth-stress-cosegmentation</a></li>
+<li><a href="../tools/google-knowledge-catalog.html">google-knowledge-catalog</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094483372718580066" rel="noopener" target="_blank">https://x.com/i/web/status/2094483372718580066</a></li>
+<li><a href="https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/?utm_source=twitter&amp;utm_medium=social&amp;utm_campaign=social_post&amp;utm_content=gr-acct" rel="noopener" target="_blank">https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/?utm_source=twitter&amp;utm_medium=social&amp;utm_campaign=social_post&amp;utm_content=gr-acct</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># TimesFM-3
+
+&gt; **TL;DR**: Google Researchの時系列基盤モデル第3世代。複数ターゲット・過去共変量・既知の未来共変量を含む多変量予測をゼロショットで扱い、予測ホライズン全体を1回の順伝播で出す。Gift-Eval・FEV-Bench・Timeの3ベンチマークで事前学習済み基盤モデル中1位だとGoogle Researchが公表した（2026-08-31）。
+
+&gt; 📌 X bookmark: 10,927（2026-09-02 時点）
+
+```mermaid
+flowchart LR
+  A[&quot;入力系列&lt;br&gt;ターゲット / 過去共変量 / 未来共変量&quot;] --&gt; B[&quot;パッチ化 (32ステップ)&lt;br&gt;＋系列別正規化&quot;]
+  B --&gt; C[&quot;トークン化&lt;br&gt;未来共変量は先読み連結&quot;]
+  C --&gt; D[&quot;交互アテンション層&lt;br&gt;時間方向(因果) ⇄ 系列横断(全結合)&quot;]
+  D --&gt; E[&quot;ホライズンの&lt;br&gt;マスクトークンを一括予測&quot;]
+  E --&gt; F[&quot;9分位点の予測&lt;br&gt;(10〜90パーセンタイル)&quot;]
+```
+
+TimesFM-2.5（2025年9月公開）までのTimesFMは単一系列の履歴だけから予測する単変量モデルだった。Google Researchはブログで、実世界の予測問題はほとんどが多変量だと述べる。小売チェーンのアイスクリーム売上を予測するなら、過去の売上だけでなく関連商品（コーン・シロップ）の売上、客足の履歴、天気予報・プロモーション・休日といった既知の未来イベントが揃って初めて良い予測になる、という例をGoogle Researchは挙げる。TimesFM-3はこの多変量シナリオをタスク別のファインチューニングなしで扱うことを狙って、多変量で事前学習された。
+
+## 何が新しいか（Google Research公表）
+
+- **330Mパラメータ**、実データと合成データを合わせた**1兆時点超**の時系列コーパスで事前学習
+- ネイティブ対応する入力は3種類。**複数ターゲット**（関連する複数系列を同時に予測、点予測と分位点予測の両方）・**過去共変量**（過去の客足など履歴しか分からない特徴）・**過去-未来（動的）共変量**（プロモ計画や天気予報など未来が既知のイベント）
+- **非自己回帰デコード**: 従来のTimesFMは1パッチずつ生成していたため遅延・誤差累積・計算コストがあった。TimesFM-3はContiguous Patch Masking（arXiv 2505.23719）の戦略で、未来ホライズン分のマスク済みプレースホルダートークンを観測コンテキストに並べ、交互アテンション層で全マスクを同時に埋める。反復ループは不要
+- 各ターゲット系列の各ホライズンステップで**9分位点**（10〜90パーセンタイル）を出し、予測の不確かさを分布として返す
+
+## アーキテクチャ
+
+Google Researchの説明では、前世代と同じdecoder-only Transformerを土台に、連続する32時点を1パッチにまとめ、スケールが大きく異なる系列を揃えるためTimesFM-2.5と同様の系列別正規化をかける。多変量化のために加わったのは次の2点。
+
+- **多変量トークン構築**: ターゲット系列と過去共変量は1パッチから1トークンを作る。過去-未来共変量は現在のパッチに未来のパッチを連結した「先読み」トークンにし、モデルが既知の未来シグナルを覗けるようにする
+- **交互アテンション**: トークンは2次元グリッドとして処理される。**因果的な時間方向アテンション**はトークンが自分の系列内の過去だけを見る（データ漏洩防止のため厳密に因果的）。**系列横断の全結合アテンション**は同じ時刻の全系列を見て、ある系列のプロモが別系列の売上に効くような相関を学ぶ。この2種を数層にわたって交互に積む
+
+## ベンチマーク（Google Research公表）
+
+Gift-Eval・FEV-Bench・Timeの3つの公開ベンチマークで、点予測と確率予測の両指標とも、事前学習済み基盤モデルの中で平均ランク1位だとGoogle Researchは述べる。比較対象には多変量対応のChronos-2やToto 2.0ファミリー、前世代のTimesFM-2.5が含まれる。共変量も系列間情報も使わず各ターゲットを独立に扱う「単変量モード」でも競合と同等以上で、多変量モードに切り替えるとさらに伸びる、という2段構えの提示になっている。具体的なランク値はブログ内の図にのみあり本文には転記されていない。
+
+## 提供形態
+
+- GitHub（google-research/timesfm）とHugging Face（google/timesfm-3.0-pytorch）で公開
+- **BigQuery統合が数週間以内**に着地するとGoogle Researchは予告。それまではTimesFM-2.5をBigQueryのAI.FORECAST関数で単変量タスクに試せる
+- ブログ末尾の謝辞で、Yichen Zhou・Petros Mol・Abhimanyu Das・Samet Oymakとの共同研究と記されている
+
+## 観察ログ（未検証）
+
+- 2026-09-03: プロモ計画を過去-未来共変量として渡した説明例で「プロモ日ごとに約20%の売上増を予測した」とGoogle Researchは述べる。ベンチマーク値ではなくブログ図解1件の説明値
+- 2026-09-03: BigQuery統合「数週間以内」の予告（2026-08-31時点）。着地時期とAI.FORECASTでの多変量対応の有無を確認する
+
+## 問い
+
+- 自分の運用データ（トークン消費・ingest件数など）に休日や予定という既知の未来共変量を添えた予測は、TimesFM-3のゼロショットで意味のある精度になるか。BigQuery統合後にAI.FORECASTで試すのが最短か
+- 系列横断の全結合アテンションは系列数が増えると系列軸にも2乗コストが乗る。数百系列規模の多変量で実用速度を保てるか（[[concepts/attention]]のO(n²)問題の系列版）
+- Chronos-2・Toto 2.0との差は画像のみで数値未転記。Gift-Eval等の公開リーダーボードで実際の順位差を確認する
+
+## 関連
+
+- [[concepts/attention]] — 土台となるdecoder-only Transformerのアテンション機構。TimesFM-3は因果的な時間方向と全結合の系列方向を交互に積む変種
+- [[companies/google]] — 開発元（Google Research）
+- [[tools/google-knowledge-catalog]] — 同じBigQuery生態系のAI向け製品。TimesFM-3はAI.FORECAST関数としてBigQueryへ統合予定
+- [[papers/2025-kim-mhealth-stress-cosegmentation]] — 多変量時系列を扱うwiki内の先行ページ。あちらは変化点でセグメント化し区間ごとに関連を検定する統計手法、こちらは基盤モデルによるゼロショット予測
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

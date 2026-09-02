@@ -71,8 +71,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a> — Transformer/LLM解説の追加学習先として推奨</li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — アテンションで計算した Key/Value をキャッシュし再利用する機能の基盤</li>
 <li><a href="../concepts/linear-attention-evolution.html">linear-attention-evolution</a> — 本ページのO(n²)ボトルネックに対する線形アテンション系列（DeltaNet・Gated DeltaNet・KDA）の進化史、Kimi K3が実装例</li>
+<li><a href="../models/timesfm-3.html">timesfm-3</a> — 時系列基盤モデルでの応用例。因果的な時間方向アテンションと系列横断の全結合アテンションを交互に積み、多変量予測を1回の順伝播で出す（Google Research）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/linear-attention-evolution.html">linear-attention-evolution</a></li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
+<li><a href="../models/timesfm-3.html">timesfm-3</a></li>
 <li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://youtu.be/j3_VgCt18fA?si=XPpZytcxyQjfGlqJ" rel="noopener" target="_blank">https://youtu.be/j3_VgCt18fA?si=XPpZytcxyQjfGlqJ</a></li></ul></section></article>
 </main>
 <script>
@@ -138,6 +140,7 @@ LLMのゴールはテキストの続きを予測すること。入力はトー�
 - [[people/andrej-karpathy]] — Transformer/LLM解説の追加学習先として推奨
 - [[concepts/prompt-caching]] — アテンションで計算した Key/Value をキャッシュし再利用する機能の基盤
 - [[concepts/linear-attention-evolution]] — 本ページのO(n²)ボトルネックに対する線形アテンション系列（DeltaNet・Gated DeltaNet・KDA）の進化史、Kimi K3が実装例
+- [[models/timesfm-3]] — 時系列基盤モデルでの応用例。因果的な時間方向アテンションと系列横断の全結合アテンションを交互に積み、多変量予測を1回の順伝播で出す（Google Research）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

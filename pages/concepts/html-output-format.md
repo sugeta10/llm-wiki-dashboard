@@ -28,3 +28,4 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 - [[tools/diagram-design]] — HTML+SVGだけで27種類の図を出しブランドの色・フォントまで寄せるリポジトリ。図版をHTMLで作る応用例
 - [[tools/show-me]] — Dex Horthyによる対案。HTMLより軽いコンポーネント木・コールスタック・型シグネチャを日常の応答形式にし、HTMLはモックアップと説明図に限定する
 - [[tools/html-share]] — 出力したHTMLの置き場所と配布経路（自分専用の一覧・期限付き共有URL・スマホでの承認）をセルフホストで用意するツール
+- [[tools/slack-html]] — 自己完結HTMLをSlackに添付してアプリ内で展開する配布経路（@geeorgeyの造語「SlackHTML」）。単一ファイル・依存なしという本リポジトリの前提がそのまま条件になる

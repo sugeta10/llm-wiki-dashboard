@@ -26,3 +26,4 @@ Stripe 社内のコーディングエージェント・パイプライン。人�
 - [[concepts/loop-anatomy]] — 5ムーブ全装備のループとしての位置づけ。本事例は「制約の質が信頼性を決める」の実証
 - [[concepts/loop-engineering]] — ループ設計の親概念（用語・進化史・構成要素）
 - [[concepts/multi-agent-patterns]] — 決定論オーケストレーター＋LLMワーカーの構成は Orchestrator-Worker パターンの大規模変種
+- [[tools/grok-bot]] — 大量のマシン生成PRを流すもう一つの事例（@lingxi）。Minionsが人間レビューで止めるところを、高確信・低影響のPRは自動マージまで進める

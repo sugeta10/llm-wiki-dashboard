@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>slack-html - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>slack-html</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="slack-html.md">Markdownで表示</a></div>
+  <div class="meta">tools/slack-html · tools · <span title="2026-09-03">今日</span></div>
+  <article><h1>SlackHTML（Slackに1枚のHTMLを添付してアプリ内で開く）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Slackのメッセージに自己完結した1枚のHTMLファイルを添付すると、Slackアプリの中でそのまま展開されダッシュボード・プレゼン・ゲームまで見せられる。「SlackHTML」はこの使い方に@geeorgeyが付けた造語で、モバイルアプリで開くには「1MB超」「JavaScriptに依存しない」の2条件が要る。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;コーディングエージェント&lt;br&gt;(Codex / Claude Code / Slackbot)&quot;] --&gt; B[&quot;単一HTML&lt;br&gt;画像はbase64・JSも同梱&quot;]
+  B --&gt; C[&quot;Slackに添付&quot;]
+  C --&gt; D[&quot;デスクトップアプリ&lt;br&gt;JSが動きリッチ表示&quot;]
+  C --&gt; E[&quot;モバイルアプリ&lt;br&gt;JS不動・1MB未満はソース表示&quot;]</pre>
+<p>Slackが機能として宣伝したものではなく、HTML添付の展開が「いつの間にか進化していた」ことに@geeorgey（リバネスナレッジ、Slack Community: Tokyo運営）が気づいて名付けたもの。HTMLを手で書くのではなくコーディングエージェントに書かせる前提で、@geeorgey自身はCodex派だがClaude Codeでも、さらにSlackbotでも作れると述べる。Slackbotに作らせる場合は調査からレポート生成まで全データがSlackの中に留まるため、@geeorgeyはセキュリティ面の安心を利点として挙げる。</p>
+<h2>作り方の制約（@geeorgeyのまとめ）</h2>
+<ul>
+<li><strong>1枚のHTMLであること</strong>が大前提。複数ファイルを含むzipやフォルダを添付しても展開されない</li>
+<li>画像は外部URLでなく<strong>base64にエンコードして埋め込む</strong></li>
+<li>JavaScriptも外部ファイルにせず<strong>HTML内に埋め込む</strong></li>
+<li><strong>モバイルで開くには1MB以上</strong>にする。1MB未満だとモバイルアプリではソースコードがそのまま表示される（2026年8月時点のSlackの仕様だと@geeorgeyは注記）。画像埋め込みで容量を超えさせる</li>
+<li><strong>モバイルではJavaScriptが動かない</strong>。デスクトップアプリは動くのでリッチな表示ができるが、モバイルも対象なら「JSなしで全文と画像が読める」設計にする</li>
+</ul>
+<h2>コピペ用プロンプトの骨子</h2>
+<p>@geeorgeyが記事に載せたプロンプトは、目的の記述に続けて次の4群の条件を並べる構成になっている。@geeorgey本人は「僕はそこまでやってないけど、もっと適当に書いても大丈夫」と付け加えている。</p>
+<ul>
+<li><strong>実装条件</strong>: UTF-8の完全な単一HTML・スマホ優先レスポンシブ・コードスニペット扱いを避けるため最終サイズ1.2MB以上・容量調整はキービジュアル画像で・画像はdata URIを最初からsrc属性に直接書く（JSで後から設定しない）</li>
+<li><strong>JS非依存の設計</strong>: 初期表示をJSに依存させない・fetch/localStorage/AudioContext/Canvas/Blob URL/外部ライブラリに依存しない・開閉はdetails/summary要素で・通常の縦スクロールで全文が読める・height:100%とoverflow:hiddenでページを固定しない</li>
+<li><strong>デザイン要件</strong>: iPhone縦画面で読める文字サイズと余白・横スクロールを出さない・ダーク/ライト両対応・タップ領域44px以上・alt属性・外部フォント/CSS/画像を使わない</li>
+<li><strong>完成時の検証</strong>: HTML単体で開ける・JS無効でも全文と画像が出る・base64が壊れていない・最終サイズが1,048,576バイトを超える・元ファイルを上書きせず別名で保存・保存先とサイズと画像数とJSなしで使える機能を報告</li>
+</ul>
+<p>Slackbotに任せるときの指示は短く、@geeorgeyの例は「調査を行い、一枚のHTMLファイルでレポートを作ってください。画像が必要な場合はbase64エンコードしてHTMLに直接埋め込むこと。ファイルサイズは必ず1MB以上にすること」という一文で済ませている。Slackbotに提供が始まったDeep Researchと組み合わせれば、リサーチ業務からのレポート共有に効くだろうと@geeorgeyは見ている。</p>
+<h2>表現の事例（@geeorgeyが挙げたもの）</h2>
+<ul>
+<li>ゲーム・ダッシュボード・プレゼンテーション形式の表示</li>
+<li>ファミコン風の音を出すHTML（デスクトップのみ、JSが必要）</li>
+<li>ChatGPT Work（Slack接続済み）で作ってそのままSlackへ投稿させたレポート。Claude Codeを使う人ならCoworkで同じことができる「はず」と@geeorgeyは推測している</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-03: 「モバイルアプリは1MB未満のHTMLをソースコード表示する」は@geeorgeyの2026年8月時点の単一観察。Slack側の仕様変更で解消・変化しうるので、使う前に手元で再確認する</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultのHTML出力（CSS/JSインライン・CDN参照なし）は既にSlackHTMLの単一ファイル条件を満たすが、たいてい1MB未満で収まる。Slackで見せるならbase64画像で嵩上げするか、デスクトップ限定で割り切るか</li>
+<li>配布経路として<a href="../tools/html-share.html">html-share</a>（自前AWSの共有URL・承認導線つき）とSlack添付のどちらが自分の用途に合うか。チームがSlackに常駐しているなら添付の方が摩擦が小さいと考えられる</li>
+<li><a href="../tools/slack-bolt.html">slack-bolt</a>で組んだボットが生成HTMLを自動添付する経路（files.upload系API）は同じ制約で展開されるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/html-share.html">html-share</a> — 同じ「LLMの出力をHTMLで見せる」課題に、自前AWS上の一覧と期限付き共有URLで答えるツール。SlackHTMLはSlackへの添付そのものを配布経路にする</li>
+<li><a href="../concepts/html-output-format.html">html-output-format</a> — HTMLをLLMの出力フォーマットにするAnthropicの設計思想。SlackHTMLはその出力の置き場所としてSlackを使う実践</li>
+<li><a href="../tools/claude-tag.html">claude-tag</a> — Slackに常駐するClaude。「Slackbotに作らせる」発想と同型で、Claude TagにSlackHTMLを作らせられるかは未確認</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/html-output-format.html">html-output-format</a></li>
+<li><a href="../tools/claude-tag.html">claude-tag</a></li>
+<li><a href="../tools/html-share.html">html-share</a></li>
+<li><a href="../tools/slack-bolt.html">slack-bolt</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094308713368584245" rel="noopener" target="_blank">https://x.com/i/web/status/2094308713368584245</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># SlackHTML（Slackに1枚のHTMLを添付してアプリ内で開く）
+
+&gt; **TL;DR**: Slackのメッセージに自己完結した1枚のHTMLファイルを添付すると、Slackアプリの中でそのまま展開されダッシュボード・プレゼン・ゲームまで見せられる。「SlackHTML」はこの使い方に@geeorgeyが付けた造語で、モバイルアプリで開くには「1MB超」「JavaScriptに依存しない」の2条件が要る。
+
+```mermaid
+flowchart LR
+  A[&quot;コーディングエージェント&lt;br&gt;(Codex / Claude Code / Slackbot)&quot;] --&gt; B[&quot;単一HTML&lt;br&gt;画像はbase64・JSも同梱&quot;]
+  B --&gt; C[&quot;Slackに添付&quot;]
+  C --&gt; D[&quot;デスクトップアプリ&lt;br&gt;JSが動きリッチ表示&quot;]
+  C --&gt; E[&quot;モバイルアプリ&lt;br&gt;JS不動・1MB未満はソース表示&quot;]
+```
+
+Slackが機能として宣伝したものではなく、HTML添付の展開が「いつの間にか進化していた」ことに@geeorgey（リバネスナレッジ、Slack Community: Tokyo運営）が気づいて名付けたもの。HTMLを手で書くのではなくコーディングエージェントに書かせる前提で、@geeorgey自身はCodex派だがClaude Codeでも、さらにSlackbotでも作れると述べる。Slackbotに作らせる場合は調査からレポート生成まで全データがSlackの中に留まるため、@geeorgeyはセキュリティ面の安心を利点として挙げる。
+
+## 作り方の制約（@geeorgeyのまとめ）
+
+- **1枚のHTMLであること**が大前提。複数ファイルを含むzipやフォルダを添付しても展開されない
+- 画像は外部URLでなく**base64にエンコードして埋め込む**
+- JavaScriptも外部ファイルにせず**HTML内に埋め込む**
+- **モバイルで開くには1MB以上**にする。1MB未満だとモバイルアプリではソースコードがそのまま表示される（2026年8月時点のSlackの仕様だと@geeorgeyは注記）。画像埋め込みで容量を超えさせる
+- **モバイルではJavaScriptが動かない**。デスクトップアプリは動くのでリッチな表示ができるが、モバイルも対象なら「JSなしで全文と画像が読める」設計にする
+
+## コピペ用プロンプトの骨子
+
+@geeorgeyが記事に載せたプロンプトは、目的の記述に続けて次の4群の条件を並べる構成になっている。@geeorgey本人は「僕はそこまでやってないけど、もっと適当に書いても大丈夫」と付け加えている。
+
+- **実装条件**: UTF-8の完全な単一HTML・スマホ優先レスポンシブ・コードスニペット扱いを避けるため最終サイズ1.2MB以上・容量調整はキービジュアル画像で・画像はdata URIを最初からsrc属性に直接書く（JSで後から設定しない）
+- **JS非依存の設計**: 初期表示をJSに依存させない・fetch/localStorage/AudioContext/Canvas/Blob URL/外部ライブラリに依存しない・開閉はdetails/summary要素で・通常の縦スクロールで全文が読める・height:100%とoverflow:hiddenでページを固定しない
+- **デザイン要件**: iPhone縦画面で読める文字サイズと余白・横スクロールを出さない・ダーク/ライト両対応・タップ領域44px以上・alt属性・外部フォント/CSS/画像を使わない
+- **完成時の検証**: HTML単体で開ける・JS無効でも全文と画像が出る・base64が壊れていない・最終サイズが1,048,576バイトを超える・元ファイルを上書きせず別名で保存・保存先とサイズと画像数とJSなしで使える機能を報告
+
+Slackbotに任せるときの指示は短く、@geeorgeyの例は「調査を行い、一枚のHTMLファイルでレポートを作ってください。画像が必要な場合はbase64エンコードしてHTMLに直接埋め込むこと。ファイルサイズは必ず1MB以上にすること」という一文で済ませている。Slackbotに提供が始まったDeep Researchと組み合わせれば、リサーチ業務からのレポート共有に効くだろうと@geeorgeyは見ている。
+
+## 表現の事例（@geeorgeyが挙げたもの）
+
+- ゲーム・ダッシュボード・プレゼンテーション形式の表示
+- ファミコン風の音を出すHTML（デスクトップのみ、JSが必要）
+- ChatGPT Work（Slack接続済み）で作ってそのままSlackへ投稿させたレポート。Claude Codeを使う人ならCoworkで同じことができる「はず」と@geeorgeyは推測している
+
+## 観察ログ（未検証）
+
+- 2026-09-03: 「モバイルアプリは1MB未満のHTMLをソースコード表示する」は@geeorgeyの2026年8月時点の単一観察。Slack側の仕様変更で解消・変化しうるので、使う前に手元で再確認する
+
+## 問い
+
+- このvaultのHTML出力（CSS/JSインライン・CDN参照なし）は既にSlackHTMLの単一ファイル条件を満たすが、たいてい1MB未満で収まる。Slackで見せるならbase64画像で嵩上げするか、デスクトップ限定で割り切るか
+- 配布経路として[[tools/html-share]]（自前AWSの共有URL・承認導線つき）とSlack添付のどちらが自分の用途に合うか。チームがSlackに常駐しているなら添付の方が摩擦が小さいと考えられる
+- [[tools/slack-bolt]]で組んだボットが生成HTMLを自動添付する経路（files.upload系API）は同じ制約で展開されるか
+
+## 関連
+
+- [[tools/html-share]] — 同じ「LLMの出力をHTMLで見せる」課題に、自前AWS上の一覧と期限付き共有URLで答えるツール。SlackHTMLはSlackへの添付そのものを配布経路にする
+- [[concepts/html-output-format]] — HTMLをLLMの出力フォーマットにするAnthropicの設計思想。SlackHTMLはその出力の置き場所としてSlackを使う実践
+- [[tools/claude-tag]] — Slackに常駐するClaude。「Slackbotに作らせる」発想と同型で、Claude TagにSlackHTMLを作らせられるかは未確認
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

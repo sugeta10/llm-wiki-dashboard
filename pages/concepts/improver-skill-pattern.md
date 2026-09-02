@@ -60,3 +60,4 @@ Warp が公開するデモリポジトリ（warpdotdev/warp-agents-demo-github-i
 - [[concepts/self-refining-skills]] — スキル内蔵型の自己改善（LESSONS.md追記）。本パターンは収集と改善を別スキルに外部化した形
 - [[concepts/skill-self-improving-loop]] — SonicGarden の外部ループ型（会話履歴からの signal 抽出→Issue→triage→PR）。入力が会話履歴か PR/issue 上の人間フィードバックかが本パターンとの違い
 - [[concepts/skill-building-best-practices]] — 小さく保つ・progressive disclosure・スクリプト同梱・gotcha 蓄積という書き方の原則が Warp の6原則と一致
+- [[tools/grok-bot]] — 運営ボットJennyが「ミスの根本原因分析→プレイブック更新→他ボットへ周知」を担う同型の実装（@lingxi）。更新先がスキルファイルでなくプレイブックで、人間レビューを挟まない点が違い

@@ -36,3 +36,4 @@ flowchart LR
 - [[concepts/agentic-data-analytics]] — Anthropicが社内で構築した同型のパイプライン（4層スタック・21%→95%精度）。Knowledge Catalogはこれに近いパターンをマネージド製品化した形
 - [[concepts/openai-data-agent-context-layers]] — OpenAIの6層コンテキスト設計。同じ「エージェントにどうデータ文脈を渡すか」という問題への別解
 - [[companies/google]] — 提供元
+- [[models/timesfm-3]] — 同じBigQuery生態系に入る時系列基盤モデル。AI.FORECAST関数経由の統合が予告されており、カタログが整えたデータの先で予測を担う位置

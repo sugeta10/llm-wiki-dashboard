@@ -109,3 +109,4 @@ wakeAgentゲートの原則：**1時間に複数回実行するcronは必ずwake
 - [[concepts/eval-loop]] — wakeAgentゲートは「スクリプトが採点→閾値超えのみLLM起動」のeval-loopパターン
 - [[concepts/agent-skill-management-system]] — Curatorが担う「スキルのライフサイクル管理」の一般概念
 - [[tools/hermes-agent-research-department]] — 同じwakeAgentゲート原理を3エージェント・リサーチ部門に適用した構成
+- [[tools/grok-bot]] — 同じ夜間帯（毎晩3時）にコードベース監査を回す別実装（@lingxi）。Hermesはcron＋wakeAgentゲートでLLM起動を絞り、Grok Botはエンジニアボットが監査PRを生成して朝に届ける
