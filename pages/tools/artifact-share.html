@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>artifact-share - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>artifact-share</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="artifact-share.md">Markdownで表示</a></div>
+  <div class="meta">tools/artifact-share · tools · <span title="2026-09-03">今日</span></div>
+  <article><h1>Artifact Share preview — ブラウザの指摘で Claude Code・Codex・Cursor にファイルを直させるローカルループ</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIエージェントが作ったHTML/Markdownをブラウザで開き、要素をクリックして書いた指摘をClaude Code・Codex・Cursorが自分で取りに来て直し、ブラウザが自動リロードで結果を見せるローカル機能。CLIとデータ契約は3エージェントで共通化できたが「会話を邪魔せずにエージェントを起こす合図」だけは3つ別々に作るしかなかった、というのが作者cojiの結論。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  H[&quot;人間: ブラウザで要素をクリックして指摘（1バッチ）&quot;] --&gt; S[&quot;preview サーバー（preview &lt;file&gt; のプロセス自身）&quot;]
+  S --&gt;|&quot;「届いた」の合図だけ（本文は乗せない）&quot;| W[&quot;起動経路（エージェントごとに別）&quot;]
+  W --&gt; A[&quot;エージェント: preview next --wait で指摘を取得&quot;]
+  A --&gt; E[&quot;編集・保存&quot;]
+  E --&gt; D[&quot;preview done --stdin で報告（generation付き）&quot;]
+  D --&gt; S
+  S --&gt;|&quot;自動リロード&quot;| H</pre>
+<p>Artifact Shareは、cojiが2026年5月ごろから自分で使うためにソース公開で作り続けているサービスで、AIエージェントが作ったHTMLやMarkdownをURLで共有する。そのCLIに追加されたローカルコマンドが <code>preview</code> で、サインインもアップロードも要らず、実装は公開されている。cojiが作ってみて核になったと述べる設計判断は2つある。会話セッションを邪魔せずにエージェントを起こす合図は3つのエージェントで別々に作るしかなかったこと、そして常駐デーモンは要らず1ファイル1プロセスで足りたことである。以下はcojiの設計メモに沿った整理で、機構の説明はすべてcojiの記述に基づく。</p>
+<h2>1周の形</h2>
+<p><code>preview &lt;file&gt;</code> を実行すると、そのプロセス自体がローカルサーバーになりブラウザが開く。以後、人間は画面上で指摘を書き、まとめて1バッチで送信する。エージェント側の1周は「指摘を取りに行く（<code>next</code>）→ 編集・保存 → 結果を報告する（<code>done</code>）」の2コマンドで閉じる。</p>
+<pre><code># 人間側: プレビューを開く(ブラウザが開き、以後は画面上で指摘する)
+npx @artifactshare/cli preview ./report.html
+
+# エージェント側: 1周はこの2コマンド
+npx @artifactshare/cli preview next --wait 90   # 指摘が届くまで待って受け取る
+npx @artifactshare/cli preview done --stdin     # 直した結果を報告する
+</code></pre>
+<p>公開URLの発行はviewerの「共有する」を押したときだけで、ローカルの指摘履歴は共有に含まれない、とcojiは明記している。</p>
+<h2>エージェントを起こす3つの合図（共通化できなかった部分）</h2>
+<p>cojiが一番苦労したと述べるのがここで、こだわりは「待っている間も会話セッションを邪魔しないこと」にある。「指摘が届くまで待つ」コマンドをフォアグラウンドで実行させれば確実に動くが、待っている間ターンが塞がり、エージェントに他の作業を頼めなくなる。理想は普段どおり会話しながら、指摘が届いた瞬間にエージェントが自分で動き出すこと。ところが、そのために使える仕組みがエージェントごとに違った。cojiが3つで実際に動かして確かめた結果の整理が次の表である（ソースからの転記）。</p>
+<table>
+<thead>
+<tr>
+<th>エージェント</th>
+<th>使えた仕組み</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Code</td>
+<td>バックグラウンドタスク完了時の自動ターン再開</td>
+</tr>
+<tr>
+<td>Codex</td>
+<td>実行中セッションへのメッセージのキュー投入</td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td>ACPで常駐させた専用セッションへの固定プロンプト送信</td>
+</tr>
+<tr>
+<td>(共通の保険)</td>
+<td>「届くまで待つ」コマンドをフォアグラウンドで実行。ターンは塞がる</td>
+</tr>
+</tbody>
+</table>
+<h3>Claude Code: バックグラウンドタスクの完了を使う</h3>
+<p>使うのは、Bashコマンドをバックグラウンドで実行できる<a href="../tools/claude-code.html">claude-code</a>の標準機能である。Claude Codeはバックグラウンドタスクが完了すると新しいターンを自動で開くので、「指摘が届くまで待つ」コマンド（<code>preview next --wait 3600</code>）をバックグラウンドに仕込んでおく。指摘が届いた瞬間にコマンドが終了し、Claude Codeが起きてファイルを直しにいく。修正後は次の待機を仕込み直してループが続く。hookからサブエージェントを非同期起動する<a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a>と同じ「メインの会話を塞がずに後で起こす」狙いを、hookでなくバックグラウンドBashの完了通知で実現した形と考えられる。</p>
+<h3>Codex: 実行中セッションのキューに直接差し込む</h3>
+<p>openai-codexにはバックグラウンド完了でターンを再開する仕組みがなく、Claude Codeの手は使えない（cojiはopenai/codexのissue #32188を参照している）。代わりに使うのは、Codex CLIが持つ「実行中セッションへのメッセージのキュー投入」で、previewサーバーが起動時にCodexのセッションIDを検出しておき、指摘が届いたらそのセッションへ「届いた」というメッセージを積む。エージェントが指摘を取りに来るまでバッチは消費されず、セッションが終わっていても <code>codex resume</code> で再開すれば受け取れる。</p>
+<h3>Cursor: 管理下のACPセッションへ固定プロンプトを送る</h3>
+<p><a href="../tools/cursor.html">cursor</a>にも自動再開の仕組みはなく、IDEチャットは外部から起こす手段自体がない。cojiが使ったのはACP（Agent Client Protocol、エディタとエージェントをつなぐ共通プロトコルで、外部から会話の作成・復元・プロンプト送信ができる）である。previewに同梱した専用ランチャーが、ACP経由の専用セッションを1ワークスペースに1つ常駐させる。指摘が届くと、ランチャーは「バッチが届いた」という固定プロンプトだけをそのセッションへ送る。本文はエージェントが自分で取りに行き、使用中なら通知は保留され、バッチは保存されたまま残る。</p>
+<h3>3つに共通させた判断: 通知は合図だけ</h3>
+<p>通知には指摘の本文もアンカーも乗せず、「届いた」という合図だけを運ぶ。中身はエージェントが毎回取りに行く形にしたので、通知経路が漏れても指摘は流出しない、とcojiは述べる。同じように外部イベント待ちのCLIを作る場合は実装をそのまま参考にできる、というのが著者の見立てである。</p>
+<h2>常駐デーモンを持たない</h2>
+<p>当初は常駐デーモンで複数セッションを束ねる構成も検討したが、cojiはやめた。<code>preview &lt;file&gt;</code> のコマンド自身がサーバーになり、Ctrl-Cで終わる。同じファイルへの2回目の <code>preview</code> は既存セッションへ再接続する。それだけの作りである。理由は、用途を「1ファイルを何度も直す反復ループ」に絞ったこと。すると複数セッションの横断発見・多重起動のロック・死んだプロセスの回収といった、デーモンが背負う寿命管理が丸ごと要らなくなる。</p>
+<h2>指摘の場所を覚えておく: anchorの3種類</h2>
+<p>指摘の位置は3種類のanchorとして保存する形に落ち着いた（ソースからの転記）。</p>
+<pre><code>type PreviewAnchor =
+  | { kind: 'artifact' }
+  | {
+      kind: 'text'
+      state: 'attached' | 'orphaned'
+      quotedText: string
+      prefixText: string
+      suffixText: string
+      cssPath: string | null
+    }
+  | {
+      kind: 'element'
+      state: 'attached' | 'orphaned'
+      selector: string
+      label: string // 例: button &quot;送信&quot;
+      contextText: string // クリック時点の周辺テキスト
+    }
+</code></pre>
+<p>cojiがこだわったのは <code>element</code> をCSSセレクタ単独にしないことである。エージェントの編集でセレクタの指す先がずれても、ラベルと周辺テキストを突き合わせれば位置を再解決できる。再解決に失敗したら <code>orphaned</code> に落とし、誤った場所には紐づけない。座標（boundingBox）は編集でずれる値なので保存せず、表示のたびに計算する。</p>
+<h2>指摘は状態を持つ</h2>
+<p>指摘の状態は5つに整理され、draft側の遷移は人間だけ、requested以降の前進はエージェントだけ、と主体を固定している。5状態の名前は埋め込みの状態遷移図にあり、キャッシュ本文で読めるのはdraftとrequestedのみである（残りは未取得）。遷移はバッチ単位で、エージェントは1バッチを1回の編集でまとめて直すので1件ずつは刻まない。reopenのたびに <code>generation</code> という番号が増え、エージェントの報告はこの番号と紐づく。古い番号の報告は無視されるので、重複報告しても二重適用されない。</p>
+<h2>cojiの見立て</h2>
+<p>作ってみてわかったのは、CLIとデータ契約は共通にできても、エージェントを起こす合図だけは共通化できないことだった、とcojiは結ぶ。同じ体験のためにエージェントの数だけ起動経路を作ることになり、この部分が今後標準化される見込みも正直薄そうだと感じている。外部からメッセージをセッションへ届けるClaude CodeのChannelsのような仕組みも出てきているが、まだ使えなかったし、使えたとしても各社独自の路線になりそうで、当面はエージェントが増えるたびに起動経路を1本ずつ足していくことになる、というのが著者の予測である。</p>
+<p>このvaultの文脈では、同じ「AI生成HTMLの置き場所と共有」を自前AWS上で解く<a href="../tools/html-share.html">html-share</a>の隣に置ける。html-shareがスマホからの承認・コメント返しを主眼にするのに対し、Artifact Share previewはローカルでの指摘→修正の反復ループが主眼で、共有URLは副次的な出口になっている。Claude Designの「コメント→Sendで自動修正」（<a href="../design/claude-design-workflow.html">claude-design-workflow</a>）と同じ形を、特定ベンダーのUIでなくローカルCLIと複数エージェントで実装した例とも読める。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-02: cojiが「16箇所の指摘をCodexとブラウザの往復だけでさばいた」実例を埋め込みカードで示している（カード先の記事は未取得）</li>
+<li>2026-09-02 予測（coji）: エージェントを起こす経路の標準化は当面来ず、Channelsのような仕組みも各社独自路線になる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultの <code>wiki/outputs/</code> に出すHTMLを <code>preview</code> で開き、ブラウザ上の指摘をClaude Codeに直させる運用は成立するか。バックグラウンドBash待機を合図にする手は、time-basedなlaunchd ingestをイベント駆動へ寄せる（<a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a>の「時間でなくイベントに反応させる」）際にも流用できるか</li>
+<li>「通知は合図だけ、本文は取りに行く」は、SlackやメールからClaude Codeを起こす他の外部イベント経路にも当てはめるべき設計則か</li>
+<li>5状態の名前と遷移、およびCodexのキュー投入・CursorのACPランチャーの具体実装を公開リポジトリで確認する</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/html-share.html">html-share</a> — 同じ「AI生成HTMLをURLで共有する」ツールの自前AWS版（minorun365製）。あちらはスマホからの承認・コメント返し、こちらはローカルの指摘→修正ループが主眼</li>
+<li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a> — Claude Codeで「メインの会話を塞がずに後で起こす」もう1つの手（hookからの非同期サブエージェント起動）</li>
+<li><a href="../design/claude-design-workflow.html">claude-design-workflow</a> — Claude Designの「コメント→Sendで修正指示」。同じ形をローカル・複数エージェントで実装したのがpreview</li>
+<li><a href="../tools/claude-code.html">claude-code</a> / openai-codex / <a href="../tools/cursor.html">cursor</a> — 起動経路を別々に作った3エージェント</li>
+<li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — Claude Code公式のループ4類型。「届いたら動く」はイベント駆動（Proactive）の最小実装にあたると考えられる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a></li>
+<li><a href="../design/claude-design-workflow.html">claude-design-workflow</a></li>
+<li><a href="../tools/html-share.html">html-share</a></li>
+<li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/coji/articles/artifactshare-preview-claude-codex-cursor" rel="noopener" target="_blank">https://zenn.dev/coji/articles/artifactshare-preview-claude-codex-cursor</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Artifact Share preview — ブラウザの指摘で Claude Code・Codex・Cursor にファイルを直させるローカルループ
+
+&gt; **TL;DR**: AIエージェントが作ったHTML/Markdownをブラウザで開き、要素をクリックして書いた指摘をClaude Code・Codex・Cursorが自分で取りに来て直し、ブラウザが自動リロードで結果を見せるローカル機能。CLIとデータ契約は3エージェントで共通化できたが「会話を邪魔せずにエージェントを起こす合図」だけは3つ別々に作るしかなかった、というのが作者cojiの結論。
+
+```mermaid
+flowchart LR
+  H[&quot;人間: ブラウザで要素をクリックして指摘（1バッチ）&quot;] --&gt; S[&quot;preview サーバー（preview &lt;file&gt; のプロセス自身）&quot;]
+  S --&gt;|&quot;「届いた」の合図だけ（本文は乗せない）&quot;| W[&quot;起動経路（エージェントごとに別）&quot;]
+  W --&gt; A[&quot;エージェント: preview next --wait で指摘を取得&quot;]
+  A --&gt; E[&quot;編集・保存&quot;]
+  E --&gt; D[&quot;preview done --stdin で報告（generation付き）&quot;]
+  D --&gt; S
+  S --&gt;|&quot;自動リロード&quot;| H
+```
+
+Artifact Shareは、cojiが2026年5月ごろから自分で使うためにソース公開で作り続けているサービスで、AIエージェントが作ったHTMLやMarkdownをURLで共有する。そのCLIに追加されたローカルコマンドが `preview` で、サインインもアップロードも要らず、実装は公開されている。cojiが作ってみて核になったと述べる設計判断は2つある。会話セッションを邪魔せずにエージェントを起こす合図は3つのエージェントで別々に作るしかなかったこと、そして常駐デーモンは要らず1ファイル1プロセスで足りたことである。以下はcojiの設計メモに沿った整理で、機構の説明はすべてcojiの記述に基づく。
+
+## 1周の形
+
+`preview &lt;file&gt;` を実行すると、そのプロセス自体がローカルサーバーになりブラウザが開く。以後、人間は画面上で指摘を書き、まとめて1バッチで送信する。エージェント側の1周は「指摘を取りに行く（`next`）→ 編集・保存 → 結果を報告する（`done`）」の2コマンドで閉じる。
+
+```
+# 人間側: プレビューを開く(ブラウザが開き、以後は画面上で指摘する)
+npx @artifactshare/cli preview ./report.html
+
+# エージェント側: 1周はこの2コマンド
+npx @artifactshare/cli preview next --wait 90   # 指摘が届くまで待って受け取る
+npx @artifactshare/cli preview done --stdin     # 直した結果を報告する
+```
+
+公開URLの発行はviewerの「共有する」を押したときだけで、ローカルの指摘履歴は共有に含まれない、とcojiは明記している。
+
+## エージェントを起こす3つの合図（共通化できなかった部分）
+
+cojiが一番苦労したと述べるのがここで、こだわりは「待っている間も会話セッションを邪魔しないこと」にある。「指摘が届くまで待つ」コマンドをフォアグラウンドで実行させれば確実に動くが、待っている間ターンが塞がり、エージェントに他の作業を頼めなくなる。理想は普段どおり会話しながら、指摘が届いた瞬間にエージェントが自分で動き出すこと。ところが、そのために使える仕組みがエージェントごとに違った。cojiが3つで実際に動かして確かめた結果の整理が次の表である（ソースからの転記）。
+
+| エージェント | 使えた仕組み |
+| --- | --- |
+| Claude Code | バックグラウンドタスク完了時の自動ターン再開 |
+| Codex | 実行中セッションへのメッセージのキュー投入 |
+| Cursor | ACPで常駐させた専用セッションへの固定プロンプト送信 |
+| (共通の保険) | 「届くまで待つ」コマンドをフォアグラウンドで実行。ターンは塞がる |
+
+### Claude Code: バックグラウンドタスクの完了を使う
+
+使うのは、Bashコマンドをバックグラウンドで実行できる[[tools/claude-code]]の標準機能である。Claude Codeはバックグラウンドタスクが完了すると新しいターンを自動で開くので、「指摘が届くまで待つ」コマンド（`preview next --wait 3600`）をバックグラウンドに仕込んでおく。指摘が届いた瞬間にコマンドが終了し、Claude Codeが起きてファイルを直しにいく。修正後は次の待機を仕込み直してループが続く。hookからサブエージェントを非同期起動する[[concepts/claude-code-hooks-async]]と同じ「メインの会話を塞がずに後で起こす」狙いを、hookでなくバックグラウンドBashの完了通知で実現した形と考えられる。
+
+### Codex: 実行中セッションのキューに直接差し込む
+
+[[tools/openai-codex]]にはバックグラウンド完了でターンを再開する仕組みがなく、Claude Codeの手は使えない（cojiはopenai/codexのissue #32188を参照している）。代わりに使うのは、Codex CLIが持つ「実行中セッションへのメッセージのキュー投入」で、previewサーバーが起動時にCodexのセッションIDを検出しておき、指摘が届いたらそのセッションへ「届いた」というメッセージを積む。エージェントが指摘を取りに来るまでバッチは消費されず、セッションが終わっていても `codex resume` で再開すれば受け取れる。
+
+### Cursor: 管理下のACPセッションへ固定プロンプトを送る
+
+[[tools/cursor]]にも自動再開の仕組みはなく、IDEチャットは外部から起こす手段自体がない。cojiが使ったのはACP（Agent Client Protocol、エディタとエージェントをつなぐ共通プロトコルで、外部から会話の作成・復元・プロンプト送信ができる）である。previewに同梱した専用ランチャーが、ACP経由の専用セッションを1ワークスペースに1つ常駐させる。指摘が届くと、ランチャーは「バッチが届いた」という固定プロンプトだけをそのセッションへ送る。本文はエージェントが自分で取りに行き、使用中なら通知は保留され、バッチは保存されたまま残る。
+
+### 3つに共通させた判断: 通知は合図だけ
+
+通知には指摘の本文もアンカーも乗せず、「届いた」という合図だけを運ぶ。中身はエージェントが毎回取りに行く形にしたので、通知経路が漏れても指摘は流出しない、とcojiは述べる。同じように外部イベント待ちのCLIを作る場合は実装をそのまま参考にできる、というのが著者の見立てである。
+
+## 常駐デーモンを持たない
+
+当初は常駐デーモンで複数セッションを束ねる構成も検討したが、cojiはやめた。`preview &lt;file&gt;` のコマンド自身がサーバーになり、Ctrl-Cで終わる。同じファイルへの2回目の `preview` は既存セッションへ再接続する。それだけの作りである。理由は、用途を「1ファイルを何度も直す反復ループ」に絞ったこと。すると複数セッションの横断発見・多重起動のロック・死んだプロセスの回収といった、デーモンが背負う寿命管理が丸ごと要らなくなる。
+
+## 指摘の場所を覚えておく: anchorの3種類
+
+指摘の位置は3種類のanchorとして保存する形に落ち着いた（ソースからの転記）。
+
+```
+type PreviewAnchor =
+  | { kind: &#x27;artifact&#x27; }
+  | {
+      kind: &#x27;text&#x27;
+      state: &#x27;attached&#x27; | &#x27;orphaned&#x27;
+      quotedText: string
+      prefixText: string
+      suffixText: string
+      cssPath: string | null
+    }
+  | {
+      kind: &#x27;element&#x27;
+      state: &#x27;attached&#x27; | &#x27;orphaned&#x27;
+      selector: string
+      label: string // 例: button &quot;送信&quot;
+      contextText: string // クリック時点の周辺テキスト
+    }
+```
+
+cojiがこだわったのは `element` をCSSセレクタ単独にしないことである。エージェントの編集でセレクタの指す先がずれても、ラベルと周辺テキストを突き合わせれば位置を再解決できる。再解決に失敗したら `orphaned` に落とし、誤った場所には紐づけない。座標（boundingBox）は編集でずれる値なので保存せず、表示のたびに計算する。
+
+## 指摘は状態を持つ
+
+指摘の状態は5つに整理され、draft側の遷移は人間だけ、requested以降の前進はエージェントだけ、と主体を固定している。5状態の名前は埋め込みの状態遷移図にあり、キャッシュ本文で読めるのはdraftとrequestedのみである（残りは未取得）。遷移はバッチ単位で、エージェントは1バッチを1回の編集でまとめて直すので1件ずつは刻まない。reopenのたびに `generation` という番号が増え、エージェントの報告はこの番号と紐づく。古い番号の報告は無視されるので、重複報告しても二重適用されない。
+
+## cojiの見立て
+
+作ってみてわかったのは、CLIとデータ契約は共通にできても、エージェントを起こす合図だけは共通化できないことだった、とcojiは結ぶ。同じ体験のためにエージェントの数だけ起動経路を作ることになり、この部分が今後標準化される見込みも正直薄そうだと感じている。外部からメッセージをセッションへ届けるClaude CodeのChannelsのような仕組みも出てきているが、まだ使えなかったし、使えたとしても各社独自の路線になりそうで、当面はエージェントが増えるたびに起動経路を1本ずつ足していくことになる、というのが著者の予測である。
+
+このvaultの文脈では、同じ「AI生成HTMLの置き場所と共有」を自前AWS上で解く[[tools/html-share]]の隣に置ける。html-shareがスマホからの承認・コメント返しを主眼にするのに対し、Artifact Share previewはローカルでの指摘→修正の反復ループが主眼で、共有URLは副次的な出口になっている。Claude Designの「コメント→Sendで自動修正」（[[design/claude-design-workflow]]）と同じ形を、特定ベンダーのUIでなくローカルCLIと複数エージェントで実装した例とも読める。
+
+## 観察ログ（未検証）
+
+- 2026-09-02: cojiが「16箇所の指摘をCodexとブラウザの往復だけでさばいた」実例を埋め込みカードで示している（カード先の記事は未取得）
+- 2026-09-02 予測（coji）: エージェントを起こす経路の標準化は当面来ず、Channelsのような仕組みも各社独自路線になる
+
+## 問い
+
+- このvaultの `wiki/outputs/` に出すHTMLを `preview` で開き、ブラウザ上の指摘をClaude Codeに直させる運用は成立するか。バックグラウンドBash待機を合図にする手は、time-basedなlaunchd ingestをイベント駆動へ寄せる（[[concepts/claude-code-loop-types]]の「時間でなくイベントに反応させる」）際にも流用できるか
+- 「通知は合図だけ、本文は取りに行く」は、SlackやメールからClaude Codeを起こす他の外部イベント経路にも当てはめるべき設計則か
+- 5状態の名前と遷移、およびCodexのキュー投入・CursorのACPランチャーの具体実装を公開リポジトリで確認する
+
+## 関連
+
+- [[tools/html-share]] — 同じ「AI生成HTMLをURLで共有する」ツールの自前AWS版（minorun365製）。あちらはスマホからの承認・コメント返し、こちらはローカルの指摘→修正ループが主眼
+- [[concepts/claude-code-hooks-async]] — Claude Codeで「メインの会話を塞がずに後で起こす」もう1つの手（hookからの非同期サブエージェント起動）
+- [[design/claude-design-workflow]] — Claude Designの「コメント→Sendで修正指示」。同じ形をローカル・複数エージェントで実装したのがpreview
+- [[tools/claude-code]] / [[tools/openai-codex]] / [[tools/cursor]] — 起動経路を別々に作った3エージェント
+- [[concepts/claude-code-loop-types]] — Claude Code公式のループ4類型。「届いたら動く」はイベント駆動（Proactive）の最小実装にあたると考えられる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

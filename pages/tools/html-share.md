@@ -45,3 +45,4 @@ minorun365が公開するセルフホスト型のHTML共有ツール。Claude Co
 - [[tools/notch-multi-agent-monitor]] — 並列稼働中のエージェントの状態を1箇所に集約する別解。あちらはMacのノッチに常駐して「完了・要承認」を通知し、こちらは成果物そのものをスマホから読める形で置く
 - [[concepts/claude-code-orchestration]] — 8並列という運用の前提側。subagent／agent teams／worktreeの使い分けで並列数を増やすほど、状況把握の集約手段が要る
 - [[tools/slack-html]] — 同じHTML成果物を、自前サーバーでなくSlackへの添付で配る別解（@geeorgey）。単一ファイル・base64画像・モバイルは1MB超かつJS非依存という制約つき
+- [[tools/artifact-share]] — 同じ「AI生成HTMLをURLで共有する」サービス（coji製）。共有に加えてローカルの `preview` でブラウザ上の指摘をClaude Code/Codex/Cursorに取りに来させて直す修正ループを持つ。上の「コメントをPC上の作業へ戻す経路」の問いに対する、別実装の答えにあたる

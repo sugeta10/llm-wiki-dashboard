@@ -41,3 +41,4 @@
 - [[tools/claude-code]] — Hooks 機能の基盤
 - [[concepts/agentic-coding]] — エージェント協調設計の文脈
 - [[concepts/llm-japanese-style-hooks]] — 同じPostToolUseを文章品質の検査に使う運用。サブエージェント起動ではなく正規表現照合の結果を警告としてエージェント自身へ返し、処理を止めずに書き直させる（@yugen_matuni）
+- [[tools/artifact-share]] — 同じ「メインの会話を塞がずに後で起こす」を、hookでなくバックグラウンドBashの完了時自動ターン再開で実現した例（`preview next --wait` を仕込む・coji製）。Codex/Cursorには同じ機構がなく別の起動経路が要った

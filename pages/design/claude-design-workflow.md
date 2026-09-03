@@ -30,3 +30,4 @@
 - [[design/slide-md]] — 同じClaude Designでスライドのデザインを `.md` 3層で固定するシステム
 - [[concepts/study-group-facilitation]] — 同じ @sodawateeer による社内勉強会運営術（別トピックだが同著者の実践）
 - [[concepts/html-output-format]] — Anthropic公式のHTML出力実例集（コードレビュー・スライド・レポート等）。ここで語られるHTML視覚化の裏付けにあたる
+- [[tools/artifact-share]] — 「コメント→Sendで修正指示」をローカルCLIと複数エージェント（Claude Code/Codex/Cursor）で実装した例（coji製 `preview`）。上の「コメント→指示の自動接続を自分のワークフローに作れるか」の問いに対する既製の答えの1つ
