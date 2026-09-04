@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ant-cli</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ant-cli.md">Markdownで表示</a></div>
-  <div class="meta">tools/ant-cli · tools · <span title="2026-06-06">2ヶ月前</span><span class="stale-badge">⚠ 60日以上前の情報</span></div>
+  <div class="meta">tools/ant-cli · tools · <span title="2026-06-06">3ヶ月前</span><span class="stale-badge">⚠ 60日以上前の情報</span></div>
   <article><h1>ant CLI（Claude Platform CLI）</h1>
 <p><strong>ant CLI</strong> は <a href="../companies/anthropic.html">anthropic</a> が提供する Claude Platform の公式コマンドラインツール。Claude Platform の<strong>全 API エンドポイントをターミナルから実行可能</strong>にし、Messages API の呼び出しや <a href="../tools/claude-managed-agents.html">claude-managed-agents</a> の起動を端末から直接行い、結果をそのままシェルにパイプできる。</p>
 <p>API を curl で叩く代わりに専用 CLI を被せる利点は、JSON を手書きせず<strong>型付きフラグやパイプした YAML からリクエストボディを組める</strong>こと、<code>@path</code> 参照でファイル内容を文字列フィールドに埋め込めること、<code>--transform</code>（GJSON path）でレスポンスから必要なフィールドだけ抽出できること（jq 等の別ツール不要）、List 系エンドポイントが自動ページネーションすることにある。X Developer Platform に対する <a href="../tools/xurl.html">xurl</a> と同じ「公式API専用CLI」の位置づけで、コーディングエージェント（<a href="../tools/claude-code.html">claude-code</a>）が <code>claude-api</code> スキル経由で ant CLI をネイティブに理解するため、エージェントに API 操作を任せやすい。</p>

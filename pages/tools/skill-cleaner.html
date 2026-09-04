@@ -67,11 +67,12 @@ node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --
 <li><a href="../tools/obsidian-skills.html">obsidian-skills</a> — kepano製 Obsidian向けAgent Skills集（agentskills.io仕様準拠）</li>
 <li><a href="../tools/gstack.html">gstack</a> — Garry Tan製AIソフトウェアファクトリー（Claude Code拡張・23スキル収録）</li>
 <li><a href="../tools/codexbar.html">codexbar</a> — 同じ steipete 製。Codex/Claude Code の使用制限残量をメニューバーに表示するアプリ</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/codexbar.html">codexbar</a></li>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> — 本ツールが検出する「スキル予算超過」がClaude Code側でどう現れるか（説明文の合計上限15,000文字を超えるとエラーなしで一覧から落ちる、と@kimuai08が報告）と、スキルを定期的に全部外して戻す運用の側</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a></li>
+<li><a href="../tools/codexbar.html">codexbar</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../tools/gstack.html">gstack</a></li>
-<li><a href="../tools/obsidian-skills.html">obsidian-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/steipete/agent-scripts/blob/main/skills/skill-cleaner/SKILL.md" rel="noopener" target="_blank">https://github.com/steipete/agent-scripts/blob/main/skills/skill-cleaner/SKILL.md</a></li></ul></section></article>
+<li><a href="../tools/gstack.html">gstack</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/steipete/agent-scripts/blob/main/skills/skill-cleaner/SKILL.md" rel="noopener" target="_blank">https://github.com/steipete/agent-scripts/blob/main/skills/skill-cleaner/SKILL.md</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -134,6 +135,7 @@ node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --
 - [[tools/obsidian-skills]] — kepano製 Obsidian向けAgent Skills集（agentskills.io仕様準拠）
 - [[tools/gstack]] — Garry Tan製AIソフトウェアファクトリー（Claude Code拡張・23スキル収録）
 - [[tools/codexbar]] — 同じ steipete 製。Codex/Claude Code の使用制限残量をメニューバーに表示するアプリ
+- [[concepts/instruction-patch-lifecycle]] — 本ツールが検出する「スキル予算超過」がClaude Code側でどう現れるか（説明文の合計上限15,000文字を超えるとエラーなしで一覧から落ちる、と@kimuai08が報告）と、スキルを定期的に全部外して戻す運用の側
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

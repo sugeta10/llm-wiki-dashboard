@@ -38,3 +38,5 @@ before next run, read the last 10
 - [[concepts/agent-reflection-layer]] — decisions-log＋週次パターン昇格でエージェントに省察層を持たせる設計。本パターンをメタ認知の枠組みで一般化したもの
 - [[concepts/agent-skill-eight-layer-design]] — 「成功した会話からSkillを抽出する」プロンプトはGotcha蓄積を事後ログでなく初回設計時に一括抽出する変種
 - [[concepts/improver-skill-pattern]] — Warpのinner/outerスキル型。フィードバック収集と改善提案を定期実行のimprover skillに外部化し、skill編集をPRで回す（Anthropic公式ブログ）
+- [[concepts/instruction-patch-lifecycle]] — 育てる（LESSONS.md蓄積）だけでなく、モデル更新時に全部外して戻す「捨てる」工程を対にする運用論。蓄積した教訓にも期限があるという視点
+- [[design/consulting-pptx-skill]] — レビュー指摘を規約ファイル（約80項目）へ1行ずつ追記し、作成前に毎回読ませ出力後に機械チェックする蓄積ループ。本パターンをスライド制作に当てた実例

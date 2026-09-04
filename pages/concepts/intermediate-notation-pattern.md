@@ -84,3 +84,4 @@ AIは毎回HTML全体を再生成するのではなく、テキスト記法の�
 - [[tools/claude-computer-use]]
 - [[concepts/prompt-caching]]
 - [[tools/hyperframes]]（HTML+`data-*`属性を中間記法として動画生成に適用した実例）
+- [[design/consulting-pptx-skill]]（36型スライドのJSON定義 SlideSpec をAIに書かせ、レイアウトはレンダラーの実測値に固定するPPTX生成の実例）

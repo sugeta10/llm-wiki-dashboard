@@ -38,6 +38,7 @@ Gift-Eval・FEV-Bench・Timeの3つの公開ベンチマークで、点予測と
 - GitHub（google-research/timesfm）とHugging Face（google/timesfm-3.0-pytorch）で公開
 - **BigQuery統合が数週間以内**に着地するとGoogle Researchは予告。それまではTimesFM-2.5をBigQueryのAI.FORECAST関数で単変量タスクに試せる
 - ブログ末尾の謝辞で、Yichen Zhou・Petros Mol・Abhimanyu Das・Samet Oymakとの共同研究と記されている
+- 公開翌日に@sametkarakastrがGoogle Researchの発表を引用し、売上・需要・トラフィック・エネルギー・金融・センサーといった時間依存データがあれば過去データ・関連系列・キャンペーンや祝日や天気など未来が既知の変数を渡せる、とトルコ語で用途を要約して拡散した（bookmark 4,147・2026-09-02時点）
 
 ## 観察ログ（未検証）
 

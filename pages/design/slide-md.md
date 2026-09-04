@@ -35,3 +35,4 @@ SLIDE.md が成立するのは「デザインの一貫性は感性でなく仕�
 - [[design/ai-slide-to-pptx]] — AI 生成スライドを編集可能な pptx に変換（PowerPoint 出力の崩れ対策）
 - [[design/claude-premium-website-build]] — Claude で高品質制作する別領域のワークフロー
 - [[design/ai-presentation-workflow]] — 構成→視覚→仕上げの工程分業ワークフロー（Style Markdown 準備はその一工程）
+- [[design/consulting-pptx-skill]] — レビュー指摘を溜めた約80項目の規約 `.md` を毎回読ませ機械チェックで違反検出するClaude Codeスキル（Carnot AI）。こちらはデザインシステムを `.md` で固定、あちらは規約を `.md`・レイアウトをレンダラー実測値で固定

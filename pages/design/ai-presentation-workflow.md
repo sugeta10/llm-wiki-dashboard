@@ -29,3 +29,4 @@
 - [[design/image2-brand-slides]] — 画像生成AIでスライド画像を1枚ずつ作るCodexスキル（本ページ「視覚確認」工程と重なる）
 - [[design/ai-slide-to-pptx]] — AI生成スライドを編集可能な.pptxに変換する手法（本ページ「仕上げ」工程と重なる）
 - [[concepts/llm-model-selection-strategy]] — 工程ごとにAI（モデル・ツール）を使い分ける思想の一般形
+- [[design/consulting-pptx-skill]] — 構成→HTMLプレビュー→編集可能PPTX→規約チェックを1本のパイプラインにまとめた Claude Code スキル（本ページ「仕上げ」工程と機械検査を一体化）

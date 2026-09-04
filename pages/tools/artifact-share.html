@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>artifact-share</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="artifact-share.md">Markdownで表示</a></div>
-  <div class="meta">tools/artifact-share · tools · <span title="2026-09-03">今日</span></div>
+  <div class="meta">tools/artifact-share · tools · <span title="2026-09-03">1日前</span></div>
   <article><h1>Artifact Share preview — ブラウザの指摘で Claude Code・Codex・Cursor にファイルを直させるローカルループ</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: AIエージェントが作ったHTML/Markdownをブラウザで開き、要素をクリックして書いた指摘をClaude Code・Codex・Cursorが自分で取りに来て直し、ブラウザが自動リロードで結果を見せるローカル機能。CLIとデータ契約は3エージェントで共通化できたが「会話を邪魔せずにエージェントを起こす合図」だけは3つ別々に作るしかなかった、というのが作者cojiの結論。</p>
@@ -115,7 +115,7 @@ npx @artifactshare/cli preview done --stdin     # 直した結果を報告する
 <h2>指摘は状態を持つ</h2>
 <p>指摘の状態は5つに整理され、draft側の遷移は人間だけ、requested以降の前進はエージェントだけ、と主体を固定している。5状態の名前は埋め込みの状態遷移図にあり、キャッシュ本文で読めるのはdraftとrequestedのみである（残りは未取得）。遷移はバッチ単位で、エージェントは1バッチを1回の編集でまとめて直すので1件ずつは刻まない。reopenのたびに <code>generation</code> という番号が増え、エージェントの報告はこの番号と紐づく。古い番号の報告は無視されるので、重複報告しても二重適用されない。</p>
 <h2>cojiの見立て</h2>
-<p>作ってみてわかったのは、CLIとデータ契約は共通にできても、エージェントを起こす合図だけは共通化できないことだった、とcojiは結ぶ。同じ体験のためにエージェントの数だけ起動経路を作ることになり、この部分が今後標準化される見込みも正直薄そうだと感じている。外部からメッセージをセッションへ届けるClaude CodeのChannelsのような仕組みも出てきているが、まだ使えなかったし、使えたとしても各社独自の路線になりそうで、当面はエージェントが増えるたびに起動経路を1本ずつ足していくことになる、というのが著者の予測である。</p>
+<p>作ってみてわかったのは、CLIとデータ契約は共通にできても、エージェントを起こす合図だけは共通化できないことだった、とcojiは結ぶ。同じ体験のためにエージェントの数だけ起動経路を作ることになり、この部分が今後標準化される見込みも正直薄そうだと感じている。外部からメッセージをセッションへ届けるClaude CodeのChannelsのような仕組みも出てきているが、まだ使えなかったし、使えたとしても各社独自の路線になりそうで、当面はエージェントが増えるたびに起動経路を1本ずつ足していくことになる、というのが著者の予測である。X上の告知ポストで@techtalkjpは一人称で「3方式を図で整理しました」と述べ、対象読者を「エージェントから使うCLIに『外部イベントを待って動く』を入れたい人」と定めたうえで、「標準化はしばらく来なさそう」と繰り返している。</p>
 <p>このvaultの文脈では、同じ「AI生成HTMLの置き場所と共有」を自前AWS上で解く<a href="../tools/html-share.html">html-share</a>の隣に置ける。html-shareがスマホからの承認・コメント返しを主眼にするのに対し、Artifact Share previewはローカルでの指摘→修正の反復ループが主眼で、共有URLは副次的な出口になっている。Claude Designの「コメント→Sendで自動修正」（<a href="../design/claude-design-workflow.html">claude-design-workflow</a>）と同じ形を、特定ベンダーのUIでなくローカルCLIと複数エージェントで実装した例とも読める。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
@@ -139,7 +139,8 @@ npx @artifactshare/cli preview done --stdin     # 直した結果を報告する
 <li><a href="../design/claude-design-workflow.html">claude-design-workflow</a></li>
 <li><a href="../tools/html-share.html">html-share</a></li>
 <li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/coji/articles/artifactshare-preview-claude-codex-cursor" rel="noopener" target="_blank">https://zenn.dev/coji/articles/artifactshare-preview-claude-codex-cursor</a></li></ul></section></article>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/coji/articles/artifactshare-preview-claude-codex-cursor" rel="noopener" target="_blank">https://zenn.dev/coji/articles/artifactshare-preview-claude-codex-cursor</a></li>
+<li><a href="https://x.com/i/web/status/2094622027055550575" rel="noopener" target="_blank">https://x.com/i/web/status/2094622027055550575</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -255,7 +256,7 @@ cojiがこだわったのは `element` をCSSセレクタ単独にしないこ�
 
 ## cojiの見立て
 
-作ってみてわかったのは、CLIとデータ契約は共通にできても、エージェントを起こす合図だけは共通化できないことだった、とcojiは結ぶ。同じ体験のためにエージェントの数だけ起動経路を作ることになり、この部分が今後標準化される見込みも正直薄そうだと感じている。外部からメッセージをセッションへ届けるClaude CodeのChannelsのような仕組みも出てきているが、まだ使えなかったし、使えたとしても各社独自の路線になりそうで、当面はエージェントが増えるたびに起動経路を1本ずつ足していくことになる、というのが著者の予測である。
+作ってみてわかったのは、CLIとデータ契約は共通にできても、エージェントを起こす合図だけは共通化できないことだった、とcojiは結ぶ。同じ体験のためにエージェントの数だけ起動経路を作ることになり、この部分が今後標準化される見込みも正直薄そうだと感じている。外部からメッセージをセッションへ届けるClaude CodeのChannelsのような仕組みも出てきているが、まだ使えなかったし、使えたとしても各社独自の路線になりそうで、当面はエージェントが増えるたびに起動経路を1本ずつ足していくことになる、というのが著者の予測である。X上の告知ポストで@techtalkjpは一人称で「3方式を図で整理しました」と述べ、対象読者を「エージェントから使うCLIに『外部イベントを待って動く』を入れたい人」と定めたうえで、「標準化はしばらく来なさそう」と繰り返している。
 
 このvaultの文脈では、同じ「AI生成HTMLの置き場所と共有」を自前AWS上で解く[[tools/html-share]]の隣に置ける。html-shareがスマホからの承認・コメント返しを主眼にするのに対し、Artifact Share previewはローカルでの指摘→修正の反復ループが主眼で、共有URLは副次的な出口になっている。Claude Designの「コメント→Sendで自動修正」（[[design/claude-design-workflow]]）と同じ形を、特定ベンダーのUIでなくローカルCLIと複数エージェントで実装した例とも読める。
 

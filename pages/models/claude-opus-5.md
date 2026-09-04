@@ -15,3 +15,4 @@
 - [[companies/anthropic]] — 開発元
 - [[models/claude-fable-5]] — 公式発表が性能・価格比較の基準に置くモデル
 - [[models/claude-opus-4-8]] — 前世代Opus
+- [[models/claude-fable-5-1]] — 2026-09-01発表の Fable 5 / Mythos 5 後継。公式が比較基準に置く Fable ラインの最新版

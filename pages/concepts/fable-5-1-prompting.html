@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fable-5-1-prompting - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>fable-5-1-prompting</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="fable-5-1-prompting.md">Markdownで表示</a></div>
+  <div class="meta">concepts/fable-5-1-prompting · concepts · <span title="2026-09-04">今日</span></div>
+  <article><h1>Claude Fable 5.1 プロンプティング（公式ガイドの業務向け7本）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: <a href="../companies/anthropic.html">anthropic</a> の Fable 5.1 向け公式プロンプトガイドには推奨プロンプトが14本あり、うち業務全般向けの7本はどれも「仕事の中身」を一切指定せず「仕事の進め方」だけを書いている、と@Charlie_no_siteが日本語で整理した。全部貼らず困っている癖に対応する1〜2本だけ使い、貼る場所で効き方が変わる。</p>
+</blockquote>
+<p>Fable 5.1が出てプロンプトを作り直すべきか迷う経営者・事業者向けに、@Charlie_no_siteは自社で回すClaude自動化約60本を点検し、Anthropicの公式ガイドを読んだ結果をまとめている。著者によれば公式ページには「こう書くと直る」文章がコピーして使える完成品として14本置かれ、内訳は開発者向け7本と業務全般向け7本で、記事は後者だけを扱う。頼む理由や境界線の話は前バージョン向けのページにも載っており、そちらは<a href="../concepts/fable-5-prompting.html">fable-5-prompting</a>が本vaultでの正本である。</p>
+<p>本ページは@Charlie_no_siteの記事に基づく二次情報で、公式ガイド本体（<code>platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1</code>）はまだ本vaultに未収集である。記事内の「7本の本体」（コピペ用の日本語訳）は画像または埋め込みで本文に残っておらず、以下は各プロンプトが何を直すかの記述だけを転記している。「公式が〜と書いている」という記述はすべて著者経由の伝聞として読む。</p>
+<h2>黙って進む癖を直す2本</h2>
+<ul>
+<li><strong>途中経過を出させる</strong>: Fable 5.1は長い作業の途中で報告をあまりせず、止まっているように見えて動いている。著者はこれを公式にも書かれている癖で不具合ではないとし、「始める前に何をするかを1行、途中も区切りごとに短く、最後はその部分だけ読めば分かる要約」の3つを最初に頼むと報告のリズムが変わると述べる</li>
+<li><strong>途中で止まらせない</strong>: 逆に長い作業の途中で「続けていいですか」と聞いて止まる癖。著者の会社では確認待ちで1時間動いていなかった事故が起きた。止まっていいのは「消すとき・戻せないとき・依頼の範囲が変わるとき」の3つだけと先に決め、それ以外は聞かずに進めるよう伝える</li>
+</ul>
+<p>この2本は<a href="../concepts/fable-5-prompting.html">fable-5-prompting</a>の「まれな早期停止に備える」「チェックポイントを絞る」と同じ指針で、Fable 5から5.1へ引き継がれている。</p>
+<h2>文章の質を上げる3本</h2>
+<ul>
+<li><strong>気取った言い回しを消す</strong>: 著者が記事の核と位置づける1本。公式が名前を付けて禁止している書き方があり、直接言えばいいところをたとえに置き換える文章（「回すべきダイヤル」のような表現）を指す。読む側は頭の中で訳し直す手間を負う。短い版は「気取った言い回しを全部消してください」の1行で、これを最後に付けるだけで提案書の手直しが目に見えて減ったと著者は述べる</li>
+<li><strong>箇条書きを止める</strong>: Fable 5.1は前より箇条書きを使わなくなったが、社内向け文章が全部リスト化されて返る場合がある。公式の指定は「頼まれたときと内容が多岐にわたるときだけ箇条書きを使う」で、相談や個人的なやり取りは普通の文章で書くまで指定すると安定する</li>
+<li><strong>元の文をそのまま写させない</strong>: 資料を要約させると元の文がそのまま混ざる癖。著者によれば公式にもFable 5.1で増えたと明記されており、他社の文章を扱うときに事故になる。自分の言葉に言い直させ、原文が要るところだけカギ括弧で短く引用させる</li>
+</ul>
+<h2>範囲と鮮度を守る2本</h2>
+<ul>
+<li><strong>依頼の範囲を勝手に動かさせない</strong>: 頼んだ範囲の周辺まで手を出す、逆に一部だけ仕上げて終わる、という差が長い仕事ほど最後にまとめて出る。公式の文は長いが要点は「依頼した範囲が成果物であること」「途中で分からないことが出たら関係しない部分を先に全部進めること」「頼んでいない改善は直さず報告に書くこと」の3つだと著者は整理する。<a href="../concepts/fable-5-prompting.html">fable-5-prompting</a>の「不要な整理・リファクタを止める」「境界を明示する」の発展形にあたる</li>
+<li><strong>知っている名前ほど調べさせる</strong>: 浅い設定で使うと知っている名前のものほど調べずに記憶で答える。著者によれば公式は「少し知っているという状態こそが古い答えを自信ありげにする」と書いており、名前が中心の質問では必ず調べてから答えるよう入れておくのが安全だとする</li>
+</ul>
+<h2>7本に共通する形: 中身でなく進め方</h2>
+<p>並べると7本とも「何を作れ・どんな構成にしろ」という仕事の中身が1行も無く、書いてあるのは進め方だけだと著者は指摘し、これを今回のいちばん大きな変化と見る。優秀な人に仕事を頼むときの形に近づき、プロンプトを作り込む必要がなくなる。著者は「プロンプトがうまい人ではなく、仕事の任せ方がうまい人がAIをうまく使う人になる」と結ぶ。</p>
+<p>この読みは、Anthropicが<a href="../concepts/context-engineering.html">context-engineering</a>で語った「ルールから判断へ」「前もって全部書くのをやめる」という設計転換と、<a href="../concepts/claude-code-task-delegation.html">claude-code-task-delegation</a>の「毎回うまく指示するから、指示なしでも結果が出る環境を設計するへ」という発想転換の、業務利用者側からの言い換えだと考えられる。</p>
+<h2>使い方の注意: 全部入れない・貼る場所で変わる</h2>
+<ul>
+<li><strong>全部を一度に入れない</strong>: 7本を全部貼ると指示が長すぎて精度が落ちる。公式も細かい指示を積むほど質が落ちると書いている、と著者は述べる。困っている癖に対応する1本か2本だけ選ぶ。著者自身は「途中経過」と「範囲」の2本をよく使い、長い作業を任せる仕事の事故がほぼ止まったという。<a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a>の「投機的に追加しない・失敗するものだけ戻す」と同じ原則である</li>
+<li><strong>貼る場所で結果が変わる</strong>: 途中経過の指定は設定欄よりその都度の依頼文の後ろに付けた方が強く出た。逆に文章の書き方の指定は会話の最初の1回目に入れた方が長持ちした。まず依頼文の後ろで試し、毎回同じなら設定欄へ移すのが安全だと著者は勧める。これは<a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a>が扱う「ロード時点」と「圧縮生存」の軸に対応する</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-03（@Charlie_no_site）: 「原文をそのまま写す癖はFable 5.1で増えたと公式が明記」「細かい指示を積むほど質が落ちると公式が書いている」は著者経由で、公式ページ本体は未参照</li>
+<li>2026-09-03（@Charlie_no_site）: 「同じ文でも貼る場所（設定欄 vs 依頼文の末尾 vs 会話の1回目）で効き方が変わる」は著者の自社での試行に基づく単一ソースの観察</li>
+<li>2026-09-03（@Charlie_no_site）: Xで日本語のFable 5.1投稿を90件近く調べ、14本を扱ったものは無かったという著者の調査</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>公式ガイド本体をingestし、7本の原文と著者の要約のずれ、および開発者向け7本の中身を確認する。「気取った言い回し」に公式が付けた名前は何か</li>
+<li>このvaultのCLAUDE.md「文章スタイル」節と<code>~/.claude/CLAUDE.md</code>は、7本のうちいくつを既に含んでいるか。含んでいるなら<a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a>の手順で「Fable 5.1では外しても失敗しない行」を特定できるか</li>
+<li>「貼る場所で効き方が変わる」は再現するか。途中経過の指示をCLAUDE.md（設定欄相当）から依頼文末尾へ移して比較する</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../models/claude-fable-5-1.html">claude-fable-5-1</a> — 本ガイドが対象とするモデル。仕様は未収集だが、プロンプト指針の変更点はここに集まる</li>
+<li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a> — 前バージョンの公式ガイド。進捗報告・早期停止・境界・スコープの指針はそこから引き継がれ、本ページは5.1で足された文章品質と鮮度の指針を加える</li>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> — 指示は期限付きパッチ。「全部入れず困っている1〜2本だけ」はその実践形</li>
+<li><a href="../concepts/context-engineering.html">context-engineering</a> — 「ルールから判断へ」の設計転換。7本が中身でなく進め方だけを書く理由の設計思想側</li>
+<li><a href="../concepts/claude-code-task-delegation.html">claude-code-task-delegation</a> — 「指示なしでも結果が出る環境を設計する」への発想転換。本ページの「任せ方がうまい人」と同じ結論</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 指示の置き場所をロード時点×圧縮生存で振り分ける公式フレーム。「貼る場所で変わる」観察の説明枠</li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計の総論</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
+<li><a href="../concepts/claude-code-task-delegation.html">claude-code-task-delegation</a></li>
+<li><a href="../concepts/context-engineering.html">context-engineering</a></li>
+<li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a></li>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095618687223173203" rel="noopener" target="_blank">https://x.com/i/web/status/2095618687223173203</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Fable 5.1 プロンプティング（公式ガイドの業務向け7本）
+
+&gt; **TL;DR**: [[companies/anthropic]] の Fable 5.1 向け公式プロンプトガイドには推奨プロンプトが14本あり、うち業務全般向けの7本はどれも「仕事の中身」を一切指定せず「仕事の進め方」だけを書いている、と@Charlie_no_siteが日本語で整理した。全部貼らず困っている癖に対応する1〜2本だけ使い、貼る場所で効き方が変わる。
+
+Fable 5.1が出てプロンプトを作り直すべきか迷う経営者・事業者向けに、@Charlie_no_siteは自社で回すClaude自動化約60本を点検し、Anthropicの公式ガイドを読んだ結果をまとめている。著者によれば公式ページには「こう書くと直る」文章がコピーして使える完成品として14本置かれ、内訳は開発者向け7本と業務全般向け7本で、記事は後者だけを扱う。頼む理由や境界線の話は前バージョン向けのページにも載っており、そちらは[[concepts/fable-5-prompting]]が本vaultでの正本である。
+
+本ページは@Charlie_no_siteの記事に基づく二次情報で、公式ガイド本体（`platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1`）はまだ本vaultに未収集である。記事内の「7本の本体」（コピペ用の日本語訳）は画像または埋め込みで本文に残っておらず、以下は各プロンプトが何を直すかの記述だけを転記している。「公式が〜と書いている」という記述はすべて著者経由の伝聞として読む。
+
+## 黙って進む癖を直す2本
+
+- **途中経過を出させる**: Fable 5.1は長い作業の途中で報告をあまりせず、止まっているように見えて動いている。著者はこれを公式にも書かれている癖で不具合ではないとし、「始める前に何をするかを1行、途中も区切りごとに短く、最後はその部分だけ読めば分かる要約」の3つを最初に頼むと報告のリズムが変わると述べる
+- **途中で止まらせない**: 逆に長い作業の途中で「続けていいですか」と聞いて止まる癖。著者の会社では確認待ちで1時間動いていなかった事故が起きた。止まっていいのは「消すとき・戻せないとき・依頼の範囲が変わるとき」の3つだけと先に決め、それ以外は聞かずに進めるよう伝える
+
+この2本は[[concepts/fable-5-prompting]]の「まれな早期停止に備える」「チェックポイントを絞る」と同じ指針で、Fable 5から5.1へ引き継がれている。
+
+## 文章の質を上げる3本
+
+- **気取った言い回しを消す**: 著者が記事の核と位置づける1本。公式が名前を付けて禁止している書き方があり、直接言えばいいところをたとえに置き換える文章（「回すべきダイヤル」のような表現）を指す。読む側は頭の中で訳し直す手間を負う。短い版は「気取った言い回しを全部消してください」の1行で、これを最後に付けるだけで提案書の手直しが目に見えて減ったと著者は述べる
+- **箇条書きを止める**: Fable 5.1は前より箇条書きを使わなくなったが、社内向け文章が全部リスト化されて返る場合がある。公式の指定は「頼まれたときと内容が多岐にわたるときだけ箇条書きを使う」で、相談や個人的なやり取りは普通の文章で書くまで指定すると安定する
+- **元の文をそのまま写させない**: 資料を要約させると元の文がそのまま混ざる癖。著者によれば公式にもFable 5.1で増えたと明記されており、他社の文章を扱うときに事故になる。自分の言葉に言い直させ、原文が要るところだけカギ括弧で短く引用させる
+
+## 範囲と鮮度を守る2本
+
+- **依頼の範囲を勝手に動かさせない**: 頼んだ範囲の周辺まで手を出す、逆に一部だけ仕上げて終わる、という差が長い仕事ほど最後にまとめて出る。公式の文は長いが要点は「依頼した範囲が成果物であること」「途中で分からないことが出たら関係しない部分を先に全部進めること」「頼んでいない改善は直さず報告に書くこと」の3つだと著者は整理する。[[concepts/fable-5-prompting]]の「不要な整理・リファクタを止める」「境界を明示する」の発展形にあたる
+- **知っている名前ほど調べさせる**: 浅い設定で使うと知っている名前のものほど調べずに記憶で答える。著者によれば公式は「少し知っているという状態こそが古い答えを自信ありげにする」と書いており、名前が中心の質問では必ず調べてから答えるよう入れておくのが安全だとする
+
+## 7本に共通する形: 中身でなく進め方
+
+並べると7本とも「何を作れ・どんな構成にしろ」という仕事の中身が1行も無く、書いてあるのは進め方だけだと著者は指摘し、これを今回のいちばん大きな変化と見る。優秀な人に仕事を頼むときの形に近づき、プロンプトを作り込む必要がなくなる。著者は「プロンプトがうまい人ではなく、仕事の任せ方がうまい人がAIをうまく使う人になる」と結ぶ。
+
+この読みは、Anthropicが[[concepts/context-engineering]]で語った「ルールから判断へ」「前もって全部書くのをやめる」という設計転換と、[[concepts/claude-code-task-delegation]]の「毎回うまく指示するから、指示なしでも結果が出る環境を設計するへ」という発想転換の、業務利用者側からの言い換えだと考えられる。
+
+## 使い方の注意: 全部入れない・貼る場所で変わる
+
+- **全部を一度に入れない**: 7本を全部貼ると指示が長すぎて精度が落ちる。公式も細かい指示を積むほど質が落ちると書いている、と著者は述べる。困っている癖に対応する1本か2本だけ選ぶ。著者自身は「途中経過」と「範囲」の2本をよく使い、長い作業を任せる仕事の事故がほぼ止まったという。[[concepts/instruction-patch-lifecycle]]の「投機的に追加しない・失敗するものだけ戻す」と同じ原則である
+- **貼る場所で結果が変わる**: 途中経過の指定は設定欄よりその都度の依頼文の後ろに付けた方が強く出た。逆に文章の書き方の指定は会話の最初の1回目に入れた方が長持ちした。まず依頼文の後ろで試し、毎回同じなら設定欄へ移すのが安全だと著者は勧める。これは[[concepts/claude-code-instruction-methods]]が扱う「ロード時点」と「圧縮生存」の軸に対応する
+
+## 観察ログ（未検証）
+
+- 2026-09-03（@Charlie_no_site）: 「原文をそのまま写す癖はFable 5.1で増えたと公式が明記」「細かい指示を積むほど質が落ちると公式が書いている」は著者経由で、公式ページ本体は未参照
+- 2026-09-03（@Charlie_no_site）: 「同じ文でも貼る場所（設定欄 vs 依頼文の末尾 vs 会話の1回目）で効き方が変わる」は著者の自社での試行に基づく単一ソースの観察
+- 2026-09-03（@Charlie_no_site）: Xで日本語のFable 5.1投稿を90件近く調べ、14本を扱ったものは無かったという著者の調査
+
+## 問い
+
+- 公式ガイド本体をingestし、7本の原文と著者の要約のずれ、および開発者向け7本の中身を確認する。「気取った言い回し」に公式が付けた名前は何か
+- このvaultのCLAUDE.md「文章スタイル」節と`~/.claude/CLAUDE.md`は、7本のうちいくつを既に含んでいるか。含んでいるなら[[concepts/instruction-patch-lifecycle]]の手順で「Fable 5.1では外しても失敗しない行」を特定できるか
+- 「貼る場所で効き方が変わる」は再現するか。途中経過の指示をCLAUDE.md（設定欄相当）から依頼文末尾へ移して比較する
+
+## 関連
+
+- [[models/claude-fable-5-1]] — 本ガイドが対象とするモデル。仕様は未収集だが、プロンプト指針の変更点はここに集まる
+- [[concepts/fable-5-prompting]] — 前バージョンの公式ガイド。進捗報告・早期停止・境界・スコープの指針はそこから引き継がれ、本ページは5.1で足された文章品質と鮮度の指針を加える
+- [[concepts/instruction-patch-lifecycle]] — 指示は期限付きパッチ。「全部入れず困っている1〜2本だけ」はその実践形
+- [[concepts/context-engineering]] — 「ルールから判断へ」の設計転換。7本が中身でなく進め方だけを書く理由の設計思想側
+- [[concepts/claude-code-task-delegation]] — 「指示なしでも結果が出る環境を設計する」への発想転換。本ページの「任せ方がうまい人」と同じ結論
+- [[concepts/claude-code-instruction-methods]] — 指示の置き場所をロード時点×圧縮生存で振り分ける公式フレーム。「貼る場所で変わる」観察の説明枠
+- [[concepts/prompt-engineering]] — プロンプト設計の総論
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

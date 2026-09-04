@@ -60,3 +60,4 @@ UIを2コマンドに固定し、内部のプロンプト・Skills・MCP連携�
 - [[tools/openai-codex]]
 - [[tools/claude-code]]
 - [[tools/adversarial-panel]] — Claude Code×Codex批判的対話と同型の異種モデル・クロスレビューを汎用スキル化したもの（2〜4パネリスト×3ラウンド＋統合）
+- [[business/gitlab-ai-fluent-teams]] — 同じ「組織のAI活用標準化」を、開発ワークフローでなくガバナンス3層と学習パスの側から行ったGitLabの事例

@@ -100,6 +100,7 @@ Anthropic公式サポート記事によれば、週次の利用上限の50%ま�
 ## 関連
 
 - [[companies/anthropic]] — 開発元
+- [[models/claude-fable-5-1]] — 後継バージョン Fable 5.1 / Mythos 5.1（2026-09-01 発表）。変更点・価格は未収集
 - [[models/gpt-5-6]] — OpenAIの対抗世代（2026-07-10 GA）。効率（トークン・コスト）でFable 5超えを主張する一方、自社比較表ではGDPval・SWE-Bench Pro等でFable 5が上回る
 - [[models/claude-opus-5]] — Anthropicが2026-07-24発表。公式が本モデルのフロンティア知能に近い性能を半額で提供すると位置づける新モデル
 - [[models/claude-mythos]] — 前身の Mythos Preview（一般公開見送り）。本モデルはその後継かつ一般公開版

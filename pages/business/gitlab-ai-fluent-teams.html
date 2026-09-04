@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gitlab-ai-fluent-teams - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>gitlab-ai-fluent-teams</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="gitlab-ai-fluent-teams.md">Markdownで表示</a></div>
+  <div class="meta">business/gitlab-ai-fluent-teams · business · <span title="2026-09-04">今日</span></div>
+  <article><h1>GitLabのAIフルエンシー育成プレイブック</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: GitLabが社内向けに公開したAI導入プレイブック。ツールの配布ではなく「何をAIに任せ・どう工程を組み・返ってきたものをどう見極めるか」というAIフルエンシーを組織能力として設計し、中央統制と現場実験を組み合わせた連合型ガバナンスと、Enterprise TechnologyチームとTalent Developmentチームの協働で育てる。</p>
+</blockquote>
+<p>同じAIツールを2つのエンジニアリングチームに渡しても、一方はバグを減らしつつ速くなり、他方はAIエージェントが自信たっぷりに返す誤った出力に振り回される、というのがGitLabの出発点である。GitLab社内でも早い段階で価値を見いだした人と、AI前提のワークフローの組み方をつかめないままの人に分かれた。そこで見えたのが、ツールの導入やアクセス権の付与と同じくらい、AIフルエンシー（AIを使いこなす力）を育てることが重要だという認識で、それは運用と技術の両面にまたがる課題だったとGitLabは書く。</p>
+<p>ブックマーク元の@fujii_yujiはこの記事を「ツール導入や使い方ではなく、AIフルエンシーを組織能力として設計する話で、人間がどう振る舞うかが書かれている」と要約している。</p>
+<h2>連合型（フェデレーテッド）ガバナンス</h2>
+<p>GitLabのEnterprise Technologyチームはガバナンスの形を3案で検討した。完全な中央集権型は、AI技術の進化速度に対して承認を1グループに集めるとボトルネックになり、しびれを切らしたメンバーが枠組みを迂回する恐れがある。完全な分散型は取り組みが全社でばらばらになり、ガードレールの一貫性を保てない。最終的に選んだのが両者を組み合わせ、ガバナンスとイネーブルメントを一体で設計したハイブリッドモデルで、役割は3層に分かれる（ソースからの転記）。</p>
+<ul>
+<li><strong>Enterprise AI</strong>（Enterprise Technologyチーム内）: プラットフォームのハブとして標準とセキュリティガードレールを定め、主要AIベンダーとの関係と自社開発のガバナンス基盤を中央で所管する。その他のAIツールはすべてこのガードレールの上に載る</li>
+<li><strong>AI Transformation Owner</strong>: 各機能組織に置かれ、現場に近い立場からAI自動化が効く領域を見極めるシニアリーダー</li>
+<li><strong>AIチャンピオン</strong>: 各機能組織のコミュニティで、社内のCenter of Excellenceとして真っ先に試し、同僚を支援し、定められた活用方針を後押しする</li>
+</ul>
+<p>CIOのManu Narayanはこれを、GitLabが顧客に提供している「スピードとコントロールの両立」を社内にも適用したものだと述べる。基盤となるAIツールは中央で統制し、実験と機能別の戦略は現場で育てる。GitLabはこれを「動きが生まれる場所に判断の余地を残した」と表現している。</p>
+<p>この3層は<a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a>で@kzkhykwが挙げる組織の壁のうち「⑤ガバナンス（誰が作れて・見えて・管理するか）」と現場の壁「③オーナーシップの不在」への、大企業側の制度的な回答と読める。AI Transformation Ownerが機能別のオーナーシップを担い、Enterprise AIがガバナンスを担う分担になっている。</p>
+<h2>Talent Developmentとの協働と「AI Literacy Ladder」</h2>
+<p>このモデルで各層が機能するには、メンバー一人ひとりがAI活用のどの段階にいるかを把握する必要があった。Talent DevelopmentチームがEnterprise Technologyチームと組んで作ったのが、自己診断ツール「AI Literacy Ladder」で、各メンバーのAIフルエンシーの現在地を明らかにし、役割に応じた次の一手を提示する。エンジニア向けには専用の学習パスを用意し、内容はプランニング・コードレビュー・壊れたパイプラインの修復・セキュリティ修正といった日々の業務に紐づけた。</p>
+<p>最高人事責任者のRob Allenは目標を「今あるツールの使い方を教えることではなく、AIが進化し続けても自信を持って適応していける判断力と長く使えるスキルを育てること」だと述べる。実践型の学習は、全社向けレッスンで共通の土台を作り、機能別セッション、エンジニア向けには実習ラボを含む上級ワークショップという段階で組まれた。</p>
+<p>「何をAIに任せるか・どう組むか・返ってきたものをどう見極めるか」というGitLabのフルエンシー定義は、Anthropicが<a href="../tools/claude-academy.html">claude-academy</a>で製品非依存の基礎として教材化したAI Fluencyの4D（Delegation / Description / Discernment / Diligence）とほぼ同じ分解である。ベンダー側と導入企業側が同じ語彙に収斂していると考えられる。</p>
+<h2>成果指標: リーチ・デプス・適用価値を重ねて見る</h2>
+<p>GitLabは成果を3領域のシグナルで測り、個別には全体像をとらえられないため必ず組み合わせて評価すると書く（ソースからの転記）。</p>
+<table>
+<thead>
+<tr>
+<th>指標</th>
+<th>見るもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>リーチ</td>
+<td>自己診断と学習パスを完了したメンバーの数</td>
+</tr>
+<tr>
+<td>デプス</td>
+<td>メンバーが学習パスを継続的に進んでいるか</td>
+</tr>
+<tr>
+<td>適用価値</td>
+<td>ワークショップのフィードバックで実務上の価値を見いだせているか。あわせてプログラム開始と相関するツール利用の伸び</td>
+</tr>
+</tbody>
+</table>
+<h2>6つの学び</h2>
+<p>まだ取り組みの初期段階にある組織向けに、GitLabは6つの学びを挙げる（ソースからの転記）。</p>
+<ol>
+<li>初日からEnterprise TechnologyとTalent Developmentを同じ場に置く。導入は技術課題であると同時に業務と行動変容の課題で、片方の機能だけでは解けない</li>
+<li>AI活用のスピードに追いつくガバナンスを設計する。導入・実験・ツールの廃止を遅らせずに統制を効かせる</li>
+<li>単一のカリキュラムを押しつけず相手の現在地に合わせる。後発層が着実に身につけられるよう実務に即した内容にする</li>
+<li>AIイネーブルメントを育て続けるプロダクトとして扱う</li>
+<li>長く効く判断力を教える。ツールの使い方はフルエンシーのごく一部で、何をどう任せ返ってきたものをどう評価するかが同じくらい重要</li>
+<li>完璧なイネーブルメント戦略を待たない。小さな成功を積み重ねて改善する</li>
+</ol>
+<p>6番目は<a href="../business/backoffice-ai-implementation.html">backoffice-ai-implementation</a>でグッドパッチ管理部が「完璧なガバナンスを先に置くのではなく走りながら整える」と述べた実態と一致する。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-03（GitLab）: 上級ワークショップ参加エンジニアの87%が「すぐに業務へ適用できる学びがあった」、非技術系ワークショップでは95%が2週間以内に実践見込み・92%が自信向上と回答、AI Ladders開始1か月後に主要社内AIコーディングツールの1日あたりインタラクション数が22.3%増。いずれもGitLabの自己申告で、母数・比較対象・期間は記事に示されていない</li>
+<li>2026-09-03: 記事末尾はGitLabの「AIモダナイゼーションアセスメント」への誘導で終わる。プレイブック公開はマーケティング導線を兼ねている</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>AI Literacy Ladderの段階定義（何段あり、各段の判定基準は何か）は記事に書かれていない。GitLabハンドブックに公開されているか</li>
+<li>連合型ガバナンスの3層を個人や小規模チームに縮約すると何が残るか。Enterprise AIの「ガードレール」は個人運用ではCLAUDE.mdやhooksに相当するのか</li>
+<li>「リーチ・デプス・適用価値」の3指標を、このvaultのブックマーク活用率（ingest→wiki→weekly）の計測に転用できるか。適用価値にあたる指標が今は無い</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-academy.html">claude-academy</a> — Anthropic公式のAI Fluency 4Dフレームワーク。GitLabのフルエンシー定義（任せる・組む・見極める）と同じ分解をベンダー側から教材化したもの</li>
+<li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a> — 企業のエージェント導入で詰まる7つの壁。本ページの3層ガバナンスは③オーナーシップ不在と⑤ガバナンスへの制度的な回答</li>
+<li><a href="../business/backoffice-ai-implementation.html">backoffice-ai-implementation</a> — グッドパッチ管理部の実装記録。「走りながらガバナンスを整える」点と、個人実装を組織資産へ移す課題が共通</li>
+<li><a href="../concepts/ai-dev-two-commands.html">ai-dev-two-commands</a> — ZOZOが全エンジニアに展開した2コマンド標準。GitLabがガバナンスと学習パスで行う「組織のAI活用標準化」を、開発ワークフローの側から行った例</li>
+<li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a> — 価値の単位を「人＋エージェントのシステム」へ移す組織論。GitLabのTalent Development関与はその人材側の実装</li>
+<li><a href="../concepts/study-group-facilitation.html">study-group-facilitation</a> — 社内勉強会を形骸化させない運営論。GitLabのAIチャンピオンコミュニティと実習ワークショップの小規模版にあたる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/backoffice-ai-implementation.html">backoffice-ai-implementation</a></li>
+<li><a href="../business/talent-to-value-ai.html">talent-to-value-ai</a></li>
+<li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a></li>
+<li><a href="../concepts/ai-dev-two-commands.html">ai-dev-two-commands</a></li>
+<li><a href="../concepts/study-group-facilitation.html">study-group-facilitation</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095347355692441639" rel="noopener" target="_blank">https://x.com/i/web/status/2095347355692441639</a></li>
+<li><a href="https://about.gitlab.com/ja-jp/blog/how-gitlab-fosters-ai-fluent-teams/" rel="noopener" target="_blank">https://about.gitlab.com/ja-jp/blog/how-gitlab-fosters-ai-fluent-teams/</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># GitLabのAIフルエンシー育成プレイブック
+
+&gt; **TL;DR**: GitLabが社内向けに公開したAI導入プレイブック。ツールの配布ではなく「何をAIに任せ・どう工程を組み・返ってきたものをどう見極めるか」というAIフルエンシーを組織能力として設計し、中央統制と現場実験を組み合わせた連合型ガバナンスと、Enterprise TechnologyチームとTalent Developmentチームの協働で育てる。
+
+同じAIツールを2つのエンジニアリングチームに渡しても、一方はバグを減らしつつ速くなり、他方はAIエージェントが自信たっぷりに返す誤った出力に振り回される、というのがGitLabの出発点である。GitLab社内でも早い段階で価値を見いだした人と、AI前提のワークフローの組み方をつかめないままの人に分かれた。そこで見えたのが、ツールの導入やアクセス権の付与と同じくらい、AIフルエンシー（AIを使いこなす力）を育てることが重要だという認識で、それは運用と技術の両面にまたがる課題だったとGitLabは書く。
+
+ブックマーク元の@fujii_yujiはこの記事を「ツール導入や使い方ではなく、AIフルエンシーを組織能力として設計する話で、人間がどう振る舞うかが書かれている」と要約している。
+
+## 連合型（フェデレーテッド）ガバナンス
+
+GitLabのEnterprise Technologyチームはガバナンスの形を3案で検討した。完全な中央集権型は、AI技術の進化速度に対して承認を1グループに集めるとボトルネックになり、しびれを切らしたメンバーが枠組みを迂回する恐れがある。完全な分散型は取り組みが全社でばらばらになり、ガードレールの一貫性を保てない。最終的に選んだのが両者を組み合わせ、ガバナンスとイネーブルメントを一体で設計したハイブリッドモデルで、役割は3層に分かれる（ソースからの転記）。
+
+- **Enterprise AI**（Enterprise Technologyチーム内）: プラットフォームのハブとして標準とセキュリティガードレールを定め、主要AIベンダーとの関係と自社開発のガバナンス基盤を中央で所管する。その他のAIツールはすべてこのガードレールの上に載る
+- **AI Transformation Owner**: 各機能組織に置かれ、現場に近い立場からAI自動化が効く領域を見極めるシニアリーダー
+- **AIチャンピオン**: 各機能組織のコミュニティで、社内のCenter of Excellenceとして真っ先に試し、同僚を支援し、定められた活用方針を後押しする
+
+CIOのManu Narayanはこれを、GitLabが顧客に提供している「スピードとコントロールの両立」を社内にも適用したものだと述べる。基盤となるAIツールは中央で統制し、実験と機能別の戦略は現場で育てる。GitLabはこれを「動きが生まれる場所に判断の余地を残した」と表現している。
+
+この3層は[[concepts/agent-adoption-walls]]で@kzkhykwが挙げる組織の壁のうち「⑤ガバナンス（誰が作れて・見えて・管理するか）」と現場の壁「③オーナーシップの不在」への、大企業側の制度的な回答と読める。AI Transformation Ownerが機能別のオーナーシップを担い、Enterprise AIがガバナンスを担う分担になっている。
+
+## Talent Developmentとの協働と「AI Literacy Ladder」
+
+このモデルで各層が機能するには、メンバー一人ひとりがAI活用のどの段階にいるかを把握する必要があった。Talent DevelopmentチームがEnterprise Technologyチームと組んで作ったのが、自己診断ツール「AI Literacy Ladder」で、各メンバーのAIフルエンシーの現在地を明らかにし、役割に応じた次の一手を提示する。エンジニア向けには専用の学習パスを用意し、内容はプランニング・コードレビュー・壊れたパイプラインの修復・セキュリティ修正といった日々の業務に紐づけた。
+
+最高人事責任者のRob Allenは目標を「今あるツールの使い方を教えることではなく、AIが進化し続けても自信を持って適応していける判断力と長く使えるスキルを育てること」だと述べる。実践型の学習は、全社向けレッスンで共通の土台を作り、機能別セッション、エンジニア向けには実習ラボを含む上級ワークショップという段階で組まれた。
+
+「何をAIに任せるか・どう組むか・返ってきたものをどう見極めるか」というGitLabのフルエンシー定義は、Anthropicが[[tools/claude-academy]]で製品非依存の基礎として教材化したAI Fluencyの4D（Delegation / Description / Discernment / Diligence）とほぼ同じ分解である。ベンダー側と導入企業側が同じ語彙に収斂していると考えられる。
+
+## 成果指標: リーチ・デプス・適用価値を重ねて見る
+
+GitLabは成果を3領域のシグナルで測り、個別には全体像をとらえられないため必ず組み合わせて評価すると書く（ソースからの転記）。
+
+| 指標 | 見るもの |
+|---|---|
+| リーチ | 自己診断と学習パスを完了したメンバーの数 |
+| デプス | メンバーが学習パスを継続的に進んでいるか |
+| 適用価値 | ワークショップのフィードバックで実務上の価値を見いだせているか。あわせてプログラム開始と相関するツール利用の伸び |
+
+## 6つの学び
+
+まだ取り組みの初期段階にある組織向けに、GitLabは6つの学びを挙げる（ソースからの転記）。
+
+1. 初日からEnterprise TechnologyとTalent Developmentを同じ場に置く。導入は技術課題であると同時に業務と行動変容の課題で、片方の機能だけでは解けない
+2. AI活用のスピードに追いつくガバナンスを設計する。導入・実験・ツールの廃止を遅らせずに統制を効かせる
+3. 単一のカリキュラムを押しつけず相手の現在地に合わせる。後発層が着実に身につけられるよう実務に即した内容にする
+4. AIイネーブルメントを育て続けるプロダクトとして扱う
+5. 長く効く判断力を教える。ツールの使い方はフルエンシーのごく一部で、何をどう任せ返ってきたものをどう評価するかが同じくらい重要
+6. 完璧なイネーブルメント戦略を待たない。小さな成功を積み重ねて改善する
+
+6番目は[[business/backoffice-ai-implementation]]でグッドパッチ管理部が「完璧なガバナンスを先に置くのではなく走りながら整える」と述べた実態と一致する。
+
+## 観察ログ（未検証）
+
+- 2026-09-03（GitLab）: 上級ワークショップ参加エンジニアの87%が「すぐに業務へ適用できる学びがあった」、非技術系ワークショップでは95%が2週間以内に実践見込み・92%が自信向上と回答、AI Ladders開始1か月後に主要社内AIコーディングツールの1日あたりインタラクション数が22.3%増。いずれもGitLabの自己申告で、母数・比較対象・期間は記事に示されていない
+- 2026-09-03: 記事末尾はGitLabの「AIモダナイゼーションアセスメント」への誘導で終わる。プレイブック公開はマーケティング導線を兼ねている
+
+## 問い
+
+- AI Literacy Ladderの段階定義（何段あり、各段の判定基準は何か）は記事に書かれていない。GitLabハンドブックに公開されているか
+- 連合型ガバナンスの3層を個人や小規模チームに縮約すると何が残るか。Enterprise AIの「ガードレール」は個人運用ではCLAUDE.mdやhooksに相当するのか
+- 「リーチ・デプス・適用価値」の3指標を、このvaultのブックマーク活用率（ingest→wiki→weekly）の計測に転用できるか。適用価値にあたる指標が今は無い
+
+## 関連
+
+- [[tools/claude-academy]] — Anthropic公式のAI Fluency 4Dフレームワーク。GitLabのフルエンシー定義（任せる・組む・見極める）と同じ分解をベンダー側から教材化したもの
+- [[concepts/agent-adoption-walls]] — 企業のエージェント導入で詰まる7つの壁。本ページの3層ガバナンスは③オーナーシップ不在と⑤ガバナンスへの制度的な回答
+- [[business/backoffice-ai-implementation]] — グッドパッチ管理部の実装記録。「走りながらガバナンスを整える」点と、個人実装を組織資産へ移す課題が共通
+- [[concepts/ai-dev-two-commands]] — ZOZOが全エンジニアに展開した2コマンド標準。GitLabがガバナンスと学習パスで行う「組織のAI活用標準化」を、開発ワークフローの側から行った例
+- [[business/talent-to-value-ai]] — 価値の単位を「人＋エージェントのシステム」へ移す組織論。GitLabのTalent Development関与はその人材側の実装
+- [[concepts/study-group-facilitation]] — 社内勉強会を形骸化させない運営論。GitLabのAIチャンピオンコミュニティと実習ワークショップの小規模版にあたる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -40,3 +40,4 @@ flowchart LR
 - [[concepts/llm-japanese-style-hooks]] — 同じ「事前指示→事後検査」転換のHook運用版（正規表現500本超・グッドパターン対・止めずに直させる）。suikoは決定論的CLIとしてCI・エディタ側に置く実装
 - [[tools/japanese-tech-writing]] — 規範を指示側（SKILL.md）に置くアプローチ。suikoは同種の規範を検査側に置き、判断を人間の文脈に残す
 - [[tools/no-ai-slop]] — 英語圏の同種パターン検出。LLMスキルによる推敲に対し、suikoは形態素解析ベースの再現可能な診断
+- [[concepts/reasoning-vs-japanese-fluency]] — 「禁止語の回避と自然な日本語は別物」という同じ線引きを、検査でなく生成側のモデル選択に適用した主張（@yugen_matuni）。どのモデルが最初から検出に引っかからない日本語を書くか

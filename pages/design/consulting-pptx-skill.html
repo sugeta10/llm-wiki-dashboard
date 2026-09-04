@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>consulting-pptx-skill - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#5fd0a0"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>consulting-pptx-skill</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="consulting-pptx-skill.md">Markdownで表示</a></div>
+  <div class="meta">design/consulting-pptx-skill · design · <span title="2026-09-04">今日</span></div>
+  <article><h1>consulting-pptx-skill｜コンサル品質のPPTXをAIに作らせるClaude Codeスキル</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 提案書・報告書づくりで毎週使っている仕組みを公開した Claude Code スキル。価値の中心はテンプレでも生成パイプラインでもなく、レビューで受けた指摘を1行ずつ溜めた約80項目のスライド規約ファイルを「作らせる前に毎回読ませ、出力後に機械チェックで違反を検出する」蓄積ループにある。</p>
+</blockquote>
+<p>@Gozengogo_ が「まじなスライドをつくるためのパワポスキル」として告知したリポジトリ（gozen3ji/consulting-pptx-skill）。README によれば公開元は AI エージェント基盤「Jinba」を開発する Carnot AI で、同社が実際に毎週の提案書・報告書づくりで使っている仕組みの公開版だとしている。一式の中身は、27パーツの自由記述HTMLパーツ集、コンサル型スライド36型のカタログと JSON によるスライド定義（SlideSpec）、HTMLプレビューから編集可能な PPTX へ出す生成パイプライン、スライド作成規約、規約違反を検出する機械チェッカーの5つ。README の冒頭は規約を「約85項目」、本文の節では「約80項目」と書いており、項目数は概数として扱う。</p>
+<h2>本体は規約ファイル slide-rules.md</h2>
+<p>README はリポジトリで一番価値があるのはテンプレでもスクリプトでもなく <code>references/slide-rules.md</code> だと明言する。実務の資料レビューで受けた指摘を1行ずつ書き溜めたもので、「結論はタイトルに書く」「角丸禁止」「塗りのあるボックスに枠線を付けない」「1資料1用語」といった項目が並ぶ。使い方は、AIに資料を作らせる前に毎回このファイルを読ませ、出力後に <code>scripts/check_deck.py</code> で違反を機械検出するだけ。AIはセッションごとに記憶がリセットされるので口頭で注意しても定着せず、ルールをファイル化して毎回読ませるのが唯一の定着方法だと README は述べる。</p>
+<p>良いスライドを作るのは型ではなく「流し込んだ後の調整」だという立場も明確で、表を2枚に割る・右カラムを帰結形に書き直す・タイトルの通し読みでストーリーを繋ぎ直す、といった調整で受けた指摘をまた規約ファイルに1行追記する。この蓄積ループが品質の源泉であり、36型テンプレとパイプラインは「たたき台を数十秒で出して、調整の反復回数を稼ぐ」ための道具にすぎないと位置づけている。自社で使うときは規約ファイルに自社の規約・指摘を追記して育てることを勧めており、指摘を教訓ファイルへ書き戻す点は <a href="../concepts/self-refining-skills.html">self-refining-skills</a> と同じ構造だと考えられる。</p>
+<h2>作り方は2経路、型カタログは1本</h2>
+<table>
+<thead>
+<tr>
+<th>経路</th>
+<th>実体</th>
+<th>出せるもの</th>
+<th>使うとき</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自由記述（本線）</td>
+<td><code>templates/freeform_parts_16x9.html</code>（27パーツ）</td>
+<td>HTMLデッキ → PDF</td>
+<td>納品物。主張に合わせて1枚ずつ組む</td>
+</tr>
+<tr>
+<td>SlideSpec パイプライン</td>
+<td><code>pipeline/slide-spec/super_template.json</code>（36型）</td>
+<td>編集可能な PPTX</td>
+<td>たたき台を秒で出す・PowerPointで渡す</td>
+</tr>
+</tbody>
+</table>
+<p>どちらの型も<strong>タイトル欄は型名だけ</strong>で、見本の主張文を置いていない。見本文があると文型がそのまま真似され、主張ではなくテンプレを写した資料になるからで、タイトルは必ずストーリーラインから起こして差し替える。プレースホルダーの書き方は両経路で統一されており（本文 <code>Text 1</code>、項目名 <code>ラベル 1</code>、数値 <code>00</code>、年 <code>YYYY年</code>、出典 <code>出典：Source 1</code> など）、チェッカーはこれらが納品デッキに残っていたら FAIL、タイトルの文型が6割以上同じなら WARN を出す。「1スライド1主張を先に決める」という <a href="../design/ai-slide-creation.html">ai-slide-creation</a> の方法論を、規約と機械検査で強制している形と読める。</p>
+<p>パーツ集には、主張パネル＋図、打ち手の効果表、状態ヒートマップ、充足度評価表（ハーベイボール）、割合のドットマトリクス、進捗バブル行列、注記つき散布図、柱＋土台、対向シェブロン、シナリオ線＋成長率チップ、課題と打ち手の2カラム、章扉のセパレーター（アジェンダ再掲・現在地を強調）などが含まれる。</p>
+<h2>AIにレイアウトを描かせない</h2>
+<p>SlideSpec パイプラインの核心は「AIにレイアウトを描かせない」こと。36型それぞれのレイアウト（タイトル位置・余白・フォントサイズ・作図ルール）は実測値としてレンダラーに焼き込んであり、AIが書くのは中身（主張・数値・ラベル）だけになる。たとえば <code>template: "waterfall"</code> に kicker・タイトル・単位付きの系列（base/up/down/total）・含意・注記・出典を持つ JSON を書くと、収益ブリッジの1枚がそのまま出る。書き出される PPTX は画像貼り付けではなく、全図形が PowerPoint で編集できるネイティブなテキストボックス・表・シェイプになる。AIに GUI でなく構造化された記法を書かせて精度を上げる点は <a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> の一例と考えられる。</p>
+<h2>セットアップと構成</h2>
+<p>Claude Code のスキルフォルダに clone し、<code>pipeline/</code> で <code>npm run setup</code> を実行する（Node.js が必要で、playwright chromium も入る）。あとは「36型から型を選んで10枚構成の SlideSpec を書き、パイプラインで編集可能な PPTX まで出して。作成前に slide-rules.md を読み、出力後は check_deck.py で FAIL 0 にすること」のように頼む。手動で使う場合はスキーマ検証→HTMLプレビュー→構造QA→編集可能PPTX書き出し→規約チェック→HTMLのはみ出し・重なり検査の順にスクリプトを回す。Node.js が無い環境でも、見本帳 PPTX の手動コピペと規約ファイル・機械チェックはそのまま使える。</p>
+<table>
+<thead>
+<tr>
+<th>パス</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SKILL.md</code></td>
+<td>実運用フロー＋36型カタログ（AIへの指示書。スキルの本体）</td>
+</tr>
+<tr>
+<td><code>templates/freeform_parts_16x9.html</code></td>
+<td>自由記述パーツ集（27パーツ・1パーツ=1スライド・16:9）</td>
+</tr>
+<tr>
+<td><code>pipeline/</code></td>
+<td>生成スクリプト（validate / render / qa / export / shots）＋CSS</td>
+</tr>
+<tr>
+<td><code>pipeline/slide-spec/super_template.json</code></td>
+<td>36型すべての完成 SlideSpec 定義（コピーして使う正本）</td>
+</tr>
+<tr>
+<td><code>pipeline/slide-spec/schema.json</code></td>
+<td>SlideSpec スキーマ</td>
+</tr>
+<tr>
+<td><code>references/slide-rules.md</code></td>
+<td>スライド作成ルール正典（約80項目）</td>
+</tr>
+<tr>
+<td><code>scripts/check_deck.py</code></td>
+<td>規約の機械チェック（PPTX / HTML 両対応・python-pptx が必要）</td>
+</tr>
+<tr>
+<td><code>scripts/check_layout.mjs</code></td>
+<td>HTMLデッキの実レンダリング検査（フッターとの重なり・右端/下端のはみ出し）</td>
+</tr>
+<tr>
+<td><code>assets/SuperTemplate_36type.pptx</code></td>
+<td>36型を1枚ずつ収めた見本帳 PPTX（PDF版あり）</td>
+</tr>
+</tbody>
+</table>
+<p>カスタマイズで一番効くのは規約ファイルへの追記で、SlideSpec ルートの <code>palette</code> でブランドカラーを一括差し替えできる。同じ仕組みをブラウザのチャットだけで使える形（Jinba App Neo）でも提供していると README は述べており、スキルはその公開版という位置づけになる。</p>
+<h2>問い</h2>
+<ul>
+<li>約80項目の規約を読み、自分の文書レビュー規約と重なる項目・欠けている項目を突き合わせる。スライド以外の文書（報告書・設計書）に移植できる項目はどれか</li>
+<li>「実測レイアウトをレンダラーに焼き込み、AIは中身だけ書く」方式は、<code>.md</code> でデザインを固定する <a href="../design/slide-md.html">slide-md</a> と比べて出力のバラつきをどれだけ抑えられるか</li>
+<li>「タイトル文型が6割以上同じなら WARN」のような機械検査は、AI生成文書の定型臭を検出する一般的な手として他の成果物にも使えるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../design/ai-slide-to-pptx.html">ai-slide-to-pptx</a> — AI生成スライドを編集可能な PPTX に組み直すプロンプト手法。本スキルはパイプライン側でネイティブ編集可能な PPTX を最初から出す</li>
+<li><a href="../design/slide-md.html">slide-md</a> — デザインシステムを <code>.md</code> で固定してスライドのバラつきを抑える体系。本スキルは規約を <code>.md</code>、レイアウトをレンダラー実測値で固定する</li>
+<li><a href="../design/ai-slide-creation.html">ai-slide-creation</a> — 「1スライド1主張」「結論を先に決める」方法論。本スキルの規約（結論はタイトルに書く・見本文を置かない）と機械チェックはその強制装置</li>
+<li><a href="../design/ai-presentation-workflow.html">ai-presentation-workflow</a> — 構成→視覚確認→編集可能化→人間確認の工程分業。本スキルは編集可能化とチェックを1本のパイプラインにまとめる</li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — AIに GUI でなく構造化記法を書かせる設計手法。SlideSpec（JSON）はその一例</li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — 指摘を教訓ファイルへ書き戻して育てるループ。規約ファイルへの1行追記と同じ構造</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../design/ai-presentation-workflow.html">ai-presentation-workflow</a></li>
+<li><a href="../design/ai-slide-creation.html">ai-slide-creation</a></li>
+<li><a href="../design/ai-slide-to-pptx.html">ai-slide-to-pptx</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095137686323687661" rel="noopener" target="_blank">https://x.com/i/web/status/2095137686323687661</a></li>
+<li><a href="https://github.com/gozen3ji/consulting-pptx-skill" rel="noopener" target="_blank">https://github.com/gozen3ji/consulting-pptx-skill</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># consulting-pptx-skill｜コンサル品質のPPTXをAIに作らせるClaude Codeスキル
+
+&gt; **TL;DR**: 提案書・報告書づくりで毎週使っている仕組みを公開した Claude Code スキル。価値の中心はテンプレでも生成パイプラインでもなく、レビューで受けた指摘を1行ずつ溜めた約80項目のスライド規約ファイルを「作らせる前に毎回読ませ、出力後に機械チェックで違反を検出する」蓄積ループにある。
+
+@Gozengogo_ が「まじなスライドをつくるためのパワポスキル」として告知したリポジトリ（gozen3ji/consulting-pptx-skill）。README によれば公開元は AI エージェント基盤「Jinba」を開発する Carnot AI で、同社が実際に毎週の提案書・報告書づくりで使っている仕組みの公開版だとしている。一式の中身は、27パーツの自由記述HTMLパーツ集、コンサル型スライド36型のカタログと JSON によるスライド定義（SlideSpec）、HTMLプレビューから編集可能な PPTX へ出す生成パイプライン、スライド作成規約、規約違反を検出する機械チェッカーの5つ。README の冒頭は規約を「約85項目」、本文の節では「約80項目」と書いており、項目数は概数として扱う。
+
+## 本体は規約ファイル slide-rules.md
+
+README はリポジトリで一番価値があるのはテンプレでもスクリプトでもなく `references/slide-rules.md` だと明言する。実務の資料レビューで受けた指摘を1行ずつ書き溜めたもので、「結論はタイトルに書く」「角丸禁止」「塗りのあるボックスに枠線を付けない」「1資料1用語」といった項目が並ぶ。使い方は、AIに資料を作らせる前に毎回このファイルを読ませ、出力後に `scripts/check_deck.py` で違反を機械検出するだけ。AIはセッションごとに記憶がリセットされるので口頭で注意しても定着せず、ルールをファイル化して毎回読ませるのが唯一の定着方法だと README は述べる。
+
+良いスライドを作るのは型ではなく「流し込んだ後の調整」だという立場も明確で、表を2枚に割る・右カラムを帰結形に書き直す・タイトルの通し読みでストーリーを繋ぎ直す、といった調整で受けた指摘をまた規約ファイルに1行追記する。この蓄積ループが品質の源泉であり、36型テンプレとパイプラインは「たたき台を数十秒で出して、調整の反復回数を稼ぐ」ための道具にすぎないと位置づけている。自社で使うときは規約ファイルに自社の規約・指摘を追記して育てることを勧めており、指摘を教訓ファイルへ書き戻す点は [[concepts/self-refining-skills]] と同じ構造だと考えられる。
+
+## 作り方は2経路、型カタログは1本
+
+| 経路 | 実体 | 出せるもの | 使うとき |
+| --- | --- | --- | --- |
+| 自由記述（本線） | `templates/freeform_parts_16x9.html`（27パーツ） | HTMLデッキ → PDF | 納品物。主張に合わせて1枚ずつ組む |
+| SlideSpec パイプライン | `pipeline/slide-spec/super_template.json`（36型） | 編集可能な PPTX | たたき台を秒で出す・PowerPointで渡す |
+
+どちらの型も**タイトル欄は型名だけ**で、見本の主張文を置いていない。見本文があると文型がそのまま真似され、主張ではなくテンプレを写した資料になるからで、タイトルは必ずストーリーラインから起こして差し替える。プレースホルダーの書き方は両経路で統一されており（本文 `Text 1`、項目名 `ラベル 1`、数値 `00`、年 `YYYY年`、出典 `出典：Source 1` など）、チェッカーはこれらが納品デッキに残っていたら FAIL、タイトルの文型が6割以上同じなら WARN を出す。「1スライド1主張を先に決める」という [[design/ai-slide-creation]] の方法論を、規約と機械検査で強制している形と読める。
+
+パーツ集には、主張パネル＋図、打ち手の効果表、状態ヒートマップ、充足度評価表（ハーベイボール）、割合のドットマトリクス、進捗バブル行列、注記つき散布図、柱＋土台、対向シェブロン、シナリオ線＋成長率チップ、課題と打ち手の2カラム、章扉のセパレーター（アジェンダ再掲・現在地を強調）などが含まれる。
+
+## AIにレイアウトを描かせない
+
+SlideSpec パイプラインの核心は「AIにレイアウトを描かせない」こと。36型それぞれのレイアウト（タイトル位置・余白・フォントサイズ・作図ルール）は実測値としてレンダラーに焼き込んであり、AIが書くのは中身（主張・数値・ラベル）だけになる。たとえば `template: &quot;waterfall&quot;` に kicker・タイトル・単位付きの系列（base/up/down/total）・含意・注記・出典を持つ JSON を書くと、収益ブリッジの1枚がそのまま出る。書き出される PPTX は画像貼り付けではなく、全図形が PowerPoint で編集できるネイティブなテキストボックス・表・シェイプになる。AIに GUI でなく構造化された記法を書かせて精度を上げる点は [[concepts/intermediate-notation-pattern]] の一例と考えられる。
+
+## セットアップと構成
+
+Claude Code のスキルフォルダに clone し、`pipeline/` で `npm run setup` を実行する（Node.js が必要で、playwright chromium も入る）。あとは「36型から型を選んで10枚構成の SlideSpec を書き、パイプラインで編集可能な PPTX まで出して。作成前に slide-rules.md を読み、出力後は check_deck.py で FAIL 0 にすること」のように頼む。手動で使う場合はスキーマ検証→HTMLプレビュー→構造QA→編集可能PPTX書き出し→規約チェック→HTMLのはみ出し・重なり検査の順にスクリプトを回す。Node.js が無い環境でも、見本帳 PPTX の手動コピペと規約ファイル・機械チェックはそのまま使える。
+
+| パス | 内容 |
+| --- | --- |
+| `SKILL.md` | 実運用フロー＋36型カタログ（AIへの指示書。スキルの本体） |
+| `templates/freeform_parts_16x9.html` | 自由記述パーツ集（27パーツ・1パーツ=1スライド・16:9） |
+| `pipeline/` | 生成スクリプト（validate / render / qa / export / shots）＋CSS |
+| `pipeline/slide-spec/super_template.json` | 36型すべての完成 SlideSpec 定義（コピーして使う正本） |
+| `pipeline/slide-spec/schema.json` | SlideSpec スキーマ |
+| `references/slide-rules.md` | スライド作成ルール正典（約80項目） |
+| `scripts/check_deck.py` | 規約の機械チェック（PPTX / HTML 両対応・python-pptx が必要） |
+| `scripts/check_layout.mjs` | HTMLデッキの実レンダリング検査（フッターとの重なり・右端/下端のはみ出し） |
+| `assets/SuperTemplate_36type.pptx` | 36型を1枚ずつ収めた見本帳 PPTX（PDF版あり） |
+
+カスタマイズで一番効くのは規約ファイルへの追記で、SlideSpec ルートの `palette` でブランドカラーを一括差し替えできる。同じ仕組みをブラウザのチャットだけで使える形（Jinba App Neo）でも提供していると README は述べており、スキルはその公開版という位置づけになる。
+
+## 問い
+
+- 約80項目の規約を読み、自分の文書レビュー規約と重なる項目・欠けている項目を突き合わせる。スライド以外の文書（報告書・設計書）に移植できる項目はどれか
+- 「実測レイアウトをレンダラーに焼き込み、AIは中身だけ書く」方式は、`.md` でデザインを固定する [[design/slide-md]] と比べて出力のバラつきをどれだけ抑えられるか
+- 「タイトル文型が6割以上同じなら WARN」のような機械検査は、AI生成文書の定型臭を検出する一般的な手として他の成果物にも使えるか
+
+## 関連
+
+- [[design/ai-slide-to-pptx]] — AI生成スライドを編集可能な PPTX に組み直すプロンプト手法。本スキルはパイプライン側でネイティブ編集可能な PPTX を最初から出す
+- [[design/slide-md]] — デザインシステムを `.md` で固定してスライドのバラつきを抑える体系。本スキルは規約を `.md`、レイアウトをレンダラー実測値で固定する
+- [[design/ai-slide-creation]] — 「1スライド1主張」「結論を先に決める」方法論。本スキルの規約（結論はタイトルに書く・見本文を置かない）と機械チェックはその強制装置
+- [[design/ai-presentation-workflow]] — 構成→視覚確認→編集可能化→人間確認の工程分業。本スキルは編集可能化とチェックを1本のパイプラインにまとめる
+- [[concepts/intermediate-notation-pattern]] — AIに GUI でなく構造化記法を書かせる設計手法。SlideSpec（JSON）はその一例
+- [[concepts/self-refining-skills]] — 指摘を教訓ファイルへ書き戻して育てるループ。規約ファイルへの1行追記と同じ構造
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

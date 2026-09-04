@@ -38,3 +38,4 @@
 - [[concepts/philosophy-external-memory]] — Knowledge Files／Identity の中身を「思想哲学DB（3層・素材から更新）」として育てる方法論。本設計図の参照資料づくりの上流
 - [[concepts/claude-projects-setup]] — 同じ Claude Projects の運用原則側（精密知識ベース・retrieval テスト・維持習慣・Cowork Projects）。本ページの構成論と対をなす
 - [[concepts/ai-curriculum-builder]] — Knowledge Filesを「学習DNAプロファイル」に特化させ、学習ドメインに応用した実装例
+- [[concepts/ai-secretary-gateway]] — 役割を「仕事の窓口」に絞ったAI秘書を本体プロンプト＋スキルの二層で組むコピペ設計（@dansyu_callenge）。1役割1社員の分離思想が本ページと重なる

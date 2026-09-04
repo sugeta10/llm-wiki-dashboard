@@ -52,3 +52,4 @@ flowchart LR
 - [[concepts/claude-skills]] — 繰り返し作業をSkills化して資産にする（カテゴリ⑤⑥）
 - [[concepts/claude-code-orchestration]] — サブエージェント並列・役割分担（カテゴリ⑥上級者の使い方）の設計
 - [[tools/claude-tag]] — 同じ「AIにタスクを委任する」発想をSlackのチーム常駐に適用した製品
+- [[concepts/fable-5-1-prompting]] — Fable 5.1公式ガイドの業務向け7本が仕事の中身でなく進め方だけを指定する、という@Charlie_no_siteの整理。本ページの「指示なしでも結果が出る環境を設計する」と同じ結論

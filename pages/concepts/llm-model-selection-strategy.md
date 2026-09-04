@@ -52,3 +52,4 @@ flowchart LR
 - [[concepts/claude-code-model-effort]] — 「モデル×エフォートの二軸」の公式解説版。モデル=何を知っているか／effort=どれだけ徹底するか
 - [[concepts/cost-effective-harness]] — 工程分解と同型の「タスク形状」評価に、委譲の協調コスト（損益分岐）の実測を加えた発展形（Lance Martin）
 - [[concepts/delegation-management-style]] — 「上流モデルが下流へ何を渡すべきか」を制約明記ブリーフの実例で具体化した実験（Cognition社）
+- [[concepts/reasoning-vs-japanese-fluency]] — 下流（日本語の最終成果物）に小モデルを置く理由をコストでなく品質に求める実測（@yugen_matuni）。推論力と日本語の自然さは別能力で、執筆モデルは手離れの良さで選ぶ

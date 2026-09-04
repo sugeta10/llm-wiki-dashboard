@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-fable-5-1 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb950"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-fable-5-1</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-fable-5-1.md">Markdownで表示</a></div>
+  <div class="meta">models/claude-fable-5-1 · models · <span title="2026-09-04">今日</span></div>
+  <article><h1>Claude Fable 5.1 / Mythos 5.1</h1>
+<p><a href="../companies/anthropic.html">anthropic</a> 公式アカウント（@claudeai）が2026-09-01に発表した <a href="../models/claude-fable-5.html">Fable 5 / Mythos 5</a> の後継バージョン。公式は Fable 5.1 と Mythos 5.1 を同時に紹介し、「コーディングと知識労働のための世界で最も先進的なモデル」と位置づけている。</p>
+<p>発表ポストで捕捉できたのはこの一文と動画リンクのみで、価格・ベンチマーク・提供範囲・Fable 5 からの変更点はまだ本vaultに未収集。具体的な仕様は Anthropic 公式ブログやシステムカードなど一次ソースの追加を待つ。</p>
+<p>Fable と Mythos を対で発表する形は、Fable 5 / Mythos 5 のときの「同一基盤モデルでセーフガードの有無だけが違う」二本立てをそのまま引き継いだものと考えられる（発表ポストには明記されていないため未確認）。</p>
+<h2>第三者による評価</h2>
+<ul>
+<li>@Charlie_no_siteは、Anthropicの5.1向け公式プロンプトガイドに推奨プロンプトが14本（開発者向け7本・業務向け7本）あり、業務向けはすべて仕事の中身でなく進め方だけを指定していると整理した。途中経過を出さない・途中で止まる・原文をそのまま写す（5.1で増えたと公式が明記、と著者）などの癖への対処が並ぶ。詳細は<a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a></li>
+<li>@yugen_matuniは、Fable 5.1の内容の正確さと論理の深さは申し分ないが日本語出力には翻訳調や堅い言い回しが出やすく、自作の日本語検査Hook（500本超）で十数件の警告が出るのが日常だったと述べる。推論力と日本語の自然さは別能力だという主張は<a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>Fable 5 から 5.1 で変わったのは何か（性能・価格・セーフガードの誤発火率・提供プラン）。公式ブログで確認する</li>
+<li>Fable 5 向けに確立したプロンプト指針（<a href="../concepts/fable-5-prompting.html">fable-5-prompting</a>）やループ設計はそのまま通用するか。<a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> の「モデル世代が変わったら指示を外して試す」手順を回す機会か。5.1向け公式ガイドの業務向け7本は<a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a>に整理済みで、公式ページ本体のingestが次の一手</li>
+<li>Fable 5 に近い性能を半額で提供するとされる <a href="../models/claude-opus-5.html">claude-opus-5</a> との棲み分けはどう変わるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../companies/anthropic.html">anthropic</a> — 開発元</li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a> — 前バージョン。Mythos クラス初の一般公開・価格・セーフガード設計・プラン別提供条件の詳細はこちら</li>
+<li><a href="../models/claude-mythos.html">claude-mythos</a> — Mythos 系列の起点（Mythos Preview・一般公開見送り）</li>
+<li><a href="../models/claude-opus-5.html">claude-opus-5</a> — 同社の別ライン。Fable 5 のフロンティア知能に近い性能を半額で提供すると公式が位置づける</li>
+<li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a> — 5.1向け公式プロンプトガイドの業務向け7本を@Charlie_no_siteが日本語で整理したもの</li>
+<li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — 推論には長けるが日本語出力は翻訳調が出やすい、という@yugen_matuniの第三者評価</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a></li>
+<li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
+<li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
+<li><a href="../models/claude-mythos.html">claude-mythos</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094848572143407483" rel="noopener" target="_blank">https://x.com/i/web/status/2094848572143407483</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Fable 5.1 / Mythos 5.1
+
+[[companies/anthropic]] 公式アカウント（@claudeai）が2026-09-01に発表した [[models/claude-fable-5|Fable 5 / Mythos 5]] の後継バージョン。公式は Fable 5.1 と Mythos 5.1 を同時に紹介し、「コーディングと知識労働のための世界で最も先進的なモデル」と位置づけている。
+
+発表ポストで捕捉できたのはこの一文と動画リンクのみで、価格・ベンチマーク・提供範囲・Fable 5 からの変更点はまだ本vaultに未収集。具体的な仕様は Anthropic 公式ブログやシステムカードなど一次ソースの追加を待つ。
+
+Fable と Mythos を対で発表する形は、Fable 5 / Mythos 5 のときの「同一基盤モデルでセーフガードの有無だけが違う」二本立てをそのまま引き継いだものと考えられる（発表ポストには明記されていないため未確認）。
+
+## 第三者による評価
+
+- @Charlie_no_siteは、Anthropicの5.1向け公式プロンプトガイドに推奨プロンプトが14本（開発者向け7本・業務向け7本）あり、業務向けはすべて仕事の中身でなく進め方だけを指定していると整理した。途中経過を出さない・途中で止まる・原文をそのまま写す（5.1で増えたと公式が明記、と著者）などの癖への対処が並ぶ。詳細は[[concepts/fable-5-1-prompting]]
+- @yugen_matuniは、Fable 5.1の内容の正確さと論理の深さは申し分ないが日本語出力には翻訳調や堅い言い回しが出やすく、自作の日本語検査Hook（500本超）で十数件の警告が出るのが日常だったと述べる。推論力と日本語の自然さは別能力だという主張は[[concepts/reasoning-vs-japanese-fluency]]
+
+## 問い
+
+- Fable 5 から 5.1 で変わったのは何か（性能・価格・セーフガードの誤発火率・提供プラン）。公式ブログで確認する
+- Fable 5 向けに確立したプロンプト指針（[[concepts/fable-5-prompting]]）やループ設計はそのまま通用するか。[[concepts/instruction-patch-lifecycle]] の「モデル世代が変わったら指示を外して試す」手順を回す機会か。5.1向け公式ガイドの業務向け7本は[[concepts/fable-5-1-prompting]]に整理済みで、公式ページ本体のingestが次の一手
+- Fable 5 に近い性能を半額で提供するとされる [[models/claude-opus-5]] との棲み分けはどう変わるか
+
+## 関連
+
+- [[companies/anthropic]] — 開発元
+- [[models/claude-fable-5]] — 前バージョン。Mythos クラス初の一般公開・価格・セーフガード設計・プラン別提供条件の詳細はこちら
+- [[models/claude-mythos]] — Mythos 系列の起点（Mythos Preview・一般公開見送り）
+- [[models/claude-opus-5]] — 同社の別ライン。Fable 5 のフロンティア知能に近い性能を半額で提供すると公式が位置づける
+- [[concepts/fable-5-1-prompting]] — 5.1向け公式プロンプトガイドの業務向け7本を@Charlie_no_siteが日本語で整理したもの
+- [[concepts/reasoning-vs-japanese-fluency]] — 推論には長けるが日本語出力は翻訳調が出やすい、という@yugen_matuniの第三者評価
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

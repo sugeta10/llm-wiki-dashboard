@@ -68,3 +68,4 @@ flowchart LR
 - [[concepts/skill-self-improving-loop]] — 会話履歴から自分のスキルを育てる自己改善ループ。本ページの「指摘のたびにSkillがルールを登録する」仕組みと同型
 - [[concepts/claude-code-hooks-async]] — Hooksの別の使い方（非同期サブエージェント起動）
 - [[tools/suiko]] — 同じ「事後の機械検査」を形態素解析ベースの決定論的CLIにした実装（nwiizo製）。本ページの正規表現＋Hook常駐に対し、辞書埋め込みのスタンドアローン診断・baseline差分・CI gateを提供し、書き直しはエージェントでなく人間の文脈判断に委ねる
+- [[concepts/reasoning-vs-japanese-fluency]] — 同著者がこの検査網を測定器にしてモデル差を比べた続編。上位モデルは十数件の警告が出るがGemini 3.8 Flashは警告ゼロで、推論力と日本語の自然さは別能力だと結論づけた

@@ -147,4 +147,5 @@ OpenAI公式は「4項目すべてを毎回埋める必要はなく、結果を�
 - [[concepts/chatgpt-custom-instructions]] — ChatGPTカスタム指示の設定手法（全チャット共通の永続プロンプト設定）
 - [[concepts/prompt-engineering-playbook]] — 海外AIガチ勢の実践プロンプト40技術（CoVe・ToT・マルチエージェント・ハーネス設計）
 - [[concepts/fable-5-prompting]] — [[models/claude-fable-5]] 固有のプロンプト指針（Anthropic公式・指示を減らす／長ターン前提／reasoning_extraction回避）
+- [[concepts/fable-5-1-prompting]] — [[models/claude-fable-5-1]] 向け公式ガイドの業務向け7本（途中経過・早期停止・気取った言い回し・箇条書き・原文転写・範囲・鮮度）を@Charlie_no_siteが日本語で整理したもの
 - [[tools/openai-codex]] — Codex向け実践プロンプティングパターン集（OpenAI公式ガイド・コードベース理解/バグ修正/PRレビュー等）

@@ -104,11 +104,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/no-ai-slop.html">no-ai-slop</a> — 英語版の同種の文章規範スキル（Peter Yang）。20+のAIスロップパターンを検出・除去</li>
 <li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> — @yugen_matuniのHook運用。全NGルールにグッドパターンを対で持たせた結果、書き直しの精度が上がったとしており、本ページの「例文を外すと強くは効かないかもしれない」という留保への実践的な回答にあたる</li>
 <li><a href="../tools/suiko.html">suiko</a> — 本ページが規範を指示側（SKILL.md）に置くのに対し、同種の規範（翻訳調・定型対比・リズム）を検査側の決定論的CLIに置いた日本語文書診断ツール（nwiizo製）</li>
+<li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — 本ページの規範が拾う翻訳調・文末単調は、推論力の高いモデルほど出やすいと@yugen_matuniが実測から主張。規範を足す前に日本語の自然なモデルを選ぶという生成側の対処</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
+<li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
 <li><a href="../tools/no-ai-slop.html">no-ai-slop</a></li>
-<li><a href="../tools/suiko.html">suiko</a></li>
-<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066751852088336698" rel="noopener" target="_blank">https://x.com/i/web/status/2066751852088336698</a></li>
+<li><a href="../tools/suiko.html">suiko</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066751852088336698" rel="noopener" target="_blank">https://x.com/i/web/status/2066751852088336698</a></li>
 <li><a href="https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d" rel="noopener" target="_blank">https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d</a></li></ul></section></article>
 </main>
 <script>
@@ -170,6 +171,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[tools/no-ai-slop]] — 英語版の同種の文章規範スキル（Peter Yang）。20+のAIスロップパターンを検出・除去
 - [[concepts/llm-japanese-style-hooks]] — @yugen_matuniのHook運用。全NGルールにグッドパターンを対で持たせた結果、書き直しの精度が上がったとしており、本ページの「例文を外すと強くは効かないかもしれない」という留保への実践的な回答にあたる
 - [[tools/suiko]] — 本ページが規範を指示側（SKILL.md）に置くのに対し、同種の規範（翻訳調・定型対比・リズム）を検査側の決定論的CLIに置いた日本語文書診断ツール（nwiizo製）
+- [[concepts/reasoning-vs-japanese-fluency]] — 本ページの規範が拾う翻訳調・文末単調は、推論力の高いモデルほど出やすいと@yugen_matuniが実測から主張。規範を足す前に日本語の自然なモデルを選ぶという生成側の対処
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

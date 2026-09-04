@@ -64,6 +64,7 @@ Anthropicが公開したマルチエージェント構成では：
 - [[business/ai-vertical-integration]]（AI企業垂直統合の産業分析）
 - [[concepts/recursive-self-improvement]]（Anthropic Institute論考：AIがAI開発を加速し後継機建造へ向かう内部証拠）
 - [[models/claude-fable-5]]（初の一般公開Mythosクラスモデル Fable 5 / Mythos 5・2026-06-10）
+- [[models/claude-fable-5-1]]（Fable 5.1 / Mythos 5.1・2026-09-01発表。詳細仕様は未収集）
 - [[companies/apple]]（WWDC26: XcodeのコードAI生成でClaudeが選択可能）
 - [[tools/claude-tag]]（SlackにClaudeをチームメイトとして常駐させる製品・2026-06-23発表）
 - [[business/founders-playbook]]（AIネイティブ・スタートアップ構築の公式プレイブック・Chat/Cowork/Code製品マトリクス）

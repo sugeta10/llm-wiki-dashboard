@@ -59,3 +59,4 @@ flowchart LR
 - [[concepts/team-leader-transition]] — 心理的安全性（エドモンドソン）・委譲＝投資など、関係の質を土台に置く点で通底するリーダー論
 - [[concepts/coachability]] — 正直さ・謙虚さ・素直さが学びを機能させる。関係の質が結果に先行するという発想と同根
 - [[concepts/output-first-learning]] — 出力前提で学びを血肉化する方法論（感想シートによる強制アウトプットと接続）
+- [[business/gitlab-ai-fluent-teams]] — 本ページの企業規模版。AIチャンピオンのコミュニティと実習ラボ付きワークショップで社内のAI活用を育てるGitLabのプレイブック

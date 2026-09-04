@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>timesfm-3</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="timesfm-3.md">Markdownで表示</a></div>
-  <div class="meta">models/timesfm-3 · models · <span title="2026-09-03">今日</span></div>
+  <div class="meta">models/timesfm-3 · models · <span title="2026-09-03">1日前</span></div>
   <article><h1>TimesFM-3</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Google Researchの時系列基盤モデル第3世代。複数ターゲット・過去共変量・既知の未来共変量を含む多変量予測をゼロショットで扱い、予測ホライズン全体を1回の順伝播で出す。Gift-Eval・FEV-Bench・Timeの3ベンチマークで事前学習済み基盤モデル中1位だとGoogle Researchが公表した（2026-08-31）。</p>
@@ -62,6 +62,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>GitHub（google-research/timesfm）とHugging Face（google/timesfm-3.0-pytorch）で公開</li>
 <li><strong>BigQuery統合が数週間以内</strong>に着地するとGoogle Researchは予告。それまではTimesFM-2.5をBigQueryのAI.FORECAST関数で単変量タスクに試せる</li>
 <li>ブログ末尾の謝辞で、Yichen Zhou・Petros Mol・Abhimanyu Das・Samet Oymakとの共同研究と記されている</li>
+<li>公開翌日に@sametkarakastrがGoogle Researchの発表を引用し、売上・需要・トラフィック・エネルギー・金融・センサーといった時間依存データがあれば過去データ・関連系列・キャンペーンや祝日や天気など未来が既知の変数を渡せる、とトルコ語で用途を要約して拡散した（bookmark 4,147・2026-09-02時点）</li>
 </ul>
 <h2>観察ログ（未検証）</h2>
 <ul>
@@ -84,7 +85,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/attention.html">attention</a></li>
 <li><a href="../papers/2025-kim-mhealth-stress-cosegmentation.html">2025-kim-mhealth-stress-cosegmentation</a></li>
 <li><a href="../tools/google-knowledge-catalog.html">google-knowledge-catalog</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094483372718580066" rel="noopener" target="_blank">https://x.com/i/web/status/2094483372718580066</a></li>
-<li><a href="https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/?utm_source=twitter&amp;utm_medium=social&amp;utm_campaign=social_post&amp;utm_content=gr-acct" rel="noopener" target="_blank">https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/?utm_source=twitter&amp;utm_medium=social&amp;utm_campaign=social_post&amp;utm_content=gr-acct</a></li></ul></section></article>
+<li><a href="https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/?utm_source=twitter&amp;utm_medium=social&amp;utm_campaign=social_post&amp;utm_content=gr-acct" rel="noopener" target="_blank">https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/?utm_source=twitter&amp;utm_medium=social&amp;utm_campaign=social_post&amp;utm_content=gr-acct</a></li>
+<li><a href="https://x.com/i/web/status/2094618027165659294" rel="noopener" target="_blank">https://x.com/i/web/status/2094618027165659294</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -145,6 +147,7 @@ Gift-Eval・FEV-Bench・Timeの3つの公開ベンチマークで、点予測と
 - GitHub（google-research/timesfm）とHugging Face（google/timesfm-3.0-pytorch）で公開
 - **BigQuery統合が数週間以内**に着地するとGoogle Researchは予告。それまではTimesFM-2.5をBigQueryのAI.FORECAST関数で単変量タスクに試せる
 - ブログ末尾の謝辞で、Yichen Zhou・Petros Mol・Abhimanyu Das・Samet Oymakとの共同研究と記されている
+- 公開翌日に@sametkarakastrがGoogle Researchの発表を引用し、売上・需要・トラフィック・エネルギー・金融・センサーといった時間依存データがあれば過去データ・関連系列・キャンペーンや祝日や天気など未来が既知の変数を渡せる、とトルコ語で用途を要約して拡散した（bookmark 4,147・2026-09-02時点）
 
 ## 観察ログ（未検証）
 

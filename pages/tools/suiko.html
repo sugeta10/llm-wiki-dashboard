@@ -65,7 +65,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> — 同じ「事前指示→事後検査」転換のHook運用版（正規表現500本超・グッドパターン対・止めずに直させる）。suikoは決定論的CLIとしてCI・エディタ側に置く実装</li>
 <li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a> — 規範を指示側（SKILL.md）に置くアプローチ。suikoは同種の規範を検査側に置き、判断を人間の文脈に残す</li>
 <li><a href="../tools/no-ai-slop.html">no-ai-slop</a> — 英語圏の同種パターン検出。LLMスキルによる推敲に対し、suikoは形態素解析ベースの再現可能な診断</li>
+<li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — 「禁止語の回避と自然な日本語は別物」という同じ線引きを、検査でなく生成側のモデル選択に適用した主張（@yugen_matuni）。どのモデルが最初から検出に引っかからない日本語を書くか</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
+<li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
 <li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li>
 <li><a href="../tools/no-ai-slop.html">no-ai-slop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2092039442680979889" rel="noopener" target="_blank">https://x.com/i/web/status/2092039442680979889</a></li>
 <li><a href="https://github.com/nwiizo/suiko" rel="noopener" target="_blank">https://github.com/nwiizo/suiko</a></li></ul></section></article>
@@ -131,6 +133,7 @@ flowchart LR
 - [[concepts/llm-japanese-style-hooks]] — 同じ「事前指示→事後検査」転換のHook運用版（正規表現500本超・グッドパターン対・止めずに直させる）。suikoは決定論的CLIとしてCI・エディタ側に置く実装
 - [[tools/japanese-tech-writing]] — 規範を指示側（SKILL.md）に置くアプローチ。suikoは同種の規範を検査側に置き、判断を人間の文脈に残す
 - [[tools/no-ai-slop]] — 英語圏の同種パターン検出。LLMスキルによる推敲に対し、suikoは形態素解析ベースの再現可能な診断
+- [[concepts/reasoning-vs-japanese-fluency]] — 「禁止語の回避と自然な日本語は別物」という同じ線引きを、検査でなく生成側のモデル選択に適用した主張（@yugen_matuni）。どのモデルが最初から検出に引っかからない日本語を書くか
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

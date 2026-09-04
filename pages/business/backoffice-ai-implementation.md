@@ -83,3 +83,4 @@ Step 5: 効果測定・横展開
 - [[companies/anthropic]]
 - [[business/keidanren-hr-ai-2026]]
 - [[tools/claude-managed-agents]]
+- [[business/gitlab-ai-fluent-teams]] — GitLabのAIフルエンシー育成プレイブック。「完璧な戦略を待たず走りながら整える」点と、個人の実装を組織能力へ移す課題（Skill化・ナレッジ集約）に対する大企業側の制度設計（連合型ガバナンス・学習パス・3指標）

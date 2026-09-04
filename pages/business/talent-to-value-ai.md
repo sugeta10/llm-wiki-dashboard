@@ -35,3 +35,4 @@
 - [[concepts/product-role-archetypes]] — 役割を職能から局面（Prototyper/Builder/Sweeper/Grower/Maintainer）へずらす分類。価値の単位を個人から外す本ページと同型
 - [[concepts/career-advice-ai-age]] — 同じ「価値の単位がシフトする」命題を、企業の人材評価でなく個人のキャリア選択の側から論じたPhil Chenの指針
 - [[concepts/action-space]] — 個人側の同型命題。AIは環境が許すアクションの幅を増幅するため、環境選択＝資本配分になる（上野山勝也／James Riney）
+- [[business/gitlab-ai-fluent-teams]] — 本ページの「人材側の実装」にあたる企業事例。GitLabがTalent DevelopmentとEnterprise Technologyを同じ場に置き、AIフルエンシーを組織能力として育てたプレイブック

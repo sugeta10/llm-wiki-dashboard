@@ -51,3 +51,4 @@ flowchart TD
 - [[concepts/context-engineering]] — Anthropic公式が示す「ルールより判断力に委ねる」lean prompt化の設計思想。本記事はその実害と対策を利用者側から実測した続報
 - [[concepts/claude-md-rules]] — 本記事が新system promptと噛み合わなくなったと指摘する「旧世代前提の明示ルール」体系そのもの
 - [[concepts/claude-code-instruction-methods]] — 指示を届ける7手段の公式フレーム。本記事の「output style vs hook」という届け方の実測はこのフレームの実践的検証にあたる
+- [[concepts/instruction-patch-lifecycle]] — 本記事が実測した「旧rulesが新世代と噛み合わない」現象を、指示は期限付きパッチでありモデル世代交代時に全部外して戻す（Boris Chernyの6か月リセット・Ablation）という運用原理の側から説明するもの（@kimuai08）

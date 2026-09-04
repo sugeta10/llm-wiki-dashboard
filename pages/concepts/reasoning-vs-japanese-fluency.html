@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>reasoning-vs-japanese-fluency - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>reasoning-vs-japanese-fluency</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="reasoning-vs-japanese-fluency.md">Markdownで表示</a></div>
+  <div class="meta">concepts/reasoning-vs-japanese-fluency · concepts · <span title="2026-09-04">今日</span></div>
+  <article><h1>推論力と日本語の自然さは別の能力（執筆モデルは手離れで選ぶ）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 論理的思考力の高さと自然な日本語を出力する力は別物で、人に読ませる日本語の最終成果物は「ベンチマーク上位のモデル」でなく「手直しが要らないモデル」で作るべきだ、と@yugen_matuniが自作の日本語検査Hookの実測をもとに主張する。</p>
+</blockquote>
+<p>@yugen_matuniは業務ドキュメントや記事の執筆に<a href="../models/claude-fable-5-1.html">Claude Fable 5.1</a>やKimi3といった上位モデルを使い、内容の正確さと論理の深さには不満がなかったが、生成された日本語をそのまま実務に使うには手動の推敲が要ったと述べる。その推敲の手戻りを減らすため、著者は自前の執筆環境に500本を超える日本語検査ルールを組み込み、エージェントがファイルを書き込んだ瞬間にHookで走らせている（この仕組みの詳細は<a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a>）。効果の具体性を欠いた記述、否定を重ねる対比表現、同じ文末が3文以上続く単調さを機械的に警告する厳格な検査網で、上位モデルに書かせると十数件の警告が出るのが日常で、警告を受けて書き直す往復が2〜3度続いていたという。</p>
+<p>この検査網を測定器として、著者はGoogleのGemini 3.8 Flashに同じプロンプトを送った。結果は警告ゼロだった。最初は検査の不具合を疑い検査スクリプトを手動で実行しても違反件数はゼロのままで、音読すると息継ぎしやすい長さで文が区切られ文末のリズムも配分されていた、と著者は書く。</p>
+<h2>主張: 思考の深さが日本語を堅くする</h2>
+<p>この実測から著者が導いた判断が、論理的思考力と自然な日本語の出力力は「まったく別の能力」だという分離である。GPT-5.6 SolやClaude Fable 5.1は複雑な要件の整理・前提の疑い・緻密なロジック構築に長ける一方、日本語として出力する段階では英語の思考プロセスを引きずった翻訳調や堅苦しい言い回しが出やすく、思考が深いゆえに修飾関係が長くなり息の詰まる文になる傾向がある、と著者は観察する。反対にGemini 3.8 Flashは語彙選択と文末リズムが最初から自然で助詞がこなれており、日本語話者が実務メールで使うような素直な文の並びを一発で出す、というのが著者の評価である。</p>
+<p>この分離は、<a href="../tools/suiko.html">suiko</a>の作者nwiizoが「禁止語の回避と自然な日本語は別物だ」と述べた線引きと同じ方向を向いている。suikoや@yugen_matuniのHookは「検出」を機械化する道具だが、本ページの主張はその手前で、どのモデルが検出に引っかからない文を最初から書くかという「生成側の適性」を問題にしている。</p>
+<h2>ボトルネックは出力待ちでなく手直し時間</h2>
+<p>著者はAI文書作成の実務を妨げる本当の要因を、生成速度でなく人間が推敲と修正に費やす時間だと位置づける。数秒で出力されても直すのに15分かかれば速いとは言えず、プロンプトの再調整や警告を読んで往復する時間もそのまま実務コストになる。Gemini 3.8 Flashでは最初から実用に耐える日本語が届くため、文末を整えたり接続詞を補ったりする手入れから解放され、構成の微調整と事実確認だけに専念できた、と著者は述べる。</p>
+<h2>モデル選択の基準: ベンチマークから手離れの良さへ</h2>
+<p>著者はこれまで新モデルが出るたびに推論ベンチマークを見て最も賢いモデルに文章を書かせてきたが、この経験で基準が変わったと明かす。複雑なアーキテクチャ設計や矛盾だらけの要件を紐解く作業には引き続きSolのような重厚なモデルを使い、人に読ませる日本語の報告書・提案書・記事といった最終成果物にはGemini 3.8 Flashを使う、という場面別の使い分けである。</p>
+<p>これは<a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a>の「上流は大モデル、下流の整形・量産は小モデル」というサンドイッチ配分と同じ形だが、根拠が違う。工程分解型モデル選択は下流に小モデルを置く理由をコストと速度に求めるのに対し、本ページは「小さいモデルのほうが日本語が自然で品質が上がる」という品質側の理由を挙げている。コストのために妥協して小モデルを使うのではなく、日本語の最終成果物では小モデルのほうが出来が良いという主張だと考えられる。</p>
+<p>なお記事末尾で著者は、この文章はすべてGemini 3.8 Flashが書いたと明記している。記事自体が主張のデモになっている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-02: 500本超の検査で「警告ゼロ」、上位モデルでは「十数件の警告・2〜3往復」は著者の自己申告で、試行回数・プロンプト・文書の種類は示されていない</li>
+<li>2026-09-02: 「最終成果物までの実質時間が上位モデル比で格段に短縮」は定量値なし。自分の環境で同じ検査を当てて再現するまでは単一ソースの主張として扱う</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>記事はGemini 3.8 Flashが書いたとされるが、「生成速度そのものよりも〜こそが」のような対比構文が本文に残っている。<a href="../tools/suiko.html">suiko</a>でこの記事自体を検査すると何件出るか</li>
+<li>このvaultのwikiページ・weekly・note原稿の生成を、推論はFable系で行い日本語の最終整形だけGemini 3.8 Flashに渡す2段構成にすると品質はどう変わるか。<a href="../concepts/notebooklm-claude-workflow.html">notebooklm-claude-workflow</a>のような橋渡しコストに見合うか</li>
+<li>「思考が深いほど修飾が長くなる」なら、同じモデルでもeffortを下げると日本語が自然になるのか。<a href="../concepts/claude-code-model-effort.html">claude-code-model-effort</a>の軸で検証できる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> — 本ページの測定器にあたる同著者の日本語検査Hook（500本超のNGルール・グッドパターン対・文末連続の集計検出）</li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 上流は大モデル・下流は小モデルの工程分解型配分。本ページはその下流配分に「小モデルのほうが日本語が自然」という品質側の根拠を足す</li>
+<li><a href="../tools/suiko.html">suiko</a> — 「禁止語の回避と自然な日本語は別物」という同じ線引きを、形態素解析ベースのCLIとして実装した検査ツール</li>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a> — 翻訳調・LLM臭を排除する日本語文章規範。本ページの検査網が拾う癖の規範側</li>
+<li><a href="../models/claude-fable-5-1.html">claude-fable-5-1</a> — 著者が推論には長けるが日本語出力は翻訳調が出やすいと評価したモデル</li>
+<li><a href="../companies/google.html">google</a> — Gemini 3.8 Flashの提供元</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/google.html">google</a></li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
+<li><a href="../models/claude-fable-5-1.html">claude-fable-5-1</a></li>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095293937686900995" rel="noopener" target="_blank">https://x.com/i/web/status/2095293937686900995</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 推論力と日本語の自然さは別の能力（執筆モデルは手離れで選ぶ）
+
+&gt; **TL;DR**: 論理的思考力の高さと自然な日本語を出力する力は別物で、人に読ませる日本語の最終成果物は「ベンチマーク上位のモデル」でなく「手直しが要らないモデル」で作るべきだ、と@yugen_matuniが自作の日本語検査Hookの実測をもとに主張する。
+
+@yugen_matuniは業務ドキュメントや記事の執筆に[[models/claude-fable-5-1|Claude Fable 5.1]]やKimi3といった上位モデルを使い、内容の正確さと論理の深さには不満がなかったが、生成された日本語をそのまま実務に使うには手動の推敲が要ったと述べる。その推敲の手戻りを減らすため、著者は自前の執筆環境に500本を超える日本語検査ルールを組み込み、エージェントがファイルを書き込んだ瞬間にHookで走らせている（この仕組みの詳細は[[concepts/llm-japanese-style-hooks]]）。効果の具体性を欠いた記述、否定を重ねる対比表現、同じ文末が3文以上続く単調さを機械的に警告する厳格な検査網で、上位モデルに書かせると十数件の警告が出るのが日常で、警告を受けて書き直す往復が2〜3度続いていたという。
+
+この検査網を測定器として、著者はGoogleのGemini 3.8 Flashに同じプロンプトを送った。結果は警告ゼロだった。最初は検査の不具合を疑い検査スクリプトを手動で実行しても違反件数はゼロのままで、音読すると息継ぎしやすい長さで文が区切られ文末のリズムも配分されていた、と著者は書く。
+
+## 主張: 思考の深さが日本語を堅くする
+
+この実測から著者が導いた判断が、論理的思考力と自然な日本語の出力力は「まったく別の能力」だという分離である。GPT-5.6 SolやClaude Fable 5.1は複雑な要件の整理・前提の疑い・緻密なロジック構築に長ける一方、日本語として出力する段階では英語の思考プロセスを引きずった翻訳調や堅苦しい言い回しが出やすく、思考が深いゆえに修飾関係が長くなり息の詰まる文になる傾向がある、と著者は観察する。反対にGemini 3.8 Flashは語彙選択と文末リズムが最初から自然で助詞がこなれており、日本語話者が実務メールで使うような素直な文の並びを一発で出す、というのが著者の評価である。
+
+この分離は、[[tools/suiko]]の作者nwiizoが「禁止語の回避と自然な日本語は別物だ」と述べた線引きと同じ方向を向いている。suikoや@yugen_matuniのHookは「検出」を機械化する道具だが、本ページの主張はその手前で、どのモデルが検出に引っかからない文を最初から書くかという「生成側の適性」を問題にしている。
+
+## ボトルネックは出力待ちでなく手直し時間
+
+著者はAI文書作成の実務を妨げる本当の要因を、生成速度でなく人間が推敲と修正に費やす時間だと位置づける。数秒で出力されても直すのに15分かかれば速いとは言えず、プロンプトの再調整や警告を読んで往復する時間もそのまま実務コストになる。Gemini 3.8 Flashでは最初から実用に耐える日本語が届くため、文末を整えたり接続詞を補ったりする手入れから解放され、構成の微調整と事実確認だけに専念できた、と著者は述べる。
+
+## モデル選択の基準: ベンチマークから手離れの良さへ
+
+著者はこれまで新モデルが出るたびに推論ベンチマークを見て最も賢いモデルに文章を書かせてきたが、この経験で基準が変わったと明かす。複雑なアーキテクチャ設計や矛盾だらけの要件を紐解く作業には引き続きSolのような重厚なモデルを使い、人に読ませる日本語の報告書・提案書・記事といった最終成果物にはGemini 3.8 Flashを使う、という場面別の使い分けである。
+
+これは[[concepts/llm-model-selection-strategy]]の「上流は大モデル、下流の整形・量産は小モデル」というサンドイッチ配分と同じ形だが、根拠が違う。工程分解型モデル選択は下流に小モデルを置く理由をコストと速度に求めるのに対し、本ページは「小さいモデルのほうが日本語が自然で品質が上がる」という品質側の理由を挙げている。コストのために妥協して小モデルを使うのではなく、日本語の最終成果物では小モデルのほうが出来が良いという主張だと考えられる。
+
+なお記事末尾で著者は、この文章はすべてGemini 3.8 Flashが書いたと明記している。記事自体が主張のデモになっている。
+
+## 観察ログ（未検証）
+
+- 2026-09-02: 500本超の検査で「警告ゼロ」、上位モデルでは「十数件の警告・2〜3往復」は著者の自己申告で、試行回数・プロンプト・文書の種類は示されていない
+- 2026-09-02: 「最終成果物までの実質時間が上位モデル比で格段に短縮」は定量値なし。自分の環境で同じ検査を当てて再現するまでは単一ソースの主張として扱う
+
+## 問い
+
+- 記事はGemini 3.8 Flashが書いたとされるが、「生成速度そのものよりも〜こそが」のような対比構文が本文に残っている。[[tools/suiko]]でこの記事自体を検査すると何件出るか
+- このvaultのwikiページ・weekly・note原稿の生成を、推論はFable系で行い日本語の最終整形だけGemini 3.8 Flashに渡す2段構成にすると品質はどう変わるか。[[concepts/notebooklm-claude-workflow]]のような橋渡しコストに見合うか
+- 「思考が深いほど修飾が長くなる」なら、同じモデルでもeffortを下げると日本語が自然になるのか。[[concepts/claude-code-model-effort]]の軸で検証できる
+
+## 関連
+
+- [[concepts/llm-japanese-style-hooks]] — 本ページの測定器にあたる同著者の日本語検査Hook（500本超のNGルール・グッドパターン対・文末連続の集計検出）
+- [[concepts/llm-model-selection-strategy]] — 上流は大モデル・下流は小モデルの工程分解型配分。本ページはその下流配分に「小モデルのほうが日本語が自然」という品質側の根拠を足す
+- [[tools/suiko]] — 「禁止語の回避と自然な日本語は別物」という同じ線引きを、形態素解析ベースのCLIとして実装した検査ツール
+- [[tools/japanese-tech-writing]] — 翻訳調・LLM臭を排除する日本語文章規範。本ページの検査網が拾う癖の規範側
+- [[models/claude-fable-5-1]] — 著者が推論には長けるが日本語出力は翻訳調が出やすいと評価したモデル
+- [[companies/google]] — Gemini 3.8 Flashの提供元
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -40,3 +40,4 @@ node --experimental-strip-types skills/skill-cleaner/scripts/skill-cleaner.ts --
 - [[tools/obsidian-skills]] — kepano製 Obsidian向けAgent Skills集（agentskills.io仕様準拠）
 - [[tools/gstack]] — Garry Tan製AIソフトウェアファクトリー（Claude Code拡張・23スキル収録）
 - [[tools/codexbar]] — 同じ steipete 製。Codex/Claude Code の使用制限残量をメニューバーに表示するアプリ
+- [[concepts/instruction-patch-lifecycle]] — 本ツールが検出する「スキル予算超過」がClaude Code側でどう現れるか（説明文の合計上限15,000文字を超えるとエラーなしで一覧から落ちる、と@kimuai08が報告）と、スキルを定期的に全部外して戻す運用の側

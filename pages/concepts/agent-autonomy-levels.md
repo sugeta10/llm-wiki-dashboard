@@ -47,3 +47,4 @@ flowchart LR
 - [[concepts/ai-session-handover]] — セッション跨ぎの記憶破綻に対する引き継ぎ設計
 - [[concepts/agent-memory-layer]] — 記憶をエージェントごとでなくユーザー所有の共有層に置く設計
 - [[concepts/claude-code-dynamic-workflows]] — プロンプトに「workflow」の一語を含めると並列オーケストレーションが起動する機能の詳細
+- [[concepts/ai-secretary-gateway]] — 「コピペ秘書（チャット内で預かる）」と「常駐秘書（定時連絡・外部受付・記憶・復旧）」を別物として線引きし、先に何を任せどこで止めるかを決める順番論（@dansyu_callenge）。本ページの段の上げ方と同じ切り口

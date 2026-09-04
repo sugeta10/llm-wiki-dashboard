@@ -38,3 +38,4 @@
 - [[tools/no-ai-slop]] — 英語版の同種の文章規範スキル（Peter Yang）。20+のAIスロップパターンを検出・除去
 - [[concepts/llm-japanese-style-hooks]] — @yugen_matuniのHook運用。全NGルールにグッドパターンを対で持たせた結果、書き直しの精度が上がったとしており、本ページの「例文を外すと強くは効かないかもしれない」という留保への実践的な回答にあたる
 - [[tools/suiko]] — 本ページが規範を指示側（SKILL.md）に置くのに対し、同種の規範（翻訳調・定型対比・リズム）を検査側の決定論的CLIに置いた日本語文書診断ツール（nwiizo製）
+- [[concepts/reasoning-vs-japanese-fluency]] — 本ページの規範が拾う翻訳調・文末単調は、推論力の高いモデルほど出やすいと@yugen_matuniが実測から主張。規範を足す前に日本語の自然なモデルを選ぶという生成側の対処

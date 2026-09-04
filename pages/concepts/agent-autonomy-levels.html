@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agent-autonomy-levels</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-autonomy-levels.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agent-autonomy-levels · concepts · <span title="2026-08-14">2週間前</span></div>
+  <div class="meta">concepts/agent-autonomy-levels · concepts · <span title="2026-08-14">3週間前</span></div>
   <article><h1>エージェント自律度の4レベル</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントかどうかは有無でなく4段の梯子であり、段を上げるのはモデルの乗り換えでなくツール・記憶・ループを1つずつ足すこと。</p>
@@ -67,11 +67,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/ai-session-handover.html">ai-session-handover</a> — セッション跨ぎの記憶破綻に対する引き継ぎ設計</li>
 <li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — 記憶をエージェントごとでなくユーザー所有の共有層に置く設計</li>
 <li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — プロンプトに「workflow」の一語を含めると並列オーケストレーションが起動する機能の詳細</li>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a> — 「コピペ秘書（チャット内で預かる）」と「常駐秘書（定時連絡・外部受付・記憶・復旧）」を別物として線引きし、先に何を任せどこで止めるかを決める順番論（@dansyu_callenge）。本ページの段の上げ方と同じ切り口</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a></li>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a></li>
 <li><a href="../concepts/graph-engineering.html">graph-engineering</a></li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
-<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
-<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2085024744387092973" rel="noopener" target="_blank">https://x.com/i/web/status/2085024744387092973</a></li></ul></section></article>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2085024744387092973" rel="noopener" target="_blank">https://x.com/i/web/status/2085024744387092973</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -141,6 +142,7 @@ flowchart LR
 - [[concepts/ai-session-handover]] — セッション跨ぎの記憶破綻に対する引き継ぎ設計
 - [[concepts/agent-memory-layer]] — 記憶をエージェントごとでなくユーザー所有の共有層に置く設計
 - [[concepts/claude-code-dynamic-workflows]] — プロンプトに「workflow」の一語を含めると並列オーケストレーションが起動する機能の詳細
+- [[concepts/ai-secretary-gateway]] — 「コピペ秘書（チャット内で預かる）」と「常駐秘書（定時連絡・外部受付・記憶・復旧）」を別物として線引きし、先に何を任せどこで止めるかを決める順番論（@dansyu_callenge）。本ページの段の上げ方と同じ切り口
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

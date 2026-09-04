@@ -40,6 +40,7 @@ Mythosを一般公開する代わりに立ち上げた防御的サイバーセ�
 
 - [[companies/anthropic]]
 - [[models/claude-fable-5]] — 後継。Mythos クラスを一般公開した版（Fable 5）とその同一基盤モデル（Mythos 5）。価格は半分以下に
+- [[models/claude-fable-5-1]] — Fable 5 / Mythos 5 の後継バージョン（2026-09-01 発表・詳細未収集）
 - [[models/claude-opus-4-7]]
 - [[concepts/agentic-coding]]
 - [[concepts/recursive-self-improvement]] — Mythos が52倍高速化・脆弱性発見・次手選択の主役として登場するAI開発加速の論考

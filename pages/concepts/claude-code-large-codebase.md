@@ -65,3 +65,4 @@ hooks の主な用途は「止めるスクリプト」ではなく**セットア
 - [[concepts/agentic-coding]] — AIが自律的にコードを書くスタイル全般
 - [[concepts/claude-code-launch-directory]] — 本ページの「インデックスを作らない」「サブディレクトリで起動する」を非エンジニアの作業フォルダまで一般化し、圧縮後に下位CLAUDE.mdが戻らない挙動まで踏み込んだ版
 - [[concepts/self-refining-skills]] — 自己改善ループの設計パターン
+- [[concepts/instruction-patch-lifecycle]] — 本ページの「3〜6ヶ月ごとの棚卸し」を「指示は期限付きパッチ」という原理と、全部外して戻すAblation手順まで展開したもの（Boris Cherny・@kimuai08）

@@ -12,7 +12,7 @@ Claudeを完全自律動作する「AIスタッフ」として機能させるた
 
 **5つのAIスタッフ原型**: Content Engine（コンテンツ研究・下書き）、Operations Manager（メール／ファイル／請求処理）、Code Reviewer（PR／バグ／ドキュメント）、Research Analyst（競合／市場／ニュース）、Customer Support Agent（チケットトリアージ／下書き）。著者は、Managed Agents の Dreaming 機能を使えば、AIスタッフ自身が自分のアウトプットを評価し改善するメタワークフローをセッション間で自動実行できるとする（[[concepts/managed-agents-dreams]]）。
 
-関連: [[concepts/managed-agents-dreams]] / [[tools/claude-managed-agents]] / [[concepts/claude-best-practices]] / [[concepts/multi-agent-patterns]] / [[concepts/workflow-cloning]]（自動化対象を Clone Score で選ぶ監査工程を先頭に置いた姉妹手順）
+関連: [[concepts/managed-agents-dreams]] / [[tools/claude-managed-agents]] / [[concepts/claude-best-practices]] / [[concepts/multi-agent-patterns]] / [[concepts/workflow-cloning]]（自動化対象を Clone Score で選ぶ監査工程を先頭に置いた姉妹手順） / [[concepts/ai-secretary-gateway]]（まずチャット内で「窓口」として仕事を預かる秘書を作り、使い方が固まってから常駐化へ進む順番論・@dansyu_callenge）
 
 ## 観察ログ（未検証）
 
