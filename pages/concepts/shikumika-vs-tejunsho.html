@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>shikumika-vs-tejunsho - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>shikumika-vs-tejunsho</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="shikumika-vs-tejunsho.md">Markdownで表示</a></div>
+  <div class="meta">concepts/shikumika-vs-tejunsho · concepts · <span title="2026-09-05">今日</span></div>
+  <article><h1>手順書と仕組みの違い — 「直した結果が戻る場所」を設計する</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 仕組み化とは手順を固定することではなく「直した結果が戻る場所」を決めることで、無印良品の店舗マニュアルMUJIGRAMが2,000ページあっても腐らないのは毎月直される場所があるからだ、と@smark_xが述べる。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  P[&quot;手順書&quot;] --&gt; E[&quot;例外が出た&quot;]
+  P --&gt; H[&quot;担当が変わった&quot;]
+  P --&gt; F[&quot;頻度が合わなくなった&quot;]
+  P --&gt; N[&quot;誰も見なくなった&quot;]
+  E --&gt; E1[&quot;1回目は「起きたこと」欄&lt;br/&gt;2回目で手順を更新&quot;]
+  H --&gt; H1[&quot;新任が読んで印をつける&lt;br/&gt;直した行に日付&quot;]
+  F --&gt; F1[&quot;頻度を下げる&lt;br/&gt;時間でなく条件で書く&quot;]
+  N --&gt; N1[&quot;消して「やめたこと」欄へ&lt;br/&gt;理由つきで移す&quot;]
+  E1 --&gt; P
+  H1 --&gt; P
+  F1 --&gt; P
+  N1 --&gt; P</pre>
+<p>「仕組み化して」と言われて手順書を書いた人は手順を書いただけで仕組みを作っていない、というのが@smark_xの出発点である。同氏が描く典型的な経路は、Notionに手順を10行書く、最初はみんな見る、1か月後に実態と3か所ズレて誰も開かない、「あのページ古いよね」と言われて直す気力が無くなる、結局口頭で聞かれるようになる、という流れだ。手順書が使われなくなるのは書き方のせいではなく、直した結果の戻り先（ブラッシュアップ機能）まで設計されていないからだ、と同氏は診断する。</p>
+<p>その対比として同氏が挙げるのが無印良品の店舗マニュアルMUJIGRAMである。@smark_xの紹介によれば、2,000ページを毎月20ページずつ直し、1年で全体の12%が入れ替わる。修正の材料は現場の改善提案で年に約2万件あり、作った当時の社長は「マニュアルは社員全員で作り、常に仕事の最高到達点であるべき」と言っているようだ、と同氏は伝聞の形で紹介する。同氏の読みは「2,000ページだから強いのではなく、毎月直される場所があるから腐らない」である。</p>
+<h2>仕組みが腐る4つの場面と対策</h2>
+<p>同氏は仕組みが腐る場面ごとに、放置した場合の結末と対策を並べる（ソースからの転記）。</p>
+<table>
+<thead>
+<tr>
+<th>場面</th>
+<th>放置すると</th>
+<th>対策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>例外が出た（「月末が土日だったら？」に手順書が答えていない）</td>
+<td>答えが口頭で溜まる。放置される月が出て仕組みが止まる</td>
+<td>1回目は手順書を更新せず「起きたこと」欄に書くだけ。2回目に来たら初めて手順を更新する。「◯◯のときは△△」と「なぜ△△か」のイレギュラールールを加え、理由があれば3つ目の例外は担当が自分で決められるようにする</td>
+</tr>
+<tr>
+<td>担当が変わった（前任者の「いつも通り」が手順書のどこにも無い）</td>
+<td>新しい人が自分のやり方で埋め、手順書が2つになる</td>
+<td>引き継ぎ初日に新しい人に手順書を読ませ「分からなかった行」に印をつけてもらう。前任者には聞き取らない（書いた本人には抜けている行が見えない）。印がついた行を直したら行末に日付を入れ、手順が2つ残ったときは内容でなく日付で正本を決める。1行目に「口頭で聞いたことは、ここに書くまで手順ではない」と書く</td>
+</tr>
+<tr>
+<td>頻度が合わなくなった（「毎朝更新」が忙しい週に3日飛ぶ）</td>
+<td>罪悪感でページごと見なくなる</td>
+<td>飛んだ日は直さず、頻度の行を「週1」に書き換える。下げても飛ぶなら時間で書くのをやめ、「数字が動いたら」「依頼が3件たまったら」のように「何が起きたら動くか」だけを書く</td>
+</tr>
+<tr>
+<td>誰も見なくなった（3週間、誰も開いていない）</td>
+<td>口頭で伝えることが正本になり、手順書は「昔のやり方」になる</td>
+<td>見なくなった手順は消し、「やめたこと」欄に理由と一緒に移す。理由が無いと半年後に誰かが善意で復活させる。見られない手順は内容でなく置き場所が悪いことが多いので、探しに行く物でなく作業の入口に出てくる物にする</td>
+</tr>
+</tbody>
+</table>
+<p>各対策の理由として同氏が添えるのは、例外を1回で手順に足すと二度と起きない例外で手順書が膨らむ、守れない頻度は願望なので即見直す、時間で書いた手順は忙しい日に必ず飛ぶ、の3点である。</p>
+<h2>置き場所は「探しに行く物」でなく「作業の入口に出てくる物」</h2>
+<p>同氏が挙げる入口の例は、Notionなら新規ページのテンプレート、チャットなら固定メッセージ、AIなら指示書の先頭、の3つである。作った物が手順書なのか仕組みなのかは2本の軸で分かり、「仕組み化する」とは右上ではなく左上だ、と同氏は述べるが、軸の定義は添付画像内にあり本ソースには捕捉されていない。</p>
+<h2>AIへの指示書も同じ</h2>
+<p>Claude Codeに渡す指示書も同じで、直したことが残る欄の無い指示書は翌日同じ間違いをする、と同氏は述べる。「属人化させない組織に」「エースの仕事観をマニュアルに」と意気込む少数精鋭の組織ほど、手順のマニュアル化をして1か月後に誰にも使われないことが起きている、というのが同氏の観察で、「直したことが残る場所」を意識して設計せよと締める。</p>
+<p>このwikiの運用に引き付けると、「起きたこと」欄は<a href="../concepts/self-refining-skills.html">self-refining-skills</a>のLESSONS.md（実行のたびに2行追記し次回読む）に、「やめたこと」欄と「見なくなった手順は消す」は<a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a>の「モデル世代が変わったら全部外してまだ失敗するものだけ戻す」に、戻り先を場面ごとに決める発想は<a href="../concepts/correction-routing.html">correction-routing</a>の6分類にあたると考えられる。@smark_xの記事が足しているのは「1回目は手順を更新しない」「時間でなく条件で書く」「消した理由を残す」という、戻り先を肥大させないための閾値の設計である。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-05: MUJIGRAMの「2,000ページ・毎月20ページ・年12%入れ替え・改善提案年約2万件」は@smark_x経由の二次情報で、無印良品側の一次資料は未参照</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultのwiki-ingest LESSONS.mdは「起きたこと」欄に相当するが、「2回目に来たら初めて手順を更新する」という昇格の閾値は決めていない。LESSONSからSKILL.md本文へ昇格させる条件を明文化するか</li>
+<li>CLAUDE.mdやスキルから消した指示を理由つきで残す「やめたこと」欄は存在するか。無ければどこに置くか</li>
+<li>「毎朝更新」のような時間ベースの手順が自分の運用にどれだけあるか。launchdの定時ingestを「ブックマークが溜まったら」という条件ベースに書き換えると何が変わるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — 「起きたこと」欄の実装形。実行のたびにLESSONS.mdへ2行追記し次回読む</li>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> — 「やめたこと」欄と「見なくなった手順は消す」に対応する、指示を育てて捨てるサイクル</li>
+<li><a href="../concepts/correction-routing.html">correction-routing</a> — 訂正の戻り先を6分類で決める。本ページの「直した結果が戻る場所」をチーム規模で設計した形</li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> — 指示ファイルは短く保ち決定を変える行だけ残す。「二度と起きない例外で手順書が膨らむ」への同じ警戒</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/correction-routing.html">correction-routing</a></li>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095717928893309025" rel="noopener" target="_blank">https://x.com/i/web/status/2095717928893309025</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 手順書と仕組みの違い — 「直した結果が戻る場所」を設計する
+
+&gt; **TL;DR**: 仕組み化とは手順を固定することではなく「直した結果が戻る場所」を決めることで、無印良品の店舗マニュアルMUJIGRAMが2,000ページあっても腐らないのは毎月直される場所があるからだ、と@smark_xが述べる。
+
+```mermaid
+flowchart LR
+  P[&quot;手順書&quot;] --&gt; E[&quot;例外が出た&quot;]
+  P --&gt; H[&quot;担当が変わった&quot;]
+  P --&gt; F[&quot;頻度が合わなくなった&quot;]
+  P --&gt; N[&quot;誰も見なくなった&quot;]
+  E --&gt; E1[&quot;1回目は「起きたこと」欄&lt;br/&gt;2回目で手順を更新&quot;]
+  H --&gt; H1[&quot;新任が読んで印をつける&lt;br/&gt;直した行に日付&quot;]
+  F --&gt; F1[&quot;頻度を下げる&lt;br/&gt;時間でなく条件で書く&quot;]
+  N --&gt; N1[&quot;消して「やめたこと」欄へ&lt;br/&gt;理由つきで移す&quot;]
+  E1 --&gt; P
+  H1 --&gt; P
+  F1 --&gt; P
+  N1 --&gt; P
+```
+
+「仕組み化して」と言われて手順書を書いた人は手順を書いただけで仕組みを作っていない、というのが@smark_xの出発点である。同氏が描く典型的な経路は、Notionに手順を10行書く、最初はみんな見る、1か月後に実態と3か所ズレて誰も開かない、「あのページ古いよね」と言われて直す気力が無くなる、結局口頭で聞かれるようになる、という流れだ。手順書が使われなくなるのは書き方のせいではなく、直した結果の戻り先（ブラッシュアップ機能）まで設計されていないからだ、と同氏は診断する。
+
+その対比として同氏が挙げるのが無印良品の店舗マニュアルMUJIGRAMである。@smark_xの紹介によれば、2,000ページを毎月20ページずつ直し、1年で全体の12%が入れ替わる。修正の材料は現場の改善提案で年に約2万件あり、作った当時の社長は「マニュアルは社員全員で作り、常に仕事の最高到達点であるべき」と言っているようだ、と同氏は伝聞の形で紹介する。同氏の読みは「2,000ページだから強いのではなく、毎月直される場所があるから腐らない」である。
+
+## 仕組みが腐る4つの場面と対策
+
+同氏は仕組みが腐る場面ごとに、放置した場合の結末と対策を並べる（ソースからの転記）。
+
+| 場面 | 放置すると | 対策 |
+|---|---|---|
+| 例外が出た（「月末が土日だったら？」に手順書が答えていない） | 答えが口頭で溜まる。放置される月が出て仕組みが止まる | 1回目は手順書を更新せず「起きたこと」欄に書くだけ。2回目に来たら初めて手順を更新する。「◯◯のときは△△」と「なぜ△△か」のイレギュラールールを加え、理由があれば3つ目の例外は担当が自分で決められるようにする |
+| 担当が変わった（前任者の「いつも通り」が手順書のどこにも無い） | 新しい人が自分のやり方で埋め、手順書が2つになる | 引き継ぎ初日に新しい人に手順書を読ませ「分からなかった行」に印をつけてもらう。前任者には聞き取らない（書いた本人には抜けている行が見えない）。印がついた行を直したら行末に日付を入れ、手順が2つ残ったときは内容でなく日付で正本を決める。1行目に「口頭で聞いたことは、ここに書くまで手順ではない」と書く |
+| 頻度が合わなくなった（「毎朝更新」が忙しい週に3日飛ぶ） | 罪悪感でページごと見なくなる | 飛んだ日は直さず、頻度の行を「週1」に書き換える。下げても飛ぶなら時間で書くのをやめ、「数字が動いたら」「依頼が3件たまったら」のように「何が起きたら動くか」だけを書く |
+| 誰も見なくなった（3週間、誰も開いていない） | 口頭で伝えることが正本になり、手順書は「昔のやり方」になる | 見なくなった手順は消し、「やめたこと」欄に理由と一緒に移す。理由が無いと半年後に誰かが善意で復活させる。見られない手順は内容でなく置き場所が悪いことが多いので、探しに行く物でなく作業の入口に出てくる物にする |
+
+各対策の理由として同氏が添えるのは、例外を1回で手順に足すと二度と起きない例外で手順書が膨らむ、守れない頻度は願望なので即見直す、時間で書いた手順は忙しい日に必ず飛ぶ、の3点である。
+
+## 置き場所は「探しに行く物」でなく「作業の入口に出てくる物」
+
+同氏が挙げる入口の例は、Notionなら新規ページのテンプレート、チャットなら固定メッセージ、AIなら指示書の先頭、の3つである。作った物が手順書なのか仕組みなのかは2本の軸で分かり、「仕組み化する」とは右上ではなく左上だ、と同氏は述べるが、軸の定義は添付画像内にあり本ソースには捕捉されていない。
+
+## AIへの指示書も同じ
+
+Claude Codeに渡す指示書も同じで、直したことが残る欄の無い指示書は翌日同じ間違いをする、と同氏は述べる。「属人化させない組織に」「エースの仕事観をマニュアルに」と意気込む少数精鋭の組織ほど、手順のマニュアル化をして1か月後に誰にも使われないことが起きている、というのが同氏の観察で、「直したことが残る場所」を意識して設計せよと締める。
+
+このwikiの運用に引き付けると、「起きたこと」欄は[[concepts/self-refining-skills]]のLESSONS.md（実行のたびに2行追記し次回読む）に、「やめたこと」欄と「見なくなった手順は消す」は[[concepts/instruction-patch-lifecycle]]の「モデル世代が変わったら全部外してまだ失敗するものだけ戻す」に、戻り先を場面ごとに決める発想は[[concepts/correction-routing]]の6分類にあたると考えられる。@smark_xの記事が足しているのは「1回目は手順を更新しない」「時間でなく条件で書く」「消した理由を残す」という、戻り先を肥大させないための閾値の設計である。
+
+## 観察ログ（未検証）
+
+- 2026-09-05: MUJIGRAMの「2,000ページ・毎月20ページ・年12%入れ替え・改善提案年約2万件」は@smark_x経由の二次情報で、無印良品側の一次資料は未参照
+
+## 問い
+
+- このvaultのwiki-ingest LESSONS.mdは「起きたこと」欄に相当するが、「2回目に来たら初めて手順を更新する」という昇格の閾値は決めていない。LESSONSからSKILL.md本文へ昇格させる条件を明文化するか
+- CLAUDE.mdやスキルから消した指示を理由つきで残す「やめたこと」欄は存在するか。無ければどこに置くか
+- 「毎朝更新」のような時間ベースの手順が自分の運用にどれだけあるか。launchdの定時ingestを「ブックマークが溜まったら」という条件ベースに書き換えると何が変わるか
+
+## 関連
+
+- [[concepts/self-refining-skills]] — 「起きたこと」欄の実装形。実行のたびにLESSONS.mdへ2行追記し次回読む
+- [[concepts/instruction-patch-lifecycle]] — 「やめたこと」欄と「見なくなった手順は消す」に対応する、指示を育てて捨てるサイクル
+- [[concepts/correction-routing]] — 訂正の戻り先を6分類で決める。本ページの「直した結果が戻る場所」をチーム規模で設計した形
+- [[concepts/skills-over-memory]] — 指示ファイルは短く保ち決定を変える行だけ残す。「二度と起きない例外で手順書が膨らむ」への同じ警戒
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

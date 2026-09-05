@@ -39,3 +39,4 @@
 - [[concepts/eval-loop]] — 「生成→基準で採点→閾値未満を止める」品質ゲート。no-ai-slopの`eval.md`自己検査は同型の実装
 - [[concepts/llm-japanese-style-hooks]] — 日本語版の同種の取り組みをスキル起動でなくPostToolUse Hookの常時検査として実装した運用例（NGルール500本超・グッドパターン対）
 - [[tools/suiko]] — 日本語のAI文体検出を、LLMスキルの推敲でなく形態素解析ベースの決定論的CLIとして実装したツール（nwiizo製・baseline差分・CI gate/SARIF対応）
+- [[concepts/kakeru-hito]] — 「AIで書いた記事をレビューできる書ける人がいない会社」の事例（@Books_Apps）。本スキルが解く問題の人間側の記述

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kakeru-hito - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>kakeru-hito</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="kakeru-hito.md">Markdownで表示</a></div>
+  <div class="meta">concepts/kakeru-hito · concepts · <span title="2026-09-05">今日</span></div>
+  <article><h1>「書ける人」と「書けない人」の違い — 主観の発信と推敲</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 「書ける人」とは言われたテーマを綺麗に書ける人でなく、読んだ人に行動を起こさせる文章を生む人で、その力量は主観の発信のうまさ、辛抱強い推敲、読者への親切心に集約される、と@Books_Appsが述べる。</p>
+</blockquote>
+<p>「書く」はここ10年で重要なスキルとなり、AIが普及した今も重要度は増している、というのが@Books_Appsの前提である。理由として同氏は、web上では検索エンジンとSNSにもとづいて人が動くため文字ベースのコミュニケーションが中心であること、電話がメール・チャットに取って代わられたこと、文字ベースの情報取得は動画より圧倒的に早いこと、複雑で厳密な科学的思考は文字や数式で記述されることを挙げる。「本を読まない人が増えている」のは事実かもしれないが「文字を読む人」は爆発的に増えている、と同氏は言う。一方で「書ける人」はそれほど増えておらず、「良いエンジニアの不足」と同様に「良い書き手の不足」は当分解消されない、というのが同氏の見立てである。</p>
+<h2>AIで書けば済むか — レビューできる人がいない会社</h2>
+<p>「AIで書けばいいじゃないか」という反論に対して同氏が挙げるのは、広告の費用対効果が合わなくなり、競合がwebコンテンツで成果を上げているのを見た経営陣が「コンテンツの発信を強化しろ」「内製でやれ」と命じた会社の事例である。社員が持ち回りでAIを使って記事を書き、コストは安いがビュー数が伸びない。原因は「AIから生み出されたコンテンツ」の良し悪しをレビューできる人がいなかったことで、この会社には「書ける人」が存在しないためレビューもできない、と同氏は述べる。こうした事例を数多く見てくると「文章で人を動かす」はそれほど簡単ではないと気づく、と同氏は言う。</p>
+<h2>主観の発信がうまい</h2>
+<p>同氏の定義する「書ける人」は、人から言われたテーマを綺麗に書ける人ではなく、書いたものが何かしらの行動を人に起こさせる文章を生み出す人である。そして本質的に「主観の発信」がうまい。記事は主観が強いほど面白く、主観が取り除かれた記事は「去勢された記事」だ、と同氏は言う。ただし独りよがりの記事は読者を不快にさせるので、主観に説得力を持たせるために書き手は工夫をし、その工夫こそが「書ける人」の力量そのものである。これは「人が何に興味を持っているか」を看破する力であり、コミュニケーション能力・プレゼンテーション能力でもあって、「書ける人」はテーマ設定、つまり現実の切り取り方からして違う、と同氏は述べる。</p>
+<h2>推敲を辛抱強くやる</h2>
+<p>「書ける人」は文章を生み出すことには苦労せず、むしろ常に「書きすぎ」であり、それをそのまま出さずに推敲を辛抱強くできる人だ、と同氏は言う。例として同氏は、太宰治『人間失格』の直筆原稿を収録した本（『直筆で読む「人間失格」』集英社新書ビジュアル版）を挙げ、作家の推敲の量が普通の人と全く異なると述べる。知人の物書きは「下書きを一万文字書いて、表に出るのはその3分の1程度」だと同氏は紹介する。</p>
+<p>同氏は村上春樹の発言として次を引用する（記事内の引用で、出典は記事に明記されていない）。</p>
+<blockquote>
+<p>推敲は僕の最大の趣味です。やっていて、こんな楽しいことはありません。推敲ができるから、小説を書いているようなものです。最初はだいたい流れのままにさっと書いてしまって、あとからしっかりと手を入れていきます。最初からみっちり書いていこうとすると、流れに乗ることがむずかしくなるので。推敲にとってもっとも大事なのは、親切心です。読者に対する親切心（サービス心ではなく親切心です）。それを失ったら、小説を書く意味なんてないんじゃないかと僕は思っているのですが。</p>
+</blockquote>
+<p>この「親切心」こそ「書ける人」が持っていなければならない資質だ、と同氏は述べる。読者を怒らせよう・騙そう・読解力のない読者は置いていっても構わない、という書き手は「書ける人」ではなく、読者はそういう書き手をすぐ見抜いて長期的に離れていく。訴えたいテーマがあり、表現の工夫に手間を惜しまず、情理を尽くして読者に伝えたいこだわりの持ち主が「書ける人」だ、というのが同氏のまとめである。</p>
+<p>「AIで書いた記事をレビューできる人がいない」という事例は、<a href="../tools/no-ai-slop.html">no-ai-slop</a>のようなAI文章の検出スキルが「書ける人」の代替になるかという問いを立てる。同スキルが除去するのは定型パターンであり、主観（現実の切り取り方）に説得力を持たせる工夫を足す側ではない、と考えられる。</p>
+<h2>問い</h2>
+<ul>
+<li>このwikiのページやweekly insightsは「主観が取り除かれた記事」になっていないか。帰属付きの解釈を本文に書く運用は、主観の発信の側か、去勢の側か</li>
+<li>「書ける人がいないとAI文章をレビューできない」は、AIによるレビューで代替できるか。定型パターンの除去と「主観に説得力を持たせる工夫」は別物か</li>
+<li>「下書き1万字→表に出るのは3分の1」の比率を、AIに書かせた下書きを自分が削る工程で計測する価値があるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/mendokusasa-barrier.html">mendokusasa-barrier</a> — 同著者（@Books_Apps）。あちらは行動を止める「面倒くさい」、こちらは書く力</li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a> — 他者視線前提でエッセイに仕上げる学習法。「主観＋読者への親切心」と同じ出力設計</li>
+<li><a href="../tools/no-ai-slop.html">no-ai-slop</a> — AI文章の定型パターン検出スキル。「レビューできる人がいない」問題の道具側</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/mendokusasa-barrier.html">mendokusasa-barrier</a></li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a></li>
+<li><a href="../tools/no-ai-slop.html">no-ai-slop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095773730064711843" rel="noopener" target="_blank">https://x.com/i/web/status/2095773730064711843</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 「書ける人」と「書けない人」の違い — 主観の発信と推敲
+
+&gt; **TL;DR**: 「書ける人」とは言われたテーマを綺麗に書ける人でなく、読んだ人に行動を起こさせる文章を生む人で、その力量は主観の発信のうまさ、辛抱強い推敲、読者への親切心に集約される、と@Books_Appsが述べる。
+
+「書く」はここ10年で重要なスキルとなり、AIが普及した今も重要度は増している、というのが@Books_Appsの前提である。理由として同氏は、web上では検索エンジンとSNSにもとづいて人が動くため文字ベースのコミュニケーションが中心であること、電話がメール・チャットに取って代わられたこと、文字ベースの情報取得は動画より圧倒的に早いこと、複雑で厳密な科学的思考は文字や数式で記述されることを挙げる。「本を読まない人が増えている」のは事実かもしれないが「文字を読む人」は爆発的に増えている、と同氏は言う。一方で「書ける人」はそれほど増えておらず、「良いエンジニアの不足」と同様に「良い書き手の不足」は当分解消されない、というのが同氏の見立てである。
+
+## AIで書けば済むか — レビューできる人がいない会社
+
+「AIで書けばいいじゃないか」という反論に対して同氏が挙げるのは、広告の費用対効果が合わなくなり、競合がwebコンテンツで成果を上げているのを見た経営陣が「コンテンツの発信を強化しろ」「内製でやれ」と命じた会社の事例である。社員が持ち回りでAIを使って記事を書き、コストは安いがビュー数が伸びない。原因は「AIから生み出されたコンテンツ」の良し悪しをレビューできる人がいなかったことで、この会社には「書ける人」が存在しないためレビューもできない、と同氏は述べる。こうした事例を数多く見てくると「文章で人を動かす」はそれほど簡単ではないと気づく、と同氏は言う。
+
+## 主観の発信がうまい
+
+同氏の定義する「書ける人」は、人から言われたテーマを綺麗に書ける人ではなく、書いたものが何かしらの行動を人に起こさせる文章を生み出す人である。そして本質的に「主観の発信」がうまい。記事は主観が強いほど面白く、主観が取り除かれた記事は「去勢された記事」だ、と同氏は言う。ただし独りよがりの記事は読者を不快にさせるので、主観に説得力を持たせるために書き手は工夫をし、その工夫こそが「書ける人」の力量そのものである。これは「人が何に興味を持っているか」を看破する力であり、コミュニケーション能力・プレゼンテーション能力でもあって、「書ける人」はテーマ設定、つまり現実の切り取り方からして違う、と同氏は述べる。
+
+## 推敲を辛抱強くやる
+
+「書ける人」は文章を生み出すことには苦労せず、むしろ常に「書きすぎ」であり、それをそのまま出さずに推敲を辛抱強くできる人だ、と同氏は言う。例として同氏は、太宰治『人間失格』の直筆原稿を収録した本（『直筆で読む「人間失格」』集英社新書ビジュアル版）を挙げ、作家の推敲の量が普通の人と全く異なると述べる。知人の物書きは「下書きを一万文字書いて、表に出るのはその3分の1程度」だと同氏は紹介する。
+
+同氏は村上春樹の発言として次を引用する（記事内の引用で、出典は記事に明記されていない）。
+
+&gt; 推敲は僕の最大の趣味です。やっていて、こんな楽しいことはありません。推敲ができるから、小説を書いているようなものです。最初はだいたい流れのままにさっと書いてしまって、あとからしっかりと手を入れていきます。最初からみっちり書いていこうとすると、流れに乗ることがむずかしくなるので。推敲にとってもっとも大事なのは、親切心です。読者に対する親切心（サービス心ではなく親切心です）。それを失ったら、小説を書く意味なんてないんじゃないかと僕は思っているのですが。
+
+この「親切心」こそ「書ける人」が持っていなければならない資質だ、と同氏は述べる。読者を怒らせよう・騙そう・読解力のない読者は置いていっても構わない、という書き手は「書ける人」ではなく、読者はそういう書き手をすぐ見抜いて長期的に離れていく。訴えたいテーマがあり、表現の工夫に手間を惜しまず、情理を尽くして読者に伝えたいこだわりの持ち主が「書ける人」だ、というのが同氏のまとめである。
+
+「AIで書いた記事をレビューできる人がいない」という事例は、[[tools/no-ai-slop]]のようなAI文章の検出スキルが「書ける人」の代替になるかという問いを立てる。同スキルが除去するのは定型パターンであり、主観（現実の切り取り方）に説得力を持たせる工夫を足す側ではない、と考えられる。
+
+## 問い
+
+- このwikiのページやweekly insightsは「主観が取り除かれた記事」になっていないか。帰属付きの解釈を本文に書く運用は、主観の発信の側か、去勢の側か
+- 「書ける人がいないとAI文章をレビューできない」は、AIによるレビューで代替できるか。定型パターンの除去と「主観に説得力を持たせる工夫」は別物か
+- 「下書き1万字→表に出るのは3分の1」の比率を、AIに書かせた下書きを自分が削る工程で計測する価値があるか
+
+## 関連
+
+- [[concepts/mendokusasa-barrier]] — 同著者（@Books_Apps）。あちらは行動を止める「面倒くさい」、こちらは書く力
+- [[concepts/output-first-learning]] — 他者視線前提でエッセイに仕上げる学習法。「主観＋読者への親切心」と同じ出力設計
+- [[tools/no-ai-slop]] — AI文章の定型パターン検出スキル。「レビューできる人がいない」問題の道具側
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

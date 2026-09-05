@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agent-command-wrappers</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-command-wrappers.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agent-command-wrappers · concepts · <span title="2026-08-15">2週間前</span></div>
+  <div class="meta">concepts/agent-command-wrappers · concepts · <span title="2026-08-15">3週間前</span></div>
   <article><h1>エージェント向けコマンドラッパー（定型操作の固定化）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントに毎回コマンドを組み立てさせず、定型操作を数十行のスクリプトに固めて1行で呼ばせる。効き目の正体は試行錯誤の削減ではなく<strong>ターン数の削減</strong>で、ステートレスなLLM APIではターンが増えるたびに全コンテキストが再送されるため。</p>

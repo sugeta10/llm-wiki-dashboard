@@ -14,3 +14,4 @@
 - [[tools/video-use]] — 先行する同系統OSS（素材フォルダ→final.mp4）
 - [[tools/claude-code]] — フル活用するハーネスの一つ
 - [[tools/video-shotcraft]] — Remotion系の新規制作特化スキル（Akari Videoは既存素材の編集寄り）
+- [[tools/ffmpeg-skill]] — 独立ツールでなくSkillとしてFFmpegをエージェントに使わせる別アプローチ（@kebura_P）

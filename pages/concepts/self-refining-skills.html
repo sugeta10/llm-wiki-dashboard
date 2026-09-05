@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>self-refining-skills</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="self-refining-skills.md">Markdownで表示</a></div>
-  <div class="meta">concepts/self-refining-skills · concepts · <span title="2026-05-08">3ヶ月前</span></div>
+  <div class="meta">concepts/self-refining-skills · concepts · <span title="2026-05-08">4ヶ月前</span></div>
   <article><h1>Self-Refining Skills（自己改善スキルループ）</h1>
 <p>LLM スキル（プロンプトテンプレート）に <strong>自己改善ループ</strong> を組み込む設計パターン。スキル実行のたびに学習記録を蓄積し、次回実行前に参照することで自動的に品質が向上する。</p>
 <h2>パターン実装</h2>
@@ -66,6 +66,7 @@ before next run, read the last 10
 <li><a href="../concepts/improver-skill-pattern.html">improver-skill-pattern</a> — Warpのinner/outerスキル型。フィードバック収集と改善提案を定期実行のimprover skillに外部化し、skill編集をPRで回す（Anthropic公式ブログ）</li>
 <li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> — 育てる（LESSONS.md蓄積）だけでなく、モデル更新時に全部外して戻す「捨てる」工程を対にする運用論。蓄積した教訓にも期限があるという視点</li>
 <li><a href="../design/consulting-pptx-skill.html">consulting-pptx-skill</a> — レビュー指摘を規約ファイル（約80項目）へ1行ずつ追記し、作成前に毎回読ませ出力後に機械チェックする蓄積ループ。本パターンをスライド制作に当てた実例</li>
+<li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a> — LESSONS.mdにあたる「起きたこと」欄を持ちつつ、1回目は本文を更新せず2回目で初めて手順化する、という昇格の閾値を足したマニュアル運用論（MUJIGRAM・@smark_x）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a></li>
 <li><a href="../concepts/agent-skill-eight-layer-design.html">agent-skill-eight-layer-design</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
@@ -133,6 +134,7 @@ before next run, read the last 10
 - [[concepts/improver-skill-pattern]] — Warpのinner/outerスキル型。フィードバック収集と改善提案を定期実行のimprover skillに外部化し、skill編集をPRで回す（Anthropic公式ブログ）
 - [[concepts/instruction-patch-lifecycle]] — 育てる（LESSONS.md蓄積）だけでなく、モデル更新時に全部外して戻す「捨てる」工程を対にする運用論。蓄積した教訓にも期限があるという視点
 - [[design/consulting-pptx-skill]] — レビュー指摘を規約ファイル（約80項目）へ1行ずつ追記し、作成前に毎回読ませ出力後に機械チェックする蓄積ループ。本パターンをスライド制作に当てた実例
+- [[concepts/shikumika-vs-tejunsho]] — LESSONS.mdにあたる「起きたこと」欄を持ちつつ、1回目は本文を更新せず2回目で初めて手順化する、という昇格の閾値を足したマニュアル運用論（MUJIGRAM・@smark_x）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

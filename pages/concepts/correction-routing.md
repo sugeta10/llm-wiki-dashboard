@@ -49,3 +49,4 @@ flowchart LR
 - [[concepts/company-brain]] — 同名概念の理論・状態層設計側（semantics/ontology分離・provenance/permissions/freshness）。本ページはその「作り方」の最小実装と訂正ループに焦点
 - [[concepts/skills-over-memory]] — 「各教訓はどこに住むべきか」という同じ仕分け問題の個人エージェント版。好み→ポリシー／手技→スキルの振り分けが対応する
 - [[concepts/agent-reflection-layer]] — 判断ログ→週次レビュー→パターン昇格という同型の「レビューを経た昇格」ループ。本ページはそれを個人からチーム横断へ広げた形
+- [[concepts/shikumika-vs-tejunsho]] — 「直した結果が戻る場所」を場面ごとに決めるマニュアル運用論。6分類の戻り先を、人間の手順書とAI指示書に共通する「起きたこと欄／やめたこと欄」に縮約した形（@smark_x）

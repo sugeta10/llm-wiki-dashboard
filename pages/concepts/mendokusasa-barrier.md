@@ -18,3 +18,4 @@
 - [[concepts/performance-habits-40s]] — 意志で頑張るのでなく悪習慣のトリガーを断つ「引き算」＝仕組み志向で強く重なる
 - [[business/human-nature-persuasion]] — 変わらない理由は「自分にできると思えない」＝着手コスト。「最初の一歩を与える」レバーで面倒（着手障壁）を下げる心理と同型
 - [[concepts/mental-conditioning]] — 意志力でなく仕組み・環境設計で行動を変える方向性が一致
+- [[concepts/kakeru-hito]] — 同著者（@Books_Apps）による「書ける人」論。主観の発信・推敲・読者への親切心

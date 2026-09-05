@@ -30,3 +30,4 @@
 - [[business/human-nature-persuasion]] — 「知識は現実でテストしないと意味がない＝出力して反応を見る」学習観で接続（Dan Koe）
 - [[concepts/ai-curriculum-builder]] — 「AIとの対話・カリキュラム化」で学習を定着させる別の学習法。本ページの「出力（エッセイ化）」で定着させる手法と対をなす
 - [[concepts/introvert-networking-strategy]] — @ysk_motoyamaが会食後の反省メモを発信の原材料に変える実践。出力を定着でなく人脈形成の手段として使う応用例
+- [[concepts/kakeru-hito]] — 「書ける人」＝主観を発信し推敲を惜しまず読者に親切な人（@Books_Apps）。他者視線前提の出力設計と同じ方向
