@@ -131,6 +131,8 @@ NTT DATA TECH は AWS Samples の [[tools/knowledge-acquisition-skill]] を使�
 
 @heynavtoor は、Karpathy の LLM Wiki が公開48時間で反響を呼んだ後、それを拡張した「LLM Wiki v2」という派生プロジェクトが登場したと投稿している。挙げられている追加機能はメモリライフサイクル管理・確信度スコアリング・知識グラフ・自動フック・忘却曲線の5つ。ただし投稿には実装者名やリポジトリへのリンクが含まれておらず、機能語の実体（設計・コード）は本ソースだけでは確認できない。
 
+その後 KiKi@AIx個人開発が、この投稿と Rohit Ghumare 名義の Gist を日本語で要約している。要約によれば v2 は7機能（確信度スコア・4層メモリ階層・型付きナレッジグラフ・ハイブリッド検索・自動フック・忘却曲線・矛盾解決）と6レベルの導入スペクトラムからなるアーキテクチャの青写真で、コード実装は含まない。詳細は [[concepts/llm-wiki-v2]] に切り出した。
+
 ## 問い
 
 - このwikiは launchd で自動 ingest している。tsurubee の「手動でソースを選ばないと理解ボトルネックが悪化する」という指摘と、自動 ingest（量）をどう両立させるか
@@ -156,3 +158,4 @@ NTT DATA TECH は AWS Samples の [[tools/knowledge-acquisition-skill]] を使�
 - [[concepts/evergreen-notes-claude-md]] — 同じMarkdown＋ウィキリンクの型を、ingest/query/lintの3操作でなく「回答直後にノート化を提案させる」会話起点の成長で回す実装（tokuhirom / 64p.org）
 - [[tools/knowledge-acquisition-skill]] — AWS Samples の実装。「資料1本追加で既存ページ7件が更新され回答構造も変わる」をファイル差分で実測した検証例
 - [[concepts/self-owned-ai-memory]] — AIとの会話記憶を Obsidian の日記と git 保存に置く個人の自作長期記憶（@zapabob_ouj）。Markdown とリポジトリを器にする本思想と同じ基盤に立ち、溜める対象が「読んだソース」でなく「会話と思考」である点が違う
+- [[concepts/llm-wiki-v2]] — 本パターンの弱点（全知識を永遠に等しく有効と扱う・200ページ超で index.md 検索が破綻・矛盾を検出しない）を確信度の減衰・メモリ階層・型付きグラフ・ハイブリッド検索・矛盾解決で補強する派生青写真

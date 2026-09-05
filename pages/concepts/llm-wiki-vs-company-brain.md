@@ -54,3 +54,4 @@ KiKi@AIx個人開発は、Karpathy式が前提とする「書き手が1人・ソ
 - [[concepts/agent-memory-layer]] — GBrain/CASSが登場する個人〜チーム規模の共有メモリ層の議論
 - [[tools/glean]] — Company Brainを製品として実装する代表例の1つ
 - [[tools/knowledge-acquisition-skill]] — AWS Samples の LLM Wiki 実装。Git差分レビューと原典照合を前提にする運用結論が、企業利用側の要件と接続する
+- [[concepts/llm-wiki-v2]] — 本文で「派生」として触れた LLM Wiki v2 の7機能（確信度スコア・4層メモリ・型付きグラフ・ハイブリッド検索・自動フック・忘却曲線・矛盾解決）と6レベル導入スペクトラムの詳細。同じ KiKi@AIx個人開発の別記事による要約
