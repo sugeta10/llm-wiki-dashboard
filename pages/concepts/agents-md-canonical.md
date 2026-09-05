@@ -27,16 +27,17 @@ flowchart TD
 
 したがって、Claude Code で育てた環境を Codex でも近い感覚で使うには、(1) 設定ファイルを AGENTS.md に一本化したうえで、(2) Codex 側の実行環境を別途足す、の二段構えになる。subagent の起動方法・hooks の有効化・外部連携の承認は、見た目が揃っても挙動確認が要る部分として残る。
 
-## 観察ログ（未検証）
+## 実践者の運用例
 
-- 2026-06-15: @showheyohtaki が、Claude の自動化系料金変更（2026-06-15 開始）をきっかけに、Claude Code 環境を Codex でも使えるよう棚卸しした実践として発信。自身は「10部門・約20人の仮想社員」をフォルダ構成（guidelines/=思想と文体、.claude/skills/=ワークフロー、.claude/agents/=専門エージェント、.claude/rules/=作業ルール、hooks/=自動実行、scripts/=よく使う処理）で運用していると述べる
-- 2026-06-15: 棚卸し→移行を人力で設計するのは重いとして、既存の Claude Code 環境を壊さず棚卸しして Codex 環境を構築する「一括移行プロンプト」を LINE で無料配布する旨を告知（プロンプト本体は本ソースには含まれない）
+- **@showheyohtaki（2026-06-15）**: Claude の自動化系料金変更（2026-06-15 開始）をきっかけに、Claude Code 環境を Codex でも使えるよう棚卸しした実践として発信。自身は「10部門・約20人の仮想社員」を、guidelines/（思想と文体）・.claude/skills/（ワークフロー）・.claude/agents/（専門エージェント）・.claude/rules/（作業ルール）・hooks/（自動実行）・scripts/（よく使う処理）というフォルダ構成で運用していると述べる。棚卸しから移行までを人力で設計するのは重いとして、既存の Claude Code 環境を壊さず棚卸しして Codex 環境を構築する「一括移行プロンプト」を LINE で無料配布すると告知した（プロンプト本体は本ソースに含まれない）
+- **@masahirochaen（チャエン・株式会社デジライズ代表、2026-08-29）**: Claude Code と Codex を併用する「二刀流」の設定と運用を保存版として投稿。大事なのは設定を丸ごとコピーすることではなく「どちらを使っても同じ基準で仕事が進む状態を作ること」だと述べ、こだわった点の筆頭に「共通ルールは AGENTS.md に1つだけ置く」を挙げる。残りの項目は添付画像内にあり本 vault では未捕捉。目的を設定の複製でなく基準の同一性に置く言い方は、本ページの「共通化できるのは指示文だけで、実行機構は別」という線引きと整合する（本 wiki の対応づけ）
 
 ## 問い
 
 - このvault（CLAUDE.md と AGENTS.md がシンボリックリンクで同一内容）は既に一本化されているが、Codex 等から開いたとき skills/hooks の実行機構までは移植されない。Codex 側で発火させたいスキル・フックはどれで、どう別登録するか
 - @import で取り込む方式と、シンボリックリンクで同一ファイルを指す方式は、保守性・他ツール互換でどちらが優れるか
 - 「共通指示 vs 実行機構」の線引きは、[[concepts/cursor-instruction-methods]] の5分類（AGENTS.md/Rules/Commands/Skills/Subagents）とどう対応するか
+- @masahirochaen の言う「どちらを使っても同じ基準で仕事が進む」を満たす最小の共通層はどこまでか。共通ルール（AGENTS.md）だけで足りるか、レビュー基準・完了条件まで揃えて初めて二刀流と言えるか
 
 ## 関連
 
@@ -47,3 +48,4 @@ flowchart TD
 - [[tools/claude-code]] — `@ファイル名` インポート機構を持つ側
 - [[tools/openai-codex]] — AGENTS.md を入口として読む側
 - [[concepts/open-knowledge-format]] — AGENTS.md/CLAUDE.md のアドホックな慣習を、フォーマットとして標準化しようとするGoogle Cloud発の仕様
+- [[concepts/gpt-6-astra-skills-prompting]] — Codex チーム（Eric Provencher）が GPT-6 Astra 向けに AGENTS.md の各行を「まだ要るか」で再審査せよと述べる指針。正本に集めた後の減らし方の側

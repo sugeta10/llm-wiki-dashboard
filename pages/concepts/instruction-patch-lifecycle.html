@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>instruction-patch-lifecycle</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="instruction-patch-lifecycle.md">Markdownで表示</a></div>
-  <div class="meta">concepts/instruction-patch-lifecycle · concepts · <span title="2026-09-03">2日前</span></div>
+  <div class="meta">concepts/instruction-patch-lifecycle · concepts · <span title="2026-09-03">3日前</span></div>
   <article><h1>指示はパッチ — 育てて捨てるサイクル（Agent Skillsの作り方）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: CLAUDE.md・スキル・フックに書く指示はすべて「モデルができなかったことを補うパッチ」で、パッチには期限がある。失敗のたびに書き足して育て、モデル世代が変わったら一度全部外してまだ失敗するものだけ戻す。Boris Chernyの「育てろ」と「6か月ごとに捨てろ」は矛盾ではなく同じサイクルの別工程だ、と@kimuai08が整理した。</p>
@@ -178,11 +178,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../design/ochiai-ai-design-method.html">ochiai-ai-design-method</a> — 同じ@kimuai08による別記事（AIデザイン指示の再構成）</li>
 <li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a> — Fable 5.1向け公式ガイドの業務向け7本。「7本を全部貼ると精度が落ちる・困っている1〜2本だけ選ぶ」は本ページの「投機的に追加しない」の利用者側の実践形（@Charlie_no_site）</li>
 <li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a> — 「見なくなった手順は消し、やめたこと欄に理由つきで移す」「例外は2回目で初めて手順化する」という、人間のマニュアル運用側の同じサイクル（MUJIGRAM・@smark_x）</li>
+<li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a> — Codex 側の同じサイクル。GPT-6 Astra のリリースを機にスキル・AGENTS.md の各指示を「まだ要るか」で再審査せよと Eric Provencher（OpenAI）が述べ、スキル過多で説明文が切り詰められる Codex 固有の挙動も報告</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
 <li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li>
 <li><a href="../concepts/context-engineering.html">context-engineering</a></li>
 <li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a></li>
-<li><a href="../concepts/lean-prompt-rules-adaptation.html">lean-prompt-rules-adaptation</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094554357161480367" rel="noopener" target="_blank">https://x.com/i/web/status/2094554357161480367</a></li></ul></section></article>
+<li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094554357161480367" rel="noopener" target="_blank">https://x.com/i/web/status/2094554357161480367</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -311,6 +312,7 @@ Boris Chernyは同じYC対談で、希少なスキルはもうプロンプトエ
 - [[design/ochiai-ai-design-method]] — 同じ@kimuai08による別記事（AIデザイン指示の再構成）
 - [[concepts/fable-5-1-prompting]] — Fable 5.1向け公式ガイドの業務向け7本。「7本を全部貼ると精度が落ちる・困っている1〜2本だけ選ぶ」は本ページの「投機的に追加しない」の利用者側の実践形（@Charlie_no_site）
 - [[concepts/shikumika-vs-tejunsho]] — 「見なくなった手順は消し、やめたこと欄に理由つきで移す」「例外は2回目で初めて手順化する」という、人間のマニュアル運用側の同じサイクル（MUJIGRAM・@smark_x）
+- [[concepts/gpt-6-astra-skills-prompting]] — Codex 側の同じサイクル。GPT-6 Astra のリリースを機にスキル・AGENTS.md の各指示を「まだ要るか」で再審査せよと Eric Provencher（OpenAI）が述べ、スキル過多で説明文が切り詰められる Codex 固有の挙動も報告
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

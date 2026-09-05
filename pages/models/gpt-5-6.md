@@ -62,3 +62,4 @@ ChatGPT・ChatGPT Work・Codex・APIで即日ロールアウト（24時間かけ
 - [[concepts/recursive-self-improvement]] — RSI測定のAnthropic側論考。本ページのRSI節と対
 - [[concepts/multi-agent-patterns]] — ultraの並列4エージェントが実装するマルチエージェント協調
 - [[concepts/prompt-caching]] — キャッシュ課金・寿命設計の対比先
+- [[models/gpt-6-astra]] — 次の世代番号。Codex チームは Sol／Luna 向けの指針が Astra を過剰に縛りうると述べる（発表内容は未収集）

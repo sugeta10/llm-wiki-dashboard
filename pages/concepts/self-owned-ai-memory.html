@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>self-owned-ai-memory</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="self-owned-ai-memory.md">Markdownで表示</a></div>
-  <div class="meta">concepts/self-owned-ai-memory · concepts · <span title="2026-09-05">今日</span></div>
+  <div class="meta">concepts/self-owned-ai-memory · concepts · <span title="2026-09-06">今日</span></div>
   <article><h1>自己所有AIメモリ（モデル非依存の長期記憶を自作する）</h1>
 <p>AIとの会話と思考を毎回自分の手元のストアに要約・構造化して溜め、どのモデル・どのサービスを使っても同じ記憶を参照させる個人設計。起点は @kuwagata_no_isi が動画つきで公開した自作システムで、本人は「AIはモデルをなんにしようとサービスが終わろうがこうすりゃ一生自分の物になる」と位置づけている。記憶をベンダーのメモリ機能に預けず自分側に置くことで、モデルの乗り換えやサービス終了があっても蓄積が失われない、という主張である。動画本体は本vaultに未収集で、以下の構成は @_mumumu がその動画を見て要約したポストに基づく。@_mumumu は本人を「AIの記憶ガチ勢」と呼び、次元数などに「だか」「らしい」と留保をつけて書いているため、細部の数値は本人の一次情報で確認が要る。</p>
 <h2>記憶パイプラインの構成（@_mumumu の要約）</h2>
@@ -55,6 +55,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>忘却か再合成か</h2>
 <p>長期記憶を長く運用すると、断片化・矛盾・肥大で質が落ちる問題がある（<a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a>）。この設計は「忘却曲線で古い記憶を減衰させる」ことで肥大に対処する。一方 <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> のページでは、Anthropic の Dreams（重複削除・矛盾解消を非破壊で行い新しいストアを生成する公式機能）と、@AI_masaou が解釈した OpenAI の Dreaming（忘却曲線で消すのでなく裏で読み直して書き直す）が、ともに「消す」でなく再合成の方向だと整理されている。個人の自作システムが忘却曲線と睡眠工程を組み合わせているのは、両方を持つ設計にも見える。忘却で量を抑え、睡眠で整合を取り直す分担だとすれば、Dreams 型の再合成と対立するのでなく補い合う可能性がある（本wikiの推論）。</p>
 <p>また、毎回の会話を要約して溜める工程は、<a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> が指摘する「経験をコンパクトな教訓に繰り返し書き直すと記憶が劣化する」経路と重なる。要約は1回で止め、原文（Obsidian の日記や git 履歴）を残しておくかどうかが劣化耐性を分けると考えられる。</p>
+<h2>LLM Wiki v2 との接続（@d5dx の返信）</h2>
+<p>@d5dx は @_mumumu のポストへの返信として、KiKi@AIx個人開発の記事「LLM Wiki v2」（<a href="../concepts/llm-wiki-v2.html">llm-wiki-v2</a>）へのリンクだけを添えた。返信に本文はなく、二つを並べる意図は明示されていない。ただ @_mumumu が要約した5工程（要約・ベクトル化・分類とタグ付け・関連付け・忘却曲線）と「無意識層」は、LLM Wiki v2 の7機能のうちセッション要約の圧縮・ハイブリッド検索のベクトル側・型付きナレッジグラフ・忘却曲線・自動フックにそれぞれ近い、と本 wiki では対応づけられる。個人が会話記憶のために組んだ構成と、Nav Toor と Rohit Ghumare が知識ベースの青写真として示した構成が、独立に同じ部品へ収束している点が、この返信が示す接続だと考えられる（本 wiki の推論）。</p>
 <h2>問い</h2>
 <ul>
 <li>忘却曲線で減衰させる設計と Dreams 型の再合成は、1年運用したときどちらが劣化しにくいか。「睡眠」工程の中身（要約のやり直しか、リンクの再計算か）を @zapabob_ouj か @kuwagata_no_isi の一次情報で確かめる</li>
@@ -68,12 +70,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a> — 「フロントのAIは交換可能、差は外部記憶の深さ」を思想（判断軸）の側で実装する方法論。本ページは会話記憶の側で同じ主張を実装する</li>
 <li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> — 教訓への繰り返し圧縮で記憶が劣化する研究。毎会話の要約工程が抱えるリスク</li>
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a> — Markdown と git を知識の器にする設計。@zapabob_ouj の Obsidian 日記＋git 保存と同じ基盤</li>
+<li><a href="../concepts/llm-wiki-v2.html">llm-wiki-v2</a> — 確信度減衰・4層メモリ・型付きグラフ・自動フックを持つ知識ベースの青写真。@d5dx が @_mumumu のポストへの返信で本記事をリンクし、本ページの構成と結びつけた</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../concepts/llm-wiki-v2.html">llm-wiki-v2</a></li>
 <li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li>
-<li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a></li>
-<li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095868860876665039" rel="noopener" target="_blank">https://x.com/i/web/status/2095868860876665039</a></li>
-<li><a href="https://x.com/i/web/status/2095900942428434802" rel="noopener" target="_blank">https://x.com/i/web/status/2095900942428434802</a></li></ul></section></article>
+<li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095868860876665039" rel="noopener" target="_blank">https://x.com/i/web/status/2095868860876665039</a></li>
+<li><a href="https://x.com/i/web/status/2095900942428434802" rel="noopener" target="_blank">https://x.com/i/web/status/2095900942428434802</a></li>
+<li><a href="https://x.com/i/web/status/2096001388048429427" rel="noopener" target="_blank">https://x.com/i/web/status/2096001388048429427</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -128,6 +132,10 @@ AIとの会話と思考を毎回自分の手元のストアに要約・構造化
 
 また、毎回の会話を要約して溜める工程は、[[papers/2026-peng-llm-memory-faulty]] が指摘する「経験をコンパクトな教訓に繰り返し書き直すと記憶が劣化する」経路と重なる。要約は1回で止め、原文（Obsidian の日記や git 履歴）を残しておくかどうかが劣化耐性を分けると考えられる。
 
+## LLM Wiki v2 との接続（@d5dx の返信）
+
+@d5dx は @_mumumu のポストへの返信として、KiKi@AIx個人開発の記事「LLM Wiki v2」（[[concepts/llm-wiki-v2]]）へのリンクだけを添えた。返信に本文はなく、二つを並べる意図は明示されていない。ただ @_mumumu が要約した5工程（要約・ベクトル化・分類とタグ付け・関連付け・忘却曲線）と「無意識層」は、LLM Wiki v2 の7機能のうちセッション要約の圧縮・ハイブリッド検索のベクトル側・型付きナレッジグラフ・忘却曲線・自動フックにそれぞれ近い、と本 wiki では対応づけられる。個人が会話記憶のために組んだ構成と、Nav Toor と Rohit Ghumare が知識ベースの青写真として示した構成が、独立に同じ部品へ収束している点が、この返信が示す接続だと考えられる（本 wiki の推論）。
+
 ## 問い
 
 - 忘却曲線で減衰させる設計と Dreams 型の再合成は、1年運用したときどちらが劣化しにくいか。「睡眠」工程の中身（要約のやり直しか、リンクの再計算か）を @zapabob_ouj か @kuwagata_no_isi の一次情報で確かめる
@@ -141,6 +149,7 @@ AIとの会話と思考を毎回自分の手元のストアに要約・構造化
 - [[concepts/philosophy-external-memory]] — 「フロントのAIは交換可能、差は外部記憶の深さ」を思想（判断軸）の側で実装する方法論。本ページは会話記憶の側で同じ主張を実装する
 - [[papers/2026-peng-llm-memory-faulty]] — 教訓への繰り返し圧縮で記憶が劣化する研究。毎会話の要約工程が抱えるリスク
 - [[concepts/llm-wiki]] — Markdown と git を知識の器にする設計。@zapabob_ouj の Obsidian 日記＋git 保存と同じ基盤
+- [[concepts/llm-wiki-v2]] — 確信度減衰・4層メモリ・型付きグラフ・自動フックを持つ知識ベースの青写真。@d5dx が @_mumumu のポストへの返信で本記事をリンクし、本ページの構成と結びつけた
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

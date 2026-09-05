@@ -106,3 +106,4 @@ Boris Chernyは同じYC対談で、希少なスキルはもうプロンプトエ
 - [[design/ochiai-ai-design-method]] — 同じ@kimuai08による別記事（AIデザイン指示の再構成）
 - [[concepts/fable-5-1-prompting]] — Fable 5.1向け公式ガイドの業務向け7本。「7本を全部貼ると精度が落ちる・困っている1〜2本だけ選ぶ」は本ページの「投機的に追加しない」の利用者側の実践形（@Charlie_no_site）
 - [[concepts/shikumika-vs-tejunsho]] — 「見なくなった手順は消し、やめたこと欄に理由つきで移す」「例外は2回目で初めて手順化する」という、人間のマニュアル運用側の同じサイクル（MUJIGRAM・@smark_x）
+- [[concepts/gpt-6-astra-skills-prompting]] — Codex 側の同じサイクル。GPT-6 Astra のリリースを機にスキル・AGENTS.md の各指示を「まだ要るか」で再審査せよと Eric Provencher（OpenAI）が述べ、スキル過多で説明文が切り詰められる Codex 固有の挙動も報告

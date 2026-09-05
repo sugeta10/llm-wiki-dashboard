@@ -68,3 +68,4 @@ Anthropicはこの簡略化を自動化する`claude doctor`コマンドをリ�
 - [[concepts/lean-prompt-rules-adaptation]] — 本記事が示すlean prompt化を利用者側から実測した続報。応答形式規定の消失で旧rulesが噛み合わなくなる実害と3つの書き直し対策（@u1）
 - [[concepts/instruction-patch-lifecycle]] — 同じ80%削減をBoris ChernyがAblation（全部外して繰り返し失敗する行だけ戻す）として語ったと@kimuai08が整理。利用者向けの「6か月ごとに全部外す」運用に落とした版
 - [[concepts/fable-5-1-prompting]] — 本記事の「ルールから判断へ」を業務利用者側から言い換えた版。Fable 5.1公式の推奨7本が中身でなく進め方だけを書いている、と@Charlie_no_siteが整理
+- [[concepts/gpt-6-astra-skills-prompting]] — OpenAI Codex チーム（Eric Provencher）が GPT-6 Astra 向けに語った同じ転換（手取り足取りの足場を外す・SKILL.md を薄いルーターに・AGENTS.md の各行を再審査）。本記事の「ルール→判断」「前もって全部→progressive disclosure」のベンダー違いの並行例

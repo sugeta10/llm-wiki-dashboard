@@ -89,7 +89,7 @@ KiKi@AIx個人開発は、すべての機能が必要になるのはナレッジ
 - [[concepts/llm-wiki-vs-company-brain]] — 同じ KiKi@AIx個人開発が v2 を「派生」の1つとして位置づけ、個人向けと企業向けの境界線を引いた記事
 - [[concepts/cerebras-knowledge-base]] — 全文＋埋め込み＋IDF＋鮮度減衰を RRF で融合する企業の社内知識ベース実装。v2 のハイブリッド検索と同型
 - [[concepts/managed-agents-dreams]] — メモリストアの重複削除・矛盾解消・インサイト統合を行う Anthropic の Dreams API。v2 の矛盾解決と統合に対応する
-- [[concepts/self-owned-ai-memory]] — 会話要約をベクトル化し忘却曲線で減衰させる個人の自作 AI 長期記憶。v2 の確信度減衰を会話記憶に適用した例
+- [[concepts/self-owned-ai-memory]] — 会話要約をベクトル化し忘却曲線で減衰させる個人の自作 AI 長期記憶。v2 の確信度減衰を会話記憶に適用した例。@d5dx が @_mumumu の要約ポストへの返信で本記事をリンクし、両者を結びつけた
 - [[concepts/agent-memory-layer]] — ユーザー所有の単一メモリ層を敷く設計思想。v2 のレベル6（複数エージェントの共有）と重なる
 - [[concepts/knowledge-graph-llm]] — 型付きエンティティと関係で LLM を補強する側の入門
 - [[concepts/context-graph-retrieval]] — RAG からコンテキストグラフへ移り k-hop 走査で「経路」を返す設計。v2 の型付きグラフ走査と方向が同じ

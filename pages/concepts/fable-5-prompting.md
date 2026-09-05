@@ -57,3 +57,4 @@ Fable 5 は指示追従・自律性・検証能力が Opus 4.8 より上がっ�
 - [[concepts/harness-engineering]] — 長ターン・非同期前提へのハーネス再設計の土台
 - [[concepts/finding-unknowns]] — Fable時代の運用フレーム（品質のボトルネックが人間側のunknown明確化へ移る）
 - [[concepts/fable-5-1-prompting]] — 後継バージョン Fable 5.1 向け公式ガイドの業務向け7本（@Charlie_no_site整理）。進捗報告・早期停止・境界・スコープの指針は本ページから引き継がれ、気取った言い回しの禁止・箇条書き制限・原文転写の抑制・既知の名前ほど調べさせる指針が加わった
+- [[concepts/gpt-6-astra-skills-prompting]] — OpenAI Codex 側の「指示を減らす」版。GPT-6 Astra 世代で旧モデル向けの足場が逆に効くとする Eric Provencher の指針で、本ページの反転（旧モデル向けの指示が過剰な足枷になる）と同型

@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>llm-wiki-v2</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="llm-wiki-v2.md">Markdownで表示</a></div>
-  <div class="meta">concepts/llm-wiki-v2 · concepts · <span title="2026-09-05">今日</span></div>
+  <div class="meta">concepts/llm-wiki-v2 · concepts · <span title="2026-09-06">今日</span></div>
   <article><h1>LLM Wiki v2：「忘れる力」を足した知識ベースの青写真</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Karpathy の LLM Wiki に確信度スコア・4層メモリ階層・型付きナレッジグラフ・ハイブリッド検索・自動フック・忘却曲線・矛盾解決の7機能を足し、「均等に重み付けされたページのフラットな集合」を「記憶が強化され、弱化し、統合され、忘却される生きたシステム」へ変えるアーキテクチャの青写真（Nav Toor の投稿と Rohit Ghumare の Gist を KiKi@AIx個人開発が要約）。</p>
@@ -121,7 +121,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-wiki-vs-company-brain.html">llm-wiki-vs-company-brain</a> — 同じ KiKi@AIx個人開発が v2 を「派生」の1つとして位置づけ、個人向けと企業向けの境界線を引いた記事</li>
 <li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a> — 全文＋埋め込み＋IDF＋鮮度減衰を RRF で融合する企業の社内知識ベース実装。v2 のハイブリッド検索と同型</li>
 <li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> — メモリストアの重複削除・矛盾解消・インサイト統合を行う Anthropic の Dreams API。v2 の矛盾解決と統合に対応する</li>
-<li><a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a> — 会話要約をベクトル化し忘却曲線で減衰させる個人の自作 AI 長期記憶。v2 の確信度減衰を会話記憶に適用した例</li>
+<li><a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a> — 会話要約をベクトル化し忘却曲線で減衰させる個人の自作 AI 長期記憶。v2 の確信度減衰を会話記憶に適用した例。@d5dx が @_mumumu の要約ポストへの返信で本記事をリンクし、両者を結びつけた</li>
 <li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — ユーザー所有の単一メモリ層を敷く設計思想。v2 のレベル6（複数エージェントの共有）と重なる</li>
 <li><a href="../concepts/knowledge-graph-llm.html">knowledge-graph-llm</a> — 型付きエンティティと関係で LLM を補強する側の入門</li>
 <li><a href="../concepts/context-graph-retrieval.html">context-graph-retrieval</a> — RAG からコンテキストグラフへ移り k-hop 走査で「経路」を返す設計。v2 の型付きグラフ走査と方向が同じ</li>
@@ -129,8 +129,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a></li>
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
 <li><a href="../concepts/llm-wiki-vs-company-brain.html">llm-wiki-vs-company-brain</a></li>
-<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
-<li><a href="../concepts/context-graph-retrieval.html">context-graph-retrieval</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/_kihonushi/n/n4fbd2bf11a1e" rel="noopener" target="_blank">https://note.com/_kihonushi/n/n4fbd2bf11a1e</a></li></ul></section></article>
+<li><a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/_kihonushi/n/n4fbd2bf11a1e" rel="noopener" target="_blank">https://note.com/_kihonushi/n/n4fbd2bf11a1e</a></li>
+<li><a href="https://x.com/i/web/status/2096001388048429427" rel="noopener" target="_blank">https://x.com/i/web/status/2096001388048429427</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -242,7 +243,7 @@ KiKi@AIx個人開発は、すべての機能が必要になるのはナレッジ
 - [[concepts/llm-wiki-vs-company-brain]] — 同じ KiKi@AIx個人開発が v2 を「派生」の1つとして位置づけ、個人向けと企業向けの境界線を引いた記事
 - [[concepts/cerebras-knowledge-base]] — 全文＋埋め込み＋IDF＋鮮度減衰を RRF で融合する企業の社内知識ベース実装。v2 のハイブリッド検索と同型
 - [[concepts/managed-agents-dreams]] — メモリストアの重複削除・矛盾解消・インサイト統合を行う Anthropic の Dreams API。v2 の矛盾解決と統合に対応する
-- [[concepts/self-owned-ai-memory]] — 会話要約をベクトル化し忘却曲線で減衰させる個人の自作 AI 長期記憶。v2 の確信度減衰を会話記憶に適用した例
+- [[concepts/self-owned-ai-memory]] — 会話要約をベクトル化し忘却曲線で減衰させる個人の自作 AI 長期記憶。v2 の確信度減衰を会話記憶に適用した例。@d5dx が @_mumumu の要約ポストへの返信で本記事をリンクし、両者を結びつけた
 - [[concepts/agent-memory-layer]] — ユーザー所有の単一メモリ層を敷く設計思想。v2 のレベル6（複数エージェントの共有）と重なる
 - [[concepts/knowledge-graph-llm]] — 型付きエンティティと関係で LLM を補強する側の入門
 - [[concepts/context-graph-retrieval]] — RAG からコンテキストグラフへ移り k-hop 走査で「経路」を返す設計。v2 の型付きグラフ走査と方向が同じ

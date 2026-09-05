@@ -54,6 +54,7 @@ GPT シリーズ・ChatGPT・Codex を開発する AI 企業。AGI の安全な�
 ## 関連
 
 - [[models/gpt-5-5]]
+- [[models/gpt-6-astra]]（新世代モデル。Codex チームがスキル・AGENTS.md 指針の前提に置く。発表本体・価格・ベンチマークは未収集）
 - [[tools/openai-codex]]
 - [[business/ai-vertical-integration]]
 - [[companies/anthropic]]

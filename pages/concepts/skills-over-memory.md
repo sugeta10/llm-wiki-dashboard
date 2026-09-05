@@ -61,3 +61,4 @@ flowchart TD
 - [[concepts/context-engineering]] — Anthropic Claude Codeチーム公式の「CLAUDE.mdに記憶させる→auto-memoryに任せる」逆転。本ページのpush/pull区分と同じ問題意識を公式側から裏付ける
 - [[concepts/correction-routing]] — 「各教訓はどこに住むべきか」の仕分けを、チームの訂正6分類（事実/決定/ポリシー/スキル/ワーカー/ゲート）＋人間レビューへ広げた版（@VibeMarketer_）
 - [[concepts/shikumika-vs-tejunsho]] — 「二度と起きない例外で手順書が膨らむ」への同じ警戒を業務手順書の側から述べる。例外は2回目で手順化・消した手順は理由つきで「やめたこと」欄へ（@smark_x）
+- [[concepts/gpt-6-astra-skills-prompting]] — OpenAI Codex チーム（Eric Provencher）が GPT-6 Astra 向けに「スキルは入れすぎない・AGENTS.md は各行をまだ要るかで再審査」と述べる指針。本ページの「決定を変える行だけ残す」規律を Codex 側から裏付ける

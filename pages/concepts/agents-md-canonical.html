@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agents-md-canonical</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agents-md-canonical.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agents-md-canonical · concepts · <span title="2026-06-17">2ヶ月前</span></div>
+  <div class="meta">concepts/agents-md-canonical · concepts · <span title="2026-09-06">今日</span></div>
   <article><h1>AGENTS.md を正本にしたクロスエージェント設定</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Claude Code（CLAUDE.md を読む）とCodex（AGENTS.md を読む）で同じフォルダ環境を使うには、共通指示を AGENTS.md に一本化し、CLAUDE.md は @AGENTS.md で取り込む薄い補足にする。ただし共通化できるのは「指示文」だけで、skills/agents/hooks/MCP のような実行機構はツールごとに入口を分ける必要がある。</p>
@@ -71,16 +71,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>したがって、Claude Code で育てた環境を Codex でも近い感覚で使うには、(1) 設定ファイルを AGENTS.md に一本化したうえで、(2) Codex 側の実行環境を別途足す、の二段構えになる。subagent の起動方法・hooks の有効化・外部連携の承認は、見た目が揃っても挙動確認が要る部分として残る。</p>
-<h2>観察ログ（未検証）</h2>
+<h2>実践者の運用例</h2>
 <ul>
-<li>2026-06-15: @showheyohtaki が、Claude の自動化系料金変更（2026-06-15 開始）をきっかけに、Claude Code 環境を Codex でも使えるよう棚卸しした実践として発信。自身は「10部門・約20人の仮想社員」をフォルダ構成（guidelines/=思想と文体、.claude/skills/=ワークフロー、.claude/agents/=専門エージェント、.claude/rules/=作業ルール、hooks/=自動実行、scripts/=よく使う処理）で運用していると述べる</li>
-<li>2026-06-15: 棚卸し→移行を人力で設計するのは重いとして、既存の Claude Code 環境を壊さず棚卸しして Codex 環境を構築する「一括移行プロンプト」を LINE で無料配布する旨を告知（プロンプト本体は本ソースには含まれない）</li>
+<li><strong>@showheyohtaki（2026-06-15）</strong>: Claude の自動化系料金変更（2026-06-15 開始）をきっかけに、Claude Code 環境を Codex でも使えるよう棚卸しした実践として発信。自身は「10部門・約20人の仮想社員」を、guidelines/（思想と文体）・.claude/skills/（ワークフロー）・.claude/agents/（専門エージェント）・.claude/rules/（作業ルール）・hooks/（自動実行）・scripts/（よく使う処理）というフォルダ構成で運用していると述べる。棚卸しから移行までを人力で設計するのは重いとして、既存の Claude Code 環境を壊さず棚卸しして Codex 環境を構築する「一括移行プロンプト」を LINE で無料配布すると告知した（プロンプト本体は本ソースに含まれない）</li>
+<li><strong>@masahirochaen（チャエン・株式会社デジライズ代表、2026-08-29）</strong>: Claude Code と Codex を併用する「二刀流」の設定と運用を保存版として投稿。大事なのは設定を丸ごとコピーすることではなく「どちらを使っても同じ基準で仕事が進む状態を作ること」だと述べ、こだわった点の筆頭に「共通ルールは AGENTS.md に1つだけ置く」を挙げる。残りの項目は添付画像内にあり本 vault では未捕捉。目的を設定の複製でなく基準の同一性に置く言い方は、本ページの「共通化できるのは指示文だけで、実行機構は別」という線引きと整合する（本 wiki の対応づけ）</li>
 </ul>
 <h2>問い</h2>
 <ul>
 <li>このvault（CLAUDE.md と AGENTS.md がシンボリックリンクで同一内容）は既に一本化されているが、Codex 等から開いたとき skills/hooks の実行機構までは移植されない。Codex 側で発火させたいスキル・フックはどれで、どう別登録するか</li>
 <li>@import で取り込む方式と、シンボリックリンクで同一ファイルを指す方式は、保守性・他ツール互換でどちらが優れるか</li>
 <li>「共通指示 vs 実行機構」の線引きは、<a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a> の5分類（AGENTS.md/Rules/Commands/Skills/Subagents）とどう対応するか</li>
+<li>@masahirochaen の言う「どちらを使っても同じ基準で仕事が進む」を満たす最小の共通層はどこまでか。共通ルール（AGENTS.md）だけで足りるか、レビュー基準・完了条件まで揃えて初めて二刀流と言えるか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -91,11 +92,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a> — <code>@ファイル名</code> インポート機構を持つ側</li>
 <li>openai-codex — AGENTS.md を入口として読む側</li>
 <li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a> — AGENTS.md/CLAUDE.md のアドホックな慣習を、フォーマットとして標準化しようとするGoogle Cloud発の仕様</li>
+<li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a> — Codex チーム（Eric Provencher）が GPT-6 Astra 向けに AGENTS.md の各行を「まだ要るか」で再審査せよと述べる指針。正本に集めた後の減らし方の側</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
 <li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a></li>
+<li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a></li>
 <li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a></li>
-<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
-<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066475738304279011" rel="noopener" target="_blank">https://x.com/i/web/status/2066475738304279011</a></li></ul></section></article>
+<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066475738304279011" rel="noopener" target="_blank">https://x.com/i/web/status/2066475738304279011</a></li>
+<li><a href="https://x.com/i/web/status/2093670963330363470" rel="noopener" target="_blank">https://x.com/i/web/status/2093670963330363470</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -145,16 +148,17 @@ flowchart TD
 
 したがって、Claude Code で育てた環境を Codex でも近い感覚で使うには、(1) 設定ファイルを AGENTS.md に一本化したうえで、(2) Codex 側の実行環境を別途足す、の二段構えになる。subagent の起動方法・hooks の有効化・外部連携の承認は、見た目が揃っても挙動確認が要る部分として残る。
 
-## 観察ログ（未検証）
+## 実践者の運用例
 
-- 2026-06-15: @showheyohtaki が、Claude の自動化系料金変更（2026-06-15 開始）をきっかけに、Claude Code 環境を Codex でも使えるよう棚卸しした実践として発信。自身は「10部門・約20人の仮想社員」をフォルダ構成（guidelines/=思想と文体、.claude/skills/=ワークフロー、.claude/agents/=専門エージェント、.claude/rules/=作業ルール、hooks/=自動実行、scripts/=よく使う処理）で運用していると述べる
-- 2026-06-15: 棚卸し→移行を人力で設計するのは重いとして、既存の Claude Code 環境を壊さず棚卸しして Codex 環境を構築する「一括移行プロンプト」を LINE で無料配布する旨を告知（プロンプト本体は本ソースには含まれない）
+- **@showheyohtaki（2026-06-15）**: Claude の自動化系料金変更（2026-06-15 開始）をきっかけに、Claude Code 環境を Codex でも使えるよう棚卸しした実践として発信。自身は「10部門・約20人の仮想社員」を、guidelines/（思想と文体）・.claude/skills/（ワークフロー）・.claude/agents/（専門エージェント）・.claude/rules/（作業ルール）・hooks/（自動実行）・scripts/（よく使う処理）というフォルダ構成で運用していると述べる。棚卸しから移行までを人力で設計するのは重いとして、既存の Claude Code 環境を壊さず棚卸しして Codex 環境を構築する「一括移行プロンプト」を LINE で無料配布すると告知した（プロンプト本体は本ソースに含まれない）
+- **@masahirochaen（チャエン・株式会社デジライズ代表、2026-08-29）**: Claude Code と Codex を併用する「二刀流」の設定と運用を保存版として投稿。大事なのは設定を丸ごとコピーすることではなく「どちらを使っても同じ基準で仕事が進む状態を作ること」だと述べ、こだわった点の筆頭に「共通ルールは AGENTS.md に1つだけ置く」を挙げる。残りの項目は添付画像内にあり本 vault では未捕捉。目的を設定の複製でなく基準の同一性に置く言い方は、本ページの「共通化できるのは指示文だけで、実行機構は別」という線引きと整合する（本 wiki の対応づけ）
 
 ## 問い
 
 - このvault（CLAUDE.md と AGENTS.md がシンボリックリンクで同一内容）は既に一本化されているが、Codex 等から開いたとき skills/hooks の実行機構までは移植されない。Codex 側で発火させたいスキル・フックはどれで、どう別登録するか
 - @import で取り込む方式と、シンボリックリンクで同一ファイルを指す方式は、保守性・他ツール互換でどちらが優れるか
 - 「共通指示 vs 実行機構」の線引きは、[[concepts/cursor-instruction-methods]] の5分類（AGENTS.md/Rules/Commands/Skills/Subagents）とどう対応するか
+- @masahirochaen の言う「どちらを使っても同じ基準で仕事が進む」を満たす最小の共通層はどこまでか。共通ルール（AGENTS.md）だけで足りるか、レビュー基準・完了条件まで揃えて初めて二刀流と言えるか
 
 ## 関連
 
@@ -165,6 +169,7 @@ flowchart TD
 - [[tools/claude-code]] — `@ファイル名` インポート機構を持つ側
 - [[tools/openai-codex]] — AGENTS.md を入口として読む側
 - [[concepts/open-knowledge-format]] — AGENTS.md/CLAUDE.md のアドホックな慣習を、フォーマットとして標準化しようとするGoogle Cloud発の仕様
+- [[concepts/gpt-6-astra-skills-prompting]] — Codex チーム（Eric Provencher）が GPT-6 Astra 向けに AGENTS.md の各行を「まだ要るか」で再審査せよと述べる指針。正本に集めた後の減らし方の側
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
