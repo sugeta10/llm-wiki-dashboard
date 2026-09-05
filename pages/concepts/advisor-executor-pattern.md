@@ -75,3 +75,4 @@ Na は記事末で、AIエージェントの実用化・プロダクション導
 - [[concepts/cost-effective-harness]] — 3パターンを「いつ使うと引き合うか」で実測した経済分析側（Lance Martin・Parameter Golf/BrowseComp）
 - [[concepts/fable-sprint-strategy]] — 実践者版のP/G/E配分（Planner/Evaluator=Fable・Generator=Opus/Sonnet）。週50%制限下の運用記録（@AI_masaou）
 - [[concepts/delegation-management-style]] — 本ページのOrchestratorパターンに近いDevin Fusion構成で、リードモデルをFable/Opusで入れ替えたコスト実験（Cognition社）
+- [[tools/herdr]] — Orchestratorパターンをマルチペインのハーネス製品上で組んだ実例。Fable 5.1が方向づけ・分解・サインオフ、Claude/Codexの各ペインが実装（@Voxyz_ai）

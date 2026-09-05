@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>self-owned-ai-memory - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>self-owned-ai-memory</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="self-owned-ai-memory.md">Markdownで表示</a></div>
+  <div class="meta">concepts/self-owned-ai-memory · concepts · <span title="2026-09-05">今日</span></div>
+  <article><h1>自己所有AIメモリ（モデル非依存の長期記憶を自作する）</h1>
+<p>AIとの会話と思考を毎回自分の手元のストアに要約・構造化して溜め、どのモデル・どのサービスを使っても同じ記憶を参照させる個人設計。起点は @kuwagata_no_isi が動画つきで公開した自作システムで、本人は「AIはモデルをなんにしようとサービスが終わろうがこうすりゃ一生自分の物になる」と位置づけている。記憶をベンダーのメモリ機能に預けず自分側に置くことで、モデルの乗り換えやサービス終了があっても蓄積が失われない、という主張である。動画本体は本vaultに未収集で、以下の構成は @_mumumu がその動画を見て要約したポストに基づく。@_mumumu は本人を「AIの記憶ガチ勢」と呼び、次元数などに「だか」「らしい」と留保をつけて書いているため、細部の数値は本人の一次情報で確認が要る。</p>
+<h2>記憶パイプラインの構成（@_mumumu の要約）</h2>
+<p>@_mumumu の要約によれば、システムは会話1回ごとに次の処理を通す。</p>
+<ul>
+<li><strong>要約</strong>: 毎回の会話と思考を要約させる</li>
+<li><strong>ベクトル化</strong>: 要約を1024次元程度のベクトルに押し込む（@_mumumu は「1024次元だか」と留保をつけている）</li>
+<li><strong>カテゴリ分けとタグ付け</strong>: 各件に分類とタグを付ける</li>
+<li><strong>関連付け</strong>: 件ごとに他の記憶と関連付ける</li>
+<li><strong>忘却</strong>: 古い記憶は忘却曲線を使って処理する</li>
+</ul>
+<p>これに加えて<strong>「無意識」に当たる層</strong>を設計しようとしており、常時動いていて人間が意識的に命令を送らなくても情報を取得し思考を関連付けているらしい、と @_mumumu は伝える。ユーザーの明示的な問いに応答する「意識的な想起」とは別に、バックグラウンドで記憶同士を結び直し続ける常駐プロセスを置く発想である。</p>
+<h2>別の実践者の同型実装（@zapabob_ouj）</h2>
+<p>@zapabob_ouj は @_mumumu のポストを引用し「わいのやってることとおなじやんけ」と述べ、自身の構成要素を列挙している。</p>
+<ul>
+<li>セマンティックグラフ記憶</li>
+<li>エビングハウス複合記憶</li>
+<li>Obsidian での日記作成</li>
+<li>ノードグラフ記憶の git 保存</li>
+<li>睡眠</li>
+</ul>
+<p>各要素の中身はポストでは説明されていない。語の対応から、「セマンティックグラフ」「ノードグラフ」は上の関連付けの層、「エビングハウス複合記憶」は忘却曲線の層、「睡眠」は稼働していない時間にまとめて整理する工程に当たると考えられる（ポストに説明はなく本wikiの推測）。記憶のグラフを Obsidian と git という汎用のテキスト基盤に置く点は、<a href="../concepts/llm-wiki.html">llm-wiki</a> が Markdown とリポジトリを知識の器にする選択と同じ土台に立っている。</p>
+<h2>忘却か再合成か</h2>
+<p>長期記憶を長く運用すると、断片化・矛盾・肥大で質が落ちる問題がある（<a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a>）。この設計は「忘却曲線で古い記憶を減衰させる」ことで肥大に対処する。一方 <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> のページでは、Anthropic の Dreams（重複削除・矛盾解消を非破壊で行い新しいストアを生成する公式機能）と、@AI_masaou が解釈した OpenAI の Dreaming（忘却曲線で消すのでなく裏で読み直して書き直す）が、ともに「消す」でなく再合成の方向だと整理されている。個人の自作システムが忘却曲線と睡眠工程を組み合わせているのは、両方を持つ設計にも見える。忘却で量を抑え、睡眠で整合を取り直す分担だとすれば、Dreams 型の再合成と対立するのでなく補い合う可能性がある（本wikiの推論）。</p>
+<p>また、毎回の会話を要約して溜める工程は、<a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> が指摘する「経験をコンパクトな教訓に繰り返し書き直すと記憶が劣化する」経路と重なる。要約は1回で止め、原文（Obsidian の日記や git 履歴）を残しておくかどうかが劣化耐性を分けると考えられる。</p>
+<h2>問い</h2>
+<ul>
+<li>忘却曲線で減衰させる設計と Dreams 型の再合成は、1年運用したときどちらが劣化しにくいか。「睡眠」工程の中身（要約のやり直しか、リンクの再計算か）を @zapabob_ouj か @kuwagata_no_isi の一次情報で確かめる</li>
+<li>「無意識層」（常時稼働・命令なしで取得と関連付け）は自分の vault では何に当たるか。launchd の定期 ingest と lint は近いが、作業中の会話へ能動的に関連記憶を差し込む経路は持っていない</li>
+<li>ベクトルDB・グラフの具体的な実装（ローカルか、どのDBか、埋め込みモデルは何か）は動画・実装ともに未収集</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — ユーザー所有の単一メモリ層を全エージェントの下に敷く設計思想。本ページはその個人DIY版で、所有の動機が「モデル・サービスからの独立」にある</li>
+<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> — ベンダー側の記憶再構成パイプライン。忘却でなく再合成という方向で、本ページの忘却曲線＋睡眠と対照になる</li>
+<li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a> — 「フロントのAIは交換可能、差は外部記憶の深さ」を思想（判断軸）の側で実装する方法論。本ページは会話記憶の側で同じ主張を実装する</li>
+<li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> — 教訓への繰り返し圧縮で記憶が劣化する研究。毎会話の要約工程が抱えるリスク</li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a> — Markdown と git を知識の器にする設計。@zapabob_ouj の Obsidian 日記＋git 保存と同じ基盤</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/llm-wiki.html">llm-wiki</a></li>
+<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li>
+<li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a></li>
+<li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095868860876665039" rel="noopener" target="_blank">https://x.com/i/web/status/2095868860876665039</a></li>
+<li><a href="https://x.com/i/web/status/2095900942428434802" rel="noopener" target="_blank">https://x.com/i/web/status/2095900942428434802</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 自己所有AIメモリ（モデル非依存の長期記憶を自作する）
+
+AIとの会話と思考を毎回自分の手元のストアに要約・構造化して溜め、どのモデル・どのサービスを使っても同じ記憶を参照させる個人設計。起点は @kuwagata_no_isi が動画つきで公開した自作システムで、本人は「AIはモデルをなんにしようとサービスが終わろうがこうすりゃ一生自分の物になる」と位置づけている。記憶をベンダーのメモリ機能に預けず自分側に置くことで、モデルの乗り換えやサービス終了があっても蓄積が失われない、という主張である。動画本体は本vaultに未収集で、以下の構成は @_mumumu がその動画を見て要約したポストに基づく。@_mumumu は本人を「AIの記憶ガチ勢」と呼び、次元数などに「だか」「らしい」と留保をつけて書いているため、細部の数値は本人の一次情報で確認が要る。
+
+## 記憶パイプラインの構成（@_mumumu の要約）
+
+@_mumumu の要約によれば、システムは会話1回ごとに次の処理を通す。
+
+- **要約**: 毎回の会話と思考を要約させる
+- **ベクトル化**: 要約を1024次元程度のベクトルに押し込む（@_mumumu は「1024次元だか」と留保をつけている）
+- **カテゴリ分けとタグ付け**: 各件に分類とタグを付ける
+- **関連付け**: 件ごとに他の記憶と関連付ける
+- **忘却**: 古い記憶は忘却曲線を使って処理する
+
+これに加えて**「無意識」に当たる層**を設計しようとしており、常時動いていて人間が意識的に命令を送らなくても情報を取得し思考を関連付けているらしい、と @_mumumu は伝える。ユーザーの明示的な問いに応答する「意識的な想起」とは別に、バックグラウンドで記憶同士を結び直し続ける常駐プロセスを置く発想である。
+
+## 別の実践者の同型実装（@zapabob_ouj）
+
+@zapabob_ouj は @_mumumu のポストを引用し「わいのやってることとおなじやんけ」と述べ、自身の構成要素を列挙している。
+
+- セマンティックグラフ記憶
+- エビングハウス複合記憶
+- Obsidian での日記作成
+- ノードグラフ記憶の git 保存
+- 睡眠
+
+各要素の中身はポストでは説明されていない。語の対応から、「セマンティックグラフ」「ノードグラフ」は上の関連付けの層、「エビングハウス複合記憶」は忘却曲線の層、「睡眠」は稼働していない時間にまとめて整理する工程に当たると考えられる（ポストに説明はなく本wikiの推測）。記憶のグラフを Obsidian と git という汎用のテキスト基盤に置く点は、[[concepts/llm-wiki]] が Markdown とリポジトリを知識の器にする選択と同じ土台に立っている。
+
+## 忘却か再合成か
+
+長期記憶を長く運用すると、断片化・矛盾・肥大で質が落ちる問題がある（[[papers/2026-peng-llm-memory-faulty]]）。この設計は「忘却曲線で古い記憶を減衰させる」ことで肥大に対処する。一方 [[concepts/managed-agents-dreams]] のページでは、Anthropic の Dreams（重複削除・矛盾解消を非破壊で行い新しいストアを生成する公式機能）と、@AI_masaou が解釈した OpenAI の Dreaming（忘却曲線で消すのでなく裏で読み直して書き直す）が、ともに「消す」でなく再合成の方向だと整理されている。個人の自作システムが忘却曲線と睡眠工程を組み合わせているのは、両方を持つ設計にも見える。忘却で量を抑え、睡眠で整合を取り直す分担だとすれば、Dreams 型の再合成と対立するのでなく補い合う可能性がある（本wikiの推論）。
+
+また、毎回の会話を要約して溜める工程は、[[papers/2026-peng-llm-memory-faulty]] が指摘する「経験をコンパクトな教訓に繰り返し書き直すと記憶が劣化する」経路と重なる。要約は1回で止め、原文（Obsidian の日記や git 履歴）を残しておくかどうかが劣化耐性を分けると考えられる。
+
+## 問い
+
+- 忘却曲線で減衰させる設計と Dreams 型の再合成は、1年運用したときどちらが劣化しにくいか。「睡眠」工程の中身（要約のやり直しか、リンクの再計算か）を @zapabob_ouj か @kuwagata_no_isi の一次情報で確かめる
+- 「無意識層」（常時稼働・命令なしで取得と関連付け）は自分の vault では何に当たるか。launchd の定期 ingest と lint は近いが、作業中の会話へ能動的に関連記憶を差し込む経路は持っていない
+- ベクトルDB・グラフの具体的な実装（ローカルか、どのDBか、埋め込みモデルは何か）は動画・実装ともに未収集
+
+## 関連
+
+- [[concepts/agent-memory-layer]] — ユーザー所有の単一メモリ層を全エージェントの下に敷く設計思想。本ページはその個人DIY版で、所有の動機が「モデル・サービスからの独立」にある
+- [[concepts/managed-agents-dreams]] — ベンダー側の記憶再構成パイプライン。忘却でなく再合成という方向で、本ページの忘却曲線＋睡眠と対照になる
+- [[concepts/philosophy-external-memory]] — 「フロントのAIは交換可能、差は外部記憶の深さ」を思想（判断軸）の側で実装する方法論。本ページは会話記憶の側で同じ主張を実装する
+- [[papers/2026-peng-llm-memory-faulty]] — 教訓への繰り返し圧縮で記憶が劣化する研究。毎会話の要約工程が抱えるリスク
+- [[concepts/llm-wiki]] — Markdown と git を知識の器にする設計。@zapabob_ouj の Obsidian 日記＋git 保存と同じ基盤
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

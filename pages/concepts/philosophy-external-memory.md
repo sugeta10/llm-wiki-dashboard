@@ -63,3 +63,4 @@ flowchart LR
 - [[concepts/claude-projects-blueprint]] — Identity/Rules/Knowledge Files で自分の声・基準・読者を学習させAIを社員化する6パート設計。思想哲学DBの実装版に近い
 - [[concepts/llm-personality-injection]] — ペルソナ・性格をプロンプトに注入する手法。本ページが「文体（服）」として区別し、思想（骨格）と対比する対象
 - [[concepts/obsidian-personal-os]] — 個人の知識・文脈を構造化して外部に置くパーソナルOSの設計（棲み分け対象）
+- [[concepts/self-owned-ai-memory]] — 「フロントのAIは交換可能」を思想でなく会話記憶の側で実装する個人事例。@kuwagata_no_isi は「モデルをなんにしようとサービスが終わろうが一生自分の物」と位置づける

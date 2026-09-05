@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-fable-5-1</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-fable-5-1.md">Markdownで表示</a></div>
-  <div class="meta">models/claude-fable-5-1 · models · <span title="2026-09-04">1日前</span></div>
+  <div class="meta">models/claude-fable-5-1 · models · <span title="2026-09-05">今日</span></div>
   <article><h1>Claude Fable 5.1 / Mythos 5.1</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> 公式アカウント（@claudeai）が2026-09-01に発表した <a href="../models/claude-fable-5.html">Fable 5 / Mythos 5</a> の後継バージョン。公式は Fable 5.1 と Mythos 5.1 を同時に紹介し、「コーディングと知識労働のための世界で最も先進的なモデル」と位置づけている。</p>
 <p>発表ポストで捕捉できたのはこの一文と動画リンクのみで、価格・ベンチマーク・提供範囲・Fable 5 からの変更点はまだ本vaultに未収集。具体的な仕様は Anthropic 公式ブログやシステムカードなど一次ソースの追加を待つ。</p>
@@ -38,6 +38,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li>@Charlie_no_siteは、Anthropicの5.1向け公式プロンプトガイドに推奨プロンプトが14本（開発者向け7本・業務向け7本）あり、業務向けはすべて仕事の中身でなく進め方だけを指定していると整理した。途中経過を出さない・途中で止まる・原文をそのまま写す（5.1で増えたと公式が明記、と著者）などの癖への対処が並ぶ。詳細は<a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a></li>
 <li>@yugen_matuniは、Fable 5.1の内容の正確さと論理の深さは申し分ないが日本語出力には翻訳調や堅い言い回しが出やすく、自作の日本語検査Hook（500本超）で十数件の警告が出るのが日常だったと述べる。推論力と日本語の自然さは別能力だという主張は<a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
+<li>@Voxyz_aiは、Fable 5.1がクォータを早く使い切りすぎるときは実装から外し、<a href="../tools/herdr.html">herdr</a>のマルチペイン構成でコーディネーター（方向づけ・タスク分解・最終サインオフ）に回すと述べる。実装はClaude・Codexの各ペインが担う</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -53,11 +54,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/claude-opus-5.html">claude-opus-5</a> — 同社の別ライン。Fable 5 のフロンティア知能に近い性能を半額で提供すると公式が位置づける</li>
 <li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a> — 5.1向け公式プロンプトガイドの業務向け7本を@Charlie_no_siteが日本語で整理したもの</li>
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — 推論には長けるが日本語出力は翻訳調が出やすい、という@yugen_matuniの第三者評価</li>
+<li><a href="../tools/herdr.html">herdr</a> — クォータ消費が速い5.1を司令塔に限定し、実装を他エージェントのペインへ回す運用（@Voxyz_ai）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a></li>
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
 <li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
-<li><a href="../models/claude-mythos.html">claude-mythos</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094848572143407483" rel="noopener" target="_blank">https://x.com/i/web/status/2094848572143407483</a></li></ul></section></article>
+<li><a href="../models/claude-mythos.html">claude-mythos</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094848572143407483" rel="noopener" target="_blank">https://x.com/i/web/status/2094848572143407483</a></li>
+<li><a href="https://x.com/i/web/status/2095917499430711319" rel="noopener" target="_blank">https://x.com/i/web/status/2095917499430711319</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -90,6 +93,7 @@ Fable と Mythos を対で発表する形は、Fable 5 / Mythos 5 のときの�
 
 - @Charlie_no_siteは、Anthropicの5.1向け公式プロンプトガイドに推奨プロンプトが14本（開発者向け7本・業務向け7本）あり、業務向けはすべて仕事の中身でなく進め方だけを指定していると整理した。途中経過を出さない・途中で止まる・原文をそのまま写す（5.1で増えたと公式が明記、と著者）などの癖への対処が並ぶ。詳細は[[concepts/fable-5-1-prompting]]
 - @yugen_matuniは、Fable 5.1の内容の正確さと論理の深さは申し分ないが日本語出力には翻訳調や堅い言い回しが出やすく、自作の日本語検査Hook（500本超）で十数件の警告が出るのが日常だったと述べる。推論力と日本語の自然さは別能力だという主張は[[concepts/reasoning-vs-japanese-fluency]]
+- @Voxyz_aiは、Fable 5.1がクォータを早く使い切りすぎるときは実装から外し、[[tools/herdr]]のマルチペイン構成でコーディネーター（方向づけ・タスク分解・最終サインオフ）に回すと述べる。実装はClaude・Codexの各ペインが担う
 
 ## 問い
 
@@ -105,6 +109,7 @@ Fable と Mythos を対で発表する形は、Fable 5 / Mythos 5 のときの�
 - [[models/claude-opus-5]] — 同社の別ライン。Fable 5 のフロンティア知能に近い性能を半額で提供すると公式が位置づける
 - [[concepts/fable-5-1-prompting]] — 5.1向け公式プロンプトガイドの業務向け7本を@Charlie_no_siteが日本語で整理したもの
 - [[concepts/reasoning-vs-japanese-fluency]] — 推論には長けるが日本語出力は翻訳調が出やすい、という@yugen_matuniの第三者評価
+- [[tools/herdr]] — クォータ消費が速い5.1を司令塔に限定し、実装を他エージェントのペインへ回す運用（@Voxyz_ai）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

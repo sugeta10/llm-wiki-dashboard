@@ -84,3 +84,4 @@ Claude の Dreams と同型の発想が ChatGPT 側にも現れている。OpenA
 - [[papers/2026-peng-llm-memory-faulty]]（LLMエージェントのメモリ劣化問題 — Dreamsが解決しようとしている課題と対応）
 - [[concepts/multi-agent-patterns]]（マルチエージェント環境でのメモリ共有設計）
 - [[concepts/agent-memory-layer]]（複数エージェント間でメモリを共有する設計思想 — Dreamsはその「保持価値の選別」を担いうる）
+- [[concepts/self-owned-ai-memory]]（個人が自作する長期記憶。忘却曲線＋「睡眠」工程を採る設計で、本ページの「忘却でなく再合成」と対照になる）

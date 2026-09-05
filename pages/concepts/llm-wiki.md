@@ -155,3 +155,4 @@ NTT DATA TECH は AWS Samples の [[tools/knowledge-acquisition-skill]] を使�
 - [[concepts/llm-wiki-vs-company-brain]] — 個人・小チーム向けのKarpathy式と企業向けCompany Brainの分岐点を権限・鮮度等の5点で整理し、4つの質問による判定基準を提示
 - [[concepts/evergreen-notes-claude-md]] — 同じMarkdown＋ウィキリンクの型を、ingest/query/lintの3操作でなく「回答直後にノート化を提案させる」会話起点の成長で回す実装（tokuhirom / 64p.org）
 - [[tools/knowledge-acquisition-skill]] — AWS Samples の実装。「資料1本追加で既存ページ7件が更新され回答構造も変わる」をファイル差分で実測した検証例
+- [[concepts/self-owned-ai-memory]] — AIとの会話記憶を Obsidian の日記と git 保存に置く個人の自作長期記憶（@zapabob_ouj）。Markdown とリポジトリを器にする本思想と同じ基盤に立ち、溜める対象が「読んだソース」でなく「会話と思考」である点が違う

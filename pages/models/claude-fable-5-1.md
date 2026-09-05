@@ -10,6 +10,7 @@ Fable と Mythos を対で発表する形は、Fable 5 / Mythos 5 のときの�
 
 - @Charlie_no_siteは、Anthropicの5.1向け公式プロンプトガイドに推奨プロンプトが14本（開発者向け7本・業務向け7本）あり、業務向けはすべて仕事の中身でなく進め方だけを指定していると整理した。途中経過を出さない・途中で止まる・原文をそのまま写す（5.1で増えたと公式が明記、と著者）などの癖への対処が並ぶ。詳細は[[concepts/fable-5-1-prompting]]
 - @yugen_matuniは、Fable 5.1の内容の正確さと論理の深さは申し分ないが日本語出力には翻訳調や堅い言い回しが出やすく、自作の日本語検査Hook（500本超）で十数件の警告が出るのが日常だったと述べる。推論力と日本語の自然さは別能力だという主張は[[concepts/reasoning-vs-japanese-fluency]]
+- @Voxyz_aiは、Fable 5.1がクォータを早く使い切りすぎるときは実装から外し、[[tools/herdr]]のマルチペイン構成でコーディネーター（方向づけ・タスク分解・最終サインオフ）に回すと述べる。実装はClaude・Codexの各ペインが担う
 
 ## 問い
 
@@ -25,3 +26,4 @@ Fable と Mythos を対で発表する形は、Fable 5 / Mythos 5 のときの�
 - [[models/claude-opus-5]] — 同社の別ライン。Fable 5 のフロンティア知能に近い性能を半額で提供すると公式が位置づける
 - [[concepts/fable-5-1-prompting]] — 5.1向け公式プロンプトガイドの業務向け7本を@Charlie_no_siteが日本語で整理したもの
 - [[concepts/reasoning-vs-japanese-fluency]] — 推論には長けるが日本語出力は翻訳調が出やすい、という@yugen_matuniの第三者評価
+- [[tools/herdr]] — クォータ消費が速い5.1を司令塔に限定し、実装を他エージェントのペインへ回す運用（@Voxyz_ai）

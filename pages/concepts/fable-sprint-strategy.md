@@ -42,3 +42,4 @@ flowchart LR
 - [[concepts/frontier-model-extraction]] — 同じ期間限定Fable週間への向き合い方。あちらは「去る前に判断を抽出する」、こちらは「開放中に全力で運用する」
 - [[models/claude-fable-5]] — 本ページの前提だった「週次上限の50%まで無償」プロモは2026-07-19に終了し、Max・premium seatではプラン標準、Pro・standard seatでは従量課金という恒常構造に移行した（プラン別の提供条件の節）
 - [[concepts/loop-engineering]] — 「雑にトークンを燃やせない環境ではループ設計が腕の見せ所」という本ページの前提の一般論側
+- [[tools/herdr]] — クォータが速く尽きるFable 5.1を司令塔に限定し実装を他ペインへ回す運用（@Voxyz_ai）。本ページの「制限下でFableをPlanner/Evaluatorに置く」配分の別実践者版
