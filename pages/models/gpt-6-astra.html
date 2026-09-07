@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>gpt-6-astra</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="gpt-6-astra.md">Markdownで表示</a></div>
-  <div class="meta">models/gpt-6-astra · models · <span title="2026-09-06">1日前</span></div>
+  <div class="meta">models/gpt-6-astra · models · <span title="2026-09-07">今日</span></div>
   <article><h1>GPT-6 Astra</h1>
 <p>OpenAI の新世代モデル。本 vault で最初に現れたのは、OpenAI の Codex DX（開発者体験）担当 Eric Provencher（@pvncher）が 2026-09-04 に公開した記事「Rethinking skills and prompts for GPT-6 Astra」で、Codex のスキル・AGENTS.md・タスクプロンプトをこのモデル前提で書き直すよう促す内容だった（<a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a>）。発表本体・価格・ベンチマーク・提供条件は未収集。</p>
 <p>Provencher の記事から分かるのは次の点に限られる。</p>
@@ -37,6 +37,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>かつて多くの手取り足取りと足場を要した作業がもう要らなくなっている世代であり、GPT-6 Astra では蓄積した指示の見直しがこれまで以上に重要になる、と Provencher は述べる</li>
 <li>GPT-6 Astra は、変更のたびにプロジェクト全体を見直すよう押されなくても何を読む必要があるか自分で見つけられる、と Provencher は述べる</li>
 <li>Sol や Luna（<a href="../models/gpt-5-6.html">gpt-5-6</a> の能力ティア）に効く指針が GPT-6 Astra を過剰に縛りうる、と Provencher は述べており、Codex チームは Astra を Sol／Luna と並ぶ別のモデルとして扱っている</li>
+</ul>
+<p>同じ記事を @29meat_ai が日本語で解説した記事（2026-09-06）から、Provencher の説明として次の挙動が補える。いずれも解説を介した記述で、原文の表現の一次確認はしていない。</p>
+<ul>
+<li>細かな意味の違いや曖昧さを扱うのが上手になっており、かつて役立った細かい手順指定が今は結果を妨げる場合がある</li>
+<li>テストや作業確認を自ら行うため、以前のモデル向けに書いた「必ずテストすること」の類が不要なテストにつながる場合がある</li>
+<li>丁寧に取り組む一方、どこまで進めるかについては慎重で、初回の実装ができた段階でまだ作業が残っていてもレビューを求めて戻ってくることがある。長く作業を続ける Sol に慣れているとこの止まり方が慎重に感じられる</li>
 </ul>
 <p>命名について。<a href="../models/gpt-5-6.html">gpt-5-6</a> では「数字が世代、Sol・Terra・Luna が永続的な能力ティア」と OpenAI が説明していたが、「GPT-6 Astra」は新しい世代番号と新しい名前の組み合わせにあたる。Astra が Sol と同じ意味でのティア名なのか別枠なのかは、記事からは判断できない。</p>
 <h2>問い</h2>
@@ -56,7 +62,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a></li>
 <li><a href="../models/claude-fable-5-1.html">claude-fable-5-1</a></li>
 <li><a href="../models/gpt-5-6.html">gpt-5-6</a></li>
-<li><a href="../weekly/2026-W37.html">2026-W37</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095991462416490862" rel="noopener" target="_blank">https://x.com/i/web/status/2095991462416490862</a></li></ul></section></article>
+<li><a href="../weekly/2026-W37.html">2026-W37</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095991462416490862" rel="noopener" target="_blank">https://x.com/i/web/status/2095991462416490862</a></li>
+<li><a href="https://x.com/i/web/status/2096415124143972582" rel="noopener" target="_blank">https://x.com/i/web/status/2096415124143972582</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -86,6 +93,12 @@ Provencher の記事から分かるのは次の点に限られる。
 - かつて多くの手取り足取りと足場を要した作業がもう要らなくなっている世代であり、GPT-6 Astra では蓄積した指示の見直しがこれまで以上に重要になる、と Provencher は述べる
 - GPT-6 Astra は、変更のたびにプロジェクト全体を見直すよう押されなくても何を読む必要があるか自分で見つけられる、と Provencher は述べる
 - Sol や Luna（[[models/gpt-5-6]] の能力ティア）に効く指針が GPT-6 Astra を過剰に縛りうる、と Provencher は述べており、Codex チームは Astra を Sol／Luna と並ぶ別のモデルとして扱っている
+
+同じ記事を @29meat_ai が日本語で解説した記事（2026-09-06）から、Provencher の説明として次の挙動が補える。いずれも解説を介した記述で、原文の表現の一次確認はしていない。
+
+- 細かな意味の違いや曖昧さを扱うのが上手になっており、かつて役立った細かい手順指定が今は結果を妨げる場合がある
+- テストや作業確認を自ら行うため、以前のモデル向けに書いた「必ずテストすること」の類が不要なテストにつながる場合がある
+- 丁寧に取り組む一方、どこまで進めるかについては慎重で、初回の実装ができた段階でまだ作業が残っていてもレビューを求めて戻ってくることがある。長く作業を続ける Sol に慣れているとこの止まり方が慎重に感じられる
 
 命名について。[[models/gpt-5-6]] では「数字が世代、Sol・Terra・Luna が永続的な能力ティア」と OpenAI が説明していたが、「GPT-6 Astra」は新しい世代番号と新しい名前の組み合わせにあたる。Astra が Sol と同じ意味でのティア名なのか別枠なのかは、記事からは判断できない。
 
