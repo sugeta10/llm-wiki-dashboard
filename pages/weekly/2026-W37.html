@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-W37 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb9a0"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-W37</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="2026-W37.md">Markdownで表示</a></div>
+  <div class="meta">weekly/2026-W37 · weekly · <span title="2026-09-07">今日</span></div>
+  <article><h1>Weekly Insights: 2026-W37（2026-09-07〜09-13）</h1>
+<h2>今週のホットトピック</h2>
+<ul>
+<li><strong><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a> OpenAI 側も「積み上げた指示を減らせ」に回った</strong> — Codex の開発者体験担当 Eric Provencher が、新世代 <a href="../models/gpt-6-astra.html">gpt-6-astra</a> 前提でスキル・AGENTS.md の各行を「まだ要るか」で再審査せよと述べる。Anthropic 側の同じ主張と独立に並んだ（X bookmark 6,252）。</li>
+<li><strong><a href="../concepts/llm-wiki-v2.html">llm-wiki-v2</a> 知識ベースの設計課題が「何を覚えるか」から「何を忘れるか」へ移った</strong> — Karpathy の LLM Wiki に確信度スコアの時間減衰・4層メモリ・忘却曲線・矛盾解決を足す青写真。このvault が名指しで当てはまる弱点（全ページを永遠に等しく有効として扱う）から出発している。</li>
+<li><strong><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a> 仕組み化とは手順を固定することでなく「直した結果が戻る場所」を決めること</strong> — @smark_x が無印良品の店舗マニュアル MUJIGRAM を引き、2,000ページが腐らないのは毎月直される場所があるからだと述べる。減らす側の閾値まで設計されている点が新しい（X bookmark 925）。</li>
+<li><strong><a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a> 減らすべき対象を金額で名指しした Uber</strong> — セッション単価を3項に分解し、「安いモデルへ下げる」でも「機能を削る」でもなく、価値ゼロのトークン消費だけを消す。利用7倍とセッション単価52%減を同時に出したと Uber Engineering が公表（X bookmark 5,958）。</li>
+</ul>
+<h3>深掘り</h3>
+<p><strong><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a> OpenAI 側も「積み上げた指示を減らせ」に回った</strong>
+Provencher の主張は「エージェントを1年使ってきた人ほど、モデルを導くために書き足した指示が肥大している」から始まり、スキルは説明文を最短にする・根本文書は薄いルーターにする・手順書化しないの3点へ落ちます。Codex 固有の観察として、スキルを入れすぎると Codex が説明文を黙って切り詰め、モデルが各説明の一部しか見られなくなる挙動を挙げている点が実務的です。sugeta-san にとって重要なのは、同じ週に Anthropic 側の <a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a>（Boris Cherny の「6か月ごとに全部消す」）と <a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a>（公式7本を「全部貼ると精度が落ちる、困っている1〜2本だけ」）が並んだことです。ベンダーが違い、製品が違い、互いを参照した形跡もないのに指針が一致している——これは特定製品のクセではなく、モデルの判断力が上がった局面では指示の在庫が資産から負債へ転じる、という現象そのものが起きている可能性を示します（両者の一致は本 wiki 側の合成で、当人同士が同じ根拠を挙げているわけではありません）。</p>
+<p><strong><a href="../concepts/llm-wiki-v2.html">llm-wiki-v2</a> 設計課題が「何を覚えるか」から「何を忘れるか」へ移った</strong>
+v2 が元パターンの弱点として名指しするのは「3ヶ月前に書かれた事実と昨日確認された事実が同じ重みで扱われる」ことで、対処は削除ではなく非優先化です。事実ごとに確信度スコアを持たせ、<code>final_score = relevance × exp(-λ × days)</code> で時間減衰させ、アクセスや新しいソースによる確認で曲線をリセットする。減衰係数 λ をカテゴリ別に変える設計まで含んでいる点が要で、このvault に当てはめるなら世代交代の速い <code>models/</code> と長命な <code>concepts/</code> で λ を分けることになります。同じ週に、個人が会話記憶のために独立に組んだ <a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a>（要約→ベクトル化→分類→関連付け→忘却曲線）がほぼ同じ部品構成へ収束していました。ただし <a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> は「経験をコンパクトな教訓に繰り返し書き直すと記憶が劣化する」と示しており、減衰と再合成が劣化を防ぐのか早めるのかは今週の素材では決着していません。</p>
+<p><strong><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a> 「直した結果が戻る場所」を決める</strong>
+@smark_x の診断は「手順書が使われなくなるのは書き方のせいではなく、直した結果の戻り先まで設計されていないから」です。ここまでなら <a href="../concepts/self-refining-skills.html">self-refining-skills</a> の LESSONS.md と同じ話ですが、この記事が足しているのは減らす側の閾値です——例外は1回目では手順を更新せず「起きたこと」欄に書くだけにして2回目で初めて昇格させる、見なくなった手順は消して「やめたこと」欄へ理由つきで移す（理由が無いと半年後に誰かが善意で復活させる）、守れない頻度は願望なので即下げ、時間でなく条件で書く。@smark_x 自身が「Claude Code に渡す指示書も同じで、直したことが残る欄の無い指示書は翌日同じ間違いをする」と AI へ接続しています。人間のマニュアル運用の側から、今週の他の素材と同じ結論に到達している例です。</p>
+<p><strong><a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a> 減らす対象を金額で名指しする</strong>
+Uber の方程式は Price/Token・Tokens/Request・Requests/Turn の3項で、採用とエンゲージメントを表す項は伸ばし、「エンジニアの依頼の上にエージェントが自分のために行う作業」にあたる中間の項だけを削ります。個人規模へ持ち帰れる具体レバーは2つ挙がっていて、サブエージェントの既定モデルを弱く安いものに固定すること（Uber Engineering が最も効くと述べる）と、MCP ツールを CLI へ投影して事前ロードの50〜70Kトークンを避けることです。さらにセッション分析ダッシュボードが16種のアンチパターン（単純タスクへの上位モデル使用、大きな MCP 応答の文脈残留、10万トークン級の初期化オーバーヘッドなど）を金額影響つきで提示する、という部分が今週のテーマに直結します。「減らせ」は主張としては安いのに実行されにくい。実行されるのは、減らす対象に名前と金額が付いたときだ、という読みです。</p>
+<h2>今週の中心テーマ</h2>
+<p><strong>AI運用の蓄積は、増やす機構だけを持つと腐る。今週の素材が揃って足したのは、減らす側の機構——期限つきパッチ・確信度の減衰・「やめたこと」欄——だった。</strong></p>
+<p>立場の違う4者が、同じ形の欠落を別々の場所で埋めています。モデルベンダーは指示に期限を設け（<a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a>、<a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a>）、知識ベース設計は事実に減衰を設け（<a href="../concepts/llm-wiki-v2.html">llm-wiki-v2</a>、<a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a>）、店舗マニュアルの運用は手順に「やめたこと」欄を設け（<a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a>）、Uber はトークン消費に金額の名札を付けました（<a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a>）。共通するのは、蓄積を止めるのではなく、蓄積したものが自然に沈む経路を先に作っている点です。</p>
+<p>先週（<a href="../weekly/2026-W35.html">2026-W35</a>）の「失敗を扱う語彙」が、起きたことをどう残すかの話だったのに対し、今週はその次に来る工程にあたります。残す設計だけを持つと、残したもの自体が次の失敗の原因になる。sugeta-san のvault で言えば、LESSONS.md も log.jsonl も規約も追記しかしない構造で、これは「育てる」側だけを実装した状態です。</p>
+<p>ただし今週の素材には反証も含まれています。<a href="../tools/grok-bot.html">grok-bot</a> の運営ボット Jenny は毎朝5時に全ボットと1on1を行い、プレイブックを毎日再注入することで「数週間経っても複雑なワークフローを忘れない」効果を出しており、指示を短く保つ方向とは逆を向いています。区別の線はおそらく「常時ロードされる指示か、発火時だけ読む規約か」で、<a href="../design/consulting-pptx-skill.html">consulting-pptx-skill</a> が約80項目の規約ファイルを毎回読ませて品質を出しているのも後者だからだと考えられます（この線引きは本 wiki 側の解釈で、各著者が述べていることではありません）。減らすべきは在庫の総量ではなく、常時ロードされる層の在庫だ、という仮説です。</p>
+<h2>根拠ページ</h2>
+<ul>
+<li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a>（→ 今週のホットトピック#1）</li>
+<li><a href="../concepts/llm-wiki-v2.html">llm-wiki-v2</a>（→ 今週のホットトピック#2）</li>
+<li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a>（→ 今週のホットトピック#3）</li>
+<li><a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a>（→ 今週のホットトピック#4）</li>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> — 「すべてのプロンプトはパッチで、パッチには期限がある」。育てる（失敗を残す）と捨てる（世代交代で全部外す）を同一サイクルの別工程として接続した @kimuai08 の整理（X bookmark 864）</li>
+<li><a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a> — 会話記憶をベンダーに預けず自前に置く個人設計。要約・ベクトル化・分類・関連付け・忘却曲線＋「無意識」層（X bookmark 5,016）</li>
+<li><a href="../models/claude-fable-5-1.html">claude-fable-5-1</a> — Anthropic が 2026-09-01 に発表した Fable 5 の後継。仕様は未収集で、現状は公式一文と第三者評価3件のみ（X bookmark 9,360）</li>
+<li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a> — 5.1向け公式ガイドの業務向け7本は仕事の中身を一切指定せず進め方だけを書いている、という @Charlie_no_site の整理。「全部貼ると精度が落ちる」</li>
+<li><a href="../models/gpt-6-astra.html">gpt-6-astra</a> — OpenAI の新世代。本 vault では Codex チームの記事経由でしか観測できておらず、発表本体・価格・ベンチマークは未収集</li>
+<li><a href="../models/timesfm-3.html">timesfm-3</a> — Google Research の時系列基盤モデル第3世代。多変量予測をゼロショットで扱い3ベンチマークで基盤モデル中1位。今週最大のシグナルだがテーマとは独立（X bookmark 10,927）</li>
+<li><a href="../tools/grok-bot.html">grok-bot</a> — 領域別5体のボットが Cursor クラウドエージェント200超を管理する @lingxi の運用。運営ボット Jenny の毎朝1on1は本週テーマの反証側（X bookmark 5,999）</li>
+<li><a href="../design/consulting-pptx-skill.html">consulting-pptx-skill</a> — 価値の中心はテンプレでなく、レビュー指摘を1行ずつ溜めた約80項目の規約ファイルと機械チェックの蓄積ループ（X bookmark 3,817）</li>
+<li><a href="../concepts/thought-eliciting-questions.html">thought-eliciting-questions</a> — 「なんで？」で詰めずに思考の入口を置き直す10フレーズ。うち「今、何を前提にして考えてる？」は前提の点検に直接使える（X bookmark 1,413）</li>
+<li><a href="../tools/ffmpeg-skill.html">ffmpeg-skill</a> — FFmpeg をエージェントから自然言語で使えるようにするスキル。「単なるコマンド集ではなく」の続きはソースが途切れており未確認（X bookmark 1,779）</li>
+<li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — 推論力と自然な日本語出力は別能力。人に読ませる最終成果物はベンチマーク順位でなく手直しの要らなさで選ぶ、という @yugen_matuni の実測</li>
+<li><a href="../business/gitlab-ai-fluent-teams.html">gitlab-ai-fluent-teams</a> — GitLab の連合型ガバナンス（中央のガードレール＋機能別オーナー＋チャンピオン）と自己診断ツール AI Literacy Ladder。ツールでなく判断力を育てる設計</li>
+<li><a href="../tools/artifact-share.html">artifact-share</a> — ブラウザの指摘をエージェントが取りに来て直すローカルループ。CLI とデータ契約は共通化できたが「会話を邪魔せず起こす合図」だけは3エージェント別々に作るしかなかった、が作者 coji の結論</li>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a> — AI秘書を「全部やる人」でなく窓口に限定し、実作業は担当AIへ、定型反復は自動化へ渡す3分割。「作成」と「送信」を分けて人間へ戻す境界設計を含む</li>
+<li><a href="../tools/slack-html.html">slack-html</a> — 自己完結した1枚のHTMLを Slack に添付するとアプリ内で展開される。モバイルで開くには1MB超・JS非依存の2条件が要る（@geeorgey の造語）</li>
+<li><a href="../concepts/kakeru-hito.html">kakeru-hito</a> — 「書ける人」は主観の発信・辛抱強い推敲・読者への親切心に集約される。AI生成記事をレビューできる人がいない会社の事例つき</li>
+<li><a href="../papers/2026-dairai-top-ai-papers-w35.html">2026-dairai-top-ai-papers-w35</a> — DAIR.AI の週次注目論文まとめ（W35分）</li>
+</ul>
+<h2>既存wikiとの接続</h2>
+<ul>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — LESSONS.md に実行のたび2行追記して次回読ませる、このvault の「育てる」側の実装。今週の素材が揃って突いているのは、その対になる「棚卸しの工程」が存在しないことです</li>
+<li><a href="../concepts/context-engineering.html">context-engineering</a> — Anthropic の Thariq が公表したシステムプロンプト80%削減。減らす側を先に実行した公式事例で、今週の Codex 側の指針はこれと独立に同じ方向へ来ました</li>
+<li><a href="../papers/2026-peng-llm-memory-faulty.html">2026-peng-llm-memory-faulty</a> — 継続的なメモリ更新でエージェントの記憶が劣化する研究。今週の「減衰させる」「再合成する」提案がこの劣化を防ぐのか早めるのかは未解決で、減らす機構を入れる前に置いておくべき反証です</li>
+</ul>
+<h2>sugeta-san への問い</h2>
+<p><strong>このvault の指示・スキル・教訓は、いま何行あって、最後に触ったのはいつですか——そして「やめたこと」はどこに残っていますか。</strong></p>
+<p>→ 今回の生成中に数えてみました。<code>CLAUDE.md</code> と <code>.claude/skills/*/SKILL.md</code>・<code>LESSONS.md</code> は合計12ファイル・1,865行で、最大の <code>wiki-ingest/SKILL.md</code>（415行）の最終コミットは 2026-07-06、<code>gen-weekly-insights/SKILL.md</code>（269行）は 2026-06-23 です。2〜3か月動いていない指示が在庫の中心を占めています。そして「やめたこと」の記録を全ファイルで探すと、見つかったのは <code>wiki-ingest/SKILL.md</code> の1行だけでした——「『著者帰属は観察ログだけ』という旧運用は廃止」。廃止の記録が本文にインラインで1件だけあり、置き場所は決まっていない状態です。<a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a> の言う「理由が無いと半年後に誰かが善意で復活させる」に、そのまま当てはまります。</p>
+<h2>今週の小アクション（5分）</h2>
+<p>指示の在庫を行数と最終更新日で並べてください。次のコマンドで棚卸しの候補が上から出ます（動作確認済み）:</p>
+<pre><code class="language-bash">for f in CLAUDE.md .claude/skills/*/SKILL.md .claude/skills/*/LESSONS.md; do
+  [ -f &quot;$f&quot; ] || continue
+  d=$(git log -1 --format=%ad --date=short -- &quot;$f&quot;)
+  [ -n &quot;$d&quot; ] || d=&quot;(未コミット)&quot;
+  printf &quot;%5s行  最終更新 %-12s %s\n&quot; &quot;$(wc -l &lt; &quot;$f&quot; | tr -d ' ')&quot; &quot;$d&quot; &quot;$f&quot;
+done | sort -rn
+</code></pre>
+<p>上位に来た「行数が多く・長く触っていない」ファイルが、<a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> の言う期限切れパッチの最有力候補です。</p>
+<h2>いますぐAIと一緒に（コピペ）</h2>
+<p>以下をそのまま Claude Code に貼ると、今週のテーマ「減らす側の機構」でこのリポジトリの指示在庫を棚卸しできます。</p>
+<pre><code>このリポジトリの指示在庫を Ablation の観点で棚卸ししてください。実行はせず、提案だけ出してください。
+
+1. CLAUDE.md と .claude/skills/wiki-ingest/SKILL.md の各行を、
+   「モデルが自力でできないから書いた（＝まだ要るパッチ）」
+   「今のモデルなら指示なしでもできる（＝期限切れの候補）」
+   「製品としての体験・出力形式を決めている（＝性能とは別枠で残す）」
+   の3分類に振り分ける。判定の根拠を必ず添え、迷った行は「判定できない」に置く
+2. 期限切れ候補のうち、外しても壊れないことを検証できるものを3つ選び、
+   その検証方法（どの操作で・何を見れば失敗と分かるか）を1つずつ書く
+3. 「やめたこと」欄をこのリポジトリのどこに置くべきか、
+   既存の LESSONS.md・wiki/log.jsonl・docs/ の役割分担を踏まえて1案だけ提案する
+
+判断基準は wiki/concepts/instruction-patch-lifecycle.md（パッチには期限がある・投機的に追加しない）と
+wiki/concepts/shikumika-vs-tejunsho.md（消した理由を残さないと復活する）を参照してください。
+</code></pre>
+<h2>さらに読むべきページ</h2>
+<ul>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> — 今週の中心テーマの原理と手順が1ページに揃っています。Ablation の4ステップ、指示の置き場所3段（CLAUDE.md／スキル／フック）、スキル説明文の合計15,000文字上限という実務的な落とし穴まで。減らす作業に着手するならここが起点です</li>
+<li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — 「ベンチマーク上位のモデルで書かせる」という基準そのものが古びた、という主張。500本超の日本語検査 Hook を測定器にした実測で、weekly や note 原稿の生成を推論と日本語整形の2段に分ける案に直接つながります</li>
+<li><a href="../business/gitlab-ai-fluent-teams.html">gitlab-ai-fluent-teams</a> — 個人の運用設計を組織の制度へ翻訳したときの形。中央のガードレール・機能別オーナー・チャンピオンの3層と、リーチ／デプス／適用価値の3指標は、AI推進の立場でそのまま検討材料になります</li>
+</ul>
+<h2>今週の音声ニュース</h2>
+<audio controls style="width:100%;margin:1rem 0"><source src="2026-W37/audio.mp3" type="audio/mpeg"></audio>
+<p><a href="https://notebooklm.google.com/notebook/609457fc-a7d4-49bd-ba4e-904adb4bf6f4">NotebookLM で開く →</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/gitlab-ai-fluent-teams.html">gitlab-ai-fluent-teams</a></li>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a></li>
+<li><a href="../concepts/context-engineering.html">context-engineering</a></li>
+<li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a></li>
+<li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Weekly Insights: 2026-W37（2026-09-07〜09-13）
+
+## 今週のホットトピック
+
+- **[[concepts/gpt-6-astra-skills-prompting]] OpenAI 側も「積み上げた指示を減らせ」に回った** — Codex の開発者体験担当 Eric Provencher が、新世代 [[models/gpt-6-astra]] 前提でスキル・AGENTS.md の各行を「まだ要るか」で再審査せよと述べる。Anthropic 側の同じ主張と独立に並んだ（X bookmark 6,252）。
+- **[[concepts/llm-wiki-v2]] 知識ベースの設計課題が「何を覚えるか」から「何を忘れるか」へ移った** — Karpathy の LLM Wiki に確信度スコアの時間減衰・4層メモリ・忘却曲線・矛盾解決を足す青写真。このvault が名指しで当てはまる弱点（全ページを永遠に等しく有効として扱う）から出発している。
+- **[[concepts/shikumika-vs-tejunsho]] 仕組み化とは手順を固定することでなく「直した結果が戻る場所」を決めること** — @smark_x が無印良品の店舗マニュアル MUJIGRAM を引き、2,000ページが腐らないのは毎月直される場所があるからだと述べる。減らす側の閾値まで設計されている点が新しい（X bookmark 925）。
+- **[[concepts/software-factory-cost-equation]] 減らすべき対象を金額で名指しした Uber** — セッション単価を3項に分解し、「安いモデルへ下げる」でも「機能を削る」でもなく、価値ゼロのトークン消費だけを消す。利用7倍とセッション単価52%減を同時に出したと Uber Engineering が公表（X bookmark 5,958）。
+
+### 深掘り
+
+**[[concepts/gpt-6-astra-skills-prompting]] OpenAI 側も「積み上げた指示を減らせ」に回った**
+Provencher の主張は「エージェントを1年使ってきた人ほど、モデルを導くために書き足した指示が肥大している」から始まり、スキルは説明文を最短にする・根本文書は薄いルーターにする・手順書化しないの3点へ落ちます。Codex 固有の観察として、スキルを入れすぎると Codex が説明文を黙って切り詰め、モデルが各説明の一部しか見られなくなる挙動を挙げている点が実務的です。sugeta-san にとって重要なのは、同じ週に Anthropic 側の [[concepts/instruction-patch-lifecycle]]（Boris Cherny の「6か月ごとに全部消す」）と [[concepts/fable-5-1-prompting]]（公式7本を「全部貼ると精度が落ちる、困っている1〜2本だけ」）が並んだことです。ベンダーが違い、製品が違い、互いを参照した形跡もないのに指針が一致している——これは特定製品のクセではなく、モデルの判断力が上がった局面では指示の在庫が資産から負債へ転じる、という現象そのものが起きている可能性を示します（両者の一致は本 wiki 側の合成で、当人同士が同じ根拠を挙げているわけではありません）。
+
+**[[concepts/llm-wiki-v2]] 設計課題が「何を覚えるか」から「何を忘れるか」へ移った**
+v2 が元パターンの弱点として名指しするのは「3ヶ月前に書かれた事実と昨日確認された事実が同じ重みで扱われる」ことで、対処は削除ではなく非優先化です。事実ごとに確信度スコアを持たせ、`final_score = relevance × exp(-λ × days)` で時間減衰させ、アクセスや新しいソースによる確認で曲線をリセットする。減衰係数 λ をカテゴリ別に変える設計まで含んでいる点が要で、このvault に当てはめるなら世代交代の速い `models/` と長命な `concepts/` で λ を分けることになります。同じ週に、個人が会話記憶のために独立に組んだ [[concepts/self-owned-ai-memory]]（要約→ベクトル化→分類→関連付け→忘却曲線）がほぼ同じ部品構成へ収束していました。ただし [[papers/2026-peng-llm-memory-faulty]] は「経験をコンパクトな教訓に繰り返し書き直すと記憶が劣化する」と示しており、減衰と再合成が劣化を防ぐのか早めるのかは今週の素材では決着していません。
+
+**[[concepts/shikumika-vs-tejunsho]] 「直した結果が戻る場所」を決める**
+@smark_x の診断は「手順書が使われなくなるのは書き方のせいではなく、直した結果の戻り先まで設計されていないから」です。ここまでなら [[concepts/self-refining-skills]] の LESSONS.md と同じ話ですが、この記事が足しているのは減らす側の閾値です——例外は1回目では手順を更新せず「起きたこと」欄に書くだけにして2回目で初めて昇格させる、見なくなった手順は消して「やめたこと」欄へ理由つきで移す（理由が無いと半年後に誰かが善意で復活させる）、守れない頻度は願望なので即下げ、時間でなく条件で書く。@smark_x 自身が「Claude Code に渡す指示書も同じで、直したことが残る欄の無い指示書は翌日同じ間違いをする」と AI へ接続しています。人間のマニュアル運用の側から、今週の他の素材と同じ結論に到達している例です。
+
+**[[concepts/software-factory-cost-equation]] 減らす対象を金額で名指しする**
+Uber の方程式は Price/Token・Tokens/Request・Requests/Turn の3項で、採用とエンゲージメントを表す項は伸ばし、「エンジニアの依頼の上にエージェントが自分のために行う作業」にあたる中間の項だけを削ります。個人規模へ持ち帰れる具体レバーは2つ挙がっていて、サブエージェントの既定モデルを弱く安いものに固定すること（Uber Engineering が最も効くと述べる）と、MCP ツールを CLI へ投影して事前ロードの50〜70Kトークンを避けることです。さらにセッション分析ダッシュボードが16種のアンチパターン（単純タスクへの上位モデル使用、大きな MCP 応答の文脈残留、10万トークン級の初期化オーバーヘッドなど）を金額影響つきで提示する、という部分が今週のテーマに直結します。「減らせ」は主張としては安いのに実行されにくい。実行されるのは、減らす対象に名前と金額が付いたときだ、という読みです。
+
+## 今週の中心テーマ
+
+**AI運用の蓄積は、増やす機構だけを持つと腐る。今週の素材が揃って足したのは、減らす側の機構——期限つきパッチ・確信度の減衰・「やめたこと」欄——だった。**
+
+立場の違う4者が、同じ形の欠落を別々の場所で埋めています。モデルベンダーは指示に期限を設け（[[concepts/gpt-6-astra-skills-prompting]]、[[concepts/instruction-patch-lifecycle]]）、知識ベース設計は事実に減衰を設け（[[concepts/llm-wiki-v2]]、[[concepts/self-owned-ai-memory]]）、店舗マニュアルの運用は手順に「やめたこと」欄を設け（[[concepts/shikumika-vs-tejunsho]]）、Uber はトークン消費に金額の名札を付けました（[[concepts/software-factory-cost-equation]]）。共通するのは、蓄積を止めるのではなく、蓄積したものが自然に沈む経路を先に作っている点です。
+
+先週（[[weekly/2026-W35]]）の「失敗を扱う語彙」が、起きたことをどう残すかの話だったのに対し、今週はその次に来る工程にあたります。残す設計だけを持つと、残したもの自体が次の失敗の原因になる。sugeta-san のvault で言えば、LESSONS.md も log.jsonl も規約も追記しかしない構造で、これは「育てる」側だけを実装した状態です。
+
+ただし今週の素材には反証も含まれています。[[tools/grok-bot]] の運営ボット Jenny は毎朝5時に全ボットと1on1を行い、プレイブックを毎日再注入することで「数週間経っても複雑なワークフローを忘れない」効果を出しており、指示を短く保つ方向とは逆を向いています。区別の線はおそらく「常時ロードされる指示か、発火時だけ読む規約か」で、[[design/consulting-pptx-skill]] が約80項目の規約ファイルを毎回読ませて品質を出しているのも後者だからだと考えられます（この線引きは本 wiki 側の解釈で、各著者が述べていることではありません）。減らすべきは在庫の総量ではなく、常時ロードされる層の在庫だ、という仮説です。
+
+## 根拠ページ
+
+- [[concepts/gpt-6-astra-skills-prompting]]（→ 今週のホットトピック#1）
+- [[concepts/llm-wiki-v2]]（→ 今週のホットトピック#2）
+- [[concepts/shikumika-vs-tejunsho]]（→ 今週のホットトピック#3）
+- [[concepts/software-factory-cost-equation]]（→ 今週のホットトピック#4）
+- [[concepts/instruction-patch-lifecycle]] — 「すべてのプロンプトはパッチで、パッチには期限がある」。育てる（失敗を残す）と捨てる（世代交代で全部外す）を同一サイクルの別工程として接続した @kimuai08 の整理（X bookmark 864）
+- [[concepts/self-owned-ai-memory]] — 会話記憶をベンダーに預けず自前に置く個人設計。要約・ベクトル化・分類・関連付け・忘却曲線＋「無意識」層（X bookmark 5,016）
+- [[models/claude-fable-5-1]] — Anthropic が 2026-09-01 に発表した Fable 5 の後継。仕様は未収集で、現状は公式一文と第三者評価3件のみ（X bookmark 9,360）
+- [[concepts/fable-5-1-prompting]] — 5.1向け公式ガイドの業務向け7本は仕事の中身を一切指定せず進め方だけを書いている、という @Charlie_no_site の整理。「全部貼ると精度が落ちる」
+- [[models/gpt-6-astra]] — OpenAI の新世代。本 vault では Codex チームの記事経由でしか観測できておらず、発表本体・価格・ベンチマークは未収集
+- [[models/timesfm-3]] — Google Research の時系列基盤モデル第3世代。多変量予測をゼロショットで扱い3ベンチマークで基盤モデル中1位。今週最大のシグナルだがテーマとは独立（X bookmark 10,927）
+- [[tools/grok-bot]] — 領域別5体のボットが Cursor クラウドエージェント200超を管理する @lingxi の運用。運営ボット Jenny の毎朝1on1は本週テーマの反証側（X bookmark 5,999）
+- [[design/consulting-pptx-skill]] — 価値の中心はテンプレでなく、レビュー指摘を1行ずつ溜めた約80項目の規約ファイルと機械チェックの蓄積ループ（X bookmark 3,817）
+- [[concepts/thought-eliciting-questions]] — 「なんで？」で詰めずに思考の入口を置き直す10フレーズ。うち「今、何を前提にして考えてる？」は前提の点検に直接使える（X bookmark 1,413）
+- [[tools/ffmpeg-skill]] — FFmpeg をエージェントから自然言語で使えるようにするスキル。「単なるコマンド集ではなく」の続きはソースが途切れており未確認（X bookmark 1,779）
+- [[concepts/reasoning-vs-japanese-fluency]] — 推論力と自然な日本語出力は別能力。人に読ませる最終成果物はベンチマーク順位でなく手直しの要らなさで選ぶ、という @yugen_matuni の実測
+- [[business/gitlab-ai-fluent-teams]] — GitLab の連合型ガバナンス（中央のガードレール＋機能別オーナー＋チャンピオン）と自己診断ツール AI Literacy Ladder。ツールでなく判断力を育てる設計
+- [[tools/artifact-share]] — ブラウザの指摘をエージェントが取りに来て直すローカルループ。CLI とデータ契約は共通化できたが「会話を邪魔せず起こす合図」だけは3エージェント別々に作るしかなかった、が作者 coji の結論
+- [[concepts/ai-secretary-gateway]] — AI秘書を「全部やる人」でなく窓口に限定し、実作業は担当AIへ、定型反復は自動化へ渡す3分割。「作成」と「送信」を分けて人間へ戻す境界設計を含む
+- [[tools/slack-html]] — 自己完結した1枚のHTMLを Slack に添付するとアプリ内で展開される。モバイルで開くには1MB超・JS非依存の2条件が要る（@geeorgey の造語）
+- [[concepts/kakeru-hito]] — 「書ける人」は主観の発信・辛抱強い推敲・読者への親切心に集約される。AI生成記事をレビューできる人がいない会社の事例つき
+- [[papers/2026-dairai-top-ai-papers-w35]] — DAIR.AI の週次注目論文まとめ（W35分）
+
+## 既存wikiとの接続
+
+- [[concepts/self-refining-skills]] — LESSONS.md に実行のたび2行追記して次回読ませる、このvault の「育てる」側の実装。今週の素材が揃って突いているのは、その対になる「棚卸しの工程」が存在しないことです
+- [[concepts/context-engineering]] — Anthropic の Thariq が公表したシステムプロンプト80%削減。減らす側を先に実行した公式事例で、今週の Codex 側の指針はこれと独立に同じ方向へ来ました
+- [[papers/2026-peng-llm-memory-faulty]] — 継続的なメモリ更新でエージェントの記憶が劣化する研究。今週の「減衰させる」「再合成する」提案がこの劣化を防ぐのか早めるのかは未解決で、減らす機構を入れる前に置いておくべき反証です
+
+## sugeta-san への問い
+
+**このvault の指示・スキル・教訓は、いま何行あって、最後に触ったのはいつですか——そして「やめたこと」はどこに残っていますか。**
+
+→ 今回の生成中に数えてみました。`CLAUDE.md` と `.claude/skills/*/SKILL.md`・`LESSONS.md` は合計12ファイル・1,865行で、最大の `wiki-ingest/SKILL.md`（415行）の最終コミットは 2026-07-06、`gen-weekly-insights/SKILL.md`（269行）は 2026-06-23 です。2〜3か月動いていない指示が在庫の中心を占めています。そして「やめたこと」の記録を全ファイルで探すと、見つかったのは `wiki-ingest/SKILL.md` の1行だけでした——「『著者帰属は観察ログだけ』という旧運用は廃止」。廃止の記録が本文にインラインで1件だけあり、置き場所は決まっていない状態です。[[concepts/shikumika-vs-tejunsho]] の言う「理由が無いと半年後に誰かが善意で復活させる」に、そのまま当てはまります。
+
+## 今週の小アクション（5分）
+
+指示の在庫を行数と最終更新日で並べてください。次のコマンドで棚卸しの候補が上から出ます（動作確認済み）:
+
+```bash
+for f in CLAUDE.md .claude/skills/*/SKILL.md .claude/skills/*/LESSONS.md; do
+  [ -f &quot;$f&quot; ] || continue
+  d=$(git log -1 --format=%ad --date=short -- &quot;$f&quot;)
+  [ -n &quot;$d&quot; ] || d=&quot;(未コミット)&quot;
+  printf &quot;%5s行  最終更新 %-12s %s\n&quot; &quot;$(wc -l &lt; &quot;$f&quot; | tr -d &#x27; &#x27;)&quot; &quot;$d&quot; &quot;$f&quot;
+done | sort -rn
+```
+
+上位に来た「行数が多く・長く触っていない」ファイルが、[[concepts/instruction-patch-lifecycle]] の言う期限切れパッチの最有力候補です。
+
+## いますぐAIと一緒に（コピペ）
+
+以下をそのまま Claude Code に貼ると、今週のテーマ「減らす側の機構」でこのリポジトリの指示在庫を棚卸しできます。
+
+```
+このリポジトリの指示在庫を Ablation の観点で棚卸ししてください。実行はせず、提案だけ出してください。
+
+1. CLAUDE.md と .claude/skills/wiki-ingest/SKILL.md の各行を、
+   「モデルが自力でできないから書いた（＝まだ要るパッチ）」
+   「今のモデルなら指示なしでもできる（＝期限切れの候補）」
+   「製品としての体験・出力形式を決めている（＝性能とは別枠で残す）」
+   の3分類に振り分ける。判定の根拠を必ず添え、迷った行は「判定できない」に置く
+2. 期限切れ候補のうち、外しても壊れないことを検証できるものを3つ選び、
+   その検証方法（どの操作で・何を見れば失敗と分かるか）を1つずつ書く
+3. 「やめたこと」欄をこのリポジトリのどこに置くべきか、
+   既存の LESSONS.md・wiki/log.jsonl・docs/ の役割分担を踏まえて1案だけ提案する
+
+判断基準は wiki/concepts/instruction-patch-lifecycle.md（パッチには期限がある・投機的に追加しない）と
+wiki/concepts/shikumika-vs-tejunsho.md（消した理由を残さないと復活する）を参照してください。
+```
+
+## さらに読むべきページ
+
+- [[concepts/instruction-patch-lifecycle]] — 今週の中心テーマの原理と手順が1ページに揃っています。Ablation の4ステップ、指示の置き場所3段（CLAUDE.md／スキル／フック）、スキル説明文の合計15,000文字上限という実務的な落とし穴まで。減らす作業に着手するならここが起点です
+- [[concepts/reasoning-vs-japanese-fluency]] — 「ベンチマーク上位のモデルで書かせる」という基準そのものが古びた、という主張。500本超の日本語検査 Hook を測定器にした実測で、weekly や note 原稿の生成を推論と日本語整形の2段に分ける案に直接つながります
+- [[business/gitlab-ai-fluent-teams]] — 個人の運用設計を組織の制度へ翻訳したときの形。中央のガードレール・機能別オーナー・チャンピオンの3層と、リーチ／デプス／適用価値の3指標は、AI推進の立場でそのまま検討材料になります
+
+## 今週の音声ニュース
+
+![[2026-W37/audio.mp3]]
+
+[NotebookLM で開く →](https://notebooklm.google.com/notebook/609457fc-a7d4-49bd-ba4e-904adb4bf6f4)
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
