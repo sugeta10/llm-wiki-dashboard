@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>correction-routing</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="correction-routing.md">Markdownで表示</a></div>
-  <div class="meta">concepts/correction-routing · concepts · <span title="2026-08-26">1週間前</span></div>
+  <div class="meta">concepts/correction-routing · concepts · <span title="2026-09-08">今日</span></div>
   <article><h1>訂正のルーティング（Company Brainを賢くする帰還ループ）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: チームがAIに与えた訂正・決定・うまくいった手順を個人チャットに閉じ込めず、「事実→会社知識／戦略選択→決定記録／繰り返す好み→ポリシー／実証済み手技→スキル／反復手順→ワーカー／危険操作→機械的ゲート」の6分類で書き戻し先を選び、人間レビューを経て全員の共有知に昇格させるcompany brain構築法（@VibeMarketer_）。</p>
@@ -95,10 +95,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> — 「各教訓はどこに住むべきか」という同じ仕分け問題の個人エージェント版。好み→ポリシー／手技→スキルの振り分けが対応する</li>
 <li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a> — 判断ログ→週次レビュー→パターン昇格という同型の「レビューを経た昇格」ループ。本ページはそれを個人からチーム横断へ広げた形</li>
 <li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a> — 「直した結果が戻る場所」を場面ごとに決めるマニュアル運用論。6分類の戻り先を、人間の手順書とAI指示書に共通する「起きたこと欄／やめたこと欄」に縮約した形（@smark_x）</li>
+<li><a href="../tools/teamai-cli.html">teamai-cli</a> — 同じループのツール実装。書き戻し先の分類を人に選ばせる代わりに、セッションのfriction採点で「書き戻す機会」を検出し、昇格（recall promote）と剪定（maintenance）をコマンドにしている</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a></li>
 <li><a href="../concepts/company-brain.html">company-brain</a></li>
 <li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a></li>
-<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2092243372929151135" rel="noopener" target="_blank">https://x.com/i/web/status/2092243372929151135</a></li></ul></section></article>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a></li>
+<li><a href="../tools/teamai-cli.html">teamai-cli</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2092243372929151135" rel="noopener" target="_blank">https://x.com/i/web/status/2092243372929151135</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -171,6 +173,7 @@ flowchart LR
 - [[concepts/skills-over-memory]] — 「各教訓はどこに住むべきか」という同じ仕分け問題の個人エージェント版。好み→ポリシー／手技→スキルの振り分けが対応する
 - [[concepts/agent-reflection-layer]] — 判断ログ→週次レビュー→パターン昇格という同型の「レビューを経た昇格」ループ。本ページはそれを個人からチーム横断へ広げた形
 - [[concepts/shikumika-vs-tejunsho]] — 「直した結果が戻る場所」を場面ごとに決めるマニュアル運用論。6分類の戻り先を、人間の手順書とAI指示書に共通する「起きたこと欄／やめたこと欄」に縮約した形（@smark_x）
+- [[tools/teamai-cli]] — 同じループのツール実装。書き戻し先の分類を人に選ばせる代わりに、セッションのfriction採点で「書き戻す機会」を検出し、昇格（recall promote）と剪定（maintenance）をコマンドにしている
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

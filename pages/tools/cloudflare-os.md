@@ -95,3 +95,4 @@ Cloudflareがこの製品を作った理由として挙げるのは、フィー�
 - [[concepts/idp-shared-cli-mcp]] — Cloudflare Accessで人間とAIを同一身元に載せる設計。Cloudflare OSの入口の認証と同じ系譜
 - [[concepts/llm-wiki]] — GitHubリポジトリのMarkdownを正本にする個人知識ベース。@shotovim はこれをContext Libraryに載せてローカル/クラウド両方から参照させている
 - [[concepts/ai-native-cloud-selection]] — 「AIエージェントがCLI/APIで操作しきれるか」でクラウドを選ぶ論。無料枠の広さもこの選定に効く要素
+- [[tools/teamai-cli]] — 共有スキル・ルールをチームに配る同じ狙いを、実行環境を持たずgitのpush/pullだけで実装したCLI（Tencent製）

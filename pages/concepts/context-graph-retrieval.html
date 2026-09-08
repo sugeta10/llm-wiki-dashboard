@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>context-graph-retrieval</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="context-graph-retrieval.md">Markdownで表示</a></div>
-  <div class="meta">concepts/context-graph-retrieval · concepts · <span title="2026-08-15">3週間前</span></div>
+  <div class="meta">concepts/context-graph-retrieval · concepts · <span title="2026-09-08">今日</span></div>
   <article><h1>コンテキストグラフ検索（RAGから経路を返す検索へ）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 検索の単位をチャンクからエンティティと関係に変え、答えを「文章」でなく「引用付きの経路」として返す9ステップ。@0xMorlex は、RAGの限界は埋め込みの質ではなく構造にあると論じる。</p>
@@ -77,11 +77,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/knowledge-graph-llm.html">knowledge-graph-llm</a> — 同じ「RAGでは届かない」問題をナレッジグラフで解く日本語入門書の紹介。あちらが課題の列挙と書籍の構成、こちらが9ステップの実装手順</li>
 <li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a> — 同じ問題への別解。グラフを作らず単一埋め込みテーブル＋全文検索とIDF・鮮度減衰のハイブリッドで解く</li>
 <li><a href="../concepts/graph-engineering.html">graph-engineering</a> — 同じ「グラフ」という語だが対象が違う。あちらのノード・エッジはエージェントの実行順序とデータの流れを指す</li>
+<li><a href="../tools/teamai-cli.html">teamai-cli</a> — チームのコードベースを対象にした実装例。トリプル抽出をLLMでなくtree-sitterのAST解析と正規表現の2トラックで行い、BM25検索をグラフでリランキングする</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/cerebras-knowledge-base.html">cerebras-knowledge-base</a></li>
 <li><a href="../concepts/graph-engineering.html">graph-engineering</a></li>
 <li><a href="../concepts/knowledge-graph-llm.html">knowledge-graph-llm</a></li>
-<li><a href="../concepts/llm-wiki-v2.html">llm-wiki-v2</a></li>
-<li><a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2086754640968732729" rel="noopener" target="_blank">https://x.com/i/web/status/2086754640968732729</a></li></ul></section></article>
+<li><a href="../tools/teamai-cli.html">teamai-cli</a></li>
+<li><a href="../concepts/llm-wiki-v2.html">llm-wiki-v2</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2086754640968732729" rel="noopener" target="_blank">https://x.com/i/web/status/2086754640968732729</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -169,6 +170,7 @@ flowchart LR
 - [[concepts/knowledge-graph-llm]] — 同じ「RAGでは届かない」問題をナレッジグラフで解く日本語入門書の紹介。あちらが課題の列挙と書籍の構成、こちらが9ステップの実装手順
 - [[concepts/cerebras-knowledge-base]] — 同じ問題への別解。グラフを作らず単一埋め込みテーブル＋全文検索とIDF・鮮度減衰のハイブリッドで解く
 - [[concepts/graph-engineering]] — 同じ「グラフ」という語だが対象が違う。あちらのノード・エッジはエージェントの実行順序とデータの流れを指す
+- [[tools/teamai-cli]] — チームのコードベースを対象にした実装例。トリプル抽出をLLMでなくtree-sitterのAST解析と正規表現の2トラックで行い、BM25検索をグラフでリランキングする
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

@@ -110,6 +110,7 @@ Anthropic公式サポート記事によれば、週次の利用上限の50%ま�
 - [[concepts/loop-engineering]] — Fable 5のパフォーマンスを最大化するループ設計手法（4条件テスト・MVL・失敗パターン）
 - [[tools/claude-managed-agents]] — Fable 5のループ実験で使用したCMAプラットフォーム（Outcomes・セルフホストサンドボックス）
 - [[concepts/llm-model-selection-strategy]] — Fable 5の「長い複雑タスクほど差が開く」特性を踏まえた工程分解型モデル選択戦略
+- [[papers/2026-sonyai-hakken]] — 科学的事実の予測に特化したSony AIの仕組み。汎用モデルに新規仮説を書かせる本モデルの創薬・分子生物学の実績と対照になる
 - [[tools/claude-code-goal]] — 「言語の庭」を生成した `/goal` 自律ワークフロー機能。Fable 5のループ型の使い方の入口
 - [[concepts/finding-unknowns]] — Fable時代の運用フレーム：仕事の質のボトルネックが人間側のunknown明確化に移るという実践論（@trq212）
 - [[concepts/notebooklm-claude-workflow]] — Fable 5を「考える」側に据え、NotebookLMの引用付き事実を「知る」入口にする分業ワークフロー（@ai_jitan）

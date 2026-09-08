@@ -65,3 +65,4 @@ flowchart LR
 - [[concepts/knowledge-graph-llm]] — 同じ「RAGでは届かない」問題をナレッジグラフで解く日本語入門書の紹介。あちらが課題の列挙と書籍の構成、こちらが9ステップの実装手順
 - [[concepts/cerebras-knowledge-base]] — 同じ問題への別解。グラフを作らず単一埋め込みテーブル＋全文検索とIDF・鮮度減衰のハイブリッドで解く
 - [[concepts/graph-engineering]] — 同じ「グラフ」という語だが対象が違う。あちらのノード・エッジはエージェントの実行順序とデータの流れを指す
+- [[tools/teamai-cli]] — チームのコードベースを対象にした実装例。トリプル抽出をLLMでなくtree-sitterのAST解析と正規表現の2トラックで行い、BM25検索をグラフでリランキングする

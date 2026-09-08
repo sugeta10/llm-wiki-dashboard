@@ -50,3 +50,4 @@ flowchart LR
 - [[concepts/skills-over-memory]] — 「各教訓はどこに住むべきか」という同じ仕分け問題の個人エージェント版。好み→ポリシー／手技→スキルの振り分けが対応する
 - [[concepts/agent-reflection-layer]] — 判断ログ→週次レビュー→パターン昇格という同型の「レビューを経た昇格」ループ。本ページはそれを個人からチーム横断へ広げた形
 - [[concepts/shikumika-vs-tejunsho]] — 「直した結果が戻る場所」を場面ごとに決めるマニュアル運用論。6分類の戻り先を、人間の手順書とAI指示書に共通する「起きたこと欄／やめたこと欄」に縮約した形（@smark_x）
+- [[tools/teamai-cli]] — 同じループのツール実装。書き戻し先の分類を人に選ばせる代わりに、セッションのfriction採点で「書き戻す機会」を検出し、昇格（recall promote）と剪定（maintenance）をコマンドにしている

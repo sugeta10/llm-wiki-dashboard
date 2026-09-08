@@ -47,3 +47,4 @@
 - [[concepts/cognitive-debt]] — 「人間レビューが新ボトルネック化」という同じ現象を、開発者の頭の中に蓄積する認知的負債という側面から論じる
 - [[business/end-of-task-assignment]] — 「エンジニアがコードを書かなくなった」という同型の観測をSpotifyの事例で報告
 - [[concepts/development-as-agriculture]] — 「生成は課金で増やせるが確認速度は無限に増やせない」という同じAmdahl構造を、農業の比喩で開発全体に広げた論（深津貴之）
+- [[papers/2026-sonyai-hakken]] — 加速の対象が自然科学側の例。AIが「まだ誰も発見していない事実」を予測したというSony AIの仕組み（手法は未収集）
