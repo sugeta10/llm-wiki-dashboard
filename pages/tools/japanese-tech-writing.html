@@ -29,13 +29,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>japanese-tech-writing</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="japanese-tech-writing.md">Markdownで表示</a></div>
-  <div class="meta">tools/japanese-tech-writing · tools · <span title="2026-06-18">2ヶ月前</span><span class="stale-badge">⚠ 60日以上前の情報</span></div>
+  <div class="meta">tools/japanese-tech-writing · tools · <span title="2026-09-10">今日</span></div>
   <article><h1>日本語技術文書の文章規範スキル（japanese-tech-writing）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 日本語で技術原稿（書籍の章・記事・解説文）を書く／推敲するときの規範をまとめた SKILL.md。「LLMっぽい空句」「冗長」「過剰な演出」を禁じ、パラグラフライティングと論証の厳密さを徹底させる。AIにもこの規範で書かせ・推敲させることを狙う。</p>
 </blockquote>
 <p>技術書編集者の鹿野桂一郎（@golden_lucky / k16shikano、ラムダノート代表）が公開した、エージェント向けスキル（SKILL.md）。<code>/japanese-tech-writing</code> として起動し、原稿執筆・リライト時に「整形・論証・読み手の負荷管理・演出抑制・LLM臭の排除」を一括して効かせる。元は例文付きだったが、公開版は例文を取り除いてコンパクト化されている。gist で公開: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d</p>
-<h2>規範の構成（10カテゴリ）</h2>
+<h2>規範の構成（2026-06 時点・10カテゴリ）</h2>
 <table>
 <thead>
 <tr>
@@ -86,16 +86,18 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tr>
 </tbody>
 </table>
+<p>上表の10カテゴリは、2026-06-17 に gist 本体（SKILL.md 全文）を読んで構成の一致を確認したもの（gist フロントマターの description は「整形／段落と論証／論証の厳密さ／読み手の負荷／視点と語り／演出の抑制／LLMっぽい空句の禁止／冗長の排除」）。公開時に鹿野は「例文を取り除いたので、けっこうコンパクトになった。例文を除いてしまってるので、そこまで強くは効かないかもしれない」と述べ、例文を外したことで規範の拘束力が下がる可能性を留保している。</p>
 <p>このvault の CLAUDE.md「文章スタイル」節（補足の括弧は文末に置く・術語に一言添える・主張に主体を明記）と狙いが重なる。AI出力の「らしさ」で読み心地と信用度を落とさない、という同じ問題への外部からの体系的な回答にあたる。</p>
-<h2>観察ログ（未検証）</h2>
-<ul>
-<li>2026-06-16: @golden_lucky 本人が公開。「例文を取り除いたので、けっこうコンパクトになった。例文を除いてしまってるので、そこまで強くは効かないかもしれない」と、例文を外したことで規範の拘束力が下がる可能性を本人が留保している</li>
-<li>2026-06-17: 一次ソースであるgist本体（SKILL.md全文）を直接ingest。本ページの10カテゴリ要約がgist現物の構成と一致することを確認（フロントマターの description＝「整形／段落と論証／論証の厳密さ／読み手の負荷／視点と語り／演出の抑制／LLMっぽい空句の禁止／冗長の排除」）</li>
-</ul>
+<h2>2026-09 の改訂（整形の削除・翻訳調の禁止）</h2>
+<p>鹿野は 2026-09-09、時雨堂の座談会で出た要望を受けてスキルを更新したと報告した。大きな差分は3点で、「整形」カテゴリを丸ごと削除したこと、「読み手の負荷の管理」を拡充したこと、「翻訳調の比喩と擬人化の禁止」という項目を新設したこと。改訂後の gist 本文は本vaultにまだ取り込んでいないため、各項目の具体的な規範文は未収集。</p>
+<p>削除された「整形」は一文一行・太字の制限・ダッシュや中黒の禁止といった表記の規則群で、文章の中身ではなく見た目に属する。残して厚くした「読み手の負荷の管理」と新設した「翻訳調の禁止」はどちらも読み手の側で起きることを扱うため、規範の重心が表記から読解へ移ったと考えられる。新設項目は <a href="../tools/suiko.html">suiko</a> が検査側（決定論的CLI）で扱う翻訳調・擬人化と同じ対象を、指示側（SKILL.md）で禁じる形になる。</p>
+<p>鹿野は同じポストで「スキルである以上、AI脱臭みが入るのは仕方ないのだ」とも述べている。規範を与えて AI らしさを消しにいく書き方そのものが別種の不自然さを残す、という自嘲と考えられる。</p>
 <h2>問い</h2>
 <ul>
 <li>このvault の CLAUDE.md「文章スタイル」節に、このスキルの規範（特に「LLMっぽい表現の禁止」「冗長の排除」）のどれを取り込むと、wikiページ・weeklyの読み心地が上がるか</li>
 <li>例文を外すと「そこまで強くは効かない」と作者が言う通りなら、規範を効かせるには例文（good/bad対）が要る。本Wikiの<a href="../concepts/self-refining-skills.html">self-refining-skills</a>のように、実際の推敲ログから例文を蓄積していく形にできるか</li>
+<li>改訂後の gist を取り込み、削除された「整形」の規則（一文一行・ダッシュの禁止など）を本vaultの出力側で別途持つ必要があるか判断する</li>
+<li>「翻訳調の比喩と擬人化の禁止」は <a href="../tools/suiko.html">suiko</a> の検査ルールとどこまで重なるか。同じ規範を指示側と検査側のどちらに置くと効くか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -110,7 +112,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
 <li><a href="../tools/no-ai-slop.html">no-ai-slop</a></li>
 <li><a href="../tools/suiko.html">suiko</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066751852088336698" rel="noopener" target="_blank">https://x.com/i/web/status/2066751852088336698</a></li>
-<li><a href="https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d" rel="noopener" target="_blank">https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d</a></li></ul></section></article>
+<li><a href="https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d" rel="noopener" target="_blank">https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d</a></li>
+<li><a href="https://x.com/i/web/status/2097608424125276430" rel="noopener" target="_blank">https://x.com/i/web/status/2097608424125276430</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -137,7 +140,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 
 技術書編集者の鹿野桂一郎（@golden_lucky / k16shikano、ラムダノート代表）が公開した、エージェント向けスキル（SKILL.md）。`/japanese-tech-writing` として起動し、原稿執筆・リライト時に「整形・論証・読み手の負荷管理・演出抑制・LLM臭の排除」を一括して効かせる。元は例文付きだったが、公開版は例文を取り除いてコンパクト化されている。gist で公開: https://gist.github.com/k16shikano/fd287c3133457c4fd8f5601d34aa817d
 
-## 規範の構成（10カテゴリ）
+## 規範の構成（2026-06 時点・10カテゴリ）
 
 | カテゴリ | 主な規範 |
 |---|---|
@@ -152,17 +155,24 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 | 見出しの付け方 | 内容を特定できる具体的な見出し、結論の先出し告知を避ける |
 | 読者への誠実さ | 例の作為性を自覚、著者の断定でなく一般的事実に訴える |
 
+上表の10カテゴリは、2026-06-17 に gist 本体（SKILL.md 全文）を読んで構成の一致を確認したもの（gist フロントマターの description は「整形／段落と論証／論証の厳密さ／読み手の負荷／視点と語り／演出の抑制／LLMっぽい空句の禁止／冗長の排除」）。公開時に鹿野は「例文を取り除いたので、けっこうコンパクトになった。例文を除いてしまってるので、そこまで強くは効かないかもしれない」と述べ、例文を外したことで規範の拘束力が下がる可能性を留保している。
+
 このvault の CLAUDE.md「文章スタイル」節（補足の括弧は文末に置く・術語に一言添える・主張に主体を明記）と狙いが重なる。AI出力の「らしさ」で読み心地と信用度を落とさない、という同じ問題への外部からの体系的な回答にあたる。
 
-## 観察ログ（未検証）
+## 2026-09 の改訂（整形の削除・翻訳調の禁止）
 
-- 2026-06-16: @golden_lucky 本人が公開。「例文を取り除いたので、けっこうコンパクトになった。例文を除いてしまってるので、そこまで強くは効かないかもしれない」と、例文を外したことで規範の拘束力が下がる可能性を本人が留保している
-- 2026-06-17: 一次ソースであるgist本体（SKILL.md全文）を直接ingest。本ページの10カテゴリ要約がgist現物の構成と一致することを確認（フロントマターの description＝「整形／段落と論証／論証の厳密さ／読み手の負荷／視点と語り／演出の抑制／LLMっぽい空句の禁止／冗長の排除」）
+鹿野は 2026-09-09、時雨堂の座談会で出た要望を受けてスキルを更新したと報告した。大きな差分は3点で、「整形」カテゴリを丸ごと削除したこと、「読み手の負荷の管理」を拡充したこと、「翻訳調の比喩と擬人化の禁止」という項目を新設したこと。改訂後の gist 本文は本vaultにまだ取り込んでいないため、各項目の具体的な規範文は未収集。
+
+削除された「整形」は一文一行・太字の制限・ダッシュや中黒の禁止といった表記の規則群で、文章の中身ではなく見た目に属する。残して厚くした「読み手の負荷の管理」と新設した「翻訳調の禁止」はどちらも読み手の側で起きることを扱うため、規範の重心が表記から読解へ移ったと考えられる。新設項目は [[tools/suiko]] が検査側（決定論的CLI）で扱う翻訳調・擬人化と同じ対象を、指示側（SKILL.md）で禁じる形になる。
+
+鹿野は同じポストで「スキルである以上、AI脱臭みが入るのは仕方ないのだ」とも述べている。規範を与えて AI らしさを消しにいく書き方そのものが別種の不自然さを残す、という自嘲と考えられる。
 
 ## 問い
 
 - このvault の CLAUDE.md「文章スタイル」節に、このスキルの規範（特に「LLMっぽい表現の禁止」「冗長の排除」）のどれを取り込むと、wikiページ・weeklyの読み心地が上がるか
 - 例文を外すと「そこまで強くは効かない」と作者が言う通りなら、規範を効かせるには例文（good/bad対）が要る。本Wikiの[[concepts/self-refining-skills]]のように、実際の推敲ログから例文を蓄積していく形にできるか
+- 改訂後の gist を取り込み、削除された「整形」の規則（一文一行・ダッシュの禁止など）を本vaultの出力側で別途持つ必要があるか判断する
+- 「翻訳調の比喩と擬人化の禁止」は [[tools/suiko]] の検査ルールとどこまで重なるか。同じ規範を指示側と検査側のどちらに置くと効くか
 
 ## 関連
 
