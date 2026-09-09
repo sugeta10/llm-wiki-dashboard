@@ -57,3 +57,4 @@ Claude Code のスキルフォルダに clone し、`pipeline/` で `npm run set
 - [[design/ai-presentation-workflow]] — 構成→視覚確認→編集可能化→人間確認の工程分業。本スキルは編集可能化とチェックを1本のパイプラインにまとめる
 - [[concepts/intermediate-notation-pattern]] — AIに GUI でなく構造化記法を書かせる設計手法。SlideSpec（JSON）はその一例
 - [[concepts/self-refining-skills]] — 指摘を教訓ファイルへ書き戻して育てるループ。規約ファイルへの1行追記と同じ構造
+- [[design/design-md]] — デザイン仕様の `.md` をエージェントの参照仕様として置く発想。既存のデザインシステム（デジタル庁など）をそのままスライド生成スキルに使う例を含む

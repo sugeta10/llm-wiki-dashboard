@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x-research-skills - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>x-research-skills</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="x-research-skills.md">Markdownで表示</a></div>
+  <div class="meta">tools/x-research-skills · tools · <span title="2026-09-09">今日</span></div>
+  <article><h1>x-research-skills（Grokを「X検索専用レイヤー」にする構成）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: X のリアルタイム検索だけを xAI API の Grok に外注し、Claude Code / Codex からは Agent Skill 経由で呼ぶ構成。@HayattiQ がスクリプトを GitHub（<code>HayattiQ/x-research-skills</code>）で公開している。</p>
+<p>📌 X bookmark: 19,871（2026-09-09 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  CC[&quot;Claude Code / Codex&quot;] --&gt; S[&quot;SKILL.md&quot;]
+  S --&gt; SC[&quot;スクリプト（クエリ・フォーマット固定）&quot;]
+  SC --&gt; API[&quot;xAI API（Grok）&quot;]
+  API --&gt; X[&quot;X 投稿のリアルタイム検索&quot;]
+  X --&gt; R[&quot;整形済みリサーチ結果&quot;]
+  R --&gt; CC</pre>
+<p>出発点は、記事や投稿文のリサーチ全般はこなす <a href="../tools/claude-code.html">claude-code</a> や ChatGPT が、「X の今」を追わせた途端に精度を落とすという観察である。@HayattiQ はこれを「能力の問題というより情報源の性質の問題」と切り分ける。つまりモデルを上位のものへ替えても解決せず、X のリアルタイム情報へ触る手段そのものを足す必要がある、という診断になっている。</p>
+<p>足す手段として @HayattiQ が選ぶのが Grok である。X 社が作っているモデルであるため X 投稿の検索・要約に強く、これを API 経由で呼んで「検索専用マイクロサービス」として扱う。エージェント本体（Claude Code / Codex）は思考と文章生成に専念し、X からの取得だけを別プロセスに委ねる分業になる。@HayattiQ は所要時間を「エンジニアなら30分で動く」と見積もっている。</p>
+<h2>構成の3ステップ</h2>
+<ol>
+<li><strong>xAI API キーを取得する</strong> — <a href="https://x.ai/">x.ai</a> からサインアップして API キーを発行する。API は有料の従量課金のため、事前に課金しておく必要がある</li>
+<li><strong>Grok を呼ぶスクリプトを書く</strong> — Grok に渡すプロンプトを固定したスクリプトを用意する</li>
+<li><strong>Agent Skill として登録する</strong> — そのスクリプトを呼び出す <code>SKILL.md</code> を書き、Claude Code / Codex から起動できるようにする</li>
+</ol>
+<h2>肝は「何でも聞かない」こと</h2>
+<p>@HayattiQ が最も強調するのは、Grok に自由質問を投げるのではなく<strong>検索クエリとフォーマットを固定する</strong>点である。「AIトレンド 日本語 直近24時間」のように対象・言語・期間の制約を明示するとノイズが激減すると述べる。スキル側が担うのは「何を聞くか」ではなく「どう聞くかを毎回同じ形に揃えること」で、<a href="../concepts/claude-skills.html">claude-skills</a> の一般形（職務定義を持続させ毎回の文脈再構築を省く）をリサーチ工程に当てたものと言える。</p>
+<p>なお、この構成は X 検索を Grok に寄せるため、X の公式 API を叩く <a href="../tools/xurl.html">xurl</a> とは前提が異なる。xurl は X Developer Portal でのアプリ登録と OAuth 認証が要る代わりに検索・投稿・メディアアップロードまで公式エンドポイントを直接扱えるのに対し、本構成は xAI の課金だけで済む代わりに取得内容が Grok の検索・要約を通した二次情報になる。どちらを採るかという同じ二択は、<a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a> の Scout エージェント設計でも「xurl スキルか Grok への切替か」として現れている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-02-10: xAI API の課金について「1回の呼び出しは0.1 USD くらい」（@HayattiQ）。記事本文はこの箇所で途切れており、クエリ内容による変動や上限は未確認</li>
+<li>2026-02-10: 効果は「海外の盛り上がっていた投稿をうまく取得できている実感がある」という体感ベースの評価で、Claude Code / ChatGPT 単体との比較実測は示されていない</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の wiki の週次リサーチ（sources/twitter/ の供給）に、xurl による公式 API 取得と Grok 経由の検索を併用する意味はあるか。ブックマーク収集は xurl、話題の発見は Grok という役割分担が成り立つか</li>
+<li>「検索クエリとフォーマットを固定する」効果は Grok 固有か、Web 検索を持つ他モデルでも同じ効きを持つか</li>
+<li>Grok の要約を経た二次情報を wiki に取り込む場合、Tier 判定（一次情報か否か）はどう扱うべきか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/xurl.html">xurl</a> — 同じ「エージェントから X を触る」問題を X 公式 API 側で解く別解。開発者アプリ認証が要る代わりに一次データを直接取得できる</li>
+<li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a> — リサーチ部門の Scout エージェントで「xurl か Grok か」という同じ二択を扱っている構成例</li>
+<li><a href="../concepts/claude-code-webfetch.html">claude-code-webfetch</a> — Web 経由の取得が Haiku の事前要約を通る Claude Code 側の機構。「Web から X を調べると精度が落ちる」の一因を説明する</li>
+<li><a href="../concepts/x-algorithm-phoenix.html">x-algorithm-phoenix</a> — X 本体のランキングも Grok ベースの Phoenix に移行済み。Grok が X 投稿に強いという主張の背景</li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a> — スクリプトを <code>SKILL.md</code> で束ねてエージェントに呼ばせる仕組みの一般形</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-webfetch.html">claude-code-webfetch</a></li>
+<li><a href="../concepts/claude-skills.html">claude-skills</a></li>
+<li><a href="../concepts/x-algorithm-phoenix.html">x-algorithm-phoenix</a></li>
+<li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a></li>
+<li><a href="../tools/xurl.html">xurl</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2021057206939156505" rel="noopener" target="_blank">https://x.com/i/web/status/2021057206939156505</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># x-research-skills（Grokを「X検索専用レイヤー」にする構成）
+
+&gt; **TL;DR**: X のリアルタイム検索だけを xAI API の Grok に外注し、Claude Code / Codex からは Agent Skill 経由で呼ぶ構成。@HayattiQ がスクリプトを GitHub（`HayattiQ/x-research-skills`）で公開している。
+
+&gt; 📌 X bookmark: 19,871（2026-09-09 時点）
+
+```mermaid
+flowchart LR
+  CC[&quot;Claude Code / Codex&quot;] --&gt; S[&quot;SKILL.md&quot;]
+  S --&gt; SC[&quot;スクリプト（クエリ・フォーマット固定）&quot;]
+  SC --&gt; API[&quot;xAI API（Grok）&quot;]
+  API --&gt; X[&quot;X 投稿のリアルタイム検索&quot;]
+  X --&gt; R[&quot;整形済みリサーチ結果&quot;]
+  R --&gt; CC
+```
+
+出発点は、記事や投稿文のリサーチ全般はこなす [[tools/claude-code]] や ChatGPT が、「X の今」を追わせた途端に精度を落とすという観察である。@HayattiQ はこれを「能力の問題というより情報源の性質の問題」と切り分ける。つまりモデルを上位のものへ替えても解決せず、X のリアルタイム情報へ触る手段そのものを足す必要がある、という診断になっている。
+
+足す手段として @HayattiQ が選ぶのが Grok である。X 社が作っているモデルであるため X 投稿の検索・要約に強く、これを API 経由で呼んで「検索専用マイクロサービス」として扱う。エージェント本体（Claude Code / Codex）は思考と文章生成に専念し、X からの取得だけを別プロセスに委ねる分業になる。@HayattiQ は所要時間を「エンジニアなら30分で動く」と見積もっている。
+
+## 構成の3ステップ
+
+1. **xAI API キーを取得する** — [x.ai](https://x.ai/) からサインアップして API キーを発行する。API は有料の従量課金のため、事前に課金しておく必要がある
+2. **Grok を呼ぶスクリプトを書く** — Grok に渡すプロンプトを固定したスクリプトを用意する
+3. **Agent Skill として登録する** — そのスクリプトを呼び出す `SKILL.md` を書き、Claude Code / Codex から起動できるようにする
+
+## 肝は「何でも聞かない」こと
+
+@HayattiQ が最も強調するのは、Grok に自由質問を投げるのではなく**検索クエリとフォーマットを固定する**点である。「AIトレンド 日本語 直近24時間」のように対象・言語・期間の制約を明示するとノイズが激減すると述べる。スキル側が担うのは「何を聞くか」ではなく「どう聞くかを毎回同じ形に揃えること」で、[[concepts/claude-skills]] の一般形（職務定義を持続させ毎回の文脈再構築を省く）をリサーチ工程に当てたものと言える。
+
+なお、この構成は X 検索を Grok に寄せるため、X の公式 API を叩く [[tools/xurl]] とは前提が異なる。xurl は X Developer Portal でのアプリ登録と OAuth 認証が要る代わりに検索・投稿・メディアアップロードまで公式エンドポイントを直接扱えるのに対し、本構成は xAI の課金だけで済む代わりに取得内容が Grok の検索・要約を通した二次情報になる。どちらを採るかという同じ二択は、[[tools/hermes-agent-research-department]] の Scout エージェント設計でも「xurl スキルか Grok への切替か」として現れている。
+
+## 観察ログ（未検証）
+
+- 2026-02-10: xAI API の課金について「1回の呼び出しは0.1 USD くらい」（@HayattiQ）。記事本文はこの箇所で途切れており、クエリ内容による変動や上限は未確認
+- 2026-02-10: 効果は「海外の盛り上がっていた投稿をうまく取得できている実感がある」という体感ベースの評価で、Claude Code / ChatGPT 単体との比較実測は示されていない
+
+## 問い
+
+- 自分の wiki の週次リサーチ（sources/twitter/ の供給）に、xurl による公式 API 取得と Grok 経由の検索を併用する意味はあるか。ブックマーク収集は xurl、話題の発見は Grok という役割分担が成り立つか
+- 「検索クエリとフォーマットを固定する」効果は Grok 固有か、Web 検索を持つ他モデルでも同じ効きを持つか
+- Grok の要約を経た二次情報を wiki に取り込む場合、Tier 判定（一次情報か否か）はどう扱うべきか
+
+## 関連
+
+- [[tools/xurl]] — 同じ「エージェントから X を触る」問題を X 公式 API 側で解く別解。開発者アプリ認証が要る代わりに一次データを直接取得できる
+- [[tools/hermes-agent-research-department]] — リサーチ部門の Scout エージェントで「xurl か Grok か」という同じ二択を扱っている構成例
+- [[concepts/claude-code-webfetch]] — Web 経由の取得が Haiku の事前要約を通る Claude Code 側の機構。「Web から X を調べると精度が落ちる」の一因を説明する
+- [[concepts/x-algorithm-phoenix]] — X 本体のランキングも Grok ベースの Phoenix に移行済み。Grok が X 投稿に強いという主張の背景
+- [[concepts/claude-skills]] — スクリプトを `SKILL.md` で束ねてエージェントに呼ばせる仕組みの一般形
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

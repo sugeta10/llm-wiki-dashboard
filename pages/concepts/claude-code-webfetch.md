@@ -88,3 +88,4 @@ AWS ドキュメントは `Accept: text/markdown` ヘッダーを付けると Ma
 - [[tools/claude-code]] — Claude Code 本体
 - [[concepts/prompt-engineering]] — プロンプト設計（情報の正確性・一次情報の重要性）
 - [[concepts/claude-code-security]] — Claude Code のセキュリティ設計（Prompt Injection 対策も含む）
+- [[tools/x-research-skills]] — Web 経由の X リサーチが弱い問題を、X 検索だけ Grok（xAI API）へ外に出して回避する構成（@HayattiQ）

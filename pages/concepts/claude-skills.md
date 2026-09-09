@@ -107,3 +107,4 @@ Claude.ai と Claude Code は同じ仕組みでスキルを動作させる。
 - [[papers/2026-hao-skill-mining]] — GUI軌跡からSKILL.mdを自動採掘する診断研究。可読でも転移せず頻度ベースラインに負けるという負の結果
 - [[tools/emil-kowalski-skills]] — デザインエンジニアの専門性（taste）をスキル化した実例（/apple-design・「AIは専門性を置き換えず増幅する」）
 - [[concepts/context-engineering]] — Anthropic Claude Codeチーム公式のコンテキスト設計原則。スキルを「必要な時だけロードされる軽量ガイド」と位置づける
+- [[tools/x-research-skills]] — 外部API（xAI の Grok）呼び出しスクリプトを SKILL.md で束ね、X検索を専用レイヤーとして常設した実例（@HayattiQ）

@@ -62,3 +62,4 @@ Claude Code + xurl で「記事を書いて → Xへポスト」がターミナ�
 - [[concepts/agentic-coding]]
 - [[concepts/x-algorithm-phoenix]] — 2026年5月のX公式アルゴリズム（Phoenix）変更：投稿戦略の転換点
 - [[tools/ant-cli]] — Claude Platform 用の公式API専用CLI（xurlのClaude版にあたる）
+- [[tools/x-research-skills]] — 同じ「エージェントからXを触る」問題を、公式APIでなく Grok（xAI API）への検索委譲で解く別解（@HayattiQ）

@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>consulting-pptx-skill</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="consulting-pptx-skill.md">Markdownで表示</a></div>
-  <div class="meta">design/consulting-pptx-skill · design · <span title="2026-09-04">4日前</span></div>
+  <div class="meta">design/consulting-pptx-skill · design · <span title="2026-09-04">5日前</span></div>
   <article><h1>consulting-pptx-skill｜コンサル品質のPPTXをAIに作らせるClaude Codeスキル</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 提案書・報告書づくりで毎週使っている仕組みを公開した Claude Code スキル。価値の中心はテンプレでも生成パイプラインでもなく、レビューで受けた指摘を1行ずつ溜めた約80項目のスライド規約ファイルを「作らせる前に毎回読ませ、出力後に機械チェックで違反を検出する」蓄積ループにある。</p>
@@ -130,6 +130,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../design/ai-presentation-workflow.html">ai-presentation-workflow</a> — 構成→視覚確認→編集可能化→人間確認の工程分業。本スキルは編集可能化とチェックを1本のパイプラインにまとめる</li>
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — AIに GUI でなく構造化記法を書かせる設計手法。SlideSpec（JSON）はその一例</li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — 指摘を教訓ファイルへ書き戻して育てるループ。規約ファイルへの1行追記と同じ構造</li>
+<li><a href="../design/design-md.html">design-md</a> — デザイン仕様の <code>.md</code> をエージェントの参照仕様として置く発想。既存のデザインシステム（デジタル庁など）をそのままスライド生成スキルに使う例を含む</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 <li><a href="../design/ai-presentation-workflow.html">ai-presentation-workflow</a></li>
@@ -215,6 +216,7 @@ Claude Code のスキルフォルダに clone し、`pipeline/` で `npm run set
 - [[design/ai-presentation-workflow]] — 構成→視覚確認→編集可能化→人間確認の工程分業。本スキルは編集可能化とチェックを1本のパイプラインにまとめる
 - [[concepts/intermediate-notation-pattern]] — AIに GUI でなく構造化記法を書かせる設計手法。SlideSpec（JSON）はその一例
 - [[concepts/self-refining-skills]] — 指摘を教訓ファイルへ書き戻して育てるループ。規約ファイルへの1行追記と同じ構造
+- [[design/design-md]] — デザイン仕様の `.md` をエージェントの参照仕様として置く発想。既存のデザインシステム（デジタル庁など）をそのままスライド生成スキルに使う例を含む
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
