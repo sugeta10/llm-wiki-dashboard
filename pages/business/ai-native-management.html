@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-native-management - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-native-management</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-native-management.md">Markdownで表示</a></div>
+  <div class="meta">business/ai-native-management · business · <span title="2026-09-10">今日</span></div>
+  <article><h1>AIネイティブ経営の13論点（深津貴之のX発言まとめ）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 深津貴之の直近2ヶ月のX発言を @kazobara が Grok に集約させた13論点。重心は「効くプロンプトの一文」ではなく、消す仕事を決める・ハーネス設計でコストを決める・評価と選別の担い手を置く、という組織側の設計に移っている。</p>
+</blockquote>
+<p>このページは二次まとめである。@kazobara（note でメンバーシップを運営）が深津貴之（note CXO / THE GUILD）との対談の事前準備として Grok に「@fladdict の直近2ヶ月の発言を網羅的に集め、経営者にとってインパクトのある順に並べ直せ」と指示し、その出力に自分の経営者向けの言い換えを足して記事化したもので、深津本人の原ポストは未参照である。抽出に使ったプロンプト自体は <a href="../concepts/x-timeline-distillation.html">x-timeline-distillation</a> に切り出した。以下、深津の主張として書かれている部分と @kazobara の言い換えを分けて記す。</p>
+<h2>起点は効率化でなく「仕事を消す」</h2>
+<p>@kazobara が最もインパクトが大きいとして先頭に置いたのがこれである。記事によれば深津の整理は、ダメなパターンが「人が運用で頑張る」→「AIで人がもっと効率よく頑張る」であり、イケてる側は先に<strong>ビジネスにインパクトのない仕事をそもそもなくす</strong>に着手する、というもの。@kazobara は「全社員に ChatGPT / Claude を配って工数20%削減」は既存業務を温存したまま加速するだけで、コスト構造も意思決定速度も本質的には変わらないと言い換える。関連して、note 社では経営会議中にプロトタイプやダッシュボードが出来上がる運用が実際に起きている、と記事は書く。ツール導入より「会議の間に検証可能なものを出す」設計のほうが効く、という現場感である。</p>
+<h2>組織設計：農業化と、評価・選別の担い手</h2>
+<p>8月の長文note の核心として挙げられているのが、AI駆動開発は工芸から農業になるという見立てで、フレームワーク名は <strong>DasA（Development as an Agriculture）</strong>。人間の仕事は「何を育てるか決める」「土壌（コンテキスト・ツール・ガードレール）を整える」「出来を選別する」に移り、実装量そのものは価値の中心ではなくなる——この論点は原典（深津のnote）から <a href="../concepts/development-as-agriculture.html">development-as-agriculture</a> に既収録で、本記事の要約はそれと矛盾しない。@kazobara の経営側への翻訳は、採用・評価・組織図を「実装できる人」中心から「土壌をつくる人／評価基準をつくる人／最終判断する人」へ移さないと、AIを入れてもボトルネックが人間のレビューと統合に残る、というもの。</p>
+<p>同じ「選別が価値」という構図は2つの論点に再登場する。ひとつは<strong>実経験の希少化</strong>で、AI時代に積んでおくべきなのは性能そのものよりロボがつくれる・3Dが作れる・AITuber がつくれる・仕入れと出荷ができるといった実経験であり、一方でその経験を積む場所自体は減っていく、という危機感が示される（記事のこの箇所は有料note の無料表示境界と重なっており、深津の原文がどこまで続くかは未捕捉）。@kazobara は「AIを使える人」より「AIに正しい制約を与えられる現場感覚を持つ人」が残る、と読み替えている。深津自身も「全部AIだけでサービス一本つくっている」と書き、プロモ動画の一気通貫パイプラインを探しているという。</p>
+<p>もうひとつが<strong>コンテンツ事業への結論</strong>で、「生成AIでワンピースを超える名作を作れるか」への答えは現状ほぼ No。理由は生成能力の不足ではなく、傑作を選別する社会的ループ（編集・市場・時間）がAI側にないこと。コンテンツ企業は「生成モデル」より「選別装置」に金を使うべき、という含意になる。</p>
+<h2>コスト：モデル課金でなくハーネス設計、モデル選定より載せ替え可能性</h2>
+<p>エージェント運用コストは「どのモデルを使うか」ではなく「設計の無駄」で決まる、という論点では、8月末のnote が扱った Uber 事例が引かれる。利用者7倍・リクエスト9.4倍でも総AI支出をほぼ横ばいに抑えた内訳として、タスク別のモデル分離（計画・評価は上位、実務サブは安いモデル）・巨大な共有計画ファイルを全員に読ませない・Tool schema を全部載せない動的ロード・会話履歴の再送とキャッシュ期限の設計・決定論的処理をトークンでなくコード／バッチへ、が挙げられる。Uber 側の一次情報は <a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a> に既収録で、セッション単価の削減幅（ピーク比半減／公式の52%減）も一致している。</p>
+<p>深津はXでも同じ問題意識を繰り返しているとされ、失敗の形は「監督AIが大計画.md を読み、実務AIが『大計画に従っているか』をまた確認する」——同じ巨大ファイルがN回走る構造で、<strong>AGENTS.md を全員が読める形で肥大化させること自体が失敗</strong>だと指摘する。@kazobara は経営者が見るべきKPIを「どのモデルを使っているか」より「1セッションあたり何回、同じ巨大コンテキストを再読ませているか」だと言い換える。指示ファイルを短く保つ方向は <a href="../concepts/agents-md-canonical.html">agents-md-canonical</a>・<a href="../concepts/skills-over-memory.html">skills-over-memory</a> と同じ処方に見える。</p>
+<p>モデル選定については、8月の「どのAIモデルがいいですか？」が決定版として書かれており、結論は——今のタスクで品質・速度・コスト・セキュリティを満たすならどれでもよい／モデルはすぐ入れ替わるので特定モデル依存のプロンプト・ワークフローは負債／見るべきは「モデルを替えても仕事が回るか」。@kazobara はここから「モデル比較表を毎週更新するより、差し替え演習をしたほうが価値が高い」と読む。工程ごとにモデルを配分する <a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> とは、配分そのものより配分を組み替えられる状態を資産と見る点で角度が違う。</p>
+<h2>指示とリスク：優先順位の委任、許容事故、言語ドリフト</h2>
+<p>プロンプト実務で一番使える観察として挙がるのが、<strong>指示を細かくしない</strong>である。「issue 486を消化して」と言うと486だけやって止まる（あるいは468と取り違えて止まる）が、「Limitが尽きるまで、やることを考えて優先順位をつけて消化して」と言うと動き続ける。真面目に指示しすぎる人ほど成果が出ない、という逆説である。別の言い方として「明日の朝に顧客に見せる」という言葉自体が、細かい最適化を捨てろという強いコンテキストになる、とも書かれている。期限と公開先をプロンプトに埋め込む形は、<a href="../concepts/fable-5-prompting.html">fable-5-prompting</a> の「指示を減らす」や <a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> の停止条件の議論と同じ方向を向いている。</p>
+<p>リスク側では、Codex などの現行ハーネスは「完成させる」より「事故を起こさない」に強く最適化されており、長期運用すると「ゼロ事故だけやる組織」と同じ強化学習がかかる、という観察が示される。ここから出てくるのが<strong>アンチハーネス</strong>という概念で、完全なリスク回避でなく「とるリスク／とらないリスク」を仕訳し、コントロール可能な範囲で問題を起こしながら進む設計へシフトするだろう、という仮説である。@kazobara の経営側への翻訳は、AI導入ガイドラインを禁止事項リストだけで書くと現場が止まるので、<strong>許容事故の定義（どこまで壊してよいか）を先に決めた方がエージェントは使える</strong>というもの。関連して、2エージェントが無限ループして課金を食い潰す事故への対処案として、独立したAI PMが数ターン進捗が止まっていたらユーザー判断を呼ぶ、という設計も出されている（停止条件を人間でなく監視エージェントに持たせる発想）。</p>
+<p>運用事故につながる技術的発見として<strong>言語ドリフト</strong>が挙げられる。上位モデルで「バイク」を考察させると英語サブエージェント側で bike が bicycle と解釈され、最終成果物に自転車が混ざる。パンツ／ズボン／underwear でも同じことが起きうる。原因は、日英で意味がずれる単語を薄いコンテキストのままエージェント間で投げ合い、統合層がドリフトした見解をそのまま混ぜること。対策の含意は、固有名詞と多義語をエージェント境界で定義固定する（翻訳させてから渡す・用語集を強制する・統合前に意味が滑っていないかを別エージェントで検査する）。語の指示対象が曖昧なまま生成が進む問題への処方という点で <a href="../concepts/semantic-generation-skill.html">semantic-generation-skill</a> と同型に見える。</p>
+<p>プロンプトの「まだ効く変な技」も残っているとされる。エージェント化でロール指定は効きにくくなったと言われつつ、人名を極端にする（「山田権左衛門康綱」など）と判断が歪む実験があり、本筋でない固有名の差だけで出力の方向が変わる可能性が示唆される。もうひとつが<strong>マスタープロンプト実験</strong>で、AIがプロンプトを発行し深津本人が実行する（「この仕事はやめろ」「こっちに進出しろ」「これを勉強しろ」と指示が来る）人間が実行レイヤーになる逆転実験。完成形ではなく「幸福になるか？」という問いのまま置かれている。</p>
+<h2>対外と学習：AIO はラブレター、シラバスの賞味期限、科学発見AI</h2>
+<p>AIO / LLMO については、SEO的な量産・自社推奨記事は短期では効いても長期では脱落する、という立場が示される。AI引用は「ユーザーが最も満足する結果」に強化学習されていくので騙す系は淘汰され、適切に情報開示したうえで人間がリピートしたくなる商品と同じリコメンドに収束する、という見立て。別投稿では「AIOやLLMOは企業からAIへのラブレター。ハックや量産と言った時点でモテない」とまで書かれている。note 側では「いいnoteを書くだけでAIに紹介される基盤を先に実装する」と公言しており、GEO をメディア基盤の問題として捉えている。</p>
+<p>教育については文科省向けの発言として、AIによって「去年のシラバスやベストプラクティスは1年以内にゴミになる」、制度を根本から変えないと後進国確定、という危機感が引かれる。@kazobara は社内研修に置き換え、AI研修をツールの使い方講習で終わらせるのは危険で、毎年作り直す前提の学習システム（評価・選別・環境設計）が必要だとする。</p>
+<p>科学発見AIとしては、Sony AI の <strong>Hakken</strong> への深津の反応（「応用が無限大では」）が紹介される。過去論文の関係図の時間発展を学習し、未発見の関係を予測して既存事実で説明まで出す仕組みで、老化関連で150万仮説を出し選んだ3件中2件が実験で確認された、という数字が記事に書かれている（wiki側の既存ページは <a href="../papers/2026-sonyai-hakken.html">2026-sonyai-hakken</a>。原論文は未収集のため数値は追跡対象として観察ログに置く）。@kazobara は R&amp;D を「文献を読む人」から「仮説生成の土壌と選別基準を設計する人」へ移す実験が創薬以外でも始まりうる、と農業メタファーに接続している。</p>
+<h2>実装チェックリスト（記事が挙げる着手順）</h2>
+<ol>
+<li>消す仕事のリストを先に作る（効率化対象ではなく廃止対象）</li>
+<li>エージェントの共有計画ファイルを肥大化させない（誰が何を読むかを役割で分ける）</li>
+<li>モデル固定をやめ、差し替え演習をする</li>
+<li>指示を手順から目的＋期限＋予算（トークン上限）に変える</li>
+<li>許容事故の定義を書く（ゼロ事故ハーネスに組織が学習されないようにする）</li>
+<li>評価・選別の担当を明確にする（生成できる人より、良いものを見分けて捨てられる人）</li>
+<li>現場の実経験（物流・製造・制作・顧客対応）を意図的に残す</li>
+<li>AIO は一次情報と顧客満足で取る。量産ハックは捨てる</li>
+</ol>
+<p>@kazobara はこの2ヶ月の深津の発言について、重心が「プロンプトの魔法の一文」から組織・コスト・評価・リスク許容の設計に移っており、経営インパクトの本体は「AIに何をさせるか」でなく「人間と組織のどこを農場の設計者に変えるか」だと結んでいる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-09: Sony AI の Hakken が老化関連で150万仮説を出し、選んだ3件中2件が実験で確認された（記事経由の数字・原論文および一次発表は未参照）</li>
+<li>2026-09-09: 「去年のシラバスやベストプラクティスは1年以内にゴミになる」という深津の予測（記事経由・原ポスト未確認）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「消す仕事のリストを先に作る」を自分の運用に当てはめると、廃止候補は何か。ingest の自動化は効率化側であって廃止側ではない</li>
+<li>言語ドリフトは英語ソースを日本語ページにする自分の ingest でも起きうるか。用語を境界で固定する最小の一歩は、ページ側の用語集か、スキル側の禁止語リストか</li>
+<li>「許容事故の定義」を headless ingest に書くとどうなるか（どこまで壊れたら止めるか・止めずに続ける範囲はどこか）</li>
+<li>Grok 経由の二次まとめを一次情報のページ（Hakken など）に混ぜない線引きは、今回のように「数値は観察ログ」で足りるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../people/fladdict.html">fladdict</a> — 論点の発信者。原ポストでなく本記事経由の要約である点に注意</li>
+<li><a href="../concepts/x-timeline-distillation.html">x-timeline-distillation</a> — 本ページを生んだ抽出手法（人物×期間×自分の立場での並べ替え）</li>
+<li><a href="../concepts/development-as-agriculture.html">development-as-agriculture</a> — 農業メタファーの原典側（深津のnote）。本ページはそのX発言版の要約</li>
+<li><a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a> — Uber事例の一次情報側。本ページはそれを経営KPIへ翻訳した二次側</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — ハーネスを設計対象として扱う全体論。「アンチハーネス」はその反対極の仮説</li>
+<li><a href="../papers/2026-sonyai-hakken.html">2026-sonyai-hakken</a> — 科学発見AIの既存ページ（仕組み・論文本体は未収集）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/development-as-agriculture.html">development-as-agriculture</a></li>
+<li><a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a></li>
+<li><a href="../concepts/x-timeline-distillation.html">x-timeline-distillation</a></li>
+<li><a href="../people/fladdict.html">fladdict</a></li>
+<li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2097517077817164081" rel="noopener" target="_blank">https://x.com/i/web/status/2097517077817164081</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AIネイティブ経営の13論点（深津貴之のX発言まとめ）
+
+&gt; **TL;DR**: 深津貴之の直近2ヶ月のX発言を @kazobara が Grok に集約させた13論点。重心は「効くプロンプトの一文」ではなく、消す仕事を決める・ハーネス設計でコストを決める・評価と選別の担い手を置く、という組織側の設計に移っている。
+
+このページは二次まとめである。@kazobara（note でメンバーシップを運営）が深津貴之（note CXO / THE GUILD）との対談の事前準備として Grok に「@fladdict の直近2ヶ月の発言を網羅的に集め、経営者にとってインパクトのある順に並べ直せ」と指示し、その出力に自分の経営者向けの言い換えを足して記事化したもので、深津本人の原ポストは未参照である。抽出に使ったプロンプト自体は [[concepts/x-timeline-distillation]] に切り出した。以下、深津の主張として書かれている部分と @kazobara の言い換えを分けて記す。
+
+## 起点は効率化でなく「仕事を消す」
+
+@kazobara が最もインパクトが大きいとして先頭に置いたのがこれである。記事によれば深津の整理は、ダメなパターンが「人が運用で頑張る」→「AIで人がもっと効率よく頑張る」であり、イケてる側は先に**ビジネスにインパクトのない仕事をそもそもなくす**に着手する、というもの。@kazobara は「全社員に ChatGPT / Claude を配って工数20%削減」は既存業務を温存したまま加速するだけで、コスト構造も意思決定速度も本質的には変わらないと言い換える。関連して、note 社では経営会議中にプロトタイプやダッシュボードが出来上がる運用が実際に起きている、と記事は書く。ツール導入より「会議の間に検証可能なものを出す」設計のほうが効く、という現場感である。
+
+## 組織設計：農業化と、評価・選別の担い手
+
+8月の長文note の核心として挙げられているのが、AI駆動開発は工芸から農業になるという見立てで、フレームワーク名は **DasA（Development as an Agriculture）**。人間の仕事は「何を育てるか決める」「土壌（コンテキスト・ツール・ガードレール）を整える」「出来を選別する」に移り、実装量そのものは価値の中心ではなくなる——この論点は原典（深津のnote）から [[concepts/development-as-agriculture]] に既収録で、本記事の要約はそれと矛盾しない。@kazobara の経営側への翻訳は、採用・評価・組織図を「実装できる人」中心から「土壌をつくる人／評価基準をつくる人／最終判断する人」へ移さないと、AIを入れてもボトルネックが人間のレビューと統合に残る、というもの。
+
+同じ「選別が価値」という構図は2つの論点に再登場する。ひとつは**実経験の希少化**で、AI時代に積んでおくべきなのは性能そのものよりロボがつくれる・3Dが作れる・AITuber がつくれる・仕入れと出荷ができるといった実経験であり、一方でその経験を積む場所自体は減っていく、という危機感が示される（記事のこの箇所は有料note の無料表示境界と重なっており、深津の原文がどこまで続くかは未捕捉）。@kazobara は「AIを使える人」より「AIに正しい制約を与えられる現場感覚を持つ人」が残る、と読み替えている。深津自身も「全部AIだけでサービス一本つくっている」と書き、プロモ動画の一気通貫パイプラインを探しているという。
+
+もうひとつが**コンテンツ事業への結論**で、「生成AIでワンピースを超える名作を作れるか」への答えは現状ほぼ No。理由は生成能力の不足ではなく、傑作を選別する社会的ループ（編集・市場・時間）がAI側にないこと。コンテンツ企業は「生成モデル」より「選別装置」に金を使うべき、という含意になる。
+
+## コスト：モデル課金でなくハーネス設計、モデル選定より載せ替え可能性
+
+エージェント運用コストは「どのモデルを使うか」ではなく「設計の無駄」で決まる、という論点では、8月末のnote が扱った Uber 事例が引かれる。利用者7倍・リクエスト9.4倍でも総AI支出をほぼ横ばいに抑えた内訳として、タスク別のモデル分離（計画・評価は上位、実務サブは安いモデル）・巨大な共有計画ファイルを全員に読ませない・Tool schema を全部載せない動的ロード・会話履歴の再送とキャッシュ期限の設計・決定論的処理をトークンでなくコード／バッチへ、が挙げられる。Uber 側の一次情報は [[concepts/software-factory-cost-equation]] に既収録で、セッション単価の削減幅（ピーク比半減／公式の52%減）も一致している。
+
+深津はXでも同じ問題意識を繰り返しているとされ、失敗の形は「監督AIが大計画.md を読み、実務AIが『大計画に従っているか』をまた確認する」——同じ巨大ファイルがN回走る構造で、**AGENTS.md を全員が読める形で肥大化させること自体が失敗**だと指摘する。@kazobara は経営者が見るべきKPIを「どのモデルを使っているか」より「1セッションあたり何回、同じ巨大コンテキストを再読ませているか」だと言い換える。指示ファイルを短く保つ方向は [[concepts/agents-md-canonical]]・[[concepts/skills-over-memory]] と同じ処方に見える。
+
+モデル選定については、8月の「どのAIモデルがいいですか？」が決定版として書かれており、結論は——今のタスクで品質・速度・コスト・セキュリティを満たすならどれでもよい／モデルはすぐ入れ替わるので特定モデル依存のプロンプト・ワークフローは負債／見るべきは「モデルを替えても仕事が回るか」。@kazobara はここから「モデル比較表を毎週更新するより、差し替え演習をしたほうが価値が高い」と読む。工程ごとにモデルを配分する [[concepts/llm-model-selection-strategy]] とは、配分そのものより配分を組み替えられる状態を資産と見る点で角度が違う。
+
+## 指示とリスク：優先順位の委任、許容事故、言語ドリフト
+
+プロンプト実務で一番使える観察として挙がるのが、**指示を細かくしない**である。「issue 486を消化して」と言うと486だけやって止まる（あるいは468と取り違えて止まる）が、「Limitが尽きるまで、やることを考えて優先順位をつけて消化して」と言うと動き続ける。真面目に指示しすぎる人ほど成果が出ない、という逆説である。別の言い方として「明日の朝に顧客に見せる」という言葉自体が、細かい最適化を捨てろという強いコンテキストになる、とも書かれている。期限と公開先をプロンプトに埋め込む形は、[[concepts/fable-5-prompting]] の「指示を減らす」や [[concepts/goal-loop-routine]] の停止条件の議論と同じ方向を向いている。
+
+リスク側では、Codex などの現行ハーネスは「完成させる」より「事故を起こさない」に強く最適化されており、長期運用すると「ゼロ事故だけやる組織」と同じ強化学習がかかる、という観察が示される。ここから出てくるのが**アンチハーネス**という概念で、完全なリスク回避でなく「とるリスク／とらないリスク」を仕訳し、コントロール可能な範囲で問題を起こしながら進む設計へシフトするだろう、という仮説である。@kazobara の経営側への翻訳は、AI導入ガイドラインを禁止事項リストだけで書くと現場が止まるので、**許容事故の定義（どこまで壊してよいか）を先に決めた方がエージェントは使える**というもの。関連して、2エージェントが無限ループして課金を食い潰す事故への対処案として、独立したAI PMが数ターン進捗が止まっていたらユーザー判断を呼ぶ、という設計も出されている（停止条件を人間でなく監視エージェントに持たせる発想）。
+
+運用事故につながる技術的発見として**言語ドリフト**が挙げられる。上位モデルで「バイク」を考察させると英語サブエージェント側で bike が bicycle と解釈され、最終成果物に自転車が混ざる。パンツ／ズボン／underwear でも同じことが起きうる。原因は、日英で意味がずれる単語を薄いコンテキストのままエージェント間で投げ合い、統合層がドリフトした見解をそのまま混ぜること。対策の含意は、固有名詞と多義語をエージェント境界で定義固定する（翻訳させてから渡す・用語集を強制する・統合前に意味が滑っていないかを別エージェントで検査する）。語の指示対象が曖昧なまま生成が進む問題への処方という点で [[concepts/semantic-generation-skill]] と同型に見える。
+
+プロンプトの「まだ効く変な技」も残っているとされる。エージェント化でロール指定は効きにくくなったと言われつつ、人名を極端にする（「山田権左衛門康綱」など）と判断が歪む実験があり、本筋でない固有名の差だけで出力の方向が変わる可能性が示唆される。もうひとつが**マスタープロンプト実験**で、AIがプロンプトを発行し深津本人が実行する（「この仕事はやめろ」「こっちに進出しろ」「これを勉強しろ」と指示が来る）人間が実行レイヤーになる逆転実験。完成形ではなく「幸福になるか？」という問いのまま置かれている。
+
+## 対外と学習：AIO はラブレター、シラバスの賞味期限、科学発見AI
+
+AIO / LLMO については、SEO的な量産・自社推奨記事は短期では効いても長期では脱落する、という立場が示される。AI引用は「ユーザーが最も満足する結果」に強化学習されていくので騙す系は淘汰され、適切に情報開示したうえで人間がリピートしたくなる商品と同じリコメンドに収束する、という見立て。別投稿では「AIOやLLMOは企業からAIへのラブレター。ハックや量産と言った時点でモテない」とまで書かれている。note 側では「いいnoteを書くだけでAIに紹介される基盤を先に実装する」と公言しており、GEO をメディア基盤の問題として捉えている。
+
+教育については文科省向けの発言として、AIによって「去年のシラバスやベストプラクティスは1年以内にゴミになる」、制度を根本から変えないと後進国確定、という危機感が引かれる。@kazobara は社内研修に置き換え、AI研修をツールの使い方講習で終わらせるのは危険で、毎年作り直す前提の学習システム（評価・選別・環境設計）が必要だとする。
+
+科学発見AIとしては、Sony AI の **Hakken** への深津の反応（「応用が無限大では」）が紹介される。過去論文の関係図の時間発展を学習し、未発見の関係を予測して既存事実で説明まで出す仕組みで、老化関連で150万仮説を出し選んだ3件中2件が実験で確認された、という数字が記事に書かれている（wiki側の既存ページは [[papers/2026-sonyai-hakken]]。原論文は未収集のため数値は追跡対象として観察ログに置く）。@kazobara は R&amp;D を「文献を読む人」から「仮説生成の土壌と選別基準を設計する人」へ移す実験が創薬以外でも始まりうる、と農業メタファーに接続している。
+
+## 実装チェックリスト（記事が挙げる着手順）
+
+1. 消す仕事のリストを先に作る（効率化対象ではなく廃止対象）
+2. エージェントの共有計画ファイルを肥大化させない（誰が何を読むかを役割で分ける）
+3. モデル固定をやめ、差し替え演習をする
+4. 指示を手順から目的＋期限＋予算（トークン上限）に変える
+5. 許容事故の定義を書く（ゼロ事故ハーネスに組織が学習されないようにする）
+6. 評価・選別の担当を明確にする（生成できる人より、良いものを見分けて捨てられる人）
+7. 現場の実経験（物流・製造・制作・顧客対応）を意図的に残す
+8. AIO は一次情報と顧客満足で取る。量産ハックは捨てる
+
+@kazobara はこの2ヶ月の深津の発言について、重心が「プロンプトの魔法の一文」から組織・コスト・評価・リスク許容の設計に移っており、経営インパクトの本体は「AIに何をさせるか」でなく「人間と組織のどこを農場の設計者に変えるか」だと結んでいる。
+
+## 観察ログ（未検証）
+
+- 2026-09-09: Sony AI の Hakken が老化関連で150万仮説を出し、選んだ3件中2件が実験で確認された（記事経由の数字・原論文および一次発表は未参照）
+- 2026-09-09: 「去年のシラバスやベストプラクティスは1年以内にゴミになる」という深津の予測（記事経由・原ポスト未確認）
+
+## 問い
+
+- 「消す仕事のリストを先に作る」を自分の運用に当てはめると、廃止候補は何か。ingest の自動化は効率化側であって廃止側ではない
+- 言語ドリフトは英語ソースを日本語ページにする自分の ingest でも起きうるか。用語を境界で固定する最小の一歩は、ページ側の用語集か、スキル側の禁止語リストか
+- 「許容事故の定義」を headless ingest に書くとどうなるか（どこまで壊れたら止めるか・止めずに続ける範囲はどこか）
+- Grok 経由の二次まとめを一次情報のページ（Hakken など）に混ぜない線引きは、今回のように「数値は観察ログ」で足りるか
+
+## 関連
+
+- [[people/fladdict]] — 論点の発信者。原ポストでなく本記事経由の要約である点に注意
+- [[concepts/x-timeline-distillation]] — 本ページを生んだ抽出手法（人物×期間×自分の立場での並べ替え）
+- [[concepts/development-as-agriculture]] — 農業メタファーの原典側（深津のnote）。本ページはそのX発言版の要約
+- [[concepts/software-factory-cost-equation]] — Uber事例の一次情報側。本ページはそれを経営KPIへ翻訳した二次側
+- [[concepts/harness-engineering]] — ハーネスを設計対象として扱う全体論。「アンチハーネス」はその反対極の仮説
+- [[papers/2026-sonyai-hakken]] — 科学発見AIの既存ページ（仕組み・論文本体は未収集）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

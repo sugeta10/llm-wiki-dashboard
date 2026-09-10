@@ -14,9 +14,12 @@ note の CXO（Chief Experience Officer）。**THE GUILD** 所属のサービス
 - [[business/ai-vertical-integration]] — 「AI企業が受託を始めた日。エンジニア・PM・デザイナーはどうこの先生きのこるか」（2026-05-12）
 - [[concepts/advisor-executor-pattern]] — Fable を司令塔に Issue 設計・fable/opus/sonnet/人間へのタスク割り当て・PR 品質不足時の上位モデル再実行をさせるプロンプト（2026-07-10・X）
 - [[concepts/development-as-agriculture]] — 「高度に進化したAI駆動開発は、農業と区別がつかなくなる」（2026-08-05・オープン社内報）
+- [[business/ai-native-management]] — 直近2ヶ月のX発言13論点（2026-09-09・@kazobara が Grok で集約した二次まとめ。原ポスト未参照）
 
 ## 関連
 
 - [[business/ai-vertical-integration]]
 - [[concepts/advisor-executor-pattern]]
 - [[concepts/development-as-agriculture]]
+- [[business/ai-native-management]]
+- [[concepts/x-timeline-distillation]] — 本人のXタイムラインを蒸留対象にした手法側

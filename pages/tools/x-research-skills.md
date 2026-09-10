@@ -48,3 +48,4 @@ flowchart LR
 - [[concepts/claude-code-webfetch]] — Web 経由の取得が Haiku の事前要約を通る Claude Code 側の機構。「Web から X を調べると精度が落ちる」の一因を説明する
 - [[concepts/x-algorithm-phoenix]] — X 本体のランキングも Grok ベースの Phoenix に移行済み。Grok が X 投稿に強いという主張の背景
 - [[concepts/claude-skills]] — スクリプトを `SKILL.md` で束ねてエージェントに呼ばせる仕組みの一般形
+- [[concepts/x-timeline-distillation]] — 同じ Grok 外注をスクリプト化せず1文のプロンプトでやる即席版。クエリ固定でなく「対象人物×期間×並べ替え軸」を都度指定する

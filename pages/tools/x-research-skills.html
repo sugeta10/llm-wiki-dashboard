@@ -71,11 +71,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-webfetch.html">claude-code-webfetch</a> — Web 経由の取得が Haiku の事前要約を通る Claude Code 側の機構。「Web から X を調べると精度が落ちる」の一因を説明する</li>
 <li><a href="../concepts/x-algorithm-phoenix.html">x-algorithm-phoenix</a> — X 本体のランキングも Grok ベースの Phoenix に移行済み。Grok が X 投稿に強いという主張の背景</li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — スクリプトを <code>SKILL.md</code> で束ねてエージェントに呼ばせる仕組みの一般形</li>
+<li><a href="../concepts/x-timeline-distillation.html">x-timeline-distillation</a> — 同じ Grok 外注をスクリプト化せず1文のプロンプトでやる即席版。クエリ固定でなく「対象人物×期間×並べ替え軸」を都度指定する</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-webfetch.html">claude-code-webfetch</a></li>
 <li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../concepts/x-algorithm-phoenix.html">x-algorithm-phoenix</a></li>
-<li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a></li>
-<li><a href="../tools/xurl.html">xurl</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2021057206939156505" rel="noopener" target="_blank">https://x.com/i/web/status/2021057206939156505</a></li></ul></section></article>
+<li><a href="../concepts/x-timeline-distillation.html">x-timeline-distillation</a></li>
+<li><a href="../tools/hermes-agent-research-department.html">hermes-agent-research-department</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2021057206939156505" rel="noopener" target="_blank">https://x.com/i/web/status/2021057206939156505</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -146,6 +147,7 @@ flowchart LR
 - [[concepts/claude-code-webfetch]] — Web 経由の取得が Haiku の事前要約を通る Claude Code 側の機構。「Web から X を調べると精度が落ちる」の一因を説明する
 - [[concepts/x-algorithm-phoenix]] — X 本体のランキングも Grok ベースの Phoenix に移行済み。Grok が X 投稿に強いという主張の背景
 - [[concepts/claude-skills]] — スクリプトを `SKILL.md` で束ねてエージェントに呼ばせる仕組みの一般形
+- [[concepts/x-timeline-distillation]] — 同じ Grok 外注をスクリプト化せず1文のプロンプトでやる即席版。クエリ固定でなく「対象人物×期間×並べ替え軸」を都度指定する
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

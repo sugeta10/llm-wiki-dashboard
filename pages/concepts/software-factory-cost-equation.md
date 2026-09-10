@@ -55,3 +55,4 @@ MCPは1,000超のサーバーを単一ゲートウェイに集約した上で、
 - [[concepts/llm-model-selection-strategy]] — 工程分解型モデル選択の個人版。Uberはベンチマークで同じ配分を自動化する
 - [[concepts/context-graph-retrieval]] — コンテキストグラフ検索の設計手順側
 - [[tools/stripe-minions]] — managed agentsパイプラインの他社実装（Stripe）
+- [[business/ai-native-management]] — 本事例を深津貴之が経営論として引いた側。「見るべきKPIはモデル名でなく、同じ巨大コンテキストを1セッションに何回再読ませているか」という翻訳になっている
