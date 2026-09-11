@@ -82,3 +82,4 @@ eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
 - [[concepts/development-as-agriculture]] — 「良いを判定可能な形にするeval設計」を、大量生成した候補から選抜する農業の比喩で位置づける論
 - [[concepts/ai-engineer-interview-questions]] — 「変更で何が壊れていないと言えるか」「AI評価者の偏りをどう扱うか」を面接の質問（Q3・Q4）にした版。eval loopを持っているかの外部診断
 - [[concepts/llm-japanese-style-hooks]] — 文章の癖をPostToolUse Hookで機械検査する実装。日常の書き込みでは止めず警告のみ返し、セッション終了時だけブロックする二段ゲート
+- [[tools/claude-code-plugin-eval]] — テストケース作成→採点→プラグインなしでの再実行という手順をCLIに組み込んだClaude Code公式コマンド。採点対象を自作プラグイン・スキルに定めた実装
