@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>instruction-means-review - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>instruction-means-review</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="instruction-means-review.md">Markdownで表示</a></div>
+  <div class="meta">concepts/instruction-means-review · concepts · <span title="2026-09-13">今日</span></div>
+  <article><h1>指示＝手段の再検討プロンプト（fladdict）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 「ユーザーの指示は目的達成に最適な手段とは限らない」をAIの前提に据え、より良い手段が見えたら実行前に代替案・根拠・トレードオフを出させる常設プロンプト。同時に、推測した真意を口実に制約を書き換えることを禁じ、可逆で小さい改善は確認せず進めさせる（@fladdict）。</p>
+</blockquote>
+<p>情報の非対称が双方向だという認識が、この3行の形を決めている。深津貴之（@fladdict）は、ユーザーの指示を本人が持っている情報と認識の範囲で選ばれた手段と置き、同時にAI側もユーザーの事情や意向を完全には把握していないと置く。どちらか片方だけを立てると失敗の形が決まる。指示を絶対視すれば劣った手段を黙って実行し、真意の推測を優先すれば明示された制約まで書き換える。3つのルールはこの2つの失敗をそれぞれ別の条項で止めている。</p>
+<h2>3つのルール</h2>
+<ol>
+<li><strong>手段を目的に照らして検討させる</strong> — 指示された手段を、明示された目的と確認済みの意向に照らして検討し、重要な改善が見込める場合は実行前に代替案とその根拠、トレードオフを簡潔に提示する。判断の材料は効果・費用・安全性・実行可能性の4つに限定され、提示のタイミングは実行前、出力は代替案・根拠・トレードオフの3点セットと決まっている</li>
+<li><strong>推測を口実に権限を広げさせない</strong> — 推測した「真の要望」を理由に、明示された制約や権限を勝手に変更しない。目的・範囲・重要な制約を変える場合は確認を取る</li>
+<li><strong>可逆で小さい改善は止めずに進めさせる</strong> — 依頼範囲内の軽微で可逆的な改善は、不要な確認で作業を止めずに進める</li>
+</ol>
+<p>止まるか進むかの線引きは「依頼範囲の外に出るか」「元に戻せるか」の2点で引かれている。代替案を出す条件（重要な改善が見込めるとき）と、確認を取る条件（目的・範囲・重要な制約が動くとき）が別々に書き分けられているのが、この短さの割に挙動が定まる理由だと考えられる。</p>
+<h2>原文</h2>
+<blockquote>
+<p>ユーザーの指示は、利用可能な情報や認識に基づくものであり、目的達成に最適な手段とは限らない。一方、Codexもユーザーの事情や意向を完全には把握していない。</p>
+<p>指示された手段を、明示された目的と確認済みの意向に照らして検討し、効果・費用・安全性・実行可能性の面で重要な改善が見込める場合は、実行前に代替案とその根拠、トレードオフを簡潔に提示する。</p>
+<p>ただし、推測した「真の要望」を理由に、明示された制約や権限を勝手に変更しない。目的・範囲・重要な制約を変える場合は確認し、依頼範囲内の軽微で可逆的な改善は、不要な確認で作業を止めずに進める。</p>
+</blockquote>
+<p>@fladdict は「みんな、自分のチャッピーにいれてみよう」と添えてこのまま貼る形で共有している。文中の主語は Codex なので、別のエージェントに貼るときは名前を差し替える。引用は X API が返す全文（note_tweet）で、ローカルキャッシュ <code>sources/twitter/2026-09-12/2098634834893754741.md</code> は冒頭の2段落目で切れている。</p>
+<h2>位置づけ</h2>
+<p>Anthropic公式ガイドを@Charlie_no_siteが整理した<a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a>では、「途中で止まらせない」（止まってよいのは消すとき・戻せないとき・依頼の範囲が変わるときの3つ）と「依頼の範囲を勝手に動かさせない」が別々の項目として並ぶ。fladdictの3行は同じ2本の線を1つのルールに畳み、そこへ「より良い手段があるなら実行前に言う」という能動側を足した形と考えられる。貼り先としては、ChatGPTのカスタム指示欄のような会話をまたいで効く常設の設定欄が想定されている（<a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a>）。</p>
+<h2>問い</h2>
+<ul>
+<li>自分のCLAUDE.md・AGENTS.mdに足す前に、既存の「勝手に進めない」系の行と重複・衝突しないか点検する（<a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a>の手順で、足すより先に既存行を再審査する）</li>
+<li>「重要な改善が見込める場合」の閾値をモデルが自分で引けるか。代替案の提示が増えて、かえって確認待ちで止まる回数が増えないか実際に数える</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a> — 範囲を動かさない／不要な確認で止まらない、を公式ガイド由来の別項目として扱う整理。本ページはその2本を1ルールに畳んだ形</li>
+<li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> — 同じ著者の別プロンプト（品質不足時に上位モデルへ切り替える司令塔型）</li>
+<li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a> — 貼り先となる常設設定欄の機能と書き方の原則</li>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> — 指示は期限付きパッチ。常設プロンプトを増やす前後の運用側</li>
+<li><a href="../people/fladdict.html">fladdict</a> — 著者</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
+<li><a href="../concepts/chatgpt-custom-instructions.html">chatgpt-custom-instructions</a></li>
+<li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a></li>
+<li><a href="../people/fladdict.html">fladdict</a></li>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2098634834893754741" rel="noopener" target="_blank">https://x.com/i/web/status/2098634834893754741</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 指示＝手段の再検討プロンプト（fladdict）
+
+&gt; **TL;DR**: 「ユーザーの指示は目的達成に最適な手段とは限らない」をAIの前提に据え、より良い手段が見えたら実行前に代替案・根拠・トレードオフを出させる常設プロンプト。同時に、推測した真意を口実に制約を書き換えることを禁じ、可逆で小さい改善は確認せず進めさせる（@fladdict）。
+
+情報の非対称が双方向だという認識が、この3行の形を決めている。深津貴之（@fladdict）は、ユーザーの指示を本人が持っている情報と認識の範囲で選ばれた手段と置き、同時にAI側もユーザーの事情や意向を完全には把握していないと置く。どちらか片方だけを立てると失敗の形が決まる。指示を絶対視すれば劣った手段を黙って実行し、真意の推測を優先すれば明示された制約まで書き換える。3つのルールはこの2つの失敗をそれぞれ別の条項で止めている。
+
+## 3つのルール
+
+1. **手段を目的に照らして検討させる** — 指示された手段を、明示された目的と確認済みの意向に照らして検討し、重要な改善が見込める場合は実行前に代替案とその根拠、トレードオフを簡潔に提示する。判断の材料は効果・費用・安全性・実行可能性の4つに限定され、提示のタイミングは実行前、出力は代替案・根拠・トレードオフの3点セットと決まっている
+2. **推測を口実に権限を広げさせない** — 推測した「真の要望」を理由に、明示された制約や権限を勝手に変更しない。目的・範囲・重要な制約を変える場合は確認を取る
+3. **可逆で小さい改善は止めずに進めさせる** — 依頼範囲内の軽微で可逆的な改善は、不要な確認で作業を止めずに進める
+
+止まるか進むかの線引きは「依頼範囲の外に出るか」「元に戻せるか」の2点で引かれている。代替案を出す条件（重要な改善が見込めるとき）と、確認を取る条件（目的・範囲・重要な制約が動くとき）が別々に書き分けられているのが、この短さの割に挙動が定まる理由だと考えられる。
+
+## 原文
+
+&gt; ユーザーの指示は、利用可能な情報や認識に基づくものであり、目的達成に最適な手段とは限らない。一方、Codexもユーザーの事情や意向を完全には把握していない。
+&gt;
+&gt; 指示された手段を、明示された目的と確認済みの意向に照らして検討し、効果・費用・安全性・実行可能性の面で重要な改善が見込める場合は、実行前に代替案とその根拠、トレードオフを簡潔に提示する。
+&gt;
+&gt; ただし、推測した「真の要望」を理由に、明示された制約や権限を勝手に変更しない。目的・範囲・重要な制約を変える場合は確認し、依頼範囲内の軽微で可逆的な改善は、不要な確認で作業を止めずに進める。
+
+@fladdict は「みんな、自分のチャッピーにいれてみよう」と添えてこのまま貼る形で共有している。文中の主語は Codex なので、別のエージェントに貼るときは名前を差し替える。引用は X API が返す全文（note_tweet）で、ローカルキャッシュ `sources/twitter/2026-09-12/2098634834893754741.md` は冒頭の2段落目で切れている。
+
+## 位置づけ
+
+Anthropic公式ガイドを@Charlie_no_siteが整理した[[concepts/fable-5-1-prompting]]では、「途中で止まらせない」（止まってよいのは消すとき・戻せないとき・依頼の範囲が変わるときの3つ）と「依頼の範囲を勝手に動かさせない」が別々の項目として並ぶ。fladdictの3行は同じ2本の線を1つのルールに畳み、そこへ「より良い手段があるなら実行前に言う」という能動側を足した形と考えられる。貼り先としては、ChatGPTのカスタム指示欄のような会話をまたいで効く常設の設定欄が想定されている（[[concepts/chatgpt-custom-instructions]]）。
+
+## 問い
+
+- 自分のCLAUDE.md・AGENTS.mdに足す前に、既存の「勝手に進めない」系の行と重複・衝突しないか点検する（[[concepts/instruction-patch-lifecycle]]の手順で、足すより先に既存行を再審査する）
+- 「重要な改善が見込める場合」の閾値をモデルが自分で引けるか。代替案の提示が増えて、かえって確認待ちで止まる回数が増えないか実際に数える
+
+## 関連
+
+- [[concepts/fable-5-1-prompting]] — 範囲を動かさない／不要な確認で止まらない、を公式ガイド由来の別項目として扱う整理。本ページはその2本を1ルールに畳んだ形
+- [[concepts/advisor-executor-pattern]] — 同じ著者の別プロンプト（品質不足時に上位モデルへ切り替える司令塔型）
+- [[concepts/chatgpt-custom-instructions]] — 貼り先となる常設設定欄の機能と書き方の原則
+- [[concepts/instruction-patch-lifecycle]] — 指示は期限付きパッチ。常設プロンプトを増やす前後の運用側
+- [[people/fladdict]] — 著者
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

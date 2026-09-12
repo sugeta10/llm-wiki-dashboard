@@ -56,3 +56,4 @@
 - [[concepts/claude-projects-blueprint]] — Claude Projects版の同種カスタマイズ（6パート設計図・AI社員化）。本ページと対をなす
 - [[companies/openai]] — ChatGPTの開発元
 - [[concepts/claude-projects-setup]] — Claude 版の3層パーソナライゼーション（アカウント全体/Project/Styles）。本ページの機能の使い分け表と同型の整理
+- [[concepts/instruction-means-review]] — カスタム指示欄に置く具体例。手段の再検討・制約の保全・確認の閾値を3行で書いた@fladdictのプロンプト

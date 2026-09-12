@@ -55,4 +55,5 @@ Fable 5.1が出てプロンプトを作り直すべきか迷う経営者・事�
 - [[concepts/context-engineering]] — 「ルールから判断へ」の設計転換。7本が中身でなく進め方だけを書く理由の設計思想側
 - [[concepts/claude-code-task-delegation]] — 「指示なしでも結果が出る環境を設計する」への発想転換。本ページの「任せ方がうまい人」と同じ結論
 - [[concepts/claude-code-instruction-methods]] — 指示の置き場所をロード時点×圧縮生存で振り分ける公式フレーム。「貼る場所で変わる」観察の説明枠
+- [[concepts/instruction-means-review]] — 「止まらせない」「範囲を動かさせない」の2本を1つの常設ルールに畳み、代替案の提示を足した@fladdictのプロンプト
 - [[concepts/prompt-engineering]] — プロンプト設計の総論

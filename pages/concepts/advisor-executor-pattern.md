@@ -76,3 +76,4 @@ Na は記事末で、AIエージェントの実用化・プロダクション導
 - [[concepts/fable-sprint-strategy]] — 実践者版のP/G/E配分（Planner/Evaluator=Fable・Generator=Opus/Sonnet）。週50%制限下の運用記録（@AI_masaou）
 - [[concepts/delegation-management-style]] — 本ページのOrchestratorパターンに近いDevin Fusion構成で、リードモデルをFable/Opusで入れ替えたコスト実験（Cognition社）
 - [[tools/herdr]] — Orchestratorパターンをマルチペインのハーネス製品上で組んだ実例。Fable 5.1が方向づけ・分解・サインオフ、Claude/Codexの各ペインが実装（@Voxyz_ai）
+- [[concepts/instruction-means-review]] — 同じ[[people/fladdict|深津貴之]]の別プロンプト。モデル配分でなく、指示そのものを手段として再検討させる側

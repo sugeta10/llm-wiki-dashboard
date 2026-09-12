@@ -15,6 +15,7 @@ note の CXO（Chief Experience Officer）。**THE GUILD** 所属のサービス
 - [[concepts/advisor-executor-pattern]] — Fable を司令塔に Issue 設計・fable/opus/sonnet/人間へのタスク割り当て・PR 品質不足時の上位モデル再実行をさせるプロンプト（2026-07-10・X）
 - [[concepts/development-as-agriculture]] — 「高度に進化したAI駆動開発は、農業と区別がつかなくなる」（2026-08-05・オープン社内報）
 - [[business/ai-native-management]] — 直近2ヶ月のX発言13論点（2026-09-09・@kazobara が Grok で集約した二次まとめ。原ポスト未参照）
+- [[concepts/instruction-means-review]] — 「指示は目的達成に最適な手段とは限らない」を前提に代替案を出させ、推測で制約は変えさせない常設プロンプト（2026-09-12・X）
 
 ## 関連
 
@@ -22,4 +23,5 @@ note の CXO（Chief Experience Officer）。**THE GUILD** 所属のサービス
 - [[concepts/advisor-executor-pattern]]
 - [[concepts/development-as-agriculture]]
 - [[business/ai-native-management]]
+- [[concepts/instruction-means-review]]
 - [[concepts/x-timeline-distillation]] — 本人のXタイムラインを蒸留対象にした手法側
