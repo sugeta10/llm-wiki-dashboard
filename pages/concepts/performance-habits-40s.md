@@ -47,3 +47,4 @@
 - [[concepts/slack-time-at-work]] — 「取り返そうと頑張らない」引き算思想を働き方の稼働率（80%）に適用した隣接概念
 - [[concepts/mendokusasa-barrier]] — 「意志で頑張る」でなく機械的に動く仕組みを作る＝悪習慣のトリガーを断つ引き算と同じ仕組み志向
 - [[concepts/dopamine-detox]] — 同著者@antoshia2nによる続編。刺激・報酬系に特化した10のデトックス実践論
+- [[concepts/mitochondria-aging]] — 「悪習慣→ストレス→さらなる悪習慣」のループがなぜ老化として現れるのかを、エネルギー配分の機構から説明する研究者の視点

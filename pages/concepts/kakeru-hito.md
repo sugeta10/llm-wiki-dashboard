@@ -35,3 +35,4 @@
 - [[concepts/mendokusasa-barrier]] — 同著者（@Books_Apps）。あちらは行動を止める「面倒くさい」、こちらは書く力
 - [[concepts/output-first-learning]] — 他者視線前提でエッセイに仕上げる学習法。「主観＋読者への親切心」と同じ出力設計
 - [[tools/no-ai-slop]] — AI文章の定型パターン検出スキル。「レビューできる人がいない」問題の道具側
+- [[concepts/writing-norms-adoption]] — 日本語ライティング規範の採否を自分で判定する手順（@tetumemo）。規範を入れるかどうかを決めるには、本ページの言う「書ける人」の判断が要る

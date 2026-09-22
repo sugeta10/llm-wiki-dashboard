@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>suiko</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="suiko.md">Markdownで表示</a></div>
-  <div class="meta">tools/suiko · tools · <span title="2026-08-25">2週間前</span></div>
+  <div class="meta">tools/suiko · tools · <span title="2026-08-25">4週間前</span></div>
   <article><h1>suiko（推敲）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 生成AIの日本語に出る翻訳調・均一なリズム・定型的な対比を、事前の指示でなく事後の機械検査で再現可能に指さすRust製CLI（nwiizo製・MIT）。検出は機械が担い、直すかどうかの判断は人間が文脈で行う分業設計。</p>
@@ -66,8 +66,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a> — 規範を指示側（SKILL.md）に置くアプローチ。suikoは同種の規範を検査側に置き、判断を人間の文脈に残す</li>
 <li><a href="../tools/no-ai-slop.html">no-ai-slop</a> — 英語圏の同種パターン検出。LLMスキルによる推敲に対し、suikoは形態素解析ベースの再現可能な診断</li>
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — 「禁止語の回避と自然な日本語は別物」という同じ線引きを、検査でなく生成側のモデル選択に適用した主張（@yugen_matuni）。どのモデルが最初から検出に引っかからない日本語を書くか</li>
+<li><a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a> — suikoが検査で扱う翻訳調・リズムを、指示側の規範（cognitive-rhythm-writing）として入れる場合の採否判定と手順（@tetumemo）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
+<li><a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a></li>
 <li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li>
 <li><a href="../tools/no-ai-slop.html">no-ai-slop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2092039442680979889" rel="noopener" target="_blank">https://x.com/i/web/status/2092039442680979889</a></li>
 <li><a href="https://github.com/nwiizo/suiko" rel="noopener" target="_blank">https://github.com/nwiizo/suiko</a></li></ul></section></article>
@@ -134,6 +136,7 @@ flowchart LR
 - [[tools/japanese-tech-writing]] — 規範を指示側（SKILL.md）に置くアプローチ。suikoは同種の規範を検査側に置き、判断を人間の文脈に残す
 - [[tools/no-ai-slop]] — 英語圏の同種パターン検出。LLMスキルによる推敲に対し、suikoは形態素解析ベースの再現可能な診断
 - [[concepts/reasoning-vs-japanese-fluency]] — 「禁止語の回避と自然な日本語は別物」という同じ線引きを、検査でなく生成側のモデル選択に適用した主張（@yugen_matuni）。どのモデルが最初から検出に引っかからない日本語を書くか
+- [[concepts/writing-norms-adoption]] — suikoが検査で扱う翻訳調・リズムを、指示側の規範（cognitive-rhythm-writing）として入れる場合の採否判定と手順（@tetumemo）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
