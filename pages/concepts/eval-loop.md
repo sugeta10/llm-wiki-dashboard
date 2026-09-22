@@ -83,3 +83,4 @@ eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
 - [[concepts/ai-engineer-interview-questions]] — 「変更で何が壊れていないと言えるか」「AI評価者の偏りをどう扱うか」を面接の質問（Q3・Q4）にした版。eval loopを持っているかの外部診断
 - [[concepts/llm-japanese-style-hooks]] — 文章の癖をPostToolUse Hookで機械検査する実装。日常の書き込みでは止めず警告のみ返し、セッション終了時だけブロックする二段ゲート
 - [[tools/claude-code-plugin-eval]] — テストケース作成→採点→プラグインなしでの再実行という手順をCLIに組み込んだClaude Code公式コマンド。採点対象を自作プラグイン・スキルに定めた実装
+- [[tools/first-reader]] — 文章にスコアも修正案も付けず、読者の離脱位置と記憶だけを観測して返すスキル。ゲートの手前に置く計測器にあたる

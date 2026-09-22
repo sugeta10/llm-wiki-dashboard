@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jev-ultrafast - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>jev-ultrafast</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="jev-ultrafast.md">Markdownで表示</a></div>
+  <div class="meta">tools/jev-ultrafast · tools · <span title="2026-09-22">今日</span></div>
+  <article><h1>Jev Ultrafast｜番号付き要素テーブルを1往復で決めるブラウザエージェント</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 観測のたびにページの操作可能な要素を番号付きテーブルに作り直し、「どの操作か」と「どの要素か」を1回のモデル呼び出しで同時に決めるブラウザエージェント。スクリーンショットを使わず、Google Flightsの検索を7.1秒で完了したと <a href="../tools/browser-use.html">browser-use</a> 公式リポジトリが計測を公開している。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Page[&quot;ページ&quot;] --&gt; Snapshot[&quot;要素テーブル（1回のブラウザ呼び出しで原子的に取得）&quot;]
+  Snapshot --&gt; Jev[&quot;TypeSafe Jev へ1リクエスト: 操作 + 各対象の候補&quot;]
+  Jev --&gt; Pick[&quot;選ばれた操作に対応する対象だけ実行&quot;]
+  Pick --&gt; Browser[&quot;ブラウザ&quot;]
+  Pick --&gt; Text[&quot;TYPE_TEXT のときだけ小型LLMが文字列生成&quot;]
+  Text --&gt; Browser
+  Browser --&gt; Page</pre>
+<p>速さの出どころは推論の高速化ではなく、1決定あたりのネットワーク往復とブラウザ呼び出しを削ったことにあるとREADMEは説明する。エージェントが読むのは画面の画像ではなく、観測ごとに作り直される要素テーブル（<code>[1] button  Change ticket type · Round trip</code> のように番号・役割・名前・現在値が並ぶ）。操作は <code>CLICK</code> <code>TYPE_TEXT</code> <code>SELECT</code> <code>SCROLL_UP</code> <code>SCROLL_DOWN</code> <code>WAIT</code> <code>DONE</code> <code>BLOCKED</code> の8種で、その状態で実行できる操作と対象しか選択肢に出ない。</p>
+<p>決定は TypeSafe の Jev へ1リクエストで投げられ、操作の予測と <code>click_target</code> / <code>type_text_target</code> / <code>select_target</code> の各対象予測が同時に返る。対象の問いは投機的で、操作が <code>CLICK</code> なら <code>click_target</code> しか実行されない。2つの決定を1往復で済ませるこの形を、READMEは TypeSafe の speculative fan-out パターンとして参照している。文字列の生成は <code>TYPE_TEXT</code> のときだけ小型LLMが担当する（デモの既定は OpenRouter 経由の <code>inception/mercury-2.5</code>、reasoning 無効）。</p>
+<p>サイト固有のアクションスクリプトや、あらかじめ用意した入力文字列はポリシーに含まれない。Flightsの例はゴールだけを与え、結果は独立に検証する。スクリーンショットに番号ラベルを描く処理は録画用のレンダラー側にあり、ブラウザを動かしているのは構造化された状態だけだとREADMEは明記する。</p>
+<h2>速さを支える実装上の選択</h2>
+<p>READMEが「なぜ動きが速いか」として挙げる項目は、どれもモデルの外側にある。</p>
+<ul>
+<li><strong>1スナップショット＝1回のブラウザ呼び出し</strong> —— 可視コントロールとその名前・値・テキストを原子的に読み、実DOMノードへの参照を保持する</li>
+<li><strong>既定ループではスクリーンショットを撮らない</strong> —— 構造化状態のみを消費し、画面キャプチャはインスペクタと録画だけが使う</li>
+<li><strong>送るのは可視テキストだけ</strong> —— 画面外の本文やフッターでモデルのコンテキストを埋めない</li>
+<li><strong>待つのは有用な状態が出るまで</strong> —— コンボボックス入力後は候補表示を最大200msまで待ち、他の操作は2フレームまたは50ms。この読み取りは実行のログ記録より後に行う</li>
+<li><strong>隠しタブのレンダリングを保つ</strong> —— フォーカスのエミュレーションで、Chromeの表示タブを切り替えずに背景のアニメーション抑制を回避する</li>
+<li><strong>中断したテキスト生成の使い回し</strong> —— 生成済みの値が再試行に持ち越されるのは、テキストヘルパーへの入力が完全に同一のときだけ</li>
+</ul>
+<p>実行前の検証も分かれている。クリックはドキュメント・フォームの値・対象・周辺の文脈を確認し、現在の座標を解決したうえで覆われたコントロールを拒否する。アニメーションが起きただけでは再予測しない。安全側の線引きとして、モデルの出力がセレクタ・座標・シェルコマンド・実行可能なJavaScriptになることはなく、テキストヘルパーの出力も小さなJSONとしてパースできなければ入力されない。</p>
+<p>画面の見た目でなく番号付きの構造をモデルに操作させる点は <a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> と同じ発想であり、そこでの「状態をテキストで持つと出力が軽く安定する」という主張が、ブラウザ操作の速度として現れた事例だと考えられる。</p>
+<h2>公開されている計測と、その範囲</h2>
+<p>READMEが公開する数字は次のとおり。動画は Zürich → London の片道検索を 7,073ms で終えた実行で、計測は最初のページ観測の後から始まり、モデル呼び出し・生成テキスト・ブラウザ処理・古くなった判断・読み込み待ちを含む。独立した後追い確認で、片道設定・Zürich・London・2026年9月20日・フライト一覧の表示が検証されている。</p>
+<p>同一モデル・同一設定で新旧を交互に6回走らせた比較では、双方とも3/3成功。所要時間の中央値が 9.450秒 → 7.092秒（25%減）、ブラウザプロトコル呼び出しの中央値が 1,092回 → 101回。ただしREADME自身が「1タスクを3回、1つのブラウザプロファイルで繰り返しただけで、一般的な信頼性ベンチマークではない」と限定している。同じポリシーで Wikipedia の指定記事を 2.798秒、ローカルのホテル検索・絞り込みを 1.896秒で通したとも記載する。</p>
+<p>限界も明示されている。<code>DONE</code> の判断は結果の独立検証を必要とし、DOMリーダーが扱うのは一般的なHTMLとARIAコントロールであってアクセシブル名の完全な仕様ではない。Shadow DOM・フレーム・canvas・ファイルアップロード・ポップアップタブ・入れ子のスクロール・任意のキーボードウィジェットはこのMVPの対象外。操作するタブは既存のChromeプロファイルを共有する。</p>
+<h2>使い方</h2>
+<p><code>git clone</code> して <code>uv sync</code>、<code>.env</code> に <code>TYPESAFE_API_KEY</code> と <code>TEXT_MODEL_API_KEY</code> を入れ、<code>uv run jev</code> でローカルのインスペクタ（<code>http://127.0.0.1:8766</code>）が立つ。インスペクタには番号付き要素・操作の確率・対象の確率・実行されたアクションが並び、「Choose next」で実行前に停止できる。Chromeへの接続は同組織の Browser Harness 経由で、<code>uv sync</code> で一緒に入る。ライブラリとしては <code>Agent(url, goal)</code> をコンテキストマネージャで開き、<code>agent.run()</code> が返す状態（<code>elapsed_ms</code> / <code>status</code>）を回す形になる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-21: 中央値 9.450秒 → 7.092秒（25%減）、ブラウザプロトコル呼び出し 1,092 → 101 という比較は開発元の自己計測で、1タスク3回・単一プロファイルという範囲つき。他サイト・他タスクでの再現性は未確認</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>番号付き要素テーブル＋操作/対象の同時予測という形は、ブラウザ以外（CLIツール・社内管理画面・Obsidianのようなローカルアプリ）へそのまま移せるか。移せるなら「AIに渡す記法」を先に設計する話に還元できる</li>
+<li>スクリーンショットを使わない設計は、視覚に意味があるページ（レイアウトで意味が決まる広告・ダッシュボード）でどこから崩れるか</li>
+<li><code>DONE</code> の独立検証をどう組むかが実運用の分かれ目になる。ゴール達成の判定器を別に置く設計は <a href="../concepts/eval-loop.html">eval-loop</a> の出荷ゲートと同じ問題ではないか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/browser-use.html">browser-use</a> — 同じ browser-use による本体のブラウザ操作ライブラリ。Jev Ultrafast は「動的なインデックス付きアクション空間」に絞った別リポジトリで、Chrome接続は同組織の Browser Harness を使う</li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — GUIでなくテキスト記法をAIに操作させ、トークンと精度を同時に改善する設計パターン。番号付き要素テーブルはブラウザ操作版の中間記法にあたる</li>
+<li><a href="../tools/claude-computer-use.html">claude-computer-use</a> — スクリーンショットとクリック座標でUIを操作するAnthropicの機能。Jev Ultrafast は既定ループから画像を外し構造化状態だけを使う逆の選択をしている</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../tools/browser-use.html">browser-use</a></li>
+<li><a href="../tools/claude-computer-use.html">claude-computer-use</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/browser-use/jev-ultrafast" rel="noopener" target="_blank">https://github.com/browser-use/jev-ultrafast</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Jev Ultrafast｜番号付き要素テーブルを1往復で決めるブラウザエージェント
+
+&gt; **TL;DR**: 観測のたびにページの操作可能な要素を番号付きテーブルに作り直し、「どの操作か」と「どの要素か」を1回のモデル呼び出しで同時に決めるブラウザエージェント。スクリーンショットを使わず、Google Flightsの検索を7.1秒で完了したと [[tools/browser-use]] 公式リポジトリが計測を公開している。
+
+```mermaid
+flowchart LR
+  Page[&quot;ページ&quot;] --&gt; Snapshot[&quot;要素テーブル（1回のブラウザ呼び出しで原子的に取得）&quot;]
+  Snapshot --&gt; Jev[&quot;TypeSafe Jev へ1リクエスト: 操作 + 各対象の候補&quot;]
+  Jev --&gt; Pick[&quot;選ばれた操作に対応する対象だけ実行&quot;]
+  Pick --&gt; Browser[&quot;ブラウザ&quot;]
+  Pick --&gt; Text[&quot;TYPE_TEXT のときだけ小型LLMが文字列生成&quot;]
+  Text --&gt; Browser
+  Browser --&gt; Page
+```
+
+速さの出どころは推論の高速化ではなく、1決定あたりのネットワーク往復とブラウザ呼び出しを削ったことにあるとREADMEは説明する。エージェントが読むのは画面の画像ではなく、観測ごとに作り直される要素テーブル（`[1] button  Change ticket type · Round trip` のように番号・役割・名前・現在値が並ぶ）。操作は `CLICK` `TYPE_TEXT` `SELECT` `SCROLL_UP` `SCROLL_DOWN` `WAIT` `DONE` `BLOCKED` の8種で、その状態で実行できる操作と対象しか選択肢に出ない。
+
+決定は TypeSafe の Jev へ1リクエストで投げられ、操作の予測と `click_target` / `type_text_target` / `select_target` の各対象予測が同時に返る。対象の問いは投機的で、操作が `CLICK` なら `click_target` しか実行されない。2つの決定を1往復で済ませるこの形を、READMEは TypeSafe の speculative fan-out パターンとして参照している。文字列の生成は `TYPE_TEXT` のときだけ小型LLMが担当する（デモの既定は OpenRouter 経由の `inception/mercury-2.5`、reasoning 無効）。
+
+サイト固有のアクションスクリプトや、あらかじめ用意した入力文字列はポリシーに含まれない。Flightsの例はゴールだけを与え、結果は独立に検証する。スクリーンショットに番号ラベルを描く処理は録画用のレンダラー側にあり、ブラウザを動かしているのは構造化された状態だけだとREADMEは明記する。
+
+## 速さを支える実装上の選択
+
+READMEが「なぜ動きが速いか」として挙げる項目は、どれもモデルの外側にある。
+
+- **1スナップショット＝1回のブラウザ呼び出し** —— 可視コントロールとその名前・値・テキストを原子的に読み、実DOMノードへの参照を保持する
+- **既定ループではスクリーンショットを撮らない** —— 構造化状態のみを消費し、画面キャプチャはインスペクタと録画だけが使う
+- **送るのは可視テキストだけ** —— 画面外の本文やフッターでモデルのコンテキストを埋めない
+- **待つのは有用な状態が出るまで** —— コンボボックス入力後は候補表示を最大200msまで待ち、他の操作は2フレームまたは50ms。この読み取りは実行のログ記録より後に行う
+- **隠しタブのレンダリングを保つ** —— フォーカスのエミュレーションで、Chromeの表示タブを切り替えずに背景のアニメーション抑制を回避する
+- **中断したテキスト生成の使い回し** —— 生成済みの値が再試行に持ち越されるのは、テキストヘルパーへの入力が完全に同一のときだけ
+
+実行前の検証も分かれている。クリックはドキュメント・フォームの値・対象・周辺の文脈を確認し、現在の座標を解決したうえで覆われたコントロールを拒否する。アニメーションが起きただけでは再予測しない。安全側の線引きとして、モデルの出力がセレクタ・座標・シェルコマンド・実行可能なJavaScriptになることはなく、テキストヘルパーの出力も小さなJSONとしてパースできなければ入力されない。
+
+画面の見た目でなく番号付きの構造をモデルに操作させる点は [[concepts/intermediate-notation-pattern]] と同じ発想であり、そこでの「状態をテキストで持つと出力が軽く安定する」という主張が、ブラウザ操作の速度として現れた事例だと考えられる。
+
+## 公開されている計測と、その範囲
+
+READMEが公開する数字は次のとおり。動画は Zürich → London の片道検索を 7,073ms で終えた実行で、計測は最初のページ観測の後から始まり、モデル呼び出し・生成テキスト・ブラウザ処理・古くなった判断・読み込み待ちを含む。独立した後追い確認で、片道設定・Zürich・London・2026年9月20日・フライト一覧の表示が検証されている。
+
+同一モデル・同一設定で新旧を交互に6回走らせた比較では、双方とも3/3成功。所要時間の中央値が 9.450秒 → 7.092秒（25%減）、ブラウザプロトコル呼び出しの中央値が 1,092回 → 101回。ただしREADME自身が「1タスクを3回、1つのブラウザプロファイルで繰り返しただけで、一般的な信頼性ベンチマークではない」と限定している。同じポリシーで Wikipedia の指定記事を 2.798秒、ローカルのホテル検索・絞り込みを 1.896秒で通したとも記載する。
+
+限界も明示されている。`DONE` の判断は結果の独立検証を必要とし、DOMリーダーが扱うのは一般的なHTMLとARIAコントロールであってアクセシブル名の完全な仕様ではない。Shadow DOM・フレーム・canvas・ファイルアップロード・ポップアップタブ・入れ子のスクロール・任意のキーボードウィジェットはこのMVPの対象外。操作するタブは既存のChromeプロファイルを共有する。
+
+## 使い方
+
+`git clone` して `uv sync`、`.env` に `TYPESAFE_API_KEY` と `TEXT_MODEL_API_KEY` を入れ、`uv run jev` でローカルのインスペクタ（`http://127.0.0.1:8766`）が立つ。インスペクタには番号付き要素・操作の確率・対象の確率・実行されたアクションが並び、「Choose next」で実行前に停止できる。Chromeへの接続は同組織の Browser Harness 経由で、`uv sync` で一緒に入る。ライブラリとしては `Agent(url, goal)` をコンテキストマネージャで開き、`agent.run()` が返す状態（`elapsed_ms` / `status`）を回す形になる。
+
+## 観察ログ（未検証）
+
+- 2026-09-21: 中央値 9.450秒 → 7.092秒（25%減）、ブラウザプロトコル呼び出し 1,092 → 101 という比較は開発元の自己計測で、1タスク3回・単一プロファイルという範囲つき。他サイト・他タスクでの再現性は未確認
+
+## 問い
+
+- 番号付き要素テーブル＋操作/対象の同時予測という形は、ブラウザ以外（CLIツール・社内管理画面・Obsidianのようなローカルアプリ）へそのまま移せるか。移せるなら「AIに渡す記法」を先に設計する話に還元できる
+- スクリーンショットを使わない設計は、視覚に意味があるページ（レイアウトで意味が決まる広告・ダッシュボード）でどこから崩れるか
+- `DONE` の独立検証をどう組むかが実運用の分かれ目になる。ゴール達成の判定器を別に置く設計は [[concepts/eval-loop]] の出荷ゲートと同じ問題ではないか
+
+## 関連
+
+- [[tools/browser-use]] — 同じ browser-use による本体のブラウザ操作ライブラリ。Jev Ultrafast は「動的なインデックス付きアクション空間」に絞った別リポジトリで、Chrome接続は同組織の Browser Harness を使う
+- [[concepts/intermediate-notation-pattern]] — GUIでなくテキスト記法をAIに操作させ、トークンと精度を同時に改善する設計パターン。番号付き要素テーブルはブラウザ操作版の中間記法にあたる
+- [[tools/claude-computer-use]] — スクリーンショットとクリック座標でUIを操作するAnthropicの機能。Jev Ultrafast は既定ループから画像を外し構造化状態だけを使う逆の選択をしている
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

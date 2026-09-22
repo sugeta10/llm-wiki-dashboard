@@ -41,3 +41,4 @@
 - [[tools/suiko]] — 日本語のAI文体検出を、LLMスキルの推敲でなく形態素解析ベースの決定論的CLIとして実装したツール（nwiizo製・baseline差分・CI gate/SARIF対応）
 - [[concepts/kakeru-hito]] — 「AIで書いた記事をレビューできる書ける人がいない会社」の事例（@Books_Apps）。本スキルが解く問題の人間側の記述
 - [[concepts/writing-norms-adoption]] — 日本語規範を入れるかどうかの判定と導入手順（@tetumemo）。本スキルが検出するAIスロップに対応する6つの型を日本語で名指ししている
+- [[tools/first-reader]] — 同じ「AIっぽい文章」問題に、テキストの属性でなく読者の読書体験（離脱位置・翌日の記憶）を測る側から当たるスキル。READMEはスロップ検出系を名指しで対比している

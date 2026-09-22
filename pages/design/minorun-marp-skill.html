@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>minorun-marp-skill - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#5fd0a0"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>minorun-marp-skill</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="minorun-marp-skill.md">Markdownで表示</a></div>
+  <div class="meta">design/minorun-marp-skill · design · <span title="2026-09-22">今日</span></div>
+  <article><h1>minorun-marp-skill｜登壇スライドの型を規則と実測検査に落としたMarpスキル</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 登壇スライドのストーリー・図・黒地デザインの型を3つのスキルに分け、書き出したPDFとSVGを実測する検査スクリプトで守らせる Marp 用のスキル集（minorun365 製・Apache 2.0）。</p>
+</blockquote>
+<p>作者の minorun365（Minoru Onda）は動機を「AIにスライドを書かせると、体裁は整うのに話が薄くなりがち」と書く。そこで自分の登壇資料を作るなかでエージェントへ繰り返し伝えてきた直し方を、規則（人が読んでもそのまま使える文書）と検査スクリプト（書き出した成果物を機械が測る）の2本立てに落とした、というのがこのリポジトリの成り立ちである。規約ファイルを毎回読ませて機械チェックで違反を取る構図は <a href="../design/consulting-pptx-skill.html">consulting-pptx-skill</a> と同じだが、あちらが検査するのはPPTX/HTMLの中身の規約、こちらが検査するのは書き出したPDF・SVGの余白や文字サイズという実測値になっている。</p>
+<h2>3つのスキルと配布物</h2>
+<table>
+<thead>
+<tr>
+<th>場所</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>skills/slide-story</code></td>
+<td>つかみ、中扉、段階的な開示、見出しの文体、締め方、尺の見積り</td>
+</tr>
+<tr>
+<td><code>skills/slide-figures</code></td>
+<td>図の情報量の絞り方、SVGの描き方、文字サイズの下限、挿絵の置き方</td>
+</tr>
+<tr>
+<td><code>skills/slide-design-dark</code></td>
+<td>余白の測り方、縦のバランス、黒地の配色、表とコードのデザイン、Marpの罠</td>
+</tr>
+<tr>
+<td><code>theme/minorun-dark.css</code></td>
+<td>黒地にシアンの Marp テーマ</td>
+</tr>
+<tr>
+<td><code>tools/</code></td>
+<td>書き出したPDFとSVGを実測する検査スクリプト</td>
+</tr>
+<tr>
+<td><code>examples/sample</code></td>
+<td>見本デッキ（<code>examples/broken</code> は検査が反応することを確かめる、わざと崩した版）</td>
+</tr>
+</tbody>
+</table>
+<p>Claude Code で使う場合は <code>skills/</code> の3つを自分のスキル置き場へコピーし、テーマと検査スクリプトはスライドを置くリポジトリへ <code>theme/</code> <code>tools/</code> ごとコピーする。話の組み立て（story）・図（figures）・黒地レイアウト（design-dark）をスキル単位で分けているため、必要な層だけ入れられる構成になっている。</p>
+<h2>検査は書き出した成果物を測る</h2>
+<p>READMEが挙げる検査スクリプトは5本で、いずれも Marp CLI で書き出した後のPDFかSVGを対象にする。</p>
+<table>
+<thead>
+<tr>
+<th>スクリプト</th>
+<th>測るもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>check-dark-margins.py</code></td>
+<td>中身の下端と右端の空き</td>
+</tr>
+<tr>
+<td><code>check-dark-gaps.py</code></td>
+<td>図や箱と、隣の本文の間隔</td>
+</tr>
+<tr>
+<td><code>check-figure-text.py</code></td>
+<td>図の中の小さい文字、箱の縁に詰まった文字</td>
+</tr>
+<tr>
+<td><code>check-svg-box-fit.mjs</code></td>
+<td>SVGの文字が箱に収まっているか</td>
+</tr>
+<tr>
+<td><code>check-reuse-diff.py</code></td>
+<td>流用したスライドの、見出しと図の対応</td>
+</tr>
+</tbody>
+</table>
+<p>実行には Marp CLI と Google Chrome、poppler（<code>pdftoppm</code> <code>pdfinfo</code>）、mupdf-tools（<code>mutool</code>）、Python 3 と Pillow が要る。<code>check-svg-box-fit.mjs</code> は Marp CLI 同梱の puppeteer-core を借りるので、場所が違う環境では <code>MARP_NODE_MODULES</code> と <code>CHROME_PATH</code> で指定する。</p>
+<p>この一式で目を引くのは <code>examples/broken</code> の位置づけで、わざと崩したデッキを同梱して「検査が反応すること」を確かめられるようにしてある。検査そのものが黙って通ってしまう状態を検出する備えであり、規約を書いて終わりにしない設計だと考えられる。流用スライドの見出しと図の対応を見る <code>check-reuse-diff.py</code> も、過去の資料を使い回したときに話と図がずれる（体裁は保たれるのに中身が噛み合わない）という、作者が最初に挙げた問題への対策にあたる。</p>
+<h2>フォントと挿絵の扱い</h2>
+<p>テーマは丸ゴシック系を想定し、第一候補は Zen Maru Gothic、未導入の macOS ではヒラギノ丸ゴで表示される。作者の手元は有償の丸ゴシック書体のため、公開されている登壇資料とは字形が少し違うと明記されている。挿絵は「いらすとや」を使う前提だが画像は同梱されず、見本デッキを書き出す前に <code>examples/sample/fetch-illustrations.sh</code> で取得する（利用条件は各自で確認するよう書かれている）。ライセンスは Apache License 2.0（Copyright 2026 Minoru Onda）で、見本デッキの一覧画像に写る挿絵はその対象外。</p>
+<h2>問い</h2>
+<ul>
+<li>話の薄さは <code>slide-story</code> の規則で本当に埋まるのか。余白や文字サイズと違って機械で測れないため、検査スクリプトが効くのは図とレイアウトだけに見える。ストーリー側の検査をどう作るかが残る問い</li>
+<li>黒地シアンのテーマ前提で書かれた <code>slide-design-dark</code> の余白・配色ルールは、白地のテーマへどこまで移せるか。テーマ非依存の部分（余白の測り方・縦のバランス）だけ抜き出せるか</li>
+<li>書き出した成果物を実測する検査は、スライド以外（このvaultの <code>wiki/outputs/</code> に出すHTML）にも移せるか。レンダリング後を測る発想は <a href="../concepts/html-output-format.html">html-output-format</a> のHTML成果物と相性が良さそうに見える</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../design/consulting-pptx-skill.html">consulting-pptx-skill</a> — レビュー指摘を溜めた規約ファイルを毎回読ませ、機械チェックで違反を検出するClaude Codeスキル。こちらは規約を成果物の実測（PDFの余白・図中の文字サイズ）で検査する</li>
+<li><a href="../design/slide-md.html">slide-md</a> — デザインシステムを <code>.md</code> で固定してスライドのバラつきを抑える体系。あちらは生成前の仕様で縛り、こちらは生成後の実測で縛る</li>
+<li><a href="../design/lt-preparation-guide.html">lt-preparation-guide</a> — LT準備のツール選定・素材調達ガイド。Marp を選んだ後の「話の組み立てと図をどう作るか」を埋めるのがこのスキル集</li>
+<li><a href="../tools/html-share.html">html-share</a> — 同じ minorun365 製の、Claude Code の生成物をHTML化して共有するツール</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/consulting-pptx-skill.html">consulting-pptx-skill</a></li>
+<li><a href="../design/lt-preparation-guide.html">lt-preparation-guide</a></li>
+<li><a href="../design/slide-md.html">slide-md</a></li>
+<li><a href="../tools/html-share.html">html-share</a></li>
+<li><a href="../concepts/html-output-format.html">html-output-format</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/minorun365/minorun-marp-skill" rel="noopener" target="_blank">https://github.com/minorun365/minorun-marp-skill</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># minorun-marp-skill｜登壇スライドの型を規則と実測検査に落としたMarpスキル
+
+&gt; **TL;DR**: 登壇スライドのストーリー・図・黒地デザインの型を3つのスキルに分け、書き出したPDFとSVGを実測する検査スクリプトで守らせる Marp 用のスキル集（minorun365 製・Apache 2.0）。
+
+作者の minorun365（Minoru Onda）は動機を「AIにスライドを書かせると、体裁は整うのに話が薄くなりがち」と書く。そこで自分の登壇資料を作るなかでエージェントへ繰り返し伝えてきた直し方を、規則（人が読んでもそのまま使える文書）と検査スクリプト（書き出した成果物を機械が測る）の2本立てに落とした、というのがこのリポジトリの成り立ちである。規約ファイルを毎回読ませて機械チェックで違反を取る構図は [[design/consulting-pptx-skill]] と同じだが、あちらが検査するのはPPTX/HTMLの中身の規約、こちらが検査するのは書き出したPDF・SVGの余白や文字サイズという実測値になっている。
+
+## 3つのスキルと配布物
+
+| 場所 | 内容 |
+| --- | --- |
+| `skills/slide-story` | つかみ、中扉、段階的な開示、見出しの文体、締め方、尺の見積り |
+| `skills/slide-figures` | 図の情報量の絞り方、SVGの描き方、文字サイズの下限、挿絵の置き方 |
+| `skills/slide-design-dark` | 余白の測り方、縦のバランス、黒地の配色、表とコードのデザイン、Marpの罠 |
+| `theme/minorun-dark.css` | 黒地にシアンの Marp テーマ |
+| `tools/` | 書き出したPDFとSVGを実測する検査スクリプト |
+| `examples/sample` | 見本デッキ（`examples/broken` は検査が反応することを確かめる、わざと崩した版） |
+
+Claude Code で使う場合は `skills/` の3つを自分のスキル置き場へコピーし、テーマと検査スクリプトはスライドを置くリポジトリへ `theme/` `tools/` ごとコピーする。話の組み立て（story）・図（figures）・黒地レイアウト（design-dark）をスキル単位で分けているため、必要な層だけ入れられる構成になっている。
+
+## 検査は書き出した成果物を測る
+
+READMEが挙げる検査スクリプトは5本で、いずれも Marp CLI で書き出した後のPDFかSVGを対象にする。
+
+| スクリプト | 測るもの |
+| --- | --- |
+| `check-dark-margins.py` | 中身の下端と右端の空き |
+| `check-dark-gaps.py` | 図や箱と、隣の本文の間隔 |
+| `check-figure-text.py` | 図の中の小さい文字、箱の縁に詰まった文字 |
+| `check-svg-box-fit.mjs` | SVGの文字が箱に収まっているか |
+| `check-reuse-diff.py` | 流用したスライドの、見出しと図の対応 |
+
+実行には Marp CLI と Google Chrome、poppler（`pdftoppm` `pdfinfo`）、mupdf-tools（`mutool`）、Python 3 と Pillow が要る。`check-svg-box-fit.mjs` は Marp CLI 同梱の puppeteer-core を借りるので、場所が違う環境では `MARP_NODE_MODULES` と `CHROME_PATH` で指定する。
+
+この一式で目を引くのは `examples/broken` の位置づけで、わざと崩したデッキを同梱して「検査が反応すること」を確かめられるようにしてある。検査そのものが黙って通ってしまう状態を検出する備えであり、規約を書いて終わりにしない設計だと考えられる。流用スライドの見出しと図の対応を見る `check-reuse-diff.py` も、過去の資料を使い回したときに話と図がずれる（体裁は保たれるのに中身が噛み合わない）という、作者が最初に挙げた問題への対策にあたる。
+
+## フォントと挿絵の扱い
+
+テーマは丸ゴシック系を想定し、第一候補は Zen Maru Gothic、未導入の macOS ではヒラギノ丸ゴで表示される。作者の手元は有償の丸ゴシック書体のため、公開されている登壇資料とは字形が少し違うと明記されている。挿絵は「いらすとや」を使う前提だが画像は同梱されず、見本デッキを書き出す前に `examples/sample/fetch-illustrations.sh` で取得する（利用条件は各自で確認するよう書かれている）。ライセンスは Apache License 2.0（Copyright 2026 Minoru Onda）で、見本デッキの一覧画像に写る挿絵はその対象外。
+
+## 問い
+
+- 話の薄さは `slide-story` の規則で本当に埋まるのか。余白や文字サイズと違って機械で測れないため、検査スクリプトが効くのは図とレイアウトだけに見える。ストーリー側の検査をどう作るかが残る問い
+- 黒地シアンのテーマ前提で書かれた `slide-design-dark` の余白・配色ルールは、白地のテーマへどこまで移せるか。テーマ非依存の部分（余白の測り方・縦のバランス）だけ抜き出せるか
+- 書き出した成果物を実測する検査は、スライド以外（このvaultの `wiki/outputs/` に出すHTML）にも移せるか。レンダリング後を測る発想は [[concepts/html-output-format]] のHTML成果物と相性が良さそうに見える
+
+## 関連
+
+- [[design/consulting-pptx-skill]] — レビュー指摘を溜めた規約ファイルを毎回読ませ、機械チェックで違反を検出するClaude Codeスキル。こちらは規約を成果物の実測（PDFの余白・図中の文字サイズ）で検査する
+- [[design/slide-md]] — デザインシステムを `.md` で固定してスライドのバラつきを抑える体系。あちらは生成前の仕様で縛り、こちらは生成後の実測で縛る
+- [[design/lt-preparation-guide]] — LT準備のツール選定・素材調達ガイド。Marp を選んだ後の「話の組み立てと図をどう作るか」を埋めるのがこのスキル集
+- [[tools/html-share]] — 同じ minorun365 製の、Claude Code の生成物をHTML化して共有するツール
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

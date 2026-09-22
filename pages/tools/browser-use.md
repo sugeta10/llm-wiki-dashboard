@@ -20,3 +20,4 @@ WebブラウザをAIエージェントが操作するためのライブラリ。
 - [[concepts/agentic-coding]]
 - [[tools/claude-computer-use]]（AnthropicによるデスクトップUI操作エージェント機能）
 - [[tools/video-use]] — 同じ「◯◯-use」命名系譜の Claude Code 動画編集 OSS
+- [[tools/jev-ultrafast]] — 同じ browser-use による高速化版の別リポジトリ。番号付き要素テーブルと、操作・対象を1往復で決める構成

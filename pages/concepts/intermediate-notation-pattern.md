@@ -85,3 +85,4 @@ AIは毎回HTML全体を再生成するのではなく、テキスト記法の�
 - [[concepts/prompt-caching]]
 - [[tools/hyperframes]]（HTML+`data-*`属性を中間記法として動画生成に適用した実例）
 - [[design/consulting-pptx-skill]]（36型スライドのJSON定義 SlideSpec をAIに書かせ、レイアウトはレンダラーの実測値に固定するPPTX生成の実例）
+- [[tools/jev-ultrafast]]（ページの操作可能要素を番号付きテーブルに作り直してモデルに選ばせるブラウザ操作版。スクリーンショットを使わず構造化状態だけを渡す）

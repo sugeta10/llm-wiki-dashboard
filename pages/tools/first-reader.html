@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>first-reader - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>first-reader</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="first-reader.md">Markdownで表示</a></div>
+  <div class="meta">tools/first-reader · tools · <span title="2026-09-22">今日</span></div>
+  <article><h1>First Reader｜公開前に「読者」に読ませるAgent Skill</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 下書きを1パッセージずつ架空の読者2人に読ませ、どこで興味を持ち・どこで離脱し・翌日何を覚えていたかを報告させるAgent Skill。文章そのものでなく読書体験を測り、本文は一切書き換えない。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Draft[&quot;下書き&quot;] --&gt; Skim[&quot;流し読み役: 開くかどうかだけ判定&quot;]
+  Draft --&gt; Feed[&quot;1パッセージずつ配信（人が読む速度で律速）&quot;]
+  Feed --&gt; Readers[&quot;読者2人: 興味・離脱の位置を記録&quot;]
+  Readers --&gt; Recall[&quot;記憶テスト（自分のノートだけで回答）&quot;]
+  Recall --&gt; Report[&quot;レポート＋注意の推移を並べたページ&quot;]
+  Skim --&gt; Report
+  Report --&gt; Ask[&quot;読者への追加質問 / 改稿して再読&quot;]</pre>
+<p>AIスロップ検出系のスキルは禁止語・文長・エムダッシュといったテキストの属性を測る。READMEはそれでは「実在の人間が読み続けるか」は分からないと述べ、代わりに読書中に起きたことを測る方針を取る。中心の出力は文章の採点ではなく、読者ごとの「ここで興味を持った／ここで止めた／翌日これを覚えていた」という経過報告と、パッセージごとに注意がどう動いたかを示す帯（attention strip）である。3人目の読者は流し読みだけをして「そもそも開いたかどうか」を2文で答える。<a href="../tools/no-ai-slop.html">no-ai-slop</a> のようなテキスト側の検査と、測っている対象が正面から違う。</p>
+<p>配布元は Shubham Saboo の <code>awesome-llm-apps</code> リポジトリの <code>agent_skills/first-reader</code>。中身は Markdown と標準ライブラリだけの Python で、オフラインで動き外部へ何も送らないとREADMEは明記する。</p>
+<h2>シミュレーションを正直に保つ3つのルール</h2>
+<p>READMEはこの手のシミュレーションが嘘になりやすい箇所を3点に絞り、いずれも機構で塞いだと説明する。</p>
+<ol>
+<li><strong>先を見せない</strong> —— 下書きは1パッセージずつ配信され、人が読めるより速くは進まない。パッセージ4でやめた読者はパッセージ5を見ていない。</li>
+<li><strong>読み返させない</strong> —— 記憶テストは読者自身のノートだけから答える。本文をもう一度参照した「記憶」は使わない。</li>
+<li><strong>書き直させない</strong> —— 読者が報告するのは自分に起きたことと「読み続けるには何が違っていなければならなかったか」だけで、原稿の決定は全部書き手に残る。</li>
+</ol>
+<p>書き手側から見ると、これは読者を評価者でなく計測器として扱う設計だと考えられる。修正案を出させないぶん、<a href="../concepts/eval-loop.html">eval-loop</a> の judge のようなスコアは返らず、返るのは離脱位置と記憶の残りという素の観測になる。</p>
+<h2>使い方と読者のキャスティング</h2>
+<p>エージェントに下書きを指して、誰に向けた文章かを最初の一文で伝える（READMEの例は「これをレビューして、うちのブログに載せるバックエンドエンジニア向けのローンチ記事」）。読者はこの一文からキャストされるため、職種名より人物描写のほうが機能するとREADMEは述べる（例として挙がるのは「評価ハーネスを3つ作ったことがあり、やめる理由を探しているスタッフエンジニア」）。下書きと同じフォルダの <code>.first-reader/audience.json</code> に保存すれば、そのフォルダの実行は常に同じ読者になる。</p>
+<p>実行後は会話を続けられる。</p>
+<ul>
+<li><strong>特定の読者に追加質問する</strong> —— 「Sにパッセージ4の先へ進ませるには何が要ったか聞いて」。Sは自分のノートから自分の言葉で答え、何が足りなかったかは言うが、書いてはくれない。</li>
+<li><strong>改稿して再読させる</strong> —— エディタで直して「again」と言うと同じ読者が読み直し、ページには前回の注意の帯が新しい帯の上に並ぶ。</li>
+<li><strong>流し読みだけ走らせる</strong> —— 「quick read」で流し読み役のみ。開くかどうかとその理由が2文で返る。</li>
+</ul>
+<h2>配布と検証</h2>
+<p>インストールは skills CLI（<code>npx skills add &lt;リポジトリURL&gt;</code>）か、ディレクトリをエージェントのスキル置き場へコピーする。検証用に <code>agent_skills/evals/first-reader/test_first_reader.py</code> が同梱され、流し読みビュー・配信（本文をディスクに書かない／読む速度を守る／読者ごとに1トークン）・記憶クイズ・信頼シグナル・読者への追加質問・ページ生成の各部を一時ファイルの下書きで検査する。振る舞い仕様は同フォルダの <code>evals.json</code>（新規セッションで実行して期待どおりか確かめるプロンプト集）と <code>trigger-cases.json</code>（スキルが発火すべき場合・すべきでない場合）に分かれている。</p>
+<p>スキル本体は <code>SKILL.md</code>、<code>references/</code>（personas・report・room・interview）、<code>scripts/</code>（skim・feed・recall・signals・ask・room と HTMLテンプレート）という構成で、読者の人格定義と出力フォーマットが参照ファイル側に切り出されている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-19: 同フォルダの ledger に、実在のエッセイ1本を5回連続で読ませたテスト記録があるとREADMEは述べる。同じ下書きで離脱位置がどれだけ再現したかの中身は未収集</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の note 記事・wikiページで走らせ、読者の離脱位置が実際の読了データや反応とどこまで一致するか。一致しないとしても「どこで止まるか」の予測として使えるか</li>
+<li><a href="../tools/buy-or-bounce.html">buy-or-bounce</a> は購買ペルソナの独白でコンバージョン障壁を出す。読者体験の計測という構造は同じで、違うのは測る対象（購買判断か読み続けるか）だけに見える。どちらか一方の設計に寄せられるか</li>
+<li>日本語の原稿で「人が読める速度」の律速や記憶テストが同じように効くか。パッセージの切り方は日本語でも妥当か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/no-ai-slop.html">no-ai-slop</a> — AIスロップのパターンをテキスト側で検出・除去するスキル。First Readerはそのテキスト計測では読者が読み続けるか分からないという立場から、読書体験の側を測る</li>
+<li><a href="../tools/buy-or-bounce.html">buy-or-bounce</a> — 5種のバイヤーペルソナにセクションごとの独白をさせて離脱箇所を可視化するスキル。読者役を並行させて「関心が死ぬ瞬間」を出す構造が同型で、対象がLP・広告の購買判断になっている版</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 生成物を基準で採点して閾値未満を止める品質ゲート。First Readerはスコアも修正案も返さず観測だけを返す点で、ゲートの手前に置く計測器にあたる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../tools/buy-or-bounce.html">buy-or-bounce</a></li>
+<li><a href="../tools/no-ai-slop.html">no-ai-slop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/agent_skills/first-reader" rel="noopener" target="_blank">https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/agent_skills/first-reader</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># First Reader｜公開前に「読者」に読ませるAgent Skill
+
+&gt; **TL;DR**: 下書きを1パッセージずつ架空の読者2人に読ませ、どこで興味を持ち・どこで離脱し・翌日何を覚えていたかを報告させるAgent Skill。文章そのものでなく読書体験を測り、本文は一切書き換えない。
+
+```mermaid
+flowchart LR
+  Draft[&quot;下書き&quot;] --&gt; Skim[&quot;流し読み役: 開くかどうかだけ判定&quot;]
+  Draft --&gt; Feed[&quot;1パッセージずつ配信（人が読む速度で律速）&quot;]
+  Feed --&gt; Readers[&quot;読者2人: 興味・離脱の位置を記録&quot;]
+  Readers --&gt; Recall[&quot;記憶テスト（自分のノートだけで回答）&quot;]
+  Recall --&gt; Report[&quot;レポート＋注意の推移を並べたページ&quot;]
+  Skim --&gt; Report
+  Report --&gt; Ask[&quot;読者への追加質問 / 改稿して再読&quot;]
+```
+
+AIスロップ検出系のスキルは禁止語・文長・エムダッシュといったテキストの属性を測る。READMEはそれでは「実在の人間が読み続けるか」は分からないと述べ、代わりに読書中に起きたことを測る方針を取る。中心の出力は文章の採点ではなく、読者ごとの「ここで興味を持った／ここで止めた／翌日これを覚えていた」という経過報告と、パッセージごとに注意がどう動いたかを示す帯（attention strip）である。3人目の読者は流し読みだけをして「そもそも開いたかどうか」を2文で答える。[[tools/no-ai-slop]] のようなテキスト側の検査と、測っている対象が正面から違う。
+
+配布元は Shubham Saboo の `awesome-llm-apps` リポジトリの `agent_skills/first-reader`。中身は Markdown と標準ライブラリだけの Python で、オフラインで動き外部へ何も送らないとREADMEは明記する。
+
+## シミュレーションを正直に保つ3つのルール
+
+READMEはこの手のシミュレーションが嘘になりやすい箇所を3点に絞り、いずれも機構で塞いだと説明する。
+
+1. **先を見せない** —— 下書きは1パッセージずつ配信され、人が読めるより速くは進まない。パッセージ4でやめた読者はパッセージ5を見ていない。
+2. **読み返させない** —— 記憶テストは読者自身のノートだけから答える。本文をもう一度参照した「記憶」は使わない。
+3. **書き直させない** —— 読者が報告するのは自分に起きたことと「読み続けるには何が違っていなければならなかったか」だけで、原稿の決定は全部書き手に残る。
+
+書き手側から見ると、これは読者を評価者でなく計測器として扱う設計だと考えられる。修正案を出させないぶん、[[concepts/eval-loop]] の judge のようなスコアは返らず、返るのは離脱位置と記憶の残りという素の観測になる。
+
+## 使い方と読者のキャスティング
+
+エージェントに下書きを指して、誰に向けた文章かを最初の一文で伝える（READMEの例は「これをレビューして、うちのブログに載せるバックエンドエンジニア向けのローンチ記事」）。読者はこの一文からキャストされるため、職種名より人物描写のほうが機能するとREADMEは述べる（例として挙がるのは「評価ハーネスを3つ作ったことがあり、やめる理由を探しているスタッフエンジニア」）。下書きと同じフォルダの `.first-reader/audience.json` に保存すれば、そのフォルダの実行は常に同じ読者になる。
+
+実行後は会話を続けられる。
+
+- **特定の読者に追加質問する** —— 「Sにパッセージ4の先へ進ませるには何が要ったか聞いて」。Sは自分のノートから自分の言葉で答え、何が足りなかったかは言うが、書いてはくれない。
+- **改稿して再読させる** —— エディタで直して「again」と言うと同じ読者が読み直し、ページには前回の注意の帯が新しい帯の上に並ぶ。
+- **流し読みだけ走らせる** —— 「quick read」で流し読み役のみ。開くかどうかとその理由が2文で返る。
+
+## 配布と検証
+
+インストールは skills CLI（`npx skills add &lt;リポジトリURL&gt;`）か、ディレクトリをエージェントのスキル置き場へコピーする。検証用に `agent_skills/evals/first-reader/test_first_reader.py` が同梱され、流し読みビュー・配信（本文をディスクに書かない／読む速度を守る／読者ごとに1トークン）・記憶クイズ・信頼シグナル・読者への追加質問・ページ生成の各部を一時ファイルの下書きで検査する。振る舞い仕様は同フォルダの `evals.json`（新規セッションで実行して期待どおりか確かめるプロンプト集）と `trigger-cases.json`（スキルが発火すべき場合・すべきでない場合）に分かれている。
+
+スキル本体は `SKILL.md`、`references/`（personas・report・room・interview）、`scripts/`（skim・feed・recall・signals・ask・room と HTMLテンプレート）という構成で、読者の人格定義と出力フォーマットが参照ファイル側に切り出されている。
+
+## 観察ログ（未検証）
+
+- 2026-09-19: 同フォルダの ledger に、実在のエッセイ1本を5回連続で読ませたテスト記録があるとREADMEは述べる。同じ下書きで離脱位置がどれだけ再現したかの中身は未収集
+
+## 問い
+
+- 自分の note 記事・wikiページで走らせ、読者の離脱位置が実際の読了データや反応とどこまで一致するか。一致しないとしても「どこで止まるか」の予測として使えるか
+- [[tools/buy-or-bounce]] は購買ペルソナの独白でコンバージョン障壁を出す。読者体験の計測という構造は同じで、違うのは測る対象（購買判断か読み続けるか）だけに見える。どちらか一方の設計に寄せられるか
+- 日本語の原稿で「人が読める速度」の律速や記憶テストが同じように効くか。パッセージの切り方は日本語でも妥当か
+
+## 関連
+
+- [[tools/no-ai-slop]] — AIスロップのパターンをテキスト側で検出・除去するスキル。First Readerはそのテキスト計測では読者が読み続けるか分からないという立場から、読書体験の側を測る
+- [[tools/buy-or-bounce]] — 5種のバイヤーペルソナにセクションごとの独白をさせて離脱箇所を可視化するスキル。読者役を並行させて「関心が死ぬ瞬間」を出す構造が同型で、対象がLP・広告の購買判断になっている版
+- [[concepts/eval-loop]] — 生成物を基準で採点して閾値未満を止める品質ゲート。First Readerはスコアも修正案も返さず観測だけを返す点で、ゲートの手前に置く計測器にあたる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

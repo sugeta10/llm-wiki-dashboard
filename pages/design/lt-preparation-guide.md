@@ -37,3 +37,4 @@
 
 - [[design/ai-slide-to-pptx]]
 - [[design/fastview-design]]
+- [[design/minorun-marp-skill]] — Marp を選んだ後の登壇スライドの作り方（ストーリー・図・黒地デザインの型＋書き出し後の実測検査）をスキル化したもの
