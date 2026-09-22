@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-japanese-writing-stack - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-japanese-writing-stack</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-japanese-writing-stack.md">Markdownで表示</a></div>
+  <div class="meta">concepts/ai-japanese-writing-stack · concepts · <span title="2026-09-22">今日</span></div>
+  <article><h1>AIに自然な日本語を書かせる執筆スタック</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIの日本語は、プロンプトやHookといったハーネスの工夫よりもまずモデル選定で決まる。そのうえで規約は増やすほど文が縮んでAI臭が戻るため、@kgsi は規約を減らすのでなく writer・Hook・reviewer の誰が読むかで置き場所を分けた。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  W[&quot;writer（執筆エージェント）&quot;] --&gt;|読む| A[&quot;内面化層: style-guide.md / voice-samples.md（上限4,500字）&quot;]
+  W --&gt; D[&quot;原稿ファイルの書き込み&quot;]
+  D --&gt; H[&quot;Hook（書き込み直後に発火）&quot;]
+  H --&gt;|走査| B[&quot;機械層: detect-ai-smell.js（文字数上限なし）&quot;]
+  H --&gt;|違反時は文ごと書き直し| D
+  D --&gt; R[&quot;reviewer（別エージェント）&quot;]
+  R --&gt;|読む| C[&quot;判定層: references/rubric.md&quot;]</pre>
+<p>文法は正しいのに読むと疲れる、1行目で「AIが書いたな」と気づかれる——この違和感の解消策として、@kgsi は自身の執筆で検証した実践知とコミュニティの成果を、モデル選定・執筆手順・スキル・執筆環境の4つの視点にまとめている。順序に意味があり、著者はプロンプトやHookなどのハーネス以上に効くのがモデル選定だと最初に断っている。</p>
+<h2>モデル選定を先に置く</h2>
+<p>2026年時点で日本語執筆に頭ひとつ抜けているのは Gemini 3.8 Flash、次点が Kimi K3 だ、というのが著者の評価である。かつて自然な文章で評価されていた Claude はコーディング特化の調整が進んだ結果、文章にもコードのような角張った硬さが目立つようになり、ChatGPT は段落の文数が均等すぎて教科書的な構成になりAI臭が最も露骨に残る、と著者は書く。この評価は、日本語検査Hookの警告件数を測定器にして同じ結論に達した<a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a>と同じ方向を向いている。</p>
+<p>ただしモデル任せで素のまま書かせれば文長のリズムは均質化し、読者への認知負荷の丸投げが起きる、と著者は続ける。モデルの地力を活かすための手順と仕組みが、以降の層にあたる。</p>
+<h2>5ステップの執筆手順</h2>
+<p>著者が現状の知見を統合した手順は5つある。</p>
+<p><strong>書く前の情報仕分けと削り</strong>。AIの文章が読むに堪えない最大の原因は「認知負荷の丸投げ」だ、とつぼた（@tsubotax）の指摘を引く。前提・補足・先回りの安心材料をすべて1文に詰め込む癖を、書かせる前に削る。具体的には、冒頭2行で誰宛てで何を判断してほしいかを確定させ、各段落に選択肢の差分・判断材料・確認方法などの役割を1つだけ与え、どれにも当てはまらない段落は捨てる。削除しても判断に影響しない括弧の補足は取り除く。</p>
+<p><strong>読者の脳内地図を壊さない大域設計</strong>。文章の破綻は「少し先を読まないと意図が分からない不意打ち」や前段落との接続の欠如から生じる、という鹿野桂一郎（@golden_lucky）の指摘に沿って、概念を初めて示すときは読者が順に読むだけで種類や役割を同定できる順序にし、新しい情報の前にそれを受け止める道筋を用意し、見出しの直後には前段落との接続を1文置く。</p>
+<p><strong>あえて偏り（ムラ）を仕込む</strong>。AIは全トピックを同じ温度で語りがちだが、人間味の正体は偏りだ、というなつ（@art_reflection）の見立てを採り、引っかかった話題は執拗に語り前提は一文で流す、という熱量の濃淡を構成段階で割り振る。</p>
+<p><strong>執筆と機械検査の分離</strong>。プロンプトに禁止事項を並べるほどモデルは萎縮して文を縮める。書くときは伸び伸び書かせ、ファイル出力の直後にHookで機械検査する。違反時は語の置換でなく該当箇所を含む文を丸ごと書き直させる。著者はこの分離をリズムを守る急所と呼ぶ。</p>
+<p><strong>最後の1割を人間が整える</strong>。9割の骨組みをAIに任せ、残り1割の呼吸や手触りは人間が整える。直した差分は記録し、次のプロンプトや検査ルールへ還元する。</p>
+<p>著者が挙げるコミュニティ発のツールは3つある。natural-japanese（@techtalkjp）は「AI臭は語彙よりリズムに出る」という着眼から生まれたAgent Skillで、人間とAIの実測コーパスを基に、体言止めの欠如や文頭反復の少なさといった従来の思い込みを排し、文長の長短のばらつき（burstiness）を機械検知する。<a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a>（@golden_lucky）は商業書籍の編集視点をスキル化したもので、論点を増やさず姿勢だけを誇張するLLM口調を排除する。<a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a>（@yugen_matuni）はファイル書き込み直後に検査し、NG表現に対して具体的な修正パターンをセットで返す仕組みである。</p>
+<h2>ルールは減らさず、読む主体ごとに置き場所を分ける</h2>
+<p>著者は自身の執筆リポジトリで「ルールを足すほど文が縮んでAI臭が戻る」失敗を経験したと書く。規約を増やすほどAIは当たり障りのない短文に逃げる。そこから導かれた設計原則が「ルールは減らすのではなく、置き場所を分ける」である。</p>
+<p>置き場所は3つ。書き手の判断基準だけを薄く記述した内面化層（<code>style-guide.md</code>・<code>voice-samples.md</code>、上限4,500字）は writer が読む。正規表現で判定できる禁則と修正方針を集約した機械層（<code>scripts/detect-ai-smell.js</code>）は文字数上限を設けず、Hookが自動走査する。完成原稿と目標の距離を独立評価する判定層（<code>references/rubric.md</code>）は別エージェントの reviewer が読む。肥大化の防止策として、ガイドが上限の8割を超えたら新ルール追加と同量の旧ルールを削る運用を置き、置き場所の原則と上限管理は <code>GOVERNANCE.md</code> に書いていると著者は述べる。</p>
+<p>この「読む主体ごとに分ける」形は、Claude Code の指示7手段を決定論的強制はHookやパーミッションへ振り分ける<a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a>と同じ骨格をしている。あちらが強制力とロード時点で振り分けるのに対し、本ページは文章のリズムを守るために執筆時に読ませる量を絞るところが動機になっていると考えられる。著者は自作のローカルエディタ <code>note-editor</code> も使っており、左の編集が中央の本番相当プレビューへ即座に反映され、右ペインから選択範囲の部分的な推敲を行えると説明している。</p>
+<h2>素材がなければハーネスも効かない</h2>
+<p>記事の締めで著者は、どれほど精巧なハーネスを組み優れたモデルを選んでも、書く人間の中に「生の具体」がなければ文章は成立しないと書く。AIが手垢のついた定型文を吐くのは、人間側が何を体験し何に違和感を覚えたかという素材を渡していないからであり、抽象的な指示からは抽象的な正論しか生まれない。「実際に触ったら思ったより素朴で拍子抜けした」「夜中にプルリクエストが通って少し安心した」といった生身の観察・数字・固有名詞があって初めて、モデルの表現力も自動検査も効く、という位置づけである。なお著者は、この記事自体を解説した執筆環境で書いたと明記している。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-13: 「ルールを足すほど文が縮んでAI臭が戻る」は著者の自リポジトリでの経験。ルール本数と文長の関係を測ったデータは示されていない</li>
+<li>2026-09-13: 内面化層の上限4,500字・8割超で同量削るという閾値の根拠は記事にない。自分の環境で再現するなら実測が要る</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultのCLAUDE.md・スキル・メモリも「置き場所を分ける」形をとっているが、上限と同量削除の運用は入っていない。4,500字のような上限を置くとしたらどのファイルか</li>
+<li>書き込み直後のHook検査は、wikiページ生成（wiki-ingest）にも入れられるか。<a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a>の500本超ルールをこのvaultのページ生成に当てると、何件出るか</li>
+<li>5ステップのうちStep1（書く前の削り）とStep4（執筆と検査の分離）は独立に導入できる。効果が大きいのはどちらから入れた場合か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — 推論力と日本語の自然さは別能力という@yugen_matuniの実測。本ページの「まずモデル選定」という順序の根拠側にあたる</li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> — 本ページがStep4の実装例として挙げるHook検査の本体ページ（@yugen_matuni）</li>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a> — 本ページが推奨スキルに挙げる日本語文章規範（@golden_lucky）。Step2の大域設計もこの著者の指摘に基づく</li>
+<li><a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a> — 同種の規範を「どの文章に入れるか」で判定する運用記録。本ページが規約の置き場所で解くのに対し、あちらは適用範囲で解く</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 指示を格納先ごとに振り分ける公式フレーム。本ページの3層分離と同じ骨格</li>
+<li><a href="../tools/suiko.html">suiko</a> — 日本語の自然さを形態素解析で診断するCLI。本ページの機械層に置ける外部実装</li>
+<li><a href="../design/ai-skills-design.html">ai-skills-design</a> — 同著者(@kgsi)がデザイン職とAgent Skillsの交差を論じた別テーマの記事</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
+<li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
+<li><a href="../design/ai-skills-design.html">ai-skills-design</a></li>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2099264387358081240" rel="noopener" target="_blank">https://x.com/i/web/status/2099264387358081240</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AIに自然な日本語を書かせる執筆スタック
+
+&gt; **TL;DR**: AIの日本語は、プロンプトやHookといったハーネスの工夫よりもまずモデル選定で決まる。そのうえで規約は増やすほど文が縮んでAI臭が戻るため、@kgsi は規約を減らすのでなく writer・Hook・reviewer の誰が読むかで置き場所を分けた。
+
+```mermaid
+flowchart LR
+  W[&quot;writer（執筆エージェント）&quot;] --&gt;|読む| A[&quot;内面化層: style-guide.md / voice-samples.md（上限4,500字）&quot;]
+  W --&gt; D[&quot;原稿ファイルの書き込み&quot;]
+  D --&gt; H[&quot;Hook（書き込み直後に発火）&quot;]
+  H --&gt;|走査| B[&quot;機械層: detect-ai-smell.js（文字数上限なし）&quot;]
+  H --&gt;|違反時は文ごと書き直し| D
+  D --&gt; R[&quot;reviewer（別エージェント）&quot;]
+  R --&gt;|読む| C[&quot;判定層: references/rubric.md&quot;]
+```
+
+文法は正しいのに読むと疲れる、1行目で「AIが書いたな」と気づかれる——この違和感の解消策として、@kgsi は自身の執筆で検証した実践知とコミュニティの成果を、モデル選定・執筆手順・スキル・執筆環境の4つの視点にまとめている。順序に意味があり、著者はプロンプトやHookなどのハーネス以上に効くのがモデル選定だと最初に断っている。
+
+## モデル選定を先に置く
+
+2026年時点で日本語執筆に頭ひとつ抜けているのは Gemini 3.8 Flash、次点が Kimi K3 だ、というのが著者の評価である。かつて自然な文章で評価されていた Claude はコーディング特化の調整が進んだ結果、文章にもコードのような角張った硬さが目立つようになり、ChatGPT は段落の文数が均等すぎて教科書的な構成になりAI臭が最も露骨に残る、と著者は書く。この評価は、日本語検査Hookの警告件数を測定器にして同じ結論に達した[[concepts/reasoning-vs-japanese-fluency]]と同じ方向を向いている。
+
+ただしモデル任せで素のまま書かせれば文長のリズムは均質化し、読者への認知負荷の丸投げが起きる、と著者は続ける。モデルの地力を活かすための手順と仕組みが、以降の層にあたる。
+
+## 5ステップの執筆手順
+
+著者が現状の知見を統合した手順は5つある。
+
+**書く前の情報仕分けと削り**。AIの文章が読むに堪えない最大の原因は「認知負荷の丸投げ」だ、とつぼた（@tsubotax）の指摘を引く。前提・補足・先回りの安心材料をすべて1文に詰め込む癖を、書かせる前に削る。具体的には、冒頭2行で誰宛てで何を判断してほしいかを確定させ、各段落に選択肢の差分・判断材料・確認方法などの役割を1つだけ与え、どれにも当てはまらない段落は捨てる。削除しても判断に影響しない括弧の補足は取り除く。
+
+**読者の脳内地図を壊さない大域設計**。文章の破綻は「少し先を読まないと意図が分からない不意打ち」や前段落との接続の欠如から生じる、という鹿野桂一郎（@golden_lucky）の指摘に沿って、概念を初めて示すときは読者が順に読むだけで種類や役割を同定できる順序にし、新しい情報の前にそれを受け止める道筋を用意し、見出しの直後には前段落との接続を1文置く。
+
+**あえて偏り（ムラ）を仕込む**。AIは全トピックを同じ温度で語りがちだが、人間味の正体は偏りだ、というなつ（@art_reflection）の見立てを採り、引っかかった話題は執拗に語り前提は一文で流す、という熱量の濃淡を構成段階で割り振る。
+
+**執筆と機械検査の分離**。プロンプトに禁止事項を並べるほどモデルは萎縮して文を縮める。書くときは伸び伸び書かせ、ファイル出力の直後にHookで機械検査する。違反時は語の置換でなく該当箇所を含む文を丸ごと書き直させる。著者はこの分離をリズムを守る急所と呼ぶ。
+
+**最後の1割を人間が整える**。9割の骨組みをAIに任せ、残り1割の呼吸や手触りは人間が整える。直した差分は記録し、次のプロンプトや検査ルールへ還元する。
+
+著者が挙げるコミュニティ発のツールは3つある。natural-japanese（@techtalkjp）は「AI臭は語彙よりリズムに出る」という着眼から生まれたAgent Skillで、人間とAIの実測コーパスを基に、体言止めの欠如や文頭反復の少なさといった従来の思い込みを排し、文長の長短のばらつき（burstiness）を機械検知する。[[tools/japanese-tech-writing]]（@golden_lucky）は商業書籍の編集視点をスキル化したもので、論点を増やさず姿勢だけを誇張するLLM口調を排除する。[[concepts/llm-japanese-style-hooks]]（@yugen_matuni）はファイル書き込み直後に検査し、NG表現に対して具体的な修正パターンをセットで返す仕組みである。
+
+## ルールは減らさず、読む主体ごとに置き場所を分ける
+
+著者は自身の執筆リポジトリで「ルールを足すほど文が縮んでAI臭が戻る」失敗を経験したと書く。規約を増やすほどAIは当たり障りのない短文に逃げる。そこから導かれた設計原則が「ルールは減らすのではなく、置き場所を分ける」である。
+
+置き場所は3つ。書き手の判断基準だけを薄く記述した内面化層（`style-guide.md`・`voice-samples.md`、上限4,500字）は writer が読む。正規表現で判定できる禁則と修正方針を集約した機械層（`scripts/detect-ai-smell.js`）は文字数上限を設けず、Hookが自動走査する。完成原稿と目標の距離を独立評価する判定層（`references/rubric.md`）は別エージェントの reviewer が読む。肥大化の防止策として、ガイドが上限の8割を超えたら新ルール追加と同量の旧ルールを削る運用を置き、置き場所の原則と上限管理は `GOVERNANCE.md` に書いていると著者は述べる。
+
+この「読む主体ごとに分ける」形は、Claude Code の指示7手段を決定論的強制はHookやパーミッションへ振り分ける[[concepts/claude-code-instruction-methods]]と同じ骨格をしている。あちらが強制力とロード時点で振り分けるのに対し、本ページは文章のリズムを守るために執筆時に読ませる量を絞るところが動機になっていると考えられる。著者は自作のローカルエディタ `note-editor` も使っており、左の編集が中央の本番相当プレビューへ即座に反映され、右ペインから選択範囲の部分的な推敲を行えると説明している。
+
+## 素材がなければハーネスも効かない
+
+記事の締めで著者は、どれほど精巧なハーネスを組み優れたモデルを選んでも、書く人間の中に「生の具体」がなければ文章は成立しないと書く。AIが手垢のついた定型文を吐くのは、人間側が何を体験し何に違和感を覚えたかという素材を渡していないからであり、抽象的な指示からは抽象的な正論しか生まれない。「実際に触ったら思ったより素朴で拍子抜けした」「夜中にプルリクエストが通って少し安心した」といった生身の観察・数字・固有名詞があって初めて、モデルの表現力も自動検査も効く、という位置づけである。なお著者は、この記事自体を解説した執筆環境で書いたと明記している。
+
+## 観察ログ（未検証）
+
+- 2026-09-13: 「ルールを足すほど文が縮んでAI臭が戻る」は著者の自リポジトリでの経験。ルール本数と文長の関係を測ったデータは示されていない
+- 2026-09-13: 内面化層の上限4,500字・8割超で同量削るという閾値の根拠は記事にない。自分の環境で再現するなら実測が要る
+
+## 問い
+
+- このvaultのCLAUDE.md・スキル・メモリも「置き場所を分ける」形をとっているが、上限と同量削除の運用は入っていない。4,500字のような上限を置くとしたらどのファイルか
+- 書き込み直後のHook検査は、wikiページ生成（wiki-ingest）にも入れられるか。[[concepts/llm-japanese-style-hooks]]の500本超ルールをこのvaultのページ生成に当てると、何件出るか
+- 5ステップのうちStep1（書く前の削り）とStep4（執筆と検査の分離）は独立に導入できる。効果が大きいのはどちらから入れた場合か
+
+## 関連
+
+- [[concepts/reasoning-vs-japanese-fluency]] — 推論力と日本語の自然さは別能力という@yugen_matuniの実測。本ページの「まずモデル選定」という順序の根拠側にあたる
+- [[concepts/llm-japanese-style-hooks]] — 本ページがStep4の実装例として挙げるHook検査の本体ページ（@yugen_matuni）
+- [[tools/japanese-tech-writing]] — 本ページが推奨スキルに挙げる日本語文章規範（@golden_lucky）。Step2の大域設計もこの著者の指摘に基づく
+- [[concepts/writing-norms-adoption]] — 同種の規範を「どの文章に入れるか」で判定する運用記録。本ページが規約の置き場所で解くのに対し、あちらは適用範囲で解く
+- [[concepts/claude-code-instruction-methods]] — 指示を格納先ごとに振り分ける公式フレーム。本ページの3層分離と同じ骨格
+- [[tools/suiko]] — 日本語の自然さを形態素解析で診断するCLI。本ページの機械層に置ける外部実装
+- [[design/ai-skills-design]] — 同著者(@kgsi)がデザイン職とAgent Skillsの交差を論じた別テーマの記事
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

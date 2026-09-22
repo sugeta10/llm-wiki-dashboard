@@ -21,3 +21,4 @@ AIが「スキル」を持ち、それをCompose・管理する時代に、デ�
 - [[design/ai-ux-methods]] — AI時代のUXデザイン5メソッド
 - [[tools/obsidian-skills]] — Obsidian向けAgent Skills集
 - [[tools/emil-kowalski-skills]] — デザイン職の専門性をAgent Skillsに落とした実例（Emil Kowalskiの/apple-design等4スキル）
+- [[concepts/ai-japanese-writing-stack]] — 同著者(@kgsi)がAIに自然な日本語を書かせるモデル選定・執筆手順・規約の置き場所をまとめた別テーマの記事

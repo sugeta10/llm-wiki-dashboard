@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>computer-history-daily-note - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>computer-history-daily-note</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="computer-history-daily-note.md">Markdownで表示</a></div>
+  <div class="meta">concepts/computer-history-daily-note · concepts · <span title="2026-09-22">今日</span></div>
+  <article><h1>客観ログと主観の振り返りを分けて積むデイリーノート</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: PCの活動履歴を自動で拾う機能（Codex の Computer History）でその日の作業を客観的なタイムラインに変え、デイリーノートでは事実の列挙と自分で書く振り返りを別々に置く。記録そのものも定期実行にし、実行できたかどうかを外から監視する。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;許可したアプリ・ブラウザの操作&quot;] --&gt; B[&quot;Computer History（Codex）&quot;]
+  B --&gt; C[&quot;10分単位のタイムラインへ整理&quot;]
+  C --&gt; D[&quot;デイリーノートへ追記（客観的事実）&quot;]
+  D --&gt; E[&quot;人間が振り返りを書き足す（主観）&quot;]
+  S[&quot;Codexのスケジュール機能&quot;] --&gt; C
+  M[&quot;Cronosu（Mac用タスクランナー）&quot;] -. 実行の成否を監視 .-&gt; S</pre>
+<p>日次の振り返りが続かない原因を、@shotovim は記憶の取り出しコストに置く。忙しく手を動かした日ほど、夜に日報やデイリーノートを書く段になると直前の作業しか思い出せない。この「思い出す」工程をシステムに委ねれば、振り返りの時間を記憶の再構成でなく次の意思決定に使える、というのが記事の主張である。</p>
+<h2>事実と主観を同じノートで分けて書く</h2>
+<p>Computer History を有効にすると、許可したアプリケーションやブラウザでの操作ログがバックグラウンドに記録される。@shotovim は、そこへ指示を与えて各時間帯の主な作業内容を客観的なタイムラインとして出させ、Obsidian のデイリーノートへ集約している。プロンプトの構成は好みでよいとしたうえで、著者自身は作業・運用と娯楽を分け、10分ごとの記録単位で出力させる設定にしていると書く。</p>
+<p>著者が推奨するのは、Computer History が列挙した事実と、自分で考えた振り返りをノート上で分けて書くことである。事実の列挙だけでも十分だが、その日一日がどうだったかという主観の感想を足すと振り返りの質が上がり、デイリーノートとしての完成度が高くなる、と述べる。デイリーノートは毎日続けてこそ長期的な価値が出るが、書く内容を思い出せないことが継続を阻む——その詰まりを、事実の側を機械に任せることで解く構図になっている。</p>
+<h2>記録プロセス自体を定期実行し、実行を監視する</h2>
+<p>日次の記録を手動でAIに指示していると確実に続かないため、履歴の抽出からノートへの追記までをスケジュールして完全に自動化する、と著者は書く。スケジューリングには Codex 内のスケジュール機能を使い、実行の成否は Mac 用タスクランナー「Cronosu」で監視している。成功したか失敗したかが直感的にわかる点を著者は利点に挙げる。</p>
+<p>この監視が効いた実例として、著者は振り返りを一日の終わりにスケジュールしていたところ、Mac がロック状態になっていて Computer History による追記ができていなかったことに Cronosu 経由で気づけた、と述べている。自動化の層をもう一段外から見る仕組みがないと、記録が止まったこと自体に気づけない。</p>
+<p>記事がまとめる役割分担は、客観的事実の収集・整理が Computer History、定常プロセスの自動化が Cronosu、成果の評価と次の行動の決定がデイリーノート、の3つである。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-12: Mac がロック状態だと Computer History による追記が行われなかった、という著者の報告。記録が欠ける条件が他にもあるかは示されていない</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultでは<a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a>がエージェントの会話履歴を記録しているが、対象はエージェント内の作業に限られる。ブラウザ閲覧や他アプリを含めた一日全体のタイムラインを足すと、週次の振り返りで拾える素材は増えるか</li>
+<li>「機械が書く事実」と「人間が書く主観」を分ける形は、このwikiの本文とインライン帰属・観察ログの分離と同じ構造をしている。同じ分け方を日次の記録にも適用すると何が変わるか</li>
+<li>定期実行の成否監視をどこに置くか。このvaultは launchd で自動同期しているが、実行できなかった日に気づく経路は用意されているか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a> — 同じ @shotovim が実践を寄せている Obsidian 運用の設計側。あちらはフォルダ構造と自動ワークフローの全体像、本ページは日次の記録1本に絞った実装</li>
+<li>openai-codex — Computer History とスケジュール機能の提供元</li>
+<li><a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a> — エージェントの会話履歴を Obsidian へ自動記録する別実装。記録源がエージェント内に閉じる点が本ページとの差分</li>
+<li><a href="../concepts/session-history-mirror.html">session-history-mirror</a> — 溜めたセッション履歴を後から掘って自己分析に使う手法。本ページは記録を作る側、あちらは記録を読む側にあたる</li>
+<li><a href="../concepts/second-brain-operations.html">second-brain-operations</a> — 溜めた記録を維持ループへ載せる運用設計</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/obsidian-personal-os.html">obsidian-personal-os</a></li>
+<li><a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a></li>
+<li><a href="../concepts/second-brain-operations.html">second-brain-operations</a></li>
+<li><a href="../concepts/session-history-mirror.html">session-history-mirror</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2098675239605453208" rel="noopener" target="_blank">https://x.com/i/web/status/2098675239605453208</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 客観ログと主観の振り返りを分けて積むデイリーノート
+
+&gt; **TL;DR**: PCの活動履歴を自動で拾う機能（Codex の Computer History）でその日の作業を客観的なタイムラインに変え、デイリーノートでは事実の列挙と自分で書く振り返りを別々に置く。記録そのものも定期実行にし、実行できたかどうかを外から監視する。
+
+```mermaid
+flowchart LR
+  A[&quot;許可したアプリ・ブラウザの操作&quot;] --&gt; B[&quot;Computer History（Codex）&quot;]
+  B --&gt; C[&quot;10分単位のタイムラインへ整理&quot;]
+  C --&gt; D[&quot;デイリーノートへ追記（客観的事実）&quot;]
+  D --&gt; E[&quot;人間が振り返りを書き足す（主観）&quot;]
+  S[&quot;Codexのスケジュール機能&quot;] --&gt; C
+  M[&quot;Cronosu（Mac用タスクランナー）&quot;] -. 実行の成否を監視 .-&gt; S
+```
+
+日次の振り返りが続かない原因を、@shotovim は記憶の取り出しコストに置く。忙しく手を動かした日ほど、夜に日報やデイリーノートを書く段になると直前の作業しか思い出せない。この「思い出す」工程をシステムに委ねれば、振り返りの時間を記憶の再構成でなく次の意思決定に使える、というのが記事の主張である。
+
+## 事実と主観を同じノートで分けて書く
+
+Computer History を有効にすると、許可したアプリケーションやブラウザでの操作ログがバックグラウンドに記録される。@shotovim は、そこへ指示を与えて各時間帯の主な作業内容を客観的なタイムラインとして出させ、Obsidian のデイリーノートへ集約している。プロンプトの構成は好みでよいとしたうえで、著者自身は作業・運用と娯楽を分け、10分ごとの記録単位で出力させる設定にしていると書く。
+
+著者が推奨するのは、Computer History が列挙した事実と、自分で考えた振り返りをノート上で分けて書くことである。事実の列挙だけでも十分だが、その日一日がどうだったかという主観の感想を足すと振り返りの質が上がり、デイリーノートとしての完成度が高くなる、と述べる。デイリーノートは毎日続けてこそ長期的な価値が出るが、書く内容を思い出せないことが継続を阻む——その詰まりを、事実の側を機械に任せることで解く構図になっている。
+
+## 記録プロセス自体を定期実行し、実行を監視する
+
+日次の記録を手動でAIに指示していると確実に続かないため、履歴の抽出からノートへの追記までをスケジュールして完全に自動化する、と著者は書く。スケジューリングには Codex 内のスケジュール機能を使い、実行の成否は Mac 用タスクランナー「Cronosu」で監視している。成功したか失敗したかが直感的にわかる点を著者は利点に挙げる。
+
+この監視が効いた実例として、著者は振り返りを一日の終わりにスケジュールしていたところ、Mac がロック状態になっていて Computer History による追記ができていなかったことに Cronosu 経由で気づけた、と述べている。自動化の層をもう一段外から見る仕組みがないと、記録が止まったこと自体に気づけない。
+
+記事がまとめる役割分担は、客観的事実の収集・整理が Computer History、定常プロセスの自動化が Cronosu、成果の評価と次の行動の決定がデイリーノート、の3つである。
+
+## 観察ログ（未検証）
+
+- 2026-09-12: Mac がロック状態だと Computer History による追記が行われなかった、という著者の報告。記録が欠ける条件が他にもあるかは示されていない
+
+## 問い
+
+- このvaultでは[[tools/claude-code-obsidian-sync]]がエージェントの会話履歴を記録しているが、対象はエージェント内の作業に限られる。ブラウザ閲覧や他アプリを含めた一日全体のタイムラインを足すと、週次の振り返りで拾える素材は増えるか
+- 「機械が書く事実」と「人間が書く主観」を分ける形は、このwikiの本文とインライン帰属・観察ログの分離と同じ構造をしている。同じ分け方を日次の記録にも適用すると何が変わるか
+- 定期実行の成否監視をどこに置くか。このvaultは launchd で自動同期しているが、実行できなかった日に気づく経路は用意されているか
+
+## 関連
+
+- [[concepts/obsidian-personal-os]] — 同じ @shotovim が実践を寄せている Obsidian 運用の設計側。あちらはフォルダ構造と自動ワークフローの全体像、本ページは日次の記録1本に絞った実装
+- [[tools/openai-codex]] — Computer History とスケジュール機能の提供元
+- [[tools/claude-code-obsidian-sync]] — エージェントの会話履歴を Obsidian へ自動記録する別実装。記録源がエージェント内に閉じる点が本ページとの差分
+- [[concepts/session-history-mirror]] — 溜めたセッション履歴を後から掘って自己分析に使う手法。本ページは記録を作る側、あちらは記録を読む側にあたる
+- [[concepts/second-brain-operations]] — 溜めた記録を維持ループへ載せる運用設計
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

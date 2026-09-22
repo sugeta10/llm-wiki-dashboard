@@ -37,3 +37,4 @@
 - [[concepts/mental-conditioning]]（恐れを扱うメンタルコンディショニング）
 - [[concepts/team-leader-transition]]（フィードバックを"与える"側・心理的安全性を率直さの設計として使う新任リーダー論）
 - [[concepts/linguistic-hedging]]（言い切って外れた責任を引き受ける率直さと、コーチャビリティが要求する正直さの表裏関係）
+- [[concepts/review-request-etiquette]]（指摘を受け取れることを相手から見える形にする実装：指摘のまとめ・今後のアクション・お礼の3点セット）

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>review-request-etiquette - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>review-request-etiquette</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="review-request-etiquette.md">Markdownで表示</a></div>
+  <div class="meta">concepts/review-request-etiquette · concepts · <span title="2026-09-22">今日</span></div>
+  <article><h1>資料レビューを依頼するときの基本動作</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 「確認お願いします」の一言で資料を投げず、5回の赤入れを前提に納期から逆算し、相手の予定と閲覧環境を整え、何をどの観点で見てほしいかを言語化し、レビュー後は指摘のまとめ・今後のアクション・お礼を返す。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;手書きの構成案（20分）&quot;] --&gt; B[&quot;ストーリーライン（Word/Docs）&quot;]
+  B --&gt; C[&quot;ストーリーライン修正版&quot;]
+  C --&gt; D[&quot;パワポ完成&quot;]
+  D --&gt; E[&quot;最終チェック&quot;]
+  E --&gt; F[&quot;本番の会議&quot;]</pre>
+<p>「これ、確認してください」という依頼が上司の側から困るのは、「確認する」という語がハイコンテクストで、何の観点で何がどうなっていることを見ればいいのかが決まらないからだ、と@ysk_motoyamaは書く。観点が指定されていなければ上司側がそれを考えるところから始めることになり、部下から思考の負荷を押し付けられている構図になる。著者はこれを上下関係の問題でなく、相手が年上でも年下でも失礼にあたる行為だと位置づける。</p>
+<p>著者は管理職としてメンバーの資料を少なく見積もっても300件以上レビューし、そのうち依頼の作法ができている人は10人に1人くらいだと述べる。自身もかつてクライアントとの会議の前日に1回目の確認依頼を送り、上司にほぼゼロから資料を作り直された経験があると明かしている。</p>
+<h2>5回の赤入れを前提に納期から逆算する</h2>
+<p>上司との関係値がない段階では資料の一発OKはもらえないと考え、最初に接する上司なら最低5回は赤入れをもらう必要があると見積もる、というのが著者の基本姿勢である。5回の内訳は、目次や構成を書き出した段階、ストーリーラインをテキストで書き終えた段階、その修正版、パワーポイントで書き終えた段階、そして最終チェックになる。</p>
+<p>このうち著者が強調するのは2回目である。いきなりパワーポイントを開かず、ワードや Google Docs で箇条書きしてストーリーを組み立てる。テキストになっていないものはどう頑張ってもパワポには落ちない、と著者は書き、ここで大量の赤入れを食らう前提を置く。4回目のパワポ段階では、載せるデータや図解の見せ方を指摘してもらい、誤字脱字は自分でチェックして上司にはさせない。</p>
+<p>社内の30分程度の会議であればここまでの工数はかからないが、経営層の承認やクライアントとの合意が絡む場面ではこれくらいを見積もる、と条件を付けている。この逆算をすれば、本番前日に1回目の確認依頼を送るという発想にはならない、というのが著者の結論である。</p>
+<h2>依頼の前に相手の予定と閲覧環境を整える</h2>
+<p>著者が挙げる2つ目は、依頼前に30秒でいいから相手のカレンダーを見ることである。午前に重要会議があるなら確認をもらえるのは午後以降だと読む、金曜に有給があるなら木曜夕方の依頼をやめて火曜に出せるよう前倒しで作る、出張で移動が長いならパワポに加えてPDF版も送る、といった読み替えができる。著者はこれを相手のためでなく自分のためだと言い切り、人はどこまでいっても主観の生き物で、同じ成績が横並びなら主観的に気に入っているほうを優遇する、と理由を述べる。</p>
+<p>3つ目は、レビューしやすい環境を整えること。難易度が最も低いぶん絶対に外せない点として、著者は資料の共有権限を付けることを挙げる。権限が付いていないやりとりが誇張なしで10回に1回くらい起きると書き、納期が迫った終業間際に権限なしの資料が届くのが最も腹立たしいと述べている。あわせて閲覧環境への配慮——移動中でも見られるようPDFやGoogleスライドの形で送ること——を挙げる。</p>
+<h2>確認観点を3パターンで言語化する</h2>
+<p>何を見てほしいかの言語化を、著者は3つのパターンに整理する。1つ目は資料全体の論理の整合性で、メッセージやストーリーラインに飛躍や矛盾がないか、単に情報を羅列していないかを見てもらう。2つ目は数値・データ・引用元の正確性で、桁や単位のミス、情報の鮮度は自分で厳重にチェックしたうえで、気になる点がないかを見てもらう。3つ目は読みやすさ・見やすさで、1ページあたりの情報量、グラフの見せ方、図解の伝わりやすさ、同じ意味の語の表記ブレなどが入る。</p>
+<p>この3分類は、資料を渡す相手を上司からAIエージェントに置き換えても、そのまま依頼文の観点指定として使える形をしていると考えられる。</p>
+<h2>レビュー後は指摘のまとめ・今後のアクション・お礼</h2>
+<p>レビューをもらった後の動きも見られている、と著者は書く。上司が気にしているのは、指摘したことを理解して資料に反映してくれるかどうかである。</p>
+<p>1つ目は、指摘された内容を整理して理解を示すこと。「ご指摘いただいた点はXXXと△△△と○○○だと理解していますが、相違ないでしょうか」と確認すれば、ずれていればその場で訂正してもらえ、手戻りを防げる。2つ目は今後のアクションを伝えること。修正内容は会議後に自席へ戻って30秒で手が動かせるレベルまで具体化し、いつまでに何をするかは100人が読んで1通りの解釈しか生まないくらい具体的にする。3つ目はお礼と成果報告で、指摘の結果どんな成果が出たかを伝える。</p>
+<p>3つ目の根拠として、著者はコロンビア大学の心理学者による『人に頼む技術』から、助けを求める人が留めておくべき「人を動かす力」の3番目が「有効性」であり、人は自分が誰かを助けたことが変化を起こしたという手応えを得たいのだ、という趣旨を引いている。</p>
+<h2>問い</h2>
+<ul>
+<li>3つの確認観点（論理の整合性／数値と出典の正確性／読みやすさ）は、レビュー依頼のテンプレートとしてAIへの依頼文にも使えるか。<a href="../concepts/google-code-review.html">google-code-review</a>のChange Author's Guideと突き合わせると、どちらの粒度が実務で回るか</li>
+<li>「5回の赤入れ」は人間の上司を前提にした工数見積もりだが、AIに中間レビューさせる回数を挟むと、人間に出す回数はどこまで減らせるか。減らしていいのはどの回か</li>
+<li>自分が依頼する側でなくレビューする側に回ったとき、観点の指定がない依頼をどう扱うか。観点を相手に書かせるか、自分で決めて返すか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a> — 同著者(@ysk_motoyama)。自己評価と他者評価の乖離を扱う記事で、「一発でOKがもらえると思うのは自己評価が高すぎる」という本ページの前提と裏表になっている</li>
+<li><a href="../concepts/google-code-review.html">google-code-review</a> — レビューを依頼する側（Change Author's Guide）と見る側の指針をコードで定式化したもの。観点を先に示す・レビュアーの時間を尊重するという骨格が共通</li>
+<li><a href="../concepts/coachability.html">coachability</a> — 指摘を受け取れる能力の側。本ページのレビュー後3点セットは、コーチャビリティを相手から見える形にする実装にあたる</li>
+<li><a href="../concepts/team-leader-transition.html">team-leader-transition</a> — フィードバックを与える側の型。本ページはそれを受け取る側から書いた対になる</li>
+<li><a href="../concepts/linguistic-hedging.html">linguistic-hedging</a> — 同著者(@ysk_motoyama)。「〜な感じ」で定義責任を相手に丸投げする話で、「確認してください」が観点を丸投げする構図と同型</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/coachability.html">coachability</a></li>
+<li><a href="../concepts/google-code-review.html">google-code-review</a></li>
+<li><a href="../concepts/self-evaluation-gap.html">self-evaluation-gap</a></li>
+<li><a href="../concepts/linguistic-hedging.html">linguistic-hedging</a></li>
+<li><a href="../concepts/team-leader-transition.html">team-leader-transition</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2098917046822289495" rel="noopener" target="_blank">https://x.com/i/web/status/2098917046822289495</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 資料レビューを依頼するときの基本動作
+
+&gt; **TL;DR**: 「確認お願いします」の一言で資料を投げず、5回の赤入れを前提に納期から逆算し、相手の予定と閲覧環境を整え、何をどの観点で見てほしいかを言語化し、レビュー後は指摘のまとめ・今後のアクション・お礼を返す。
+
+```mermaid
+flowchart LR
+  A[&quot;手書きの構成案（20分）&quot;] --&gt; B[&quot;ストーリーライン（Word/Docs）&quot;]
+  B --&gt; C[&quot;ストーリーライン修正版&quot;]
+  C --&gt; D[&quot;パワポ完成&quot;]
+  D --&gt; E[&quot;最終チェック&quot;]
+  E --&gt; F[&quot;本番の会議&quot;]
+```
+
+「これ、確認してください」という依頼が上司の側から困るのは、「確認する」という語がハイコンテクストで、何の観点で何がどうなっていることを見ればいいのかが決まらないからだ、と@ysk_motoyamaは書く。観点が指定されていなければ上司側がそれを考えるところから始めることになり、部下から思考の負荷を押し付けられている構図になる。著者はこれを上下関係の問題でなく、相手が年上でも年下でも失礼にあたる行為だと位置づける。
+
+著者は管理職としてメンバーの資料を少なく見積もっても300件以上レビューし、そのうち依頼の作法ができている人は10人に1人くらいだと述べる。自身もかつてクライアントとの会議の前日に1回目の確認依頼を送り、上司にほぼゼロから資料を作り直された経験があると明かしている。
+
+## 5回の赤入れを前提に納期から逆算する
+
+上司との関係値がない段階では資料の一発OKはもらえないと考え、最初に接する上司なら最低5回は赤入れをもらう必要があると見積もる、というのが著者の基本姿勢である。5回の内訳は、目次や構成を書き出した段階、ストーリーラインをテキストで書き終えた段階、その修正版、パワーポイントで書き終えた段階、そして最終チェックになる。
+
+このうち著者が強調するのは2回目である。いきなりパワーポイントを開かず、ワードや Google Docs で箇条書きしてストーリーを組み立てる。テキストになっていないものはどう頑張ってもパワポには落ちない、と著者は書き、ここで大量の赤入れを食らう前提を置く。4回目のパワポ段階では、載せるデータや図解の見せ方を指摘してもらい、誤字脱字は自分でチェックして上司にはさせない。
+
+社内の30分程度の会議であればここまでの工数はかからないが、経営層の承認やクライアントとの合意が絡む場面ではこれくらいを見積もる、と条件を付けている。この逆算をすれば、本番前日に1回目の確認依頼を送るという発想にはならない、というのが著者の結論である。
+
+## 依頼の前に相手の予定と閲覧環境を整える
+
+著者が挙げる2つ目は、依頼前に30秒でいいから相手のカレンダーを見ることである。午前に重要会議があるなら確認をもらえるのは午後以降だと読む、金曜に有給があるなら木曜夕方の依頼をやめて火曜に出せるよう前倒しで作る、出張で移動が長いならパワポに加えてPDF版も送る、といった読み替えができる。著者はこれを相手のためでなく自分のためだと言い切り、人はどこまでいっても主観の生き物で、同じ成績が横並びなら主観的に気に入っているほうを優遇する、と理由を述べる。
+
+3つ目は、レビューしやすい環境を整えること。難易度が最も低いぶん絶対に外せない点として、著者は資料の共有権限を付けることを挙げる。権限が付いていないやりとりが誇張なしで10回に1回くらい起きると書き、納期が迫った終業間際に権限なしの資料が届くのが最も腹立たしいと述べている。あわせて閲覧環境への配慮——移動中でも見られるようPDFやGoogleスライドの形で送ること——を挙げる。
+
+## 確認観点を3パターンで言語化する
+
+何を見てほしいかの言語化を、著者は3つのパターンに整理する。1つ目は資料全体の論理の整合性で、メッセージやストーリーラインに飛躍や矛盾がないか、単に情報を羅列していないかを見てもらう。2つ目は数値・データ・引用元の正確性で、桁や単位のミス、情報の鮮度は自分で厳重にチェックしたうえで、気になる点がないかを見てもらう。3つ目は読みやすさ・見やすさで、1ページあたりの情報量、グラフの見せ方、図解の伝わりやすさ、同じ意味の語の表記ブレなどが入る。
+
+この3分類は、資料を渡す相手を上司からAIエージェントに置き換えても、そのまま依頼文の観点指定として使える形をしていると考えられる。
+
+## レビュー後は指摘のまとめ・今後のアクション・お礼
+
+レビューをもらった後の動きも見られている、と著者は書く。上司が気にしているのは、指摘したことを理解して資料に反映してくれるかどうかである。
+
+1つ目は、指摘された内容を整理して理解を示すこと。「ご指摘いただいた点はXXXと△△△と○○○だと理解していますが、相違ないでしょうか」と確認すれば、ずれていればその場で訂正してもらえ、手戻りを防げる。2つ目は今後のアクションを伝えること。修正内容は会議後に自席へ戻って30秒で手が動かせるレベルまで具体化し、いつまでに何をするかは100人が読んで1通りの解釈しか生まないくらい具体的にする。3つ目はお礼と成果報告で、指摘の結果どんな成果が出たかを伝える。
+
+3つ目の根拠として、著者はコロンビア大学の心理学者による『人に頼む技術』から、助けを求める人が留めておくべき「人を動かす力」の3番目が「有効性」であり、人は自分が誰かを助けたことが変化を起こしたという手応えを得たいのだ、という趣旨を引いている。
+
+## 問い
+
+- 3つの確認観点（論理の整合性／数値と出典の正確性／読みやすさ）は、レビュー依頼のテンプレートとしてAIへの依頼文にも使えるか。[[concepts/google-code-review]]のChange Author&#x27;s Guideと突き合わせると、どちらの粒度が実務で回るか
+- 「5回の赤入れ」は人間の上司を前提にした工数見積もりだが、AIに中間レビューさせる回数を挟むと、人間に出す回数はどこまで減らせるか。減らしていいのはどの回か
+- 自分が依頼する側でなくレビューする側に回ったとき、観点の指定がない依頼をどう扱うか。観点を相手に書かせるか、自分で決めて返すか
+
+## 関連
+
+- [[concepts/self-evaluation-gap]] — 同著者(@ysk_motoyama)。自己評価と他者評価の乖離を扱う記事で、「一発でOKがもらえると思うのは自己評価が高すぎる」という本ページの前提と裏表になっている
+- [[concepts/google-code-review]] — レビューを依頼する側（Change Author&#x27;s Guide）と見る側の指針をコードで定式化したもの。観点を先に示す・レビュアーの時間を尊重するという骨格が共通
+- [[concepts/coachability]] — 指摘を受け取れる能力の側。本ページのレビュー後3点セットは、コーチャビリティを相手から見える形にする実装にあたる
+- [[concepts/team-leader-transition]] — フィードバックを与える側の型。本ページはそれを受け取る側から書いた対になる
+- [[concepts/linguistic-hedging]] — 同著者(@ysk_motoyama)。「〜な感じ」で定義責任を相手に丸投げする話で、「確認してください」が観点を丸投げする構図と同型
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

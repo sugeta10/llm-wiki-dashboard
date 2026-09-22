@@ -46,4 +46,5 @@
 - [[concepts/llm-japanese-style-hooks]] — @yugen_matuniのHook運用。全NGルールにグッドパターンを対で持たせた結果、書き直しの精度が上がったとしており、本ページの「例文を外すと強くは効かないかもしれない」という留保への実践的な回答にあたる
 - [[tools/suiko]] — 本ページが規範を指示側（SKILL.md）に置くのに対し、同種の規範（翻訳調・定型対比・リズム）を検査側の決定論的CLIに置いた日本語文書診断ツール（nwiizo製）
 - [[concepts/reasoning-vs-japanese-fluency]] — 本ページの規範が拾う翻訳調・文末単調は、推論力の高いモデルほど出やすいと@yugen_matuniが実測から主張。規範を足す前に日本語の自然なモデルを選ぶという生成側の対処
+- [[concepts/ai-japanese-writing-stack]] — 本スキルを推奨ツールの1つに挙げる@kgsiの執筆スタック。大域設計のステップも鹿野桂一郎の指摘（不意打ちを避ける順序・見出し直後の接続文）を出典にしている
 - [[concepts/writing-norms-adoption]] — 本スキルと対になる cognitive-rhythm-writing を含めた導入判定と手順。@tetumemo が自社の執筆ルール130項目と突き合わせ、「読み手が正しさを求める文章にだけ入れる」という採否の線を引いた実践記録

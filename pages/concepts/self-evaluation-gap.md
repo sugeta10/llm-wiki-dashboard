@@ -42,3 +42,4 @@
 - [[concepts/linguistic-hedging]] — 同著者(@ysk_motoyama)。「〜な感じ」というぼかし言葉を知的怠慢と断じる別テーマの記事
 - [[concepts/career-agency-variables]] — 同著者(@ysk_motoyama)。何をやるか/どうやるか/なぜやるかの3変数でキャリアの自己決定権を論じる別テーマの記事
 - [[concepts/introvert-networking-strategy]] — 同著者(@ysk_motoyama)。社交の量で戦わず準備工程に投資する人脈戦略。自己評価でなく他者からどう見つけてもらうかを扱う別テーマの記事
+- [[concepts/review-request-etiquette]] — 同著者(@ysk_motoyama)。資料レビュー依頼の基本動作。「一発でOKがもらえると思うのは自己評価が高すぎる」という本ページと裏表の前提に立つ
