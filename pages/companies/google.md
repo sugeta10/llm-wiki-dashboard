@@ -34,3 +34,4 @@ Googleの消費者向けAI戦略は、個別プロダクト課金ではなく**�
 - [[tools/google-knowledge-catalog]] — AIエージェント向けデータガバナンス製品（メタデータ収集・Geminiエンリッチ・検証済みクエリ）
 - [[models/timesfm-3]] — Google Researchの時系列基盤モデル第3世代（2026-08-31発表）。多変量予測をゼロショット・1回の順伝播で扱い、BigQueryへ統合予定
 - [[concepts/reasoning-vs-japanese-fluency]] — Gemini 3.8 Flashが500本超の日本語検査Hookを警告ゼロで通過したという@yugen_matuniの実測。日本語の最終成果物では上位モデルより手離れが良いという評価
+- [[concepts/gemini-rewrite-stop-hook]] — 内容は別モデル・日本語はGeminiで整える分業を、CodexのStop HookからCursor CLI経由（Gemini 3.8 Flash High）で自動化した@yugen_matuniの実装

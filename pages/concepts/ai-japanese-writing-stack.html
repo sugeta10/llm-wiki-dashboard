@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-japanese-writing-stack</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-japanese-writing-stack.md">Markdownで表示</a></div>
-  <div class="meta">concepts/ai-japanese-writing-stack · concepts · <span title="2026-09-22">今日</span></div>
+  <div class="meta">concepts/ai-japanese-writing-stack · concepts · <span title="2026-09-23">今日</span></div>
   <article><h1>AIに自然な日本語を書かせる執筆スタック</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: AIの日本語は、プロンプトやHookといったハーネスの工夫よりもまずモデル選定で決まる。そのうえで規約は増やすほど文が縮んでAI臭が戻るため、@kgsi は規約を減らすのでなく writer・Hook・reviewer の誰が読むかで置き場所を分けた。</p>
@@ -80,11 +80,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 指示を格納先ごとに振り分ける公式フレーム。本ページの3層分離と同じ骨格</li>
 <li><a href="../tools/suiko.html">suiko</a> — 日本語の自然さを形態素解析で診断するCLI。本ページの機械層に置ける外部実装</li>
 <li><a href="../design/ai-skills-design.html">ai-skills-design</a> — 同著者(@kgsi)がデザイン職とAgent Skillsの交差を論じた別テーマの記事</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a> — 執筆モデルと別に日本語整形専用のGeminiをStop Hookで呼ぶ@yugen_matuniの実装。本ページの分離構成に整形層を足す例</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a></li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
 <li><a href="../design/ai-skills-design.html">ai-skills-design</a></li>
-<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li>
-<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2099264387358081240" rel="noopener" target="_blank">https://x.com/i/web/status/2099264387358081240</a></li></ul></section></article>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2099264387358081240" rel="noopener" target="_blank">https://x.com/i/web/status/2099264387358081240</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -176,6 +177,7 @@ flowchart LR
 - [[concepts/claude-code-instruction-methods]] — 指示を格納先ごとに振り分ける公式フレーム。本ページの3層分離と同じ骨格
 - [[tools/suiko]] — 日本語の自然さを形態素解析で診断するCLI。本ページの機械層に置ける外部実装
 - [[design/ai-skills-design]] — 同著者(@kgsi)がデザイン職とAgent Skillsの交差を論じた別テーマの記事
+- [[concepts/gemini-rewrite-stop-hook]] — 執筆モデルと別に日本語整形専用のGeminiをStop Hookで呼ぶ@yugen_matuniの実装。本ページの分離構成に整形層を足す例
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

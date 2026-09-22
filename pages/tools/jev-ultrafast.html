@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>jev-ultrafast</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="jev-ultrafast.md">Markdownで表示</a></div>
-  <div class="meta">tools/jev-ultrafast · tools · <span title="2026-09-22">今日</span></div>
+  <div class="meta">tools/jev-ultrafast · tools · <span title="2026-09-23">今日</span></div>
   <article><h1>Jev Ultrafast｜番号付き要素テーブルを1往復で決めるブラウザエージェント</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 観測のたびにページの操作可能な要素を番号付きテーブルに作り直し、「どの操作か」と「どの要素か」を1回のモデル呼び出しで同時に決めるブラウザエージェント。スクリーンショットを使わず、Google Flightsの検索を7.1秒で完了したと <a href="../tools/browser-use.html">browser-use</a> 公式リポジトリが計測を公開している。</p>
@@ -78,7 +78,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/browser-use.html">browser-use</a> — 同じ browser-use による本体のブラウザ操作ライブラリ。Jev Ultrafast は「動的なインデックス付きアクション空間」に絞った別リポジトリで、Chrome接続は同組織の Browser Harness を使う</li>
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — GUIでなくテキスト記法をAIに操作させ、トークンと精度を同時に改善する設計パターン。番号付き要素テーブルはブラウザ操作版の中間記法にあたる</li>
 <li><a href="../tools/claude-computer-use.html">claude-computer-use</a> — スクリーンショットとクリック座標でUIを操作するAnthropicの機能。Jev Ultrafast は既定ループから画像を外し構造化状態だけを使う逆の選択をしている</li>
+<li><a href="../models/jev.html">jev</a> — @CompleteSkepticがRLCDで訓練したと発表した新型フロンティアモデル。本ページの「TypeSafe's Jev」と同一と考えられる（未確認）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../models/jev.html">jev</a></li>
 <li><a href="../tools/browser-use.html">browser-use</a></li>
 <li><a href="../tools/claude-computer-use.html">claude-computer-use</a></li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/browser-use/jev-ultrafast" rel="noopener" target="_blank">https://github.com/browser-use/jev-ultrafast</a></li></ul></section></article>
@@ -165,6 +167,7 @@ READMEが公開する数字は次のとおり。動画は Zürich → London の
 - [[tools/browser-use]] — 同じ browser-use による本体のブラウザ操作ライブラリ。Jev Ultrafast は「動的なインデックス付きアクション空間」に絞った別リポジトリで、Chrome接続は同組織の Browser Harness を使う
 - [[concepts/intermediate-notation-pattern]] — GUIでなくテキスト記法をAIに操作させ、トークンと精度を同時に改善する設計パターン。番号付き要素テーブルはブラウザ操作版の中間記法にあたる
 - [[tools/claude-computer-use]] — スクリーンショットとクリック座標でUIを操作するAnthropicの機能。Jev Ultrafast は既定ループから画像を外し構造化状態だけを使う逆の選択をしている
+- [[models/jev]] — @CompleteSkepticがRLCDで訓練したと発表した新型フロンティアモデル。本ページの「TypeSafe&#x27;s Jev」と同一と考えられる（未確認）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

@@ -117,3 +117,4 @@ flowchart TD
 - [[concepts/frontier-model-extraction]] — フロンティアモデルの持久力を抽出する型4として `/goal`＋動的ワークフローを使う（貼られた証拠＋ハード上限の2安全ルール）
 - [[concepts/claude-code-loop-types]] — `/goal` を Goal-based ループとして位置づける公式4類型（トリガー×停止条件×プリミティブ）
 - [[tools/claude-code-ultracode]] — `/goal`と1行で同居させる総力戦モード。実例の指示文は両者の組み合わせだった
+- [[concepts/gemini-rewrite-stop-hook]] — CodexのStop Hookで終了前に日本語校正（Gemini呼び出し）を差し込む実装例。Stop hookで次の作業を差し込む同じ使い方

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jev - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb950"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>jev</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="jev.md">Markdownで表示</a></div>
+  <div class="meta">models/jev · models · <span title="2026-09-23">今日</span></div>
+  <article><h1>Jev（RLCDで訓練された新型フロンティアモデル）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: ChatGPTの共同発明者を名乗る@CompleteSkepticが、2年間ステルスで開発した新しい訓練手法「RLCD」と、それで作った新型フロンティアモデル「Jev」を2026-09-15に発表した。告知文は「20-200x faster」「40-400x」で途切れており、手法とスペックの詳細は未収集。</p>
+<p>📌 X bookmark: 57,568（2026-09-19 時点）</p>
+</blockquote>
+<p>@CompleteSkepticは発表ポストで、ChatGPTを共同発明した後「超人的なチャットモデルがなぜAGIにつながっていないのか」を問い続けてきたと書く。その答えとして示したのが、モデルを訓練する新しい方法 <strong>RLCD</strong> と、新しいタイプのフロンティアAIモデル <strong>Jev</strong> である。発表の問題設定は「チャットモデルの延長ではAGIに届かない」という前提に立っており、Jevはチャットモデルとは別系統のモデルとして位置づけられていると読める。</p>
+<p>捕捉できた数値は「20-200x faster（20〜200倍高速）」と、比較対象が途切れた「40-400x」の2つだけである。何と比べて速いのか、RLCDが何の略か、提供形態（API・価格）はポスト本文からは読み取れない。発表には動画が添付されているが中身は未捕捉。</p>
+<h2>ブラウザエージェントでの利用例（推論による接続）</h2>
+<p>browser-useが公開した<a href="../tools/jev-ultrafast.html">jev-ultrafast</a>は「TypeSafe's Jev」を決定器として使い、ページの要素テーブルから操作と対象を1回のリクエストで同時に予測させている。同名で時期も近いため本ページのJevと同一と考えられるが、@CompleteSkepticのポストにはTypeSafeという社名が出てこず、同一性は未確認である。同一なら、Jevは文章を生成する代わりに「番号付きの選択肢から確率付きで選ぶ」型の出力を持ち、自由記述の生成は小型LLMに任せる使われ方をしていることになる。「20-200x faster」という主張とも、生成でなく選択に絞ることで速くするという設計とも整合する。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-15: 「20-200x faster」「40-400x」は開発元の自己申告で、比較対象・計測条件は未捕捉。発表本文（リンク先）を取得して何と比べた数字かを確かめる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>RLCDは何の略で、既存のRLHF・RLVRと何が違うのか。発表本文かリンク先の技術資料を別途ingestして確認する</li>
+<li>「チャットモデルの延長ではAGIに届かない」という問題設定は、<a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a>など既存ページのAGI観とどう噛み合うか</li>
+<li>TypeSafeのJevと同一か。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/jev-ultrafast.html">jev-ultrafast</a> — 「TypeSafe's Jev」を操作・対象の同時予測に使うbrowser-useのブラウザエージェント（本ページのJevと同一と考えられるが未確認）</li>
+<li><a href="../companies/openai.html">openai</a> — 発表者が共同発明したと述べるChatGPTの開発元</li>
+<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a> — AGI時代の競争優位を論じる既存ページ。発表の「チャットモデルはなぜAGIに届かないか」という問いの対照</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/openai.html">openai</a></li>
+<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li>
+<li><a href="../tools/jev-ultrafast.html">jev-ultrafast</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2099925682726002904" rel="noopener" target="_blank">https://x.com/i/web/status/2099925682726002904</a></li>
+<li><a href="https://github.com/browser-use/jev-ultrafast" rel="noopener" target="_blank">https://github.com/browser-use/jev-ultrafast</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Jev（RLCDで訓練された新型フロンティアモデル）
+
+&gt; **TL;DR**: ChatGPTの共同発明者を名乗る@CompleteSkepticが、2年間ステルスで開発した新しい訓練手法「RLCD」と、それで作った新型フロンティアモデル「Jev」を2026-09-15に発表した。告知文は「20-200x faster」「40-400x」で途切れており、手法とスペックの詳細は未収集。
+
+&gt; 📌 X bookmark: 57,568（2026-09-19 時点）
+
+@CompleteSkepticは発表ポストで、ChatGPTを共同発明した後「超人的なチャットモデルがなぜAGIにつながっていないのか」を問い続けてきたと書く。その答えとして示したのが、モデルを訓練する新しい方法 **RLCD** と、新しいタイプのフロンティアAIモデル **Jev** である。発表の問題設定は「チャットモデルの延長ではAGIに届かない」という前提に立っており、Jevはチャットモデルとは別系統のモデルとして位置づけられていると読める。
+
+捕捉できた数値は「20-200x faster（20〜200倍高速）」と、比較対象が途切れた「40-400x」の2つだけである。何と比べて速いのか、RLCDが何の略か、提供形態（API・価格）はポスト本文からは読み取れない。発表には動画が添付されているが中身は未捕捉。
+
+## ブラウザエージェントでの利用例（推論による接続）
+
+browser-useが公開した[[tools/jev-ultrafast]]は「TypeSafe&#x27;s Jev」を決定器として使い、ページの要素テーブルから操作と対象を1回のリクエストで同時に予測させている。同名で時期も近いため本ページのJevと同一と考えられるが、@CompleteSkepticのポストにはTypeSafeという社名が出てこず、同一性は未確認である。同一なら、Jevは文章を生成する代わりに「番号付きの選択肢から確率付きで選ぶ」型の出力を持ち、自由記述の生成は小型LLMに任せる使われ方をしていることになる。「20-200x faster」という主張とも、生成でなく選択に絞ることで速くするという設計とも整合する。
+
+## 観察ログ（未検証）
+
+- 2026-09-15: 「20-200x faster」「40-400x」は開発元の自己申告で、比較対象・計測条件は未捕捉。発表本文（リンク先）を取得して何と比べた数字かを確かめる
+
+## 問い
+
+- RLCDは何の略で、既存のRLHF・RLVRと何が違うのか。発表本文かリンク先の技術資料を別途ingestして確認する
+- 「チャットモデルの延長ではAGIに届かない」という問題設定は、[[concepts/agi-knowledge-moat]]など既存ページのAGI観とどう噛み合うか
+- TypeSafeのJevと同一か。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか
+
+## 関連
+
+- [[tools/jev-ultrafast]] — 「TypeSafe&#x27;s Jev」を操作・対象の同時予測に使うbrowser-useのブラウザエージェント（本ページのJevと同一と考えられるが未確認）
+- [[companies/openai]] — 発表者が共同発明したと述べるChatGPTの開発元
+- [[concepts/agi-knowledge-moat]] — AGI時代の競争優位を論じる既存ページ。発表の「チャットモデルはなぜAGIに届かないか」という問いの対照
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

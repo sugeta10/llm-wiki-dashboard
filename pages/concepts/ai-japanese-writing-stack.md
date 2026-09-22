@@ -69,3 +69,4 @@ flowchart LR
 - [[concepts/claude-code-instruction-methods]] — 指示を格納先ごとに振り分ける公式フレーム。本ページの3層分離と同じ骨格
 - [[tools/suiko]] — 日本語の自然さを形態素解析で診断するCLI。本ページの機械層に置ける外部実装
 - [[design/ai-skills-design]] — 同著者(@kgsi)がデザイン職とAgent Skillsの交差を論じた別テーマの記事
+- [[concepts/gemini-rewrite-stop-hook]] — 執筆モデルと別に日本語整形専用のGeminiをStop Hookで呼ぶ@yugen_matuniの実装。本ページの分離構成に整形層を足す例

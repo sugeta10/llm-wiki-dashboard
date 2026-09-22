@@ -67,11 +67,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/no-ai-slop.html">no-ai-slop</a> — 英語圏の同種パターン検出。LLMスキルによる推敲に対し、suikoは形態素解析ベースの再現可能な診断</li>
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — 「禁止語の回避と自然な日本語は別物」という同じ線引きを、検査でなく生成側のモデル選択に適用した主張（@yugen_matuni）。どのモデルが最初から検出に引っかからない日本語を書くか</li>
 <li><a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a> — suikoが検査で扱う翻訳調・リズムを、指示側の規範（cognitive-rhythm-writing）として入れる場合の採否判定と手順（@tetumemo）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a> — 同じ@yugen_matuniが検査（NGワード）と並行させるGeminiリライトのStop Hook自動化。書き換えの意味保持をモデルの自己比較で担保する方式で、suikoの「書き換えない・指さすだけ」とは逆側の設計と考えられる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a></li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
 <li><a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a></li>
-<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li>
-<li><a href="../tools/no-ai-slop.html">no-ai-slop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2092039442680979889" rel="noopener" target="_blank">https://x.com/i/web/status/2092039442680979889</a></li>
+<li><a href="../tools/japanese-tech-writing.html">japanese-tech-writing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2092039442680979889" rel="noopener" target="_blank">https://x.com/i/web/status/2092039442680979889</a></li>
 <li><a href="https://github.com/nwiizo/suiko" rel="noopener" target="_blank">https://github.com/nwiizo/suiko</a></li></ul></section></article>
 </main>
 <script>
@@ -137,6 +138,7 @@ flowchart LR
 - [[tools/no-ai-slop]] — 英語圏の同種パターン検出。LLMスキルによる推敲に対し、suikoは形態素解析ベースの再現可能な診断
 - [[concepts/reasoning-vs-japanese-fluency]] — 「禁止語の回避と自然な日本語は別物」という同じ線引きを、検査でなく生成側のモデル選択に適用した主張（@yugen_matuni）。どのモデルが最初から検出に引っかからない日本語を書くか
 - [[concepts/writing-norms-adoption]] — suikoが検査で扱う翻訳調・リズムを、指示側の規範（cognitive-rhythm-writing）として入れる場合の採否判定と手順（@tetumemo）
+- [[concepts/gemini-rewrite-stop-hook]] — 同じ@yugen_matuniが検査（NGワード）と並行させるGeminiリライトのStop Hook自動化。書き換えの意味保持をモデルの自己比較で担保する方式で、suikoの「書き換えない・指さすだけ」とは逆側の設計と考えられる
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

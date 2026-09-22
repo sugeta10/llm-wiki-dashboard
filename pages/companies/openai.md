@@ -60,3 +60,4 @@ GPT シリーズ・ChatGPT・Codex を開発する AI 企業。AGI の安全な�
 - [[companies/anthropic]]
 - [[concepts/forward-deployed-engineer]]
 - [[companies/apple]]（WWDC26: XcodeのコードAI生成でChatGPTが選択可能）
+- [[models/jev]]（ChatGPTの共同発明者を名乗る@CompleteSkepticが、チャットモデルの延長とは別系統として発表した新型フロンティアモデル。OpenAIとの現在の関係は未確認）

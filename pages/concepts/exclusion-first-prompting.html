@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>exclusion-first-prompting - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>exclusion-first-prompting</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="exclusion-first-prompting.md">Markdownで表示</a></div>
+  <div class="meta">concepts/exclusion-first-prompting · concepts · <span title="2026-09-23">今日</span></div>
+  <article><h1>除外先行プロンプト（「◯◯は出さなくていい。その上で△△」）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIへの指示は良いものの条件より先に「出さなくていいもの」を書く。『エッセンシャル思考』の「90点ルール」を、並んだ候補を選ぶ段階から出させる前へ前倒しする使い方だと@smark_xが提案する。</p>
+</blockquote>
+<p>AIを入れて前より忙しくなった人は、「良いものを出して」「もっと良くして」と打つほど候補を読んで捨てる仕事が増え、自分の時間を吸い取られている、と@smark_xは指摘する。著者によれば、『エッセンシャル思考』（2014年刊・60万部超）の「90点ルール」は、いちばん大事な基準を1つ決めて100点満点で採点し、90点に届かないものは0点として捨てる道具で、本の中では並んだ選択肢を<strong>選ぶとき</strong>に使う。AIなら同じ捨てる基準を<strong>出させる前</strong>に決められるので、使うタイミングを前倒しにしたほうが効く、というのが著者の主張である。</p>
+<p>著者自身、少し前まで「多角的に30案出して」と頼み、読んで選ぶほうに時間を取られていた。AIは当たり前のことしか返さないと思いかけたが、振り返ると捨てる基準を先に書いていなかっただけだった、と述べる。「良いもの」の条件は言葉になっていなくても、「出さなくていいもの」の条件は頼む前からだいたい決まっている、というのが著者の見立てである。その基準すら無いなら「出さなくていい基準の候補を出して」から始めればよい、とも書く。</p>
+<h2>文型と言い換え例</h2>
+<p>文型は「◯◯は出さなくていい。その上で△△」の2文だけで、著者は目的別に言い換え例を挙げる（以下は記事からの転記）。</p>
+<p><strong>案を出させる</strong>
+- 「良いものを出して」→「今期の予算で動かせないものは出さなくていい。その上で20案」
+- 「キャッチコピーを10個出して」→「商品名を言い換えただけのものは出さなくていい。その上で10個」
+- 「企画のアイデアをください」→「今の人数で回らないものは出さなくていい。その上で、来週から試せる順に」
+- 「タイトル案を出して」→「本文に書いていないことを約束するものは出さなくていい。その上で、短い順に5つ」</p>
+<p><strong>調べさせる</strong>
+- 「◯◯について調べて」→「公式サイトの1ページ目に書いてあることは出さなくていい。その上で、うちと違う点だけ」
+- 「競合を調べて」→「うちより規模が大きい会社は出さなくていい。その上で、同じ価格帯の3社」
+- 「もっと詳しく教えて」→「1回目と同じ答えは出さなくていい。その上で、逆の見方を1つ」
+- 「会議の準備をして」→「決めない議題は出さなくていい。その上で、今週決めること1つと、その材料」</p>
+<p><strong>直させる</strong>
+- 「もっと良くして」→「意味が変わる直しは出さなくていい。その上で、言い回しだけ」
+- 「わかりやすくして」→「言葉の説明を足す直しは出さなくていい。その上で、1文を短く切る」
+- 「チェックして」→「1つの観点でしか引っかからない指摘は出さなくていい。その上で、2つ以上の観点が同じ場所を指したものだけ」
+- 「もう一回直して」→「前回直した箇所は出さなくていい。その上で、直した箇所と理由が残る欄を1つ」</p>
+<h2>なぜ効くか</h2>
+<p>著者は各カテゴリの効き方を次のように説明する。「良いものを出して」はAI側で「思いつくものを全部」に置き換わるため、20案を読む仕事が発生する。調べ物は既知の情報が混ざるほど読む時間が伸びるので、既知を先に外せば読むのは差分だけになる。「直して」だけだとAIは全文を書き直してよいと受け取り、返ってきた後に直す前と見比べる仕事が増える。言い換えの中身は全部違っても、先頭でやっていることは「そもそも選択肢に並べないものを決め、良いものの条件はその後で足す」の1つだ、と著者はまとめる。</p>
+<p>この発想は、<a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a>の縛り「私が言いそうなことは失敗」と同じ形をしていると考えられる。どちらも既知・凡庸を出力空間から先に外し、読む量を差分に絞る。「直させる」の「意味が変わる直しは出さなくていい」は、<a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a>が校正指示に入れる「数値・条件・否定・約束の強度を保つ」と同じ防御を、1文の除外条件として書いたものと読める。人間側に残る仕事を「何を捨てるかの決断」に置く点は<a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a>とも重なる。</p>
+<h2>問い</h2>
+<ul>
+<li>除外条件を先頭に置くと、モデルは除外対象の語に引っ張られて逆に寄せる（「〜しないで」が逆効果になる）ことはないか。<a href="../concepts/prompt-engineering.html">prompt-engineering</a>にまとめた各社公式ガイドの制約の書き方と比べて検証する</li>
+<li>wikiのQueryや週次insightsの生成指示に「既にwikiにあることは出さなくていい。その上で差分だけ」を入れると、読む量はどれだけ減るか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a> — 「私が言いそうなことは失敗」という縛りで既知を出力から外す参謀プロンプト。除外を先に書く同じ型</li>
+<li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a> — 整理はAIに任せ、人間は「何を作るか/捨てるか」を決める工程へ移るという主張。本ページはその「捨てる」を指示文の先頭に移したもの</li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計の総論と公式ガイド群。除外先行はその中の制約・境界（Boundaries）の書き方の一流儀にあたる</li>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a> — 校正時に「意味を変えない」制約を明示する実装例。「直させる」の除外条件と同じ防御</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a></li>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a></li>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a></li>
+<li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2099644697593684196" rel="noopener" target="_blank">https://x.com/i/web/status/2099644697593684196</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 除外先行プロンプト（「◯◯は出さなくていい。その上で△△」）
+
+&gt; **TL;DR**: AIへの指示は良いものの条件より先に「出さなくていいもの」を書く。『エッセンシャル思考』の「90点ルール」を、並んだ候補を選ぶ段階から出させる前へ前倒しする使い方だと@smark_xが提案する。
+
+AIを入れて前より忙しくなった人は、「良いものを出して」「もっと良くして」と打つほど候補を読んで捨てる仕事が増え、自分の時間を吸い取られている、と@smark_xは指摘する。著者によれば、『エッセンシャル思考』（2014年刊・60万部超）の「90点ルール」は、いちばん大事な基準を1つ決めて100点満点で採点し、90点に届かないものは0点として捨てる道具で、本の中では並んだ選択肢を**選ぶとき**に使う。AIなら同じ捨てる基準を**出させる前**に決められるので、使うタイミングを前倒しにしたほうが効く、というのが著者の主張である。
+
+著者自身、少し前まで「多角的に30案出して」と頼み、読んで選ぶほうに時間を取られていた。AIは当たり前のことしか返さないと思いかけたが、振り返ると捨てる基準を先に書いていなかっただけだった、と述べる。「良いもの」の条件は言葉になっていなくても、「出さなくていいもの」の条件は頼む前からだいたい決まっている、というのが著者の見立てである。その基準すら無いなら「出さなくていい基準の候補を出して」から始めればよい、とも書く。
+
+## 文型と言い換え例
+
+文型は「◯◯は出さなくていい。その上で△△」の2文だけで、著者は目的別に言い換え例を挙げる（以下は記事からの転記）。
+
+**案を出させる**
+- 「良いものを出して」→「今期の予算で動かせないものは出さなくていい。その上で20案」
+- 「キャッチコピーを10個出して」→「商品名を言い換えただけのものは出さなくていい。その上で10個」
+- 「企画のアイデアをください」→「今の人数で回らないものは出さなくていい。その上で、来週から試せる順に」
+- 「タイトル案を出して」→「本文に書いていないことを約束するものは出さなくていい。その上で、短い順に5つ」
+
+**調べさせる**
+- 「◯◯について調べて」→「公式サイトの1ページ目に書いてあることは出さなくていい。その上で、うちと違う点だけ」
+- 「競合を調べて」→「うちより規模が大きい会社は出さなくていい。その上で、同じ価格帯の3社」
+- 「もっと詳しく教えて」→「1回目と同じ答えは出さなくていい。その上で、逆の見方を1つ」
+- 「会議の準備をして」→「決めない議題は出さなくていい。その上で、今週決めること1つと、その材料」
+
+**直させる**
+- 「もっと良くして」→「意味が変わる直しは出さなくていい。その上で、言い回しだけ」
+- 「わかりやすくして」→「言葉の説明を足す直しは出さなくていい。その上で、1文を短く切る」
+- 「チェックして」→「1つの観点でしか引っかからない指摘は出さなくていい。その上で、2つ以上の観点が同じ場所を指したものだけ」
+- 「もう一回直して」→「前回直した箇所は出さなくていい。その上で、直した箇所と理由が残る欄を1つ」
+
+## なぜ効くか
+
+著者は各カテゴリの効き方を次のように説明する。「良いものを出して」はAI側で「思いつくものを全部」に置き換わるため、20案を読む仕事が発生する。調べ物は既知の情報が混ざるほど読む時間が伸びるので、既知を先に外せば読むのは差分だけになる。「直して」だけだとAIは全文を書き直してよいと受け取り、返ってきた後に直す前と見比べる仕事が増える。言い換えの中身は全部違っても、先頭でやっていることは「そもそも選択肢に並べないものを決め、良いものの条件はその後で足す」の1つだ、と著者はまとめる。
+
+この発想は、[[concepts/ai-strategist-prompt]]の縛り「私が言いそうなことは失敗」と同じ形をしていると考えられる。どちらも既知・凡庸を出力空間から先に外し、読む量を差分に絞る。「直させる」の「意味が変わる直しは出さなくていい」は、[[concepts/gemini-rewrite-stop-hook]]が校正指示に入れる「数値・条件・否定・約束の強度を保つ」と同じ防御を、1文の除外条件として書いたものと読める。人間側に残る仕事を「何を捨てるかの決断」に置く点は[[concepts/ai-requirements-definition]]とも重なる。
+
+## 問い
+
+- 除外条件を先頭に置くと、モデルは除外対象の語に引っ張られて逆に寄せる（「〜しないで」が逆効果になる）ことはないか。[[concepts/prompt-engineering]]にまとめた各社公式ガイドの制約の書き方と比べて検証する
+- wikiのQueryや週次insightsの生成指示に「既にwikiにあることは出さなくていい。その上で差分だけ」を入れると、読む量はどれだけ減るか
+
+## 関連
+
+- [[concepts/ai-strategist-prompt]] — 「私が言いそうなことは失敗」という縛りで既知を出力から外す参謀プロンプト。除外を先に書く同じ型
+- [[concepts/ai-requirements-definition]] — 整理はAIに任せ、人間は「何を作るか/捨てるか」を決める工程へ移るという主張。本ページはその「捨てる」を指示文の先頭に移したもの
+- [[concepts/prompt-engineering]] — プロンプト設計の総論と公式ガイド群。除外先行はその中の制約・境界（Boundaries）の書き方の一流儀にあたる
+- [[concepts/gemini-rewrite-stop-hook]] — 校正時に「意味を変えない」制約を明示する実装例。「直させる」の除外条件と同じ防御
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

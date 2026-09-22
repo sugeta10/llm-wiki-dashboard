@@ -136,11 +136,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/frontier-model-extraction.html">frontier-model-extraction</a> — フロンティアモデルの持久力を抽出する型4として <code>/goal</code>＋動的ワークフローを使う（貼られた証拠＋ハード上限の2安全ルール）</li>
 <li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — <code>/goal</code> を Goal-based ループとして位置づける公式4類型（トリガー×停止条件×プリミティブ）</li>
 <li><a href="../tools/claude-code-ultracode.html">claude-code-ultracode</a> — <code>/goal</code>と1行で同居させる総力戦モード。実例の指示文は両者の組み合わせだった</li>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a> — CodexのStop Hookで終了前に日本語校正（Gemini呼び出し）を差し込む実装例。Stop hookで次の作業を差し込む同じ使い方</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
 <li><a href="../concepts/frontier-model-extraction.html">frontier-model-extraction</a></li>
-<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li>
-<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://code.claude.com/docs/ja/goal" rel="noopener" target="_blank">https://code.claude.com/docs/ja/goal</a></li>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a></li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://code.claude.com/docs/ja/goal" rel="noopener" target="_blank">https://code.claude.com/docs/ja/goal</a></li>
 <li><a href="https://code.claude.com/docs/en/goal" rel="noopener" target="_blank">https://code.claude.com/docs/en/goal</a></li>
 <li><a href="https://x.com/i/web/status/2081900706005717219" rel="noopener" target="_blank">https://x.com/i/web/status/2081900706005717219</a></li></ul></section></article>
 </main>
@@ -282,6 +283,7 @@ flowchart TD
 - [[concepts/frontier-model-extraction]] — フロンティアモデルの持久力を抽出する型4として `/goal`＋動的ワークフローを使う（貼られた証拠＋ハード上限の2安全ルール）
 - [[concepts/claude-code-loop-types]] — `/goal` を Goal-based ループとして位置づける公式4類型（トリガー×停止条件×プリミティブ）
 - [[tools/claude-code-ultracode]] — `/goal`と1行で同居させる総力戦モード。実例の指示文は両者の組み合わせだった
+- [[concepts/gemini-rewrite-stop-hook]] — CodexのStop Hookで終了前に日本語校正（Gemini呼び出し）を差し込む実装例。Stop hookで次の作業を差し込む同じ使い方
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

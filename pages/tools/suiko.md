@@ -42,3 +42,4 @@ flowchart LR
 - [[tools/no-ai-slop]] — 英語圏の同種パターン検出。LLMスキルによる推敲に対し、suikoは形態素解析ベースの再現可能な診断
 - [[concepts/reasoning-vs-japanese-fluency]] — 「禁止語の回避と自然な日本語は別物」という同じ線引きを、検査でなく生成側のモデル選択に適用した主張（@yugen_matuni）。どのモデルが最初から検出に引っかからない日本語を書くか
 - [[concepts/writing-norms-adoption]] — suikoが検査で扱う翻訳調・リズムを、指示側の規範（cognitive-rhythm-writing）として入れる場合の採否判定と手順（@tetumemo）
+- [[concepts/gemini-rewrite-stop-hook]] — 同じ@yugen_matuniが検査（NGワード）と並行させるGeminiリライトのStop Hook自動化。書き換えの意味保持をモデルの自己比較で担保する方式で、suikoの「書き換えない・指さすだけ」とは逆側の設計と考えられる

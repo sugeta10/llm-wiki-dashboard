@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>reasoning-vs-japanese-fluency</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="reasoning-vs-japanese-fluency.md">Markdownで表示</a></div>
-  <div class="meta">concepts/reasoning-vs-japanese-fluency · concepts · <span title="2026-09-04">2週間前</span></div>
+  <div class="meta">concepts/reasoning-vs-japanese-fluency · concepts · <span title="2026-09-23">今日</span></div>
   <article><h1>推論力と日本語の自然さは別の能力（執筆モデルは手離れで選ぶ）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 論理的思考力の高さと自然な日本語を出力する力は別物で、人に読ませる日本語の最終成果物は「ベンチマーク上位のモデル」でなく「手直しが要らないモデル」で作るべきだ、と@yugen_matuniが自作の日本語検査Hookの実測をもとに主張する。</p>
@@ -65,11 +65,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/claude-fable-5-1.html">claude-fable-5-1</a> — 著者が推論には長けるが日本語出力は翻訳調が出やすいと評価したモデル</li>
 <li><a href="../companies/google.html">google</a> — Gemini 3.8 Flashの提供元</li>
 <li><a href="../concepts/ai-japanese-writing-stack.html">ai-japanese-writing-stack</a> — @kgsiが別経路（自身の執筆環境）から同じ「まずモデル選定」に達した統合論。日本語執筆はGemini 3.8 Flashが頭ひとつ抜け次点がKimi K3という評価まで一致し、本ページの先にある執筆手順と規約の置き場所設計を足す</li>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a> — 同著者の続編。本ページの判断を「内容は他モデル・日本語はGemini」の分業にし、CodexのStop Hookから自動で呼ぶ仕組みにした実装</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/google.html">google</a></li>
 <li><a href="../concepts/ai-japanese-writing-stack.html">ai-japanese-writing-stack</a></li>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a></li>
 <li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
-<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
-<li><a href="../models/claude-fable-5-1.html">claude-fable-5-1</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095293937686900995" rel="noopener" target="_blank">https://x.com/i/web/status/2095293937686900995</a></li></ul></section></article>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095293937686900995" rel="noopener" target="_blank">https://x.com/i/web/status/2095293937686900995</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -136,6 +137,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[models/claude-fable-5-1]] — 著者が推論には長けるが日本語出力は翻訳調が出やすいと評価したモデル
 - [[companies/google]] — Gemini 3.8 Flashの提供元
 - [[concepts/ai-japanese-writing-stack]] — @kgsiが別経路（自身の執筆環境）から同じ「まずモデル選定」に達した統合論。日本語執筆はGemini 3.8 Flashが頭ひとつ抜け次点がKimi K3という評価まで一致し、本ページの先にある執筆手順と規約の置き場所設計を足す
+- [[concepts/gemini-rewrite-stop-hook]] — 同著者の続編。本ページの判断を「内容は他モデル・日本語はGemini」の分業にし、CodexのStop Hookから自動で呼ぶ仕組みにした実装
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
