@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-loop-types</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-loop-types.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-code-loop-types · concepts · <span title="2026-07-10">2ヶ月前</span></div>
+  <div class="meta">concepts/claude-code-loop-types · concepts · <span title="2026-09-23">今日</span></div>
   <article><h1>Claude Code 公式ループ4類型（Getting started with loops）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Claude Code チームによるループの公式定義は「停止条件を満たすまで作業サイクルを繰り返すエージェント」。トリガー・停止条件・使用プリミティブ・適合タスクの4軸で Turn-based / Goal-based / Time-based / Proactive の4類型に整理し、「最も単純な解決策から始めて選択的に使う」を原則に置く。</p>
@@ -114,11 +114,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a> — Proactive ループの合成部品（トリアージ→修正→レビューのオーケストレーション）</li>
 <li><a href="../tools/loop-library.html">loop-library</a> — すぐ使えるループのカタログ。本ページの類型で分類し直せる</li>
 <li><a href="../tools/makeloop.html">makeloop</a> — <code>/loop</code> プロンプト生成器。time-based ループの設計を自動化する側</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
+<li><a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a> — Proactive ループの個人実装例：検知は通常プログラム、起動後は軽量→高推論→強モデルへ段階的に回し、実行前に人間承認を挟む（Codex運用）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a></li>
+<li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li>
 <li><a href="../concepts/loop-anatomy.html">loop-anatomy</a></li>
-<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
-<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2074208949205881033" rel="noopener" target="_blank">https://x.com/i/web/status/2074208949205881033</a></li></ul></section></article>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2074208949205881033" rel="noopener" target="_blank">https://x.com/i/web/status/2074208949205881033</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -202,6 +203,7 @@ Proactive は単独機能でなく合成で、`/schedule` で新着レポート�
 - [[concepts/claude-code-dynamic-workflows]] — Proactive ループの合成部品（トリアージ→修正→レビューのオーケストレーション）
 - [[tools/loop-library]] — すぐ使えるループのカタログ。本ページの類型で分類し直せる
 - [[tools/makeloop]] — `/loop` プロンプト生成器。time-based ループの設計を自動化する側
+- [[concepts/ai-pre-judgment-automation]] — Proactive ループの個人実装例：検知は通常プログラム、起動後は軽量→高推論→強モデルへ段階的に回し、実行前に人間承認を挟む（Codex運用）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

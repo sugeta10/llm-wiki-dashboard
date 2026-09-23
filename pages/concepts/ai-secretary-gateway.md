@@ -80,3 +80,4 @@ AIに「明日の予定に、これ追加して」と頼むと「わかりまし
 - [[concepts/agent-autonomy-levels]] — チャット／ツール付き／マルチステップ／完全自律の4段。コピペ秘書は最初の段、常駐秘書は上の段に当たり、段を上げるのはプロンプトでなくツール・記憶・ループ
 - [[concepts/claude-projects-blueprint]] — Claude Projects を「AI社員」として組む6パート設計図。役割を1つに絞り本体と参照資料を分ける発想が本ページの本体＋スキルの二層と重なる
 - [[concepts/ai-strategist-prompt]] — 別著者（@akira_papa_IT）の「専属参謀」プロンプト。AI社員シリーズ①「AI参謀」と役割が近い
+- [[concepts/ai-pre-judgment-automation]] — 仕事の入口（Slack/Gmail/GitHub/カレンダー等）を10分おきに監視し調査→提案→人間承認→実行を回す実運用例（入江慎吾）。本ページの「常駐秘書」段に当たる

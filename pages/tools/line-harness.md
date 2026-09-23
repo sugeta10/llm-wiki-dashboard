@@ -41,3 +41,4 @@ LINE公式アカウントを本気で運用すると配信ツールの月額1〜
 - [[concepts/ai-native-cloud-selection]] — 「AIエージェントが操作しきれるか」を選定軸にする設計思想。本ページはその軸のツール選定への適用例
 - [[business/dinii-ask-anything]] — 照会をAIに任せ実行を人間に残すSlack botの同型の承認設計（Claude Managed Agents実装）
 - [[tools/claude-mcp]] — 同梱MCPサーバーが依拠する外部ツール連携仕様
+- [[concepts/ai-pre-judgment-automation]] — 検知→調査→提案→人間確認→実行で社外送信の手前に承認を置く同型の運用（Slack/Gmail/GitHub監視・Codex）

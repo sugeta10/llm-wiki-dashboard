@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-pre-judgment-automation - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-pre-judgment-automation</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-pre-judgment-automation.md">Markdownで表示</a></div>
+  <div class="meta">concepts/ai-pre-judgment-automation · concepts · <span title="2026-09-23">今日</span></div>
+  <article><h1>AIに任せるのは「判断の手前まで」— 仕事の入口を常時監視して提案させる運用</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Slack・Gmail・GitHub・カレンダーなど「仕事が発生する入口」をAIに常時見張らせ、背景調査から「こう進めますか？」の提案までを先にやらせる運用。人間は提案を読んで承認・修正・却下だけを判断し、承認後の実作業は再びAIが進める（入江慎吾の実践記）。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  src[&quot;仕事の入口&lt;br/&gt;Slack/GitHub/Gmail/カレンダー/議事録/ToDo&quot;] --&gt; poll[&quot;通常プログラムで10分おきに新着検知&lt;br/&gt;DBで通知済みか判定&quot;]
+  poll --&gt;|仕事がありそうな時だけ| light[&quot;Codex起動・軽量モデルで判断&quot;]
+  light --&gt;|簡単| act0[&quot;そのまま処理&quot;]
+  light --&gt;|難しい判断| mid[&quot;高推論モデル&quot;]
+  light --&gt;|開発など複雑| strong[&quot;さらに強いモデル&quot;]
+  mid --&gt; propose[&quot;調査→提案&quot;]
+  strong --&gt; propose
+  propose --&gt; human{&quot;人間が確認&lt;br/&gt;OK/ここだけ変えて/今回はやらない&quot;}
+  human --&gt;|承認| exec[&quot;AIが実行&quot;]</pre>
+<p>AIに仕事を頼む前には、通知を開いて中身を理解し、過去のやり取りや前回の資料を探し、「AIに何と指示すればいいか」を考える工程がある。アプリ開発者の入江慎吾（note: iritec）は、この「仕事を始めるまで」が実は重く、1日に何度も届く通知ごとに発生するスイッチングコストこそが削れる部分だと述べる。仕事の入口はある程度決まっているので、その入口をAIに見てもらい、本人が気づく前に背景まで調べて提案してくれる状態を ChatGPT と Codex で組んで運用している。Claude や Claude Code でも似たことはできるだろうと本人も書いている。</p>
+<h2>先に調べさせる中身</h2>
+<p>Codex には Slack・Gmail・Googleカレンダーなど仕事で使うツールを接続しており、新しい仕事が発生すると次を先に調べる。</p>
+<ul>
+<li>何を依頼されているのか</li>
+<li>過去にどう対応していたのか</li>
+<li>前回どの資料を使ったのか</li>
+<li>普段どんな形式で共有しているのか</li>
+<li>今回はどう対応するのがよさそうか</li>
+</ul>
+<p>著者の例は、クライアント定例の前に資料を更新してPDF化しSlackで事前共有する仕事。以前はメンションを受けてから前回のGoogleスライドを探し、追加内容を過去のやり取りから調べ、書き換え・PDF化・共有までを自分でやっていた。いまはAIが調査して提案を出し、本人は「OK」「ここだけ変えて」「今回はやらない」と判断するだけで、承認すれば資料編集もそのまま進む。</p>
+<p>会議準備にも同じ仕組みを使う。カレンダー・過去の議事録・Slack・メール・ToDoを読み、会議の1時間前に「今日これだけ見ておけば大丈夫」というまとめを用意させ、それを読んでからミーティングに入る。著者はこれだけでも頭の切り替えがかなり楽になったと述べる。</p>
+<h2>検知は普通のプログラム、判断はモデルを段階的に</h2>
+<p>監視対象は Slack・GitHub・Gmail・Googleカレンダー・議事録・ToDo の6つで、10分おきにチェックする。ただし毎回AIを起動すると無駄が多いため、最初の検知は通常のプログラムが担う。プログラムが新着を確認し、データベースで「すでに通知したものか」を判定して、仕事が発生していそうなときだけ Codex を起動する。</p>
+<p>起動後もまず軽量なモデルで内容を判断し、簡単なものはそのまま処理、少し難しい判断が要るものはより高い推論レベルのモデルへ、開発のような複雑な作業はさらに強いモデルへ回す。すべての仕事に最高性能のモデルを使う必要はなく、これでコストをかなり抑えられると著者は述べる。検知を決定論的なコードに寄せてAI起動を絞る形は、<a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> が Proactive ループで勧める「routine は小型高速モデルへ、判断は最上位モデルへ」と同じ配分だと考えられる。</p>
+<h2>全自動化せず「確認してから動く」</h2>
+<p>著者がこの仕組みで一番大事にしているのは <strong>AIが勝手に仕事を完了させないこと</strong>。Slackへの返信もメール送信も資料更新も技術的には自動化できるが、AIが判断を誤ったときにそのまま社外へ送信されうるのが怖いとして、流れを <strong>検知 → 調査 → 提案 → 人間が確認 → 実行</strong> に固定している。</p>
+<p>AIには仕事の進め方を書いた「ルールブック」を渡している。著者が挙げる例は次のとおり。</p>
+<ul>
+<li>Slackで自分にメンションが来たら仕事の候補</li>
+<li>GitHubでは特定の人から作業完了のコメントが来たら確認する</li>
+<li>返信文は相手の文体に合わせる</li>
+<li>開発作業ではブランチを作って、動作確認できるところまで進める</li>
+</ul>
+<p>運用しながら「このケースでは通知しなくていい」「この場合はここまで調べてほしい」「この種類の仕事なら先にこれを確認する」とルールを足していく。著者はこれを、AIそのものを賢くするというより <strong>自分の仕事のやり方を少しずつAIに移植していく感覚</strong> だと表現する。承認後にAIが進める作業は、メールやSlackの返信案作成、資料修正、Googleスプレッドシート更新、ブラウザ上の申請作業、開発ならブランチを切った実装と動作確認まで広がっている。</p>
+<h2>人間に残すのは方向と要否の判断</h2>
+<p>AIが作るものが8〜9割まで完成していることはかなり増えたと著者は述べる。それでも「本当にこの方向でいいのか」「もっとこうした方がいいのではないか」「そもそもこの仕事をやるべきなのか」は人間が考えた方がよく、そこが人間の関わる価値が高いところだという立場をとる。目指すのは人間を仕事から外すことではなく、AIが気づき・過去を調べ・状況を整理し・選択肢を考えて提案し、人間が判断し、判断後の作業をまたAIがやる形である。</p>
+<p>AIエージェントを始めるなら、いきなり全自動にせず、<strong>自分が毎日どこを見て仕事を見つけているのか</strong>（Slack・メール・GitHub・カレンダー・議事録）から考え、その入口をAIに見てもらって「次これやりますか？」と聞いてくれる状態を作るところからでよい、と著者は勧める。</p>
+<p>この運用は <a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a> が「コピペ秘書」の先に置いた「常駐秘書」（向こうから連絡し、確認後に実行する段）を実際に組んだ一例と読める。外部に届く操作の手前で人間承認を挟む線引きは <a href="../tools/line-harness.html">line-harness</a> の「送信のみ人間承認」とも同型だと考えられる。</p>
+<h2>問い</h2>
+<ul>
+<li>「すでに通知したか」を判定するDBと、ルールブックへの追記はどう結びついているか（通知不要ケースをルール側で持つのか検知コード側で持つのか）。記事では構成の詳細は語られていない</li>
+<li>自分の環境で入口を棚卸しすると何になるか。このvaultの launchd 常駐処理（決定論で検知しAIを起動する構成）に「提案→承認」の段を足せるか</li>
+<li>提案を承認するUIはどこか（Slack・Codexアプリ上など）。記事の画像内にしか示されておらず本vaultでは未捕捉</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a> — AI秘書を仕事の窓口に限定し人間が決めることだけ戻す設計。本ページはその常駐版を実運用した例</li>
+<li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — Proactive ループ（イベント/スケジュール起動・小型モデルと最上位モデルの使い分け）の公式整理</li>
+<li><a href="../tools/line-harness.html">line-harness</a> — 送信だけ人間承認に残すClaude Code運用。外部送信の手前で止める同じ境界</li>
+<li>openai-codex — 本運用の実行基盤</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a></li>
+<li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
+<li><a href="../tools/line-harness.html">line-harness</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/iritec/n/n07e54d070700" rel="noopener" target="_blank">https://note.com/iritec/n/n07e54d070700</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AIに任せるのは「判断の手前まで」— 仕事の入口を常時監視して提案させる運用
+
+&gt; **TL;DR**: Slack・Gmail・GitHub・カレンダーなど「仕事が発生する入口」をAIに常時見張らせ、背景調査から「こう進めますか？」の提案までを先にやらせる運用。人間は提案を読んで承認・修正・却下だけを判断し、承認後の実作業は再びAIが進める（入江慎吾の実践記）。
+
+```mermaid
+flowchart LR
+  src[&quot;仕事の入口&lt;br/&gt;Slack/GitHub/Gmail/カレンダー/議事録/ToDo&quot;] --&gt; poll[&quot;通常プログラムで10分おきに新着検知&lt;br/&gt;DBで通知済みか判定&quot;]
+  poll --&gt;|仕事がありそうな時だけ| light[&quot;Codex起動・軽量モデルで判断&quot;]
+  light --&gt;|簡単| act0[&quot;そのまま処理&quot;]
+  light --&gt;|難しい判断| mid[&quot;高推論モデル&quot;]
+  light --&gt;|開発など複雑| strong[&quot;さらに強いモデル&quot;]
+  mid --&gt; propose[&quot;調査→提案&quot;]
+  strong --&gt; propose
+  propose --&gt; human{&quot;人間が確認&lt;br/&gt;OK/ここだけ変えて/今回はやらない&quot;}
+  human --&gt;|承認| exec[&quot;AIが実行&quot;]
+```
+
+AIに仕事を頼む前には、通知を開いて中身を理解し、過去のやり取りや前回の資料を探し、「AIに何と指示すればいいか」を考える工程がある。アプリ開発者の入江慎吾（note: iritec）は、この「仕事を始めるまで」が実は重く、1日に何度も届く通知ごとに発生するスイッチングコストこそが削れる部分だと述べる。仕事の入口はある程度決まっているので、その入口をAIに見てもらい、本人が気づく前に背景まで調べて提案してくれる状態を ChatGPT と Codex で組んで運用している。Claude や Claude Code でも似たことはできるだろうと本人も書いている。
+
+## 先に調べさせる中身
+
+Codex には Slack・Gmail・Googleカレンダーなど仕事で使うツールを接続しており、新しい仕事が発生すると次を先に調べる。
+
+- 何を依頼されているのか
+- 過去にどう対応していたのか
+- 前回どの資料を使ったのか
+- 普段どんな形式で共有しているのか
+- 今回はどう対応するのがよさそうか
+
+著者の例は、クライアント定例の前に資料を更新してPDF化しSlackで事前共有する仕事。以前はメンションを受けてから前回のGoogleスライドを探し、追加内容を過去のやり取りから調べ、書き換え・PDF化・共有までを自分でやっていた。いまはAIが調査して提案を出し、本人は「OK」「ここだけ変えて」「今回はやらない」と判断するだけで、承認すれば資料編集もそのまま進む。
+
+会議準備にも同じ仕組みを使う。カレンダー・過去の議事録・Slack・メール・ToDoを読み、会議の1時間前に「今日これだけ見ておけば大丈夫」というまとめを用意させ、それを読んでからミーティングに入る。著者はこれだけでも頭の切り替えがかなり楽になったと述べる。
+
+## 検知は普通のプログラム、判断はモデルを段階的に
+
+監視対象は Slack・GitHub・Gmail・Googleカレンダー・議事録・ToDo の6つで、10分おきにチェックする。ただし毎回AIを起動すると無駄が多いため、最初の検知は通常のプログラムが担う。プログラムが新着を確認し、データベースで「すでに通知したものか」を判定して、仕事が発生していそうなときだけ Codex を起動する。
+
+起動後もまず軽量なモデルで内容を判断し、簡単なものはそのまま処理、少し難しい判断が要るものはより高い推論レベルのモデルへ、開発のような複雑な作業はさらに強いモデルへ回す。すべての仕事に最高性能のモデルを使う必要はなく、これでコストをかなり抑えられると著者は述べる。検知を決定論的なコードに寄せてAI起動を絞る形は、[[concepts/claude-code-loop-types]] が Proactive ループで勧める「routine は小型高速モデルへ、判断は最上位モデルへ」と同じ配分だと考えられる。
+
+## 全自動化せず「確認してから動く」
+
+著者がこの仕組みで一番大事にしているのは **AIが勝手に仕事を完了させないこと**。Slackへの返信もメール送信も資料更新も技術的には自動化できるが、AIが判断を誤ったときにそのまま社外へ送信されうるのが怖いとして、流れを **検知 → 調査 → 提案 → 人間が確認 → 実行** に固定している。
+
+AIには仕事の進め方を書いた「ルールブック」を渡している。著者が挙げる例は次のとおり。
+
+- Slackで自分にメンションが来たら仕事の候補
+- GitHubでは特定の人から作業完了のコメントが来たら確認する
+- 返信文は相手の文体に合わせる
+- 開発作業ではブランチを作って、動作確認できるところまで進める
+
+運用しながら「このケースでは通知しなくていい」「この場合はここまで調べてほしい」「この種類の仕事なら先にこれを確認する」とルールを足していく。著者はこれを、AIそのものを賢くするというより **自分の仕事のやり方を少しずつAIに移植していく感覚** だと表現する。承認後にAIが進める作業は、メールやSlackの返信案作成、資料修正、Googleスプレッドシート更新、ブラウザ上の申請作業、開発ならブランチを切った実装と動作確認まで広がっている。
+
+## 人間に残すのは方向と要否の判断
+
+AIが作るものが8〜9割まで完成していることはかなり増えたと著者は述べる。それでも「本当にこの方向でいいのか」「もっとこうした方がいいのではないか」「そもそもこの仕事をやるべきなのか」は人間が考えた方がよく、そこが人間の関わる価値が高いところだという立場をとる。目指すのは人間を仕事から外すことではなく、AIが気づき・過去を調べ・状況を整理し・選択肢を考えて提案し、人間が判断し、判断後の作業をまたAIがやる形である。
+
+AIエージェントを始めるなら、いきなり全自動にせず、**自分が毎日どこを見て仕事を見つけているのか**（Slack・メール・GitHub・カレンダー・議事録）から考え、その入口をAIに見てもらって「次これやりますか？」と聞いてくれる状態を作るところからでよい、と著者は勧める。
+
+この運用は [[concepts/ai-secretary-gateway]] が「コピペ秘書」の先に置いた「常駐秘書」（向こうから連絡し、確認後に実行する段）を実際に組んだ一例と読める。外部に届く操作の手前で人間承認を挟む線引きは [[tools/line-harness]] の「送信のみ人間承認」とも同型だと考えられる。
+
+## 問い
+
+- 「すでに通知したか」を判定するDBと、ルールブックへの追記はどう結びついているか（通知不要ケースをルール側で持つのか検知コード側で持つのか）。記事では構成の詳細は語られていない
+- 自分の環境で入口を棚卸しすると何になるか。このvaultの launchd 常駐処理（決定論で検知しAIを起動する構成）に「提案→承認」の段を足せるか
+- 提案を承認するUIはどこか（Slack・Codexアプリ上など）。記事の画像内にしか示されておらず本vaultでは未捕捉
+
+## 関連
+
+- [[concepts/ai-secretary-gateway]] — AI秘書を仕事の窓口に限定し人間が決めることだけ戻す設計。本ページはその常駐版を実運用した例
+- [[concepts/claude-code-loop-types]] — Proactive ループ（イベント/スケジュール起動・小型モデルと最上位モデルの使い分け）の公式整理
+- [[tools/line-harness]] — 送信だけ人間承認に残すClaude Code運用。外部送信の手前で止める同じ境界
+- [[tools/openai-codex]] — 本運用の実行基盤
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

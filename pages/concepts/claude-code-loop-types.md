@@ -61,3 +61,4 @@ Proactive は単独機能でなく合成で、`/schedule` で新着レポート�
 - [[concepts/claude-code-dynamic-workflows]] — Proactive ループの合成部品（トリアージ→修正→レビューのオーケストレーション）
 - [[tools/loop-library]] — すぐ使えるループのカタログ。本ページの類型で分類し直せる
 - [[tools/makeloop]] — `/loop` プロンプト生成器。time-based ループの設計を自動化する側
+- [[concepts/ai-pre-judgment-automation]] — Proactive ループの個人実装例：検知は通常プログラム、起動後は軽量→高推論→強モデルへ段階的に回し、実行前に人間承認を挟む（Codex運用）
