@@ -37,6 +37,7 @@
 ## 関連
 
 - [[tools/claude-code-plugins]] — security-guidance プラグインが実装例
+- [[tools/claude-code-mods]] — 外部プロセスを起動せず TypeScript 関数をエンジンに直接ロードする Function Hooks。従来 hooks は `classic.*` として1:1でラップされる（nogu の解説）
 - [[concepts/multi-agent-patterns]] — マルチエージェント設計パターン全般
 - [[tools/claude-code]] — Hooks 機能の基盤
 - [[concepts/agentic-coding]] — エージェント協調設計の文脈

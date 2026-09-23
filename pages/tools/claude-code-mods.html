@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-mods - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-mods</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-mods.md">Markdownで表示</a></div>
+  <div class="meta">tools/claude-code-mods · tools · <span title="2026-09-23">今日</span></div>
+  <article><h1>Claude Mods / Function Hooks｜Claude Code 本体に TypeScript 関数を差し込む拡張機構</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 従来の Hooks が「外部プロセスを起動して JSON をやり取りする」仕組みだったのに対し、Claude Mods は TypeScript の関数（Function Hooks）を Claude Code のエンジンプロセスへ直接ロードし、Koa 風のミドルウェア <code>($, e, next)</code> として画面描画・状態・ツール登録まで書き換えられるようにした拡張機構。<code>/diff</code> や AGENTS.md 対応といった標準機能自体も Mod で実装されている、と nogu が解説している。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Event[&quot;イベント e&quot;] --&gt; Prepend[&quot;prepend（組織ポリシー）&quot;]
+  Prepend --&gt; User[&quot;user（自分が入れたMod）&quot;]
+  User --&gt; Append[&quot;append（組織ポリシー）&quot;]
+  Append --&gt; Builtin[&quot;builtin（バイナリ同梱）&quot;]
+  Builtin --&gt; Core[&quot;core（エンジン本体）&quot;]
+  Core -. &quot;結果が逆順に戻る（上り）&quot; .-&gt; Prepend</pre>
+<p>nogu によると、従来の <a href="../tools/claude-code.html">claude-code</a> の hooks はイベントのたびに外部プロセスを起動して標準入力にイベントの JSON を渡し、標準出力や exit code で許可・拒否・加工結果を受け取る仕組みだった。プロセスをまたぐため、やり取りできるのはテキストの入出力と可否判定までに限られる。Function Hooks はこの境界をなくし、関数として同じメモリ空間で呼ばれるので、エンジンの操作窓口 <code>$</code> を通じて画面描画・状態管理・ツール登録まで直接触れる。両者の違いは「プロセスをまたぐかどうか」に集約される、というのが nogu の整理である。</p>
+<p>Mod は外付けの拡張ではなく、Claude Code 自身の <code>/diff</code> コマンドやテレメトリ機能、Claude Code 2.1.277 で追加された AGENTS.md サポート（<code>agents-md</code> Mod）も同じ仕組みで作られている。nogu はここから「Claude Mods は Claude Code の標準機能自体を拡張できる」「かなり将来性の高い機能」と評価している。</p>
+<h2>使い始め方</h2>
+<p>nogu の記事時点では early access で、<code>~/.claude/settings.json</code> の <code>env</code> に <code>CLAUDE_CODE_ENABLE_FUNCTION_HOOKS: "1"</code> を設定して有効化する。Mod は <code>.claude-plugin/plugin.json</code>（メタ情報）＋ <code>hooks/hooks.json</code>（<code>{"modules": ["./register.ts"]}</code> でエントリポイントを宣言）＋ <code>hooks/register.ts(x)</code> という構成で、<a href="../tools/claude-code-plugins.html">claude-code-plugins</a> と同じプラグイン形式に乗る。<code>claude --plugin-dir ./my-mod</code> でインストールせずにそのセッションだけ試せ、保存するとホットリロードされるので Claude 自身に Mod を書かせながら試せる。型は <code>/plugin-types</code> で生成される <code>.claude/types/claude-code.d.ts</code> が正で、<code>claude plugin validate .</code> で登録を検証する。</p>
+<h2><code>register(on)</code> と <code>($, e, next)</code></h2>
+<p><code>register</code> の中で <code>on(イベント名, マッチャー?, ハンドラ)</code> を呼んで処理をつなぐ。マッチャーは絞り込み条件で、<code>{ tool: "Bash" }</code> なら Bash の <code>tool.call</code> だけを拾う。ハンドラの3引数は nogu の表で次のように説明されている。</p>
+<table>
+<thead>
+<tr>
+<th>引数</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$</code></td>
+<td>エンジンとの唯一の接続窓口。画面描画・モデル・ストレージ・タイマー・ツール登録など、外の世界に触れる手段はすべて <code>$</code> 経由。 <code>$</code> のメソッドは、それ自体がイベントでもある</td>
+</tr>
+<tr>
+<td><code>e</code></td>
+<td>そのイベントの入力データ。フラットな値で、idは固定（pinned）、それ以外のペイロードは自由に書き換えてよい</td>
+</tr>
+<tr>
+<td><code>next</code></td>
+<td>次の処理へ進む関数</td>
+</tr>
+</tbody>
+</table>
+<p>Mod は隔離環境で動き、<code>$</code> を使わない限り外の世界に何もできない。これが安全性の要だと nogu は述べる。<code>next</code> は Express/Koa のミドルウェアそのもので、呼ぶタイミング次第で3通りに使い分けられる。</p>
+<ul>
+<li><strong>早期リターン</strong>: <code>next(e)</code> を呼ばずに <code>{ deny: "no" }</code> などを返すと、後続のフックにも core にも届かない（<code>rm -rf /</code> の遮断など）</li>
+<li><strong>後処理</strong>: <code>const r = await next(e)</code> で内側を先に走らせ、計測やログ（<code>$.ui.log</code>）を足してから <code>r</code> を返す（Koa のオニオンモデル）</li>
+<li><strong>結果の書き換え</strong>: 返ってきた <code>r.text</code> を加工して返す（<code>Read</code> の出力に混じった <code>sk-...</code> を <code>[REDACTED]</code> にする例）</li>
+</ul>
+<p>ハンドラが例外を投げるか10秒を超えると、そのハンドラだけがスキップされる。<code>.catch</code> を宣言しておけば猶予予算の中で <code>next</code> と同等の権限で代わりに答えられ、<code>next.called</code> で既に内側を呼んだかを判定できる。</p>
+<h2>5層チェーンと「位置がそのまま権威」</h2>
+<p>1つのイベントは prepend（組織ポリシー）→ user（自分が入れた Mod）→ append（組織ポリシー）→ builtin（バイナリ同梱）→ core（エンジン本体）の5層を1本の fold として貫通し、<code>e</code> は下りで各層に加工されうる、結果は上りで各層に加工されうる。順序は関数の入れ子 <code>A(B(C(core(⊥))))</code> と同じで、外側のフックほど下りで最初に <code>e</code> を見て、上りで最後に結果を見る。nogu はこれを「位置がそのまま権威」と表現する。</p>
+<p>組織は両端（prepend と append）を押さえ、個人の Mod は挟まれる。user の Mod が許可しても外側の append が後から拒否でき、prepend が先に拒否すれば user の Mod にはイベントが届かない。managed 端末や Team/Enterprise プランでは公式の <code>sec-default</code> Mod が自動的に最外殻の prepend に座り、個人のプラグインは組織の従来 hooks・プロンプトのシステムセクション・組織の設定・組織提供ツールの説明文に触れられなくなる。<code>prependPlugins</code> を設定した組織は prepend 枠を自分で管理し、<code>sec-default</code> を含めるかも選べる。何も足さない状態は <code>on("*", ($, e, next) =&gt; next.to(e, "builtin"))</code> の1行と同じ意味で、nogu は「ここに自分のハンドラを足していくのが Mod を書くこと」とまとめている。</p>
+<p>その他のルールとして nogu が挙げる要点は次のとおり。</p>
+<ul>
+<li><code>$</code> は <code>$.noun.verb(...)</code>、イベント名も <code>on("event")</code> とリテラルで書く。ローダーが静的に列挙するため、動的に組み立てた名前は認識されない</li>
+<li>ハンドラは自分が引き起こしたディスパッチ（自分の <code>$</code> 呼び出し・<code>next</code>・起動したサブエージェント）を見ない。兄弟や他プラグインからは見える</li>
+<li>プラグインはプロセスと同じ到達範囲を持つ信頼済みコードとして扱われ、組織は <code>plugin.register</code> にフックして各プラグインが宣言する <code>uses</code> を審査・拒否できる</li>
+<li>従来の settings フックはすべて <code>classic.&lt;Event&gt;</code> として1:1でラップされ、JSON の入出力もそのまま引き継がれる</li>
+<li><code>engine.create</code> にフックすれば <code>$</code> 自体に新しい名詞を足せる（公式 <code>telemetry</code> Mod が <code>$.telemetry</code> を足しているのと同じ仕組み）</li>
+</ul>
+<p><code>$</code> には tool / command / prompt / ui / fs / store / http / process / mcp / agent / turn / session / model / settings / config / env / clock / audio / plugin の名詞が並び、<code>$.tool.register</code>（モデルに新しいツールを与える）、<code>$.ui.open</code>（描画ペインを開く）、<code>$.session.usage</code>（コンテキスト使用率・レート制限・コスト）、<code>$.model.classify</code>（用意したラベルから1つ選ばせる）などがある。イベントも <code>tool.call</code> <code>check</code>（permission 判定）<code>prompt.submit</code> <code>step</code>（モデルへの1リクエスト）<code>compact</code> <code>agent.spawn</code> <code>ui.render</code> <code>config.set</code> <code>skill.prompt</code> などに及ぶ。完全な一覧は nogu の記事の Appendix にある。</p>
+<h2>実例</h2>
+<ul>
+<li><strong>diff</strong>（公式）: <code>/diff</code> の実体。セッション中の未コミット変更をトランスクリプト横のパネルにファイル・hunk ごとに表示し、比較基準（HEAD・セッション開始時のスナップショット・デフォルトブランチとの merge-base）を切り替えられる。画面の一部を Mod が描いている点が従来 hooks との差だと nogu は強調する</li>
+<li><strong>agents-md</strong>（公式）: <code>CLAUDE.md</code> と同じ形で <code>AGENTS.md</code> を読み込む。<code>instructionFiles</code> オプションで <code>claude-md</code> / <code>claude-md-or-agents-md</code>（デフォルト：CLAUDE.md が無ければ AGENTS.md にフォールバック）/ <code>claude-md-and-agents-md</code> / <code>managed-only</code> を選び、<code>pluginConfigs</code> の <code>agents-md@builtin</code> に書く。README によると <code>session.start</code> でモードをログに出し、<code>tool.call</code>（Read）でディレクトリ内の <code>AGENTS.md</code> を動的に添付している</li>
+<li><strong>sec-default</strong>（公式）: 新しいポリシーは足さず、組織の hooks・プロンプト・管理設定・ツールポリシーをユーザーのプラグインから「触れさせない」ことだけを担う</li>
+<li><strong>terminal-browser</strong>（コミュニティ製・zenbu-labs）: Kitty graphics protocol で分割ペイン内に実際のブラウザを表示し、<code>/browser</code> で起動する。<code>$.browser.open()</code> を他のプラグイン向け API として提供する</li>
+<li><strong>cc-arcade</strong>（コミュニティ製・sezaakgun）: プロンプト欄の上で Snake・Tetris・Doom を遊べる、7イベントだけで作られた Mod。<code>turn.complete</code> と <code>tool.call</code> は <code>next(e)</code> を先に呼んで本来の処理を邪魔せず結果だけ観測する。毎秒10回（Doom は20回）の描画は <code>ui.render</code> のハンドラに載せず別の実行コンテキスト（<code>Client</code> モジュール）に切り出し、<code>surface.every(100, ...)</code> の独自クロックで回して <code>surface.post</code> で親に結果を返す。メインのフックチェーンを重くしない「メインとワーカーの分離」だと nogu は解説する</li>
+</ul>
+<p>nogu はこれらを「標準機能と同じ土俵」とまとめる。公式の標準機能もコミュニティ製 Mod も、同じ <code>register</code> とイベントへのフックで作られている。</p>
+<p>指示の置き場所を整理した <a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> では、決定論的に強制できるのは hook と permission だった。Function Hooks はその hook の層を、可否判定だけでなく結果の書き換え・UI・ツール追加まで広げたものと考えられる。また <a href="../concepts/agents-md-canonical.html">agents-md-canonical</a> が扱う「AGENTS.md を正本にする」運用は、Claude Code 側では <code>agents-md</code> Mod の <code>instructionFiles</code> で読み方を選べるようになった。</p>
+<h2>問い</h2>
+<ul>
+<li>このvaultの hooks（SessionStart や PostToolUse で動かしている外部スクリプト）のうち、Function Hooks に移すと何が良くなるか。<code>classic.*</code> として1:1でラップされるなら、移さなくても壊れないのか</li>
+<li>AGENTS.md と CLAUDE.md をシンボリックリンクで同一にしている現状は、<code>agents-md</code> の <code>claude-md-and-agents-md</code> モードで二重読み込みにならないか</li>
+<li>「位置がそのまま権威」の5層は、<a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> の Enterprise → Global → Project の4層とどう対応するか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a> — Mods が拡張する本体</li>
+<li><a href="../tools/claude-code-plugins.html">claude-code-plugins</a> — Mods が乗るプラグイン形式と公式マーケットプレイス</li>
+<li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a> — 外部プロセス型の従来 hooks（asyncRewake）の使い方。Function Hooks はプロセスをまたがない発展形</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — hooks を「決定論的強制」の層に置く指示手段の整理</li>
+<li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a> — AGENTS.md を正本にする運用。Claude Code 側の AGENTS.md 対応は <code>agents-md</code> Mod で実装されている</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li>
+<li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
+<li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a></li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/nogu66/articles/claude-code-function-hooks-claude-mods" rel="noopener" target="_blank">https://zenn.dev/nogu66/articles/claude-code-function-hooks-claude-mods</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Mods / Function Hooks｜Claude Code 本体に TypeScript 関数を差し込む拡張機構
+
+&gt; **TL;DR**: 従来の Hooks が「外部プロセスを起動して JSON をやり取りする」仕組みだったのに対し、Claude Mods は TypeScript の関数（Function Hooks）を Claude Code のエンジンプロセスへ直接ロードし、Koa 風のミドルウェア `($, e, next)` として画面描画・状態・ツール登録まで書き換えられるようにした拡張機構。`/diff` や AGENTS.md 対応といった標準機能自体も Mod で実装されている、と nogu が解説している。
+
+```mermaid
+flowchart LR
+  Event[&quot;イベント e&quot;] --&gt; Prepend[&quot;prepend（組織ポリシー）&quot;]
+  Prepend --&gt; User[&quot;user（自分が入れたMod）&quot;]
+  User --&gt; Append[&quot;append（組織ポリシー）&quot;]
+  Append --&gt; Builtin[&quot;builtin（バイナリ同梱）&quot;]
+  Builtin --&gt; Core[&quot;core（エンジン本体）&quot;]
+  Core -. &quot;結果が逆順に戻る（上り）&quot; .-&gt; Prepend
+```
+
+nogu によると、従来の [[tools/claude-code]] の hooks はイベントのたびに外部プロセスを起動して標準入力にイベントの JSON を渡し、標準出力や exit code で許可・拒否・加工結果を受け取る仕組みだった。プロセスをまたぐため、やり取りできるのはテキストの入出力と可否判定までに限られる。Function Hooks はこの境界をなくし、関数として同じメモリ空間で呼ばれるので、エンジンの操作窓口 `$` を通じて画面描画・状態管理・ツール登録まで直接触れる。両者の違いは「プロセスをまたぐかどうか」に集約される、というのが nogu の整理である。
+
+Mod は外付けの拡張ではなく、Claude Code 自身の `/diff` コマンドやテレメトリ機能、Claude Code 2.1.277 で追加された AGENTS.md サポート（`agents-md` Mod）も同じ仕組みで作られている。nogu はここから「Claude Mods は Claude Code の標準機能自体を拡張できる」「かなり将来性の高い機能」と評価している。
+
+## 使い始め方
+
+nogu の記事時点では early access で、`~/.claude/settings.json` の `env` に `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS: &quot;1&quot;` を設定して有効化する。Mod は `.claude-plugin/plugin.json`（メタ情報）＋ `hooks/hooks.json`（`{&quot;modules&quot;: [&quot;./register.ts&quot;]}` でエントリポイントを宣言）＋ `hooks/register.ts(x)` という構成で、[[tools/claude-code-plugins]] と同じプラグイン形式に乗る。`claude --plugin-dir ./my-mod` でインストールせずにそのセッションだけ試せ、保存するとホットリロードされるので Claude 自身に Mod を書かせながら試せる。型は `/plugin-types` で生成される `.claude/types/claude-code.d.ts` が正で、`claude plugin validate .` で登録を検証する。
+
+## `register(on)` と `($, e, next)`
+
+`register` の中で `on(イベント名, マッチャー?, ハンドラ)` を呼んで処理をつなぐ。マッチャーは絞り込み条件で、`{ tool: &quot;Bash&quot; }` なら Bash の `tool.call` だけを拾う。ハンドラの3引数は nogu の表で次のように説明されている。
+
+| 引数 | 役割 |
+| --- | --- |
+| `$` | エンジンとの唯一の接続窓口。画面描画・モデル・ストレージ・タイマー・ツール登録など、外の世界に触れる手段はすべて `$` 経由。 `$` のメソッドは、それ自体がイベントでもある |
+| `e` | そのイベントの入力データ。フラットな値で、idは固定（pinned）、それ以外のペイロードは自由に書き換えてよい |
+| `next` | 次の処理へ進む関数 |
+
+Mod は隔離環境で動き、`$` を使わない限り外の世界に何もできない。これが安全性の要だと nogu は述べる。`next` は Express/Koa のミドルウェアそのもので、呼ぶタイミング次第で3通りに使い分けられる。
+
+- **早期リターン**: `next(e)` を呼ばずに `{ deny: &quot;no&quot; }` などを返すと、後続のフックにも core にも届かない（`rm -rf /` の遮断など）
+- **後処理**: `const r = await next(e)` で内側を先に走らせ、計測やログ（`$.ui.log`）を足してから `r` を返す（Koa のオニオンモデル）
+- **結果の書き換え**: 返ってきた `r.text` を加工して返す（`Read` の出力に混じった `sk-...` を `[REDACTED]` にする例）
+
+ハンドラが例外を投げるか10秒を超えると、そのハンドラだけがスキップされる。`.catch` を宣言しておけば猶予予算の中で `next` と同等の権限で代わりに答えられ、`next.called` で既に内側を呼んだかを判定できる。
+
+## 5層チェーンと「位置がそのまま権威」
+
+1つのイベントは prepend（組織ポリシー）→ user（自分が入れた Mod）→ append（組織ポリシー）→ builtin（バイナリ同梱）→ core（エンジン本体）の5層を1本の fold として貫通し、`e` は下りで各層に加工されうる、結果は上りで各層に加工されうる。順序は関数の入れ子 `A(B(C(core(⊥))))` と同じで、外側のフックほど下りで最初に `e` を見て、上りで最後に結果を見る。nogu はこれを「位置がそのまま権威」と表現する。
+
+組織は両端（prepend と append）を押さえ、個人の Mod は挟まれる。user の Mod が許可しても外側の append が後から拒否でき、prepend が先に拒否すれば user の Mod にはイベントが届かない。managed 端末や Team/Enterprise プランでは公式の `sec-default` Mod が自動的に最外殻の prepend に座り、個人のプラグインは組織の従来 hooks・プロンプトのシステムセクション・組織の設定・組織提供ツールの説明文に触れられなくなる。`prependPlugins` を設定した組織は prepend 枠を自分で管理し、`sec-default` を含めるかも選べる。何も足さない状態は `on(&quot;*&quot;, ($, e, next) =&gt; next.to(e, &quot;builtin&quot;))` の1行と同じ意味で、nogu は「ここに自分のハンドラを足していくのが Mod を書くこと」とまとめている。
+
+その他のルールとして nogu が挙げる要点は次のとおり。
+
+- `$` は `$.noun.verb(...)`、イベント名も `on(&quot;event&quot;)` とリテラルで書く。ローダーが静的に列挙するため、動的に組み立てた名前は認識されない
+- ハンドラは自分が引き起こしたディスパッチ（自分の `$` 呼び出し・`next`・起動したサブエージェント）を見ない。兄弟や他プラグインからは見える
+- プラグインはプロセスと同じ到達範囲を持つ信頼済みコードとして扱われ、組織は `plugin.register` にフックして各プラグインが宣言する `uses` を審査・拒否できる
+- 従来の settings フックはすべて `classic.&lt;Event&gt;` として1:1でラップされ、JSON の入出力もそのまま引き継がれる
+- `engine.create` にフックすれば `$` 自体に新しい名詞を足せる（公式 `telemetry` Mod が `$.telemetry` を足しているのと同じ仕組み）
+
+`$` には tool / command / prompt / ui / fs / store / http / process / mcp / agent / turn / session / model / settings / config / env / clock / audio / plugin の名詞が並び、`$.tool.register`（モデルに新しいツールを与える）、`$.ui.open`（描画ペインを開く）、`$.session.usage`（コンテキスト使用率・レート制限・コスト）、`$.model.classify`（用意したラベルから1つ選ばせる）などがある。イベントも `tool.call` `check`（permission 判定）`prompt.submit` `step`（モデルへの1リクエスト）`compact` `agent.spawn` `ui.render` `config.set` `skill.prompt` などに及ぶ。完全な一覧は nogu の記事の Appendix にある。
+
+## 実例
+
+- **diff**（公式）: `/diff` の実体。セッション中の未コミット変更をトランスクリプト横のパネルにファイル・hunk ごとに表示し、比較基準（HEAD・セッション開始時のスナップショット・デフォルトブランチとの merge-base）を切り替えられる。画面の一部を Mod が描いている点が従来 hooks との差だと nogu は強調する
+- **agents-md**（公式）: `CLAUDE.md` と同じ形で `AGENTS.md` を読み込む。`instructionFiles` オプションで `claude-md` / `claude-md-or-agents-md`（デフォルト：CLAUDE.md が無ければ AGENTS.md にフォールバック）/ `claude-md-and-agents-md` / `managed-only` を選び、`pluginConfigs` の `agents-md@builtin` に書く。README によると `session.start` でモードをログに出し、`tool.call`（Read）でディレクトリ内の `AGENTS.md` を動的に添付している
+- **sec-default**（公式）: 新しいポリシーは足さず、組織の hooks・プロンプト・管理設定・ツールポリシーをユーザーのプラグインから「触れさせない」ことだけを担う
+- **terminal-browser**（コミュニティ製・zenbu-labs）: Kitty graphics protocol で分割ペイン内に実際のブラウザを表示し、`/browser` で起動する。`$.browser.open()` を他のプラグイン向け API として提供する
+- **cc-arcade**（コミュニティ製・sezaakgun）: プロンプト欄の上で Snake・Tetris・Doom を遊べる、7イベントだけで作られた Mod。`turn.complete` と `tool.call` は `next(e)` を先に呼んで本来の処理を邪魔せず結果だけ観測する。毎秒10回（Doom は20回）の描画は `ui.render` のハンドラに載せず別の実行コンテキスト（`Client` モジュール）に切り出し、`surface.every(100, ...)` の独自クロックで回して `surface.post` で親に結果を返す。メインのフックチェーンを重くしない「メインとワーカーの分離」だと nogu は解説する
+
+nogu はこれらを「標準機能と同じ土俵」とまとめる。公式の標準機能もコミュニティ製 Mod も、同じ `register` とイベントへのフックで作られている。
+
+指示の置き場所を整理した [[concepts/claude-code-instruction-methods]] では、決定論的に強制できるのは hook と permission だった。Function Hooks はその hook の層を、可否判定だけでなく結果の書き換え・UI・ツール追加まで広げたものと考えられる。また [[concepts/agents-md-canonical]] が扱う「AGENTS.md を正本にする」運用は、Claude Code 側では `agents-md` Mod の `instructionFiles` で読み方を選べるようになった。
+
+## 問い
+
+- このvaultの hooks（SessionStart や PostToolUse で動かしている外部スクリプト）のうち、Function Hooks に移すと何が良くなるか。`classic.*` として1:1でラップされるなら、移さなくても壊れないのか
+- AGENTS.md と CLAUDE.md をシンボリックリンクで同一にしている現状は、`agents-md` の `claude-md-and-agents-md` モードで二重読み込みにならないか
+- 「位置がそのまま権威」の5層は、[[concepts/claude-code-context-hierarchy]] の Enterprise → Global → Project の4層とどう対応するか
+
+## 関連
+
+- [[tools/claude-code]] — Mods が拡張する本体
+- [[tools/claude-code-plugins]] — Mods が乗るプラグイン形式と公式マーケットプレイス
+- [[concepts/claude-code-hooks-async]] — 外部プロセス型の従来 hooks（asyncRewake）の使い方。Function Hooks はプロセスをまたがない発展形
+- [[concepts/claude-code-instruction-methods]] — hooks を「決定論的強制」の層に置く指示手段の整理
+- [[concepts/agents-md-canonical]] — AGENTS.md を正本にする運用。Claude Code 側の AGENTS.md 対応は `agents-md` Mod で実装されている
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

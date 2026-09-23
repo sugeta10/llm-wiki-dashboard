@@ -70,3 +70,4 @@
 - [[concepts/claude-code-launch-directory]] — 本ページの層構造と直交する軸：起動したフォルダが読まれる説明書と効く設定を決め、しかも設定だけは親から継承されない
 - [[concepts/context-engineering]] — 「どこに置くか」を扱う本ページに対し、「何を置くべきか」を扱う上位の設計思想（Anthropic Claude Codeチーム公式）
 - [[concepts/claude-md-multilayer-design]] — 階層ロードを前提に「常設契約/パス別Rules/遅延Skills/強制境界」へ役割分担する設計論。本ページの階層構造の使いこなし側
+- [[tools/claude-code-mods]] — 本ページの Enterprise→Global→Project の層構造に対し、Mods は prepend/user/append/builtin/core の5層で「位置がそのまま権威」になる拡張側の階層（nogu解説）。両者の対応は未整理

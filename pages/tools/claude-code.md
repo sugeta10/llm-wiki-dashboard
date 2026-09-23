@@ -429,3 +429,4 @@ Claude Codeにアプリのフロー構造をHTML + JSONで文書化させ、そ�
 - [[tools/codexbar]]（Codex/Claude Code の使用制限残量をメニューバー常駐で可視化する macOS アプリ・steipete製）
 - [[tools/claude-academy]]（Anthropic公式の無料学習サイト。Claude Code専用トラックあり）
 - [[tools/claude-code-plugin-eval]]（`claude plugin eval`：自作プラグイン・スキルをあり/なしで対比して効果を測るコマンド）
+- [[tools/claude-code-mods]]（Claude Mods / Function Hooks：TypeScript関数をエンジンに直接ロードして画面描画・ツール登録まで書き換える拡張機構）

@@ -61,4 +61,5 @@ READMEが公開する数字は次のとおり。動画は Zürich → London の
 - [[tools/browser-use]] — 同じ browser-use による本体のブラウザ操作ライブラリ。Jev Ultrafast は「動的なインデックス付きアクション空間」に絞った別リポジトリで、Chrome接続は同組織の Browser Harness を使う
 - [[concepts/intermediate-notation-pattern]] — GUIでなくテキスト記法をAIに操作させ、トークンと精度を同時に改善する設計パターン。番号付き要素テーブルはブラウザ操作版の中間記法にあたる
 - [[tools/claude-computer-use]] — スクリーンショットとクリック座標でUIを操作するAnthropicの機能。Jev Ultrafast は既定ループから画像を外し構造化状態だけを使う逆の選択をしている
+- [[tools/laya-mlx]] — Jev 型の選択モデルのオープンウェイト版 Laya をローカル（MLX）とブラウザ（WebGPU）で回す例。planner が候補と説明文を作りモデルは選ぶだけという、本ページと同じ分業を Snake/Chess で示す
 - [[models/jev]] — @CompleteSkepticがRLCDで訓練したと発表した新型フロンティアモデル。本ページの「TypeSafe's Jev」と同一と考えられる（未確認）

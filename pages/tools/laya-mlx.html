@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>laya-mlx - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>laya-mlx</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="laya-mlx.md">Markdownで表示</a></div>
+  <div class="meta">tools/laya-mlx · tools · <span title="2026-09-23">今日</span></div>
+  <article><h1>laya-mlx｜選択肢にスコアを付けるだけの小型モデルを手元で1判断8msで回す</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Jev と同じ「文章を生成せず、渡した選択肢にスコアを付ける」型のオープンウェイトモデル Laya を Apple Silicon の MLX で動かすライブラリ。mizchi の実測では M5 で1判断（3問）8〜9ms、ブラウザ（onnxruntime-web + WebGPU）では約50msで、「ローカルなら60fps以上、ブラウザでは20fps」と mizchi がまとめている。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  State[&quot;ゲーム状態&quot;] --&gt; Planner[&quot;決定的なplanner（Hamiltonian cycle / chess.jsの2ply探索）&quot;]
+  Planner --&gt; Desc[&quot;各候補に英語の説明文（Safe. Best route... / Unsafe...）&quot;]
+  Desc --&gt; Laya[&quot;Laya: choice + noul で確率分布&quot;]
+  Laya --&gt; Argmax[&quot;argmax&quot;]
+  Argmax --&gt; Shield{&quot;shield: 危険な手か&quot;}
+  Shield -- &quot;安全&quot; --&gt; Act[&quot;実行&quot;]
+  Shield -- &quot;危険&quot; --&gt; Swap[&quot;安全な手に差し替え&quot;] --&gt; Act</pre>
+<p>mizchi が出発点にしたのは、<a href="../models/jev.html">jev</a> の API が1リクエスト500ms（日本からは遅延が乗って実質2fps）かかるのは主に地理の問題で、モデル自体は小さいはずだという予想である。Laya は Convai Innovations が公開した Jev 型のオープンウェイト実装で、質問の型も Jev とほぼ同じ3種（<code>choice</code>: 選択肢の確率分布／<code>score</code>: 順序付きルーブリックの期待値／<code>noul</code>: 命題が真である確率）を持つ。中身は ModernBERT（英語・421M）または mmBERT（多言語・322M）の encoder に2層の decision head を載せたもので、<code>[CLS] choice question: ... [SEP] [MASK] 選択肢1 [MASK] 選択肢2 ... [SEP] 状態 [SEP]</code> という系列の <code>[MASK]</code> 位置の hidden state をスコアにする。双方向 encoder なので1回の forward pass で全選択肢のスコアが出る、と mizchi は説明する。</p>
+<p>laya-mlx はこれを PyTorch なしで MLX に移植したもので、<code>pip install laya-mlx</code> で入り、Hugging Face から重みを落として <code>laya.load(...)</code> → <code>agent.predict(テキスト, {質問名: {type, instructions, criteria}})</code> で使う。mizchi の手元（M5）ではロード0.7秒・初回1.6秒（warmup）・2回目以降は3問まとめて21msだった。</p>
+<h2>「ゲームを理解している」わけではない：planner が説明し、Laya が選ぶ</h2>
+<p>同梱の Snake デモの仕組みを mizchi は次のように分解している。決定的な planner が各方向を <code>Blocked. Collision.</code> / <code>Unsafe. Traps the snake.</code> / <code>Safe. Best route to food.</code> / <code>Safe. Slower route.</code> と分類し、それを <code>choice</code> の選択肢の説明文として渡す（加えて <code>noul</code> を2問）。Laya の出力の argmax を実行し、unsafe を選んだら shield が安全な方向に差し替える。つまり planner が状況を英語で説明し、Laya は「文を読んで一番良さそうなものを選ぶ」役である。</p>
+<p>mizchi が作ったブラウザ版 Chess も同じ構造で、chess.js で合法手を出し、2 ply の駒得探索で候補を6手に絞って説明文（<code>Captures the queen. Gives check. Safe. Best.</code> など）を付ける。棋力は「初心者には勝てる」程度で、序盤は候補の評価が全部同点になるため <code>Best.</code> に意味がなく、Laya はおそらく説明文の語感で選んでいるだけだと mizchi 自身が限界を認めている。結論として mizchi は「判断の質は選択肢の説明文の質で決まる。これは Jev と同じ」と述べ、Jev の記事で書いた「選択肢の設計が大事」「Bloom filter のように使う」「ガードレール用途」がそのまま Laya にも当てはまるとする。賢さは Jev のほうが上だが、安くて速いぶん「雑に大量に投げて confidence でふるいにかける」使い方に向く、というのが mizchi の位置づけである。</p>
+<p>この「合法手だけ渡せばルール違反しない」構造は、<a href="../tools/jev-ultrafast.html">jev-ultrafast</a> がブラウザの操作可能要素だけを番号付き選択肢として渡す設計と同じ発想であり、<a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> の「AIには生の画面でなく、選べる形に整えた記法を渡す」をゲームに適用した例と考えられる。</p>
+<h2>計測（mizchi の手元 M5・自己計測）</h2>
+<ul>
+<li><strong>MLX</strong>: 公式ベンチ（M3 Max）は1問13.4ms（英語421M）/ 7.4ms（多言語322M）、50問バッチで395 q/s。M5 で Snake を <code>--max-speed</code> で回すと1判断（3問）8〜9ms、87〜98判断/秒。描画が追いつかないので通常モードは12判断/秒に抑えている</li>
+<li><strong>ONNX 書き出し</strong>: MLX に ONNX exporter が無いため upstream の PyTorch 実装を経由して <code>torch.onnx.export</code>（dynamo）で出力。63問の fixture で MLX（CPU）と全問 argmax 一致、確率誤差は fp32 で 1.3e-6、fp16 で 5.1e-4</li>
+<li><strong>ブラウザ（M5 の Chromium、onnxruntime-web）</strong>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>モデル</th>
+<th>backend</th>
+<th>3 問 (65 tokens)</th>
+<th>20 問 (91 tokens)</th>
+<th>3 問 (1024 tokens)</th>
+<th>確率誤差</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fp32 (1.29 GB)</td>
+<td>WebGPU</td>
+<td>61 ms</td>
+<td>369 ms</td>
+<td>–</td>
+<td>1.1e-6</td>
+</tr>
+<tr>
+<td>fp16 (647 MB)</td>
+<td>WebGPU</td>
+<td>48 ms</td>
+<td>270 ms</td>
+<td>1039 ms</td>
+<td>1.2e-2</td>
+</tr>
+<tr>
+<td>fp16</td>
+<td>wasm</td>
+<td>901 ms</td>
+<td>–</td>
+<td>–</td>
+<td>9.1e-4</td>
+</tr>
+</tbody>
+</table>
+<p>wasm は20倍遅く WebGPU 一択、というのが mizchi の判断である。Snake のブラウザ版は1判断50ms前後（18〜20判断/秒）で MLX の約1/5。Chess は1手あたり Laya が50〜70ms、planner が50〜60msで、初回だけ shader compile で約200msかかる。モデルは Hugging Face から直接 fetch して Cache API に入れるので、2回目以降はオフラインで動く。</p>
+<h2>サイズの本丸は embedding</h2>
+<p>fp16 で647MB、初回ロードに数分かかる。322M パラメータのうち61%（196.6M）が mmBERT の256k語彙の embedding table で、Transformer 本体は fp16 で251MBしかない、と mizchi は内訳を示す。MatMul の weight-only int4 量子化は872MBにしかならず確率誤差0.13で使い物にならなかった。縮めるなら embedding をグラフから外して JS 側で int8 のテーブルから gather するのが筋で、語彙50kの英語版421Mは embedding が小さく有利かもしれない（未検証）と mizchi は見立てている。道中で MLX・onnxruntime-web・tokenizers.js のバグを1つずつ踏んだとも書いている。</p>
+<p>mizchi は、出て数日で Jev クローンが大量に作られており Laya はその1つに過ぎないとしつつ、Jev のコンセプト上ローカルで低遅延に動くことに価値があるのでこの路線を追うと述べる。一方で「BERT をチューニングすればできる」と言われがちな点には、Jev は学習抜きにこれを実現しているのが強みだと反論している。記事自体は mizchi のアイデアを Claude が実証し、そのレポートを mizchi が手で直したものだと冒頭で明かされている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-21: 「1判断8〜9ms（M5・MLX）/ ブラウザ WebGPU で約50ms」は mizchi の単一環境での自己計測。M5 以外の Apple Silicon やモバイルのブラウザ（メモリ上限がネックと mizchi 自身が指摘）での再現は未確認</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「決定的なロジックが候補と説明文を作り、小型モデルは選ぶだけ」という分業は、ゲーム以外（wiki ingest のカテゴリ判定・Tier 判定のような分類）でも速度とコストの両面で効くか。LLM に毎回生成させている判定のうち、選択肢に落とせるものはどれか</li>
+<li>説明文の語感で選んでしまう問題（Chess 序盤の全同点）は、説明文の設計で潰せるのか、モデルの賢さの限界なのか</li>
+<li>embedding を外して int8 gather する縮め方で、ブラウザでの初回ロード数分を実用域まで下げられるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../models/jev.html">jev</a> — Laya が模倣する「選択肢にスコアを付けるだけ」の元祖モデル。mizchi によると1リクエスト500ms（日本から実質2fps）</li>
+<li><a href="../tools/jev-ultrafast.html">jev-ultrafast</a> — 同じ Jev 型の選択モデルをブラウザ操作に使う例。候補を番号付きで渡し選ばせる構造が Snake/Chess デモと共通</li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — 生の状態でなく整えた記法をAIに渡す設計パターン。planner の説明文はゲーム版の中間記法にあたる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../models/jev.html">jev</a></li>
+<li><a href="../tools/jev-ultrafast.html">jev-ultrafast</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/mizchi/articles/laya-mlx-60fps" rel="noopener" target="_blank">https://zenn.dev/mizchi/articles/laya-mlx-60fps</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># laya-mlx｜選択肢にスコアを付けるだけの小型モデルを手元で1判断8msで回す
+
+&gt; **TL;DR**: Jev と同じ「文章を生成せず、渡した選択肢にスコアを付ける」型のオープンウェイトモデル Laya を Apple Silicon の MLX で動かすライブラリ。mizchi の実測では M5 で1判断（3問）8〜9ms、ブラウザ（onnxruntime-web + WebGPU）では約50msで、「ローカルなら60fps以上、ブラウザでは20fps」と mizchi がまとめている。
+
+```mermaid
+flowchart LR
+  State[&quot;ゲーム状態&quot;] --&gt; Planner[&quot;決定的なplanner（Hamiltonian cycle / chess.jsの2ply探索）&quot;]
+  Planner --&gt; Desc[&quot;各候補に英語の説明文（Safe. Best route... / Unsafe...）&quot;]
+  Desc --&gt; Laya[&quot;Laya: choice + noul で確率分布&quot;]
+  Laya --&gt; Argmax[&quot;argmax&quot;]
+  Argmax --&gt; Shield{&quot;shield: 危険な手か&quot;}
+  Shield -- &quot;安全&quot; --&gt; Act[&quot;実行&quot;]
+  Shield -- &quot;危険&quot; --&gt; Swap[&quot;安全な手に差し替え&quot;] --&gt; Act
+```
+
+mizchi が出発点にしたのは、[[models/jev]] の API が1リクエスト500ms（日本からは遅延が乗って実質2fps）かかるのは主に地理の問題で、モデル自体は小さいはずだという予想である。Laya は Convai Innovations が公開した Jev 型のオープンウェイト実装で、質問の型も Jev とほぼ同じ3種（`choice`: 選択肢の確率分布／`score`: 順序付きルーブリックの期待値／`noul`: 命題が真である確率）を持つ。中身は ModernBERT（英語・421M）または mmBERT（多言語・322M）の encoder に2層の decision head を載せたもので、`[CLS] choice question: ... [SEP] [MASK] 選択肢1 [MASK] 選択肢2 ... [SEP] 状態 [SEP]` という系列の `[MASK]` 位置の hidden state をスコアにする。双方向 encoder なので1回の forward pass で全選択肢のスコアが出る、と mizchi は説明する。
+
+laya-mlx はこれを PyTorch なしで MLX に移植したもので、`pip install laya-mlx` で入り、Hugging Face から重みを落として `laya.load(...)` → `agent.predict(テキスト, {質問名: {type, instructions, criteria}})` で使う。mizchi の手元（M5）ではロード0.7秒・初回1.6秒（warmup）・2回目以降は3問まとめて21msだった。
+
+## 「ゲームを理解している」わけではない：planner が説明し、Laya が選ぶ
+
+同梱の Snake デモの仕組みを mizchi は次のように分解している。決定的な planner が各方向を `Blocked. Collision.` / `Unsafe. Traps the snake.` / `Safe. Best route to food.` / `Safe. Slower route.` と分類し、それを `choice` の選択肢の説明文として渡す（加えて `noul` を2問）。Laya の出力の argmax を実行し、unsafe を選んだら shield が安全な方向に差し替える。つまり planner が状況を英語で説明し、Laya は「文を読んで一番良さそうなものを選ぶ」役である。
+
+mizchi が作ったブラウザ版 Chess も同じ構造で、chess.js で合法手を出し、2 ply の駒得探索で候補を6手に絞って説明文（`Captures the queen. Gives check. Safe. Best.` など）を付ける。棋力は「初心者には勝てる」程度で、序盤は候補の評価が全部同点になるため `Best.` に意味がなく、Laya はおそらく説明文の語感で選んでいるだけだと mizchi 自身が限界を認めている。結論として mizchi は「判断の質は選択肢の説明文の質で決まる。これは Jev と同じ」と述べ、Jev の記事で書いた「選択肢の設計が大事」「Bloom filter のように使う」「ガードレール用途」がそのまま Laya にも当てはまるとする。賢さは Jev のほうが上だが、安くて速いぶん「雑に大量に投げて confidence でふるいにかける」使い方に向く、というのが mizchi の位置づけである。
+
+この「合法手だけ渡せばルール違反しない」構造は、[[tools/jev-ultrafast]] がブラウザの操作可能要素だけを番号付き選択肢として渡す設計と同じ発想であり、[[concepts/intermediate-notation-pattern]] の「AIには生の画面でなく、選べる形に整えた記法を渡す」をゲームに適用した例と考えられる。
+
+## 計測（mizchi の手元 M5・自己計測）
+
+- **MLX**: 公式ベンチ（M3 Max）は1問13.4ms（英語421M）/ 7.4ms（多言語322M）、50問バッチで395 q/s。M5 で Snake を `--max-speed` で回すと1判断（3問）8〜9ms、87〜98判断/秒。描画が追いつかないので通常モードは12判断/秒に抑えている
+- **ONNX 書き出し**: MLX に ONNX exporter が無いため upstream の PyTorch 実装を経由して `torch.onnx.export`（dynamo）で出力。63問の fixture で MLX（CPU）と全問 argmax 一致、確率誤差は fp32 で 1.3e-6、fp16 で 5.1e-4
+- **ブラウザ（M5 の Chromium、onnxruntime-web）**:
+
+| モデル | backend | 3 問 (65 tokens) | 20 問 (91 tokens) | 3 問 (1024 tokens) | 確率誤差 |
+| --- | --- | --- | --- | --- | --- |
+| fp32 (1.29 GB) | WebGPU | 61 ms | 369 ms | – | 1.1e-6 |
+| fp16 (647 MB) | WebGPU | 48 ms | 270 ms | 1039 ms | 1.2e-2 |
+| fp16 | wasm | 901 ms | – | – | 9.1e-4 |
+
+wasm は20倍遅く WebGPU 一択、というのが mizchi の判断である。Snake のブラウザ版は1判断50ms前後（18〜20判断/秒）で MLX の約1/5。Chess は1手あたり Laya が50〜70ms、planner が50〜60msで、初回だけ shader compile で約200msかかる。モデルは Hugging Face から直接 fetch して Cache API に入れるので、2回目以降はオフラインで動く。
+
+## サイズの本丸は embedding
+
+fp16 で647MB、初回ロードに数分かかる。322M パラメータのうち61%（196.6M）が mmBERT の256k語彙の embedding table で、Transformer 本体は fp16 で251MBしかない、と mizchi は内訳を示す。MatMul の weight-only int4 量子化は872MBにしかならず確率誤差0.13で使い物にならなかった。縮めるなら embedding をグラフから外して JS 側で int8 のテーブルから gather するのが筋で、語彙50kの英語版421Mは embedding が小さく有利かもしれない（未検証）と mizchi は見立てている。道中で MLX・onnxruntime-web・tokenizers.js のバグを1つずつ踏んだとも書いている。
+
+mizchi は、出て数日で Jev クローンが大量に作られており Laya はその1つに過ぎないとしつつ、Jev のコンセプト上ローカルで低遅延に動くことに価値があるのでこの路線を追うと述べる。一方で「BERT をチューニングすればできる」と言われがちな点には、Jev は学習抜きにこれを実現しているのが強みだと反論している。記事自体は mizchi のアイデアを Claude が実証し、そのレポートを mizchi が手で直したものだと冒頭で明かされている。
+
+## 観察ログ（未検証）
+
+- 2026-09-21: 「1判断8〜9ms（M5・MLX）/ ブラウザ WebGPU で約50ms」は mizchi の単一環境での自己計測。M5 以外の Apple Silicon やモバイルのブラウザ（メモリ上限がネックと mizchi 自身が指摘）での再現は未確認
+
+## 問い
+
+- 「決定的なロジックが候補と説明文を作り、小型モデルは選ぶだけ」という分業は、ゲーム以外（wiki ingest のカテゴリ判定・Tier 判定のような分類）でも速度とコストの両面で効くか。LLM に毎回生成させている判定のうち、選択肢に落とせるものはどれか
+- 説明文の語感で選んでしまう問題（Chess 序盤の全同点）は、説明文の設計で潰せるのか、モデルの賢さの限界なのか
+- embedding を外して int8 gather する縮め方で、ブラウザでの初回ロード数分を実用域まで下げられるか
+
+## 関連
+
+- [[models/jev]] — Laya が模倣する「選択肢にスコアを付けるだけ」の元祖モデル。mizchi によると1リクエスト500ms（日本から実質2fps）
+- [[tools/jev-ultrafast]] — 同じ Jev 型の選択モデルをブラウザ操作に使う例。候補を番号付きで渡し選ばせる構造が Snake/Chess デモと共通
+- [[concepts/intermediate-notation-pattern]] — 生の状態でなく整えた記法をAIに渡す設計パターン。planner の説明文はゲーム版の中間記法にあたる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

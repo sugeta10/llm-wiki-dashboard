@@ -12,6 +12,10 @@
 
 browser-useが公開した[[tools/jev-ultrafast]]は「TypeSafe's Jev」を決定器として使い、ページの要素テーブルから操作と対象を1回のリクエストで同時に予測させている。同名で時期も近いため本ページのJevと同一と考えられるが、@CompleteSkepticのポストにはTypeSafeという社名が出てこず、同一性は未確認である。同一なら、Jevは文章を生成する代わりに「番号付きの選択肢から確率付きで選ぶ」型の出力を持ち、自由記述の生成は小型LLMに任せる使われ方をしていることになる。「20-200x faster」という主張とも、生成でなく選択に絞ることで速くするという設計とも整合する。
 
+## 使った側の記述とオープンウェイトのクローン
+
+mizchi は Zenn 記事で Jev を「自然言語を生成せず、用意した選択肢にスコアを付けることに特化した API」と説明し、1リクエスト500ms（日本からは遅延が乗って実質2fps）と書いている。選択型の出力という点は上の browser-use の使われ方と一致する。mizchi によると公開から数日で Jev クローンが大量に作られ、そのうち Convai Innovations の Laya（BERT 系 encoder＋decision head、322M〜421M）は手元の MLX で1判断8〜9msまで速くなった（[[tools/laya-mlx]]）。ただし賢さは Jev が上で、Jev は学習抜きに選択判断を実現している点が強みだと mizchi は見ている。
+
 ## 観察ログ（未検証）
 
 - 2026-09-15: 「20-200x faster」「40-400x」は開発元の自己申告で、比較対象・計測条件は未捕捉。発表本文（リンク先）を取得して何と比べた数字かを確かめる
@@ -25,5 +29,6 @@ browser-useが公開した[[tools/jev-ultrafast]]は「TypeSafe's Jev」を決�
 ## 関連
 
 - [[tools/jev-ultrafast]] — 「TypeSafe's Jev」を操作・対象の同時予測に使うbrowser-useのブラウザエージェント（本ページのJevと同一と考えられるが未確認）
+- [[tools/laya-mlx]] — Jev 型のオープンウェイトクローン Laya を MLX で1判断8msで回すライブラリ（mizchi の実測・ブラウザ WebGPU では約50ms）
 - [[companies/openai]] — 発表者が共同発明したと述べるChatGPTの開発元
 - [[concepts/agi-knowledge-moat]] — AGI時代の競争優位を論じる既存ページ。発表の「チャットモデルはなぜAGIに届かないか」という問いの対照

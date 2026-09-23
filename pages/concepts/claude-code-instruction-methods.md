@@ -69,3 +69,4 @@ mindmap
 - [[concepts/claude-md-multilayer-design]] — 同じ振り分けを「精神論→検査可能な契約への書き換え」とコピペ可能な実装物（Project Contract・adversarial-reviewer・settings.json・Hook）で補う実装ガイド版（@ai_ai_ailover）
 - [[concepts/instruction-patch-lifecycle]] — 本ページの「原則はCLAUDE.md・手順はスキル・絶対はフック」という振り分けを、失敗のたびに育ててモデル世代交代時に全部外して戻す時間軸（ライフサイクル）へ広げた運用論（Boris Cherny・@kimuai08）
 - [[concepts/fable-5-1-prompting]] — 「同じ文でも設定欄・依頼文の末尾・会話の1回目で効き方が変わる」という@Charlie_no_siteの観察。本ページのロード時点×圧縮生存の軸で説明できる実例
+- [[tools/claude-code-mods]] — 本ページで「決定論的強制」に置いた hook の層を、TypeScript 関数を直接ロードする Function Hooks で結果の書き換え・画面描画・ツール登録まで広げたもの（nogu解説）
