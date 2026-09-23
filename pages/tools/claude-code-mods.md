@@ -61,8 +61,9 @@ Mod は隔離環境で動き、`$` を使わない限り外の世界に何もで
 - **sec-default**（公式）: 新しいポリシーは足さず、組織の hooks・プロンプト・管理設定・ツールポリシーをユーザーのプラグインから「触れさせない」ことだけを担う
 - **terminal-browser**（コミュニティ製・zenbu-labs）: Kitty graphics protocol で分割ペイン内に実際のブラウザを表示し、`/browser` で起動する。`$.browser.open()` を他のプラグイン向け API として提供する
 - **cc-arcade**（コミュニティ製・sezaakgun）: プロンプト欄の上で Snake・Tetris・Doom を遊べる、7イベントだけで作られた Mod。`turn.complete` と `tool.call` は `next(e)` を先に呼んで本来の処理を邪魔せず結果だけ観測する。毎秒10回（Doom は20回）の描画は `ui.render` のハンドラに載せず別の実行コンテキスト（`Client` モジュール）に切り出し、`surface.every(100, ...)` の独自クロックで回して `surface.post` で親に結果を返す。メインのフックチェーンを重くしない「メインとワーカーの分離」だと nogu は解説する
+- **Jev Model Router**（コミュニティ製・@dani_avila7）: リクエストごとに判断モデル Jev がサブエージェントのモデルを分類し、メインモデルはセッション開始時だけ選ぶ（[[tools/jev-model-router]]）。エンジンのモデル選択まで Mod から差し替えられる例と考えられる
 
-nogu はこれらを「標準機能と同じ土俵」とまとめる。公式の標準機能もコミュニティ製 Mod も、同じ `register` とイベントへのフックで作られている。
+nogu はこれらを「標準機能と同じ土俵」とまとめる。nogu は記事の告知ポストでも、Claude Mods を「画面表示の変更や独自ツールの追加など、Claude Code ハーネスを深く拡張できる仕組み」と紹介している。公式の標準機能もコミュニティ製 Mod も、同じ `register` とイベントへのフックで作られている。
 
 指示の置き場所を整理した [[concepts/claude-code-instruction-methods]] では、決定論的に強制できるのは hook と permission だった。Function Hooks はその hook の層を、可否判定だけでなく結果の書き換え・UI・ツール追加まで広げたものと考えられる。また [[concepts/agents-md-canonical]] が扱う「AGENTS.md を正本にする」運用は、Claude Code 側では `agents-md` Mod の `instructionFiles` で読み方を選べるようになった。
 
@@ -79,3 +80,4 @@ nogu はこれらを「標準機能と同じ土俵」とまとめる。公式の
 - [[concepts/claude-code-hooks-async]] — 外部プロセス型の従来 hooks（asyncRewake）の使い方。Function Hooks はプロセスをまたがない発展形
 - [[concepts/claude-code-instruction-methods]] — hooks を「決定論的強制」の層に置く指示手段の整理
 - [[concepts/agents-md-canonical]] — AGENTS.md を正本にする運用。Claude Code 側の AGENTS.md 対応は `agents-md` Mod で実装されている
+- [[tools/jev-model-router]] — Jev でサブエージェント・メインのモデルを振り分けるコミュニティ製 Mod

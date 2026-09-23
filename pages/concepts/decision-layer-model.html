@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>decision-layer-model</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="decision-layer-model.md">Markdownで表示</a></div>
-  <div class="meta">concepts/decision-layer-model · concepts · <span title="2026-09-23">今日</span></div>
+  <div class="meta">concepts/decision-layer-model · concepts · <span title="2026-09-24">今日</span></div>
   <article><h1>判断レイヤー｜生成するモデルと、次を決めるモデルを分ける</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントの中の「次はどのワーカーか」「このソースは関連するか」「公開してよいか」といった小さな判断を、文章を生成するLLMから切り離し、選択肢・点数・真偽を確率付きで返す専用モデル（TypeSafe AI の <a href="../models/jev.html">jev</a> 等）に任せる設計。「LLMが仕事を作り、Jevが次を決め、コードが実行する」の三分業になる。</p>
@@ -88,6 +88,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a> — 委譲のコーディネーションコストを実測した実験。判断を安いモデルへ切り出す動機と同じ問題を扱う</li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 工程ごとにモデルを配分する戦略。判断レイヤーはその配分先を「生成しないモデル」まで広げる</li>
 <li><a href="../tools/grok-bot.html">grok-bot</a> — 領域別ボットを運営ボットが巡回・催促する運用。@0xCodila が想定する GrokBot 風 Chief of Staff の実例</li>
+<li><a href="../tools/jev-model-router.html">jev-model-router</a> — Claude Code のモデル振り分けを Jev に任せる Mod。判断レイヤーをコーディングエージェント自身のモデル配分に当てはめた例</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
 <li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a></li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
@@ -185,6 +186,7 @@ flowchart LR
 - [[concepts/cost-effective-harness]] — 委譲のコーディネーションコストを実測した実験。判断を安いモデルへ切り出す動機と同じ問題を扱う
 - [[concepts/llm-model-selection-strategy]] — 工程ごとにモデルを配分する戦略。判断レイヤーはその配分先を「生成しないモデル」まで広げる
 - [[tools/grok-bot]] — 領域別ボットを運営ボットが巡回・催促する運用。@0xCodila が想定する GrokBot 風 Chief of Staff の実例
+- [[tools/jev-model-router]] — Claude Code のモデル振り分けを Jev に任せる Mod。判断レイヤーをコーディングエージェント自身のモデル配分に当てはめた例
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

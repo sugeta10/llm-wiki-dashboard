@@ -69,3 +69,4 @@ flowchart LR
 - [[concepts/cost-effective-harness]] — 委譲のコーディネーションコストを実測した実験。判断を安いモデルへ切り出す動機と同じ問題を扱う
 - [[concepts/llm-model-selection-strategy]] — 工程ごとにモデルを配分する戦略。判断レイヤーはその配分先を「生成しないモデル」まで広げる
 - [[tools/grok-bot]] — 領域別ボットを運営ボットが巡回・催促する運用。@0xCodila が想定する GrokBot 風 Chief of Staff の実例
+- [[tools/jev-model-router]] — Claude Code のモデル振り分けを Jev に任せる Mod。判断レイヤーをコーディングエージェント自身のモデル配分に当てはめた例

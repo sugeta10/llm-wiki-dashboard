@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>llm-model-selection-strategy</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="llm-model-selection-strategy.md">Markdownで表示</a></div>
-  <div class="meta">concepts/llm-model-selection-strategy · concepts · <span title="2026-09-23">今日</span></div>
+  <div class="meta">concepts/llm-model-selection-strategy · concepts · <span title="2026-09-24">今日</span></div>
   <article><h1>LLMモデル選択戦略（工程分解型コスト最適化）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: タスクを上流（設計・方針）・中流（実装）・下流（整形・量産）に分解し、各工程に最適な規模のモデルを当てる。大モデルを全工程に使うのは最弱の運用で、前処理（小）→上流（大）→中流（中）→下流（小）の「サンドイッチ」往復が速度・コスト・質を同時に最適化する。</p>
@@ -75,6 +75,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — 下流（日本語の最終成果物）に小モデルを置く理由をコストでなく品質に求める実測（@yugen_matuni）。推論力と日本語の自然さは別能力で、執筆モデルは手離れの良さで選ぶ</li>
 <li><a href="../concepts/decision-layer-model.html">decision-layer-model</a> — 配分先を「生成しないモデル」まで広げた設計。エージェント内の分岐（次のワーカー・関連度・公開可否）だけを判断モデルに任せる（@0xCodila・@29meat_ai）</li>
 <li><a href="../concepts/small-llm-fine-tuning.html">small-llm-fine-tuning</a> — 配分先の小型モデルを自前で作る手段。1.5Bを200〜500件でQLoRA学習し狭いタスクに特化させる（@sairahul1）</li>
+<li><a href="../tools/jev-model-router.html">jev-model-router</a> — 工程ごとのモデル配分を判断モデル Jev が毎リクエスト自動で行う Claude Code Mod（@dani_avila7）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
 <li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a></li>
 <li><a href="../concepts/claude-code-model-effort.html">claude-code-model-effort</a></li>
@@ -158,6 +159,7 @@ flowchart LR
 - [[concepts/reasoning-vs-japanese-fluency]] — 下流（日本語の最終成果物）に小モデルを置く理由をコストでなく品質に求める実測（@yugen_matuni）。推論力と日本語の自然さは別能力で、執筆モデルは手離れの良さで選ぶ
 - [[concepts/decision-layer-model]] — 配分先を「生成しないモデル」まで広げた設計。エージェント内の分岐（次のワーカー・関連度・公開可否）だけを判断モデルに任せる（@0xCodila・@29meat_ai）
 - [[concepts/small-llm-fine-tuning]] — 配分先の小型モデルを自前で作る手段。1.5Bを200〜500件でQLoRA学習し狭いタスクに特化させる（@sairahul1）
+- [[tools/jev-model-router]] — 工程ごとのモデル配分を判断モデル Jev が毎リクエスト自動で行う Claude Code Mod（@dani_avila7）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

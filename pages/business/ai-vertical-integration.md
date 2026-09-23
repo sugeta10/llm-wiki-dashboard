@@ -96,3 +96,4 @@ NTT・ソフトバンク・KDDI・NEC・[[companies/fujitsu]]・SCSK・TIS・ア
 - [[people/fladdict]] — 著者プロフィール
 - [[business/end-of-task-assignment]] — 同じ受託・SES業界への影響を、Spotify事例とhuman-on-the-loopという別の切り口で論じる
 - [[people/pieter-levels]] — 「大手AIがインディーハッカーのアプリを食う」と個人開発者側から同じ地形を語る実践者のアーカイブ
+- [[business/ai-agency-180-day-plan]] — 監査$3K→構築$30K→リテイナーで年商50万ドルを狙う AI エージェンシーの立ち上げ計画。受託側の現在の価格感の一例

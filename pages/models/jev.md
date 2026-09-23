@@ -45,3 +45,4 @@ mizchi は Zenn 記事で Jev を「自然言語を生成せず、用意した�
 - [[companies/openai]] — 発表者が共同発明したと述べるChatGPTの開発元
 - [[concepts/agi-knowledge-moat]] — AGI時代の競争優位を論じる既存ページ。発表の「チャットモデルはなぜAGIに届かないか」という問いの対照
 - [[concepts/small-llm-fine-tuning]] — 狭いタスクを小さなモデルで解く方向を、専用モデルでなく小型LLMのファインチューニングで実現する手順
+- [[tools/jev-model-router]] — Jev に Claude Code のサブエージェント・メインモデルの選択を任せる Claude Code Mod（@dani_avila7）

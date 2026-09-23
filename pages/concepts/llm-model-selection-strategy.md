@@ -55,3 +55,4 @@ flowchart LR
 - [[concepts/reasoning-vs-japanese-fluency]] — 下流（日本語の最終成果物）に小モデルを置く理由をコストでなく品質に求める実測（@yugen_matuni）。推論力と日本語の自然さは別能力で、執筆モデルは手離れの良さで選ぶ
 - [[concepts/decision-layer-model]] — 配分先を「生成しないモデル」まで広げた設計。エージェント内の分岐（次のワーカー・関連度・公開可否）だけを判断モデルに任せる（@0xCodila・@29meat_ai）
 - [[concepts/small-llm-fine-tuning]] — 配分先の小型モデルを自前で作る手段。1.5Bを200〜500件でQLoRA学習し狭いタスクに特化させる（@sairahul1）
+- [[tools/jev-model-router]] — 工程ごとのモデル配分を判断モデル Jev が毎リクエスト自動で行う Claude Code Mod（@dani_avila7）

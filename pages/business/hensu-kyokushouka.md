@@ -22,3 +22,4 @@
 - [[business/ai-income-retirement-strategy]] — 一人・自動収益化でのFIを目指す文脈との接続
 - [[business/roi-qualification-sales]] — 投資対効果が成立しない案件を断って絞り込むという、扱う変数（案件）を選別する発想が重なる
 - [[people/pieter-levels]] — 人を増やさず複数プロダクトを一人で並列運営し、その過程を全部公開している実例
+- [[business/ai-agency-180-day-plan]] — 業界を1つに固定し納品物を部品化して2件目を80%完成から始める AI エージェンシーの計画。変数を絞る設計の実践例
