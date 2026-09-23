@@ -29,3 +29,4 @@ Provencher の記事から分かるのは次の点に限られる。
 - [[tools/openai-codex]] — 本モデルを前提にスキル指針が更新された製品
 - [[concepts/gpt-6-astra-skills-prompting]] — 本モデル向けにスキル・AGENTS.md を見直す Codex チームの指針
 - [[models/claude-fable-5-1]] — 同時期に発表された Anthropic 側の最新版
+- [[concepts/ai-news-source-automation]] — 本モデルに7つの情報源を深夜巡回させ発信ネタを集める運用例（@beku_AI）

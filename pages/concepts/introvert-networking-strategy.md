@@ -46,3 +46,4 @@
 - [[concepts/output-first-learning]] — 出力を前提に学ぶと定着・伝達力が同時に育つという@shinkaronの論。本ページの「反省メモを発信に変える」はその実践例に近い
 - [[concepts/organizational-maneuvering]] — 佐久間宣行の組織内立ち回り術。「在職中に名前を育てる」は本ページのプル型発信と同じ構えで、対象が社内である点が異なる
 - [[concepts/structuring-ability]] — 著者の一芸である構造化力そのものを扱ったページ
+- [[concepts/aikyou]] — 感情の透明性・相手を採点しない・好意を素直に受け取ることで「求められる側」になる愛嬌論（@ichigoholi）。本ページの準備型とは別の入り口

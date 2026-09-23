@@ -42,3 +42,4 @@ YouTube検索はあくまで一例。Claude Codeがアクセスできるデー�
 - [[concepts/obsidian-personal-os]]
 - [[concepts/llm-wiki]]
 - [[concepts/self-refining-skills]]
+- [[concepts/ai-news-source-automation]] — 7つの情報源を並列分析して毎朝1枚のレポートと発信ネタ候補にする運用（@beku_AI）。出口を発信に置いた同型のパイプライン

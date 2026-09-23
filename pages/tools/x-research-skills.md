@@ -49,3 +49,4 @@ flowchart LR
 - [[concepts/x-algorithm-phoenix]] — X 本体のランキングも Grok ベースの Phoenix に移行済み。Grok が X 投稿に強いという主張の背景
 - [[concepts/claude-skills]] — スクリプトを `SKILL.md` で束ねてエージェントに呼ばせる仕組みの一般形
 - [[concepts/x-timeline-distillation]] — 同じ Grok 外注をスクリプト化せず1文のプロンプトでやる即席版。クエリ固定でなく「対象人物×期間×並べ替え軸」を都度指定する
+- [[concepts/ai-news-source-automation]] — X 以外の7源（海外メディアRSS・Hacker News・Reddit 等）を深夜に自動収集して朝のレポートにまとめる型。X を追う本ページと補完関係にある

@@ -41,6 +41,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>browser-useが公開した<a href="../tools/jev-ultrafast.html">jev-ultrafast</a>は「TypeSafe's Jev」を決定器として使い、ページの要素テーブルから操作と対象を1回のリクエストで同時に予測させている。同名で時期も近いため本ページのJevと同一と考えられるが、@CompleteSkepticのポストにはTypeSafeという社名が出てこず、同一性は未確認である。同一なら、Jevは文章を生成する代わりに「番号付きの選択肢から確率付きで選ぶ」型の出力を持ち、自由記述の生成は小型LLMに任せる使われ方をしていることになる。「20-200x faster」という主張とも、生成でなく選択に絞ることで速くするという設計とも整合する。</p>
 <h2>使った側の記述とオープンウェイトのクローン</h2>
 <p>mizchi は Zenn 記事で Jev を「自然言語を生成せず、用意した選択肢にスコアを付けることに特化した API」と説明し、1リクエスト500ms（日本からは遅延が乗って実質2fps）と書いている。選択型の出力という点は上の browser-use の使われ方と一致する。mizchi によると公開から数日で Jev クローンが大量に作られ、そのうち Convai Innovations の Laya（BERT 系 encoder＋decision head、322M〜421M）は手元の MLX で1判断8〜9msまで速くなった（<a href="../tools/laya-mlx.html">laya-mlx</a>）。ただし賢さは Jev が上で、Jev は学習抜きに選択判断を実現している点が強みだと mizchi は見ている。</p>
+<h2>外部からの内部構造推測（未収集）</h2>
+<p>@iwashi86 は、Jev の内部アーキテクチャを推測した技術記事「Jev's Architecture Unmasked」のメモを投稿している。@iwashi86 のまとめによると、この記事は Jev の API を約1万回呼び出して内部構造を推測したもので、従来の言語モデルによる分類・ルーティングはトークンを1文字ずつ逐次生成するため膨大な無駄な計算コストが発生していた、という問題設定から始まる。捕捉できたメモはここで途切れており、記事が推測した構造そのものは未収集である。問題設定は、上の mizchi の「生成せず選択肢にスコアを付ける」という説明と同じ方向を指している。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-09-15: 「20-200x faster」「40-400x」は開発元の自己申告で、比較対象・計測条件は未捕捉。発表本文（リンク先）を取得して何と比べた数字かを確かめる</li>
@@ -49,6 +51,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li>RLCDは何の略で、既存のRLHF・RLVRと何が違うのか。発表本文かリンク先の技術資料を別途ingestして確認する</li>
 <li>「チャットモデルの延長ではAGIに届かない」という問題設定は、<a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a>など既存ページのAGI観とどう噛み合うか</li>
+<li>「Jev's Architecture Unmasked」の原記事を取得し、API 約1万回の呼び出しから何を推測したのか（encoder＋decision head 型か、Laya との構造の近さ）を確かめる</li>
 <li>TypeSafeのJevと同一か。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか</li>
 </ul>
 <h2>関連</h2>
@@ -62,7 +65,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/jev-ultrafast.html">jev-ultrafast</a></li>
 <li><a href="../tools/laya-mlx.html">laya-mlx</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2099925682726002904" rel="noopener" target="_blank">https://x.com/i/web/status/2099925682726002904</a></li>
 <li><a href="https://github.com/browser-use/jev-ultrafast" rel="noopener" target="_blank">https://github.com/browser-use/jev-ultrafast</a></li>
-<li><a href="https://zenn.dev/mizchi/articles/laya-mlx-60fps" rel="noopener" target="_blank">https://zenn.dev/mizchi/articles/laya-mlx-60fps</a></li></ul></section></article>
+<li><a href="https://zenn.dev/mizchi/articles/laya-mlx-60fps" rel="noopener" target="_blank">https://zenn.dev/mizchi/articles/laya-mlx-60fps</a></li>
+<li><a href="https://x.com/i/web/status/2100713337436930288" rel="noopener" target="_blank">https://x.com/i/web/status/2100713337436930288</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -101,6 +105,10 @@ browser-useが公開した[[tools/jev-ultrafast]]は「TypeSafe&#x27;s Jev」を
 
 mizchi は Zenn 記事で Jev を「自然言語を生成せず、用意した選択肢にスコアを付けることに特化した API」と説明し、1リクエスト500ms（日本からは遅延が乗って実質2fps）と書いている。選択型の出力という点は上の browser-use の使われ方と一致する。mizchi によると公開から数日で Jev クローンが大量に作られ、そのうち Convai Innovations の Laya（BERT 系 encoder＋decision head、322M〜421M）は手元の MLX で1判断8〜9msまで速くなった（[[tools/laya-mlx]]）。ただし賢さは Jev が上で、Jev は学習抜きに選択判断を実現している点が強みだと mizchi は見ている。
 
+## 外部からの内部構造推測（未収集）
+
+@iwashi86 は、Jev の内部アーキテクチャを推測した技術記事「Jev&#x27;s Architecture Unmasked」のメモを投稿している。@iwashi86 のまとめによると、この記事は Jev の API を約1万回呼び出して内部構造を推測したもので、従来の言語モデルによる分類・ルーティングはトークンを1文字ずつ逐次生成するため膨大な無駄な計算コストが発生していた、という問題設定から始まる。捕捉できたメモはここで途切れており、記事が推測した構造そのものは未収集である。問題設定は、上の mizchi の「生成せず選択肢にスコアを付ける」という説明と同じ方向を指している。
+
 ## 観察ログ（未検証）
 
 - 2026-09-15: 「20-200x faster」「40-400x」は開発元の自己申告で、比較対象・計測条件は未捕捉。発表本文（リンク先）を取得して何と比べた数字かを確かめる
@@ -109,6 +117,7 @@ mizchi は Zenn 記事で Jev を「自然言語を生成せず、用意した�
 
 - RLCDは何の略で、既存のRLHF・RLVRと何が違うのか。発表本文かリンク先の技術資料を別途ingestして確認する
 - 「チャットモデルの延長ではAGIに届かない」という問題設定は、[[concepts/agi-knowledge-moat]]など既存ページのAGI観とどう噛み合うか
+- 「Jev&#x27;s Architecture Unmasked」の原記事を取得し、API 約1万回の呼び出しから何を推測したのか（encoder＋decision head 型か、Laya との構造の近さ）を確かめる
 - TypeSafeのJevと同一か。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか
 
 ## 関連

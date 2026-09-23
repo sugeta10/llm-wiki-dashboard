@@ -34,3 +34,4 @@ flowchart LR
 - [[concepts/coachability]]
 - [[concepts/self-evaluation-gap]]
 - [[business/org-design-intelligence]]
+- [[concepts/aikyou]] — 相手を採点しないことで安全感を与える愛嬌論（@ichigoholi）。心理的安全性の1対1版として読める

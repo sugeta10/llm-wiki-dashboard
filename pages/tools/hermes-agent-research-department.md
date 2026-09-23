@@ -75,3 +75,4 @@ Hermes Desktop app（v0.16.0）のProfile Builder（Identity→Model→Skills→
 - [[tools/notebooklm]] — Analystの統合エンジン。consumer版は公式APIがなくブラウザ自動化依存
 - [[concepts/obsidian-personal-os]] — Obsidianを複数エージェントの共有メモリ層に据える設計と地続き
 - [[tools/x-research-skills]] — Scoutの「xurlかGrokか」の二択のうち、Grok側を Claude Code / Codex のスキルとして具体化した構成（@HayattiQ）
+- [[concepts/ai-news-source-automation]] — 海外RSS・HN・Product Hunt・中国SNS等7源を深夜収集し朝5時に統合レポート化する個人運用（@beku_AI）。出口がブリーフでなく発信ネタ
