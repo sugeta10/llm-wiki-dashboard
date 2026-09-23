@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>graph-reliability-design</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="graph-reliability-design.md">Markdownで表示</a></div>
-  <div class="meta">concepts/graph-reliability-design · concepts · <span title="2026-08-17">1ヶ月前</span></div>
+  <div class="meta">concepts/graph-reliability-design · concepts · <span title="2026-09-23">今日</span></div>
   <article><h1>本番グラフの信頼性設計（状態・失敗・ルーティング権限）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: ノードとエッジの図が隠しているのは状態と失敗であり、@0xwhrrariは、耐久する状態・アーティファクト参照での受け渡し・ノード単位の失敗方針・決定論的に許可されたルートが揃って初めてグラフはデモから本番になると論じる。</p>
@@ -122,11 +122,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a> — スタックの一段下、モデル周囲のコードとしてのハーネス</li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a> — 検査役ノードの品質ゲートとしての具体実装</li>
 <li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a> — 本ページの設計語彙（冪等・承認・予算・フォールバック）を「答えられるか」で測る面接10問。Q5〜Q7がここに対応する</li>
+<li><a href="../concepts/decision-layer-model.html">decision-layer-model</a> — ルーターの確率的な分類を、生成しない専用の判断モデル（Jev）に任せる設計。分類器の実体の一例</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/12-factor-agents.html">12-factor-agents</a></li>
 <li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a></li>
 <li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
-<li><a href="../concepts/graph-engineering.html">graph-engineering</a></li>
-<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2086784668003598356" rel="noopener" target="_blank">https://x.com/i/web/status/2086784668003598356</a></li></ul></section></article>
+<li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li>
+<li><a href="../concepts/graph-engineering.html">graph-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2086784668003598356" rel="noopener" target="_blank">https://x.com/i/web/status/2086784668003598356</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -246,6 +247,7 @@ fan-outについては、並列化はいちばん理解しやすい利点であ�
 - [[concepts/harness-engineering]] — スタックの一段下、モデル周囲のコードとしてのハーネス
 - [[concepts/eval-loop]] — 検査役ノードの品質ゲートとしての具体実装
 - [[concepts/ai-engineer-interview-questions]] — 本ページの設計語彙（冪等・承認・予算・フォールバック）を「答えられるか」で測る面接10問。Q5〜Q7がここに対応する
+- [[concepts/decision-layer-model]] — ルーターの確率的な分類を、生成しない専用の判断モデル（Jev）に任せる設計。分類器の実体の一例
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

@@ -80,11 +80,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-computer-use.html">claude-computer-use</a> — スクリーンショットとクリック座標でUIを操作するAnthropicの機能。Jev Ultrafast は既定ループから画像を外し構造化状態だけを使う逆の選択をしている</li>
 <li><a href="../tools/laya-mlx.html">laya-mlx</a> — Jev 型の選択モデルのオープンウェイト版 Laya をローカル（MLX）とブラウザ（WebGPU）で回す例。planner が候補と説明文を作りモデルは選ぶだけという、本ページと同じ分業を Snake/Chess で示す</li>
 <li><a href="../models/jev.html">jev</a> — @CompleteSkepticがRLCDで訓練したと発表した新型フロンティアモデル。本ページの「TypeSafe's Jev」と同一と考えられる（未確認）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../concepts/decision-layer-model.html">decision-layer-model</a> — 本ページの「観測ごとに選択肢を作り直す」設計を、司令塔エージェントのワーカー選択へ一般化した判断レイヤーの設計論</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
 <li><a href="../models/jev.html">jev</a></li>
 <li><a href="../tools/browser-use.html">browser-use</a></li>
-<li><a href="../tools/claude-computer-use.html">claude-computer-use</a></li>
-<li><a href="../tools/laya-mlx.html">laya-mlx</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/browser-use/jev-ultrafast" rel="noopener" target="_blank">https://github.com/browser-use/jev-ultrafast</a></li></ul></section></article>
+<li><a href="../tools/claude-computer-use.html">claude-computer-use</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/browser-use/jev-ultrafast" rel="noopener" target="_blank">https://github.com/browser-use/jev-ultrafast</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -170,6 +171,7 @@ READMEが公開する数字は次のとおり。動画は Zürich → London の
 - [[tools/claude-computer-use]] — スクリーンショットとクリック座標でUIを操作するAnthropicの機能。Jev Ultrafast は既定ループから画像を外し構造化状態だけを使う逆の選択をしている
 - [[tools/laya-mlx]] — Jev 型の選択モデルのオープンウェイト版 Laya をローカル（MLX）とブラウザ（WebGPU）で回す例。planner が候補と説明文を作りモデルは選ぶだけという、本ページと同じ分業を Snake/Chess で示す
 - [[models/jev]] — @CompleteSkepticがRLCDで訓練したと発表した新型フロンティアモデル。本ページの「TypeSafe&#x27;s Jev」と同一と考えられる（未確認）
+- [[concepts/decision-layer-model]] — 本ページの「観測ごとに選択肢を作り直す」設計を、司令塔エージェントのワーカー選択へ一般化した判断レイヤーの設計論
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

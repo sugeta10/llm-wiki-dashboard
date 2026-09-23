@@ -66,3 +66,4 @@ flowchart LR
 - [[concepts/cerebras-knowledge-base]] — 同じ問題への別解。グラフを作らず単一埋め込みテーブル＋全文検索とIDF・鮮度減衰のハイブリッドで解く
 - [[concepts/graph-engineering]] — 同じ「グラフ」という語だが対象が違う。あちらのノード・エッジはエージェントの実行順序とデータの流れを指す
 - [[tools/teamai-cli]] — チームのコードベースを対象にした実装例。トリプル抽出をLLMでなくtree-sitterのAST解析と正規表現の2トラックで行い、BM25検索をグラフでリランキングする
+- [[concepts/small-llm-fine-tuning]] — 振る舞いの一貫性は学習、最新の事実は検索で渡すという線引きを示すファインチューニング手順。本ページは検索側の受け皿

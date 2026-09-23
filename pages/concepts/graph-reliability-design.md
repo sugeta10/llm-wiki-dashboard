@@ -97,3 +97,4 @@ fan-outについては、並列化はいちばん理解しやすい利点であ�
 - [[concepts/harness-engineering]] — スタックの一段下、モデル周囲のコードとしてのハーネス
 - [[concepts/eval-loop]] — 検査役ノードの品質ゲートとしての具体実装
 - [[concepts/ai-engineer-interview-questions]] — 本ページの設計語彙（冪等・承認・予算・フォールバック）を「答えられるか」で測る面接10問。Q5〜Q7がここに対応する
+- [[concepts/decision-layer-model]] — ルーターの確率的な分類を、生成しない専用の判断モデル（Jev）に任せる設計。分類器の実体の一例

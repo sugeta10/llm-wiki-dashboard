@@ -111,7 +111,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/jev.html">jev</a> — Laya が模倣する「選択肢にスコアを付けるだけ」の元祖モデル。mizchi によると1リクエスト500ms（日本から実質2fps）</li>
 <li><a href="../tools/jev-ultrafast.html">jev-ultrafast</a> — 同じ Jev 型の選択モデルをブラウザ操作に使う例。候補を番号付きで渡し選ばせる構造が Snake/Chess デモと共通</li>
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — 生の状態でなく整えた記法をAIに渡す設計パターン。planner の説明文はゲーム版の中間記法にあたる</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../concepts/decision-layer-model.html">decision-layer-model</a> — planner が説明しモデルは選ぶだけ、という分業をエージェント全体の設計（LLMが作り、判断モデルが決め、コードが実行する）に広げた概念ページ</li>
+<li><a href="../concepts/small-llm-fine-tuning.html">small-llm-fine-tuning</a> — 小型モデルを狭いタスクに特化させる別経路。Laya は既製の選択モデル、こちらは自前データでの QLoRA 学習</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../concepts/small-llm-fine-tuning.html">small-llm-fine-tuning</a></li>
 <li><a href="../models/jev.html">jev</a></li>
 <li><a href="../tools/jev-ultrafast.html">jev-ultrafast</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/mizchi/articles/laya-mlx-60fps" rel="noopener" target="_blank">https://zenn.dev/mizchi/articles/laya-mlx-60fps</a></li></ul></section></article>
 </main>
@@ -196,6 +200,8 @@ mizchi は、出て数日で Jev クローンが大量に作られており Laya
 - [[models/jev]] — Laya が模倣する「選択肢にスコアを付けるだけ」の元祖モデル。mizchi によると1リクエスト500ms（日本から実質2fps）
 - [[tools/jev-ultrafast]] — 同じ Jev 型の選択モデルをブラウザ操作に使う例。候補を番号付きで渡し選ばせる構造が Snake/Chess デモと共通
 - [[concepts/intermediate-notation-pattern]] — 生の状態でなく整えた記法をAIに渡す設計パターン。planner の説明文はゲーム版の中間記法にあたる
+- [[concepts/decision-layer-model]] — planner が説明しモデルは選ぶだけ、という分業をエージェント全体の設計（LLMが作り、判断モデルが決め、コードが実行する）に広げた概念ページ
+- [[concepts/small-llm-fine-tuning]] — 小型モデルを狭いタスクに特化させる別経路。Laya は既製の選択モデル、こちらは自前データでの QLoRA 学習
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

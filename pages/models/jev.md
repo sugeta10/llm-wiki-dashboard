@@ -16,6 +16,12 @@ browser-useが公開した[[tools/jev-ultrafast]]は「TypeSafe's Jev」を決�
 
 mizchi は Zenn 記事で Jev を「自然言語を生成せず、用意した選択肢にスコアを付けることに特化した API」と説明し、1リクエスト500ms（日本からは遅延が乗って実質2fps）と書いている。選択型の出力という点は上の browser-use の使われ方と一致する。mizchi によると公開から数日で Jev クローンが大量に作られ、そのうち Convai Innovations の Laya（BERT 系 encoder＋decision head、322M〜421M）は手元の MLX で1判断8〜9msまで速くなった（[[tools/laya-mlx]]）。ただし賢さは Jev が上で、Jev は学習抜きに選択判断を実現している点が強みだと mizchi は見ている。
 
+## TypeSafe AI の「System One モデル」としての記述
+
+@29meat_ai と @0xCodila の2本の解説記事は、Jev を TypeSafe AI の「System One モデル」として紹介している。@29meat_ai が参照した一次資料は TypeSafe AI の発表「Introducing System One Models & Jev」で、公開日は2026-09-15とされる。@CompleteSkeptic の発表と同じ日付であることから、両者は同じ発表を指していると考えられるが、@CompleteSkeptic と TypeSafe AI の関係は今回のソースでも確認できていない。
+
+両記事の説明によると、Jev には状況を表すテキストと、答えられる選択肢や評価基準を渡し、返ってくるのは選択肢・点数・真偽と確率である。問いの型は3つあり、Choice は一覧から1つを選び確率分布と確信度を返し、Score は定義した尺度で評価し、Noul は yes/no に「yes の確率」を返す（@0xCodila）。文章・コード・理由の説明は生成しない。@0xCodila は価格を入力100万トークンあたり0.042ドル・出力課金なし（Jev 1.13）と紹介し、@29meat_ai は公式が英語で最も精度が高く、日本語を含む他言語は自分のデータで検証するよう案内していると書く。確信度は正答率ではない、という注意は両記事に共通する。この「生成せず選ぶ」性質をエージェント設計にどう組み込むかは [[concepts/decision-layer-model]] にまとめた。
+
 ## 外部からの内部構造推測（未収集）
 
 @iwashi86 は、Jev の内部アーキテクチャを推測した技術記事「Jev's Architecture Unmasked」のメモを投稿している。@iwashi86 のまとめによると、この記事は Jev の API を約1万回呼び出して内部構造を推測したもので、従来の言語モデルによる分類・ルーティングはトークンを1文字ずつ逐次生成するため膨大な無駄な計算コストが発生していた、という問題設定から始まる。捕捉できたメモはここで途切れており、記事が推測した構造そのものは未収集である。問題設定は、上の mizchi の「生成せず選択肢にスコアを付ける」という説明と同じ方向を指している。
@@ -29,11 +35,13 @@ mizchi は Zenn 記事で Jev を「自然言語を生成せず、用意した�
 - RLCDは何の略で、既存のRLHF・RLVRと何が違うのか。発表本文かリンク先の技術資料を別途ingestして確認する
 - 「チャットモデルの延長ではAGIに届かない」という問題設定は、[[concepts/agi-knowledge-moat]]など既存ページのAGI観とどう噛み合うか
 - 「Jev's Architecture Unmasked」の原記事を取得し、API 約1万回の呼び出しから何を推測したのか（encoder＋decision head 型か、Laya との構造の近さ）を確かめる
-- TypeSafeのJevと同一か。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか
+- @CompleteSkeptic と TypeSafe AI の関係（創業者か）を公式発表で確かめる。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか
 
 ## 関連
 
+- [[concepts/decision-layer-model]] — Jev のような判断モデルを生成LLMから切り離し「LLMが作り、Jevが決め、コードが実行する」に分ける設計と30事例
 - [[tools/jev-ultrafast]] — 「TypeSafe's Jev」を操作・対象の同時予測に使うbrowser-useのブラウザエージェント（本ページのJevと同一と考えられるが未確認）
 - [[tools/laya-mlx]] — Jev 型のオープンウェイトクローン Laya を MLX で1判断8msで回すライブラリ（mizchi の実測・ブラウザ WebGPU では約50ms）
 - [[companies/openai]] — 発表者が共同発明したと述べるChatGPTの開発元
 - [[concepts/agi-knowledge-moat]] — AGI時代の競争優位を論じる既存ページ。発表の「チャットモデルはなぜAGIに届かないか」という問いの対照
+- [[concepts/small-llm-fine-tuning]] — 狭いタスクを小さなモデルで解く方向を、専用モデルでなく小型LLMのファインチューニングで実現する手順

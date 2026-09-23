@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>eval-loop</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="eval-loop.md">Markdownで表示</a></div>
-  <div class="meta">concepts/eval-loop · concepts · <span title="2026-06-02">3ヶ月前</span></div>
+  <div class="meta">concepts/eval-loop · concepts · <span title="2026-09-23">今日</span></div>
   <article><h1>Eval Loop（AI出力の品質ゲート）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: AIスロップ（量産される薄い出力）はプロンプト問題ではなく品質管理問題であり、出力を基準に対して自動採点し閾値未満を出荷前に止める「eval loop」という品質レイヤーの欠如が原因。プロンプト改良・高価なモデル・メモリは全て入力側の対症療法で、根治しない。</p>
@@ -126,6 +126,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> — 文章の癖をPostToolUse Hookで機械検査する実装。日常の書き込みでは止めず警告のみ返し、セッション終了時だけブロックする二段ゲート</li>
 <li><a href="../tools/claude-code-plugin-eval.html">claude-code-plugin-eval</a> — テストケース作成→採点→プラグインなしでの再実行という手順をCLIに組み込んだClaude Code公式コマンド。採点対象を自作プラグイン・スキルに定めた実装</li>
 <li><a href="../tools/first-reader.html">first-reader</a> — 文章にスコアも修正案も付けず、読者の離脱位置と記憶だけを観測して返すスキル。ゲートの手前に置く計測器にあたる</li>
+<li><a href="../concepts/small-llm-fine-tuning.html">small-llm-fine-tuning</a> — 小型LLMのファインチューニングを訓練損失でなく固定ベースラインと隔離テストで判定する手順。品質ゲートを学習パイプラインへ持ち込んだ例</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-skill-eight-layer-design.html">agent-skill-eight-layer-design</a></li>
 <li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a></li>
 <li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a></li>
@@ -237,6 +238,7 @@ eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
 - [[concepts/llm-japanese-style-hooks]] — 文章の癖をPostToolUse Hookで機械検査する実装。日常の書き込みでは止めず警告のみ返し、セッション終了時だけブロックする二段ゲート
 - [[tools/claude-code-plugin-eval]] — テストケース作成→採点→プラグインなしでの再実行という手順をCLIに組み込んだClaude Code公式コマンド。採点対象を自作プラグイン・スキルに定めた実装
 - [[tools/first-reader]] — 文章にスコアも修正案も付けず、読者の離脱位置と記憶だけを観測して返すスキル。ゲートの手前に置く計測器にあたる
+- [[concepts/small-llm-fine-tuning]] — 小型LLMのファインチューニングを訓練損失でなく固定ベースラインと隔離テストで判定する手順。品質ゲートを学習パイプラインへ持ち込んだ例
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

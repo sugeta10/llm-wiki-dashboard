@@ -78,3 +78,4 @@ flowchart LR
 - [[tools/stripe-minions]] — 同じく大量のマシン生成PRを流すパイプライン。Minionsは決定論ゲートと人間レビューで止め、Grok Botは高確信・低影響なら自動マージまで進める
 - [[concepts/improver-skill-pattern]] — 運営ボットJennyによる「ミスの根本原因→プレイブック更新→周知」は、outer improver skillがフィードバックからスキル編集を提案する構造と同型
 - [[tools/hermes-agent-overnight]] — 夜間に自動化ワークフローを回す先行例。Grok Botの毎晩3時の監査は同じ時間帯運用の別実装
+- [[concepts/decision-layer-model]] — @0xCodila が GrokBot 風 Chief of Staff を例に、ワーカー選択・完了判定などの小さな判断を判断モデルへ切り出す設計を示す

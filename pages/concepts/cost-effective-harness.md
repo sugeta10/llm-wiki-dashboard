@@ -59,3 +59,4 @@ Tarun Amasa（@trq212）の「Claude がタスクに応じて自分でハーネ�
 - [[concepts/multi-agent-patterns]] — fan-out overlap 等の協調コストが生じるマルチエージェント設計の一般論
 - [[concepts/delegation-management-style]] — 同じ委任コスト論を、別著者（Cognition社/Devin Fusion）が「リードモデルの管理スタイルの違い」という別軸で実測した実験
 - [[concepts/agent-command-wrappers]] — 同じコスト構造をモデル配分ではなく「操作をコードに固定してターンを消す」側から扱う。委譲するまでもない定型操作の受け皿
+- [[concepts/decision-layer-model]] — エージェント内の分岐判断を安い専用モデルへ切り出す設計。完了タスクあたりの請求額で追うべきという同じコスト観
