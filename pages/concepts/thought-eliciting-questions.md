@@ -30,3 +30,4 @@
 - [[tools/grill-me]] — AIに質問させて実装前の要件を掘り下げるAgent Skill。本ページは人間側の質問技術で、問いが思考を引き出すという機構が共通
 - [[tools/notebooklm-book-mentors]] — 本に「答えでなく問いを返す」人格を与える読書術。答えをもらうだけなら検索で、問いを返されるから気づきが生まれるという設計思想が本ページと同一
 - [[concepts/dopamine-detox]] — 同著者@antoshia2nによる実践論。こちらは刺激・報酬系、本ページは思考・対話が主題
+- [[concepts/likable-questioning]] — 同著者@antoshia2nの「人たらしの質問力」10選。本ページが相手の思考を引き出す問いなのに対し、あちらは自分が教わる側の聞き方

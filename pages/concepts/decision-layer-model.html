@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>decision-layer-model</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="decision-layer-model.md">Markdownで表示</a></div>
-  <div class="meta">concepts/decision-layer-model · concepts · <span title="2026-09-24">今日</span></div>
+  <div class="meta">concepts/decision-layer-model · concepts · <span title="2026-09-25">今日</span></div>
   <article><h1>判断レイヤー｜生成するモデルと、次を決めるモデルを分ける</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントの中の「次はどのワーカーか」「このソースは関連するか」「公開してよいか」といった小さな判断を、文章を生成するLLMから切り離し、選択肢・点数・真偽を確率付きで返す専用モデル（TypeSafe AI の <a href="../models/jev.html">jev</a> 等）に任せる設計。「LLMが仕事を作り、Jevが次を決め、コードが実行する」の三分業になる。</p>
@@ -55,6 +55,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>止まる場所を用意する</strong> —— 夜間運用ではソース収集と下書きまでを許し、公開は別の承認チェックに回す。アクション数と支出の上限、進捗の保存を持ち、中断後は最後に完了したアクションを確かめてから再開する。確信度の高い答えは、ファイルが保存された・メッセージが送られたことの証明にはならない</li>
 <li><strong>完了判定を分ける</strong> —— browser-use は Jev が DONE を選んだ後に結果を独立に確認する。@0xCodila はこの分離を自分の完了チェックにも借りるよう勧める</li>
 </ul>
+<p>翌日 @0xCodila は、自分で組んだ構成を「prompt → GrokBot → Jev の判断 → GrokBot の実行 → 結果」の5段で示し、セットアップは7分だと投稿している（手順は添付動画にあり未捕捉）。GrokBot が作業を運び、分岐だけを Jev が決めるという、本ページの三分業をそのまま一本の流れにした形である。</p>
+<p>@zodchiii は同じ並列化を費用の面から裏づける。TypeSafe のクックブックでは13問を1呼び出しにまとめると12.2倍安く10.0倍速かったとし、よくある失敗に「1問1呼び出し」「文書をまるごと状態として送る」「日付・件数・大小比較をモデルにさせる」「<code>jev-latest</code> で閾値を調整する」「Noul と Choice の答えが一致すると思い込む」を挙げる。仕様と公式が公開する苦手の一覧は <a href="../models/jev.html">jev</a> にまとめた。</p>
 <p>確信度は正答率ではない。@0xCodila は最初のレビュー閾値を0.85に置き、自分のワークフローのラベル付き例で調整するとしている。@29meat_ai も、決められた形式で答えることと判断を間違えないことは別で、「質問」「感想」「要望」の選択肢を守って返せても感想を質問に分類する可能性は残ると書く。</p>
 <h2>使いどころの広がり（@29meat_ai の30事例）</h2>
 <p>@29meat_ai は公開から3日の実装・試作を30本集め、完成した市販サービスではないと断ったうえで紹介している。用途は大きく次の系統に分かれる。</p>
@@ -101,7 +103,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
 <li><a href="../models/jev.html">jev</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2100984487802708306" rel="noopener" target="_blank">https://x.com/i/web/status/2100984487802708306</a></li>
 <li><a href="https://x.com/i/web/status/2100844631693095267" rel="noopener" target="_blank">https://x.com/i/web/status/2100844631693095267</a></li>
-<li><a href="https://x.com/i/web/status/2101007482919227841" rel="noopener" target="_blank">https://x.com/i/web/status/2101007482919227841</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2101007482919227841" rel="noopener" target="_blank">https://x.com/i/web/status/2101007482919227841</a></li>
+<li><a href="https://x.com/i/web/status/2101243146596384854" rel="noopener" target="_blank">https://x.com/i/web/status/2101243146596384854</a></li>
+<li><a href="https://x.com/i/web/status/2101433560796467348" rel="noopener" target="_blank">https://x.com/i/web/status/2101433560796467348</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -153,6 +157,10 @@ flowchart LR
 - **同じ状態を見る問いは並列に投げる** —— ワーカー選択・緊急度・承認チェックが同じ状態で答えられるなら同時に送る。投機的な分岐（候補ごとに先に問い、選ばれた分岐の答えだけ使う）も使える。ただし問い同士は互いの答えを読めないため、新しい検索結果が必要な判断は検索を先に済ませる
 - **止まる場所を用意する** —— 夜間運用ではソース収集と下書きまでを許し、公開は別の承認チェックに回す。アクション数と支出の上限、進捗の保存を持ち、中断後は最後に完了したアクションを確かめてから再開する。確信度の高い答えは、ファイルが保存された・メッセージが送られたことの証明にはならない
 - **完了判定を分ける** —— browser-use は Jev が DONE を選んだ後に結果を独立に確認する。@0xCodila はこの分離を自分の完了チェックにも借りるよう勧める
+
+翌日 @0xCodila は、自分で組んだ構成を「prompt → GrokBot → Jev の判断 → GrokBot の実行 → 結果」の5段で示し、セットアップは7分だと投稿している（手順は添付動画にあり未捕捉）。GrokBot が作業を運び、分岐だけを Jev が決めるという、本ページの三分業をそのまま一本の流れにした形である。
+
+@zodchiii は同じ並列化を費用の面から裏づける。TypeSafe のクックブックでは13問を1呼び出しにまとめると12.2倍安く10.0倍速かったとし、よくある失敗に「1問1呼び出し」「文書をまるごと状態として送る」「日付・件数・大小比較をモデルにさせる」「`jev-latest` で閾値を調整する」「Noul と Choice の答えが一致すると思い込む」を挙げる。仕様と公式が公開する苦手の一覧は [[models/jev]] にまとめた。
 
 確信度は正答率ではない。@0xCodila は最初のレビュー閾値を0.85に置き、自分のワークフローのラベル付き例で調整するとしている。@29meat_ai も、決められた形式で答えることと判断を間違えないことは別で、「質問」「感想」「要望」の選択肢を守って返せても感想を質問に分類する可能性は残ると書く。
 
