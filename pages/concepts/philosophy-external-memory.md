@@ -58,6 +58,7 @@ flowchart LR
 
 ## 関連
 
+- [[business/stock-gata-fukugyo]] — 文体・構成・文字量を1ファイルに固定してClaudeに毎回貼る副業の制作体制。本ページが「服」と呼ぶ文体側を型にする実践例
 - [[concepts/agi-knowledge-moat]] — 競争優位が「知識の占有」から「知識生成ループ・触れる思想の源泉」へ移るという同じ問い。外部記憶の深さが差を生むという主張の上位フレーム
 - [[concepts/agent-memory-layer]] — ユーザー所有の単一メモリ層を全エージェントの下に敷く設計。5つのClaudeエージェントが同一DBを参照する運用と同型
 - [[concepts/claude-projects-blueprint]] — Identity/Rules/Knowledge Files で自分の声・基準・読者を学習させAIを社員化する6パート設計。思想哲学DBの実装版に近い

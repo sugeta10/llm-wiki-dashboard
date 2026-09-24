@@ -46,3 +46,4 @@
 - [[tools/claude-mcp]] — Model Context Protocol（Firecrawl/Filesystem等の外部連携）
 - [[business/ai-income-retirement-strategy]] — AIを使った自動収益化と早期退職の戦略
 - [[tools/claude-code]] — Claude Code（cron連携での自動運転に使うCLIツール）
+- [[business/stock-gata-fukugyo]] — 記事を検索流入が続くストックとして積み、当たった型をClaudeでテンプレ量産して継続難易度を下げる副業論（ラクヨコ事例）

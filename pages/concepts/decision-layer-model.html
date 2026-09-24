@@ -69,9 +69,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>コストの見方</h2>
 <p>@0xCodila によると、Jev 1.13 の価格は入力100万トークンあたり0.042ドルで出力課金はなく、1判断1,000トークンなら1万判断で0.42ドルになる。ただしフライト検索の0.0039ドルはJevの入力90,558トークンとテキスト生成役の料金を合わせた値で、ブラウザ側のコストは入っていない。@0xCodila は「完了したタスクあたりの請求額」で追うべきだとし、安い判断がワーカーを誤った分岐へ送れば判断そのものより高くつくと指摘する。@29meat_ai も、単発では安くても毎秒10回呼ぶDoomのような使い方では速度と総費用をセットで考える必要があると書く。</p>
 <p>この「生成は高いモデル、分岐は安い専用モデル」という配分は、<a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> の工程分解型モデル配分や <a href="../concepts/cost-effective-harness.html">cost-effective-harness</a> の委譲コスト論を、モデルの種類そのものを分ける方向へ一段進めたものと考えられる。また「分類器は確率的、許可されたルートは決定論的」とする <a href="../concepts/graph-reliability-design.html">graph-reliability-design</a> のルーター設計に、分類器の実体として判断モデルを入れる形とも読める。</p>
+<h2>ハーネスに2層で入れる（@0xMovez の整理）</h2>
+<p>同じ日に @0xMovez も「Split → Playground → SDK → Handoff → Questions → Dynamic Menu → Parallel → Guardrails → Cost → Deploy」という、@0xCodila とほぼ同じ章立て・同じ事例の10ステップ記事を出している。どちらが先に書いたかはソースからは分からない。@0xMovez の記事で上乗せされているのは、判断モデルを個々のエージェントではなく<strong>ハーネス（モデルの外側でループ・ツール・権限を回す仕組み）</strong>に組み込むという視点である。</p>
+<p>@0xMovez によれば、Claude Code・Codex・Cursor といったコーディング用ハーネスは、危険な操作を実行前に分類するステップをそれぞれ持っていて、この分類器がエージェントへの信頼を少しずつ築いてきた。ただしこれまではハーネスのクローズドな部分に閉じていた。安くて速い分類器モデルが出たことで、同じパターンをどのエージェントにも持ち込めるようになった、というのが @0xMovez の主張だ。具体例として挙がるのが LangChain の AutoModeMiddleware で、ツール呼び出しのたびに Jev が危険な判断かを確かめ、安全チェックに生成トークンを使わないと紹介されている。</p>
+<p>@0xMovez はこれを2層として描く。上の層はリクエストを処理できる最も安いモデルを選ぶ<strong>モデルルーター</strong>（単純なタスクは速いモデルへ、複雑なタスクは推論モデルへ。LangChain の用例として紹介）、下の層は危険なツール呼び出しを実行前に止める <strong>Auto Mode ゲート</strong>である。どちらの層も文章を生成しない。<a href="../tools/jev-model-router.html">jev-model-router</a> は上の層を Claude Code に当てはめた実装にあたる。<a href="../concepts/harness-engineering.html">harness-engineering</a> の「エージェント = モデル + ハーネス」という見方からすると、判断レイヤーはハーネス側の部品の置き換えであり、モデルを替えずに挙動を変える打ち手と考えられる。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-09-18: @0xCodila が紹介する事例として、Hassan が Jev で AI 論文1,018本を分類し総額0.08ドル・1本あたり中央値256ms、Vercel の fx チームが安全性分類で GPT-5.6-luna より約5〜18倍速く精度も上がったと報告。いずれも一次資料未参照</li>
+<li>2026-09-18: @0xMovez が「同じモデルでもハーネス次第で78%と42%に分かれる」と述べ、Alex Volkov が約100万トークンの Claude セッションを1秒で8.6万トークンに圧縮した（要約でなく関連度フィルタ）、Riley Brown がメール500通を3.5セントで分類したと紹介。78%/42% は比較対象のベンチマーク名が書かれておらず、いずれも一次資料未参照</li>
 </ul>
 <h2>問い</h2>
 <ul>
@@ -89,12 +94,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 工程ごとにモデルを配分する戦略。判断レイヤーはその配分先を「生成しないモデル」まで広げる</li>
 <li><a href="../tools/grok-bot.html">grok-bot</a> — 領域別ボットを運営ボットが巡回・催促する運用。@0xCodila が想定する GrokBot 風 Chief of Staff の実例</li>
 <li><a href="../tools/jev-model-router.html">jev-model-router</a> — Claude Code のモデル振り分けを Jev に任せる Mod。判断レイヤーをコーディングエージェント自身のモデル配分に当てはめた例</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — エージェント = モデル + ハーネスの全体論。@0xMovez はモデルルーターと Auto Mode ゲートの2層を、ハーネス側に判断モデルを入れる形として描く</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
 <li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
-<li><a href="../models/jev.html">jev</a></li>
-<li><a href="../tools/grok-bot.html">grok-bot</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2100984487802708306" rel="noopener" target="_blank">https://x.com/i/web/status/2100984487802708306</a></li>
-<li><a href="https://x.com/i/web/status/2100844631693095267" rel="noopener" target="_blank">https://x.com/i/web/status/2100844631693095267</a></li></ul></section></article>
+<li><a href="../models/jev.html">jev</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2100984487802708306" rel="noopener" target="_blank">https://x.com/i/web/status/2100984487802708306</a></li>
+<li><a href="https://x.com/i/web/status/2100844631693095267" rel="noopener" target="_blank">https://x.com/i/web/status/2100844631693095267</a></li>
+<li><a href="https://x.com/i/web/status/2101007482919227841" rel="noopener" target="_blank">https://x.com/i/web/status/2101007482919227841</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -167,9 +174,18 @@ flowchart LR
 
 この「生成は高いモデル、分岐は安い専用モデル」という配分は、[[concepts/llm-model-selection-strategy]] の工程分解型モデル配分や [[concepts/cost-effective-harness]] の委譲コスト論を、モデルの種類そのものを分ける方向へ一段進めたものと考えられる。また「分類器は確率的、許可されたルートは決定論的」とする [[concepts/graph-reliability-design]] のルーター設計に、分類器の実体として判断モデルを入れる形とも読める。
 
+## ハーネスに2層で入れる（@0xMovez の整理）
+
+同じ日に @0xMovez も「Split → Playground → SDK → Handoff → Questions → Dynamic Menu → Parallel → Guardrails → Cost → Deploy」という、@0xCodila とほぼ同じ章立て・同じ事例の10ステップ記事を出している。どちらが先に書いたかはソースからは分からない。@0xMovez の記事で上乗せされているのは、判断モデルを個々のエージェントではなく**ハーネス（モデルの外側でループ・ツール・権限を回す仕組み）**に組み込むという視点である。
+
+@0xMovez によれば、Claude Code・Codex・Cursor といったコーディング用ハーネスは、危険な操作を実行前に分類するステップをそれぞれ持っていて、この分類器がエージェントへの信頼を少しずつ築いてきた。ただしこれまではハーネスのクローズドな部分に閉じていた。安くて速い分類器モデルが出たことで、同じパターンをどのエージェントにも持ち込めるようになった、というのが @0xMovez の主張だ。具体例として挙がるのが LangChain の AutoModeMiddleware で、ツール呼び出しのたびに Jev が危険な判断かを確かめ、安全チェックに生成トークンを使わないと紹介されている。
+
+@0xMovez はこれを2層として描く。上の層はリクエストを処理できる最も安いモデルを選ぶ**モデルルーター**（単純なタスクは速いモデルへ、複雑なタスクは推論モデルへ。LangChain の用例として紹介）、下の層は危険なツール呼び出しを実行前に止める **Auto Mode ゲート**である。どちらの層も文章を生成しない。[[tools/jev-model-router]] は上の層を Claude Code に当てはめた実装にあたる。[[concepts/harness-engineering]] の「エージェント = モデル + ハーネス」という見方からすると、判断レイヤーはハーネス側の部品の置き換えであり、モデルを替えずに挙動を変える打ち手と考えられる。
+
 ## 観察ログ（未検証）
 
 - 2026-09-18: @0xCodila が紹介する事例として、Hassan が Jev で AI 論文1,018本を分類し総額0.08ドル・1本あたり中央値256ms、Vercel の fx チームが安全性分類で GPT-5.6-luna より約5〜18倍速く精度も上がったと報告。いずれも一次資料未参照
+- 2026-09-18: @0xMovez が「同じモデルでもハーネス次第で78%と42%に分かれる」と述べ、Alex Volkov が約100万トークンの Claude セッションを1秒で8.6万トークンに圧縮した（要約でなく関連度フィルタ）、Riley Brown がメール500通を3.5セントで分類したと紹介。78%/42% は比較対象のベンチマーク名が書かれておらず、いずれも一次資料未参照
 
 ## 問い
 
@@ -187,6 +203,7 @@ flowchart LR
 - [[concepts/llm-model-selection-strategy]] — 工程ごとにモデルを配分する戦略。判断レイヤーはその配分先を「生成しないモデル」まで広げる
 - [[tools/grok-bot]] — 領域別ボットを運営ボットが巡回・催促する運用。@0xCodila が想定する GrokBot 風 Chief of Staff の実例
 - [[tools/jev-model-router]] — Claude Code のモデル振り分けを Jev に任せる Mod。判断レイヤーをコーディングエージェント自身のモデル配分に当てはめた例
+- [[concepts/harness-engineering]] — エージェント = モデル + ハーネスの全体論。@0xMovez はモデルルーターと Auto Mode ゲートの2層を、ハーネス側に判断モデルを入れる形として描く
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

@@ -81,4 +81,5 @@ OpenAI・Anthropic・ThoughtWorksが調整なく同じ壁にぶつかり、異�
 - [[business/startups-for-agents]] — ハーネスがデフォルトで読み込むツールになれば「golden」という投資テーゼ（@gregisenberg）。ハーネスをビジネス機会の側から見る視点
 - [[tools/oh-my-openagent]] — Hashline（The Harness Problem / Can Bölük）を実装したエージェント基盤。「失敗はモデルでなく編集ツールのせい」という具体的打ち手
 - [[people/uncle-bob-martin]] — 「エージェントのコードは読まず極端な制約で囲む」という著名実践者による体現事例
+- [[concepts/decision-layer-model]] — ハーネス内の分岐（モデル選択・危険操作の事前分類）を生成しない判断モデルへ切り出す設計。モデルを替えずハーネス部品を置き換える打ち手
 - [[papers/2026-dairai-top-ai-papers-w35]] — ハーネスを動的・蓄積的にする研究2本（JIT-Agent=タスクごとにハーネスを合成、Prime Agent=走行間で永続するContinual Harness）。手で設計して凍結するハーネスの次の段階

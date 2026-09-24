@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>stock-gata-fukugyo - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>stock-gata-fukugyo</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="stock-gata-fukugyo.md">Markdownで表示</a></div>
+  <div class="meta">business/stock-gata-fukugyo · business · <span title="2026-09-24">今日</span></div>
+  <article><h1>ストック型副業｜「継続難易度」を下げる3つの設計（Claude×ラクヨコ事例）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 副業の収益を月ごとの作業量に依存する「フロー型」から、記事が検索流入を呼び続ける「ストック型」に移し、当たった1本をテンプレ化して横に広げ、文体・構成・文字量を1ファイルにまとめてClaudeに毎回渡すことで、個人のセンスと根性に頼らない副業にするという@client2728770の主張。</p>
+</blockquote>
+<p>多くの副業が続かないのは、ネタを考える・書く・投稿するの全部を自分1人が毎日こなす「アルバイトの在宅版」になっていて、体調や本業の都合で手が止まった瞬間に収益が消えるからだ、と@client2728770は述べる。だから目標を「毎月の投稿数を増やすこと」でなく「1本から積み上がるリソースを定義すること」に置き直す。記事を書くほど次のネタ・読者・直す仕組みが増えていく状態を作れるかどうかで、継続難易度が決まるという見立てである。記事の末尾は LINE 登録と PDF 特典への誘導で、プロンプト全文などは登録者向けとされている（本ページは公開部分のみを扱う）。</p>
+<h2>3つのポイント</h2>
+<ol>
+<li><strong>収益をストック型にする</strong> —— 一度公開すれば検索から人が来る限り収益が積み上がる記事に収益源を移す。@client2728770 のこだわりは「投稿を丸々1か月止めても大丈夫な状態」を作ってから、それを本数で拡大すること。収益を毎月変わる「変数」から、あらかじめ決まっている「定数」に変えると表現している。</li>
+<li><strong>当たった1本をテンプレ化して横に広げる</strong> —— 当たった記事の構造をそのまま型にし、Claudeにテーマだけ差し替えさせる。1本が売れたらテーマを捨てず、初心者向け・失敗回避編・テンプレ集・具体例まとめ・実践ロードマップの5方向に広げる。新規テーマは月1本まで減らしたとしている。</li>
+<li><strong>属人性を排除した制作体制を作る</strong> —— 型にするのは3つだけ。
+   - <strong>文体</strong>: 自分の過去の文章を3本渡し、口調・語尾・よく使う表現に加えて「使っていない表現」を分析させる。@client2728770 は最後の項目がないとAI特有の言い回しが混ざると述べる
+   - <strong>構成</strong>: 8ブロックで固定する（困っている場面／向いていない人／選ぶ軸／判断の仕方／商品3つ／使って分かったこと／よくある失敗／まとめ）
+   - <strong>文字量</strong>: 1文60字以内、1段落1〜3文、全体3,000字。読者がスマホで読む前提</li>
+</ol>
+<p>この3つを1ファイルにして毎回冒頭に貼るだけで、1本に半日かかっていた執筆が25分になったとしている。</p>
+<h2>なぜ新サービス（ラクヨコ）を選んだか</h2>
+<p>@client2728770 によると、ラクヨコは楽天が2026年8月25日に始めた激安通販の直販チャネルで、約6万商品から始まり、楽天市場とは別サービスになっている（「楽天版Temu・SHEIN」に近いと表現）。注目したのは買い物でなく「まだ誰もまとめていない」ことで、開設11日時点で、まとまった記事・送料無料条件の記事・カテゴリ別まとめ記事がほぼ見当たらなかったという。ストック型記事を積むなら、すでに記事で埋まった場所より空いた場所のほうが楽だ、というのが選定理由である。</p>
+<p>一方で、ラクヨコは楽天市場と独立した直販チャネルのため、楽天市場の商品と同じ感覚で紹介できるとは限らないと本人が認めている。そこで役割を3つに分けた。ラクヨコは「まだ誰も書いていない情報を見つける場所」、紹介の仕組みが整っている楽天市場を紹介に使い、調べた結果は自分のコンテンツとして商品にする。紹介リンクの可否は自分の管理画面で確認すること、紹介リンクを使う記事には広告表示が必要なこと、価格や条件は公式ページで確認することを、@client2728770 自身が注意として書いている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-11: @client2728770 の自己申告で、開設11日間の収益は紹介報酬148,000円＋自分のコンテンツ販売152,000円＝300,000円。1〜4日目は0円（記事6本作成）、5〜7日目31,000円、8〜11日目269,000円。流入は毎日投稿が約3割、記事経由が約7割。LINE誘導つき記事の数字で第三者の検証なし</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「使っていない表現」を分析させて文体ファイルに入れる手法は、<a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> のNGルールを検査側でなく指示側に置いたものと考えられる。指示だけでAI特有の言い回しがどこまで消えるか</li>
+<li>当たった1本を5方向に広げるテンプレ量産は、検索エンジンから見て同じ読者向けの似た記事の量産になる。ストックとして積み上がり続けるのか、薄い記事として評価を落とすのか</li>
+<li>「空いている新サービスに先に入る」判断は、先行者が増えた時点で優位が消える。ストック型の前提（検索流入が続く）と、先行者利益の短さはどう両立するか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/claude-mcp-affiliate-automation.html">claude-mcp-affiliate-automation</a> — Claude で高単価アフィリエイトの案件選定・記事量産を自動運転化するガイド。本ページは「量産」より「継続難易度を下げる」ことを主眼にし、案件選定の代わりに空いている新サービスを選ぶ</li>
+<li><a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a> — 当たったフックを増幅して量産するショート動画運用。「当たった1本を横に広げる」という同じ型を動画で回している</li>
+<li><a href="../business/ai-income-retirement-strategy.html">ai-income-retirement-strategy</a> — AIによる自動収益化の戦略。「自分が動かなくても積み上がる状態（手離れ）」という本ページの到達点と同じ方向</li>
+<li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a> — 文体でなく思想を外部記憶に構造化してAIに書かせる方法論。本ページの文体・構成・文字量ファイルは、その「服」側を固定する実践にあたる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/claude-mcp-affiliate-automation.html">claude-mcp-affiliate-automation</a></li>
+<li><a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a></li>
+<li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a></li>
+<li><a href="../business/ai-income-retirement-strategy.html">ai-income-retirement-strategy</a></li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2098226250200572061" rel="noopener" target="_blank">https://x.com/i/web/status/2098226250200572061</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># ストック型副業｜「継続難易度」を下げる3つの設計（Claude×ラクヨコ事例）
+
+&gt; **TL;DR**: 副業の収益を月ごとの作業量に依存する「フロー型」から、記事が検索流入を呼び続ける「ストック型」に移し、当たった1本をテンプレ化して横に広げ、文体・構成・文字量を1ファイルにまとめてClaudeに毎回渡すことで、個人のセンスと根性に頼らない副業にするという@client2728770の主張。
+
+多くの副業が続かないのは、ネタを考える・書く・投稿するの全部を自分1人が毎日こなす「アルバイトの在宅版」になっていて、体調や本業の都合で手が止まった瞬間に収益が消えるからだ、と@client2728770は述べる。だから目標を「毎月の投稿数を増やすこと」でなく「1本から積み上がるリソースを定義すること」に置き直す。記事を書くほど次のネタ・読者・直す仕組みが増えていく状態を作れるかどうかで、継続難易度が決まるという見立てである。記事の末尾は LINE 登録と PDF 特典への誘導で、プロンプト全文などは登録者向けとされている（本ページは公開部分のみを扱う）。
+
+## 3つのポイント
+
+1. **収益をストック型にする** —— 一度公開すれば検索から人が来る限り収益が積み上がる記事に収益源を移す。@client2728770 のこだわりは「投稿を丸々1か月止めても大丈夫な状態」を作ってから、それを本数で拡大すること。収益を毎月変わる「変数」から、あらかじめ決まっている「定数」に変えると表現している。
+2. **当たった1本をテンプレ化して横に広げる** —— 当たった記事の構造をそのまま型にし、Claudeにテーマだけ差し替えさせる。1本が売れたらテーマを捨てず、初心者向け・失敗回避編・テンプレ集・具体例まとめ・実践ロードマップの5方向に広げる。新規テーマは月1本まで減らしたとしている。
+3. **属人性を排除した制作体制を作る** —— 型にするのは3つだけ。
+   - **文体**: 自分の過去の文章を3本渡し、口調・語尾・よく使う表現に加えて「使っていない表現」を分析させる。@client2728770 は最後の項目がないとAI特有の言い回しが混ざると述べる
+   - **構成**: 8ブロックで固定する（困っている場面／向いていない人／選ぶ軸／判断の仕方／商品3つ／使って分かったこと／よくある失敗／まとめ）
+   - **文字量**: 1文60字以内、1段落1〜3文、全体3,000字。読者がスマホで読む前提
+
+   この3つを1ファイルにして毎回冒頭に貼るだけで、1本に半日かかっていた執筆が25分になったとしている。
+
+## なぜ新サービス（ラクヨコ）を選んだか
+
+@client2728770 によると、ラクヨコは楽天が2026年8月25日に始めた激安通販の直販チャネルで、約6万商品から始まり、楽天市場とは別サービスになっている（「楽天版Temu・SHEIN」に近いと表現）。注目したのは買い物でなく「まだ誰もまとめていない」ことで、開設11日時点で、まとまった記事・送料無料条件の記事・カテゴリ別まとめ記事がほぼ見当たらなかったという。ストック型記事を積むなら、すでに記事で埋まった場所より空いた場所のほうが楽だ、というのが選定理由である。
+
+一方で、ラクヨコは楽天市場と独立した直販チャネルのため、楽天市場の商品と同じ感覚で紹介できるとは限らないと本人が認めている。そこで役割を3つに分けた。ラクヨコは「まだ誰も書いていない情報を見つける場所」、紹介の仕組みが整っている楽天市場を紹介に使い、調べた結果は自分のコンテンツとして商品にする。紹介リンクの可否は自分の管理画面で確認すること、紹介リンクを使う記事には広告表示が必要なこと、価格や条件は公式ページで確認することを、@client2728770 自身が注意として書いている。
+
+## 観察ログ（未検証）
+
+- 2026-09-11: @client2728770 の自己申告で、開設11日間の収益は紹介報酬148,000円＋自分のコンテンツ販売152,000円＝300,000円。1〜4日目は0円（記事6本作成）、5〜7日目31,000円、8〜11日目269,000円。流入は毎日投稿が約3割、記事経由が約7割。LINE誘導つき記事の数字で第三者の検証なし
+
+## 問い
+
+- 「使っていない表現」を分析させて文体ファイルに入れる手法は、[[concepts/llm-japanese-style-hooks]] のNGルールを検査側でなく指示側に置いたものと考えられる。指示だけでAI特有の言い回しがどこまで消えるか
+- 当たった1本を5方向に広げるテンプレ量産は、検索エンジンから見て同じ読者向けの似た記事の量産になる。ストックとして積み上がり続けるのか、薄い記事として評価を落とすのか
+- 「空いている新サービスに先に入る」判断は、先行者が増えた時点で優位が消える。ストック型の前提（検索流入が続く）と、先行者利益の短さはどう両立するか
+
+## 関連
+
+- [[business/claude-mcp-affiliate-automation]] — Claude で高単価アフィリエイトの案件選定・記事量産を自動運転化するガイド。本ページは「量産」より「継続難易度を下げる」ことを主眼にし、案件選定の代わりに空いている新サービスを選ぶ
+- [[business/youtube-shorts-jidouka-marketing]] — 当たったフックを増幅して量産するショート動画運用。「当たった1本を横に広げる」という同じ型を動画で回している
+- [[business/ai-income-retirement-strategy]] — AIによる自動収益化の戦略。「自分が動かなくても積み上がる状態（手離れ）」という本ページの到達点と同じ方向
+- [[concepts/philosophy-external-memory]] — 文体でなく思想を外部記憶に構造化してAIに書かせる方法論。本ページの文体・構成・文字量ファイルは、その「服」側を固定する実践にあたる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
