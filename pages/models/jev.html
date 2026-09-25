@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>jev</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="jev.md">Markdownで表示</a></div>
-  <div class="meta">models/jev · models · <span title="2026-09-25">今日</span></div>
+  <div class="meta">models/jev · models · <span title="2026-09-26">今日</span></div>
   <article><h1>Jev（RLCDで訓練された新型フロンティアモデル）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: ChatGPTの共同発明者を名乗る@CompleteSkepticが、2年間ステルスで開発した新しい訓練手法「RLCD」と、それで作った新型フロンティアモデル「Jev」を2026-09-15に発表した。告知文は「20-200x faster」「40-400x」で途切れており、手法とスペックの詳細は未収集。</p>
@@ -63,6 +63,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>@karoukun_ai の記事によると、Jev を作ったのは元 OpenAI の研究者で InstructGPT 論文の共著者の Diogo Almeida 氏で、「System One」という名前はカーネマンの速い思考（システム1）に由来する。Claude や GPT-5.6 Sol が遅い思考（システム2）を担う設計なのに対し、Jev はシステム1だけを極端に速く安く担当する、と @karoukun_ai は整理する。@CompleteSkeptic が Almeida 氏のアカウントかどうかは、この記事にもハンドル名が出てこないため確認できていない。</p>
 <p>@karoukun_ai が紹介する TypeSafe 自身の4ワークフロー評価では、Jev は67.8%で GPT-5.6 Terra（67.9%）とほぼ同等、Sol（74.1%）と Opus 5（73.1%）には届かず、コストは約200分の1、レイテンシは約50分の1とされる。@karoukun_ai はこの数字が正答率ではない点を強調する。評価ページの記載では、正解ラベルは GPT-6 Astra と Claude Fable 5.1 を高い思考設定で動かした回答の平均で作られており、人手の正解は無い。つまり67.8%は2つの最前線モデルの合意との一致率で、ワークフローを自社チームが作ったので偏りがありうることは TypeSafe 自身も認めているという。平均の内訳では請求書処理で Jev が61.8%と、Terra 74.7%・Opus 5 78.4%・Sol 79.1%に大きく離されており、散らかった文書から構造化された事実を抜き出す作業はまだ得意でない、と @karoukun_ai は書く（出典は第三者ブログ）。「最大193.6倍高速・444.6倍安価」という公称値も自社設定のワークフロー全体での比較で、第三者の再現は無い。@karoukun_ai の結論は「賢さで上を取るモデルではなく、同じくらいの賢さを桁違いに安く速く出すモデル」である。</p>
 <p>提供経路は発表週のうちに広がり、Vercel AI Gateway（公式チェンジログ）・Cloudflare Workers AI（<code>typesafe/jev</code>、コンテキスト32,000トークン）・LiteLLM のパススルー・LangChain の <code>langchain-typesafe</code> から呼べるようになった。Claude Code へのつなぎ方と周辺ツールは <a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a> にまとめた。日本語については、Yusuke Kawabata 氏が問い合わせ文を状態として渡し「人間の対応を求めているか」に98%の Yes が返ったと投稿している（@karoukun_ai の紹介）。</p>
+<h2>API仕様の日本語チートシート（@akira_papa_IT のまとめ）</h2>
+<p>@akira_papa_IT は公式ドキュメント（docs.typesafe.ai）を元にした日本語の解説記事で、Jev を「TypeSafe AI 社の新モデル」、発表者を「ChatGPT の共同発明者で TypeSafe AI の CEO、Diogo Almeida 氏（@CompleteSkeptic）」と紹介し、@CompleteSkeptic の発表ポストを公式リンクとして挙げている。上の節で未確認としていた @CompleteSkeptic と TypeSafe AI・Almeida 氏の関係について、この記事は同一人物として扱っている（二次解説による紹介で、公式プロフィールでの確認はまだ）。</p>
+<p>記事が挙げる HTTP API はエンドポイント <code>POST https://api.typesafe.ai/v1/systemone</code>、モデル指定は <code>jev-latest</code>（最新の安定版）と <code>jev-1.13</code>（バージョン固定）。入力は判断材料の <strong>State</strong> と、判定させたい問いの <strong>Questions</strong>（1リクエストに最大数十問）の2つだけだと @akira_papa_IT は説明する。問いの型ごとの定義は次のとおり紹介されている。</p>
+<ul>
+<li><strong>Choice</strong> —— <code>criteria</code> はキー名と「どういう場合にこれを選ぶか」の説明の組。返りは <code>choice</code>（最も確率が高いキー）・<code>probabilities</code>（全選択肢の確率で合計1.0）・<code>confidence</code></li>
+<li><strong>Score</strong> —— <code>criteria</code> は0点から昇順に深刻度・品質が高くなる説明の配列。内部で各レベルの確率分布（例: レベル2が79%）を計算し最尤のレベルを返す</li>
+<li><strong>Noul</strong> —— <code>instructions</code> は否定文でなく肯定文で書く Yes/No の問いで、<code>criteria</code> は省略可。返りは真である確率（0.000〜1.000）と <code>confidence</code></li>
+</ul>
+<p>@akira_papa_IT は <code>confidence</code> を "low" / "medium" / "high" の3段階として紹介している。上の @zodchiii は確信度を0〜1の値、@karoukun_ai は Noul には confidence が返らないと書いており、記述が食い違う。どれが現行の仕様かは公式ドキュメントで確かめる必要がある。確率と確信度の違いについては、「こんにちは」だけのチャットに「解約を希望しているか」と聞けば確率は0.5前後、根拠となる情報が無いので確信度は low になる、という例で @akira_papa_IT は説明する。公式の「Model Jaggedness」からは、多段の論理・数学、自由形式の文章生成、無関係なノイズの多い巨大な入力、二重否定のような込み入った問い文の4つを苦手として挙げ、問い文は平易な肯定文で書くよう勧めている。</p>
+<p>記事には「テキスト生成回路が存在しないのでハッキングされることは構造上あり得ない」という記述もあるが、上の jaggedness page の紹介では「状態に埋め込まれた指示で答えが動く」とされている。文章を出力させられることは無くても、判定結果そのものは入力に操作されうると読むのが安全と考えられる。設計パターン側の記述は <a href="../concepts/decision-layer-model.html">decision-layer-model</a> に統合した。</p>
 <h2>外部からの内部構造推測（未収集）</h2>
 <p>@iwashi86 は、Jev の内部アーキテクチャを推測した技術記事「Jev's Architecture Unmasked」のメモを投稿している。@iwashi86 のまとめによると、この記事は Jev の API を約1万回呼び出して内部構造を推測したもので、従来の言語モデルによる分類・ルーティングはトークンを1文字ずつ逐次生成するため膨大な無駄な計算コストが発生していた、という問題設定から始まる。捕捉できたメモはここで途切れており、記事が推測した構造そのものは未収集である。問題設定は、上の mizchi の「生成せず選択肢にスコアを付ける」という説明と同じ方向を指している。</p>
 <h2>観察ログ（未検証）</h2>
@@ -76,7 +86,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>「チャットモデルの延長ではAGIに届かない」という問題設定は、<a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a>など既存ページのAGI観とどう噛み合うか</li>
 <li>「Jev's Architecture Unmasked」の原記事を取得し、API 約1万回の呼び出しから何を推測したのか（encoder＋decision head 型か、Laya との構造の近さ）を確かめる</li>
 <li>評価の正解ラベルが「Astra と Fable 5.1 の合意」なら、Jev の67.8%は最前線モデルの癖まで含めた一致率になる。人手ラベルの自前データで測ると順位はどう動くか</li>
-<li>@CompleteSkeptic と TypeSafe AI の関係（創業者か）を公式発表で確かめる。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか</li>
+<li>@CompleteSkeptic と TypeSafe AI の関係（@akira_papa_IT は Diogo Almeida 氏＝CEO と紹介）を公式発表・公式プロフィールで確かめる。confidence が3段階ラベルか0〜1の値かも公式ドキュメントで確かめる。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -99,7 +109,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="https://x.com/i/web/status/2100984487802708306" rel="noopener" target="_blank">https://x.com/i/web/status/2100984487802708306</a></li>
 <li><a href="https://x.com/i/web/status/2100844631693095267" rel="noopener" target="_blank">https://x.com/i/web/status/2100844631693095267</a></li>
 <li><a href="https://x.com/i/web/status/2101243146596384854" rel="noopener" target="_blank">https://x.com/i/web/status/2101243146596384854</a></li>
-<li><a href="https://x.com/i/web/status/2101497267815686284" rel="noopener" target="_blank">https://x.com/i/web/status/2101497267815686284</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2101497267815686284" rel="noopener" target="_blank">https://x.com/i/web/status/2101497267815686284</a></li>
+<li><a href="https://x.com/i/web/status/2101805212541616639" rel="noopener" target="_blank">https://x.com/i/web/status/2101805212541616639</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -172,6 +183,20 @@ TypeSafe は現行バージョンの苦手を「jaggedness page」として公�
 
 提供経路は発表週のうちに広がり、Vercel AI Gateway（公式チェンジログ）・Cloudflare Workers AI（`typesafe/jev`、コンテキスト32,000トークン）・LiteLLM のパススルー・LangChain の `langchain-typesafe` から呼べるようになった。Claude Code へのつなぎ方と周辺ツールは [[concepts/jev-claude-code-integration]] にまとめた。日本語については、Yusuke Kawabata 氏が問い合わせ文を状態として渡し「人間の対応を求めているか」に98%の Yes が返ったと投稿している（@karoukun_ai の紹介）。
 
+## API仕様の日本語チートシート（@akira_papa_IT のまとめ）
+
+@akira_papa_IT は公式ドキュメント（docs.typesafe.ai）を元にした日本語の解説記事で、Jev を「TypeSafe AI 社の新モデル」、発表者を「ChatGPT の共同発明者で TypeSafe AI の CEO、Diogo Almeida 氏（@CompleteSkeptic）」と紹介し、@CompleteSkeptic の発表ポストを公式リンクとして挙げている。上の節で未確認としていた @CompleteSkeptic と TypeSafe AI・Almeida 氏の関係について、この記事は同一人物として扱っている（二次解説による紹介で、公式プロフィールでの確認はまだ）。
+
+記事が挙げる HTTP API はエンドポイント `POST https://api.typesafe.ai/v1/systemone`、モデル指定は `jev-latest`（最新の安定版）と `jev-1.13`（バージョン固定）。入力は判断材料の **State** と、判定させたい問いの **Questions**（1リクエストに最大数十問）の2つだけだと @akira_papa_IT は説明する。問いの型ごとの定義は次のとおり紹介されている。
+
+- **Choice** —— `criteria` はキー名と「どういう場合にこれを選ぶか」の説明の組。返りは `choice`（最も確率が高いキー）・`probabilities`（全選択肢の確率で合計1.0）・`confidence`
+- **Score** —— `criteria` は0点から昇順に深刻度・品質が高くなる説明の配列。内部で各レベルの確率分布（例: レベル2が79%）を計算し最尤のレベルを返す
+- **Noul** —— `instructions` は否定文でなく肯定文で書く Yes/No の問いで、`criteria` は省略可。返りは真である確率（0.000〜1.000）と `confidence`
+
+@akira_papa_IT は `confidence` を &quot;low&quot; / &quot;medium&quot; / &quot;high&quot; の3段階として紹介している。上の @zodchiii は確信度を0〜1の値、@karoukun_ai は Noul には confidence が返らないと書いており、記述が食い違う。どれが現行の仕様かは公式ドキュメントで確かめる必要がある。確率と確信度の違いについては、「こんにちは」だけのチャットに「解約を希望しているか」と聞けば確率は0.5前後、根拠となる情報が無いので確信度は low になる、という例で @akira_papa_IT は説明する。公式の「Model Jaggedness」からは、多段の論理・数学、自由形式の文章生成、無関係なノイズの多い巨大な入力、二重否定のような込み入った問い文の4つを苦手として挙げ、問い文は平易な肯定文で書くよう勧めている。
+
+記事には「テキスト生成回路が存在しないのでハッキングされることは構造上あり得ない」という記述もあるが、上の jaggedness page の紹介では「状態に埋め込まれた指示で答えが動く」とされている。文章を出力させられることは無くても、判定結果そのものは入力に操作されうると読むのが安全と考えられる。設計パターン側の記述は [[concepts/decision-layer-model]] に統合した。
+
 ## 外部からの内部構造推測（未収集）
 
 @iwashi86 は、Jev の内部アーキテクチャを推測した技術記事「Jev&#x27;s Architecture Unmasked」のメモを投稿している。@iwashi86 のまとめによると、この記事は Jev の API を約1万回呼び出して内部構造を推測したもので、従来の言語モデルによる分類・ルーティングはトークンを1文字ずつ逐次生成するため膨大な無駄な計算コストが発生していた、という問題設定から始まる。捕捉できたメモはここで途切れており、記事が推測した構造そのものは未収集である。問題設定は、上の mizchi の「生成せず選択肢にスコアを付ける」という説明と同じ方向を指している。
@@ -187,7 +212,7 @@ TypeSafe は現行バージョンの苦手を「jaggedness page」として公�
 - 「チャットモデルの延長ではAGIに届かない」という問題設定は、[[concepts/agi-knowledge-moat]]など既存ページのAGI観とどう噛み合うか
 - 「Jev&#x27;s Architecture Unmasked」の原記事を取得し、API 約1万回の呼び出しから何を推測したのか（encoder＋decision head 型か、Laya との構造の近さ）を確かめる
 - 評価の正解ラベルが「Astra と Fable 5.1 の合意」なら、Jev の67.8%は最前線モデルの癖まで含めた一致率になる。人手ラベルの自前データで測ると順位はどう動くか
-- @CompleteSkeptic と TypeSafe AI の関係（創業者か）を公式発表で確かめる。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか
+- @CompleteSkeptic と TypeSafe AI の関係（@akira_papa_IT は Diogo Almeida 氏＝CEO と紹介）を公式発表・公式プロフィールで確かめる。confidence が3段階ラベルか0〜1の値かも公式ドキュメントで確かめる。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか
 
 ## 関連
 

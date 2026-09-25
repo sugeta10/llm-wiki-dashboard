@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>exclusion-first-prompting</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="exclusion-first-prompting.md">Markdownで表示</a></div>
-  <div class="meta">concepts/exclusion-first-prompting · concepts · <span title="2026-09-23">2日前</span></div>
+  <div class="meta">concepts/exclusion-first-prompting · concepts · <span title="2026-09-26">今日</span></div>
   <article><h1>除外先行プロンプト（「◯◯は出さなくていい。その上で△△」）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: AIへの指示は良いものの条件より先に「出さなくていいもの」を書く。『エッセンシャル思考』の「90点ルール」を、並んだ候補を選ぶ段階から出させる前へ前倒しする使い方だと@smark_xが提案する。</p>
@@ -67,7 +67,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a> — 整理はAIに任せ、人間は「何を作るか/捨てるか」を決める工程へ移るという主張。本ページはその「捨てる」を指示文の先頭に移したもの</li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a> — プロンプト設計の総論と公式ガイド群。除外先行はその中の制約・境界（Boundaries）の書き方の一流儀にあたる</li>
 <li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a> — 校正時に「意味を変えない」制約を明示する実装例。「直させる」の除外条件と同じ防御</li>
+<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> — 同著者の制約理論の記事。骨子先出し・差分だけ返させるなど、読んで直す工程へ流す量を絞る打ち手をまとめる</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-requirements-definition.html">ai-requirements-definition</a></li>
+<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
 <li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a></li>
 <li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a></li>
 <li><a href="../concepts/prompt-engineering.html">prompt-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2099644697593684196" rel="noopener" target="_blank">https://x.com/i/web/status/2099644697593684196</a></li></ul></section></article>
@@ -138,6 +140,7 @@ AIを入れて前より忙しくなった人は、「良いものを出して」
 - [[concepts/ai-requirements-definition]] — 整理はAIに任せ、人間は「何を作るか/捨てるか」を決める工程へ移るという主張。本ページはその「捨てる」を指示文の先頭に移したもの
 - [[concepts/prompt-engineering]] — プロンプト設計の総論と公式ガイド群。除外先行はその中の制約・境界（Boundaries）の書き方の一流儀にあたる
 - [[concepts/gemini-rewrite-stop-hook]] — 校正時に「意味を変えない」制約を明示する実装例。「直させる」の除外条件と同じ防御
+- [[concepts/ai-review-bottleneck]] — 同著者の制約理論の記事。骨子先出し・差分だけ返させるなど、読んで直す工程へ流す量を絞る打ち手をまとめる
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

@@ -47,6 +47,8 @@ Cloudflare 公式例の読み方として @karoukun_ai が解説する要点は�
 - **ガードとレビュー** —— jevwire（制約を厳しくはできても緩められない一方向設計）、Jev Review（変更を Jev の判定で評価するコードレビュー用ワークフロー）、foreman（複数エージェントの開発ラインで進めるか止めるかを Jev に任せる）、zod-jev（Zod の形の検証に Jev の意味の検証を重ねる）、semdecide（Unix パイプラインや CI に型付き判定を入れる。終了コードの契約があるぶん壊れにくいと @karoukun_ai は評価）
 - **探索・操作** —— blink（ファイルシステムを歩く探索役を複数走らせてコードベースを検索）、BrowserClaw（ログイン済み Chrome を保ったまま操作する MCP サーバで、DOM を刈り込み Shadow DOM と iframe も貫通すると説明されている）
 
+中国語圏でも @Pluvio9yte が「Jev の API を手に入れたらこれを真似すればいい」というリストを投稿しており、1番目が [[tools/jev-ultrafast]]、2番目が Claude Code 向けの **fast-jev-compaction** である。捕捉できた本文は「给 Claude Code（Claude Code に…）」で途切れており、文脈の圧縮を Jev で行うものと名前からは推測できるが、中身と作者は未収集である。
+
 Stop フックで完了の主張に証拠を求める limpet・jev-belay は、Haiku を評価器に使う [[tools/claude-code-goal]] の完了判定と同じ位置に、生成しない判定モデルを置いたものと考えられる。jev-belay が「ファイルが変わったのに検査が通っていないときだけ呼ぶ」という発火条件を持つのは、判定を安くしても呼び出し回数を絞る設計が要ることを示している。
 
 ## 手を出す前の確認と落とし穴
@@ -69,6 +71,7 @@ Stop フックで完了の主張に証拠を求める limpet・jev-belay は、H
 
 - このwikiの Claude Code 運用で、毎回発生している判断を3つ書き出すと何になるか（ingest のカテゴリ判定、粒度判定、既反映チェックなど）。それを今いくらで回しているか
 - jev-belay 型の「完了の主張に証拠を求める」Stop フックは、日本語のトランスクリプトでも誤判定なく働くか
+- fast-jev-compaction の実体（リポジトリ・作者・圧縮の方法）を確かめ、[[concepts/decision-layer-model]] で紹介された「instant compaction」と同じものかを見る
 - Winnow（入る前に判定）と yoshi（入った後に削る）は、同じセッションでトークン削減量と取りこぼしにどれだけ差が出るか
 
 ## 関連
@@ -78,3 +81,4 @@ Stop フックで完了の主張に証拠を求める limpet・jev-belay は、H
 - [[tools/jev-model-router]] — ルート3の実装例。メインモデルをセッション開始時にしか選ばない理由がプロンプトキャッシュ
 - [[concepts/prompt-caching]] — メインモデルの途中切り替えで失われるキャッシュの仕組み
 - [[tools/claude-code-goal]] — Stop hook と Haiku 評価器で完了を判定する /goal。limpet・jev-belay と同じ位置の仕組み
+- [[tools/jev-ultrafast]] — @Pluvio9yte のリストで fast-jev-compaction と並んで最初に挙げられた、Jev で操作と対象を1往復で決めるブラウザエージェント

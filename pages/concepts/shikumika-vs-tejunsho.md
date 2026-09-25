@@ -61,3 +61,4 @@ Claude Codeに渡す指示書も同じで、直したことが残る欄の無い
 - [[concepts/instruction-patch-lifecycle]] — 「やめたこと」欄と「見なくなった手順は消す」に対応する、指示を育てて捨てるサイクル
 - [[concepts/correction-routing]] — 訂正の戻り先を6分類で決める。本ページの「直した結果が戻る場所」をチーム規模で設計した形
 - [[concepts/skills-over-memory]] — 指示ファイルは短く保ち決定を変える行だけ残す。「二度と起きない例外で手順書が膨らむ」への同じ警戒
+- [[concepts/ai-review-bottleneck]] — 同著者の続編的な記事。直した理由を指示書の欄に残し10個を超えたら採点条件へ格上げする、本ページの「戻る場所」のAI指示書版

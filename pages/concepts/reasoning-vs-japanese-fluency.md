@@ -45,3 +45,4 @@
 - [[companies/google]] — Gemini 3.8 Flashの提供元
 - [[concepts/ai-japanese-writing-stack]] — @kgsiが別経路（自身の執筆環境）から同じ「まずモデル選定」に達した統合論。日本語執筆はGemini 3.8 Flashが頭ひとつ抜け次点がKimi K3という評価まで一致し、本ページの先にある執筆手順と規約の置き場所設計を足す
 - [[concepts/gemini-rewrite-stop-hook]] — 同著者の続編。本ページの判断を「内容は他モデル・日本語はGemini」の分業にし、CodexのStop Hookから自動で呼ぶ仕組みにした実装
+- [[concepts/ai-review-bottleneck]] — 手直し時間がボトルネックという同じ観測を、モデル選択でなく流入の量と質を絞る5つの運用で解いた論（@smark_x）

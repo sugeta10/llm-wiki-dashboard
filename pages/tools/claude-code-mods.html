@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-mods</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-mods.md">Markdownで表示</a></div>
-  <div class="meta">tools/claude-code-mods · tools · <span title="2026-09-24">1日前</span></div>
+  <div class="meta">tools/claude-code-mods · tools · <span title="2026-09-24">2日前</span></div>
   <article><h1>Claude Mods / Function Hooks｜Claude Code 本体に TypeScript 関数を差し込む拡張機構</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 従来の Hooks が「外部プロセスを起動して JSON をやり取りする」仕組みだったのに対し、Claude Mods は TypeScript の関数（Function Hooks）を Claude Code のエンジンプロセスへ直接ロードし、Koa 風のミドルウェア <code>($, e, next)</code> として画面描画・状態・ツール登録まで書き換えられるようにした拡張機構。<code>/diff</code> や AGENTS.md 対応といった標準機能自体も Mod で実装されている、と nogu が解説している。</p>

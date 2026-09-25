@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>jev-claude-code-integration</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="jev-claude-code-integration.md">Markdownで表示</a></div>
-  <div class="meta">concepts/jev-claude-code-integration · concepts · <span title="2026-09-25">今日</span></div>
+  <div class="meta">concepts/jev-claude-code-integration · concepts · <span title="2026-09-26">今日</span></div>
   <article><h1>Claude Code に Jev をつなぐ3ルートと周辺ツール</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 判断モデル <a href="../models/jev.html">jev</a> を Claude Code につなぐ経路は「公式エージェントスキル（Jevを呼ぶコードを書かせる）」「MCPサーバ（Claude Codeの道具にする）」「モデルルーター（Claude Code のモデル選択自体をJevに任せる）」の3つで、目的によって使い分ける。発表から数日で、文脈の選別・Stopフックでの完了検証・スキルの並べ替えといった Claude Code 周りの実装が大量に公開された。</p>
@@ -63,6 +63,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>ガードとレビュー</strong> —— jevwire（制約を厳しくはできても緩められない一方向設計）、Jev Review（変更を Jev の判定で評価するコードレビュー用ワークフロー）、foreman（複数エージェントの開発ラインで進めるか止めるかを Jev に任せる）、zod-jev（Zod の形の検証に Jev の意味の検証を重ねる）、semdecide（Unix パイプラインや CI に型付き判定を入れる。終了コードの契約があるぶん壊れにくいと @karoukun_ai は評価）</li>
 <li><strong>探索・操作</strong> —— blink（ファイルシステムを歩く探索役を複数走らせてコードベースを検索）、BrowserClaw（ログイン済み Chrome を保ったまま操作する MCP サーバで、DOM を刈り込み Shadow DOM と iframe も貫通すると説明されている）</li>
 </ul>
+<p>中国語圏でも @Pluvio9yte が「Jev の API を手に入れたらこれを真似すればいい」というリストを投稿しており、1番目が <a href="../tools/jev-ultrafast.html">jev-ultrafast</a>、2番目が Claude Code 向けの <strong>fast-jev-compaction</strong> である。捕捉できた本文は「给 Claude Code（Claude Code に…）」で途切れており、文脈の圧縮を Jev で行うものと名前からは推測できるが、中身と作者は未収集である。</p>
 <p>Stop フックで完了の主張に証拠を求める limpet・jev-belay は、Haiku を評価器に使う <a href="../tools/claude-code-goal.html">claude-code-goal</a> の完了判定と同じ位置に、生成しない判定モデルを置いたものと考えられる。jev-belay が「ファイルが変わったのに検査が通っていないときだけ呼ぶ」という発火条件を持つのは、判定を安くしても呼び出し回数を絞る設計が要ることを示している。</p>
 <h2>手を出す前の確認と落とし穴</h2>
 <p>@karoukun_ai が挙げる注意のうち、<a href="../models/jev.html">jev</a> の仕様・苦手の一覧に無いものは次のとおり。</p>
@@ -82,6 +83,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li>このwikiの Claude Code 運用で、毎回発生している判断を3つ書き出すと何になるか（ingest のカテゴリ判定、粒度判定、既反映チェックなど）。それを今いくらで回しているか</li>
 <li>jev-belay 型の「完了の主張に証拠を求める」Stop フックは、日本語のトランスクリプトでも誤判定なく働くか</li>
+<li>fast-jev-compaction の実体（リポジトリ・作者・圧縮の方法）を確かめ、<a href="../concepts/decision-layer-model.html">decision-layer-model</a> で紹介された「instant compaction」と同じものかを見る</li>
 <li>Winnow（入る前に判定）と yoshi（入った後に削る）は、同じセッションでトークン削減量と取りこぼしにどれだけ差が出るか</li>
 </ul>
 <h2>関連</h2>
@@ -91,11 +93,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/jev-model-router.html">jev-model-router</a> — ルート3の実装例。メインモデルをセッション開始時にしか選ばない理由がプロンプトキャッシュ</li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — メインモデルの途中切り替えで失われるキャッシュの仕組み</li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — Stop hook と Haiku 評価器で完了を判定する /goal。limpet・jev-belay と同じ位置の仕組み</li>
+<li><a href="../tools/jev-ultrafast.html">jev-ultrafast</a> — @Pluvio9yte のリストで fast-jev-compaction と並んで最初に挙げられた、Jev で操作と対象を1往復で決めるブラウザエージェント</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
 <li><a href="../models/jev.html">jev</a></li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
-<li><a href="../tools/jev-model-router.html">jev-model-router</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2101497267815686284" rel="noopener" target="_blank">https://x.com/i/web/status/2101497267815686284</a></li></ul></section></article>
+<li><a href="../tools/jev-model-router.html">jev-model-router</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2101497267815686284" rel="noopener" target="_blank">https://x.com/i/web/status/2101497267815686284</a></li>
+<li><a href="https://x.com/i/web/status/2101831273224311035" rel="noopener" target="_blank">https://x.com/i/web/status/2101831273224311035</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -165,6 +169,8 @@ Cloudflare 公式例の読み方として @karoukun_ai が解説する要点は�
 - **ガードとレビュー** —— jevwire（制約を厳しくはできても緩められない一方向設計）、Jev Review（変更を Jev の判定で評価するコードレビュー用ワークフロー）、foreman（複数エージェントの開発ラインで進めるか止めるかを Jev に任せる）、zod-jev（Zod の形の検証に Jev の意味の検証を重ねる）、semdecide（Unix パイプラインや CI に型付き判定を入れる。終了コードの契約があるぶん壊れにくいと @karoukun_ai は評価）
 - **探索・操作** —— blink（ファイルシステムを歩く探索役を複数走らせてコードベースを検索）、BrowserClaw（ログイン済み Chrome を保ったまま操作する MCP サーバで、DOM を刈り込み Shadow DOM と iframe も貫通すると説明されている）
 
+中国語圏でも @Pluvio9yte が「Jev の API を手に入れたらこれを真似すればいい」というリストを投稿しており、1番目が [[tools/jev-ultrafast]]、2番目が Claude Code 向けの **fast-jev-compaction** である。捕捉できた本文は「给 Claude Code（Claude Code に…）」で途切れており、文脈の圧縮を Jev で行うものと名前からは推測できるが、中身と作者は未収集である。
+
 Stop フックで完了の主張に証拠を求める limpet・jev-belay は、Haiku を評価器に使う [[tools/claude-code-goal]] の完了判定と同じ位置に、生成しない判定モデルを置いたものと考えられる。jev-belay が「ファイルが変わったのに検査が通っていないときだけ呼ぶ」という発火条件を持つのは、判定を安くしても呼び出し回数を絞る設計が要ることを示している。
 
 ## 手を出す前の確認と落とし穴
@@ -187,6 +193,7 @@ Stop フックで完了の主張に証拠を求める limpet・jev-belay は、H
 
 - このwikiの Claude Code 運用で、毎回発生している判断を3つ書き出すと何になるか（ingest のカテゴリ判定、粒度判定、既反映チェックなど）。それを今いくらで回しているか
 - jev-belay 型の「完了の主張に証拠を求める」Stop フックは、日本語のトランスクリプトでも誤判定なく働くか
+- fast-jev-compaction の実体（リポジトリ・作者・圧縮の方法）を確かめ、[[concepts/decision-layer-model]] で紹介された「instant compaction」と同じものかを見る
 - Winnow（入る前に判定）と yoshi（入った後に削る）は、同じセッションでトークン削減量と取りこぼしにどれだけ差が出るか
 
 ## 関連
@@ -196,6 +203,7 @@ Stop フックで完了の主張に証拠を求める limpet・jev-belay は、H
 - [[tools/jev-model-router]] — ルート3の実装例。メインモデルをセッション開始時にしか選ばない理由がプロンプトキャッシュ
 - [[concepts/prompt-caching]] — メインモデルの途中切り替えで失われるキャッシュの仕組み
 - [[tools/claude-code-goal]] — Stop hook と Haiku 評価器で完了を判定する /goal。limpet・jev-belay と同じ位置の仕組み
+- [[tools/jev-ultrafast]] — @Pluvio9yte のリストで fast-jev-compaction と並んで最初に挙げられた、Jev で操作と対象を1往復で決めるブラウザエージェント
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

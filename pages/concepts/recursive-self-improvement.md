@@ -48,3 +48,4 @@
 - [[business/end-of-task-assignment]] — 「エンジニアがコードを書かなくなった」という同型の観測をSpotifyの事例で報告
 - [[concepts/development-as-agriculture]] — 「生成は課金で増やせるが確認速度は無限に増やせない」という同じAmdahl構造を、農業の比喩で開発全体に広げた論（深津貴之）
 - [[papers/2026-sonyai-hakken]] — 加速の対象が自然科学側の例。AIが「まだ誰も発見していない事実」を予測したというSony AIの仕組み（手法は未収集）
+- [[concepts/ai-review-bottleneck]] — 同じ「人間レビューがボトルネック」構造を個人のClaude Code運用に下ろし、流入を絞る5つのやり方にした実践論（@smark_x）

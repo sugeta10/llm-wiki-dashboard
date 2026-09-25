@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>decision-layer-model</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="decision-layer-model.md">Markdownで表示</a></div>
-  <div class="meta">concepts/decision-layer-model · concepts · <span title="2026-09-25">今日</span></div>
+  <div class="meta">concepts/decision-layer-model · concepts · <span title="2026-09-26">今日</span></div>
   <article><h1>判断レイヤー｜生成するモデルと、次を決めるモデルを分ける</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントの中の「次はどのワーカーか」「このソースは関連するか」「公開してよいか」といった小さな判断を、文章を生成するLLMから切り離し、選択肢・点数・真偽を確率付きで返す専用モデル（TypeSafe AI の <a href="../models/jev.html">jev</a> 等）に任せる設計。「LLMが仕事を作り、Jevが次を決め、コードが実行する」の三分業になる。</p>
@@ -75,6 +75,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>同じ日に @0xMovez も「Split → Playground → SDK → Handoff → Questions → Dynamic Menu → Parallel → Guardrails → Cost → Deploy」という、@0xCodila とほぼ同じ章立て・同じ事例の10ステップ記事を出している。どちらが先に書いたかはソースからは分からない。@0xMovez の記事で上乗せされているのは、判断モデルを個々のエージェントではなく<strong>ハーネス（モデルの外側でループ・ツール・権限を回す仕組み）</strong>に組み込むという視点である。</p>
 <p>@0xMovez によれば、Claude Code・Codex・Cursor といったコーディング用ハーネスは、危険な操作を実行前に分類するステップをそれぞれ持っていて、この分類器がエージェントへの信頼を少しずつ築いてきた。ただしこれまではハーネスのクローズドな部分に閉じていた。安くて速い分類器モデルが出たことで、同じパターンをどのエージェントにも持ち込めるようになった、というのが @0xMovez の主張だ。具体例として挙がるのが LangChain の AutoModeMiddleware で、ツール呼び出しのたびに Jev が危険な判断かを確かめ、安全チェックに生成トークンを使わないと紹介されている。</p>
 <p>@0xMovez はこれを2層として描く。上の層はリクエストを処理できる最も安いモデルを選ぶ<strong>モデルルーター</strong>（単純なタスクは速いモデルへ、複雑なタスクは推論モデルへ。LangChain の用例として紹介）、下の層は危険なツール呼び出しを実行前に止める <strong>Auto Mode ゲート</strong>である。どちらの層も文章を生成しない。<a href="../tools/jev-model-router.html">jev-model-router</a> は上の層を Claude Code に当てはめた実装にあたる。<a href="../concepts/harness-engineering.html">harness-engineering</a> の「エージェント = モデル + ハーネス」という見方からすると、判断レイヤーはハーネス側の部品の置き換えであり、モデルを替えずに挙動を変える打ち手と考えられる。</p>
+<h2>本番運用の型（@akira_papa_IT の実装レシピから）</h2>
+<p>@akira_papa_IT の日本語チートシートは、判断を型付きの値で受け取れることを、生成LLMでは組みにくかった運用の型に結びつけている。いずれも @akira_papa_IT の紹介で、効果の数字は自己申告または出典不明である。</p>
+<ul>
+<li><strong>重み付けはコードに置く（Composite Scoring）</strong> —— 「課金してくれそうな見込み客か」を Yes/No で丸投げせず、予算規模・導入時期・課題の一致度を個別の Score で測り、最終的な重み付けの計算式はコード側に書く。ビジネスのルールが変わってもプロンプトでなく計算式を直せば済む</li>
+<li><strong>判定基準をコードとしてレビューする</strong> —— Choice の <code>criteria</code> を TypeScript のオブジェクトとしてモジュール化し、カテゴリの追加・変更を普通のPRで議論する。戻り値を型にすれば <code>switch</code> の書き漏れを網羅性チェックで弾ける</li>
+<li><strong>CIで判定を回帰テストする</strong> —— 典型ケース10件と境界ケース5件をゴールデンデータとして保存し、<code>criteria</code> を直すたびに Vitest で既存の分類が壊れていないかを確かめる。<code>confidence</code> が low のときに人へ回す振る舞いもテストしておくのが肝だと @akira_papa_IT は書く</li>
+<li><strong>同一判定をキャッシュする</strong> —— 入力 State と <code>criteria</code> を正規化して SHA-256 でハッシュし Redis に保存する。<code>criteria</code> を直したらキーの版を上げて古いキャッシュを捨てる。@akira_papa_IT は Jev を「決定的な確率計算の純粋関数」と説明するが、同じ入力で同じ確率が返るかは公式の記述で確かめていない</li>
+<li><strong>2軸で振り分ける</strong> —— 確率と確信度の組み合わせで自動処理・人への回付を分け、確信度が低いときは人のサポート窓口へ回す</li>
+</ul>
+<p>5つ目の2軸の振り分けは、上の「確信度は正答率ではない」という注意と合わせて読む必要がある。確信度が高くても判定が誤っていることはありうるので、人へ回す条件は確信度だけでなく操作の重さ（@zodchiii の閾値の動かし方）でも決めるのが安全と考えられる。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-09-18: @0xCodila が紹介する事例として、Hassan が Jev で AI 論文1,018本を分類し総額0.08ドル・1本あたり中央値256ms、Vercel の fx チームが安全性分類で GPT-5.6-luna より約5〜18倍速く精度も上がったと報告。いずれも一次資料未参照</li>
@@ -106,7 +116,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="https://x.com/i/web/status/2100844631693095267" rel="noopener" target="_blank">https://x.com/i/web/status/2100844631693095267</a></li>
 <li><a href="https://x.com/i/web/status/2101007482919227841" rel="noopener" target="_blank">https://x.com/i/web/status/2101007482919227841</a></li>
 <li><a href="https://x.com/i/web/status/2101243146596384854" rel="noopener" target="_blank">https://x.com/i/web/status/2101243146596384854</a></li>
-<li><a href="https://x.com/i/web/status/2101433560796467348" rel="noopener" target="_blank">https://x.com/i/web/status/2101433560796467348</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2101433560796467348" rel="noopener" target="_blank">https://x.com/i/web/status/2101433560796467348</a></li>
+<li><a href="https://x.com/i/web/status/2101805212541616639" rel="noopener" target="_blank">https://x.com/i/web/status/2101805212541616639</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -190,6 +201,18 @@ flowchart LR
 @0xMovez によれば、Claude Code・Codex・Cursor といったコーディング用ハーネスは、危険な操作を実行前に分類するステップをそれぞれ持っていて、この分類器がエージェントへの信頼を少しずつ築いてきた。ただしこれまではハーネスのクローズドな部分に閉じていた。安くて速い分類器モデルが出たことで、同じパターンをどのエージェントにも持ち込めるようになった、というのが @0xMovez の主張だ。具体例として挙がるのが LangChain の AutoModeMiddleware で、ツール呼び出しのたびに Jev が危険な判断かを確かめ、安全チェックに生成トークンを使わないと紹介されている。
 
 @0xMovez はこれを2層として描く。上の層はリクエストを処理できる最も安いモデルを選ぶ**モデルルーター**（単純なタスクは速いモデルへ、複雑なタスクは推論モデルへ。LangChain の用例として紹介）、下の層は危険なツール呼び出しを実行前に止める **Auto Mode ゲート**である。どちらの層も文章を生成しない。[[tools/jev-model-router]] は上の層を Claude Code に当てはめた実装にあたる。[[concepts/harness-engineering]] の「エージェント = モデル + ハーネス」という見方からすると、判断レイヤーはハーネス側の部品の置き換えであり、モデルを替えずに挙動を変える打ち手と考えられる。
+
+## 本番運用の型（@akira_papa_IT の実装レシピから）
+
+@akira_papa_IT の日本語チートシートは、判断を型付きの値で受け取れることを、生成LLMでは組みにくかった運用の型に結びつけている。いずれも @akira_papa_IT の紹介で、効果の数字は自己申告または出典不明である。
+
+- **重み付けはコードに置く（Composite Scoring）** —— 「課金してくれそうな見込み客か」を Yes/No で丸投げせず、予算規模・導入時期・課題の一致度を個別の Score で測り、最終的な重み付けの計算式はコード側に書く。ビジネスのルールが変わってもプロンプトでなく計算式を直せば済む
+- **判定基準をコードとしてレビューする** —— Choice の `criteria` を TypeScript のオブジェクトとしてモジュール化し、カテゴリの追加・変更を普通のPRで議論する。戻り値を型にすれば `switch` の書き漏れを網羅性チェックで弾ける
+- **CIで判定を回帰テストする** —— 典型ケース10件と境界ケース5件をゴールデンデータとして保存し、`criteria` を直すたびに Vitest で既存の分類が壊れていないかを確かめる。`confidence` が low のときに人へ回す振る舞いもテストしておくのが肝だと @akira_papa_IT は書く
+- **同一判定をキャッシュする** —— 入力 State と `criteria` を正規化して SHA-256 でハッシュし Redis に保存する。`criteria` を直したらキーの版を上げて古いキャッシュを捨てる。@akira_papa_IT は Jev を「決定的な確率計算の純粋関数」と説明するが、同じ入力で同じ確率が返るかは公式の記述で確かめていない
+- **2軸で振り分ける** —— 確率と確信度の組み合わせで自動処理・人への回付を分け、確信度が低いときは人のサポート窓口へ回す
+
+5つ目の2軸の振り分けは、上の「確信度は正答率ではない」という注意と合わせて読む必要がある。確信度が高くても判定が誤っていることはありうるので、人へ回す条件は確信度だけでなく操作の重さ（@zodchiii の閾値の動かし方）でも決めるのが安全と考えられる。
 
 ## 観察ログ（未検証）
 

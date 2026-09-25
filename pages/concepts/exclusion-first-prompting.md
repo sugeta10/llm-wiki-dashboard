@@ -45,3 +45,4 @@ AIを入れて前より忙しくなった人は、「良いものを出して」
 - [[concepts/ai-requirements-definition]] — 整理はAIに任せ、人間は「何を作るか/捨てるか」を決める工程へ移るという主張。本ページはその「捨てる」を指示文の先頭に移したもの
 - [[concepts/prompt-engineering]] — プロンプト設計の総論と公式ガイド群。除外先行はその中の制約・境界（Boundaries）の書き方の一流儀にあたる
 - [[concepts/gemini-rewrite-stop-hook]] — 校正時に「意味を変えない」制約を明示する実装例。「直させる」の除外条件と同じ防御
+- [[concepts/ai-review-bottleneck]] — 同著者の制約理論の記事。骨子先出し・差分だけ返させるなど、読んで直す工程へ流す量を絞る打ち手をまとめる

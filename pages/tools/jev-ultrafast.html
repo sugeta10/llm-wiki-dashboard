@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>jev-ultrafast</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="jev-ultrafast.md">Markdownで表示</a></div>
-  <div class="meta">tools/jev-ultrafast · tools · <span title="2026-09-23">2日前</span></div>
+  <div class="meta">tools/jev-ultrafast · tools · <span title="2026-09-26">今日</span></div>
   <article><h1>Jev Ultrafast｜番号付き要素テーブルを1往復で決めるブラウザエージェント</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 観測のたびにページの操作可能な要素を番号付きテーブルに作り直し、「どの操作か」と「どの要素か」を1回のモデル呼び出しで同時に決めるブラウザエージェント。スクリーンショットを使わず、Google Flightsの検索を7.1秒で完了したと <a href="../tools/browser-use.html">browser-use</a> 公式リポジトリが計測を公開している。</p>
@@ -63,6 +63,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>限界も明示されている。<code>DONE</code> の判断は結果の独立検証を必要とし、DOMリーダーが扱うのは一般的なHTMLとARIAコントロールであってアクセシブル名の完全な仕様ではない。Shadow DOM・フレーム・canvas・ファイルアップロード・ポップアップタブ・入れ子のスクロール・任意のキーボードウィジェットはこのMVPの対象外。操作するタブは既存のChromeプロファイルを共有する。</p>
 <h2>使い方</h2>
 <p><code>git clone</code> して <code>uv sync</code>、<code>.env</code> に <code>TYPESAFE_API_KEY</code> と <code>TEXT_MODEL_API_KEY</code> を入れ、<code>uv run jev</code> でローカルのインスペクタ（<code>http://127.0.0.1:8766</code>）が立つ。インスペクタには番号付き要素・操作の確率・対象の確率・実行されたアクションが並び、「Choose next」で実行前に停止できる。Chromeへの接続は同組織の Browser Harness 経由で、<code>uv sync</code> で一緒に入る。ライブラリとしては <code>Agent(url, goal)</code> をコンテキストマネージャで開き、<code>agent.run()</code> が返す状態（<code>elapsed_ms</code> / <code>status</code>）を回す形になる。</p>
+<p>中国語圏では @Pluvio9yte が「Jev の API キーを手に入れたが遊び方が分からない人向け」の真似できるリストの1番目に本リポジトリを挙げ、Jev は各ステップで「何をするか・どの要素を押すか」だけを判断し、文字入力のときだけ小型モデルを呼ぶ、Google Flights の検索は約7秒と紹介している（ブックマーク3,218件）。リストの2番目以降は捕捉が途切れている（<a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a> 参照）。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-09-21: 中央値 9.450秒 → 7.092秒（25%減）、ブラウザプロトコル呼び出し 1,092 → 101 という比較は開発元の自己計測で、1タスク3回・単一プロファイルという範囲つき。他サイト・他タスクでの再現性は未確認</li>
@@ -83,9 +84,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/decision-layer-model.html">decision-layer-model</a> — 本ページの「観測ごとに選択肢を作り直す」設計を、司令塔エージェントのワーカー選択へ一般化した判断レイヤーの設計論</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li>
 <li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a></li>
 <li><a href="../models/jev.html">jev</a></li>
-<li><a href="../tools/browser-use.html">browser-use</a></li>
-<li><a href="../tools/claude-computer-use.html">claude-computer-use</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/browser-use/jev-ultrafast" rel="noopener" target="_blank">https://github.com/browser-use/jev-ultrafast</a></li></ul></section></article>
+<li><a href="../tools/browser-use.html">browser-use</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/browser-use/jev-ultrafast" rel="noopener" target="_blank">https://github.com/browser-use/jev-ultrafast</a></li>
+<li><a href="https://x.com/i/web/status/2101831273224311035" rel="noopener" target="_blank">https://x.com/i/web/status/2101831273224311035</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -153,6 +155,8 @@ READMEが公開する数字は次のとおり。動画は Zürich → London の
 ## 使い方
 
 `git clone` して `uv sync`、`.env` に `TYPESAFE_API_KEY` と `TEXT_MODEL_API_KEY` を入れ、`uv run jev` でローカルのインスペクタ（`http://127.0.0.1:8766`）が立つ。インスペクタには番号付き要素・操作の確率・対象の確率・実行されたアクションが並び、「Choose next」で実行前に停止できる。Chromeへの接続は同組織の Browser Harness 経由で、`uv sync` で一緒に入る。ライブラリとしては `Agent(url, goal)` をコンテキストマネージャで開き、`agent.run()` が返す状態（`elapsed_ms` / `status`）を回す形になる。
+
+中国語圏では @Pluvio9yte が「Jev の API キーを手に入れたが遊び方が分からない人向け」の真似できるリストの1番目に本リポジトリを挙げ、Jev は各ステップで「何をするか・どの要素を押すか」だけを判断し、文字入力のときだけ小型モデルを呼ぶ、Google Flights の検索は約7秒と紹介している（ブックマーク3,218件）。リストの2番目以降は捕捉が途切れている（[[concepts/jev-claude-code-integration]] 参照）。
 
 ## 観察ログ（未検証）
 

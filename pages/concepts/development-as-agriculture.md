@@ -41,3 +41,4 @@ flowchart LR
 - [[business/end-of-task-assignment]] — 「パイプラインを組む人とレビューする人だけが残る」という同型の結論をSpotify事例で論じる
 - [[concepts/output-outcome-impact]] — 生成量（アウトプット）でなくアウトカムで測るプロダクト論。生成が安くなるほど判定側が効くという本ページの構図の指標版
 - [[business/ai-native-management]] — 同じ農業メタファーを含む深津のX発言13論点の二次まとめ（@kazobara経由）。本ページの原典側に対する周辺論点の集約
+- [[concepts/ai-review-bottleneck]] — 確認速度が制約になる構造を『ザ・ゴール』の制約理論で捉え、読んで直す工程への流入を絞る具体策を示した実践論（@smark_x）
