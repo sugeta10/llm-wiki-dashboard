@@ -29,10 +29,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>jev-model-router</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="jev-model-router.md">Markdownで表示</a></div>
-  <div class="meta">tools/jev-model-router · tools · <span title="2026-09-24">1日前</span></div>
+  <div class="meta">tools/jev-model-router · tools · <span title="2026-09-25">今日</span></div>
   <article><h1>Jev Model Router｜Jev でリクエストごとに Claude Code のモデルを振り分ける Mod</h1>
 <p>@dani_avila7 が公開した、判断モデル <a href="../models/jev.html">jev</a> に Claude Code のモデル選択を任せる Claude Code Mod（<a href="../tools/claude-code-mods.html">claude-code-mods</a> の仕組みで動く拡張）。Jev には TypeSafe（@typesafeai）の直接 API か、Vercel AI Gateway 経由でアクセスする。</p>
 <p>@dani_avila7 の告知によると、Claude Code にリクエストを送るたびに Jev がサブエージェントのモデルを分類し、メインモデルはセッション開始時だけ分類する。メインモデルを途中で切り替えない理由は「〜を壊さないため」と書かれているが、告知文がそこで途切れており、何を壊さないためか（プロンプトキャッシュと考えられるが未確認）、分類の候補となるモデル・設定方法・リポジトリの所在は未収集である。告知には動画が添付されているが中身は未捕捉。</p>
+<p>この点について @karoukun_ai の記事は、メインモデルを途中で切り替えるとプロンプトキャッシュが壊れるため、メインモデルのルーティングは既定でオフになっていると説明している。安いモデルに切り替えたつもりが長いプロンプトのキャッシュを捨てて逆に高くつく落とし穴を、設計で避けている例という位置づけである。同じ発想の OSS として jev-router（gargpratyush 作、1ターン1回だけ Jev に問い合わせる fail-open のローカルプロキシ）があり、両者の比較は <a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a> にまとめた。</p>
 <p>リクエストごとに「どのモデルに任せるか」を選ぶ処理は、生成を伴わない選択なので、Jev の「文章を生成せず選択肢に確率付きでスコアを付ける」性質とよく噛み合うと考えられる。<a href="../concepts/decision-layer-model.html">decision-layer-model</a> が描く「LLM が作り、Jev が決め、コードが実行する」分業を、Claude Code 自身のモデル配分に当てはめた例と読める。工程ごとに大・中・小のモデルを人が配分する <a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> を、判断モデルが自動で行う形でもある。</p>
 <h2>問い</h2>
 <ul>
@@ -46,11 +47,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/decision-layer-model.html">decision-layer-model</a> — 生成 LLM から小さな分岐の判断を切り離す設計。モデル振り分けはその典型的な用途</li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 工程ごとにモデルを人が配分する戦略。Router はこの配分を毎リクエスト自動化する</li>
 <li><a href="../tools/laya-mlx.html">laya-mlx</a> — Jev 型選択モデルのオープンウェイト版。ローカルで回せば判断の遅延を下げられる候補</li>
+<li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a> — Claude Code に Jev をつなぐ3ルート。本 Mod と jev-router はモデルルーター経路の実装例</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li>
+<li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a></li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
 <li><a href="../models/jev.html">jev</a></li>
-<li><a href="../tools/claude-code-mods.html">claude-code-mods</a></li>
-<li><a href="../tools/laya-mlx.html">laya-mlx</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2101176629745561686" rel="noopener" target="_blank">https://x.com/i/web/status/2101176629745561686</a></li></ul></section></article>
+<li><a href="../tools/claude-code-mods.html">claude-code-mods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2101176629745561686" rel="noopener" target="_blank">https://x.com/i/web/status/2101176629745561686</a></li>
+<li><a href="https://x.com/i/web/status/2101497267815686284" rel="noopener" target="_blank">https://x.com/i/web/status/2101497267815686284</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -77,6 +80,8 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 
 @dani_avila7 の告知によると、Claude Code にリクエストを送るたびに Jev がサブエージェントのモデルを分類し、メインモデルはセッション開始時だけ分類する。メインモデルを途中で切り替えない理由は「〜を壊さないため」と書かれているが、告知文がそこで途切れており、何を壊さないためか（プロンプトキャッシュと考えられるが未確認）、分類の候補となるモデル・設定方法・リポジトリの所在は未収集である。告知には動画が添付されているが中身は未捕捉。
 
+この点について @karoukun_ai の記事は、メインモデルを途中で切り替えるとプロンプトキャッシュが壊れるため、メインモデルのルーティングは既定でオフになっていると説明している。安いモデルに切り替えたつもりが長いプロンプトのキャッシュを捨てて逆に高くつく落とし穴を、設計で避けている例という位置づけである。同じ発想の OSS として jev-router（gargpratyush 作、1ターン1回だけ Jev に問い合わせる fail-open のローカルプロキシ）があり、両者の比較は [[concepts/jev-claude-code-integration]] にまとめた。
+
 リクエストごとに「どのモデルに任せるか」を選ぶ処理は、生成を伴わない選択なので、Jev の「文章を生成せず選択肢に確率付きでスコアを付ける」性質とよく噛み合うと考えられる。[[concepts/decision-layer-model]] が描く「LLM が作り、Jev が決め、コードが実行する」分業を、Claude Code 自身のモデル配分に当てはめた例と読める。工程ごとに大・中・小のモデルを人が配分する [[concepts/llm-model-selection-strategy]] を、判断モデルが自動で行う形でもある。
 
 ## 問い
@@ -91,6 +96,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[concepts/decision-layer-model]] — 生成 LLM から小さな分岐の判断を切り離す設計。モデル振り分けはその典型的な用途
 - [[concepts/llm-model-selection-strategy]] — 工程ごとにモデルを人が配分する戦略。Router はこの配分を毎リクエスト自動化する
 - [[tools/laya-mlx]] — Jev 型選択モデルのオープンウェイト版。ローカルで回せば判断の遅延を下げられる候補
+- [[concepts/jev-claude-code-integration]] — Claude Code に Jev をつなぐ3ルート。本 Mod と jev-router はモデルルーター経路の実装例
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

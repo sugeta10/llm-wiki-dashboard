@@ -58,4 +58,5 @@ Claude Code のスキルフォルダに clone し、`pipeline/` で `npm run set
 - [[concepts/intermediate-notation-pattern]] — AIに GUI でなく構造化記法を書かせる設計手法。SlideSpec（JSON）はその一例
 - [[concepts/self-refining-skills]] — 指摘を教訓ファイルへ書き戻して育てるループ。規約ファイルへの1行追記と同じ構造
 - [[design/design-md]] — デザイン仕様の `.md` をエージェントの参照仕様として置く発想。既存のデザインシステム（デジタル庁など）をそのままスライド生成スキルに使う例を含む
+- [[concepts/review-request-etiquette]] — 資料レビューを依頼する側の作法と、コンサル上司が最初に問う「目的・読み手・論点・意思決定」。本スキルが機械チェックするのはスライド表現の規約で、その上流にあたる問いを扱う
 - [[design/minorun-marp-skill]] — 規約＋機械チェックという同じ構図を Marp の登壇スライドに適用した例（minorun365製）。検査対象が規約違反でなく、書き出したPDF・SVGの余白や文字サイズという実測値になっている

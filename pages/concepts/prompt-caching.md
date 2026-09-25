@@ -96,3 +96,4 @@ response = client.messages.create(
 - [[concepts/agent-command-wrappers]] — キャッシュがあっても再送は残るため、ターン数そのものを減らすという設計側。倍率表（読み出し0.1倍・書き込み1.25/2倍）を実測コストの説明に使っている
 - [[concepts/ai-engineer-interview-questions]] — キャッシングの導入場面・効果・注意点を採用面接で問う質問例（第2弾Q2）
 - [[concepts/software-factory-cost-equation]] — TTL経済を艦隊規模の既定値に落とした実例（Uber）：アイドルの長い対話セッションは1時間TTL・短命なサブエージェントは5分TTLに使い分け
+- [[concepts/jev-claude-code-integration]] — ターンごとのモデルルーターがメインモデルを切り替えるとキャッシュを捨てて逆に高くつくため、メイン切替を既定オフにする設計例（jev-model-router・jcm-router）

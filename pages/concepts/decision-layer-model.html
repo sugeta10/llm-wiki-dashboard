@@ -96,12 +96,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 工程ごとにモデルを配分する戦略。判断レイヤーはその配分先を「生成しないモデル」まで広げる</li>
 <li><a href="../tools/grok-bot.html">grok-bot</a> — 領域別ボットを運営ボットが巡回・催促する運用。@0xCodila が想定する GrokBot 風 Chief of Staff の実例</li>
 <li><a href="../tools/jev-model-router.html">jev-model-router</a> — Claude Code のモデル振り分けを Jev に任せる Mod。判断レイヤーをコーディングエージェント自身のモデル配分に当てはめた例</li>
+<li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a> — 判断レイヤーを Claude Code に入れる具体的な経路（公式スキル・MCP・モデルルーター）と、文脈選別・Stop フック等の周辺実装（@karoukun_ai）</li>
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a> — エージェント = モデル + ハーネスの全体論。@0xMovez はモデルルーターと Auto Mode ゲートの2層を、ハーネス側に判断モデルを入れる形として描く</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
 <li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a></li>
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
-<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
-<li><a href="../models/jev.html">jev</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2100984487802708306" rel="noopener" target="_blank">https://x.com/i/web/status/2100984487802708306</a></li>
+<li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a></li>
+<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2100984487802708306" rel="noopener" target="_blank">https://x.com/i/web/status/2100984487802708306</a></li>
 <li><a href="https://x.com/i/web/status/2100844631693095267" rel="noopener" target="_blank">https://x.com/i/web/status/2100844631693095267</a></li>
 <li><a href="https://x.com/i/web/status/2101007482919227841" rel="noopener" target="_blank">https://x.com/i/web/status/2101007482919227841</a></li>
 <li><a href="https://x.com/i/web/status/2101243146596384854" rel="noopener" target="_blank">https://x.com/i/web/status/2101243146596384854</a></li>
@@ -211,6 +212,7 @@ flowchart LR
 - [[concepts/llm-model-selection-strategy]] — 工程ごとにモデルを配分する戦略。判断レイヤーはその配分先を「生成しないモデル」まで広げる
 - [[tools/grok-bot]] — 領域別ボットを運営ボットが巡回・催促する運用。@0xCodila が想定する GrokBot 風 Chief of Staff の実例
 - [[tools/jev-model-router]] — Claude Code のモデル振り分けを Jev に任せる Mod。判断レイヤーをコーディングエージェント自身のモデル配分に当てはめた例
+- [[concepts/jev-claude-code-integration]] — 判断レイヤーを Claude Code に入れる具体的な経路（公式スキル・MCP・モデルルーター）と、文脈選別・Stop フック等の周辺実装（@karoukun_ai）
 - [[concepts/harness-engineering]] — エージェント = モデル + ハーネスの全体論。@0xMovez はモデルルーターと Auto Mode ゲートの2層を、ハーネス側に判断モデルを入れる形として描く
 </script>
 <script>

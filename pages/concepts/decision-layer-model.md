@@ -83,4 +83,5 @@ flowchart LR
 - [[concepts/llm-model-selection-strategy]] — 工程ごとにモデルを配分する戦略。判断レイヤーはその配分先を「生成しないモデル」まで広げる
 - [[tools/grok-bot]] — 領域別ボットを運営ボットが巡回・催促する運用。@0xCodila が想定する GrokBot 風 Chief of Staff の実例
 - [[tools/jev-model-router]] — Claude Code のモデル振り分けを Jev に任せる Mod。判断レイヤーをコーディングエージェント自身のモデル配分に当てはめた例
+- [[concepts/jev-claude-code-integration]] — 判断レイヤーを Claude Code に入れる具体的な経路（公式スキル・MCP・モデルルーター）と、文脈選別・Stop フック等の周辺実装（@karoukun_ai）
 - [[concepts/harness-engineering]] — エージェント = モデル + ハーネスの全体論。@0xMovez はモデルルーターと Auto Mode ゲートの2層を、ハーネス側に判断モデルを入れる形として描く

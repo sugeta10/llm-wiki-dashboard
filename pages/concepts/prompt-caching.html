@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>prompt-caching</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="prompt-caching.md">Markdownで表示</a></div>
-  <div class="meta">concepts/prompt-caching · concepts · <span title="2026-05-20">4ヶ月前</span></div>
+  <div class="meta">concepts/prompt-caching · concepts · <span title="2026-09-25">今日</span></div>
   <article><h1>プロンプトキャッシング（Prompt Caching）</h1>
 <p>Anthropic Claude APIが提供する<strong>プロンプトの前処理結果を再利用する機能</strong>。同一のプレフィックスを含むリクエストで、処理時間とコストを大幅に削減できる。</p>
 <p>関連: <a href="../concepts/prompt-cache-prewarm.html">prompt-cache-prewarm</a> | <a href="../concepts/prompt-engineering.html">prompt-engineering</a> | <a href="../companies/anthropic.html">anthropic</a></p>
@@ -144,11 +144,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a> — キャッシュがあっても再送は残るため、ターン数そのものを減らすという設計側。倍率表（読み出し0.1倍・書き込み1.25/2倍）を実測コストの説明に使っている</li>
 <li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a> — キャッシングの導入場面・効果・注意点を採用面接で問う質問例（第2弾Q2）</li>
 <li><a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a> — TTL経済を艦隊規模の既定値に落とした実例（Uber）：アイドルの長い対話セッションは1時間TTL・短命なサブエージェントは5分TTLに使い分け</li>
+<li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a> — ターンごとのモデルルーターがメインモデルを切り替えるとキャッシュを捨てて逆に高くつくため、メイン切替を既定オフにする設計例（jev-model-router・jcm-router）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a></li>
 <li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a></li>
 <li><a href="../concepts/attention.html">attention</a></li>
 <li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
-<li><a href="../concepts/prompt-cache-prewarm.html">prompt-cache-prewarm</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache</a></li></ul></section></article>
+<li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -267,6 +268,7 @@ response = client.messages.create(
 - [[concepts/agent-command-wrappers]] — キャッシュがあっても再送は残るため、ターン数そのものを減らすという設計側。倍率表（読み出し0.1倍・書き込み1.25/2倍）を実測コストの説明に使っている
 - [[concepts/ai-engineer-interview-questions]] — キャッシングの導入場面・効果・注意点を採用面接で問う質問例（第2弾Q2）
 - [[concepts/software-factory-cost-equation]] — TTL経済を艦隊規模の既定値に落とした実例（Uber）：アイドルの長い対話セッションは1時間TTL・短命なサブエージェントは5分TTLに使い分け
+- [[concepts/jev-claude-code-integration]] — ターンごとのモデルルーターがメインモデルを切り替えるとキャッシュを捨てて逆に高くつくため、メイン切替を既定オフにする設計例（jev-model-router・jcm-router）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

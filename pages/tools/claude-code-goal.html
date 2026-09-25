@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-goal</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-goal.md">Markdownで表示</a></div>
-  <div class="meta">tools/claude-code-goal · tools · <span title="2026-07-29">1ヶ月前</span></div>
+  <div class="meta">tools/claude-code-goal · tools · <span title="2026-09-25">今日</span></div>
   <article><h1>Claude Code /goal コマンド</h1>
 <p><strong><code>/goal</code></strong> は <a href="../tools/claude-code.html">claude-code</a> のセッションスコープ自律ワークフロー機能。完了条件を設定すると、Claude が条件を満たすまで自動でターンを繰り返す。</p>
 <h2>概要</h2>
@@ -137,6 +137,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — <code>/goal</code> を Goal-based ループとして位置づける公式4類型（トリガー×停止条件×プリミティブ）</li>
 <li><a href="../tools/claude-code-ultracode.html">claude-code-ultracode</a> — <code>/goal</code>と1行で同居させる総力戦モード。実例の指示文は両者の組み合わせだった</li>
 <li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a> — CodexのStop Hookで終了前に日本語校正（Gemini呼び出し）を差し込む実装例。Stop hookで次の作業を差し込む同じ使い方</li>
+<li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a> — Stop フックで完了の主張に証拠を求める limpet・jev-belay。評価器の位置に Haiku でなく生成しない判定モデル Jev を置いた実装例</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-dynamic-workflows.html">claude-code-dynamic-workflows</a></li>
 <li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
 <li><a href="../concepts/frontier-model-extraction.html">frontier-model-extraction</a></li>
@@ -284,6 +285,7 @@ flowchart TD
 - [[concepts/claude-code-loop-types]] — `/goal` を Goal-based ループとして位置づける公式4類型（トリガー×停止条件×プリミティブ）
 - [[tools/claude-code-ultracode]] — `/goal`と1行で同居させる総力戦モード。実例の指示文は両者の組み合わせだった
 - [[concepts/gemini-rewrite-stop-hook]] — CodexのStop Hookで終了前に日本語校正（Gemini呼び出し）を差し込む実装例。Stop hookで次の作業を差し込む同じ使い方
+- [[concepts/jev-claude-code-integration]] — Stop フックで完了の主張に証拠を求める limpet・jev-belay。評価器の位置に Haiku でなく生成しない判定モデル Jev を置いた実装例
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

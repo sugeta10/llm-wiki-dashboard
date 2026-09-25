@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jev-claude-code-integration - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>jev-claude-code-integration</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="jev-claude-code-integration.md">Markdownで表示</a></div>
+  <div class="meta">concepts/jev-claude-code-integration · concepts · <span title="2026-09-25">今日</span></div>
+  <article><h1>Claude Code に Jev をつなぐ3ルートと周辺ツール</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 判断モデル <a href="../models/jev.html">jev</a> を Claude Code につなぐ経路は「公式エージェントスキル（Jevを呼ぶコードを書かせる）」「MCPサーバ（Claude Codeの道具にする）」「モデルルーター（Claude Code のモデル選択自体をJevに任せる）」の3つで、目的によって使い分ける。発表から数日で、文脈の選別・Stopフックでの完了検証・スキルの並べ替えといった Claude Code 周りの実装が大量に公開された。</p>
+</blockquote>
+<p>@karoukun_ai の記事は、Claude Code で時間とお金が溶けるのはコードを書く部分でなく、その手前の「この指示はどのモデルに回すか」「このファイルは読む必要があるか」「この出力は合格か」という細かい判断で、そのたびに文章を書くためのAIを呼んでいるのが今の標準だ、という問題設定から始まる。その判断だけを安い専用モデルに移すのが Jev の使いどころで、考え方そのものは <a href="../concepts/decision-layer-model.html">decision-layer-model</a> にまとめた。記事は公開リポジトリ・公式ドキュメント・公開投稿から集めた二次まとめで、@karoukun_ai 自身が手元で確かめたのはウェイトリスト登録から公式スキル導入までだと明記している。</p>
+<pre class="mermaid">flowchart TD
+  Goal[&quot;やりたいこと&quot;] --&gt; R1[&quot;公式エージェントスキル&quot;]
+  Goal --&gt; R2[&quot;MCPサーバ（evaluate ツール）&quot;]
+  Goal --&gt; R3[&quot;モデルルーター（ローカルプロキシ）&quot;]
+  R1 --&gt; A1[&quot;自分のアプリにJevを組み込むコードを書かせる&quot;]
+  R2 --&gt; A2[&quot;Claude Code から Jev を直接呼ぶ&quot;]
+  R3 --&gt; A3[&quot;ターンごとのモデル選択をJevが判定&quot;]</pre>
+<h2>ルート1: 公式エージェントスキル</h2>
+<p>TypeSafe 公式コンソールの Quickstart に載っている方法で、Claude Code なら <code>claude plugin marketplace add typesafe-ai/skills</code> → <code>claude plugin install typesafe@typesafe-ai</code>、他のエージェントなら <code>npx skills add typesafe-ai/skills --skill typesafe-ai</code> を使う（公式はどちらか一方だけを使うよう指示）。@karoukun_ai は、これを入れても Jev 自体は動かず（呼ぶには別途APIキーが要る）、Claude Code の挙動も変わらない、あくまで Jev を呼ぶコードを書くときの指針だと注意する。向いているのは自分のアプリに Jev を組み込みたい場合である。@karoukun_ai は公式ウェイトリストに登録して半日足らずでコンソールに入れたとも書いている（発表直後の大量招待の時期と重なった可能性がある、と本人が留保）。</p>
+<h2>ルート2: MCPサーバで Claude Code の道具にする</h2>
+<p>Claude Code から Jev を直接呼ぶ最短経路で、@karoukun_ai が中心に紹介するのは <strong>typesafe-mcp</strong>。Go の単一バイナリで、公開するツールは <code>evaluate</code> ひとつだけ。state（判断材料）と choice / noul / score の型付き質問をそのまま渡すので、質問を組み立てるのはエージェント側になる。README によると <code>evaluate setup mcp</code> の1コマンドで Claude Code・Claude Desktop・Codex に一括登録され、OpenRouter のキーでも動く（その場合は OpenRouter の Decisions エンドポイント経由で請求も OpenRouter 側。アルファ扱いのパスで移動の可能性ありと README に明記）。</p>
+<p>自前で書く例として、<code>@modelcontextprotocol/sdk</code> で <code>evaluate</code> だけを公開する軽量サーバを作り <code>claude mcp add jev-gateway -- node ...</code> で登録した個人ブログが紹介されている。そのブログの筆者は1回あたり約0.0000147ドルだったと書いている。</p>
+<h2>ルート3: モデルルーターでモデル選択を任せる</h2>
+<p>Claude Code がどのモデルを使うかをターンごとに Jev に判定させる経路。<strong>jev-router</strong>（gargpratyush 作・MIT）はローカルにプロキシを立て、1ターンにつき1回だけ「どの階層のモデルが必要か」を Jev に尋ねる。README によると TypeSafe に送るのはユーザーのプロンプト本文だけで、遅延が増えるのはターン最初の1回だけ（ツールのループ中は増えない）。Jev が落ちても現在のモデルのまま素通しする fail-open 設計で、CLI の認証情報には触れない。</p>
+<p>同じ発想の <a href="../tools/jev-model-router.html">jev-model-router</a>（@dani_avila7）について、@karoukun_ai はメインモデルのルーティングが既定でオフになっている理由を「途中で切り替えるとプロンプトキャッシュが壊れるから」と説明している。安いモデルに切り替えたつもりが長いプロンプトのキャッシュ（<a href="../concepts/prompt-caching.html">prompt-caching</a>）を捨てて逆に高くつく、という落とし穴を設計で避けている例として @karoukun_ai は評価する。</p>
+<h2>Claude Code の外からの呼び出し口</h2>
+<p>@karoukun_ai が挙げる経路は TypeSafe 直接API・Vercel AI Gateway・Cloudflare Workers AI（モデルID <code>typesafe/jev</code>、コンテキスト32,000トークン）・LiteLLM のパススルー（TypeSafe の API はストリーミングを提供しないと LiteLLM のドキュメントに明記）・LangChain の <code>langchain-typesafe</code>（<code>TypeSafeClassifier</code> に state と questions を <code>.invoke()</code> で渡す）の5つで、TypeSafe 本体の招待が無くても経路は複数開いている。</p>
+<p>Cloudflare 公式例の読み方として @karoukun_ai が解説する要点は次のとおり。<code>questions</code> の各キー（例: <code>is_urgent</code>）は自分で付けるラベルで、返りの <code>answers</code> に同じ名前で入る。各質問は <code>type</code>・<code>instructions</code>・<code>criteria</code> の3点セットで、<code>criteria</code> の書き方だけが型ごとに違う（noul は true/false それぞれの条件、choice は選択肢名と説明の組で選択肢名がそのまま返る、score は低い順の配列で返りは1.04のような連続値）。<code>criteria</code> は省略もでき、判断がはっきりした質問なら instructions だけで動く。質問を増やしても1つの state に対して並列処理されるため速度はほとんど変わらない。Choice と Score には0〜1の confidence と確率分布が付くが、Noul は確率そのものが答えなので confidence という別枠は返らず、この違いを知らずに閾値を組むと片方で分岐が書けなくなる、と @karoukun_ai は注意する。</p>
+<h2>Claude Code 周りで公開された実装</h2>
+<p>@karoukun_ai は「発表から2日で GitHub に300以上の関連リポジトリ」という個人ブログの報告を引き、有志の一覧（awesome-jev 系リポジトリ3本）から Claude Code 周りで効きそうなものを紹介している。系統に分けると次のようになる。</p>
+<ul>
+<li><strong>文脈を汚さない・削る</strong> —— Winnow はツールの実行結果を文脈に入れる前に今のタスクと関係あるかを判定する（後から掃除せず最初から汚さない）。yoshi は Claude Code / Codex 向けの文脈削減プロキシで、削減量を実測で出すことを掲げる</li>
+<li><strong>何を差し込むかを選ぶ</strong> —— skillranker はインストール済みスキルを今のセッションに必要な順で並べ替える Rust 製 CLI とフックで、該当なしなら棄権する。jev-skillful はプロンプトごとにスキル・MCPサーバ・エージェント・コマンドから差し込むものを選び、効いたかまで測る</li>
+<li><strong>モデル・推論の深さを選ぶ</strong> —— jev-router、jcm-router（メッセージごとにモデルと推論の深さを選ぶが、キャッシュの効いたメイン会話には手を出さない）、jev-codex-router（Codex 側でモデル・思考の深さ・速度モードを選ぶ）</li>
+<li><strong>完了を疑う Stop フック</strong> —— limpet はエージェントが早まって終了しようとするのを平易なルールに照らして止める。jev-belay は完了の主張を信じる前にトランスクリプトに証拠があるかを確かめ、ファイルが変更されたのに検査が通っていないときだけ4問の Jev 呼び出しを1回使い、エラー時は必ず通す</li>
+<li><strong>ガードとレビュー</strong> —— jevwire（制約を厳しくはできても緩められない一方向設計）、Jev Review（変更を Jev の判定で評価するコードレビュー用ワークフロー）、foreman（複数エージェントの開発ラインで進めるか止めるかを Jev に任せる）、zod-jev（Zod の形の検証に Jev の意味の検証を重ねる）、semdecide（Unix パイプラインや CI に型付き判定を入れる。終了コードの契約があるぶん壊れにくいと @karoukun_ai は評価）</li>
+<li><strong>探索・操作</strong> —— blink（ファイルシステムを歩く探索役を複数走らせてコードベースを検索）、BrowserClaw（ログイン済み Chrome を保ったまま操作する MCP サーバで、DOM を刈り込み Shadow DOM と iframe も貫通すると説明されている）</li>
+</ul>
+<p>Stop フックで完了の主張に証拠を求める limpet・jev-belay は、Haiku を評価器に使う <a href="../tools/claude-code-goal.html">claude-code-goal</a> の完了判定と同じ位置に、生成しない判定モデルを置いたものと考えられる。jev-belay が「ファイルが変わったのに検査が通っていないときだけ呼ぶ」という発火条件を持つのは、判定を安くしても呼び出し回数を絞る設計が要ることを示している。</p>
+<h2>手を出す前の確認と落とし穴</h2>
+<p>@karoukun_ai が挙げる注意のうち、<a href="../models/jev.html">jev</a> の仕様・苦手の一覧に無いものは次のとおり。</p>
+<ul>
+<li>MCP サーバを登録しても起動済みのセッションにはツール定義が反映されない。<code>claude mcp list</code> で Connected なのに not found になるならセッションを開き直す（個人ブログの報告）</li>
+<li>Vercel AI Gateway は無料枠でもカード登録を求められた、という個人ブログの報告がある</li>
+<li>Jev は返信文もコードも書かないので、判定後に文章が要るなら Claude などの生成モデルを別に置き、その料金も別途かかる</li>
+<li>Jev 自体が速く安くても、ネットワーク・候補生成・閾値・集約・フォールバックを含むシステム設計で最終的な数値は大きく変わる（日本語の技術ブログの指摘）</li>
+<li>記事を書く・投稿を作る・調べものをするといった作業が主用途なら、公式スキルを入れても普段の動きは何も変わらない。効くのは分類・抽出・ランキング・振り分けをアプリに組み込むときである</li>
+</ul>
+<p>目的別の逆引きとして、@karoukun_ai はとりあえず試すなら typesafe-mcp、アプリに組み込むなら公式スキル、モデル選択の自動化なら jev-router か jcm-router（メインモデルを切り替えない設計のもの）、トークン削減なら Winnow か yoshi、出力検証なら jev-belay か limpet を勧める。最初の一歩は「自分の作業で毎回発生している判断を3つ書き出し、それを今いくらで回しているかを数える」ことだと結んでいる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-20: 「発表から2日で GitHub に300以上の関連リポジトリ」は個人ブログの報告の孫引きで、数え方は未確認</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このwikiの Claude Code 運用で、毎回発生している判断を3つ書き出すと何になるか（ingest のカテゴリ判定、粒度判定、既反映チェックなど）。それを今いくらで回しているか</li>
+<li>jev-belay 型の「完了の主張に証拠を求める」Stop フックは、日本語のトランスクリプトでも誤判定なく働くか</li>
+<li>Winnow（入る前に判定）と yoshi（入った後に削る）は、同じセッションでトークン削減量と取りこぼしにどれだけ差が出るか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../models/jev.html">jev</a> — 本ページがつなぐ判断モデル本体。仕様・評価値・公式が認める苦手の一覧</li>
+<li><a href="../concepts/decision-layer-model.html">decision-layer-model</a> — 生成LLMから小さな分岐の判断を切り離す設計論。本ページはそれを Claude Code に当てはめる具体的な経路</li>
+<li><a href="../tools/jev-model-router.html">jev-model-router</a> — ルート3の実装例。メインモデルをセッション開始時にしか選ばない理由がプロンプトキャッシュ</li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a> — メインモデルの途中切り替えで失われるキャッシュの仕組み</li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — Stop hook と Haiku 評価器で完了を判定する /goal。limpet・jev-belay と同じ位置の仕組み</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
+<li><a href="../models/jev.html">jev</a></li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
+<li><a href="../tools/jev-model-router.html">jev-model-router</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2101497267815686284" rel="noopener" target="_blank">https://x.com/i/web/status/2101497267815686284</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Code に Jev をつなぐ3ルートと周辺ツール
+
+&gt; **TL;DR**: 判断モデル [[models/jev]] を Claude Code につなぐ経路は「公式エージェントスキル（Jevを呼ぶコードを書かせる）」「MCPサーバ（Claude Codeの道具にする）」「モデルルーター（Claude Code のモデル選択自体をJevに任せる）」の3つで、目的によって使い分ける。発表から数日で、文脈の選別・Stopフックでの完了検証・スキルの並べ替えといった Claude Code 周りの実装が大量に公開された。
+
+@karoukun_ai の記事は、Claude Code で時間とお金が溶けるのはコードを書く部分でなく、その手前の「この指示はどのモデルに回すか」「このファイルは読む必要があるか」「この出力は合格か」という細かい判断で、そのたびに文章を書くためのAIを呼んでいるのが今の標準だ、という問題設定から始まる。その判断だけを安い専用モデルに移すのが Jev の使いどころで、考え方そのものは [[concepts/decision-layer-model]] にまとめた。記事は公開リポジトリ・公式ドキュメント・公開投稿から集めた二次まとめで、@karoukun_ai 自身が手元で確かめたのはウェイトリスト登録から公式スキル導入までだと明記している。
+
+```mermaid
+flowchart TD
+  Goal[&quot;やりたいこと&quot;] --&gt; R1[&quot;公式エージェントスキル&quot;]
+  Goal --&gt; R2[&quot;MCPサーバ（evaluate ツール）&quot;]
+  Goal --&gt; R3[&quot;モデルルーター（ローカルプロキシ）&quot;]
+  R1 --&gt; A1[&quot;自分のアプリにJevを組み込むコードを書かせる&quot;]
+  R2 --&gt; A2[&quot;Claude Code から Jev を直接呼ぶ&quot;]
+  R3 --&gt; A3[&quot;ターンごとのモデル選択をJevが判定&quot;]
+```
+
+## ルート1: 公式エージェントスキル
+
+TypeSafe 公式コンソールの Quickstart に載っている方法で、Claude Code なら `claude plugin marketplace add typesafe-ai/skills` → `claude plugin install typesafe@typesafe-ai`、他のエージェントなら `npx skills add typesafe-ai/skills --skill typesafe-ai` を使う（公式はどちらか一方だけを使うよう指示）。@karoukun_ai は、これを入れても Jev 自体は動かず（呼ぶには別途APIキーが要る）、Claude Code の挙動も変わらない、あくまで Jev を呼ぶコードを書くときの指針だと注意する。向いているのは自分のアプリに Jev を組み込みたい場合である。@karoukun_ai は公式ウェイトリストに登録して半日足らずでコンソールに入れたとも書いている（発表直後の大量招待の時期と重なった可能性がある、と本人が留保）。
+
+## ルート2: MCPサーバで Claude Code の道具にする
+
+Claude Code から Jev を直接呼ぶ最短経路で、@karoukun_ai が中心に紹介するのは **typesafe-mcp**。Go の単一バイナリで、公開するツールは `evaluate` ひとつだけ。state（判断材料）と choice / noul / score の型付き質問をそのまま渡すので、質問を組み立てるのはエージェント側になる。README によると `evaluate setup mcp` の1コマンドで Claude Code・Claude Desktop・Codex に一括登録され、OpenRouter のキーでも動く（その場合は OpenRouter の Decisions エンドポイント経由で請求も OpenRouter 側。アルファ扱いのパスで移動の可能性ありと README に明記）。
+
+自前で書く例として、`@modelcontextprotocol/sdk` で `evaluate` だけを公開する軽量サーバを作り `claude mcp add jev-gateway -- node ...` で登録した個人ブログが紹介されている。そのブログの筆者は1回あたり約0.0000147ドルだったと書いている。
+
+## ルート3: モデルルーターでモデル選択を任せる
+
+Claude Code がどのモデルを使うかをターンごとに Jev に判定させる経路。**jev-router**（gargpratyush 作・MIT）はローカルにプロキシを立て、1ターンにつき1回だけ「どの階層のモデルが必要か」を Jev に尋ねる。README によると TypeSafe に送るのはユーザーのプロンプト本文だけで、遅延が増えるのはターン最初の1回だけ（ツールのループ中は増えない）。Jev が落ちても現在のモデルのまま素通しする fail-open 設計で、CLI の認証情報には触れない。
+
+同じ発想の [[tools/jev-model-router]]（@dani_avila7）について、@karoukun_ai はメインモデルのルーティングが既定でオフになっている理由を「途中で切り替えるとプロンプトキャッシュが壊れるから」と説明している。安いモデルに切り替えたつもりが長いプロンプトのキャッシュ（[[concepts/prompt-caching]]）を捨てて逆に高くつく、という落とし穴を設計で避けている例として @karoukun_ai は評価する。
+
+## Claude Code の外からの呼び出し口
+
+@karoukun_ai が挙げる経路は TypeSafe 直接API・Vercel AI Gateway・Cloudflare Workers AI（モデルID `typesafe/jev`、コンテキスト32,000トークン）・LiteLLM のパススルー（TypeSafe の API はストリーミングを提供しないと LiteLLM のドキュメントに明記）・LangChain の `langchain-typesafe`（`TypeSafeClassifier` に state と questions を `.invoke()` で渡す）の5つで、TypeSafe 本体の招待が無くても経路は複数開いている。
+
+Cloudflare 公式例の読み方として @karoukun_ai が解説する要点は次のとおり。`questions` の各キー（例: `is_urgent`）は自分で付けるラベルで、返りの `answers` に同じ名前で入る。各質問は `type`・`instructions`・`criteria` の3点セットで、`criteria` の書き方だけが型ごとに違う（noul は true/false それぞれの条件、choice は選択肢名と説明の組で選択肢名がそのまま返る、score は低い順の配列で返りは1.04のような連続値）。`criteria` は省略もでき、判断がはっきりした質問なら instructions だけで動く。質問を増やしても1つの state に対して並列処理されるため速度はほとんど変わらない。Choice と Score には0〜1の confidence と確率分布が付くが、Noul は確率そのものが答えなので confidence という別枠は返らず、この違いを知らずに閾値を組むと片方で分岐が書けなくなる、と @karoukun_ai は注意する。
+
+## Claude Code 周りで公開された実装
+
+@karoukun_ai は「発表から2日で GitHub に300以上の関連リポジトリ」という個人ブログの報告を引き、有志の一覧（awesome-jev 系リポジトリ3本）から Claude Code 周りで効きそうなものを紹介している。系統に分けると次のようになる。
+
+- **文脈を汚さない・削る** —— Winnow はツールの実行結果を文脈に入れる前に今のタスクと関係あるかを判定する（後から掃除せず最初から汚さない）。yoshi は Claude Code / Codex 向けの文脈削減プロキシで、削減量を実測で出すことを掲げる
+- **何を差し込むかを選ぶ** —— skillranker はインストール済みスキルを今のセッションに必要な順で並べ替える Rust 製 CLI とフックで、該当なしなら棄権する。jev-skillful はプロンプトごとにスキル・MCPサーバ・エージェント・コマンドから差し込むものを選び、効いたかまで測る
+- **モデル・推論の深さを選ぶ** —— jev-router、jcm-router（メッセージごとにモデルと推論の深さを選ぶが、キャッシュの効いたメイン会話には手を出さない）、jev-codex-router（Codex 側でモデル・思考の深さ・速度モードを選ぶ）
+- **完了を疑う Stop フック** —— limpet はエージェントが早まって終了しようとするのを平易なルールに照らして止める。jev-belay は完了の主張を信じる前にトランスクリプトに証拠があるかを確かめ、ファイルが変更されたのに検査が通っていないときだけ4問の Jev 呼び出しを1回使い、エラー時は必ず通す
+- **ガードとレビュー** —— jevwire（制約を厳しくはできても緩められない一方向設計）、Jev Review（変更を Jev の判定で評価するコードレビュー用ワークフロー）、foreman（複数エージェントの開発ラインで進めるか止めるかを Jev に任せる）、zod-jev（Zod の形の検証に Jev の意味の検証を重ねる）、semdecide（Unix パイプラインや CI に型付き判定を入れる。終了コードの契約があるぶん壊れにくいと @karoukun_ai は評価）
+- **探索・操作** —— blink（ファイルシステムを歩く探索役を複数走らせてコードベースを検索）、BrowserClaw（ログイン済み Chrome を保ったまま操作する MCP サーバで、DOM を刈り込み Shadow DOM と iframe も貫通すると説明されている）
+
+Stop フックで完了の主張に証拠を求める limpet・jev-belay は、Haiku を評価器に使う [[tools/claude-code-goal]] の完了判定と同じ位置に、生成しない判定モデルを置いたものと考えられる。jev-belay が「ファイルが変わったのに検査が通っていないときだけ呼ぶ」という発火条件を持つのは、判定を安くしても呼び出し回数を絞る設計が要ることを示している。
+
+## 手を出す前の確認と落とし穴
+
+@karoukun_ai が挙げる注意のうち、[[models/jev]] の仕様・苦手の一覧に無いものは次のとおり。
+
+- MCP サーバを登録しても起動済みのセッションにはツール定義が反映されない。`claude mcp list` で Connected なのに not found になるならセッションを開き直す（個人ブログの報告）
+- Vercel AI Gateway は無料枠でもカード登録を求められた、という個人ブログの報告がある
+- Jev は返信文もコードも書かないので、判定後に文章が要るなら Claude などの生成モデルを別に置き、その料金も別途かかる
+- Jev 自体が速く安くても、ネットワーク・候補生成・閾値・集約・フォールバックを含むシステム設計で最終的な数値は大きく変わる（日本語の技術ブログの指摘）
+- 記事を書く・投稿を作る・調べものをするといった作業が主用途なら、公式スキルを入れても普段の動きは何も変わらない。効くのは分類・抽出・ランキング・振り分けをアプリに組み込むときである
+
+目的別の逆引きとして、@karoukun_ai はとりあえず試すなら typesafe-mcp、アプリに組み込むなら公式スキル、モデル選択の自動化なら jev-router か jcm-router（メインモデルを切り替えない設計のもの）、トークン削減なら Winnow か yoshi、出力検証なら jev-belay か limpet を勧める。最初の一歩は「自分の作業で毎回発生している判断を3つ書き出し、それを今いくらで回しているかを数える」ことだと結んでいる。
+
+## 観察ログ（未検証）
+
+- 2026-09-20: 「発表から2日で GitHub に300以上の関連リポジトリ」は個人ブログの報告の孫引きで、数え方は未確認
+
+## 問い
+
+- このwikiの Claude Code 運用で、毎回発生している判断を3つ書き出すと何になるか（ingest のカテゴリ判定、粒度判定、既反映チェックなど）。それを今いくらで回しているか
+- jev-belay 型の「完了の主張に証拠を求める」Stop フックは、日本語のトランスクリプトでも誤判定なく働くか
+- Winnow（入る前に判定）と yoshi（入った後に削る）は、同じセッションでトークン削減量と取りこぼしにどれだけ差が出るか
+
+## 関連
+
+- [[models/jev]] — 本ページがつなぐ判断モデル本体。仕様・評価値・公式が認める苦手の一覧
+- [[concepts/decision-layer-model]] — 生成LLMから小さな分岐の判断を切り離す設計論。本ページはそれを Claude Code に当てはめる具体的な経路
+- [[tools/jev-model-router]] — ルート3の実装例。メインモデルをセッション開始時にしか選ばない理由がプロンプトキャッシュ
+- [[concepts/prompt-caching]] — メインモデルの途中切り替えで失われるキャッシュの仕組み
+- [[tools/claude-code-goal]] — Stop hook と Haiku 評価器で完了を判定する /goal。limpet・jev-belay と同じ位置の仕組み
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

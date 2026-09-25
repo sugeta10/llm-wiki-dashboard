@@ -42,6 +42,14 @@ TypeSafe は現行バージョンの苦手を「jaggedness page」として公�
 
 @zodchiii は、これらの失敗はすべて「コードでやるべきことをモデルに渡した」という同じ形をしていると結論づける。運用面では、`jev-latest` は新リリースで指す先が変わり、あるバージョンで調整した閾値は次に持ち越せないため `jev-1.13.0` のように固定し、呼び出しごとに `r.model` と `r.usage` を記録するよう勧める。TypeSafe 自身は、エージェントは問いを書くのが得意でないので一緒に編集する前提で、問いと閾値を1ファイルにまとめてレビューしやすくするよう注記しているという。
 
+## 開発者・評価値・提供経路（@karoukun_ai のまとめ）
+
+@karoukun_ai の記事によると、Jev を作ったのは元 OpenAI の研究者で InstructGPT 論文の共著者の Diogo Almeida 氏で、「System One」という名前はカーネマンの速い思考（システム1）に由来する。Claude や GPT-5.6 Sol が遅い思考（システム2）を担う設計なのに対し、Jev はシステム1だけを極端に速く安く担当する、と @karoukun_ai は整理する。@CompleteSkeptic が Almeida 氏のアカウントかどうかは、この記事にもハンドル名が出てこないため確認できていない。
+
+@karoukun_ai が紹介する TypeSafe 自身の4ワークフロー評価では、Jev は67.8%で GPT-5.6 Terra（67.9%）とほぼ同等、Sol（74.1%）と Opus 5（73.1%）には届かず、コストは約200分の1、レイテンシは約50分の1とされる。@karoukun_ai はこの数字が正答率ではない点を強調する。評価ページの記載では、正解ラベルは GPT-6 Astra と Claude Fable 5.1 を高い思考設定で動かした回答の平均で作られており、人手の正解は無い。つまり67.8%は2つの最前線モデルの合意との一致率で、ワークフローを自社チームが作ったので偏りがありうることは TypeSafe 自身も認めているという。平均の内訳では請求書処理で Jev が61.8%と、Terra 74.7%・Opus 5 78.4%・Sol 79.1%に大きく離されており、散らかった文書から構造化された事実を抜き出す作業はまだ得意でない、と @karoukun_ai は書く（出典は第三者ブログ）。「最大193.6倍高速・444.6倍安価」という公称値も自社設定のワークフロー全体での比較で、第三者の再現は無い。@karoukun_ai の結論は「賢さで上を取るモデルではなく、同じくらいの賢さを桁違いに安く速く出すモデル」である。
+
+提供経路は発表週のうちに広がり、Vercel AI Gateway（公式チェンジログ）・Cloudflare Workers AI（`typesafe/jev`、コンテキスト32,000トークン）・LiteLLM のパススルー・LangChain の `langchain-typesafe` から呼べるようになった。Claude Code へのつなぎ方と周辺ツールは [[concepts/jev-claude-code-integration]] にまとめた。日本語については、Yusuke Kawabata 氏が問い合わせ文を状態として渡し「人間の対応を求めているか」に98%の Yes が返ったと投稿している（@karoukun_ai の紹介）。
+
 ## 外部からの内部構造推測（未収集）
 
 @iwashi86 は、Jev の内部アーキテクチャを推測した技術記事「Jev's Architecture Unmasked」のメモを投稿している。@iwashi86 のまとめによると、この記事は Jev の API を約1万回呼び出して内部構造を推測したもので、従来の言語モデルによる分類・ルーティングはトークンを1文字ずつ逐次生成するため膨大な無駄な計算コストが発生していた、という問題設定から始まる。捕捉できたメモはここで途切れており、記事が推測した構造そのものは未収集である。問題設定は、上の mizchi の「生成せず選択肢にスコアを付ける」という説明と同じ方向を指している。
@@ -56,6 +64,7 @@ TypeSafe は現行バージョンの苦手を「jaggedness page」として公�
 - RLCDは何の略で、既存のRLHF・RLVRと何が違うのか。発表本文かリンク先の技術資料を別途ingestして確認する
 - 「チャットモデルの延長ではAGIに届かない」という問題設定は、[[concepts/agi-knowledge-moat]]など既存ページのAGI観とどう噛み合うか
 - 「Jev's Architecture Unmasked」の原記事を取得し、API 約1万回の呼び出しから何を推測したのか（encoder＋decision head 型か、Laya との構造の近さ）を確かめる
+- 評価の正解ラベルが「Astra と Fable 5.1 の合意」なら、Jev の67.8%は最前線モデルの癖まで含めた一致率になる。人手ラベルの自前データで測ると順位はどう動くか
 - @CompleteSkeptic と TypeSafe AI の関係（創業者か）を公式発表で確かめる。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか
 
 ## 関連
@@ -67,3 +76,4 @@ TypeSafe は現行バージョンの苦手を「jaggedness page」として公�
 - [[concepts/agi-knowledge-moat]] — AGI時代の競争優位を論じる既存ページ。発表の「チャットモデルはなぜAGIに届かないか」という問いの対照
 - [[concepts/small-llm-fine-tuning]] — 狭いタスクを小さなモデルで解く方向を、専用モデルでなく小型LLMのファインチューニングで実現する手順
 - [[tools/jev-model-router]] — Jev に Claude Code のサブエージェント・メインモデルの選択を任せる Claude Code Mod（@dani_avila7）
+- [[concepts/jev-claude-code-integration]] — 公式スキル・MCPサーバ・モデルルーターの3ルートで Claude Code に Jev をつなぐ方法と、Stop フック等の周辺ツール（@karoukun_ai）
