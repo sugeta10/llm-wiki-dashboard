@@ -56,3 +56,4 @@ MCPは1,000超のサーバーを単一ゲートウェイに集約した上で、
 - [[concepts/context-graph-retrieval]] — コンテキストグラフ検索の設計手順側
 - [[tools/stripe-minions]] — managed agentsパイプラインの他社実装（Stripe）
 - [[business/ai-native-management]] — 本事例を深津貴之が経営論として引いた側。「見るべきKPIはモデル名でなく、同じ巨大コンテキストを1セッションに何回再読ませているか」という翻訳になっている
+- [[concepts/github-runner-agent-factory]] — 「ソフトウェア工場」を個人が GitHub の Self-hosted runner 上で24/365稼働させる構成（@k1ito）。本ページは全社規模側

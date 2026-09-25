@@ -118,11 +118,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/improver-skill-pattern.html">improver-skill-pattern</a> — 運営ボットJennyによる「ミスの根本原因→プレイブック更新→周知」は、outer improver skillがフィードバックからスキル編集を提案する構造と同型</li>
 <li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a> — 夜間に自動化ワークフローを回す先行例。Grok Botの毎晩3時の監査は同じ時間帯運用の別実装</li>
 <li><a href="../concepts/decision-layer-model.html">decision-layer-model</a> — @0xCodila が GrokBot 風 Chief of Staff を例に、ワーカー選択・完了判定などの小さな判断を判断モデルへ切り出す設計を示す</li>
+<li><a href="../concepts/github-runner-agent-factory.html">github-runner-agent-factory</a> — 死活管理を専用ボットに持たせる本ページに対し、GitHub の Self-hosted runner 上でエージェントを常時動かし情報も GitHub に集約する個人構成（@k1ito）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li>
+<li><a href="../concepts/github-runner-agent-factory.html">github-runner-agent-factory</a></li>
 <li><a href="../concepts/improver-skill-pattern.html">improver-skill-pattern</a></li>
 <li><a href="../tools/cursor.html">cursor</a></li>
-<li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a></li>
-<li><a href="../tools/stripe-minions.html">stripe-minions</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094493172516966781" rel="noopener" target="_blank">https://x.com/i/web/status/2094493172516966781</a></li></ul></section></article>
+<li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094493172516966781" rel="noopener" target="_blank">https://x.com/i/web/status/2094493172516966781</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -224,6 +225,7 @@ flowchart LR
 - [[concepts/improver-skill-pattern]] — 運営ボットJennyによる「ミスの根本原因→プレイブック更新→周知」は、outer improver skillがフィードバックからスキル編集を提案する構造と同型
 - [[tools/hermes-agent-overnight]] — 夜間に自動化ワークフローを回す先行例。Grok Botの毎晩3時の監査は同じ時間帯運用の別実装
 - [[concepts/decision-layer-model]] — @0xCodila が GrokBot 風 Chief of Staff を例に、ワーカー選択・完了判定などの小さな判断を判断モデルへ切り出す設計を示す
+- [[concepts/github-runner-agent-factory]] — 死活管理を専用ボットに持たせる本ページに対し、GitHub の Self-hosted runner 上でエージェントを常時動かし情報も GitHub に集約する個人構成（@k1ito）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

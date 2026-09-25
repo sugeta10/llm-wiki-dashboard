@@ -159,3 +159,4 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[concepts/graph-engineering]] — ループのさらに一段上の抽象化レイヤー。同じ@0xCodezによるハーネス→ループ→グラフ3部作の最終層
 - [[business/end-of-task-assignment]] — 「35分問題」への言及とともに、ループ設計を割り振り型開発の終焉というキャリア論の文脈に位置づける
 - [[concepts/agent-autonomy-levels]] — ループを「レベル3→4へ上げる部品」として位置づける梯子（@Mahaximus_）。採用率50%を採算ラインとする点が別ソースで一致
+- [[concepts/github-runner-agent-factory]] — ループを24/365回し続ける実行基盤を GitHub（Self-hosted runner・情報集約・Blacksmith で CI 高速化）に置いた個人実践（@k1ito）
