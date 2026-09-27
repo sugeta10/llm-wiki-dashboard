@@ -32,3 +32,4 @@ Phil Chen（@philhchen）は、自身のスタートアップ・Helm AI・Scale 
 - [[concepts/finding-unknowns]]
 - [[business/talent-to-value-ai]]
 - [[concepts/action-space]] — 同型の主張を日本側から（上野山勝也の「地頭の腑分け・知的な運動神経・アクション空間」をJames Rineyが展開）
+- [[business/high-income-skills-testosterone]] — 学歴・経歴なしで年収を上げる4スキルの告知（@badassceo・記事本体は未収集）

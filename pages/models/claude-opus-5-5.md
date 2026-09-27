@@ -16,3 +16,4 @@
 - [[models/claude-opus-5]] — 前世代と考えられる Opus（2026-07-24発表）
 - [[concepts/lean-prompt-rules-adaptation]] — Opus 5 移行でシステムプロンプトが変わり旧 rules が噛み合わなくなった実測記録。本モデルのシステムプロンプトを読むときの比較対象
 - [[companies/anthropic]] — 開発元
+- [[concepts/effort-level-selection]] — @trq212 が Opus 5.5 で同一タスクを effort 別に実行した実験（low 0/5 → high 4〜5/5 の事例など）

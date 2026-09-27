@@ -65,3 +65,4 @@ flowchart TD
 - [[concepts/agentic-coding]] — 上位概念。unknownsの削減と計画をその中核スキルと位置づける
 - [[concepts/career-advice-ai-age]] — Phil Chenの「問題を解くより見つける」。エージェント時代に価値を出す問題選択スキルとして接続
 - [[concepts/ai-strategist-prompt]] — 会話履歴を横断させ「見えていない機会/リスク/前提」を強制出力させる参謀プロンプト。unknownsの掘り出しを個人利用に落とした型
+- [[concepts/effort-level-selection]] — 同じ@trq212の effort 論。「インタビュー→low で実装→レビュー→high で検証」のループで本フレームの実装前インタビューを前段に置く

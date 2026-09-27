@@ -28,3 +28,4 @@ Fable と Mythos を対で発表する形は、Fable 5 / Mythos 5 のときの�
 - [[concepts/reasoning-vs-japanese-fluency]] — 推論には長けるが日本語出力は翻訳調が出やすい、という@yugen_matuniの第三者評価
 - [[tools/herdr]] — クォータ消費が速い5.1を司令塔に限定し、実装を他エージェントのペインへ回す運用（@Voxyz_ai）
 - [[models/gpt-6-astra]] — 同時期（2026-09-04）に OpenAI Codex チームがスキル指針の前提に置いた新世代モデル。両社の最新世代が同じ「指示を減らせ」へ向かう対応は [[concepts/gpt-6-astra-skills-prompting]]
+- [[concepts/effort-level-selection]] — Fable 5.1 と Opus 5.5 の effort 曲線と使い分けの経験則（@trq212）

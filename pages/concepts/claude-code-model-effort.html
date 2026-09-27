@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-model-effort</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-model-effort.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-code-model-effort · concepts · <span title="2026-07-10">2ヶ月前</span></div>
+  <div class="meta">concepts/claude-code-model-effort · concepts · <span title="2026-09-27">今日</span></div>
   <article><h1>モデル選択と Effort（knowing more vs trying harder）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: モデル設定は「どの凍結済み重みが応答するか＝何を知っているか」を、effort 設定は「完了と見なす前にどれだけ徹底的に働くか」を決める別次元のつまみ。Claude が間違えたらまずコンテキストを疑い、次に「知らなかったのか（モデル）／頑張らなかったのか（effort）」で切り分ける。</p>
@@ -67,11 +67,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> — モデルの知識差を前提に高価モデルの出番を絞る配線パターン</li>
 <li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a> — 専門家側。デフォルト effort が 4.7 比で同トークン量のままより良い結果という公式報告</li>
 <li><a href="../concepts/token-management.html">token-management</a> — トークン消費を経営イシューとして扱う上位論点</li>
+<li><a href="../concepts/effort-level-selection.html">effort-level-selection</a> — 同じ effort をどの仕事にどのレベルで当てるかの実測版（@trq212・Terminal-Bench 3.0 と Opus 5.5 実験）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
+<li><a href="../concepts/effort-level-selection.html">effort-level-selection</a></li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li>
 <li><a href="../models/claude-fable-5.html">claude-fable-5</a></li>
-<li><a href="../concepts/token-management.html">token-management</a></li>
-<li><a href="../models/claude-opus-4-8.html">claude-opus-4-8</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2074900291062034618" rel="noopener" target="_blank">https://x.com/i/web/status/2074900291062034618</a></li></ul></section></article>
+<li><a href="../concepts/token-management.html">token-management</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2074900291062034618" rel="noopener" target="_blank">https://x.com/i/web/status/2074900291062034618</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -141,6 +142,7 @@ Hallie の比喩では、Fable は「他の誰にも解けない問題を扱う�
 - [[concepts/advisor-executor-pattern]] — モデルの知識差を前提に高価モデルの出番を絞る配線パターン
 - [[models/claude-opus-4-8]] — 専門家側。デフォルト effort が 4.7 比で同トークン量のままより良い結果という公式報告
 - [[concepts/token-management]] — トークン消費を経営イシューとして扱う上位論点
+- [[concepts/effort-level-selection]] — 同じ effort をどの仕事にどのレベルで当てるかの実測版（@trq212・Terminal-Bench 3.0 と Opus 5.5 実験）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

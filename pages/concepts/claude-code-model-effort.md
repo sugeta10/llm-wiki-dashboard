@@ -47,3 +47,4 @@ Hallie の比喩では、Fable は「他の誰にも解けない問題を扱う�
 - [[concepts/advisor-executor-pattern]] — モデルの知識差を前提に高価モデルの出番を絞る配線パターン
 - [[models/claude-opus-4-8]] — 専門家側。デフォルト effort が 4.7 比で同トークン量のままより良い結果という公式報告
 - [[concepts/token-management]] — トークン消費を経営イシューとして扱う上位論点
+- [[concepts/effort-level-selection]] — 同じ effort をどの仕事にどのレベルで当てるかの実測版（@trq212・Terminal-Bench 3.0 と Opus 5.5 実験）
