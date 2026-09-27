@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>decision-layer-model</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="decision-layer-model.md">Markdownで表示</a></div>
-  <div class="meta">concepts/decision-layer-model · concepts · <span title="2026-09-26">今日</span></div>
+  <div class="meta">concepts/decision-layer-model · concepts · <span title="2026-09-27">今日</span></div>
   <article><h1>判断レイヤー｜生成するモデルと、次を決めるモデルを分ける</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントの中の「次はどのワーカーか」「このソースは関連するか」「公開してよいか」といった小さな判断を、文章を生成するLLMから切り離し、選択肢・点数・真偽を確率付きで返す専用モデル（TypeSafe AI の <a href="../models/jev.html">jev</a> 等）に任せる設計。「LLMが仕事を作り、Jevが次を決め、コードが実行する」の三分業になる。</p>
@@ -108,11 +108,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/jev-model-router.html">jev-model-router</a> — Claude Code のモデル振り分けを Jev に任せる Mod。判断レイヤーをコーディングエージェント自身のモデル配分に当てはめた例</li>
 <li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a> — 判断レイヤーを Claude Code に入れる具体的な経路（公式スキル・MCP・モデルルーター）と、文脈選別・Stop フック等の周辺実装（@karoukun_ai）</li>
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a> — エージェント = モデル + ハーネスの全体論。@0xMovez はモデルルーターと Auto Mode ゲートの2層を、ハーネス側に判断モデルを入れる形として描く</li>
+<li><a href="../concepts/jev-codex-integration.html">jev-codex-integration</a> — 判断レイヤーを Codex に入れる実務層。自動処理率と正解率をセットで測る評価設計と、日本語での検証の仕方（@MakeAI_CEO）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
 <li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a></li>
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
 <li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a></li>
-<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2100984487802708306" rel="noopener" target="_blank">https://x.com/i/web/status/2100984487802708306</a></li>
+<li><a href="../concepts/jev-codex-integration.html">jev-codex-integration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2100984487802708306" rel="noopener" target="_blank">https://x.com/i/web/status/2100984487802708306</a></li>
 <li><a href="https://x.com/i/web/status/2100844631693095267" rel="noopener" target="_blank">https://x.com/i/web/status/2100844631693095267</a></li>
 <li><a href="https://x.com/i/web/status/2101007482919227841" rel="noopener" target="_blank">https://x.com/i/web/status/2101007482919227841</a></li>
 <li><a href="https://x.com/i/web/status/2101243146596384854" rel="noopener" target="_blank">https://x.com/i/web/status/2101243146596384854</a></li>
@@ -237,6 +238,7 @@ flowchart LR
 - [[tools/jev-model-router]] — Claude Code のモデル振り分けを Jev に任せる Mod。判断レイヤーをコーディングエージェント自身のモデル配分に当てはめた例
 - [[concepts/jev-claude-code-integration]] — 判断レイヤーを Claude Code に入れる具体的な経路（公式スキル・MCP・モデルルーター）と、文脈選別・Stop フック等の周辺実装（@karoukun_ai）
 - [[concepts/harness-engineering]] — エージェント = モデル + ハーネスの全体論。@0xMovez はモデルルーターと Auto Mode ゲートの2層を、ハーネス側に判断モデルを入れる形として描く
+- [[concepts/jev-codex-integration]] — 判断レイヤーを Codex に入れる実務層。自動処理率と正解率をセットで測る評価設計と、日本語での検証の仕方（@MakeAI_CEO）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

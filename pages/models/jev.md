@@ -68,6 +68,10 @@ TypeSafe は現行バージョンの苦手を「jaggedness page」として公�
 
 @iwashi86 は、Jev の内部アーキテクチャを推測した技術記事「Jev's Architecture Unmasked」のメモを投稿している。@iwashi86 のまとめによると、この記事は Jev の API を約1万回呼び出して内部構造を推測したもので、従来の言語モデルによる分類・ルーティングはトークンを1文字ずつ逐次生成するため膨大な無駄な計算コストが発生していた、という問題設定から始まる。捕捉できたメモはここで途切れており、記事が推測した構造そのものは未収集である。問題設定は、上の mizchi の「生成せず選択肢にスコアを付ける」という説明と同じ方向を指している。
 
+## Codex 向け解説での仕様の記述（@MakeAI_CEO）
+
+@MakeAI_CEO の Codex 向け解説記事は、2026-09-21時点の公式資料を確認したうえで、入力はテキストのみ（画像・音声・動画は不可）、現行モデルは jev-1.13.0、Noul には confidence が無く Choice・Score の confidence は確率分布の集中度、と書く。Noul に confidence が無い点は @karoukun_ai の記述と一致し、上の confidence の形式の食い違いを解く材料の一つになる。公式の70〜500ミリ秒という低遅延は主に米国西海岸からの測定だとも紹介している。Codex への導入と設計の勘所は [[concepts/jev-codex-integration]] にまとめた。
+
 ## 観察ログ（未検証）
 
 - 2026-09-15: 「20-200x faster」「40-400x」は開発元の自己申告で、比較対象・計測条件は未捕捉。発表本文（リンク先）を取得して何と比べた数字かを確かめる
@@ -91,3 +95,4 @@ TypeSafe は現行バージョンの苦手を「jaggedness page」として公�
 - [[concepts/small-llm-fine-tuning]] — 狭いタスクを小さなモデルで解く方向を、専用モデルでなく小型LLMのファインチューニングで実現する手順
 - [[tools/jev-model-router]] — Jev に Claude Code のサブエージェント・メインモデルの選択を任せる Claude Code Mod（@dani_avila7）
 - [[concepts/jev-claude-code-integration]] — 公式スキル・MCPサーバ・モデルルーターの3ルートで Claude Code に Jev をつなぐ方法と、Stop フック等の周辺ツール（@karoukun_ai）
+- [[concepts/jev-codex-integration]] — 同じ公式スキルを Codex に入れる手順・応用案7つ・精度を上げる6つの設計（@MakeAI_CEO）

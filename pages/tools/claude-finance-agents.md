@@ -78,3 +78,4 @@ Claude for Excel / PowerPoint / Word / Outlook アドインにより4アプリ�
 - [[tools/claude-mcp]]
 - [[business/backoffice-ai-implementation]]
 - [[tools/autohedge]] — 自律型ヘッジファンドOSS（4エージェント分業）。公式の本テンプレートと役割設計を対比できる
+- [[business/ai-tenbagger-research]] — 金融特化AI「Astra」で米国小型株の兆しを拾い Claude で投資ストーリーに解釈する個人の分業例（@goldouji）

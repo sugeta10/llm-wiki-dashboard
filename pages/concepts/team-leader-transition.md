@@ -35,3 +35,4 @@ flowchart LR
 - [[concepts/self-evaluation-gap]]
 - [[business/org-design-intelligence]]
 - [[concepts/aikyou]] — 相手を採点しないことで安全感を与える愛嬌論（@ichigoholi）。心理的安全性の1対1版として読める
+- [[concepts/senior-engineer-death-spiral]] — 転職・昇進を機に実力以上を演じて空回りする現象（@iwashi86 紹介）。役割が変わった直後に崩れる、エンジニア版の同系統の問題

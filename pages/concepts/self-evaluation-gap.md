@@ -43,3 +43,4 @@
 - [[concepts/career-agency-variables]] — 同著者(@ysk_motoyama)。何をやるか/どうやるか/なぜやるかの3変数でキャリアの自己決定権を論じる別テーマの記事
 - [[concepts/introvert-networking-strategy]] — 同著者(@ysk_motoyama)。社交の量で戦わず準備工程に投資する人脈戦略。自己評価でなく他者からどう見つけてもらうかを扱う別テーマの記事
 - [[concepts/review-request-etiquette]] — 同著者(@ysk_motoyama)。資料レビュー依頼の基本動作。「一発でOKがもらえると思うのは自己評価が高すぎる」という本ページと裏表の前提に立つ
+- [[concepts/senior-engineer-death-spiral]] — 実力以上のエンジニアを演じて空回りする現象（@iwashi86 紹介）。自己評価のずれが背伸びとして表れる例として読める
