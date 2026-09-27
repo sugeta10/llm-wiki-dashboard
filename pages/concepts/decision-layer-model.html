@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>decision-layer-model</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="decision-layer-model.md">Markdownで表示</a></div>
-  <div class="meta">concepts/decision-layer-model · concepts · <span title="2026-09-27">今日</span></div>
+  <div class="meta">concepts/decision-layer-model · concepts · <span title="2026-09-27">1日前</span></div>
   <article><h1>判断レイヤー｜生成するモデルと、次を決めるモデルを分ける</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントの中の「次はどのワーカーか」「このソースは関連するか」「公開してよいか」といった小さな判断を、文章を生成するLLMから切り離し、選択肢・点数・真偽を確率付きで返す専用モデル（TypeSafe AI の <a href="../models/jev.html">jev</a> 等）に任せる設計。「LLMが仕事を作り、Jevが次を決め、コードが実行する」の三分業になる。</p>

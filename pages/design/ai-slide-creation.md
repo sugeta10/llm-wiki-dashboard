@@ -51,4 +51,5 @@ AIにスライド作成を丸投げすると「綺麗なだけで刺さらない
 - [[design/lt-preparation-guide]] — LT発表のツール・素材・手順ガイド
 - [[concepts/prompt-engineering]] — 制約を明示するプロンプト設計の一般形
 - [[concepts/eval-loop]] — 出力を基準に採点し直す自己検証ループ
+- [[design/interactive-ai-slides]] — 同じ著者の続編：構造（6種）ごとに1つの「動き」を対応させ、クリックで深掘りできる動くAIスライドにする手法
 - [[design/consulting-pptx-skill]] — 「結論はタイトルに書く」「見本の主張文を置かない（文型を写した資料になる）」を規約＋機械チェックで強制するClaude Codeスキル（Carnot AI）。本ページの1スライド1主張原則の強制装置
