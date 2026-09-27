@@ -96,3 +96,4 @@ TypeSafe は現行バージョンの苦手を「jaggedness page」として公�
 - [[tools/jev-model-router]] — Jev に Claude Code のサブエージェント・メインモデルの選択を任せる Claude Code Mod（@dani_avila7）
 - [[concepts/jev-claude-code-integration]] — 公式スキル・MCPサーバ・モデルルーターの3ルートで Claude Code に Jev をつなぐ方法と、Stop フック等の周辺ツール（@karoukun_ai）
 - [[concepts/jev-codex-integration]] — 同じ公式スキルを Codex に入れる手順・応用案7つ・精度を上げる6つの設計（@MakeAI_CEO）
+- [[models/diffusiongemma-jev]] — Google Gemma 公式が紹介した Jev API 互換のモデル。Cloud Run に1コマンドでエンドポイントを立てられ、1ステップ約35〜60ms

@@ -63,3 +63,4 @@ mizchi は、出て数日で Jev クローンが大量に作られており Laya
 - [[concepts/decision-layer-model]] — planner が説明しモデルは選ぶだけ、という分業をエージェント全体の設計（LLMが作り、判断モデルが決め、コードが実行する）に広げた概念ページ
 - [[concepts/small-llm-fine-tuning]] — 小型モデルを狭いタスクに特化させる別経路。Laya は既製の選択モデル、こちらは自前データでの QLoRA 学習
 - [[tools/jev-model-router]] — Jev に Claude Code のモデル選択を毎リクエスト任せる Mod。判断の遅延を下げるローカル代替として Laya が候補になる
+- [[models/diffusiongemma-jev]] — Jev API 互換を掲げる Google のモデル。手元 MLX でなく自前の Cloud Run に置く選択肢（1ステップ約35〜60ms・@googlegemma）

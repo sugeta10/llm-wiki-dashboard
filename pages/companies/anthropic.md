@@ -70,3 +70,4 @@ Anthropicが公開したマルチエージェント構成では：
 - [[business/founders-playbook]]（AIネイティブ・スタートアップ構築の公式プレイブック・Chat/Cowork/Code製品マトリクス）
 - [[concepts/product-role-archetypes]]（Boris Cherny が Anthropic 内で観察した職能横断の5アーキタイプ）
 - [[tools/claude-academy]]（公式の無料学習サイト・2026-08-20公開。製品別5トラック＋AI Fluency）
+- [[models/claude-opus-5-5]]（Opus 5 後継と考えられるモデル。個人が投稿したシステムプロンプト冒頭のみ捕捉・公式情報は未収集）

@@ -98,3 +98,4 @@ flowchart LR
 - [[concepts/jev-claude-code-integration]] — 判断レイヤーを Claude Code に入れる具体的な経路（公式スキル・MCP・モデルルーター）と、文脈選別・Stop フック等の周辺実装（@karoukun_ai）
 - [[concepts/harness-engineering]] — エージェント = モデル + ハーネスの全体論。@0xMovez はモデルルーターと Auto Mode ゲートの2層を、ハーネス側に判断モデルを入れる形として描く
 - [[concepts/jev-codex-integration]] — 判断レイヤーを Codex に入れる実務層。自動処理率と正解率をセットで測る評価設計と、日本語での検証の仕方（@MakeAI_CEO）
+- [[models/diffusiongemma-jev]] — Google Gemma 公式が紹介した Jev API 互換モデル。Cloud Run に自前で立てられる、判断レイヤーの呼び先の差し替え候補

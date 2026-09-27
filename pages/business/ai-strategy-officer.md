@@ -27,3 +27,4 @@
 - [[concepts/ai-strategist-prompt]] — 同じ「AIを参謀・戦略側に置く」型。こちらは全会話履歴の棚卸しで盲点を掘る個人利用版
 - [[models/claude-fable-5]] — 「長く複雑なタスクほど差が開く」性能が戦略委任論の前提
 - [[business/ai-income-retirement-strategy]] — AIによる自動収益化・早期退職という同系の個人ビジネス戦略
+- [[business/kaigai-mifukyuu-business]] — 海外で儲かっていて日本に未普及の5業態と空白の見抜き方（@client2728770）。AIに委ねる市場選定の候補リストとして読める

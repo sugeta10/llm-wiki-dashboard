@@ -37,3 +37,4 @@
 - [[business/youtube-shorts-jidouka-marketing]] — 当たったフックを増幅して量産するショート動画運用。「当たった1本を横に広げる」という同じ型を動画で回している
 - [[business/ai-income-retirement-strategy]] — AIによる自動収益化の戦略。「自分が動かなくても積み上がる状態（手離れ）」という本ページの到達点と同じ方向
 - [[concepts/philosophy-external-memory]] — 文体でなく思想を外部記憶に構造化してAIに書かせる方法論。本ページの文体・構成・文字量ファイルは、その「服」側を固定する実践にあたる
+- [[business/kaigai-mifukyuu-business]] — 同じ著者の「海外で儲かっていて日本に未普及のビジネス5選」。空白を最初に日本語で説明する側に回る、という同じ戦略を市場選びに広げたもの

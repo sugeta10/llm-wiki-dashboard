@@ -48,3 +48,4 @@ flowchart LR
 - [[concepts/modular-research-pipeline]] — 実行・分析・記憶の層を分けてソースを差し替える調査パイプライン。情報源を入れ替えて使い回す発想が共通
 - [[tools/x-research-skills]] — Grok を使ったXリサーチをスキル化した構成。本ページの7源にX自体は含まれないため、補完関係にある
 - [[models/gpt-6-astra]] — 著者がリサーチ担当に使っているモデル
+- [[business/kaigai-mifukyuu-business]] — 海外の一次情報を日本語で最初に説明することを「いちばん空いている場所」とする @client2728770 の記事。業界特化の有料ニュースレターを B2B 商品として挙げる
