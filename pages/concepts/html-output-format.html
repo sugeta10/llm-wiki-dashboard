@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>html-output-format</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="html-output-format.md">Markdownで表示</a></div>
-  <div class="meta">concepts/html-output-format · concepts · <span title="2026-07-27">2ヶ月前</span></div>
+  <div class="meta">concepts/html-output-format · concepts · <span title="2026-09-28">今日</span></div>
   <article><h1>HTMLを柔軟な出力フォーマットとして使う</h1>
 <p>Anthropicが公開した実例ギャラリーリポジトリ「html-effectiveness」。ブログ記事「The unreasonable effectiveness of HTML」に付随し、LLMの<strong>出力</strong>フォーマットとしてHTMLを使う設計思想を、ビルド不要・依存なしの自己完結型HTMLファイル群で示す。各ファイルは単体の<code>.html</code>で、ブラウザで直接開くだけで動く。</p>
 <h2>収録カテゴリと用途</h2>
@@ -68,9 +68,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>サンプル内の製品名・データ・シナリオはすべて架空のもの（プレースホルダーブランド「Acme」など）で、説明目的のみに使われている。</p>
+<h2>実践者の運用例: 長時間タスクの前にダッシュボードを作らせる（@Voxyz_ai）</h2>
+<p>@Voxyz_ai は、<a href="../models/claude-opus-5-5.html">claude-opus-5-5</a> に長いタスクを任せるときは毎回、まず簡単な HTML ダッシュボードを vibe-code させるよう勧めている。そのうえでダッシュボード作成だけを担当するサブエージェントを用意し、名前を <code>dashboard-builder</code>、effort を medium に設定すると述べる。ポスト本文はここで途切れ、続きの設定とダッシュボードの見本は画像のため未捕捉。自律実行の途中経過を人間が読める形に出させる、という点で Communication カテゴリの「ステータスレポート」を常駐させる使い方と読める（wiki側の解釈）。</p>
 <h2>問い</h2>
 <ul>
 <li>ブログ本文「The unreasonable effectiveness of HTML」がHTML出力を推す具体的な理由（Markdownやプレーンテキストとの比較根拠）を読む</li>
+<li>dashboard-builder サブエージェントの定義本文（ツール・出力先・更新頻度）は何か。途切れた続きと画像の捕捉待ち</li>
 <li>このパターンと<a href="../concepts/llm-doc-management.html">llm-doc-management</a>（LLMへの入力としてHTMLを使うパターン）を組み合わせ、入出力の両方をHTML+JSONで統一できるか試す</li>
 </ul>
 <h2>関連</h2>
@@ -82,12 +85,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/show-me.html">show-me</a> — Dex Horthyによる対案。HTMLより軽いコンポーネント木・コールスタック・型シグネチャを日常の応答形式にし、HTMLはモックアップと説明図に限定する</li>
 <li><a href="../tools/html-share.html">html-share</a> — 出力したHTMLの置き場所と配布経路（自分専用の一覧・期限付き共有URL・スマホでの承認）をセルフホストで用意するツール</li>
 <li><a href="../tools/slack-html.html">slack-html</a> — 自己完結HTMLをSlackに添付してアプリ内で展開する配布経路（@geeorgeyの造語「SlackHTML」）。単一ファイル・依存なしという本リポジトリの前提がそのまま条件になる</li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a> — dashboard-builder のような出力専用サブエージェントの定義方法</li>
+<li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a> — 長時間タスク前にダッシュボードを作らせる運用の対象モデル（@Voxyz_ai）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li>
 <li><a href="../design/claude-design-workflow.html">claude-design-workflow</a></li>
-<li><a href="../tools/diagram-design.html">diagram-design</a></li>
-<li><a href="../tools/html-share.html">html-share</a></li>
-<li><a href="../tools/hyperframes.html">hyperframes</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/anthropics/html-effectiveness" rel="noopener" target="_blank">https://github.com/anthropics/html-effectiveness</a></li>
-<li><a href="https://x.com/i/web/status/2080439126390636661" rel="noopener" target="_blank">https://x.com/i/web/status/2080439126390636661</a></li></ul></section></article>
+<li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a></li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
+<li><a href="../tools/diagram-design.html">diagram-design</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/anthropics/html-effectiveness" rel="noopener" target="_blank">https://github.com/anthropics/html-effectiveness</a></li>
+<li><a href="https://x.com/i/web/status/2080439126390636661" rel="noopener" target="_blank">https://x.com/i/web/status/2080439126390636661</a></li>
+<li><a href="https://x.com/i/web/status/2103946635831050740" rel="noopener" target="_blank">https://x.com/i/web/status/2103946635831050740</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -125,9 +131,14 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 
 サンプル内の製品名・データ・シナリオはすべて架空のもの（プレースホルダーブランド「Acme」など）で、説明目的のみに使われている。
 
+## 実践者の運用例: 長時間タスクの前にダッシュボードを作らせる（@Voxyz_ai）
+
+@Voxyz_ai は、[[models/claude-opus-5-5]] に長いタスクを任せるときは毎回、まず簡単な HTML ダッシュボードを vibe-code させるよう勧めている。そのうえでダッシュボード作成だけを担当するサブエージェントを用意し、名前を `dashboard-builder`、effort を medium に設定すると述べる。ポスト本文はここで途切れ、続きの設定とダッシュボードの見本は画像のため未捕捉。自律実行の途中経過を人間が読める形に出させる、という点で Communication カテゴリの「ステータスレポート」を常駐させる使い方と読める（wiki側の解釈）。
+
 ## 問い
 
 - ブログ本文「The unreasonable effectiveness of HTML」がHTML出力を推す具体的な理由（Markdownやプレーンテキストとの比較根拠）を読む
+- dashboard-builder サブエージェントの定義本文（ツール・出力先・更新頻度）は何か。途切れた続きと画像の捕捉待ち
 - このパターンと[[concepts/llm-doc-management]]（LLMへの入力としてHTMLを使うパターン）を組み合わせ、入出力の両方をHTML+JSONで統一できるか試す
 
 ## 関連
@@ -139,6 +150,8 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 - [[tools/show-me]] — Dex Horthyによる対案。HTMLより軽いコンポーネント木・コールスタック・型シグネチャを日常の応答形式にし、HTMLはモックアップと説明図に限定する
 - [[tools/html-share]] — 出力したHTMLの置き場所と配布経路（自分専用の一覧・期限付き共有URL・スマホでの承認）をセルフホストで用意するツール
 - [[tools/slack-html]] — 自己完結HTMLをSlackに添付してアプリ内で展開する配布経路（@geeorgeyの造語「SlackHTML」）。単一ファイル・依存なしという本リポジトリの前提がそのまま条件になる
+- [[tools/claude-code-subagents]] — dashboard-builder のような出力専用サブエージェントの定義方法
+- [[models/claude-opus-5-5]] — 長時間タスク前にダッシュボードを作らせる運用の対象モデル（@Voxyz_ai）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

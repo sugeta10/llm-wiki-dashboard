@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-subagents</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-subagents.md">Markdownで表示</a></div>
-  <div class="meta">tools/claude-code-subagents · tools · <span title="2026-05-23">4ヶ月前</span><span class="stale-badge">⚠ 60日以上前の情報</span></div>
+  <div class="meta">tools/claude-code-subagents · tools · <span title="2026-09-28">今日</span></div>
   <article><h1>Claude Code サブエージェント</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: <a href="../tools/claude-code.html">claude-code</a> のサブエージェント機能は、専用のコンテキストウィンドウで独立動作し、ツール呼出のノイズをメインに残さず結果サマリーだけを返すことで、長セッションのコンテキスト汚染を防ぐ仕組み。</p>
@@ -92,11 +92,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a> — SubagentsとSkillsの境界・3軸の使い分けフレーム（Cursor文脈）</li>
 <li><a href="../concepts/claude-code-google-cloud.html">claude-code-google-cloud</a> — API/パイプライン/ダッシュボードを並列実装する実演例</li>
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — subagent定義を agent teams/worktree と組み合わせる並列運用フレーム</li>
+<li><a href="../concepts/x-ops-subagent-company.html">x-ops-subagent-company</a> — <code>.claude/agents/</code> に9チームを定義し統括が束ねる X 運用の実例（@giver_itora26）</li>
+<li><a href="../concepts/html-output-format.html">html-output-format</a> — 長時間タスク用の <code>dashboard-builder</code> サブエージェント（effort medium）を置く運用例（@Voxyz_ai）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-google-cloud.html">claude-code-google-cloud</a></li>
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li>
 <li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a></li>
-<li><a href="../concepts/llm-council.html">llm-council</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2048486242321662189" rel="noopener" target="_blank">https://x.com/i/web/status/2048486242321662189</a></li></ul></section></article>
+<li><a href="../concepts/html-output-format.html">html-output-format</a></li>
+<li><a href="../concepts/llm-council.html">llm-council</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2048486242321662189" rel="noopener" target="_blank">https://x.com/i/web/status/2048486242321662189</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -173,6 +175,8 @@ Claude Code には以下のサブエージェントが同梱されている。
 - [[concepts/cursor-instruction-methods]] — SubagentsとSkillsの境界・3軸の使い分けフレーム（Cursor文脈）
 - [[concepts/claude-code-google-cloud]] — API/パイプライン/ダッシュボードを並列実装する実演例
 - [[concepts/claude-code-orchestration]] — subagent定義を agent teams/worktree と組み合わせる並列運用フレーム
+- [[concepts/x-ops-subagent-company]] — `.claude/agents/` に9チームを定義し統括が束ねる X 運用の実例（@giver_itora26）
+- [[concepts/html-output-format]] — 長時間タスク用の `dashboard-builder` サブエージェント（effort medium）を置く運用例（@Voxyz_ai）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

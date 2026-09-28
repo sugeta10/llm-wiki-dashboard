@@ -118,3 +118,4 @@ flowchart TD
 - [[concepts/agent-autonomy-levels]] — agent/loop/graphを積み上げとして提示する入門側（@Mahaximus_）。偽エッジの判定・新鮮なコンテキストの検査役が別ソースで独立に同じ結論へ到達している
 - [[concepts/context-graph-retrieval]] — 別の著者（@0xMorlex）が同じノード・エッジの語彙を検索側に当てた記事。本ページのグラフが実行順序を指すのに対し、あちらのグラフは知識の実体と関係を指す
 - [[concepts/graph-reliability-design]] — 同じ語彙を本番運用側へ延長した層（@0xwhrrari）。耐久する状態・アーティファクト参照での受け渡し・ノード単位の失敗方針・経路ごとの権限という、本ページが扱っていない実装要件を担う
+- [[concepts/loops-and-graphs-approval]] — 同じ偽エッジテストを共有しつつ、4種ノード（splitter/worker/code node/gate）・2本の戻り道（correction/learning edge）・影響範囲でのゲート・人間を最後の1点に置く配置を扱う（@hanakoxbt）

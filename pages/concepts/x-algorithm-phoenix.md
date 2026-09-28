@@ -23,3 +23,4 @@
 - [[tools/xurl]] — X API v2 CLI（投稿・検索・インプレッション取得）
 - [[concepts/prompt-engineering]] — X上でのAIプロンプト共有・マーケティング戦略にも関連
 - [[tools/x-research-skills]] — 同じ Grok を、ランキング側でなく検索側から使う構成。Claude Code / Codex の X リサーチを xAI API に委譲する（@HayattiQ）
+- [[concepts/x-ops-subagent-company]] — 直近24時間に伸びた投稿の構造を先に調べさせる Claude Code サブエージェント構成の X 運用（@giver_itora26）

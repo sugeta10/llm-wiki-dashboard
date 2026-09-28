@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-review-bottleneck</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-review-bottleneck.md">Markdownで表示</a></div>
-  <div class="meta">concepts/ai-review-bottleneck · concepts · <span title="2026-09-26">2日前</span></div>
+  <div class="meta">concepts/ai-review-bottleneck · concepts · <span title="2026-09-28">今日</span></div>
   <article><h1>AI協働のボトルネックは「読んで直す工程」｜『ザ・ゴール』の制約理論で見る</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: AIが速くしたのは「作る工程」だけで、仕事全体の速さは人間の「読んで直す工程」で決まる。だから直す工程そのものを速くする前に、そこへ流れ込む量と質を変える（自己採点・骨子先出し・◯×と理由だけ返す・差分だけ返させる・直した理由を指示書に残す）、と @smark_x が主張する。</p>
@@ -68,11 +68,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a> — 同著者の「直した結果が戻る場所を決める」仕組み化論。⑤の指示書の育て方の元になる考え方</li>
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a> — ボトルネックは出力待ちでなく手直し時間という同じ観測から、手離れの良いモデルを選ぶ方向へ進んだ事例</li>
 <li><a href="../concepts/exclusion-first-prompting.html">exclusion-first-prompting</a> — 同著者の「◯◯は出さなくていい」の2文型。出力の段階で量を絞る、②④と同じ方向の打ち手</li>
+<li><a href="../concepts/loops-and-graphs-approval.html">loops-and-graphs-approval</a> — 人間のレビュー地点を「最も取り返しがつかない1点」に減らす側からの答え（@hanakoxbt）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/development-as-agriculture.html">development-as-agriculture</a></li>
 <li><a href="../concepts/exclusion-first-prompting.html">exclusion-first-prompting</a></li>
+<li><a href="../concepts/loops-and-graphs-approval.html">loops-and-graphs-approval</a></li>
 <li><a href="../concepts/reasoning-vs-japanese-fluency.html">reasoning-vs-japanese-fluency</a></li>
-<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li>
-<li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2101786175812129067" rel="noopener" target="_blank">https://x.com/i/web/status/2101786175812129067</a></li></ul></section></article>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2101786175812129067" rel="noopener" target="_blank">https://x.com/i/web/status/2101786175812129067</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -140,6 +141,7 @@ flowchart LR
 - [[concepts/shikumika-vs-tejunsho]] — 同著者の「直した結果が戻る場所を決める」仕組み化論。⑤の指示書の育て方の元になる考え方
 - [[concepts/reasoning-vs-japanese-fluency]] — ボトルネックは出力待ちでなく手直し時間という同じ観測から、手離れの良いモデルを選ぶ方向へ進んだ事例
 - [[concepts/exclusion-first-prompting]] — 同著者の「◯◯は出さなくていい」の2文型。出力の段階で量を絞る、②④と同じ方向の打ち手
+- [[concepts/loops-and-graphs-approval]] — 人間のレビュー地点を「最も取り返しがつかない1点」に減らす側からの答え（@hanakoxbt）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

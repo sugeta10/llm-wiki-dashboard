@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x-ops-subagent-company - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>x-ops-subagent-company</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="x-ops-subagent-company.md">Markdownで表示</a></div>
+  <div class="meta">concepts/x-ops-subagent-company · concepts · <span title="2026-09-28">今日</span></div>
+  <article><h1>Claude Codeのサブエージェントで作る「X運用会社」（統括1体＋8チーム）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AIに投稿を「書かせる」のをやめ、直近24時間の伸びた投稿を先に調べる役・書く役・リプ/いいね/引用の候補を作る役などを Claude Code のサブエージェント9体に分け、統括1体を経由して人間は承認だけする X 運用の型。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  H[&quot;社長（人間）\n承認・投稿実行&quot;] --&gt; D[&quot;① バズポスト統括&quot;]
+  D --&gt; R[&quot;② リサーチ\n直近24時間の伸びた投稿の構造&quot;]
+  R --&gt; D
+  D --&gt; P[&quot;③④ 勝負ポスト・通常ポスト&quot;]
+  D --&gt; E[&quot;⑤⑥⑦ リプ・いいね・引用の候補&quot;]
+  D --&gt; A[&quot;⑧⑨ 記事・商品/LINE導線&quot;]
+  P --&gt; L[&quot;logs/日付/&quot;]
+  E --&gt; L
+  A --&gt; L
+  L --&gt; D
+  D --&gt; H</pre>
+<p>@giver_itora26 は、最初に AI へ「Xでバズる投稿を書いて」と任せたところ、それらしく読みやすいが全く伸びない投稿を量産したと述べる。原因は AI に「今のX」を渡していなかったことだとし、先に書かせるのをやめて、伸びている投稿を先に調べさせる運用へ切り替えた。この記事は @giver_itora26 が LINE オープンチャットと自身の収益化講座へ誘導する宣伝つきの記事で、以下は宣伝部分を除いた設計の要点。</p>
+<h2>リサーチを先に置く：「直近24時間」の構造だけを見る</h2>
+<p>リサーチチームの仕事は、昨日でも半年前でもなく<strong>直近24時間</strong>で実際に伸びた投稿を探すこと。@giver_itora26 は投稿をコピーするのでなく、何のネタに反応があったか・1行目の始め方・切り口・構成・続きを読みたくなる理由という<strong>構造</strong>を調べ、それを統括に渡すと述べる。X のアルゴリズムが短期で入れ替わる前提（<a href="../concepts/x-algorithm-phoenix.html">x-algorithm-phoenix</a>）に立つと、鮮度の窓を24時間に絞る判断は理にかなうと考えられる（wiki側の解釈）。</p>
+<h2>組織：人間が話す相手は統括1体だけ</h2>
+<p>9チームは、バズポスト統括・リサーチ・Xバズポスト作成（1日1本の勝負ポスト）・通常ポスト作成（朝昼夜）・リプ周り・いいね回り・引用・記事作成（X Articles）・商品作成/マネタイズ（商品企画とLINE導線）。@giver_itora26 が強調するのは人数でなく、9体を束ねる「上司」がいることで、人間が各チームへ個別に指示するなら結局忙しいままだとする。統括は仕事を振り分け、方針からずれた成果物を差し戻し、「今日の承認リスト」を1ファイルにまとめ、週1回は伸びた/伸びなかった投稿を分析して改善案を3つ出す。</p>
+<p>実装は Claude Code の標準機能の組み合わせで、@giver_itora26 は次の構成を示す（有志公開のプラグイン cc-company は任意）。</p>
+<ul>
+<li><code>CLAUDE.md</code> — 「会社の憲法」。ミッション・組織図・共通ルール（ターゲット・トーン・全角140字以内・成果物は <code>logs/YYYY-MM-DD/チーム名.md</code> へ提出）</li>
+<li><code>.claude/agents/</code> — 1チーム1ファイルのサブエージェント定義（name・description・tools を frontmatter に持つ。<a href="../tools/claude-code-subagents.html">claude-code-subagents</a> 参照）</li>
+<li><code>inbox/</code> — AI はそのままでは X のタイムラインやフォロワー数を見られないため、人間が見つけた投稿・アカウントを貼る場所。慣れたらブラウザ操作ツールや X API で自動収集させてもよいとする</li>
+<li><code>logs/</code> — 各チームの提出先。統括がここを読んで承認リストにまとめる</li>
+</ul>
+<p>共通ルールに「inbox/ にないデータ（フォロワー数・URLなど）は推測で作らず『不明』と書く」を入れている点は、生成役に数値を捏造させないための地味だが効く制約と考えられる（wiki側の解釈）。起動は個別呼び出し・複数チーム並列・統括経由の「社長モード」の3通りで、毎朝7時に <code>claude -p "buzz-directorとして朝の業務を開始して"</code> を cron で回す例も載っている。</p>
+<h2>自動化してよい範囲と人間に残す判断</h2>
+<p>@giver_itora26 は、X では通常の自動投稿や一定条件下の引用ポストは認められているが、自動いいねは禁止、不特定多数への自動返信も認められず、AI 自動返信ボットには事前承認が要ると述べ、「AI社員に何でも自動実行させる」設計にしてはいけないとする。このためリプ・いいねのチームは実行でなく<strong>候補リストを作るだけ</strong>で、リプは各アカウント3パターンを出して人間が選ぶ。記事中のリプ・いいねチーム説明には「【要修正：規約まわりの説明をここに記載】」という編集途中の注記が残っており、規約部分は記事内でも未整理のまま公開されている。</p>
+<p>人間が最後に見るのは、内容がおかしくないか・事実関係・自分が言っていないことを作っていないか・ブランドに合っているか、の4点。「人間に残したのは判断」という配置は、<a href="../concepts/loops-and-graphs-approval.html">loops-and-graphs-approval</a> の「人間は最後の1点だけを承認する」、<a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a> の「AIに任せるのは判断の手前まで」と同じ形をしている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-26 @giver_itora26: 「1案件の報酬78,386,800円」「X未経験から9か月で利益1.3億円」は自己申告で、この仕組みとの因果も示されていない。運用時間は「外注3人＋1日4時間→自分1人＋約30分（87.5%削減）」で、現在の運用量は1日4投稿＋引用2本。X bookmark 655（2026-09-28時点）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>統括の差し戻しは「方針からずれていれば」という主観基準だけで、プログラムで判定できるチェックを持たない。<a href="../concepts/loops-and-graphs-approval.html">loops-and-graphs-approval</a> の言う「楽観主義者2人の同意」になっていないか</li>
+<li>週次振り返りの改善案は次週の指示（エージェント定義）に書き戻されるのか、報告で終わるのか</li>
+<li>このリポの発信（note記事・公開サイト）に「直近24時間の構造だけ見るリサーチ役」を置くと何が変わるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a> — <code>.claude/agents/</code> のサブエージェント定義の仕様</li>
+<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — 役割を subagent 定義で固定する並列運用フレーム。本ページはその非エンジニア向けの業務適用例</li>
+<li><a href="../concepts/ai-employee-workflow.html">ai-employee-workflow</a> — Claude を「AIスタッフ」に仕立てる7日間セットアップ（@eng_khairallah1）</li>
+<li><a href="../concepts/x-algorithm-phoenix.html">x-algorithm-phoenix</a> — 2026年5月の X アルゴリズム大改変。直近の反応から逆算する必要の背景</li>
+<li><a href="../concepts/ai-news-source-automation.html">ai-news-source-automation</a> — 深夜収集→朝に並列分析→人は選ぶだけ、という同じ発信ネタ収集の型（@beku_AI）</li>
+<li><a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a> — AIは判断の手前まで・人間が承認・AIが実行という同じ分担</li>
+<li><a href="../concepts/loops-and-graphs-approval.html">loops-and-graphs-approval</a> — 人間を最も取り返しのつかない1点にだけ置く設計論（@hanakoxbt）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li>
+<li><a href="../concepts/loops-and-graphs-approval.html">loops-and-graphs-approval</a></li>
+<li><a href="../concepts/x-algorithm-phoenix.html">x-algorithm-phoenix</a></li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a></li>
+<li><a href="../concepts/ai-employee-workflow.html">ai-employee-workflow</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2103746609234473443" rel="noopener" target="_blank">https://x.com/i/web/status/2103746609234473443</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Codeのサブエージェントで作る「X運用会社」（統括1体＋8チーム）
+
+&gt; **TL;DR**: AIに投稿を「書かせる」のをやめ、直近24時間の伸びた投稿を先に調べる役・書く役・リプ/いいね/引用の候補を作る役などを Claude Code のサブエージェント9体に分け、統括1体を経由して人間は承認だけする X 運用の型。
+
+```mermaid
+flowchart TD
+  H[&quot;社長（人間）\n承認・投稿実行&quot;] --&gt; D[&quot;① バズポスト統括&quot;]
+  D --&gt; R[&quot;② リサーチ\n直近24時間の伸びた投稿の構造&quot;]
+  R --&gt; D
+  D --&gt; P[&quot;③④ 勝負ポスト・通常ポスト&quot;]
+  D --&gt; E[&quot;⑤⑥⑦ リプ・いいね・引用の候補&quot;]
+  D --&gt; A[&quot;⑧⑨ 記事・商品/LINE導線&quot;]
+  P --&gt; L[&quot;logs/日付/&quot;]
+  E --&gt; L
+  A --&gt; L
+  L --&gt; D
+  D --&gt; H
+```
+
+@giver_itora26 は、最初に AI へ「Xでバズる投稿を書いて」と任せたところ、それらしく読みやすいが全く伸びない投稿を量産したと述べる。原因は AI に「今のX」を渡していなかったことだとし、先に書かせるのをやめて、伸びている投稿を先に調べさせる運用へ切り替えた。この記事は @giver_itora26 が LINE オープンチャットと自身の収益化講座へ誘導する宣伝つきの記事で、以下は宣伝部分を除いた設計の要点。
+
+## リサーチを先に置く：「直近24時間」の構造だけを見る
+
+リサーチチームの仕事は、昨日でも半年前でもなく**直近24時間**で実際に伸びた投稿を探すこと。@giver_itora26 は投稿をコピーするのでなく、何のネタに反応があったか・1行目の始め方・切り口・構成・続きを読みたくなる理由という**構造**を調べ、それを統括に渡すと述べる。X のアルゴリズムが短期で入れ替わる前提（[[concepts/x-algorithm-phoenix]]）に立つと、鮮度の窓を24時間に絞る判断は理にかなうと考えられる（wiki側の解釈）。
+
+## 組織：人間が話す相手は統括1体だけ
+
+9チームは、バズポスト統括・リサーチ・Xバズポスト作成（1日1本の勝負ポスト）・通常ポスト作成（朝昼夜）・リプ周り・いいね回り・引用・記事作成（X Articles）・商品作成/マネタイズ（商品企画とLINE導線）。@giver_itora26 が強調するのは人数でなく、9体を束ねる「上司」がいることで、人間が各チームへ個別に指示するなら結局忙しいままだとする。統括は仕事を振り分け、方針からずれた成果物を差し戻し、「今日の承認リスト」を1ファイルにまとめ、週1回は伸びた/伸びなかった投稿を分析して改善案を3つ出す。
+
+実装は Claude Code の標準機能の組み合わせで、@giver_itora26 は次の構成を示す（有志公開のプラグイン cc-company は任意）。
+
+- `CLAUDE.md` — 「会社の憲法」。ミッション・組織図・共通ルール（ターゲット・トーン・全角140字以内・成果物は `logs/YYYY-MM-DD/チーム名.md` へ提出）
+- `.claude/agents/` — 1チーム1ファイルのサブエージェント定義（name・description・tools を frontmatter に持つ。[[tools/claude-code-subagents]] 参照）
+- `inbox/` — AI はそのままでは X のタイムラインやフォロワー数を見られないため、人間が見つけた投稿・アカウントを貼る場所。慣れたらブラウザ操作ツールや X API で自動収集させてもよいとする
+- `logs/` — 各チームの提出先。統括がここを読んで承認リストにまとめる
+
+共通ルールに「inbox/ にないデータ（フォロワー数・URLなど）は推測で作らず『不明』と書く」を入れている点は、生成役に数値を捏造させないための地味だが効く制約と考えられる（wiki側の解釈）。起動は個別呼び出し・複数チーム並列・統括経由の「社長モード」の3通りで、毎朝7時に `claude -p &quot;buzz-directorとして朝の業務を開始して&quot;` を cron で回す例も載っている。
+
+## 自動化してよい範囲と人間に残す判断
+
+@giver_itora26 は、X では通常の自動投稿や一定条件下の引用ポストは認められているが、自動いいねは禁止、不特定多数への自動返信も認められず、AI 自動返信ボットには事前承認が要ると述べ、「AI社員に何でも自動実行させる」設計にしてはいけないとする。このためリプ・いいねのチームは実行でなく**候補リストを作るだけ**で、リプは各アカウント3パターンを出して人間が選ぶ。記事中のリプ・いいねチーム説明には「【要修正：規約まわりの説明をここに記載】」という編集途中の注記が残っており、規約部分は記事内でも未整理のまま公開されている。
+
+人間が最後に見るのは、内容がおかしくないか・事実関係・自分が言っていないことを作っていないか・ブランドに合っているか、の4点。「人間に残したのは判断」という配置は、[[concepts/loops-and-graphs-approval]] の「人間は最後の1点だけを承認する」、[[concepts/ai-pre-judgment-automation]] の「AIに任せるのは判断の手前まで」と同じ形をしている。
+
+## 観察ログ（未検証）
+
+- 2026-09-26 @giver_itora26: 「1案件の報酬78,386,800円」「X未経験から9か月で利益1.3億円」は自己申告で、この仕組みとの因果も示されていない。運用時間は「外注3人＋1日4時間→自分1人＋約30分（87.5%削減）」で、現在の運用量は1日4投稿＋引用2本。X bookmark 655（2026-09-28時点）
+
+## 問い
+
+- 統括の差し戻しは「方針からずれていれば」という主観基準だけで、プログラムで判定できるチェックを持たない。[[concepts/loops-and-graphs-approval]] の言う「楽観主義者2人の同意」になっていないか
+- 週次振り返りの改善案は次週の指示（エージェント定義）に書き戻されるのか、報告で終わるのか
+- このリポの発信（note記事・公開サイト）に「直近24時間の構造だけ見るリサーチ役」を置くと何が変わるか
+
+## 関連
+
+- [[tools/claude-code-subagents]] — `.claude/agents/` のサブエージェント定義の仕様
+- [[concepts/claude-code-orchestration]] — 役割を subagent 定義で固定する並列運用フレーム。本ページはその非エンジニア向けの業務適用例
+- [[concepts/ai-employee-workflow]] — Claude を「AIスタッフ」に仕立てる7日間セットアップ（@eng_khairallah1）
+- [[concepts/x-algorithm-phoenix]] — 2026年5月の X アルゴリズム大改変。直近の反応から逆算する必要の背景
+- [[concepts/ai-news-source-automation]] — 深夜収集→朝に並列分析→人は選ぶだけ、という同じ発信ネタ収集の型（@beku_AI）
+- [[concepts/ai-pre-judgment-automation]] — AIは判断の手前まで・人間が承認・AIが実行という同じ分担
+- [[concepts/loops-and-graphs-approval]] — 人間を最も取り返しのつかない1点にだけ置く設計論（@hanakoxbt）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

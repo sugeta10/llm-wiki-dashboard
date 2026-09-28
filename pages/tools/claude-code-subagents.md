@@ -54,3 +54,5 @@ Claude Code には以下のサブエージェントが同梱されている。
 - [[concepts/cursor-instruction-methods]] — SubagentsとSkillsの境界・3軸の使い分けフレーム（Cursor文脈）
 - [[concepts/claude-code-google-cloud]] — API/パイプライン/ダッシュボードを並列実装する実演例
 - [[concepts/claude-code-orchestration]] — subagent定義を agent teams/worktree と組み合わせる並列運用フレーム
+- [[concepts/x-ops-subagent-company]] — `.claude/agents/` に9チームを定義し統括が束ねる X 運用の実例（@giver_itora26）
+- [[concepts/html-output-format]] — 長時間タスク用の `dashboard-builder` サブエージェント（effort medium）を置く運用例（@Voxyz_ai）

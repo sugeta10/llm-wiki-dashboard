@@ -58,3 +58,4 @@
 - [[concepts/coding-agent-workflow-styles]] — 並列運用は高速制御／委譲低速の2類型のうち委譲側に寄る選択肢
 - [[tools/html-share]] — 並列数を増やしたあとの状況把握側。作者minorun365は8並列で稼働させたまま外出し、成果物をスマホから追う運用を報告している
 - [[tools/herdr]] — 「自分が指揮官になる」フレームの指揮官役をメインエージェントに渡し、Claude と Codex の各ペインへ仕事を割り当てて結果を読ませるマルチペイン運用（@Voxyz_ai）。クォータの速い Fable 5.1 を方向づけ・分解・サインオフに限定する配分も同ページ
+- [[concepts/x-ops-subagent-company]] — 役割を subagent 定義で固定し統括1体経由で動かす構成を X 運用に適用した非エンジニア向け実践例（@giver_itora26）

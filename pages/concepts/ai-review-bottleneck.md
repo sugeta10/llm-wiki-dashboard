@@ -45,3 +45,4 @@ flowchart LR
 - [[concepts/shikumika-vs-tejunsho]] — 同著者の「直した結果が戻る場所を決める」仕組み化論。⑤の指示書の育て方の元になる考え方
 - [[concepts/reasoning-vs-japanese-fluency]] — ボトルネックは出力待ちでなく手直し時間という同じ観測から、手離れの良いモデルを選ぶ方向へ進んだ事例
 - [[concepts/exclusion-first-prompting]] — 同著者の「◯◯は出さなくていい」の2文型。出力の段階で量を絞る、②④と同じ方向の打ち手
+- [[concepts/loops-and-graphs-approval]] — 人間のレビュー地点を「最も取り返しがつかない1点」に減らす側からの答え（@hanakoxbt）
