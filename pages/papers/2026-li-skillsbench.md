@@ -49,3 +49,4 @@ flowchart LR
 - [[business/skill-library-strategy]] — Skillライブラリを私有資産とする戦略論。本論は「どんなSkillが実際に効くか」の経験則を与える
 - [[papers/2026-dairai-top-ai-papers-w35]] — NVIDIA ACESの「Skill Lift」が独立に同じ対試験設計へ到達（dair_ai週次まとめ経由）。構造スキャナーのスコアはLLM-judge品質とrho 0.14でほぼ無相関という補強データ
 - [[tools/claude-code-plugin-eval]] — 同じ「あり/なし」の対比を手元のプラグイン・スキルに回すClaude Code公式コマンド。本論の測り方が一次ツールに載った形
+- [[tools/skillopt]] — Microsoft製のスキル最適化OSS。自己改訂でも held-out 検証を厳密改善した編集だけ採用する設計で、本論の「自己生成Skillは逆効果」への一つの回答になりうる

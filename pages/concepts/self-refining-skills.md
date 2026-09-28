@@ -41,3 +41,4 @@ before next run, read the last 10
 - [[concepts/instruction-patch-lifecycle]] — 育てる（LESSONS.md蓄積）だけでなく、モデル更新時に全部外して戻す「捨てる」工程を対にする運用論。蓄積した教訓にも期限があるという視点
 - [[design/consulting-pptx-skill]] — レビュー指摘を規約ファイル（約80項目）へ1行ずつ追記し、作成前に毎回読ませ出力後に機械チェックする蓄積ループ。本パターンをスライド制作に当てた実例
 - [[concepts/shikumika-vs-tejunsho]] — LESSONS.mdにあたる「起きたこと」欄を持ちつつ、1回目は本文を更新せず2回目で初めて手順化する、という昇格の閾値を足したマニュアル運用論（MUJIGRAM・@smark_x）
+- [[tools/skillopt]] — スキル文書を学習可能パラメータとみなし、採点付き rollout と held-out 検証ゲートで編集を自動採否する機械化版（Microsoft・夜間に過去セッションから学ぶ SkillOpt-Sleep も同梱）

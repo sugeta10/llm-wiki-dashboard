@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>cloudflare-os</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cloudflare-os.md">Markdownで表示</a></div>
-  <div class="meta">tools/cloudflare-os · tools · <span title="2026-09-08">2週間前</span></div>
+  <div class="meta">tools/cloudflare-os · tools · <span title="2026-09-08">3週間前</span></div>
   <article><h1>Cloudflare OS</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 全社員にエージェント作業空間を配り、「エージェントが何を観測したか」を記録して共有時に相手の権限を再検証するオープンソースの社内AIプラットフォーム（Cloudflare公式・2026-08-05にOSS公開）。</p>
@@ -106,6 +106,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/llm-wiki.html">llm-wiki</a> — GitHubリポジトリのMarkdownを正本にする個人知識ベース。@shotovim はこれをContext Libraryに載せてローカル/クラウド両方から参照させている</li>
 <li><a href="../concepts/ai-native-cloud-selection.html">ai-native-cloud-selection</a> — 「AIエージェントがCLI/APIで操作しきれるか」でクラウドを選ぶ論。無料枠の広さもこの選定に効く要素</li>
 <li><a href="../tools/teamai-cli.html">teamai-cli</a> — 共有スキル・ルールをチームに配る同じ狙いを、実行環境を持たずgitのpush/pullだけで実装したCLI（Tencent製）</li>
+<li><a href="../concepts/claude-code-security.html">claude-code-security</a> — 端末へ設定を配るメルカリのMDM戦略と、GKE上で外部への経路を一本化したメルカリのAI PoC基盤。社内AI基盤を端末側と共有基盤側のどちらに置くかの比較軸</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/skill-library-strategy.html">skill-library-strategy</a></li>
 <li><a href="../companies/cloudflare.html">cloudflare</a></li>
 <li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a></li>
@@ -230,6 +231,7 @@ Cloudflareがこの製品を作った理由として挙げるのは、フィー�
 - [[concepts/llm-wiki]] — GitHubリポジトリのMarkdownを正本にする個人知識ベース。@shotovim はこれをContext Libraryに載せてローカル/クラウド両方から参照させている
 - [[concepts/ai-native-cloud-selection]] — 「AIエージェントがCLI/APIで操作しきれるか」でクラウドを選ぶ論。無料枠の広さもこの選定に効く要素
 - [[tools/teamai-cli]] — 共有スキル・ルールをチームに配る同じ狙いを、実行環境を持たずgitのpush/pullだけで実装したCLI（Tencent製）
+- [[concepts/claude-code-security]] — 端末へ設定を配るメルカリのMDM戦略と、GKE上で外部への経路を一本化したメルカリのAI PoC基盤。社内AI基盤を端末側と共有基盤側のどちらに置くかの比較軸
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

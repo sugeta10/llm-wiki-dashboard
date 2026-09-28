@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-security</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-security.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-code-security · concepts · <span title="2026-08-15">1ヶ月前</span></div>
+  <div class="meta">concepts/claude-code-security · concepts · <span title="2026-09-29">今日</span></div>
   <article><h1>Claude Code セキュリティ設定と組織展開</h1>
 <p>メルカリ AI Security Team による <a href="../tools/claude-code.html">claude-code</a> の組織展開戦略。エンジニアと非エンジニアの双方が安全かつ生産性高く利用できる設定を MDM で配布する方法論。</p>
 <h2>Claude Code のリスク</h2>
@@ -201,10 +201,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p><strong>Claude Code自体の脆弱性</strong>。同記事は、セキュリティ専門機関Check Point Researchが2026年に公表した脆弱性として、悪意ある第三者が用意したリポジトリを開くだけで確認画面の前に不正コードが実行される問題と、接続先設定の書き換えで認証情報が外部サーバーへ送られる経路の2つを挙げる。いずれも修正版が配布済みだという。ただしこれは二次情報で、Check Point側の公表原文はこのvaultでは未確認である。プロンプトインジェクションの防御率については、著者自身が「一次の論文までは確認しきれていないので正確な数値として鵜呑みにしていない」と留保した上で、「AIが自力で悪意ある指示を見抜いてくれる」という期待は今の時点では持たないほうがいい、という方向性だけは複数の情報源で一致すると書く。</p>
 <p><strong>二次情報の劣化という落とし穴</strong>。@AIEducationlaboは、同じ「確認スキップ禁止」の設定でも記事によってキー名の書き方が違っていたと報告し、公式ドキュメントに載っているのは <code>disableBypassPermissionsMode</code> だと確認した上で、最後は必ず一次情報で裏を取るよう勧めている。皮肉なことに、この記事自体もX上の表示ではグロブのアスタリスクが落ちており、<code>Bash(curl:)</code> <code>Read(.env.)</code> のような動かない形になっている。転記のたびに設定が壊れるという著者の指摘を、記事自身が実演している。上記「実装例：settings.json の具体的な書き方」の版が正しい形である。</p>
 <p>あわせて彼は、メルカリがやっているから安全だという思考停止を避けること、設定という物理的な鍵と判断力を育てる教育は両輪であり配って終わりにしないことの2点を注意として挙げている。</p>
+<h2>インフラ層の事例：メルカリのAI PoC基盤（元記事は未捕捉）</h2>
+<p>上の4層でいう「インフラ・契約層」にあたる話として、メルカリが社内AI基盤のPoC（試作・検証）環境とそのセキュリティをまとめて紹介した記事がある。@connect24h（2026-09-27）の紹介ポストによれば、基盤は Google Kubernetes Engine（GKE、Google Cloud のマネージド Kubernetes サービス）上に構築され、外部へ出る通信の経路を一本に集約している。記事本体はこのvaultに取り込まれておらず、構成の詳細は未収集である。</p>
+<p>@connect24h は自社ではWSL（Windows上でLinuxを動かす仕組み）で各社員の端末に環境を配る予定だと書き、その方式では n8n（ワークフロー自動化ツール）のように外部からの webhook を受ける用途が難しいと述べる。端末に配る方式は受信口を持ちにくく、共有のクラスタに置けば受信も送信も1か所で管理できる、という対比として読めると考えられる（wiki側の推論）。端末配布型の設定管理は本ページ前半、全社員に作業空間を配る基盤の別解は <a href="../tools/cloudflare-os.html">cloudflare-os</a> を参照。</p>
 <h2>問い</h2>
 <ul>
 <li>Check Point Researchの公表原文に当たり、上記2件の脆弱性の影響バージョンと修正版を特定する。二次情報のまま運用判断の根拠にしない</li>
 <li>4層フレームのうち、個人vaultで意味を持つのはどこか。監査・コンプライアンス層は「誰が入力したか」でなく「どのソースをどのTierで取り込んだか」に読み替えられる（<a href="../concepts/ai-agent-governance.html">ai-agent-governance</a>）</li>
+<li>メルカリのAI PoC基盤の元記事を取得し、外部への経路をどう一本化しているか（プロキシ・NAT・許可ドメインのどれで制御しているか）を確かめる</li>
 <li>MDMを持たない規模では、属性別の配り分けを何で代替するか。設定ファイルの配布に強制力がない以上、denyリストの厚みで差をつける以外の手段があるか</li>
 </ul>
 <h2>関連</h2>
@@ -217,13 +221,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
 <li><a href="../concepts/token-management.html">token-management</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li>
-<li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener" target="_blank">https://speakerdeck.com/hi120ki/claude-code-organization-settings</a></li>
+<li><a href="../tools/cloudflare-os.html">cloudflare-os</a></li>
+<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://speakerdeck.com/hi120ki/claude-code-organization-settings" rel="noopener" target="_blank">https://speakerdeck.com/hi120ki/claude-code-organization-settings</a></li>
 <li><a href="https://x.com/i/web/status/2056571858242404578" rel="noopener" target="_blank">https://x.com/i/web/status/2056571858242404578</a></li>
 <li><a href="https://github.com/anthropics/claude-code/blob/b7339920b69f4a395c28727a1e2305dc5b122cb2/plugins/security-guidance/hooks/hooks.json#L63" rel="noopener" target="_blank">https://github.com/anthropics/claude-code/blob/b7339920b69f4a395c28727a1e2305dc5b122cb2/plugins/security-guidance/hooks/hooks.json#L63</a></li>
 <li><a href="https://x.com/i/web/status/2063105741976952929" rel="noopener" target="_blank">https://x.com/i/web/status/2063105741976952929</a></li>
 <li><a href="https://x.com/i/web/status/2076895490957066612" rel="noopener" target="_blank">https://x.com/i/web/status/2076895490957066612</a></li>
-<li><a href="https://x.com/i/web/status/2087092697807180160" rel="noopener" target="_blank">https://x.com/i/web/status/2087092697807180160</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2087092697807180160" rel="noopener" target="_blank">https://x.com/i/web/status/2087092697807180160</a></li>
+<li><a href="https://x.com/i/web/status/2104076376181805140" rel="noopener" target="_blank">https://x.com/i/web/status/2104076376181805140</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -384,10 +389,17 @@ AI導入支援のコンサルタント@AIEducationlaboが2026-08-11に公開し�
 
 あわせて彼は、メルカリがやっているから安全だという思考停止を避けること、設定という物理的な鍵と判断力を育てる教育は両輪であり配って終わりにしないことの2点を注意として挙げている。
 
+## インフラ層の事例：メルカリのAI PoC基盤（元記事は未捕捉）
+
+上の4層でいう「インフラ・契約層」にあたる話として、メルカリが社内AI基盤のPoC（試作・検証）環境とそのセキュリティをまとめて紹介した記事がある。@connect24h（2026-09-27）の紹介ポストによれば、基盤は Google Kubernetes Engine（GKE、Google Cloud のマネージド Kubernetes サービス）上に構築され、外部へ出る通信の経路を一本に集約している。記事本体はこのvaultに取り込まれておらず、構成の詳細は未収集である。
+
+@connect24h は自社ではWSL（Windows上でLinuxを動かす仕組み）で各社員の端末に環境を配る予定だと書き、その方式では n8n（ワークフロー自動化ツール）のように外部からの webhook を受ける用途が難しいと述べる。端末に配る方式は受信口を持ちにくく、共有のクラスタに置けば受信も送信も1か所で管理できる、という対比として読めると考えられる（wiki側の推論）。端末配布型の設定管理は本ページ前半、全社員に作業空間を配る基盤の別解は [[tools/cloudflare-os]] を参照。
+
 ## 問い
 
 - Check Point Researchの公表原文に当たり、上記2件の脆弱性の影響バージョンと修正版を特定する。二次情報のまま運用判断の根拠にしない
 - 4層フレームのうち、個人vaultで意味を持つのはどこか。監査・コンプライアンス層は「誰が入力したか」でなく「どのソースをどのTierで取り込んだか」に読み替えられる（[[concepts/ai-agent-governance]]）
+- メルカリのAI PoC基盤の元記事を取得し、外部への経路をどう一本化しているか（プロキシ・NAT・許可ドメインのどれで制御しているか）を確かめる
 - MDMを持たない規模では、属性別の配り分けを何で代替するか。設定ファイルの配布に強制力がない以上、denyリストの厚みで差をつける以外の手段があるか
 
 ## 関連

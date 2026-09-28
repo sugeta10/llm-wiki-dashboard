@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>skillopt - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>skillopt</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="skillopt.md">Markdownで表示</a></div>
+  <div class="meta">tools/skillopt · tools · <span title="2026-09-28">1日前</span></div>
+  <article><h1>SkillOpt（Microsoft）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: スキル文書（SKILL.md 相当）を「凍結したエージェントの学習可能パラメータ」とみなし、エポック・バッチ・学習率・検証ゲートというニューラルネット訓練の規律で、モデルの重みに触れずにスキルを最適化する Microsoft 製 OSS（MIT・<code>pip install skillopt</code>）。</p>
+</blockquote>
+<p>Microsoft の開発チーム（論文筆頭は Yifan Yang ら）は README で、既存のスキルは手書き・強いLLMによる一発生成・緩く管理された自己改訂のいずれかで作られ、どれもフィードバックを受けて開始点より確実に良くなる性質を持たないと問題設定する。SkillOpt はここに最適化器の規律を持ち込む。対象モデルとは別の <strong>optimizer モデル</strong> が採点済みの実行結果（rollout）を読み、1つのスキル文書に対する上限付きの add / delete / replace 編集を提案する。論文準拠のデフォルト経路では、候補編集は <strong>held-out 検証スコアを厳密に改善したときだけ採用</strong> される。テキスト版の「学習率」（1回の編集量の予算）、却下した編集を覚えておくバッファ、エポック単位の slow / meta 更新が訓練を安定させる、とチームは説明する。</p>
+<p>配備される成果物は <code>best_skill.md</code>（通常 300〜2,000 トークン）1枚だけで、変更していない対象モデルにそのまま読ませる。したがって推論時の追加モデル呼び出しはゼロ。これは <a href="../tools/dspy.html">dspy</a> や <a href="../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a> の GEPA と同じ「プロンプトを最適化問題として解く」系譜にあり、最適化の単位をエージェントのスキルファイルに置いた点が特徴と考えられる。</p>
+<pre class="mermaid">flowchart LR
+  S[&quot;skill.md（現行）&quot;] --&gt; R[&quot;rollout（対象モデルで実行・採点）&quot;]
+  R --&gt; F[&quot;reflect（optimizer モデルが失敗を分析）&quot;]
+  F --&gt; A[&quot;aggregate（バッチ集約）&quot;]
+  A --&gt; E[&quot;select / update（add・delete・replace 編集）&quot;]
+  E --&gt; V{&quot;held-out 検証で改善？&quot;}
+  V --&gt;|yes| S
+  V --&gt;|no| B[&quot;rejected-edit buffer&quot;]
+  B --&gt; F
+  S --&gt; D[&quot;best_skill.md を配備&quot;]</pre>
+<h2>訓練ループと構成要素</h2>
+<ul>
+<li><strong>訓練ループ</strong>: v0.1.0（2026-06-02）の時点で rollout → reflect → aggregate → select → update → evaluate の全工程を収録（README の記述順を図にした）</li>
+<li><strong>バックエンド</strong>: チャット系（<code>openai_chat</code>・<code>claude_chat</code>・<code>qwen_chat</code>・<code>minimax_chat</code>・<code>copilot_chat</code>・<code>openai_compatible</code>）と実行系（<code>codex_exec</code>・<code>claude_code_exec</code>・<code>cursor_exec</code>・<code>copilot_exec</code>）。OpenAI Chat Completions 互換のプロバイダはまず <code>openai_compatible</code> を試すよう README が案内している</li>
+<li><strong>ベンチマーク</strong>: <code>skillopt/envs/&lt;name&gt;/</code> パッケージ（アダプタ・データローダ・採点付き rollout・YAML 設定・任意の初期スキル）として追加する。最小の参考実装は <code>skillopt/envs/searchqa/</code>。組み込みは6種</li>
+<li><strong>WebUI</strong>: Gradio 製の監視ダッシュボード（<code>python -m skillopt_webui.app</code>、既定ポート 7860）。既定のバインドが <code>0.0.0.0</code> で全インターフェースに公開されるため、手元専用なら <code>--host 127.0.0.1</code> を付けるよう README が注意している</li>
+</ul>
+<h2>SkillOpt-Sleep（夜間のオフライン自己進化）</h2>
+<p>v0.2.0（2026-07-02）の目玉機能で、<code>skillopt-sleep</code> CLI として提供される。Claude Code / Codex / Copilot などローカルのコーディングエージェントの過去セッションを振り返り、繰り返し現れるタスクを再実行し、検証ゲートを通ったスキルだけを統合する。工程は harvest（収集）→ mine（採掘）→ replay（再実行）→ consolidate（統合）。同リリースのリポジトリ側には Claude Code・Codex・Copilot・Devin 向けの統合シェルと OpenClaw 向けの参考実装が入っている（プラグイン／MCP ファイルは PyPI の wheel に含まれずリポジトリにだけある）。</p>
+<p>人の睡眠中の記憶整理になぞらえた設計は、<a href="../tools/claude-managed-agents.html">claude-managed-agents</a> の Dreaming と同じ発想と考えられる。違いは、採用可否を held-out 検証スコアという機械的なゲートで決める点にある。</p>
+<h2>評価結果（チームの自己申告）</h2>
+<p>チームは README で次を主張している（詳細は arXiv 2605.23904）。</p>
+<ul>
+<li>6ベンチマーク × 7対象モデル × 3実行ハーネス（直接チャット・Codex CLI・Claude Code CLI）の評価した全52セルで最良または同率最良</li>
+<li>GPT-5.5 のスキルなし平均正答率を、直接チャットで +23.5 ポイント、Codex のエージェントループ内で +24.8、Claude Code 内で +19.1 押し上げた</li>
+<li>最適化済みスキルは追加の最適化なしで、モデル規模をまたいで、Codex と Claude Code のハーネス間で、近いベンチマークへ転移する</li>
+</ul>
+<p>この「転移する」という主張は、GUI 軌跡から採掘したスキルは転移しなかったとする <a href="../papers/2026-hao-skill-mining.html">2026-hao-skill-mining</a> の負の結果と対照的である。違いは、採掘がデータの頻度に依存するのに対し、SkillOpt は検証スコアで編集を選別する点にあると考えられる。</p>
+<h2>採用状況</h2>
+<ul>
+<li>2026-06-03 に gbrain・gbrain-evals・darwin-skill が SkillOpt を統合したと README が告知</li>
+<li>2026-07-24 に Microsoft Research の公式記事が公開され、VentureBeat・機械之心（Synced）・The Decoder などが報じた（README のニュース欄より）</li>
+<li>X では @RoundtableSpace が「性能を評価し、自分の指示を書き換え、ベンチマークに落ちた変更を捨て、最適化したスキルをモデル間で持ち運べる」と紹介した</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-09-28: 「全52セルで最良または同率最良」「GPT-5.5 で +19.1〜+24.8 ポイント」は開発チームの自己申告。第三者の再現は未収集</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvaultの <code>wiki-ingest</code> スキルは LESSONS.md 追記型の自己改善（<a href="../concepts/self-refining-skills.html">self-refining-skills</a>）で回しているが、採点可能な評価セットを作れば SkillOpt の検証ゲート型に載せ替えられるか。そもそも ingest の「良さ」を held-out スコアに落とせるか</li>
+<li>検証ゲートを厳密改善に限ると、評価セットに現れない振る舞い（文体・安全側の配慮）を削る編集が通ってしまわないか</li>
+<li><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a> の「自己生成Skillは逆効果」という結果と、SkillOpt の「最適化スキルが大きく効く」という結果は、検証ゲートの有無で説明がつくのか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a> — スキルあり/なしの対試験で効果を測るベンチマーク。「自己生成Skillは逆効果・compactが勝つ」に対し、SkillOpt は検証ゲート付きの自動改訂と 300〜2,000 トークンの compact な成果物で答えた形</li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a> — LESSONS.md 追記型の自己改善ループ。SkillOpt は同じ「スキルを育てる」目的を、採点と検証ゲートで機械化した版</li>
+<li><a href="../concepts/improver-skill-pattern.html">improver-skill-pattern</a> — Warp の inner/outer スキル型。改善提案を人間が PR でレビューする点が、検証スコアで自動採否する SkillOpt との違い</li>
+<li><a href="../tools/dspy.html">dspy</a> — プロンプトを最適化問題として扱う先行フレームワーク（COPRO/GEPA）。SkillOpt は最適化対象をスキル文書1枚に絞った</li>
+<li><a href="../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a> — DSPy+GEPA でスキルを自動進化させるリポ。同じ目的の別実装</li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — Dreaming（睡眠中の記憶整理）という同じ比喩を持つ機能。SkillOpt-Sleep と比較できる</li>
+<li><a href="../papers/2026-hao-skill-mining.html">2026-hao-skill-mining</a> — 軌跡からのスキル採掘は転移しなかったという負の結果。SkillOpt の転移の主張と対照</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/improver-skill-pattern.html">improver-skill-pattern</a></li>
+<li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
+<li><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a></li>
+<li><a href="../tools/dspy.html">dspy</a></li>
+<li><a href="../papers/2026-hao-skill-mining.html">2026-hao-skill-mining</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/microsoft/SkillOpt" rel="noopener" target="_blank">https://github.com/microsoft/SkillOpt</a></li>
+<li><a href="https://x.com/i/web/status/2104235868298924252" rel="noopener" target="_blank">https://x.com/i/web/status/2104235868298924252</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># SkillOpt（Microsoft）
+
+&gt; **TL;DR**: スキル文書（SKILL.md 相当）を「凍結したエージェントの学習可能パラメータ」とみなし、エポック・バッチ・学習率・検証ゲートというニューラルネット訓練の規律で、モデルの重みに触れずにスキルを最適化する Microsoft 製 OSS（MIT・`pip install skillopt`）。
+
+Microsoft の開発チーム（論文筆頭は Yifan Yang ら）は README で、既存のスキルは手書き・強いLLMによる一発生成・緩く管理された自己改訂のいずれかで作られ、どれもフィードバックを受けて開始点より確実に良くなる性質を持たないと問題設定する。SkillOpt はここに最適化器の規律を持ち込む。対象モデルとは別の **optimizer モデル** が採点済みの実行結果（rollout）を読み、1つのスキル文書に対する上限付きの add / delete / replace 編集を提案する。論文準拠のデフォルト経路では、候補編集は **held-out 検証スコアを厳密に改善したときだけ採用** される。テキスト版の「学習率」（1回の編集量の予算）、却下した編集を覚えておくバッファ、エポック単位の slow / meta 更新が訓練を安定させる、とチームは説明する。
+
+配備される成果物は `best_skill.md`（通常 300〜2,000 トークン）1枚だけで、変更していない対象モデルにそのまま読ませる。したがって推論時の追加モデル呼び出しはゼロ。これは [[tools/dspy]] や [[tools/hermes-agent-self-evolution]] の GEPA と同じ「プロンプトを最適化問題として解く」系譜にあり、最適化の単位をエージェントのスキルファイルに置いた点が特徴と考えられる。
+
+```mermaid
+flowchart LR
+  S[&quot;skill.md（現行）&quot;] --&gt; R[&quot;rollout（対象モデルで実行・採点）&quot;]
+  R --&gt; F[&quot;reflect（optimizer モデルが失敗を分析）&quot;]
+  F --&gt; A[&quot;aggregate（バッチ集約）&quot;]
+  A --&gt; E[&quot;select / update（add・delete・replace 編集）&quot;]
+  E --&gt; V{&quot;held-out 検証で改善？&quot;}
+  V --&gt;|yes| S
+  V --&gt;|no| B[&quot;rejected-edit buffer&quot;]
+  B --&gt; F
+  S --&gt; D[&quot;best_skill.md を配備&quot;]
+```
+
+## 訓練ループと構成要素
+
+- **訓練ループ**: v0.1.0（2026-06-02）の時点で rollout → reflect → aggregate → select → update → evaluate の全工程を収録（README の記述順を図にした）
+- **バックエンド**: チャット系（`openai_chat`・`claude_chat`・`qwen_chat`・`minimax_chat`・`copilot_chat`・`openai_compatible`）と実行系（`codex_exec`・`claude_code_exec`・`cursor_exec`・`copilot_exec`）。OpenAI Chat Completions 互換のプロバイダはまず `openai_compatible` を試すよう README が案内している
+- **ベンチマーク**: `skillopt/envs/&lt;name&gt;/` パッケージ（アダプタ・データローダ・採点付き rollout・YAML 設定・任意の初期スキル）として追加する。最小の参考実装は `skillopt/envs/searchqa/`。組み込みは6種
+- **WebUI**: Gradio 製の監視ダッシュボード（`python -m skillopt_webui.app`、既定ポート 7860）。既定のバインドが `0.0.0.0` で全インターフェースに公開されるため、手元専用なら `--host 127.0.0.1` を付けるよう README が注意している
+
+## SkillOpt-Sleep（夜間のオフライン自己進化）
+
+v0.2.0（2026-07-02）の目玉機能で、`skillopt-sleep` CLI として提供される。Claude Code / Codex / Copilot などローカルのコーディングエージェントの過去セッションを振り返り、繰り返し現れるタスクを再実行し、検証ゲートを通ったスキルだけを統合する。工程は harvest（収集）→ mine（採掘）→ replay（再実行）→ consolidate（統合）。同リリースのリポジトリ側には Claude Code・Codex・Copilot・Devin 向けの統合シェルと OpenClaw 向けの参考実装が入っている（プラグイン／MCP ファイルは PyPI の wheel に含まれずリポジトリにだけある）。
+
+人の睡眠中の記憶整理になぞらえた設計は、[[tools/claude-managed-agents]] の Dreaming と同じ発想と考えられる。違いは、採用可否を held-out 検証スコアという機械的なゲートで決める点にある。
+
+## 評価結果（チームの自己申告）
+
+チームは README で次を主張している（詳細は arXiv 2605.23904）。
+
+- 6ベンチマーク × 7対象モデル × 3実行ハーネス（直接チャット・Codex CLI・Claude Code CLI）の評価した全52セルで最良または同率最良
+- GPT-5.5 のスキルなし平均正答率を、直接チャットで +23.5 ポイント、Codex のエージェントループ内で +24.8、Claude Code 内で +19.1 押し上げた
+- 最適化済みスキルは追加の最適化なしで、モデル規模をまたいで、Codex と Claude Code のハーネス間で、近いベンチマークへ転移する
+
+この「転移する」という主張は、GUI 軌跡から採掘したスキルは転移しなかったとする [[papers/2026-hao-skill-mining]] の負の結果と対照的である。違いは、採掘がデータの頻度に依存するのに対し、SkillOpt は検証スコアで編集を選別する点にあると考えられる。
+
+## 採用状況
+
+- 2026-06-03 に gbrain・gbrain-evals・darwin-skill が SkillOpt を統合したと README が告知
+- 2026-07-24 に Microsoft Research の公式記事が公開され、VentureBeat・機械之心（Synced）・The Decoder などが報じた（README のニュース欄より）
+- X では @RoundtableSpace が「性能を評価し、自分の指示を書き換え、ベンチマークに落ちた変更を捨て、最適化したスキルをモデル間で持ち運べる」と紹介した
+
+## 観察ログ（未検証）
+
+- 2026-09-28: 「全52セルで最良または同率最良」「GPT-5.5 で +19.1〜+24.8 ポイント」は開発チームの自己申告。第三者の再現は未収集
+
+## 問い
+
+- このvaultの `wiki-ingest` スキルは LESSONS.md 追記型の自己改善（[[concepts/self-refining-skills]]）で回しているが、採点可能な評価セットを作れば SkillOpt の検証ゲート型に載せ替えられるか。そもそも ingest の「良さ」を held-out スコアに落とせるか
+- 検証ゲートを厳密改善に限ると、評価セットに現れない振る舞い（文体・安全側の配慮）を削る編集が通ってしまわないか
+- [[papers/2026-li-skillsbench]] の「自己生成Skillは逆効果」という結果と、SkillOpt の「最適化スキルが大きく効く」という結果は、検証ゲートの有無で説明がつくのか
+
+## 関連
+
+- [[papers/2026-li-skillsbench]] — スキルあり/なしの対試験で効果を測るベンチマーク。「自己生成Skillは逆効果・compactが勝つ」に対し、SkillOpt は検証ゲート付きの自動改訂と 300〜2,000 トークンの compact な成果物で答えた形
+- [[concepts/self-refining-skills]] — LESSONS.md 追記型の自己改善ループ。SkillOpt は同じ「スキルを育てる」目的を、採点と検証ゲートで機械化した版
+- [[concepts/improver-skill-pattern]] — Warp の inner/outer スキル型。改善提案を人間が PR でレビューする点が、検証スコアで自動採否する SkillOpt との違い
+- [[tools/dspy]] — プロンプトを最適化問題として扱う先行フレームワーク（COPRO/GEPA）。SkillOpt は最適化対象をスキル文書1枚に絞った
+- [[tools/hermes-agent-self-evolution]] — DSPy+GEPA でスキルを自動進化させるリポ。同じ目的の別実装
+- [[tools/claude-managed-agents]] — Dreaming（睡眠中の記憶整理）という同じ比喩を持つ機能。SkillOpt-Sleep と比較できる
+- [[papers/2026-hao-skill-mining]] — 軌跡からのスキル採掘は転移しなかったという負の結果。SkillOpt の転移の主張と対照
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

@@ -93,3 +93,4 @@ PyTorchよりもKerasに近い使い心地（高度に抽象化された訓練�
 - [[concepts/eval-loop]] — 評価指標で出力を採点するループ。DSPyはそのスコアを最適化の目的関数に使う
 - [[tools/hermes-agent]] — GEPAオフライン最適化を実装するエージェント基盤
 - [[tools/hermes-agent-self-evolution]] — DSPy+GEPAでスキル/プロンプト/コードを自動進化させる専用リポ（GEPAはICLR 2026 Oral）
+- [[tools/skillopt]] — 最適化対象をエージェントのスキル文書1枚に絞った Microsoft 製の同系統フレームワーク（検証ゲート付き add/delete/replace 編集）
