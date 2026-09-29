@@ -48,3 +48,4 @@ Book のランディングページで著者が掲げる問いは「ChatGPTは�
 - [[tools/understand-anything]] — コードベースという限定ドメインでナレッジグラフを自動構築するツール
 - [[concepts/graph-engineering]] — 同じ「グラフ」の語を使うが対象が違う（エージェント実行順序のグラフ）
 - [[concepts/context-graph-retrieval]] — 同じ「RAGでは届かない」問題を、チャンクからトリプル抽出・正規化・provenance・経路ランキングへ至る9ステップの実装手順として示した記事（@0xMorlex）
+- [[tools/pageindex]] — ベクトルDB・埋め込み・チャンク分割を使わないRAG手法として紹介されたPageIndex。グラフでなく別の索引で解く別解とみられる（仕組みは未収集）

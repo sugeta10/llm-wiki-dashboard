@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>cerebras-knowledge-base</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cerebras-knowledge-base.md">Markdownで表示</a></div>
-  <div class="meta">concepts/cerebras-knowledge-base · concepts · <span title="2026-07-25">2ヶ月前</span></div>
+  <div class="meta">concepts/cerebras-knowledge-base · concepts · <span title="2026-09-29">今日</span></div>
   <article><h1>Cerebrasの社内知識ベース設計</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Cerebrasが3ヶ月で社内定着させた知識ベースは、全データソースを単一の埋め込みテーブルに正規化し、Slackは全文検索＋埋め込み＋IDF＋鮮度減衰のハイブリッドで検索した上でRRF融合とリランキングを行い、MCPで検索プリミティブをそのままツールとして公開する設計だ。</p>
@@ -83,6 +83,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/knowledge-graph-llm.html">knowledge-graph-llm</a> — 同じ「回答のゆらぎ・説明不能・社内知識の欠如」をナレッジグラフ側から解こうとする対案</li>
 <li><a href="../concepts/context-graph-retrieval.html">context-graph-retrieval</a> — 埋め込みを捨ててエンティティと関係の走査に置き換える対案。本ページのハイブリッド検索が「似た文書を上手く引く」方向なのに対し、あちらは「経路を返す」方向へ振り切る</li>
 <li><a href="../concepts/llm-wiki-v2.html">llm-wiki-v2</a> — 個人向け LLM Wiki の拡張青写真。BM25＋ベクトル＋グラフ走査を RRF で融合し、確信度を時間で減衰させる設計が本ページの「全文＋埋め込み＋鮮度減衰→RRF」と同型に収束している</li>
+<li><a href="../tools/pageindex.html">pageindex</a> — 本ページと逆に、埋め込みも類似度検索も使わないと紹介されたRAG手法（仕組みは未収集）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/dinii-ask-anything.html">dinii-ask-anything</a></li>
 <li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
 <li><a href="../concepts/company-brain.html">company-brain</a></li>
@@ -187,6 +188,7 @@ MCP統合では、search・search_slack・search_code・who_knowsといった検
 - [[concepts/knowledge-graph-llm]] — 同じ「回答のゆらぎ・説明不能・社内知識の欠如」をナレッジグラフ側から解こうとする対案
 - [[concepts/context-graph-retrieval]] — 埋め込みを捨ててエンティティと関係の走査に置き換える対案。本ページのハイブリッド検索が「似た文書を上手く引く」方向なのに対し、あちらは「経路を返す」方向へ振り切る
 - [[concepts/llm-wiki-v2]] — 個人向け LLM Wiki の拡張青写真。BM25＋ベクトル＋グラフ走査を RRF で融合し、確信度を時間で減衰させる設計が本ページの「全文＋埋め込み＋鮮度減衰→RRF」と同型に収束している
+- [[tools/pageindex]] — 本ページと逆に、埋め込みも類似度検索も使わないと紹介されたRAG手法（仕組みは未収集）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

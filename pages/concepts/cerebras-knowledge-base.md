@@ -77,3 +77,4 @@ MCP統合では、search・search_slack・search_code・who_knowsといった検
 - [[concepts/knowledge-graph-llm]] — 同じ「回答のゆらぎ・説明不能・社内知識の欠如」をナレッジグラフ側から解こうとする対案
 - [[concepts/context-graph-retrieval]] — 埋め込みを捨ててエンティティと関係の走査に置き換える対案。本ページのハイブリッド検索が「似た文書を上手く引く」方向なのに対し、あちらは「経路を返す」方向へ振り切る
 - [[concepts/llm-wiki-v2]] — 個人向け LLM Wiki の拡張青写真。BM25＋ベクトル＋グラフ走査を RRF で融合し、確信度を時間で減衰させる設計が本ページの「全文＋埋め込み＋鮮度減衰→RRF」と同型に収束している
+- [[tools/pageindex]] — 本ページと逆に、埋め込みも類似度検索も使わないと紹介されたRAG手法（仕組みは未収集）
