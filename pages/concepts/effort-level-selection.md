@@ -66,3 +66,5 @@ Thariq の主な読み取りは「高 effort は隠れたエッジケースが�
 - [[tools/grill-me]] — 実装前インタビューの独立実装
 - [[tools/claude-code-ultracode]] — `/effort ultracode` で起動する総力戦モード。max の先にある並列編成
 - [[concepts/llm-model-selection-strategy]] — 工程ごとにモデル×effort を割り当てる実務戦略
+- [[concepts/opus-motion-design-studio]] — 動画制作での effort 運用例（小修正 medium・新作 xhigh・ローンチ max）
+- [[tools/claude-projects-threads]] — コーディネーターとスレッドで effort を分けて設定する Claude Projects。既定はスレッド high・コーディネーター low

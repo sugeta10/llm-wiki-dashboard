@@ -30,3 +30,4 @@ GUI の動画編集ソフトと違い、構成がコード（＝中間記法）�
 - [[business/youtube-shorts-jidouka-marketing]]
 - [[tools/openmontage]] — エージェント型動画制作システム。Remotionを既定レンダラとして組み込む
 - [[tools/video-shotcraft]] — Remotionでシネマティックなプロダクトプロモを組むショットレシピカード集スキル
+- [[concepts/opus-motion-design-studio]] — Opus 5.5 のコード描画動画講座。Remotion は明示しないと選ばれない「ルートB」として登場

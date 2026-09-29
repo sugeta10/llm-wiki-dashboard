@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>goal-loop-routine</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="goal-loop-routine.md">Markdownで表示</a></div>
-  <div class="meta">concepts/goal-loop-routine · concepts · <span title="2026-06-23">3ヶ月前</span></div>
+  <div class="meta">concepts/goal-loop-routine · concepts · <span title="2026-09-30">今日</span></div>
   <article><h1>goal / loop / routine の使い分け（3つの動詞）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェント自動化の正体は3つの動詞に分かれる——<code>goal</code>=条件を満たすまで走って止まる、<code>loop</code>=自分がいる間タイマーで繰り返す、<code>routine</code>=自分がいない間クラウドで走る。動詞を取り違えるとコマンドが空振りするので、まず「いつ止まるか」で選ぶ。</p>
@@ -110,11 +110,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/makeloop.html">makeloop</a> — closed/open の二分で骨格を切り替えてループプロンプトを自動生成するコマンド。本ページの動詞分類と同じ「止まる条件で選ぶ」判断軸を生成側に置いたもの</li>
 <li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — 公式チーム版の分類。本ページの3動詞に turn-based（素の agentic loop）と proactive（合成）を加えた4類型</li>
 <li><a href="../concepts/dynamic-agent-org.html">dynamic-agent-org</a> — 本ページが動詞（単体エージェントの止まり方）を扱うのに対し、こちらは複数エージェントの接続構造（グラフ）が実行中に書き換わる次の抽象化レイヤー</li>
+<li><a href="../tools/claude-projects-threads.html">claude-projects-threads</a> — Claude Projects の Routines タブ。コーディネーターに頼むとプロジェクト内でスレッドとして走るルーティンが作られる</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
 <li><a href="../concepts/dynamic-agent-org.html">dynamic-agent-org</a></li>
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
 <li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li>
-<li><a href="../tools/loop-library.html">loop-library</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2068426104088748331" rel="noopener" target="_blank">https://x.com/i/web/status/2068426104088748331</a></li>
+<li><a href="../tools/claude-projects-threads.html">claude-projects-threads</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2068426104088748331" rel="noopener" target="_blank">https://x.com/i/web/status/2068426104088748331</a></li>
 <li><a href="https://x.com/i/web/status/2068692611334893582" rel="noopener" target="_blank">https://x.com/i/web/status/2068692611334893582</a></li></ul></section></article>
 </main>
 <script>
@@ -196,6 +197,7 @@ flowchart TD
 - [[tools/makeloop]] — closed/open の二分で骨格を切り替えてループプロンプトを自動生成するコマンド。本ページの動詞分類と同じ「止まる条件で選ぶ」判断軸を生成側に置いたもの
 - [[concepts/claude-code-loop-types]] — 公式チーム版の分類。本ページの3動詞に turn-based（素の agentic loop）と proactive（合成）を加えた4類型
 - [[concepts/dynamic-agent-org]] — 本ページが動詞（単体エージェントの止まり方）を扱うのに対し、こちらは複数エージェントの接続構造（グラフ）が実行中に書き換わる次の抽象化レイヤー
+- [[tools/claude-projects-threads]] — Claude Projects の Routines タブ。コーディネーターに頼むとプロジェクト内でスレッドとして走るルーティンが作られる
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

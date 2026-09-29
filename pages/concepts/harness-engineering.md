@@ -83,3 +83,4 @@ OpenAI・Anthropic・ThoughtWorksが調整なく同じ壁にぶつかり、異�
 - [[people/uncle-bob-martin]] — 「エージェントのコードは読まず極端な制約で囲む」という著名実践者による体現事例
 - [[concepts/decision-layer-model]] — ハーネス内の分岐（モデル選択・危険操作の事前分類）を生成しない判断モデルへ切り出す設計。モデルを替えずハーネス部品を置き換える打ち手
 - [[papers/2026-dairai-top-ai-papers-w35]] — ハーネスを動的・蓄積的にする研究2本（JIT-Agent=タスクごとにハーネスを合成、Prime Agent=走行間で永続するContinual Harness）。手で設計して凍結するハーネスの次の段階
+- [[concepts/opus-motion-design-studio]] — 「プロンプト10%・ハーネス90%」を動画制作に当てはめた講座（@0xMovez）

@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>effort-level-selection</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="effort-level-selection.md">Markdownで表示</a></div>
-  <div class="meta">concepts/effort-level-selection · concepts · <span title="2026-09-27">2日前</span></div>
+  <div class="meta">concepts/effort-level-selection · concepts · <span title="2026-09-30">今日</span></div>
   <article><h1>effort レベルの使い分け（Spending your effort）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: effort は「どれだけ検証・エッジケース確認をし、どれだけ自分の判断で動くか」を変えるつまみで、高 effort が効くのは隠れたエッジケースの多いタスク（ハードウェア・コードレビュー・セキュリティ）。通常開発は「インタビュー→低/中 effort で実装→レビュー→高 effort で検証」のループで回す、と Anthropic Claude Code チームの Thariq（@trq212）が自身の eval 実行と実験から結論づけた。</p>
@@ -109,11 +109,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/grill-me.html">grill-me</a> — 実装前インタビューの独立実装</li>
 <li><a href="../tools/claude-code-ultracode.html">claude-code-ultracode</a> — <code>/effort ultracode</code> で起動する総力戦モード。max の先にある並列編成</li>
 <li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a> — 工程ごとにモデル×effort を割り当てる実務戦略</li>
+<li><a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a> — 動画制作での effort 運用例（小修正 medium・新作 xhigh・ローンチ max）</li>
+<li><a href="../tools/claude-projects-threads.html">claude-projects-threads</a> — コーディネーターとスレッドで effort を分けて設定する Claude Projects。既定はスレッド high・コーディネーター low</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-model-effort.html">claude-code-model-effort</a></li>
 <li><a href="../concepts/finding-unknowns.html">finding-unknowns</a></li>
+<li><a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a></li>
 <li><a href="../models/claude-fable-5-1.html">claude-fable-5-1</a></li>
-<li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a></li>
-<li><a href="../concepts/llm-model-selection-strategy.html">llm-model-selection-strategy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2103576349499855160" rel="noopener" target="_blank">https://x.com/i/web/status/2103576349499855160</a></li></ul></section></article>
+<li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2103576349499855160" rel="noopener" target="_blank">https://x.com/i/web/status/2103576349499855160</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -202,6 +204,8 @@ Thariq の主な読み取りは「高 effort は隠れたエッジケースが�
 - [[tools/grill-me]] — 実装前インタビューの独立実装
 - [[tools/claude-code-ultracode]] — `/effort ultracode` で起動する総力戦モード。max の先にある並列編成
 - [[concepts/llm-model-selection-strategy]] — 工程ごとにモデル×effort を割り当てる実務戦略
+- [[concepts/opus-motion-design-studio]] — 動画制作での effort 運用例（小修正 medium・新作 xhigh・ローンチ max）
+- [[tools/claude-projects-threads]] — コーディネーターとスレッドで effort を分けて設定する Claude Projects。既定はスレッド high・コーディネーター low
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

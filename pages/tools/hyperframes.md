@@ -100,3 +100,4 @@ HeyGenの本業はAIアバター動画だが「アバターは動画の半分」
 - [[companies/anthropic]]
 - [[concepts/html-output-format]] — Anthropic公式のHTML出力実例集。HyperframesはHTMLを動画レンダリングの入力に使う応用形
 - [[tools/diagram-design]] — HTML+SVGを図版の最終出力に使うリポジトリ。HTMLを成果物フォーマットに据える同系（出力は動画でなく静止図）
+- [[concepts/opus-motion-design-studio]] — Opus 5.5 は Hyperframes が使える環境でも依存ゼロの seek(t)＋Playwright＋ffmpeg を既定で選ぶという観察。フレームワークを使わせるなら明示が要る

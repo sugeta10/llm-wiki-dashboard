@@ -58,3 +58,4 @@ flowchart TD
 - [[tools/makeloop]] — closed/open の二分で骨格を切り替えてループプロンプトを自動生成するコマンド。本ページの動詞分類と同じ「止まる条件で選ぶ」判断軸を生成側に置いたもの
 - [[concepts/claude-code-loop-types]] — 公式チーム版の分類。本ページの3動詞に turn-based（素の agentic loop）と proactive（合成）を加えた4類型
 - [[concepts/dynamic-agent-org]] — 本ページが動詞（単体エージェントの止まり方）を扱うのに対し、こちらは複数エージェントの接続構造（グラフ）が実行中に書き換わる次の抽象化レイヤー
+- [[tools/claude-projects-threads]] — Claude Projects の Routines タブ。コーディネーターに頼むとプロジェクト内でスレッドとして走るルーティンが作られる

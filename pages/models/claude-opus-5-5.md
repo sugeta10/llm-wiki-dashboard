@@ -18,3 +18,4 @@
 - [[companies/anthropic]] — 開発元
 - [[concepts/effort-level-selection]] — @trq212 が Opus 5.5 で同一タスクを effort 別に実行した実験（low 0/5 → high 4〜5/5 の事例など）
 - [[concepts/html-output-format]] — 長いタスクを任せる前に HTML ダッシュボードを作らせる運用（@Voxyz_ai）
+- [[concepts/opus-motion-design-studio]] — 公開直後に流行したコード描画動画の作り方を12ステップにまとめた講座（@0xMovez）。xhigh/max と画像読解による自己批評ループが要

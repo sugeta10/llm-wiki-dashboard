@@ -79,3 +79,4 @@ Wada はさらに、3パターンに加え「**Dynamic**」を4番目のアプ�
 - [[design/fastview-design]] — エージェント生成UIにも適用できるUI設計原則
 - [[companies/cloudflare]] — Dynamic Workers上でReact SSRするGenerativeUI第4アプローチ「Dynamic」の実行環境
 - [[concepts/agentic-data-analytics]] — デジタル庁が行政データのMCP分析でMCP AppsによるチャットUI表示を試作した事例。Open-endedパターンを公共データの分析インターフェースに適用した実装
+- [[tools/openai-mcp-extensions]] — MCP Apps の上にチャット欄外の入口を足す ChatGPT 専用拡張

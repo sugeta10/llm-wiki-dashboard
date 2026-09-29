@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-projects-threads - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-projects-threads</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-projects-threads.md">Markdownで表示</a></div>
+  <div class="meta">tools/claude-projects-threads · tools · <span title="2026-09-30">今日</span></div>
+  <article><h1>Claude Projects（コーディネーター＋並列スレッド型）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 1本の会話で仕事を渡すとコーディネーターエージェントがスレッドに分割し、各スレッドがクラウドの Claude Code セッションとして並列に走って PR を出す新しい Claude Projects。@dani_avila7 は、実作業を渡す前に Context・Goal・Memory・Environment・Connectors を整えるのが要だと述べる。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  U[&quot;ユーザー&lt;br/&gt;（1本の会話）&quot;] --&gt; C[&quot;コーディネーター&lt;br/&gt;（ブリーフを書き・結果を追う）&quot;]
+  C --&gt; T1[&quot;スレッド A&lt;br/&gt;クラウドセッション&quot;]
+  C --&gt; T2[&quot;スレッド B&lt;br/&gt;クラウドセッション&quot;]
+  E[&quot;Environment&lt;br/&gt;（repo を毎回 fresh clone・API credentials）&quot;] --&gt; T1
+  E --&gt; T2
+  T1 --&gt; PR1[&quot;PR&quot;]
+  T2 --&gt; PR2[&quot;PR&quot;]
+  T1 --&gt; L[&quot;Library&lt;br/&gt;（非コードの成果物）&quot;]</pre>
+<p>ナレッジファイルと指示を会話に持たせる従来のチャット版 Projects（<a href="../concepts/claude-projects-setup.html">claude-projects-setup</a>・<a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a>）とは別物で、こちらは作業の実行単位がエージェントのスレッドになっている。@dani_avila7 の説明では、コーディネーターが各スレッドのブリーフを書いて返ってきた結果を管理するので、設定が揃っていればスレッドは本来持っているべき情報を人に聞きに止まらずに進められる。スレッドは Claude Desktop の左サイドバーの Projects から扱い、1日あたり全プロジェクト合計200スレッドの新規作成上限があるという。</p>
+<h2>作成時の Context</h2>
+<p>プロジェクト作成時に名前とゴールを与え、Context に GitHub リポジトリ・ファイル・フォルダ・Google Drive フォルダを加える。Claude はタスクに応じてどのソースを開くか自分で決める。@dani_avila7 は、数百のスプレッドシートや PDF を入れたフォルダは避け、整ったコンテキストだけを与えて「中身はすべて関連する」と Claude が信頼できる状態にするよう勧める（チャット版の「知識ベースを物置にしない」と同じ原則）。リポジトリはほぼ全タスクが触る1〜2本だけを加え、残りは Project instructions に名前を書いておけば、スレッドが必要に応じて作業中に clone する。リポジトリ接続でエラーが出たら GitHub 連携を再接続する。スレッドには各リポジトリへの Claude GitHub App と、古い接続には無い新しい権限が要るため。</p>
+<p>初回作成時は Claude が自発的に初期セットアップを走らせ、リポジトリを変更せずに探索したうえで、追加すべきリポジトリ・作るべきルーティン・始められるスレッドを提案する。執筆時点では、この初期セットアップの最初の25ドル分のトークンを Anthropic が負担していると @dani_avila7 は書いている。</p>
+<h2>Settings</h2>
+<ul>
+<li><strong>General / Goal</strong>: Goal 欄は最大8,000字。@dani_avila7 はイントロと指標・課題・機能（サブ節4つ）・セキュリティと品質・構成と運用・中立性とガバナンス・ロードマップ・対象ユーザーに分けて全体像を書いた。</li>
+<li><strong>Models</strong>: コーディネーター（プロジェクト会話の Claude）とスレッド（作業するエージェント）のモデルと effort を別々に選ぶ。既定は全部 Opus で、スレッドが high・コーディネーターが low。@dani_avila7 は「全スレッド high がプランを最も速く溶かす」として Opus 5.5 の両方 Medium で運用し、単純なプロジェクトならコーディネーター Opus 5.5・スレッド Sonnet 5 を勧める。個別タスクだけ会話内で別モデルを頼むこともできる。effort の考え方は <a href="../concepts/effort-level-selection.html">effort-level-selection</a> と同じ軸で読める（推論）。</li>
+<li><strong>Auto-continue</strong>: 利用上限のリセット時に自動再開する設定をオンにする。</li>
+<li><strong>Memory / Project instructions</strong>: 上限16,000字で、コーディネーターと全スレッドに渡る「プロジェクトの CLAUDE.md」。各リポジトリの CLAUDE.md はスレッドが clone 時に読むので繰り返さない。書く節の例は、プロジェクトの文脈・ソース一覧（1行ずつ所在と中身）・正本（各ソースの指針がどこにあり、衝突時にどれが勝つか）・ソース間の関係・不変条件・着手前に読むもの。複数の指示ファイルに正本を1つ決める考え方は <a href="../concepts/agents-md-canonical.html">agents-md-canonical</a> と同型と考えられる（推論）。</li>
+<li><strong>Auto Memory</strong>: Claude が作業中に自分で書くファイル群で、MEMORY.md が索引となり全クラウドスレッドが起動時に読む。プロジェクトが変わると過去の状態を書いたファイルが推論のノイズになるので、定期的に読んで掃除する（掃除自体をスレッドに任せることもできる）。</li>
+<li><strong>Environment</strong>: スレッドが走るクラウド環境。各スレッドは追加したリポジトリを毎回 fresh clone し、デフォルトブランチから新ブランチを切る。環境は Projects 専用でなく、他の Claude Code クラウドセッション・ルーティン・<a href="../tools/claude-tag.html">claude-tag</a> と共通なので、Projects 用と分かる名前を付けておく。</li>
+<li><strong>Network</strong>: 既定の Trusted（パッケージレジストリ・GitHub・クラウド SDK など Anthropic の許可リストのみ）を推奨し、社内 API などが要るときは Custom で個別に足す。</li>
+<li><strong>環境変数と API credentials の違い</strong>: 環境変数はセッション内の Claude・実行コマンド・環境の利用者全員が読める素の値で、リージョン・プロジェクトID・フラグ・サービスURLなどの設定用。API credentials は秘密用で、キーと適用ホストを環境に登録すると Anthropic のエージェントプロキシがセッションを出た後のリクエストにキーを付けるので、キーは Claude にも実行コマンドにも環境変数にも届かない（Pro / Max プランで利用可）。人とエージェントに鍵を配らずに外部サービスへ届かせる設計として <a href="../concepts/idp-shared-cli-mcp.html">idp-shared-cli-mcp</a> と並べて読める（推論）。</li>
+<li><strong>Setup script</strong>: 環境起動時のパッケージ導入などを任せる。初回セッションで走り、5分未満で終われば結果のファイルシステムが約1週間キャッシュされ後続セッションで再利用される。キャッシュされるのはファイルだけで、データベースのような常駐プロセスはセッションごとに起動が要る。</li>
+<li><strong>Connectors</strong>: claude.ai アカウント側で一度つないだ MCP サーバー（<a href="../tools/claude-mcp.html">claude-mcp</a>）が全スレッドで使える。未接続の MCP を呼ぶたびにトークンとノイズを失うので、始める前に全部つなぎ切る。コーディネーター会話自体はコネクタを持たず、Linear チケットを読むような作業はスレッドに回る。</li>
+<li><strong>Plugins</strong>: クラウドスレッドにプラグインを入れる唯一の経路。リポジトリの <code>.claude/settings.json</code> で有効化したプラグインはクラウドでは読み込まれない。</li>
+<li><strong>Usage</strong>: スレッド別・モデル別のトークン使用、コーディネーターの消費、キャッシュの効き、高コストなセッションを見られる。</li>
+</ul>
+<h2>使い方</h2>
+<p>コーディネーターとの1本の会話に、できれば完結した仕事単位（例: Linear チケットを渡して「取り組み、疑問があれば聞いて」）を渡す。Overview ペインはスレッドを Ready for review（PR がレビュー待ち）・Waiting on you（返答や承認待ち、または失敗）・Working・Landing（承認済み・マージ待ち）・Idle・Resolved（手動・最後の手順後に Claude が・1週間放置で自動）の状態で束ねる。1スレッドに複数 PR も持てるが、@dani_avila7 は同じタスクでも PR ごとに新スレッドを開き、PR とスレッドを1対1にすると、マージされた変更ごとの判断理由を後で辿りやすいと勧める。Library タブには追加したファイルとスレッドの生成物（レポート・分析など非コードの成果）が入り、Routines タブには定期実行の仕事が並ぶ。コーディネーターに「毎週依存関係レポートを」と頼むと、プロジェクト内でスレッドとして走るルーティンが作られる（<a href="../concepts/goal-loop-routine.html">goal-loop-routine</a>）。</p>
+<h2>問い</h2>
+<ul>
+<li>自分のリポジトリ群で、Project instructions の「正本と衝突時の優先」節を書くと、各リポの CLAUDE.md とどこで食い違うか</li>
+<li>API credentials のプロキシ注入は、ローカル Claude Code で .env にキーを置く運用と比べてどこまで漏えい面を減らすか。ローカルに同等の仕組みを持てるか</li>
+<li>「PR 1本 = スレッド1本」は、判断理由の追跡を PR description に頼る運用とどちらが後で読みやすいか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/claude-projects-setup.html">claude-projects-setup</a> — チャット版 Projects（ナレッジファイル＋standing brief）。同名だが実行モデルが異なる</li>
+<li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a> — チャット版 Projects の設計図</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — スレッドの実体であるクラウドセッションの基盤</li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — ルーティンを含む goal / loop / routine の使い分け</li>
+<li><a href="../concepts/effort-level-selection.html">effort-level-selection</a> — コーディネーター／スレッドの effort 選びの判断軸</li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a> — Connectors の中身</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-projects-setup.html">claude-projects-setup</a></li>
+<li><a href="../concepts/effort-level-selection.html">effort-level-selection</a></li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2104356640749187329" rel="noopener" target="_blank">https://x.com/i/web/status/2104356640749187329</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Projects（コーディネーター＋並列スレッド型）
+
+&gt; **TL;DR**: 1本の会話で仕事を渡すとコーディネーターエージェントがスレッドに分割し、各スレッドがクラウドの Claude Code セッションとして並列に走って PR を出す新しい Claude Projects。@dani_avila7 は、実作業を渡す前に Context・Goal・Memory・Environment・Connectors を整えるのが要だと述べる。
+
+```mermaid
+flowchart LR
+  U[&quot;ユーザー&lt;br/&gt;（1本の会話）&quot;] --&gt; C[&quot;コーディネーター&lt;br/&gt;（ブリーフを書き・結果を追う）&quot;]
+  C --&gt; T1[&quot;スレッド A&lt;br/&gt;クラウドセッション&quot;]
+  C --&gt; T2[&quot;スレッド B&lt;br/&gt;クラウドセッション&quot;]
+  E[&quot;Environment&lt;br/&gt;（repo を毎回 fresh clone・API credentials）&quot;] --&gt; T1
+  E --&gt; T2
+  T1 --&gt; PR1[&quot;PR&quot;]
+  T2 --&gt; PR2[&quot;PR&quot;]
+  T1 --&gt; L[&quot;Library&lt;br/&gt;（非コードの成果物）&quot;]
+```
+
+ナレッジファイルと指示を会話に持たせる従来のチャット版 Projects（[[concepts/claude-projects-setup]]・[[concepts/claude-projects-blueprint]]）とは別物で、こちらは作業の実行単位がエージェントのスレッドになっている。@dani_avila7 の説明では、コーディネーターが各スレッドのブリーフを書いて返ってきた結果を管理するので、設定が揃っていればスレッドは本来持っているべき情報を人に聞きに止まらずに進められる。スレッドは Claude Desktop の左サイドバーの Projects から扱い、1日あたり全プロジェクト合計200スレッドの新規作成上限があるという。
+
+## 作成時の Context
+
+プロジェクト作成時に名前とゴールを与え、Context に GitHub リポジトリ・ファイル・フォルダ・Google Drive フォルダを加える。Claude はタスクに応じてどのソースを開くか自分で決める。@dani_avila7 は、数百のスプレッドシートや PDF を入れたフォルダは避け、整ったコンテキストだけを与えて「中身はすべて関連する」と Claude が信頼できる状態にするよう勧める（チャット版の「知識ベースを物置にしない」と同じ原則）。リポジトリはほぼ全タスクが触る1〜2本だけを加え、残りは Project instructions に名前を書いておけば、スレッドが必要に応じて作業中に clone する。リポジトリ接続でエラーが出たら GitHub 連携を再接続する。スレッドには各リポジトリへの Claude GitHub App と、古い接続には無い新しい権限が要るため。
+
+初回作成時は Claude が自発的に初期セットアップを走らせ、リポジトリを変更せずに探索したうえで、追加すべきリポジトリ・作るべきルーティン・始められるスレッドを提案する。執筆時点では、この初期セットアップの最初の25ドル分のトークンを Anthropic が負担していると @dani_avila7 は書いている。
+
+## Settings
+
+- **General / Goal**: Goal 欄は最大8,000字。@dani_avila7 はイントロと指標・課題・機能（サブ節4つ）・セキュリティと品質・構成と運用・中立性とガバナンス・ロードマップ・対象ユーザーに分けて全体像を書いた。
+- **Models**: コーディネーター（プロジェクト会話の Claude）とスレッド（作業するエージェント）のモデルと effort を別々に選ぶ。既定は全部 Opus で、スレッドが high・コーディネーターが low。@dani_avila7 は「全スレッド high がプランを最も速く溶かす」として Opus 5.5 の両方 Medium で運用し、単純なプロジェクトならコーディネーター Opus 5.5・スレッド Sonnet 5 を勧める。個別タスクだけ会話内で別モデルを頼むこともできる。effort の考え方は [[concepts/effort-level-selection]] と同じ軸で読める（推論）。
+- **Auto-continue**: 利用上限のリセット時に自動再開する設定をオンにする。
+- **Memory / Project instructions**: 上限16,000字で、コーディネーターと全スレッドに渡る「プロジェクトの CLAUDE.md」。各リポジトリの CLAUDE.md はスレッドが clone 時に読むので繰り返さない。書く節の例は、プロジェクトの文脈・ソース一覧（1行ずつ所在と中身）・正本（各ソースの指針がどこにあり、衝突時にどれが勝つか）・ソース間の関係・不変条件・着手前に読むもの。複数の指示ファイルに正本を1つ決める考え方は [[concepts/agents-md-canonical]] と同型と考えられる（推論）。
+- **Auto Memory**: Claude が作業中に自分で書くファイル群で、MEMORY.md が索引となり全クラウドスレッドが起動時に読む。プロジェクトが変わると過去の状態を書いたファイルが推論のノイズになるので、定期的に読んで掃除する（掃除自体をスレッドに任せることもできる）。
+- **Environment**: スレッドが走るクラウド環境。各スレッドは追加したリポジトリを毎回 fresh clone し、デフォルトブランチから新ブランチを切る。環境は Projects 専用でなく、他の Claude Code クラウドセッション・ルーティン・[[tools/claude-tag]] と共通なので、Projects 用と分かる名前を付けておく。
+  - **Network**: 既定の Trusted（パッケージレジストリ・GitHub・クラウド SDK など Anthropic の許可リストのみ）を推奨し、社内 API などが要るときは Custom で個別に足す。
+  - **環境変数と API credentials の違い**: 環境変数はセッション内の Claude・実行コマンド・環境の利用者全員が読める素の値で、リージョン・プロジェクトID・フラグ・サービスURLなどの設定用。API credentials は秘密用で、キーと適用ホストを環境に登録すると Anthropic のエージェントプロキシがセッションを出た後のリクエストにキーを付けるので、キーは Claude にも実行コマンドにも環境変数にも届かない（Pro / Max プランで利用可）。人とエージェントに鍵を配らずに外部サービスへ届かせる設計として [[concepts/idp-shared-cli-mcp]] と並べて読める（推論）。
+  - **Setup script**: 環境起動時のパッケージ導入などを任せる。初回セッションで走り、5分未満で終われば結果のファイルシステムが約1週間キャッシュされ後続セッションで再利用される。キャッシュされるのはファイルだけで、データベースのような常駐プロセスはセッションごとに起動が要る。
+- **Connectors**: claude.ai アカウント側で一度つないだ MCP サーバー（[[tools/claude-mcp]]）が全スレッドで使える。未接続の MCP を呼ぶたびにトークンとノイズを失うので、始める前に全部つなぎ切る。コーディネーター会話自体はコネクタを持たず、Linear チケットを読むような作業はスレッドに回る。
+- **Plugins**: クラウドスレッドにプラグインを入れる唯一の経路。リポジトリの `.claude/settings.json` で有効化したプラグインはクラウドでは読み込まれない。
+- **Usage**: スレッド別・モデル別のトークン使用、コーディネーターの消費、キャッシュの効き、高コストなセッションを見られる。
+
+## 使い方
+
+コーディネーターとの1本の会話に、できれば完結した仕事単位（例: Linear チケットを渡して「取り組み、疑問があれば聞いて」）を渡す。Overview ペインはスレッドを Ready for review（PR がレビュー待ち）・Waiting on you（返答や承認待ち、または失敗）・Working・Landing（承認済み・マージ待ち）・Idle・Resolved（手動・最後の手順後に Claude が・1週間放置で自動）の状態で束ねる。1スレッドに複数 PR も持てるが、@dani_avila7 は同じタスクでも PR ごとに新スレッドを開き、PR とスレッドを1対1にすると、マージされた変更ごとの判断理由を後で辿りやすいと勧める。Library タブには追加したファイルとスレッドの生成物（レポート・分析など非コードの成果）が入り、Routines タブには定期実行の仕事が並ぶ。コーディネーターに「毎週依存関係レポートを」と頼むと、プロジェクト内でスレッドとして走るルーティンが作られる（[[concepts/goal-loop-routine]]）。
+
+## 問い
+
+- 自分のリポジトリ群で、Project instructions の「正本と衝突時の優先」節を書くと、各リポの CLAUDE.md とどこで食い違うか
+- API credentials のプロキシ注入は、ローカル Claude Code で .env にキーを置く運用と比べてどこまで漏えい面を減らすか。ローカルに同等の仕組みを持てるか
+- 「PR 1本 = スレッド1本」は、判断理由の追跡を PR description に頼る運用とどちらが後で読みやすいか
+
+## 関連
+
+- [[concepts/claude-projects-setup]] — チャット版 Projects（ナレッジファイル＋standing brief）。同名だが実行モデルが異なる
+- [[concepts/claude-projects-blueprint]] — チャット版 Projects の設計図
+- [[tools/claude-code]] — スレッドの実体であるクラウドセッションの基盤
+- [[concepts/goal-loop-routine]] — ルーティンを含む goal / loop / routine の使い分け
+- [[concepts/effort-level-selection]] — コーディネーター／スレッドの effort 選びの判断軸
+- [[tools/claude-mcp]] — Connectors の中身
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

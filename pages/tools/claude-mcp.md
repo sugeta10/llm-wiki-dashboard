@@ -63,3 +63,5 @@ MCP Appsは[[concepts/generative-ui]]が扱うOpen-endedパターンの実装に
 - [[tools/claude-academy]] — Anthropic公式の無料学習サイト。Claude Platform トラックが API・Console・MCP を扱う
 - [[concepts/agentic-data-analytics]] — MCPを業務データ分析の接続層として使う設計論。デジタル庁が行政手続等調査データ約75,000件をMCP経由で自然言語分析する実装をGitHub公開した事例を含む
 - [[tools/line-harness]] — MCPサーバー同梱のOSS LINE配信ツール。「AIに運用させて人間は監視する」前提の設計例
+- [[tools/openai-mcp-extensions]] — MCP / MCP Apps に ChatGPT 固有の入口（サイドバー・ファイルハンドラ・メンション・フォーム）を足す OpenAI 公式拡張
+- [[tools/claude-projects-threads]] — claude.ai でつないだ MCP コネクタを全スレッドで使う Claude Projects。コーディネーター自体はコネクタを持たない

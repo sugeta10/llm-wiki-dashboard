@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>opus-motion-design-studio - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>opus-motion-design-studio</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="opus-motion-design-studio.md">Markdownで表示</a></div>
+  <div class="meta">concepts/opus-motion-design-studio · concepts · <span title="2026-09-30">今日</span></div>
+  <article><h1>Opus 5.5 モーションデザインスタジオ（seek(t) エンジン＋批評ループ）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Opus 5.5 で「コードから描く動画」を量産するには、プロンプトより周辺の仕組み（決定論的な seek(t) レンダラ・リファレンス・状態リスト型の仕様・自分のフレームを見て直す批評ループ）が効く、と @0xMovez が12ステップの講座にまとめた。</p>
+<p>📌 X bookmark: 20,396（2026-09-29 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  B[&quot;ディレクターズブリーフ&lt;br/&gt;（リファレンス・状態リスト）&quot;] --&gt; S[&quot;Opus が seek(t) を書く&lt;br/&gt;（index.html）&quot;]
+  S --&gt; P[&quot;ヘッドレスブラウザ&lt;br/&gt;（Playwright）で全フレーム撮影&quot;]
+  P --&gt; F[&quot;ffmpeg で MP4 化&quot;]
+  F --&gt; C[&quot;Opus が静止画を採点&lt;br/&gt;最悪の3点を書き出す&quot;]
+  C --&gt;|&quot;全スコア 8 未満&quot;| S
+  C --&gt;|&quot;全スコア 8 以上&quot;| D[&quot;納品（MP4・ポスター・コンタクトシート）&quot;]</pre>
+<p><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a> の公開（@0xMovez によれば2026-09-22）直後、タイムラインはコードからレンダリングされたショーリール・ローンチ動画・音楽ビデオで埋まり、「ワンプロンプト」「モーションデザイナーは終わり」という反応が広がった。@0xMovez はどちらも半分だけ正しいとし、30語のプロンプトから出た作品がある一方で、9,500字のディレクターズブリーフ・スキルのフォルダ・APIキー2本・12時間の自律実行から出た作品もあると整理する。Claude Code チームの Thariq（<a href="../concepts/effort-level-selection.html">effort-level-selection</a> の @trq212）もこの落差を「投稿はワンショットと言うが、プロンプトはスキル・例・キー込みで1万字」と一言でまとめたという。講座の結論は「プロンプトは動画の10%で、残り90%はハーネス」で、<a href="../concepts/harness-engineering.html">harness-engineering</a> の「エージェント = モデル + ハーネス」を動画制作に当てはめた実例として読める（推論）。</p>
+<h2>Part 1: 何が起きているか</h2>
+<ul>
+<li><strong>モデルは動画でなくプログラムを書く</strong>: Opus 5.5 はテキストと画像を入力しテキストを出力するので、MP4 は出せない。この流行の動画はすべて、Opus が書いた <code>draw(t)</code> / <code>seek(t)</code> 関数（任意の時刻のフレームをそのまま描く純関数）を、ヘッドレスブラウザが 60fps・15秒なら900回呼んでスクリーンショットし、ffmpeg が結合したもの。タイマーに依存しないのでレンダリングは毎回同一になり、修正は1行の編集と再レンダリングで済む。</li>
+<li><strong>Opus の既定は依存ゼロの「ルートA」</strong>: Tommy Rossi がワンショット出力を調べたところ、Opus は index.html 1枚・eval 経由で呼ぶ seek 関数・Playwright によるフレーム撮影・ffmpeg エンコードという構成を好み、<a href="../tools/remotion.html">remotion</a> や <a href="../tools/hyperframes.html">hyperframes</a> が使える環境でも選ばなかったという。フレームワークを使わせたいなら明示的に指定する必要がある、と @0xMovez は述べる。</li>
+<li><strong>セットアップは Claude Code 前提</strong>: チャットアプリでもアニメーションは書けるが、レンダリングし・音を聞き・自分のフレームを見られるのはシェルを持つエージェント（<a href="../tools/claude-code.html">claude-code</a> など）だけで、このフィードバックループが「微妙な初回」とバズった作品の差だとする。プロジェクト直下に CLAUDE.md の house rules を置けば毎回繰り返し指示しなくてよい。</li>
+<li><strong>effort</strong>: @0xMovez によれば Opus 5.5 の既定は medium で、バズったワンショットはすべて xhigh か max で動いていた。小修正・再レンダリングは medium、新作は xhigh、冒頭3秒でローンチを背負うなら max を推奨する。</li>
+</ul>
+<h2>Part 2: ディレクターとしてのプロンプト</h2>
+<ul>
+<li><strong>ワンライナー</strong>: 流行を作った9投稿のうち4本が「履歴書用の15秒ショーリール（showreel for a résumé）」「なんて凄いモーションデザイナーなんだ」「go all out」を含む同じ文を使った。@0xMovez の分解では、ショーリールというジャンルが「速いカット・1ショット1技法・最高作を先頭」という既知の規則を持ち込み、モデル自身を主題にすることで製品説明の誤りが起きず、15秒は1パスで終わり6〜8ショットが入る長さ、「go all out」は xhigh/max の上に乗る努力の乗数として働く。弱点は athemeroy のデータセットが「brief contagion」と呼ぶ現象で、同じプロンプトから互いに似たリールが大量に出た。「ワンライナーはエンジンを試すがアイデアは試さない。アイデアを含んでいないから」と @0xMovez は述べる。</li>
+<li><strong>ブランド向け</strong>: Tony Dinh は1年前に1,000ドル超を払った類似のローンチ動画を30分未満で作った。追加したのは製品URL・「実際の製品スクリーンショット・ロゴ・素材を使う」・「音楽必須」の3行で、Opus がサイトから素材を自分で集めたという。Rob Hallam は同じチャットで続けて製品広告を頼むとレンダラ・音声合成・書き出しパイプラインが既にあるぶん速かったと報告しており、@0xMovez は「ブランドごとに1セッション」を勧める。achxvi は ElevenLabs キーを渡して製品を説明する喋るキャラクターを作り、声＋マスコットをサービスとして販売している。APIキーは .env に置き「ElevenLabs のキーは .env の ELEVENLABS_API_KEY」と書き、スクショする可能性のあるプロンプトに実キーを貼らない。</li>
+<li><strong>リファレンス</strong>: リファレンスが無いと Opus は「中央寄せテキスト・グラデーション背景・全部フェードイン」の既定に戻る。Rexan Wong はバズった多数のクリップを調べ、スタイルは説明するより名指すほうが効き、参照動画・フレームがペース・書体・トランジションの手本になると結論づけた。参照の渡し方は、1フレーム（何を取り何を取らないかを添える）・動画（ffmpeg でフレーム抽出し、コードの前にショットごとのペースを記述させる）・自分のライブラリ（先に style_guide.md を書かせる）の3段。Pleometric が p5.js を提案したところ Opus は独自の紙質レンダラを書いたといい、@0xMovez は「見た目と制約を指定し、ライブラリは指定しない」ことを勧める。</li>
+<li><strong>状態リスト型の仕様</strong>: 週で最もブックマークされたプロンプトはワンライナーでなく、@twoclipping の UI モーフ（907K再生・19Kブックマーク）と @verbove の MakerMap フィルムが使った XML 仕様だった。中身は「尋ねる入力・演出方針・ビートごとの状態リスト・ビルド規則・落とし穴」で、1つの形状がカットなしにボタン→ローダー→プレイヤー→スライダー→チャート→コマンドパレットとサイズ・角丸・色を変え、カーソルの実クリックが各変化を駆動し、最終フレームを最初のフレームと一致させてループさせる。NFT_Chen のエディタ映像は同じ発想を物語にしたもので、偽の UI は全要素の状態が既知の「セット」になる。</li>
+</ul>
+<h2>Part 3: エンジンを作る</h2>
+<ul>
+<li><strong>seek(t) レンダラ</strong>: ルートAを2ファイル（任意の瞬間を描くページと、時間を進めてフレームを ffmpeg に流すレンダラ）で書き直す。フレームワーク派向けに同じプロンプトのルートBも示される（本文は画像で未捕捉）。</li>
+<li><strong>閉形式スプリング</strong>: 安いモーションは固定カーブでAからBへイーズし、高いモーションは質量を持って加速し、わずかにオーバーシュートして落ち着く。モーフ系の作品が閉形式スプリング（時刻の純関数として書けるばね運動）を指定するのは seek(t) の決定性を保てるから。見落とされがちな点として、目標値が何度も変わる値（カーソル・コンテナ幅）はスプリングを再始動せず、変化ごとに開始時刻の違うスプリングを足し合わせる。こうすると動きが連続したまま、フレーム0〜811をシミュレーションせずにフレーム812を描ける。プリセットは Snappy（ボタン・トグル）・Default（カード・コンテナ・カメラ）・Heavy（大きな文字・3D・ロゴ）・Playful（マスコット・ステッカー、目に見えるオーバーシュート）の4種。</li>
+<li><strong>音をビートに合わせる</strong>: @oozn のスティーブ・ジョブズ映像は Node でサウンドトラックを合成し全カットを 120BPM に固定、Vox の「small print」は Python で音楽を合成してから映像を1秒単位で磨いた。@0xMovez の方針は「曲を渡すなら計測し、渡さないなら映像と同じタイムラインで合成する」の二択。</li>
+</ul>
+<h2>Part 4: 1本からスタジオへ</h2>
+<ul>
+<li><strong>夜通し走らせるディレクターズブリーフ</strong>: Donald は5分口述して寝ると、起きたとき142秒の音楽ビデオ（2.1M再生）ができていた。公開プロンプトは約9,500字、@pradeepXkapoor の「Pip」ロボット映像は19,000字で、どちらも「動画を記述せずクルーを雇う」骨格を持つと @0xMovez は述べる。項目は、1行のフィルム要約・リファレンス・ツールとキー（予算と「節約して使え」を含む）・キャラクターバイブル・タイムスタンプ付きビートシート（冒頭2秒にフック、3〜5秒ごとに見せ場）・画面上テキスト・ワークフローゲート（plan → rig → stills → animatic → full pass → polish → audio → render を飛ばさない）・批評ループ・納品物。Donald のブリーフの要は「generate-then-trace」で、Seedance 2.5 がキャラクターと物理の入ったベースショットを出し、Opus がその上から全編を JavaScript で描き直すので、視聴者はコードで描いた層だけを見る。John Heibel の PDoom リポジトリ（1.1K stars）では、Opus が並列実行するサブエージェント向けに ANIMATION_GUIDE.md を、初回生成後に STORYBOARD.md を書いており、@0xMovez は両ファイルを名指しで頼むよう勧める。</li>
+<li><strong>自分のフレームを見させる</strong>: Opus 5.5 は画像を読めるので、レンダリングした静止画を採点し、最悪の3点を書き出して直し、全スコアが8以上になるまで繰り返せる。@0xMovez はこの習慣がバズった作品と「ちょっと微妙」と投稿された作品を分けたとする。@mablesjoseph の水彩短編は163回のモデル呼び出しと約7時間をかけたと明かしており、「反復は失敗でなく方法」の例として挙げられる。構造は <a href="../concepts/eval-loop.html">eval-loop</a> の「生成→採点→閾値未満なら戻す」を視覚出力に適用した形と考えられる（推論）。</li>
+<li><strong>出荷</strong>: シーンを固定ピクセルでなくレイアウト関数に対して書き、9:16・1:1・16:9 を並列にレンダリングさせる（16:9 を縦に切り抜かない）。パイプラインをスキルに包めば講座全体が「/motion-reel for [URL], 20s, vertical, reference ./refs/frame.png」の1文に畳める。収益化の型として achxvi の提供内容（音楽・任意スタイルのマスコット・製品機能・最後にオファー・多言語・修正3回まで）と Tony Dinh の「1年前は約1,000ドル」という相場感が示される。</li>
+</ul>
+<p>紹介されたリポジトリは PDoomVideo（音楽ビデオ）・ClaudeAnimationBase（スターター）・buildwithhanif/claude-animation-skill（Node canvas）・heygen-com/hyperframes（HTMLフレームワーク）・Remotion の AI スキル（Reactフレームワーク）・Battle-of-Austerlitz-Film（長尺）・guanmo-ai/awesome-ai-motion（プロンプト集）・athemeroy/awesome-opus-5-5-videos（データセット）。記事中の埋め込み投稿・テンプレート・コードの多くは画像や埋め込みで、本vaultには未捕捉。</p>
+<h2>問い</h2>
+<ul>
+<li>自分の環境で「seek(t) ＋ Playwright ＋ ffmpeg」のルートAと、<a href="../tools/hyperframes.html">hyperframes</a> / <a href="../tools/remotion.html">remotion</a> 経由のルートBを同じブリーフで回し、修正のしやすさと見た目の差を比べる</li>
+<li>批評ループの「全スコア8以上」は同じモデルによる自己採点で、甘くなる余地がある。採点基準をブリーフ側に固定すれば足りるか、人の目のチェックポイントが要るか</li>
+<li>「brief contagion」はスキル化して配布するほど強まるはず。スキル化とリファレンス（自分のライブラリ）の組み合わせで独自性を保てるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a> — 講座が前提とするモデル。effort 設定と画像読解が要</li>
+<li><a href="../tools/hyperframes.html">hyperframes</a> — HTML ベースの決定論的動画フレームワーク。講座のルートB候補</li>
+<li><a href="../tools/remotion.html">remotion</a> — React ベースの動画フレームワーク。@oozn のジョブズ映像が使用</li>
+<li><a href="../tools/openmontage.html">openmontage</a> — 研究から合成までをパイプライン化したエージェント型動画制作システム。本講座のスタジオ化の OSS 版にあたる</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — 「プロンプト10%・ハーネス90%」の一般論</li>
+<li><a href="../concepts/effort-level-selection.html">effort-level-selection</a> — medium / xhigh / max の使い分けの実測版（@trq212）</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 批評ループの一般形</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/effort-level-selection.html">effort-level-selection</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
+<li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a></li>
+<li><a href="../tools/hyperframes.html">hyperframes</a></li>
+<li><a href="../tools/remotion.html">remotion</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2104216919033192746" rel="noopener" target="_blank">https://x.com/i/web/status/2104216919033192746</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Opus 5.5 モーションデザインスタジオ（seek(t) エンジン＋批評ループ）
+
+&gt; **TL;DR**: Opus 5.5 で「コードから描く動画」を量産するには、プロンプトより周辺の仕組み（決定論的な seek(t) レンダラ・リファレンス・状態リスト型の仕様・自分のフレームを見て直す批評ループ）が効く、と @0xMovez が12ステップの講座にまとめた。
+
+&gt; 📌 X bookmark: 20,396（2026-09-29 時点）
+
+```mermaid
+flowchart LR
+  B[&quot;ディレクターズブリーフ&lt;br/&gt;（リファレンス・状態リスト）&quot;] --&gt; S[&quot;Opus が seek(t) を書く&lt;br/&gt;（index.html）&quot;]
+  S --&gt; P[&quot;ヘッドレスブラウザ&lt;br/&gt;（Playwright）で全フレーム撮影&quot;]
+  P --&gt; F[&quot;ffmpeg で MP4 化&quot;]
+  F --&gt; C[&quot;Opus が静止画を採点&lt;br/&gt;最悪の3点を書き出す&quot;]
+  C --&gt;|&quot;全スコア 8 未満&quot;| S
+  C --&gt;|&quot;全スコア 8 以上&quot;| D[&quot;納品（MP4・ポスター・コンタクトシート）&quot;]
+```
+
+[[models/claude-opus-5-5]] の公開（@0xMovez によれば2026-09-22）直後、タイムラインはコードからレンダリングされたショーリール・ローンチ動画・音楽ビデオで埋まり、「ワンプロンプト」「モーションデザイナーは終わり」という反応が広がった。@0xMovez はどちらも半分だけ正しいとし、30語のプロンプトから出た作品がある一方で、9,500字のディレクターズブリーフ・スキルのフォルダ・APIキー2本・12時間の自律実行から出た作品もあると整理する。Claude Code チームの Thariq（[[concepts/effort-level-selection]] の @trq212）もこの落差を「投稿はワンショットと言うが、プロンプトはスキル・例・キー込みで1万字」と一言でまとめたという。講座の結論は「プロンプトは動画の10%で、残り90%はハーネス」で、[[concepts/harness-engineering]] の「エージェント = モデル + ハーネス」を動画制作に当てはめた実例として読める（推論）。
+
+## Part 1: 何が起きているか
+
+- **モデルは動画でなくプログラムを書く**: Opus 5.5 はテキストと画像を入力しテキストを出力するので、MP4 は出せない。この流行の動画はすべて、Opus が書いた `draw(t)` / `seek(t)` 関数（任意の時刻のフレームをそのまま描く純関数）を、ヘッドレスブラウザが 60fps・15秒なら900回呼んでスクリーンショットし、ffmpeg が結合したもの。タイマーに依存しないのでレンダリングは毎回同一になり、修正は1行の編集と再レンダリングで済む。
+- **Opus の既定は依存ゼロの「ルートA」**: Tommy Rossi がワンショット出力を調べたところ、Opus は index.html 1枚・eval 経由で呼ぶ seek 関数・Playwright によるフレーム撮影・ffmpeg エンコードという構成を好み、[[tools/remotion]] や [[tools/hyperframes]] が使える環境でも選ばなかったという。フレームワークを使わせたいなら明示的に指定する必要がある、と @0xMovez は述べる。
+- **セットアップは Claude Code 前提**: チャットアプリでもアニメーションは書けるが、レンダリングし・音を聞き・自分のフレームを見られるのはシェルを持つエージェント（[[tools/claude-code]] など）だけで、このフィードバックループが「微妙な初回」とバズった作品の差だとする。プロジェクト直下に CLAUDE.md の house rules を置けば毎回繰り返し指示しなくてよい。
+- **effort**: @0xMovez によれば Opus 5.5 の既定は medium で、バズったワンショットはすべて xhigh か max で動いていた。小修正・再レンダリングは medium、新作は xhigh、冒頭3秒でローンチを背負うなら max を推奨する。
+
+## Part 2: ディレクターとしてのプロンプト
+
+- **ワンライナー**: 流行を作った9投稿のうち4本が「履歴書用の15秒ショーリール（showreel for a résumé）」「なんて凄いモーションデザイナーなんだ」「go all out」を含む同じ文を使った。@0xMovez の分解では、ショーリールというジャンルが「速いカット・1ショット1技法・最高作を先頭」という既知の規則を持ち込み、モデル自身を主題にすることで製品説明の誤りが起きず、15秒は1パスで終わり6〜8ショットが入る長さ、「go all out」は xhigh/max の上に乗る努力の乗数として働く。弱点は athemeroy のデータセットが「brief contagion」と呼ぶ現象で、同じプロンプトから互いに似たリールが大量に出た。「ワンライナーはエンジンを試すがアイデアは試さない。アイデアを含んでいないから」と @0xMovez は述べる。
+- **ブランド向け**: Tony Dinh は1年前に1,000ドル超を払った類似のローンチ動画を30分未満で作った。追加したのは製品URL・「実際の製品スクリーンショット・ロゴ・素材を使う」・「音楽必須」の3行で、Opus がサイトから素材を自分で集めたという。Rob Hallam は同じチャットで続けて製品広告を頼むとレンダラ・音声合成・書き出しパイプラインが既にあるぶん速かったと報告しており、@0xMovez は「ブランドごとに1セッション」を勧める。achxvi は ElevenLabs キーを渡して製品を説明する喋るキャラクターを作り、声＋マスコットをサービスとして販売している。APIキーは .env に置き「ElevenLabs のキーは .env の ELEVENLABS_API_KEY」と書き、スクショする可能性のあるプロンプトに実キーを貼らない。
+- **リファレンス**: リファレンスが無いと Opus は「中央寄せテキスト・グラデーション背景・全部フェードイン」の既定に戻る。Rexan Wong はバズった多数のクリップを調べ、スタイルは説明するより名指すほうが効き、参照動画・フレームがペース・書体・トランジションの手本になると結論づけた。参照の渡し方は、1フレーム（何を取り何を取らないかを添える）・動画（ffmpeg でフレーム抽出し、コードの前にショットごとのペースを記述させる）・自分のライブラリ（先に style_guide.md を書かせる）の3段。Pleometric が p5.js を提案したところ Opus は独自の紙質レンダラを書いたといい、@0xMovez は「見た目と制約を指定し、ライブラリは指定しない」ことを勧める。
+- **状態リスト型の仕様**: 週で最もブックマークされたプロンプトはワンライナーでなく、@twoclipping の UI モーフ（907K再生・19Kブックマーク）と @verbove の MakerMap フィルムが使った XML 仕様だった。中身は「尋ねる入力・演出方針・ビートごとの状態リスト・ビルド規則・落とし穴」で、1つの形状がカットなしにボタン→ローダー→プレイヤー→スライダー→チャート→コマンドパレットとサイズ・角丸・色を変え、カーソルの実クリックが各変化を駆動し、最終フレームを最初のフレームと一致させてループさせる。NFT_Chen のエディタ映像は同じ発想を物語にしたもので、偽の UI は全要素の状態が既知の「セット」になる。
+
+## Part 3: エンジンを作る
+
+- **seek(t) レンダラ**: ルートAを2ファイル（任意の瞬間を描くページと、時間を進めてフレームを ffmpeg に流すレンダラ）で書き直す。フレームワーク派向けに同じプロンプトのルートBも示される（本文は画像で未捕捉）。
+- **閉形式スプリング**: 安いモーションは固定カーブでAからBへイーズし、高いモーションは質量を持って加速し、わずかにオーバーシュートして落ち着く。モーフ系の作品が閉形式スプリング（時刻の純関数として書けるばね運動）を指定するのは seek(t) の決定性を保てるから。見落とされがちな点として、目標値が何度も変わる値（カーソル・コンテナ幅）はスプリングを再始動せず、変化ごとに開始時刻の違うスプリングを足し合わせる。こうすると動きが連続したまま、フレーム0〜811をシミュレーションせずにフレーム812を描ける。プリセットは Snappy（ボタン・トグル）・Default（カード・コンテナ・カメラ）・Heavy（大きな文字・3D・ロゴ）・Playful（マスコット・ステッカー、目に見えるオーバーシュート）の4種。
+- **音をビートに合わせる**: @oozn のスティーブ・ジョブズ映像は Node でサウンドトラックを合成し全カットを 120BPM に固定、Vox の「small print」は Python で音楽を合成してから映像を1秒単位で磨いた。@0xMovez の方針は「曲を渡すなら計測し、渡さないなら映像と同じタイムラインで合成する」の二択。
+
+## Part 4: 1本からスタジオへ
+
+- **夜通し走らせるディレクターズブリーフ**: Donald は5分口述して寝ると、起きたとき142秒の音楽ビデオ（2.1M再生）ができていた。公開プロンプトは約9,500字、@pradeepXkapoor の「Pip」ロボット映像は19,000字で、どちらも「動画を記述せずクルーを雇う」骨格を持つと @0xMovez は述べる。項目は、1行のフィルム要約・リファレンス・ツールとキー（予算と「節約して使え」を含む）・キャラクターバイブル・タイムスタンプ付きビートシート（冒頭2秒にフック、3〜5秒ごとに見せ場）・画面上テキスト・ワークフローゲート（plan → rig → stills → animatic → full pass → polish → audio → render を飛ばさない）・批評ループ・納品物。Donald のブリーフの要は「generate-then-trace」で、Seedance 2.5 がキャラクターと物理の入ったベースショットを出し、Opus がその上から全編を JavaScript で描き直すので、視聴者はコードで描いた層だけを見る。John Heibel の PDoom リポジトリ（1.1K stars）では、Opus が並列実行するサブエージェント向けに ANIMATION_GUIDE.md を、初回生成後に STORYBOARD.md を書いており、@0xMovez は両ファイルを名指しで頼むよう勧める。
+- **自分のフレームを見させる**: Opus 5.5 は画像を読めるので、レンダリングした静止画を採点し、最悪の3点を書き出して直し、全スコアが8以上になるまで繰り返せる。@0xMovez はこの習慣がバズった作品と「ちょっと微妙」と投稿された作品を分けたとする。@mablesjoseph の水彩短編は163回のモデル呼び出しと約7時間をかけたと明かしており、「反復は失敗でなく方法」の例として挙げられる。構造は [[concepts/eval-loop]] の「生成→採点→閾値未満なら戻す」を視覚出力に適用した形と考えられる（推論）。
+- **出荷**: シーンを固定ピクセルでなくレイアウト関数に対して書き、9:16・1:1・16:9 を並列にレンダリングさせる（16:9 を縦に切り抜かない）。パイプラインをスキルに包めば講座全体が「/motion-reel for [URL], 20s, vertical, reference ./refs/frame.png」の1文に畳める。収益化の型として achxvi の提供内容（音楽・任意スタイルのマスコット・製品機能・最後にオファー・多言語・修正3回まで）と Tony Dinh の「1年前は約1,000ドル」という相場感が示される。
+
+紹介されたリポジトリは PDoomVideo（音楽ビデオ）・ClaudeAnimationBase（スターター）・buildwithhanif/claude-animation-skill（Node canvas）・heygen-com/hyperframes（HTMLフレームワーク）・Remotion の AI スキル（Reactフレームワーク）・Battle-of-Austerlitz-Film（長尺）・guanmo-ai/awesome-ai-motion（プロンプト集）・athemeroy/awesome-opus-5-5-videos（データセット）。記事中の埋め込み投稿・テンプレート・コードの多くは画像や埋め込みで、本vaultには未捕捉。
+
+## 問い
+
+- 自分の環境で「seek(t) ＋ Playwright ＋ ffmpeg」のルートAと、[[tools/hyperframes]] / [[tools/remotion]] 経由のルートBを同じブリーフで回し、修正のしやすさと見た目の差を比べる
+- 批評ループの「全スコア8以上」は同じモデルによる自己採点で、甘くなる余地がある。採点基準をブリーフ側に固定すれば足りるか、人の目のチェックポイントが要るか
+- 「brief contagion」はスキル化して配布するほど強まるはず。スキル化とリファレンス（自分のライブラリ）の組み合わせで独自性を保てるか
+
+## 関連
+
+- [[models/claude-opus-5-5]] — 講座が前提とするモデル。effort 設定と画像読解が要
+- [[tools/hyperframes]] — HTML ベースの決定論的動画フレームワーク。講座のルートB候補
+- [[tools/remotion]] — React ベースの動画フレームワーク。@oozn のジョブズ映像が使用
+- [[tools/openmontage]] — 研究から合成までをパイプライン化したエージェント型動画制作システム。本講座のスタジオ化の OSS 版にあたる
+- [[concepts/harness-engineering]] — 「プロンプト10%・ハーネス90%」の一般論
+- [[concepts/effort-level-selection]] — medium / xhigh / max の使い分けの実測版（@trq212）
+- [[concepts/eval-loop]] — 批評ループの一般形
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

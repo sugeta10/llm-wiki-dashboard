@@ -45,3 +45,4 @@ Content / Code / Client / Research の4テンプレートに共通するパタ�
 - [[concepts/claude-projects-blueprint]] — 同じ Claude Projects の「AI社員化」6パート設計図。こちらは何を書くかの構成論、本ページは retrieval・精度・維持の運用原則
 - [[concepts/claude-best-practices]] — Projects・Custom Instructions を含む Claude 活用18ステップの総合
 - [[concepts/chatgpt-custom-instructions]] — ChatGPT 版の「カスタム指示/メモリ/Projects の使い分け」。3層パーソナライゼーションと同型の整理
+- [[tools/claude-projects-threads]] — 同名の新しい Claude Projects（コーディネーター＋並列クラウドスレッド型）。本ページのチャット版とは実行モデルが異なる
