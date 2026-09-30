@@ -37,4 +37,5 @@ Anthropic公式ガイドを@Charlie_no_siteが整理した[[concepts/fable-5-1-p
 - [[concepts/advisor-executor-pattern]] — 同じ著者の別プロンプト（品質不足時に上位モデルへ切り替える司令塔型）
 - [[concepts/chatgpt-custom-instructions]] — 貼り先となる常設設定欄の機能と書き方の原則
 - [[concepts/instruction-patch-lifecycle]] — 指示は期限付きパッチ。常設プロンプトを増やす前後の運用側
+- [[concepts/goal-restatement-prompt]] — 目的の把握そのものをAIに言い直させて確かめる1文プロンプト（@poteto）。本ルールの前段に置ける
 - [[people/fladdict]] — 著者
