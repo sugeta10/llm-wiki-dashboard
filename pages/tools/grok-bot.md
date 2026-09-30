@@ -80,3 +80,4 @@ flowchart LR
 - [[tools/hermes-agent-overnight]] — 夜間に自動化ワークフローを回す先行例。Grok Botの毎晩3時の監査は同じ時間帯運用の別実装
 - [[concepts/decision-layer-model]] — @0xCodila が GrokBot 風 Chief of Staff を例に、ワーカー選択・完了判定などの小さな判断を判断モデルへ切り出す設計を示す
 - [[concepts/github-runner-agent-factory]] — 死活管理を専用ボットに持たせる本ページに対し、GitHub の Self-hosted runner 上でエージェントを常時動かし情報も GitHub に集約する個人構成（@k1ito）
+- [[tools/openai-dots]] — @umiyuki_ai が「OpenAI 版の GrokBot」と要約した、OpenAI DevDay 発表のクラウド常駐バックグラウンドボット

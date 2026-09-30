@@ -55,6 +55,8 @@ GPT シリーズ・ChatGPT・Codex を開発する AI 企業。AGI の安全な�
 
 - [[models/gpt-5-5]]
 - [[models/gpt-6-astra]]（新世代モデル。Codex チームがスキル・AGENTS.md 指針の前提に置く。発表本体・価格・ベンチマークは未収集）
+- [[models/gpt-6-1-sol]]（DevDay 発表の新モデル。@umiyuki_ai の紹介では Astra 並みの性能を 1/5 の価格。実数は未収集）
+- [[tools/openai-dots]]（DevDay 発表のクラウド常駐バックグラウンドボット。Pro で利用可・@umiyuki_ai の要約で「OpenAI 版の GrokBot」）
 - [[tools/openai-codex]]
 - [[business/ai-vertical-integration]]
 - [[companies/anthropic]]
