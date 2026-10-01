@@ -42,3 +42,4 @@ Koe は persuasion を道具として位置づけ、「倫理的かどうかは�
 - [[concepts/organizational-maneuvering]] — 「褒めて味方を作る」「上司の不安を先に消す」立ち回りは、生存の緊張を鎮めアイデンティティを満たす心理レバーの実装例
 - [[concepts/creativity-recovery-protocol]] — 同著者Dan Koeによる、創造性の回復を7日間プロトコルで扱う実践論
 - [[business/roi-qualification-sales]] — 投資対効果診断で不安を数字として可視化する営業手法は、レバー1「まず脅威を名指す」の実装例
+- [[concepts/zeigarnik-fatigue-loop]] — 同じツァイガルニク効果が、放置された未完了では注意を奪い続ける消耗源になるという逆側の議論

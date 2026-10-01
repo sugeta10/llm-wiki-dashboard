@@ -78,3 +78,4 @@ ChatGPT と Claude のプロジェクト機能に2ファイルをアップロー
 - [[tools/no-ai-slop]] — 英語圏の同種の規範スキル。6つの型に相当するAIスロップパターンを検出・除去する
 - [[tools/first-reader]] — 架空の読者に逐次読ませて離脱位置を観測する校正支援スキル。@laiso が cognitive-rhythm-writing と並べて評価した、規範でなく読まれ方を測る側の道具
 - [[concepts/kakeru-hito]] — 「AIで書いてもレビューできる人がいなければ伸びない」という主張と、規範の採否を自分で判定するという本ページの姿勢が接続する
+- [[design/consulting-pptx-skill]] — AI臭いワード・言い回しのリスト（ai-smell-lexicon.md）を同梱したスライド生成スキル。規範をスキルのファイルとして毎回読ませる運用例

@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>consulting-pptx-skill</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="consulting-pptx-skill.md">Markdownで表示</a></div>
-  <div class="meta">design/consulting-pptx-skill · design · <span title="2026-09-04">3週間前</span></div>
+  <div class="meta">design/consulting-pptx-skill · design · <span title="2026-10-02">今日</span></div>
   <article><h1>consulting-pptx-skill｜コンサル品質のPPTXをAIに作らせるClaude Codeスキル</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 提案書・報告書づくりで毎週使っている仕組みを公開した Claude Code スキル。価値の中心はテンプレでも生成パイプラインでもなく、レビューで受けた指摘を1行ずつ溜めた約80項目のスライド規約ファイルを「作らせる前に毎回読ませ、出力後に機械チェックで違反を検出する」蓄積ループにある。</p>
@@ -116,9 +116,27 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>カスタマイズで一番効くのは規約ファイルへの追記で、SlideSpec ルートの <code>palette</code> でブランドカラーを一括差し替えできる。同じ仕組みをブラウザのチャットだけで使える形（Jinba App Neo）でも提供していると README は述べており、スキルはその公開版という位置づけになる。</p>
+<h2>carnot-tech 版での変更（PPTX パイプラインを外し HTML→PDF に一本化）</h2>
+<p>@tetumemo が「コンサルティング-pptx-スキル」として共有したのは、Carnot AI の組織アカウント配下に置かれた carnot-tech/consulting-pptx-skill で、上記の gozen3ji 版から構成が変わっている。README から読み取れる差分は次のとおり。</p>
+<ul>
+<li><strong>規約は約110項目に増えた</strong>。例として「前提・定義は左、帰結は右」が加わっている</li>
+<li><strong>パーツ集は62型になった</strong>。基本パーツ集27（表紙・矢羽・前提→帰結・評価表など）に、追加パーツ集35（エグゼクティブサマリー・積み上げ棒・ブリッジ・マトリクス・イシューツリー・ガントなど）が足された。入口は両パーツ集を印刷した62ページの型カタログ PDF で、README は「レイアウトの発想帳として使い、合わなければ捨てる」よう勧める</li>
+<li><strong>JSON から編集可能 PPTX を出す SlideSpec パイプラインは外された</strong>。README は理由を「使用頻度が低かったため」とし、git タグ <code>pipeline-archived</code> に旧版を残している。資料は HTML（16:9）で組んで Chrome のヘッドレス印刷で PDF にし、PPTX が要るときは PDF で渡すか62型の見本帳 PPTX から手でコピーする</li>
+<li><strong>たたき台生成が <code>scripts/new_deck.py</code> になった</strong>。<code>--parts b01,m05,...</code> とパーツ番号を並べると、2つのパーツ集の CSS を衝突しないよう結合して1本のデッキ HTML を作る。<code>new_deck.py</code> と <code>check_deck.py</code> は Python 標準ライブラリだけで動く</li>
+<li><strong>工程の最後にフレッシュアイ・レビューが加わった</strong>。機械チェックの後、<code>references/content-review-prompt.md</code> の指示文で「作り方を知らない別のエージェント」にデッキを読ませ、日本語・論理・矛盾の指摘を採否表にして採用分だけ直す。AI臭いワード・言い回しのリスト（<code>references/ai-smell-lexicon.md</code>）も同梱された</li>
+<li><strong>機械チェックが内容の整合にも踏み込んだ</strong>。タイトルの「N段階」と本文の連番が食い違うと FAIL にする</li>
+</ul>
+<p>既定の配色は暖色系（生成りの地・濃茶の文字・茶のアクセント、見出しは明朝・本文はゴシック）で、<code>:root</code> の変数で差し替える。生成資料の最終ページの出典行に「consulting-pptx-skill で作成」の注釈を入れるよう README は求めている。</p>
+<p>「たたき台を数十秒で出す」ための PPTX パイプラインを捨てて、レビュー工程（機械チェック＋別エージェント）を厚くした変更は、品質の源泉を型でなく「組んだ後の調整」に置く README の立場を、作者自身が実運用で確かめた結果と読める（推論）。別エージェントに作り方を伏せて読ませる工程は、人間のレビュー負荷を手前で減らす <a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> の「自己採点を手前に」と同じ方向の手と考えられる（推論）。@tetumemo はこのリンクを、自身の「デジタル庁×コンサル型で"伝わる"パワポを作るSkillsキット」配布ポストへのリプライとして置いている（キット本体は本vaultには未収集）。</p>
 <h2>問い</h2>
 <ul>
-<li>約80項目の規約を読み、自分の文書レビュー規約と重なる項目・欠けている項目を突き合わせる。スライド以外の文書（報告書・設計書）に移植できる項目はどれか</li>
+<li>編集可能 PPTX の自動生成を「使用頻度が低い」として外した判断は、PowerPoint で渡す必要がある現場でも成り立つか。PDF 納品で足りる用途の範囲はどこまでか</li>
+<li>
+<p><code>ai-smell-lexicon.md</code> の AI臭ワードは、<a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a> の「AIっぽさの6つの型」とどこまで重なるか</p>
+</li>
+<li>
+<p>約80項目の規約を読み、自分の文書レビュー規約と重なる項目・欠けている項目を突き合わせる。スライド以外の文書（報告書・設計書）に移植できる項目はどれか</p>
+</li>
 <li>「実測レイアウトをレンダラーに焼き込み、AIは中身だけ書く」方式は、<code>.md</code> でデザインを固定する <a href="../design/slide-md.html">slide-md</a> と比べて出力のバラつきをどれだけ抑えられるか</li>
 <li>「タイトル文型が6割以上同じなら WARN」のような機械検査は、AI生成文書の定型臭を検出する一般的な手として他の成果物にも使えるか</li>
 </ul>
@@ -133,12 +151,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../design/design-md.html">design-md</a> — デザイン仕様の <code>.md</code> をエージェントの参照仕様として置く発想。既存のデザインシステム（デジタル庁など）をそのままスライド生成スキルに使う例を含む</li>
 <li><a href="../concepts/review-request-etiquette.html">review-request-etiquette</a> — 資料レビューを依頼する側の作法と、コンサル上司が最初に問う「目的・読み手・論点・意思決定」。本スキルが機械チェックするのはスライド表現の規約で、その上流にあたる問いを扱う</li>
 <li><a href="../design/minorun-marp-skill.html">minorun-marp-skill</a> — 規約＋機械チェックという同じ構図を Marp の登壇スライドに適用した例（minorun365製）。検査対象が規約違反でなく、書き出したPDF・SVGの余白や文字サイズという実測値になっている</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> — 人間の「読んで直す工程」をボトルネックと見て流入を絞る発想。carnot-tech 版が加えた別エージェントのフレッシュアイ・レビューはその手前で指摘を拾う工程</li>
+<li><a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a> — AIっぽさの型と日本語ライティング規範（@tetumemo）。同梱の AI臭ワードリストと比較できる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
 <li><a href="../concepts/review-request-etiquette.html">review-request-etiquette</a></li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
-<li><a href="../design/ai-presentation-workflow.html">ai-presentation-workflow</a></li>
-<li><a href="../design/ai-slide-creation.html">ai-slide-creation</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095137686323687661" rel="noopener" target="_blank">https://x.com/i/web/status/2095137686323687661</a></li>
-<li><a href="https://github.com/gozen3ji/consulting-pptx-skill" rel="noopener" target="_blank">https://github.com/gozen3ji/consulting-pptx-skill</a></li></ul></section></article>
+<li><a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2095137686323687661" rel="noopener" target="_blank">https://x.com/i/web/status/2095137686323687661</a></li>
+<li><a href="https://github.com/gozen3ji/consulting-pptx-skill" rel="noopener" target="_blank">https://github.com/gozen3ji/consulting-pptx-skill</a></li>
+<li><a href="https://x.com/i/web/status/2105449083615969505" rel="noopener" target="_blank">https://x.com/i/web/status/2105449083615969505</a></li>
+<li><a href="https://github.com/carnot-tech/consulting-pptx-skill" rel="noopener" target="_blank">https://github.com/carnot-tech/consulting-pptx-skill</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -204,7 +226,25 @@ Claude Code のスキルフォルダに clone し、`pipeline/` で `npm run set
 
 カスタマイズで一番効くのは規約ファイルへの追記で、SlideSpec ルートの `palette` でブランドカラーを一括差し替えできる。同じ仕組みをブラウザのチャットだけで使える形（Jinba App Neo）でも提供していると README は述べており、スキルはその公開版という位置づけになる。
 
+## carnot-tech 版での変更（PPTX パイプラインを外し HTML→PDF に一本化）
+
+@tetumemo が「コンサルティング-pptx-スキル」として共有したのは、Carnot AI の組織アカウント配下に置かれた carnot-tech/consulting-pptx-skill で、上記の gozen3ji 版から構成が変わっている。README から読み取れる差分は次のとおり。
+
+- **規約は約110項目に増えた**。例として「前提・定義は左、帰結は右」が加わっている
+- **パーツ集は62型になった**。基本パーツ集27（表紙・矢羽・前提→帰結・評価表など）に、追加パーツ集35（エグゼクティブサマリー・積み上げ棒・ブリッジ・マトリクス・イシューツリー・ガントなど）が足された。入口は両パーツ集を印刷した62ページの型カタログ PDF で、README は「レイアウトの発想帳として使い、合わなければ捨てる」よう勧める
+- **JSON から編集可能 PPTX を出す SlideSpec パイプラインは外された**。README は理由を「使用頻度が低かったため」とし、git タグ `pipeline-archived` に旧版を残している。資料は HTML（16:9）で組んで Chrome のヘッドレス印刷で PDF にし、PPTX が要るときは PDF で渡すか62型の見本帳 PPTX から手でコピーする
+- **たたき台生成が `scripts/new_deck.py` になった**。`--parts b01,m05,...` とパーツ番号を並べると、2つのパーツ集の CSS を衝突しないよう結合して1本のデッキ HTML を作る。`new_deck.py` と `check_deck.py` は Python 標準ライブラリだけで動く
+- **工程の最後にフレッシュアイ・レビューが加わった**。機械チェックの後、`references/content-review-prompt.md` の指示文で「作り方を知らない別のエージェント」にデッキを読ませ、日本語・論理・矛盾の指摘を採否表にして採用分だけ直す。AI臭いワード・言い回しのリスト（`references/ai-smell-lexicon.md`）も同梱された
+- **機械チェックが内容の整合にも踏み込んだ**。タイトルの「N段階」と本文の連番が食い違うと FAIL にする
+
+既定の配色は暖色系（生成りの地・濃茶の文字・茶のアクセント、見出しは明朝・本文はゴシック）で、`:root` の変数で差し替える。生成資料の最終ページの出典行に「consulting-pptx-skill で作成」の注釈を入れるよう README は求めている。
+
+「たたき台を数十秒で出す」ための PPTX パイプラインを捨てて、レビュー工程（機械チェック＋別エージェント）を厚くした変更は、品質の源泉を型でなく「組んだ後の調整」に置く README の立場を、作者自身が実運用で確かめた結果と読める（推論）。別エージェントに作り方を伏せて読ませる工程は、人間のレビュー負荷を手前で減らす [[concepts/ai-review-bottleneck]] の「自己採点を手前に」と同じ方向の手と考えられる（推論）。@tetumemo はこのリンクを、自身の「デジタル庁×コンサル型で&quot;伝わる&quot;パワポを作るSkillsキット」配布ポストへのリプライとして置いている（キット本体は本vaultには未収集）。
+
 ## 問い
+
+- 編集可能 PPTX の自動生成を「使用頻度が低い」として外した判断は、PowerPoint で渡す必要がある現場でも成り立つか。PDF 納品で足りる用途の範囲はどこまでか
+- `ai-smell-lexicon.md` の AI臭ワードは、[[concepts/writing-norms-adoption]] の「AIっぽさの6つの型」とどこまで重なるか
 
 - 約80項目の規約を読み、自分の文書レビュー規約と重なる項目・欠けている項目を突き合わせる。スライド以外の文書（報告書・設計書）に移植できる項目はどれか
 - 「実測レイアウトをレンダラーに焼き込み、AIは中身だけ書く」方式は、`.md` でデザインを固定する [[design/slide-md]] と比べて出力のバラつきをどれだけ抑えられるか
@@ -221,6 +261,8 @@ Claude Code のスキルフォルダに clone し、`pipeline/` で `npm run set
 - [[design/design-md]] — デザイン仕様の `.md` をエージェントの参照仕様として置く発想。既存のデザインシステム（デジタル庁など）をそのままスライド生成スキルに使う例を含む
 - [[concepts/review-request-etiquette]] — 資料レビューを依頼する側の作法と、コンサル上司が最初に問う「目的・読み手・論点・意思決定」。本スキルが機械チェックするのはスライド表現の規約で、その上流にあたる問いを扱う
 - [[design/minorun-marp-skill]] — 規約＋機械チェックという同じ構図を Marp の登壇スライドに適用した例（minorun365製）。検査対象が規約違反でなく、書き出したPDF・SVGの余白や文字サイズという実測値になっている
+- [[concepts/ai-review-bottleneck]] — 人間の「読んで直す工程」をボトルネックと見て流入を絞る発想。carnot-tech 版が加えた別エージェントのフレッシュアイ・レビューはその手前で指摘を拾う工程
+- [[concepts/writing-norms-adoption]] — AIっぽさの型と日本語ライティング規範（@tetumemo）。同梱の AI臭ワードリストと比較できる
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
