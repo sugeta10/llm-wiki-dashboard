@@ -47,3 +47,4 @@ flowchart LR
 - [[concepts/exclusion-first-prompting]] — 同著者の「◯◯は出さなくていい」の2文型。出力の段階で量を絞る、②④と同じ方向の打ち手
 - [[concepts/loops-and-graphs-approval]] — 人間のレビュー地点を「最も取り返しがつかない1点」に減らす側からの答え（@hanakoxbt）
 - [[design/consulting-pptx-skill]] — スライド生成スキルで、機械チェックの後に「作り方を知らない別エージェント」に読ませて指摘を採否表にする工程を持つ。人間に届く前に指摘を減らす実装例
+- [[concepts/overnight-delegation-prompt]] — 就寝中の8時間をエージェントに委ねるプロンプト。朝にまとめて成果を読む工程がこのボトルネックに当たりうる

@@ -160,3 +160,4 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[business/end-of-task-assignment]] — 「35分問題」への言及とともに、ループ設計を割り振り型開発の終焉というキャリア論の文脈に位置づける
 - [[concepts/agent-autonomy-levels]] — ループを「レベル3→4へ上げる部品」として位置づける梯子（@Mahaximus_）。採用率50%を採算ラインとする点が別ソースで一致
 - [[concepts/github-runner-agent-factory]] — ループを24/365回し続ける実行基盤を GitHub（Self-hosted runner・情報集約・Blacksmith で CI 高速化）に置いた個人実践（@k1ito）
+- [[concepts/overnight-delegation-prompt]] — 就寝中の8時間をエージェントに委ねる一文プロンプト（ループ設計の軽量な実例）

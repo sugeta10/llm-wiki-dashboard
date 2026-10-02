@@ -111,3 +111,4 @@ wakeAgentゲートの原則：**1時間に複数回実行するcronは必ずwake
 - [[tools/hermes-agent-research-department]] — 同じwakeAgentゲート原理を3エージェント・リサーチ部門に適用した構成
 - [[tools/grok-bot]] — 同じ夜間帯（毎晩3時）にコードベース監査を回す別実装（@lingxi）。Hermesはcron＋wakeAgentゲートでLLM起動を絞り、Grok Botはエンジニアボットが監査PRを生成して朝に届ける
 - [[concepts/github-runner-agent-factory]] — 夜間に区切る本ページに対し、GitHub の Self-hosted runner でエージェントを24/365常時稼働させる構成（@k1ito）
+- [[concepts/overnight-delegation-prompt]] — 同じ夜間自律実行を、製品機能に乗せた自然言語1文の委任で済ませる軽量版（Dots向け）
