@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>asd-ste100-llm-writing - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>asd-ste100-llm-writing</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="asd-ste100-llm-writing.md">Markdownで表示</a></div>
+  <div class="meta">concepts/asd-ste100-llm-writing · concepts · <span title="2026-10-03">今日</span></div>
+  <article><h1>ASD-STE100 で LLM に説明させる｜制御言語で出力を読みやすくする</h1>
+<blockquote>
+<p>📌 X bookmark: 64,763（2026-10-03 時点）</p>
+</blockquote>
+<p><a href="../people/andrej-karpathy.html">andrej-karpathy</a> が「これから言語モデルの出力を理解することにずっと多くの時間を使うことになる」と前置きし、そのための tips の1つ目（Writing）として挙げた手法。LLM に何かを説明させるとき、<strong>ASD-STE100</strong> で書くよう頼むとうまくいった、と Karpathy は述べている。ASD-STE100 は語彙と文法を制限した<strong>制御言語（controlled language）</strong>の仕様で、Karpathy はこれが元々何のために作られたかを説明しかけたところでポストの本文が途切れている（続きと添付画像は未収集）。</p>
+<p>wiki 側の補足として、ASD-STE100 は一般に Simplified Technical English（STE）と呼ばれ、航空宇宙・防衛分野の整備マニュアルを非ネイティブの読み手にも誤解なく読ませるために作られた規格として知られる。承認語彙を1語1義に絞り、短い文・能動態・1文1指示を求める。LLM の出力は語彙が華美で一文が長く、読み手が「わかった気」になりやすい。そこへ制約の明確な既存仕様を名指しで指定すると、文体指示を一から書くより少ない言葉で出力の形を揃えられる、という点が効く理由だと考えられる（Karpathy 自身の説明は未収集なので、これは推論）。</p>
+<p>Karpathy の前置きは、LLM の出力量が増えて人間側の「読んで理解する」工程が重くなる、という見立てとして読める。<a href="../concepts/cognitive-debt.html">cognitive-debt</a> が扱う「AI の生成速度に人間の理解が追いつかない」問題に対し、出力側の書き方を制約して理解コストを下げる打ち手と位置づけられる。日本語出力の癖を事後に機械検査する <a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> とは、生成時の指示で縛るか、生成後に検査するかの違いがある。</p>
+<h2>問い</h2>
+<ul>
+<li>ポストの続き（ASD-STE100 の由来以降の tips 2つ目以降）と添付画像の内容は何か。原ポストを取り直す</li>
+<li>日本語の出力に同等の「名指しできる制御言語仕様」はあるか（例: やさしい日本語）。wiki ページや weekly の説明文で試すと読みやすさは上がるか</li>
+<li>制御言語で書かせると、専門概念の説明の正確さが落ちる（承認語彙で言い換えられない語が出る）ことはないか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a> — 本手法を紹介した発信者</li>
+<li><a href="../concepts/cognitive-debt.html">cognitive-debt</a> — AI の出力に人間の理解が追いつかない問題。本手法は出力の書き方側から理解コストを下げる</li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a> — LLM の文体の癖を生成後に Hook で検査する手法。本手法は生成時に仕様で縛る側</li>
+<li><a href="../concepts/feynman-technique-ai-era.html">feynman-technique-ai-era</a> — 「わかった気」を説明で検証する学習法。読む側の理解を確かめる別方向の打ち手</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/cognitive-debt.html">cognitive-debt</a></li>
+<li><a href="../concepts/feynman-technique-ai-era.html">feynman-technique-ai-era</a></li>
+<li><a href="../concepts/llm-japanese-style-hooks.html">llm-japanese-style-hooks</a></li>
+<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2105819303471976479" rel="noopener" target="_blank">https://x.com/i/web/status/2105819303471976479</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># ASD-STE100 で LLM に説明させる｜制御言語で出力を読みやすくする
+
+&gt; 📌 X bookmark: 64,763（2026-10-03 時点）
+
+[[people/andrej-karpathy]] が「これから言語モデルの出力を理解することにずっと多くの時間を使うことになる」と前置きし、そのための tips の1つ目（Writing）として挙げた手法。LLM に何かを説明させるとき、**ASD-STE100** で書くよう頼むとうまくいった、と Karpathy は述べている。ASD-STE100 は語彙と文法を制限した**制御言語（controlled language）**の仕様で、Karpathy はこれが元々何のために作られたかを説明しかけたところでポストの本文が途切れている（続きと添付画像は未収集）。
+
+wiki 側の補足として、ASD-STE100 は一般に Simplified Technical English（STE）と呼ばれ、航空宇宙・防衛分野の整備マニュアルを非ネイティブの読み手にも誤解なく読ませるために作られた規格として知られる。承認語彙を1語1義に絞り、短い文・能動態・1文1指示を求める。LLM の出力は語彙が華美で一文が長く、読み手が「わかった気」になりやすい。そこへ制約の明確な既存仕様を名指しで指定すると、文体指示を一から書くより少ない言葉で出力の形を揃えられる、という点が効く理由だと考えられる（Karpathy 自身の説明は未収集なので、これは推論）。
+
+Karpathy の前置きは、LLM の出力量が増えて人間側の「読んで理解する」工程が重くなる、という見立てとして読める。[[concepts/cognitive-debt]] が扱う「AI の生成速度に人間の理解が追いつかない」問題に対し、出力側の書き方を制約して理解コストを下げる打ち手と位置づけられる。日本語出力の癖を事後に機械検査する [[concepts/llm-japanese-style-hooks]] とは、生成時の指示で縛るか、生成後に検査するかの違いがある。
+
+## 問い
+
+- ポストの続き（ASD-STE100 の由来以降の tips 2つ目以降）と添付画像の内容は何か。原ポストを取り直す
+- 日本語の出力に同等の「名指しできる制御言語仕様」はあるか（例: やさしい日本語）。wiki ページや weekly の説明文で試すと読みやすさは上がるか
+- 制御言語で書かせると、専門概念の説明の正確さが落ちる（承認語彙で言い換えられない語が出る）ことはないか
+
+## 関連
+
+- [[people/andrej-karpathy]] — 本手法を紹介した発信者
+- [[concepts/cognitive-debt]] — AI の出力に人間の理解が追いつかない問題。本手法は出力の書き方側から理解コストを下げる
+- [[concepts/llm-japanese-style-hooks]] — LLM の文体の癖を生成後に Hook で検査する手法。本手法は生成時に仕様で縛る側
+- [[concepts/feynman-technique-ai-era]] — 「わかった気」を説明で検証する学習法。読む側の理解を確かめる別方向の打ち手
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

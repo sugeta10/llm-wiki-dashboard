@@ -40,3 +40,4 @@ Karpathy の LLM Wiki 実装について NickSpisak_ が詳細解説（41,000件
 - [[concepts/llm-council]] — Karpathy が考案した LLM Council（複数モデルのポーリング＋匿名ピアレビュー）パターン
 - [[concepts/attention]] — Transformer中核機構。Karpathyのコンテンツが追加学習先として推奨される
 - [[concepts/research-methodology]] — Karpathyの「single batch overfit」「raw data を手で見る」技法が引用
+- [[concepts/asd-ste100-llm-writing]] — LLM に ASD-STE100（制御言語）で説明させると出力が理解しやすいという Karpathy の tip

@@ -34,3 +34,4 @@ Suzanne（Anthropic）が共有し、@trq212 がお気に入りとして紹介�
 - [[concepts/prompt-engineering]] — プロンプト設計全般
 - [[concepts/developer-ai-collaboration]] — 開発者とAIエージェントの役割分担
 - [[concepts/finding-unknowns]] — 同じ@trq212の unknown 発見フレーム。実装後のクイズ技法が本手法と同目的
+- [[concepts/feynman-technique-ai-era]] — 逆に自分が AI に教える側に回り、詰まった箇所で理解の浅さを見つける勉強法

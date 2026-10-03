@@ -72,3 +72,4 @@ flowchart LR
 - [[concepts/ai-japanese-writing-stack]] — @kgsiが本ページの仕組みを「執筆と機械検査の分離」として自身の執筆手順に組み込んだ統合論。検査ルールを writer に読ませず Hook 側へ置くという振り分けの根拠を、規約を足すほど文が縮む経験から書いている
 - [[concepts/writing-norms-adoption]] — 規範を指示側（プロジェクト・Skill）に置いたまま運用する側の記録。本ページが「指示では消えない」として検査へ移したのに対し、あちらは指示側に残したうえで「どの文章に入れるか」で効きを確保する
 - [[concepts/gemini-rewrite-stop-hook]] — 同著者が本ページの機械検査と並行して動かすGeminiリライトのStop Hook。検出に加えて生成側で日本語を置き換える
+- [[concepts/asd-ste100-llm-writing]] — 文体を生成後に検査する本ページに対し、生成時に制御言語の仕様で縛る Karpathy の tip

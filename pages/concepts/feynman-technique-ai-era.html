@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>feynman-technique-ai-era - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>feynman-technique-ai-era</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="feynman-technique-ai-era.md">Markdownで表示</a></div>
+  <div class="meta">concepts/feynman-technique-ai-era · concepts · <span title="2026-10-03">今日</span></div>
+  <article><h1>AI時代のファインマンテクニック｜「わかった気」を説明して確かめる勉強法</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 生成AIは難度を下げて何度でも説明してくれるぶん「わかった気」になるのが極端に簡単になるので、学んだ内容を何も見ずに「背景→提案手法→検証結果→メリット・デメリット」の順で説明できるかで理解を確かめ、詰まったところだけ AI に調べさせて戻る、という勉強法。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;インプット（講義動画・書籍をAIで噛み砕く）&quot;] --&gt; B[&quot;GPT-Liveに「間違いがあれば教えて」と伝えて説明する&quot;]
+  B --&gt;|詰まった| C[&quot;その箇所をAIに調べさせ教わる&quot;]
+  C --&gt; B
+  B --&gt;|最後まで話せた| D[&quot;説明全体の誤りをフィードバックさせる&quot;]
+  D --&gt; E[&quot;引っかかった点は別チャネルで真偽確認&quot;]</pre>
+<p>iwashi（@iwashi86）がブログ記事「AI時代の勉強法(2026)」で、生成AI以降に理解の難しかったものが比較的容易に理解できるようになった一方、噛み砕いた説明を受けて「あーそういうことね」とすぐなりがちな点を「かなり危険」と指摘した。@t_wadaはこの一節を引いて「深く同意する」とポストしている。確認方法としてiwashiが挙げるのが、誰かに内容を説明してみるファインマンテクニックである。</p>
+<h2>説明の型：論文の骨子に沿って話す</h2>
+<p>iwashiは、大体の技術は論文の骨子と似た構成になっているとして、説明時に次の項目を話すようにしている。</p>
+<ul>
+<li>背景（何かしらの課題が存在する）</li>
+<li>課題を解くための提案技術や手法</li>
+<li>実際に実験して検証した結果（論文でなければ無い場合もある）</li>
+<li>その技術のメリットとデメリット</li>
+</ul>
+<p>これを何も見ずにスラスラ話せるなら、実装できるかはおいて概略は理解できている可能性が高く、スラスラ出てこないならわかった気になっているだけだ、とiwashiは述べる。例として SGD → Momentum を「SGD は勾配だけで更新しジグザグ進む→Momentum はこれまでの方向も使い、ぶれを打ち消す→速く収束するが追加ハイパラや最小値の行き過ぎがある」と説明し、そこから「Momentum の課題を Adam が〜」と後続技術へつなげている。</p>
+<h2>インプット：英語の一次教材を AI で噛み砕く</h2>
+<p>iwashiは、知の高速道路で一番発達したのは動画だとし、Stanford の CS336（Language Modeling from Scratch）のような講義を英語のまま使う方法を挙げる。</p>
+<ul>
+<li><strong>動画のみ</strong>: PC で講義を再生し、隣のスマホで GPT-Live に逐次通訳させる。ある程度わかるなら普段は黙らせ、わからない箇所だけ止めて質問する</li>
+<li><strong>動画→テキスト</strong>: YouTube の transcript と講義資料 PDF を LLM に読ませ、自分専用の日本語解説 Web テキストを作らせて予習・復習に使う</li>
+<li><strong>動画→音声</strong>: NotebookLM で対談音声にしてざっくり教わる（謎のメタファーを連発して分かりにくいこともある）</li>
+<li><strong>書籍</strong>: 難しい箇所を撮影して ChatGPT に噛み砕かせ、何度か往復する。生成AI以前は輪読会でカバーしていた部分だという。ビジネス書は読み流せるので AI はあまり使わない</li>
+<li><strong>オライリー</strong>: 学習プラットフォームで英語書籍の先行リリースまで読める。AI の技術書は変化が激しく翻訳の時差が痛いので英語で読み、AI で読みやすくする</li>
+</ul>
+<h2>アウトプット：GPT-Live 相手に説明する</h2>
+<p>iwashiは、両手は塞がるが口と耳が空いている時間に、インプットした内容を GPT-Live に話している。「今から〜について説明するから、間違えているところがあったら教えて」と伝えて話し始め、詰まったところは理解が浅いので GPT-Live に調べさせて逆に教わり、また最初から話す。最後まで話せても「これまでの説明で間違っているところがあれば教えて」とフィードバックをもらう。ハルシネーションもありうるので、引っかかった点は別のチャネルで真偽を確かめる。</p>
+<p>勉強会での登壇やブログ執筆も同じ働きをする。iwashiは MoE の技術メモを書いた際、前半はスラスラ書けたが Auxiliary Load Balancing Loss の節で論理が急にあやふやになり、理解できていなかったと気づいて学び直したと書いている。なお記事自体は誤字脱字チェック以外に生成AIを使わず手でタイプした、とiwashiは明記している。</p>
+<p><a href="../concepts/output-first-learning.html">output-first-learning</a> が「出力を前提に読む」ことで定着させるのに対し、本手法は出力を<strong>理解の検査</strong>として使う点に重心がある。<a href="../concepts/cognitive-debt.html">cognitive-debt</a> の「説明できないものは出さない」という基準を、学習の場面に適用したものとも読める（wiki 側の関連づけ）。</p>
+<h2>問い</h2>
+<ul>
+<li>このwikiのページを「背景→手法→検証→メリデメ」で何も見ずに話せるか。ingest 直後のページで試し、詰まる箇所を問いに回す運用にできるか</li>
+<li>AI が説明を噛み砕くほど「わかった気」が強まるなら、<a href="../concepts/asd-ste100-llm-writing.html">asd-ste100-llm-writing</a> のように出力を制約して読ませる手と、本手法のように自分で話して検査する手はどう組み合わせるのがよいか</li>
+<li>GPT-Live 以外の音声対話（Claude の音声モードなど）でも、誤りの指摘が十分な精度で返ってくるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/cognitive-debt.html">cognitive-debt</a> — AI の生成速度に人間の理解が追いつかない負債。「説明できないものは出さない」基準と同じ発想</li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a> — 出力を前提に学ぶ血肉化法。本手法は出力を理解の検査に使う</li>
+<li><a href="../concepts/ai-teacher-prompt.html">ai-teacher-prompt</a> — AI に教師役を割り当てて理解を深める手法。本手法は逆に自分が教える側に回る</li>
+<li><a href="../concepts/research-methodology.html">research-methodology</a> — ML リサーチ力の整理。論文の骨子に沿って説明する型と接続</li>
+<li><a href="../concepts/asd-ste100-llm-writing.html">asd-ste100-llm-writing</a> — LLM の出力を制御言語で書かせて理解しやすくする手法</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-teacher-prompt.html">ai-teacher-prompt</a></li>
+<li><a href="../concepts/asd-ste100-llm-writing.html">asd-ste100-llm-writing</a></li>
+<li><a href="../concepts/cognitive-debt.html">cognitive-debt</a></li>
+<li><a href="../concepts/output-first-learning.html">output-first-learning</a></li>
+<li><a href="../concepts/research-methodology.html">research-methodology</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2105834978089328932" rel="noopener" target="_blank">https://x.com/i/web/status/2105834978089328932</a></li>
+<li><a href="https://iwashi.co/2026/10/01/how-to-study-in-ai-era" rel="noopener" target="_blank">https://iwashi.co/2026/10/01/how-to-study-in-ai-era</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AI時代のファインマンテクニック｜「わかった気」を説明して確かめる勉強法
+
+&gt; **TL;DR**: 生成AIは難度を下げて何度でも説明してくれるぶん「わかった気」になるのが極端に簡単になるので、学んだ内容を何も見ずに「背景→提案手法→検証結果→メリット・デメリット」の順で説明できるかで理解を確かめ、詰まったところだけ AI に調べさせて戻る、という勉強法。
+
+```mermaid
+flowchart LR
+  A[&quot;インプット（講義動画・書籍をAIで噛み砕く）&quot;] --&gt; B[&quot;GPT-Liveに「間違いがあれば教えて」と伝えて説明する&quot;]
+  B --&gt;|詰まった| C[&quot;その箇所をAIに調べさせ教わる&quot;]
+  C --&gt; B
+  B --&gt;|最後まで話せた| D[&quot;説明全体の誤りをフィードバックさせる&quot;]
+  D --&gt; E[&quot;引っかかった点は別チャネルで真偽確認&quot;]
+```
+
+iwashi（@iwashi86）がブログ記事「AI時代の勉強法(2026)」で、生成AI以降に理解の難しかったものが比較的容易に理解できるようになった一方、噛み砕いた説明を受けて「あーそういうことね」とすぐなりがちな点を「かなり危険」と指摘した。@t_wadaはこの一節を引いて「深く同意する」とポストしている。確認方法としてiwashiが挙げるのが、誰かに内容を説明してみるファインマンテクニックである。
+
+## 説明の型：論文の骨子に沿って話す
+
+iwashiは、大体の技術は論文の骨子と似た構成になっているとして、説明時に次の項目を話すようにしている。
+
+- 背景（何かしらの課題が存在する）
+- 課題を解くための提案技術や手法
+- 実際に実験して検証した結果（論文でなければ無い場合もある）
+- その技術のメリットとデメリット
+
+これを何も見ずにスラスラ話せるなら、実装できるかはおいて概略は理解できている可能性が高く、スラスラ出てこないならわかった気になっているだけだ、とiwashiは述べる。例として SGD → Momentum を「SGD は勾配だけで更新しジグザグ進む→Momentum はこれまでの方向も使い、ぶれを打ち消す→速く収束するが追加ハイパラや最小値の行き過ぎがある」と説明し、そこから「Momentum の課題を Adam が〜」と後続技術へつなげている。
+
+## インプット：英語の一次教材を AI で噛み砕く
+
+iwashiは、知の高速道路で一番発達したのは動画だとし、Stanford の CS336（Language Modeling from Scratch）のような講義を英語のまま使う方法を挙げる。
+
+- **動画のみ**: PC で講義を再生し、隣のスマホで GPT-Live に逐次通訳させる。ある程度わかるなら普段は黙らせ、わからない箇所だけ止めて質問する
+- **動画→テキスト**: YouTube の transcript と講義資料 PDF を LLM に読ませ、自分専用の日本語解説 Web テキストを作らせて予習・復習に使う
+- **動画→音声**: NotebookLM で対談音声にしてざっくり教わる（謎のメタファーを連発して分かりにくいこともある）
+- **書籍**: 難しい箇所を撮影して ChatGPT に噛み砕かせ、何度か往復する。生成AI以前は輪読会でカバーしていた部分だという。ビジネス書は読み流せるので AI はあまり使わない
+- **オライリー**: 学習プラットフォームで英語書籍の先行リリースまで読める。AI の技術書は変化が激しく翻訳の時差が痛いので英語で読み、AI で読みやすくする
+
+## アウトプット：GPT-Live 相手に説明する
+
+iwashiは、両手は塞がるが口と耳が空いている時間に、インプットした内容を GPT-Live に話している。「今から〜について説明するから、間違えているところがあったら教えて」と伝えて話し始め、詰まったところは理解が浅いので GPT-Live に調べさせて逆に教わり、また最初から話す。最後まで話せても「これまでの説明で間違っているところがあれば教えて」とフィードバックをもらう。ハルシネーションもありうるので、引っかかった点は別のチャネルで真偽を確かめる。
+
+勉強会での登壇やブログ執筆も同じ働きをする。iwashiは MoE の技術メモを書いた際、前半はスラスラ書けたが Auxiliary Load Balancing Loss の節で論理が急にあやふやになり、理解できていなかったと気づいて学び直したと書いている。なお記事自体は誤字脱字チェック以外に生成AIを使わず手でタイプした、とiwashiは明記している。
+
+[[concepts/output-first-learning]] が「出力を前提に読む」ことで定着させるのに対し、本手法は出力を**理解の検査**として使う点に重心がある。[[concepts/cognitive-debt]] の「説明できないものは出さない」という基準を、学習の場面に適用したものとも読める（wiki 側の関連づけ）。
+
+## 問い
+
+- このwikiのページを「背景→手法→検証→メリデメ」で何も見ずに話せるか。ingest 直後のページで試し、詰まる箇所を問いに回す運用にできるか
+- AI が説明を噛み砕くほど「わかった気」が強まるなら、[[concepts/asd-ste100-llm-writing]] のように出力を制約して読ませる手と、本手法のように自分で話して検査する手はどう組み合わせるのがよいか
+- GPT-Live 以外の音声対話（Claude の音声モードなど）でも、誤りの指摘が十分な精度で返ってくるか
+
+## 関連
+
+- [[concepts/cognitive-debt]] — AI の生成速度に人間の理解が追いつかない負債。「説明できないものは出さない」基準と同じ発想
+- [[concepts/output-first-learning]] — 出力を前提に学ぶ血肉化法。本手法は出力を理解の検査に使う
+- [[concepts/ai-teacher-prompt]] — AI に教師役を割り当てて理解を深める手法。本手法は逆に自分が教える側に回る
+- [[concepts/research-methodology]] — ML リサーチ力の整理。論文の骨子に沿って説明する型と接続
+- [[concepts/asd-ste100-llm-writing]] — LLM の出力を制御言語で書かせて理解しやすくする手法
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

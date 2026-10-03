@@ -81,3 +81,4 @@ Pasteur は「幸運は準備された精神に宿る」と言い、Hamming は�
 - [[concepts/output-first-learning]] — 「書くことで思考を確認する」（Paul Graham / Darwin の原理）と交差
 - [[tools/papers-cli]] — 「スレッド要約でなく論文本文を読む」という情報源の質の規範を、arXiv/J-STAGE/IRDBからのPDF取得自動化で下支えするツール
 - [[concepts/career-advice-ai-age]] — Phil Chenのキャリア論。「問題を解くより見つける・評判は複利」が本ページの問題選択・情報源の質と地続き
+- [[concepts/feynman-technique-ai-era]] — 技術を論文の骨子（背景→手法→検証→メリデメ）で説明できるかで理解を確かめる勉強法

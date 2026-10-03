@@ -20,6 +20,18 @@ Mod は外付けの拡張ではなく、Claude Code 自身の `/diff` コマン�
 
 nogu の記事時点では early access で、`~/.claude/settings.json` の `env` に `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS: "1"` を設定して有効化する。Mod は `.claude-plugin/plugin.json`（メタ情報）＋ `hooks/hooks.json`（`{"modules": ["./register.ts"]}` でエントリポイントを宣言）＋ `hooks/register.ts(x)` という構成で、[[tools/claude-code-plugins]] と同じプラグイン形式に乗る。`claude --plugin-dir ./my-mod` でインストールせずにそのセッションだけ試せ、保存するとホットリロードされるので Claude 自身に Mod を書かせながら試せる。型は `/plugin-types` で生成される `.claude/types/claude-code.d.ts` が正で、`claude plugin validate .` で登録を検証する。
 
+## 正式発表後の変化と最初に押さえる3つ
+
+nogu は正式発表後に書いた X 記事で、Claude Mods が2026年10月1日に正式発表されたと書いている。動作確認した Claude Code 2.1.287 では Mod が最初から有効で、early access 版で必要だった環境変数は要らない。構成も更新されている。`$.state` を使うなら状態の型を宣言する `types/index.d.ts` を足し、テストを書く段階で `tests/` を足す。Claude Code の API の型定義は、Mod を読み込むと `.claude-plugin/types/` へ自動で書き出される（early access 期の記事にあった `/plugin-types` で `.claude/types/claude-code.d.ts` を生成する手順とは置き場所が異なる）。検証は `claude plugin validate` で登録イベントと使用機能を確かめ、`claude plugin test` でイベントを起こして戻り値や画面表示を確かめる。marketplace の設定は配ると決めてから用意すればよい、というのが nogu の勧める順序である。
+
+2.1.287 の型定義にはイベントが43個ある。nogu は一覧を覚えるより、使い道が見えやすい次の3つから入るよう勧める。
+
+- **`tool.call`**: ツールの実行を受け取り、実行前に止める・実行時間を記録する・結果に含まれる指定の文字列を伏せる
+- **`ui.render`**: 表示する場所を指定し、プロンプト欄の上に情報を足したりパネルを描いたりする（`/diff` がその例）
+- **`$.state`**: セッション中の値を Claude Code 側に置く。ホットリロードしても値は残り、描画中に読めば更新に合わせて再描画される。次のセッションまで残したい値は `$.store` を使う
+
+この3つで「ツールが動く→状態が変わる→画面が更新される」の流れが作れる、と nogu は述べる。最初の題材は大きな拡張でなく、毎回手で止めている1つの操作や、作業中に何度も確認している1行の情報でよく、変えたい動作を先に決めてからそれが起きるイベントを探す、というのが nogu の勧める入り方である。
+
 ## `register(on)` と `($, e, next)`
 
 `register` の中で `on(イベント名, マッチャー?, ハンドラ)` を呼んで処理をつなぐ。マッチャーは絞り込み条件で、`{ tool: "Bash" }` なら Bash の `tool.call` だけを拾う。ハンドラの3引数は nogu の表で次のように説明されている。
@@ -71,6 +83,7 @@ nogu はこれらを「標準機能と同じ土俵」とまとめる。nogu は�
 
 - このvaultの hooks（SessionStart や PostToolUse で動かしている外部スクリプト）のうち、Function Hooks に移すと何が良くなるか。`classic.*` として1:1でラップされるなら、移さなくても壊れないのか
 - AGENTS.md と CLAUDE.md をシンボリックリンクで同一にしている現状は、`agents-md` の `claude-md-and-agents-md` モードで二重読み込みにならないか
+- このvaultで「毎回手で止めている1つの操作」は何か。`tool.call` ＋ `$.state` ＋ `ui.render` の最小構成で、ingest 中の処理件数をプロンプト欄の上に出すような Mod が `--plugin-dir` で作れるか
 - 「位置がそのまま権威」の5層は、[[concepts/claude-code-context-hierarchy]] の Enterprise → Global → Project の4層とどう対応するか
 
 ## 関連
