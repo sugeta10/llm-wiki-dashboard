@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>no-backward-compat-agents-md - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>no-backward-compat-agents-md</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="no-backward-compat-agents-md.md">Markdownで表示</a></div>
+  <div class="meta">concepts/no-backward-compat-agents-md · concepts · <span title="2026-10-04">今日</span></div>
+  <article><h1>後方互換を捨てさせる AGENTS.md 指示（開発中・社内向けPJ）</h1>
+<blockquote>
+<p>📌 X bookmark: 3,543（2026-10-03 時点）</p>
+</blockquote>
+<p>コーディングエージェントは、既存コードを書き換えるときに古い呼び出し方を残す互換レイヤ・データ移行処理・念のためのフォールバックを足しがちで、開発中のプロジェクトではそれがそのまま負債として積み上がる。@sesere115 は「ここ1ヶ月ほど Codex で死ぬほど開発」した経験から、AGENTS.md（openai-codex が入口として読む指示ファイル）に次の前提を書いておくと体験が「割と改善された」と述べる。</p>
+<blockquote>
+<p>「これは社内向けサービスであり、開発中のPJのため後方互換やデータ移行は行わず、常に理想的かつKISSなコードに書き換えて下さい。開発は以下のサイクルで行って下さい」</p>
+</blockquote>
+<p>この指示は3つの部品でできている（以下の分解は本 wiki の読み）。</p>
+<ul>
+<li><strong>前提の宣言</strong>: 「社内向け」「開発中」と状況を先に伝える。外部利用者も本番データもまだ無いので、互換性を守る理由が無いことをエージェントに推論させる材料になる</li>
+<li><strong>禁止の明示</strong>: 「後方互換やデータ移行は行わず」と、エージェントが善意で足しがちな作業を名指しで止める</li>
+<li><strong>到達点の指定</strong>: 「常に理想的かつ KISS（Keep It Simple, Stupid＝できるだけ単純に保つ原則）なコードに書き換え」で、差分を最小にする方向でなく、あるべき形へ書き直す方向を既定にする</li>
+</ul>
+<p>投稿は「以下のサイクルで行って下さい ↓」で終わっており、具体的な開発サイクルは本 vault には未捕捉（続きはスレッドか画像にあると考えられる）。</p>
+<p>Anthropic の Fable 5 向けプロンプティング指針も「起こり得ないケースのエラーハンドリングやフォールバックを足すな」と同じ方向の制約を勧めている（<a href="../concepts/fable-5-prompting.html">fable-5-prompting</a>）。モデル提供側と実践者の双方が、エージェントの「念のための保守的な追加」を指示で止める必要を感じている点は共通していると考えられる（推論）。</p>
+<h2>適用範囲</h2>
+<p>この指示が成り立つのは「外部利用者がいない」「捨ててよいデータしかない」という前提が真のあいだだけである。本番データや外部 API 利用者を持った時点で、データ移行と互換性はむしろ必須の作業になる。前提が崩れたときに AGENTS.md のこの行を外し忘れると、エージェントは既存データを壊す書き換えを正当な指示として実行しうる（推論）。</p>
+<p>「理想的かつ KISS」の解釈も一意ではない。<a href="../concepts/concept-design.html">concept-design</a> で takeshi_teshima は、KISS/YAGNI を「いま必要なコード量が最も少ない方」と読むと概念設計を誤ると指摘しており、書き換えのたびにエージェントが何を「理想」とみなすかは別途検証が要る。</p>
+<h2>問い</h2>
+<ul>
+<li>「開発中だから互換性不要」の前提を、いつ・誰が外すかをどう仕組みにするか（リリース判定と連動して AGENTS.md の該当行を消す、など）</li>
+<li>毎回「理想形へ書き換え」させると差分が大きくなり、レビュー負荷が増えるのではないか。差分の大きさと負債の少なさのトレードオフを実測できるか</li>
+<li>省略されている「開発サイクル」は何だったか。原ポストのスレッドを確認する</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a> — フォールバックや要求外のリファクタを足させない制約。モデル提供側の同方向の指針</li>
+<li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a> — この種の指示を AGENTS.md に正本として置き、Claude Code からも読ませる構成</li>
+<li><a href="../concepts/concept-design.html">concept-design</a> — 「KISS とは何か」の解釈。最小コード量ではなく、現実を無理なく表す概念の内側での単純さ</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li>
+<li><a href="../concepts/concept-design.html">concept-design</a></li>
+<li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2106265918145978753" rel="noopener" target="_blank">https://x.com/i/web/status/2106265918145978753</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 後方互換を捨てさせる AGENTS.md 指示（開発中・社内向けPJ）
+
+&gt; 📌 X bookmark: 3,543（2026-10-03 時点）
+
+コーディングエージェントは、既存コードを書き換えるときに古い呼び出し方を残す互換レイヤ・データ移行処理・念のためのフォールバックを足しがちで、開発中のプロジェクトではそれがそのまま負債として積み上がる。@sesere115 は「ここ1ヶ月ほど Codex で死ぬほど開発」した経験から、AGENTS.md（[[tools/openai-codex]] が入口として読む指示ファイル）に次の前提を書いておくと体験が「割と改善された」と述べる。
+
+&gt; 「これは社内向けサービスであり、開発中のPJのため後方互換やデータ移行は行わず、常に理想的かつKISSなコードに書き換えて下さい。開発は以下のサイクルで行って下さい」
+
+この指示は3つの部品でできている（以下の分解は本 wiki の読み）。
+
+- **前提の宣言**: 「社内向け」「開発中」と状況を先に伝える。外部利用者も本番データもまだ無いので、互換性を守る理由が無いことをエージェントに推論させる材料になる
+- **禁止の明示**: 「後方互換やデータ移行は行わず」と、エージェントが善意で足しがちな作業を名指しで止める
+- **到達点の指定**: 「常に理想的かつ KISS（Keep It Simple, Stupid＝できるだけ単純に保つ原則）なコードに書き換え」で、差分を最小にする方向でなく、あるべき形へ書き直す方向を既定にする
+
+投稿は「以下のサイクルで行って下さい ↓」で終わっており、具体的な開発サイクルは本 vault には未捕捉（続きはスレッドか画像にあると考えられる）。
+
+Anthropic の Fable 5 向けプロンプティング指針も「起こり得ないケースのエラーハンドリングやフォールバックを足すな」と同じ方向の制約を勧めている（[[concepts/fable-5-prompting]]）。モデル提供側と実践者の双方が、エージェントの「念のための保守的な追加」を指示で止める必要を感じている点は共通していると考えられる（推論）。
+
+## 適用範囲
+
+この指示が成り立つのは「外部利用者がいない」「捨ててよいデータしかない」という前提が真のあいだだけである。本番データや外部 API 利用者を持った時点で、データ移行と互換性はむしろ必須の作業になる。前提が崩れたときに AGENTS.md のこの行を外し忘れると、エージェントは既存データを壊す書き換えを正当な指示として実行しうる（推論）。
+
+「理想的かつ KISS」の解釈も一意ではない。[[concepts/concept-design]] で takeshi_teshima は、KISS/YAGNI を「いま必要なコード量が最も少ない方」と読むと概念設計を誤ると指摘しており、書き換えのたびにエージェントが何を「理想」とみなすかは別途検証が要る。
+
+## 問い
+
+- 「開発中だから互換性不要」の前提を、いつ・誰が外すかをどう仕組みにするか（リリース判定と連動して AGENTS.md の該当行を消す、など）
+- 毎回「理想形へ書き換え」させると差分が大きくなり、レビュー負荷が増えるのではないか。差分の大きさと負債の少なさのトレードオフを実測できるか
+- 省略されている「開発サイクル」は何だったか。原ポストのスレッドを確認する
+
+## 関連
+
+- [[concepts/fable-5-prompting]] — フォールバックや要求外のリファクタを足させない制約。モデル提供側の同方向の指針
+- [[concepts/agents-md-canonical]] — この種の指示を AGENTS.md に正本として置き、Claude Code からも読ませる構成
+- [[concepts/concept-design]] — 「KISS とは何か」の解釈。最小コード量ではなく、現実を無理なく表す概念の内側での単純さ
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

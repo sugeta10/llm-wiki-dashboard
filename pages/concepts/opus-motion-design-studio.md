@@ -44,11 +44,16 @@ flowchart LR
 
 紹介されたリポジトリは PDoomVideo（音楽ビデオ）・ClaudeAnimationBase（スターター）・buildwithhanif/claude-animation-skill（Node canvas）・heygen-com/hyperframes（HTMLフレームワーク）・Remotion の AI スキル（Reactフレームワーク）・Battle-of-Austerlitz-Film（長尺）・guanmo-ai/awesome-ai-motion（プロンプト集）・athemeroy/awesome-opus-5-5-videos（データセット）。記事中の埋め込み投稿・テンプレート・コードの多くは画像や埋め込みで、本vaultには未捕捉。
 
+## 続報: 17ページの「モーションデザイン・ブループリント」PDF
+
+@0xMovez は講座の続報（2026-10-03）で、「Anthropic の Opus 5.5 向けモーションデザイン用プロンプティング・ブループリント」を見つけたとして、17ページの PDF を Google Drive で共有した。@0xMovez によれば中身はプロンプト技法・モーションとオーディオのデザインワークフロー・ディレクター向けプロンプトで、本人はこれを Claude に読ませて CLAUDE.md を作ったという。Anthropic が作成した文書かどうかは投稿者の説明のみで、公式の出所は確認できていない。Drive のキャッシュは読み込み中の画面だけで、PDF 本文は本 vault には未捕捉。「PDF を Claude に読ませて CLAUDE.md にする」使い方は、本講座の「プロジェクト直下に house rules を置く」を外部資料から作る手順にあたると考えられる（推論）。
+
 ## 問い
 
 - 自分の環境で「seek(t) ＋ Playwright ＋ ffmpeg」のルートAと、[[tools/hyperframes]] / [[tools/remotion]] 経由のルートBを同じブリーフで回し、修正のしやすさと見た目の差を比べる
 - 批評ループの「全スコア8以上」は同じモデルによる自己採点で、甘くなる余地がある。採点基準をブリーフ側に固定すれば足りるか、人の目のチェックポイントが要るか
 - 「brief contagion」はスキル化して配布するほど強まるはず。スキル化とリファレンス（自分のライブラリ）の組み合わせで独自性を保てるか
+- 17ページ PDF は本当に Anthropic 由来か。本文を入手し、講座の12ステップと重なる部分・新しい部分を切り分ける
 
 ## 関連
 

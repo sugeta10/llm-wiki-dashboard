@@ -50,3 +50,4 @@ flowchart TD
 - [[tools/claude-code-mods]] — Claude Code 側の AGENTS.md 対応は `agents-md` Mod で実装され、`instructionFiles` で CLAUDE.md のみ／フォールバック／両方読み／組織管理のみを選べる（nogu の解説）
 - [[concepts/open-knowledge-format]] — AGENTS.md/CLAUDE.md のアドホックな慣習を、フォーマットとして標準化しようとするGoogle Cloud発の仕様
 - [[concepts/gpt-6-astra-skills-prompting]] — Codex チーム（Eric Provencher）が GPT-6 Astra 向けに AGENTS.md の各行を「まだ要るか」で再審査せよと述べる指針。正本に集めた後の減らし方の側
+- [[concepts/no-backward-compat-agents-md]] — AGENTS.md に書く中身の一例：開発中・社内向けという前提を宣言して後方互換とデータ移行を止める1文（@sesere115・Codex）

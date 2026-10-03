@@ -92,3 +92,4 @@ Fulfillmentを最初から切り出すのはYAGNI違反ではないか、とい�
 - [[concepts/behavioral-specification]] — 実装前に人間が確定させるべき「正解・不正解の判定基準」。概念テストは仕様の正誤でなく、その仕様が既存の概念と矛盾せず語れるかを見る一段手前のテスト
 - [[concepts/ai-quality-amplification]] — AIは品質の増幅器という論。本記事が命名の参考文献に挙げる仙塲大也（@MinoDriven）の主張であり、概念設計のズレも同じだけ増幅されると考えられる
 - [[concepts/forward-deployed-engineer]] — 顧客現場に入るFDEの中核能力を「業務モデリングスキル」と名指しし、本記事をその必要性が理解しやすい解説として挙げる実務者の読み（@gura105）。単一アプリの概念設計と、複数SoRを束ねるオントロジー構築を同じスキルの両端に置く
+- [[concepts/no-backward-compat-agents-md]] — AGENTS.md で「常に理想的かつ KISS に書き換えよ」とエージェントに指示する例（@sesere115）。そこでの「KISS」を最小コード量と読むか、本ページの意味で読むかで書き換え結果が変わると考えられる

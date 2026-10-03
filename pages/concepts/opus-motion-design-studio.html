@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>opus-motion-design-studio</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="opus-motion-design-studio.md">Markdownで表示</a></div>
-  <div class="meta">concepts/opus-motion-design-studio · concepts · <span title="2026-09-30">3日前</span></div>
+  <div class="meta">concepts/opus-motion-design-studio · concepts · <span title="2026-10-04">今日</span></div>
   <article><h1>Opus 5.5 モーションデザインスタジオ（seek(t) エンジン＋批評ループ）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Opus 5.5 で「コードから描く動画」を量産するには、プロンプトより周辺の仕組み（決定論的な seek(t) レンダラ・リファレンス・状態リスト型の仕様・自分のフレームを見て直す批評ループ）が効く、と @0xMovez が12ステップの講座にまとめた。</p>
@@ -70,11 +70,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>出荷</strong>: シーンを固定ピクセルでなくレイアウト関数に対して書き、9:16・1:1・16:9 を並列にレンダリングさせる（16:9 を縦に切り抜かない）。パイプラインをスキルに包めば講座全体が「/motion-reel for [URL], 20s, vertical, reference ./refs/frame.png」の1文に畳める。収益化の型として achxvi の提供内容（音楽・任意スタイルのマスコット・製品機能・最後にオファー・多言語・修正3回まで）と Tony Dinh の「1年前は約1,000ドル」という相場感が示される。</li>
 </ul>
 <p>紹介されたリポジトリは PDoomVideo（音楽ビデオ）・ClaudeAnimationBase（スターター）・buildwithhanif/claude-animation-skill（Node canvas）・heygen-com/hyperframes（HTMLフレームワーク）・Remotion の AI スキル（Reactフレームワーク）・Battle-of-Austerlitz-Film（長尺）・guanmo-ai/awesome-ai-motion（プロンプト集）・athemeroy/awesome-opus-5-5-videos（データセット）。記事中の埋め込み投稿・テンプレート・コードの多くは画像や埋め込みで、本vaultには未捕捉。</p>
+<h2>続報: 17ページの「モーションデザイン・ブループリント」PDF</h2>
+<p>@0xMovez は講座の続報（2026-10-03）で、「Anthropic の Opus 5.5 向けモーションデザイン用プロンプティング・ブループリント」を見つけたとして、17ページの PDF を Google Drive で共有した。@0xMovez によれば中身はプロンプト技法・モーションとオーディオのデザインワークフロー・ディレクター向けプロンプトで、本人はこれを Claude に読ませて CLAUDE.md を作ったという。Anthropic が作成した文書かどうかは投稿者の説明のみで、公式の出所は確認できていない。Drive のキャッシュは読み込み中の画面だけで、PDF 本文は本 vault には未捕捉。「PDF を Claude に読ませて CLAUDE.md にする」使い方は、本講座の「プロジェクト直下に house rules を置く」を外部資料から作る手順にあたると考えられる（推論）。</p>
 <h2>問い</h2>
 <ul>
 <li>自分の環境で「seek(t) ＋ Playwright ＋ ffmpeg」のルートAと、<a href="../tools/hyperframes.html">hyperframes</a> / <a href="../tools/remotion.html">remotion</a> 経由のルートBを同じブリーフで回し、修正のしやすさと見た目の差を比べる</li>
 <li>批評ループの「全スコア8以上」は同じモデルによる自己採点で、甘くなる余地がある。採点基準をブリーフ側に固定すれば足りるか、人の目のチェックポイントが要るか</li>
 <li>「brief contagion」はスキル化して配布するほど強まるはず。スキル化とリファレンス（自分のライブラリ）の組み合わせで独自性を保てるか</li>
+<li>17ページ PDF は本当に Anthropic 由来か。本文を入手し、講座の12ステップと重なる部分・新しい部分を切り分ける</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -89,7 +92,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
 <li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a></li>
 <li><a href="../tools/hyperframes.html">hyperframes</a></li>
-<li><a href="../tools/remotion.html">remotion</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2104216919033192746" rel="noopener" target="_blank">https://x.com/i/web/status/2104216919033192746</a></li></ul></section></article>
+<li><a href="../tools/remotion.html">remotion</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2104216919033192746" rel="noopener" target="_blank">https://x.com/i/web/status/2104216919033192746</a></li>
+<li><a href="https://x.com/i/web/status/2106379875812577422" rel="noopener" target="_blank">https://x.com/i/web/status/2106379875812577422</a></li>
+<li><a href="https://drive.google.com/file/d/1iy9FXYpB65C2_jp7XMkRetxjkeG4cvUU/view?usp=sharing" rel="noopener" target="_blank">https://drive.google.com/file/d/1iy9FXYpB65C2_jp7XMkRetxjkeG4cvUU/view?usp=sharing</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -156,11 +161,16 @@ flowchart LR
 
 紹介されたリポジトリは PDoomVideo（音楽ビデオ）・ClaudeAnimationBase（スターター）・buildwithhanif/claude-animation-skill（Node canvas）・heygen-com/hyperframes（HTMLフレームワーク）・Remotion の AI スキル（Reactフレームワーク）・Battle-of-Austerlitz-Film（長尺）・guanmo-ai/awesome-ai-motion（プロンプト集）・athemeroy/awesome-opus-5-5-videos（データセット）。記事中の埋め込み投稿・テンプレート・コードの多くは画像や埋め込みで、本vaultには未捕捉。
 
+## 続報: 17ページの「モーションデザイン・ブループリント」PDF
+
+@0xMovez は講座の続報（2026-10-03）で、「Anthropic の Opus 5.5 向けモーションデザイン用プロンプティング・ブループリント」を見つけたとして、17ページの PDF を Google Drive で共有した。@0xMovez によれば中身はプロンプト技法・モーションとオーディオのデザインワークフロー・ディレクター向けプロンプトで、本人はこれを Claude に読ませて CLAUDE.md を作ったという。Anthropic が作成した文書かどうかは投稿者の説明のみで、公式の出所は確認できていない。Drive のキャッシュは読み込み中の画面だけで、PDF 本文は本 vault には未捕捉。「PDF を Claude に読ませて CLAUDE.md にする」使い方は、本講座の「プロジェクト直下に house rules を置く」を外部資料から作る手順にあたると考えられる（推論）。
+
 ## 問い
 
 - 自分の環境で「seek(t) ＋ Playwright ＋ ffmpeg」のルートAと、[[tools/hyperframes]] / [[tools/remotion]] 経由のルートBを同じブリーフで回し、修正のしやすさと見た目の差を比べる
 - 批評ループの「全スコア8以上」は同じモデルによる自己採点で、甘くなる余地がある。採点基準をブリーフ側に固定すれば足りるか、人の目のチェックポイントが要るか
 - 「brief contagion」はスキル化して配布するほど強まるはず。スキル化とリファレンス（自分のライブラリ）の組み合わせで独自性を保てるか
+- 17ページ PDF は本当に Anthropic 由来か。本文を入手し、講座の12ステップと重なる部分・新しい部分を切り分ける
 
 ## 関連
 
