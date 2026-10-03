@@ -52,3 +52,4 @@
 - [[design/consulting-pptx-skill]] — コンサル品質の静的PPTXを規約ファイルで作らせるスキル。本ページは同じコンサル資料の型を HTML の対話性へ広げる方向
 - [[design/slide-md]] — スライドの見た目を `.md` デザインシステムで固定する仕組み（見本コードで見た目をそろえる本手法と同じ発想）
 - [[tools/artifact-share]] — AI生成HTMLをURL共有しクリックで修正指示できるツール（アーティファクト出力の共有経路）
+- [[tools/html-slide-presenter]] — 作ったHTMLスライドを発表するときの発表者ツール（現在・次のスライド・ノート・2画面同期）

@@ -36,3 +36,4 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 - [[tools/slack-html]] — 自己完結HTMLをSlackに添付してアプリ内で展開する配布経路（@geeorgeyの造語「SlackHTML」）。単一ファイル・依存なしという本リポジトリの前提がそのまま条件になる
 - [[tools/claude-code-subagents]] — dashboard-builder のような出力専用サブエージェントの定義方法
 - [[models/claude-opus-5-5]] — 長時間タスク前にダッシュボードを作らせる運用の対象モデル（@Voxyz_ai）
+- [[tools/html-slide-presenter]] — HTMLスライドの横に presenter.html を置き、元HTMLを変えずに発表者ツールを外付けする応用例（梶谷健人製）

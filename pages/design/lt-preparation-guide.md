@@ -38,3 +38,4 @@
 - [[design/ai-slide-to-pptx]]
 - [[design/fastview-design]]
 - [[design/minorun-marp-skill]] — Marp を選んだ後の登壇スライドの作り方（ストーリー・図・黒地デザインの型＋書き出し後の実測検査）をスキル化したもの
+- [[tools/html-slide-presenter]] — HTMLスライドにKeynote相当の発表者ツール（現在・次のスライドとノート、投影側と同期）を付ける配布システム（梶谷健人製）
