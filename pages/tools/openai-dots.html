@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>openai-dots</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="openai-dots.md">Markdownで表示</a></div>
-  <div class="meta">tools/openai-dots · tools · <span title="2026-10-02">1日前</span></div>
+  <div class="meta">tools/openai-dots · tools · <span title="2026-10-03">今日</span></div>
   <article><h1>Dots（OpenAI）</h1>
 <p>OpenAI が DevDay（2026-09-29 頃）で発表した、クラウド上でバックグラウンド作業するボットの製品。本 vault での初出は @umiyuki_ai による DevDay 発表まとめのポストで、@umiyuki_ai は「要するに OpenAI 版の GrokBot」と要約している。公式発表本体・料金体系・対応ツールは未収集。</p>
 <p>@umiyuki_ai が伝えている仕様は次の 3 点に限られる。</p>
@@ -43,12 +43,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>使い方の広がり（発表直後の反応）</h2>
 <p>発表から数日で、Dots を夜通し動かす使い方が個人ポストで共有された。@paji_a は Dots を「全年齢AGI」と評し、就寝前に「これまでの依頼・承認の範囲で残タスクを進め、停止したセッションはゴール設定や定期確認で再開し、入力待ちは保留して他を進める」よう頼む一文プロンプトを公開した（詳細は <a href="../concepts/overnight-delegation-prompt.html">overnight-delegation-prompt</a>）。このプロンプトから、Dots には<strong>ゴール設定</strong>と<strong>定期確認</strong>の機能があり、複数のセッションを並行して持てることが読み取れる（公式仕様では未確認）。</p>
 <p><a href="../tools/openclaw.html">openclaw</a> を使ってきた @usedhonda は「Dots を通して AI エージェントにちゃんと触れる人が増えてきて嬉しい」と書き、自分の経験としてエージェントに与えてきた入力を挙げている。ポストで読める範囲は GPS・周囲の会話（音声認識済み）・メッセンジャーや LINE での会話の3つで、その先は途切れていて未収集。常時の生活文脈をエージェントに流し込む OpenClaw 流の使い方が、Dots の利用者にも次の段階として見えてくると @usedhonda は示唆していると読める（wiki側の解釈）。</p>
+<p>音声で常時つなぐ使い方も出ている。@tetumemo は、自分専用の Dots に電話すると現時点では繋ぎっぱなしで無制限に使え、「本当に AI 秘書が常に横にいる感じ」だと書いた。@tetumemo によれば、タスクとして Codex や ChatGPT Work に振らない限り週間利用量を消費しない（「今は」と期間限定の可能性を含めた書き方）。続くポストで @tetumemo は、骨伝導イヤホンの Shokz を付けっぱなしにして話し続けられるので在宅勤務と組み合わせると最強かもしれない、オフィスでは独り言が周りの迷惑になる、と述べている。Dots の価値が作業の委任だけでなく、話しかけ続けられる相手としての常時接続にもあると示す使用例と読める（wiki側の解釈）。音声で話しかける窓口としての Dots は、依頼を受けて仕分けるだけの窓口に AI 秘書を限定する <a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a> の考え方とも重なる。</p>
 <h2>問い</h2>
 <ul>
 <li>Dots はコーディング専用か汎用の作業ボットか。openai-codex のクラウド実行との役割分担はどうなっているか</li>
 <li>「チャットは Codex 容量と別枠」は、Codex を使い切っても Dots とのチャットは続けられるという意味か。公式の料金ページで確かめる</li>
 <li>夜間に定期作業を回す <a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a> や <a href="../concepts/github-runner-agent-factory.html">github-runner-agent-factory</a> の運用を Dots で置き換えられるか</li>
 <li>@usedhonda が挙げた GPS・周囲の会話のような生活文脈を、Dots に公式の経路で渡せるか</li>
+<li>電話での「繋ぎっぱなし・無制限」は期間限定か。音声の常時接続はどの利用枠に数えられるか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -58,13 +60,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/gpt-6-1-sol.html">gpt-6-1-sol</a> — 同じ DevDay で発表されたモデル</li>
 <li><a href="../concepts/overnight-delegation-prompt.html">overnight-delegation-prompt</a> — Dots に夜通し作業させる就寝前の委任プロンプト</li>
 <li><a href="../tools/openclaw.html">openclaw</a> — @usedhonda が Dots 以前から使ってきたエージェント基盤</li>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a> — AI 秘書を仕事の窓口に限定する考え方。@tetumemo の「AI 秘書が常に横にいる」使い方と重なる</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/openai.html">openai</a></li>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a></li>
 <li><a href="../concepts/overnight-delegation-prompt.html">overnight-delegation-prompt</a></li>
 <li><a href="../models/gpt-6-1-sol.html">gpt-6-1-sol</a></li>
-<li><a href="../tools/grok-bot.html">grok-bot</a></li>
-<li><a href="../tools/openclaw.html">openclaw</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2105015480557896162" rel="noopener" target="_blank">https://x.com/i/web/status/2105015480557896162</a></li>
+<li><a href="../tools/grok-bot.html">grok-bot</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2105015480557896162" rel="noopener" target="_blank">https://x.com/i/web/status/2105015480557896162</a></li>
 <li><a href="https://x.com/i/web/status/2105609782354964932" rel="noopener" target="_blank">https://x.com/i/web/status/2105609782354964932</a></li>
-<li><a href="https://x.com/i/web/status/2105690965847802175" rel="noopener" target="_blank">https://x.com/i/web/status/2105690965847802175</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2105690965847802175" rel="noopener" target="_blank">https://x.com/i/web/status/2105690965847802175</a></li>
+<li><a href="https://x.com/i/web/status/2105910279104336107" rel="noopener" target="_blank">https://x.com/i/web/status/2105910279104336107</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -105,12 +109,15 @@ OpenAI が DevDay（2026-09-29 頃）で発表した、クラウド上でバッ�
 
 [[tools/openclaw]] を使ってきた @usedhonda は「Dots を通して AI エージェントにちゃんと触れる人が増えてきて嬉しい」と書き、自分の経験としてエージェントに与えてきた入力を挙げている。ポストで読める範囲は GPS・周囲の会話（音声認識済み）・メッセンジャーや LINE での会話の3つで、その先は途切れていて未収集。常時の生活文脈をエージェントに流し込む OpenClaw 流の使い方が、Dots の利用者にも次の段階として見えてくると @usedhonda は示唆していると読める（wiki側の解釈）。
 
+音声で常時つなぐ使い方も出ている。@tetumemo は、自分専用の Dots に電話すると現時点では繋ぎっぱなしで無制限に使え、「本当に AI 秘書が常に横にいる感じ」だと書いた。@tetumemo によれば、タスクとして Codex や ChatGPT Work に振らない限り週間利用量を消費しない（「今は」と期間限定の可能性を含めた書き方）。続くポストで @tetumemo は、骨伝導イヤホンの Shokz を付けっぱなしにして話し続けられるので在宅勤務と組み合わせると最強かもしれない、オフィスでは独り言が周りの迷惑になる、と述べている。Dots の価値が作業の委任だけでなく、話しかけ続けられる相手としての常時接続にもあると示す使用例と読める（wiki側の解釈）。音声で話しかける窓口としての Dots は、依頼を受けて仕分けるだけの窓口に AI 秘書を限定する [[concepts/ai-secretary-gateway]] の考え方とも重なる。
+
 ## 問い
 
 - Dots はコーディング専用か汎用の作業ボットか。[[tools/openai-codex]] のクラウド実行との役割分担はどうなっているか
 - 「チャットは Codex 容量と別枠」は、Codex を使い切っても Dots とのチャットは続けられるという意味か。公式の料金ページで確かめる
 - 夜間に定期作業を回す [[tools/hermes-agent-overnight]] や [[concepts/github-runner-agent-factory]] の運用を Dots で置き換えられるか
 - @usedhonda が挙げた GPS・周囲の会話のような生活文脈を、Dots に公式の経路で渡せるか
+- 電話での「繋ぎっぱなし・無制限」は期間限定か。音声の常時接続はどの利用枠に数えられるか
 
 ## 関連
 
@@ -120,6 +127,7 @@ OpenAI が DevDay（2026-09-29 頃）で発表した、クラウド上でバッ�
 - [[models/gpt-6-1-sol]] — 同じ DevDay で発表されたモデル
 - [[concepts/overnight-delegation-prompt]] — Dots に夜通し作業させる就寝前の委任プロンプト
 - [[tools/openclaw]] — @usedhonda が Dots 以前から使ってきたエージェント基盤
+- [[concepts/ai-secretary-gateway]] — AI 秘書を仕事の窓口に限定する考え方。@tetumemo の「AI 秘書が常に横にいる」使い方と重なる
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

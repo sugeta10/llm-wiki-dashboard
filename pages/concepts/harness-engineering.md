@@ -84,3 +84,4 @@ OpenAI・Anthropic・ThoughtWorksが調整なく同じ壁にぶつかり、異�
 - [[concepts/decision-layer-model]] — ハーネス内の分岐（モデル選択・危険操作の事前分類）を生成しない判断モデルへ切り出す設計。モデルを替えずハーネス部品を置き換える打ち手
 - [[papers/2026-dairai-top-ai-papers-w35]] — ハーネスを動的・蓄積的にする研究2本（JIT-Agent=タスクごとにハーネスを合成、Prime Agent=走行間で永続するContinual Harness）。手で設計して凍結するハーネスの次の段階
 - [[concepts/opus-motion-design-studio]] — 「プロンプト10%・ハーネス90%」を動画制作に当てはめた講座（@0xMovez）
+- [[concepts/dsl-as-harness]] — 表現力を捨てた DSL を書かせると、スキーマ・検証器・文法・編集単位の4つのハーネス性質がまとめて得られるという設計論（MulmoClaude のエッセイ）

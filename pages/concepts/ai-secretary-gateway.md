@@ -81,3 +81,4 @@ AIに「明日の予定に、これ追加して」と頼むと「わかりまし
 - [[concepts/claude-projects-blueprint]] — Claude Projects を「AI社員」として組む6パート設計図。役割を1つに絞り本体と参照資料を分ける発想が本ページの本体＋スキルの二層と重なる
 - [[concepts/ai-strategist-prompt]] — 別著者（@akira_papa_IT）の「専属参謀」プロンプト。AI社員シリーズ①「AI参謀」と役割が近い
 - [[concepts/ai-pre-judgment-automation]] — 仕事の入口（Slack/Gmail/GitHub/カレンダー等）を10分おきに監視し調査→提案→人間承認→実行を回す実運用例（入江慎吾）。本ページの「常駐秘書」段に当たる
+- [[tools/openai-dots]] — 電話で繋ぎっぱなしにして「AI 秘書が常に横にいる」使い方が報告された常駐ボット（@tetumemo）。音声の窓口として常駐秘書を置く一例

@@ -19,4 +19,5 @@ Karpathy の前置きは、LLM の出力量が増えて人間側の「読んで�
 - [[people/andrej-karpathy]] — 本手法を紹介した発信者
 - [[concepts/cognitive-debt]] — AI の出力に人間の理解が追いつかない問題。本手法は出力の書き方側から理解コストを下げる
 - [[concepts/llm-japanese-style-hooks]] — LLM の文体の癖を生成後に Hook で検査する手法。本手法は生成時に仕様で縛る側
+- [[concepts/dsl-as-harness]] — @snakajima が本ポストへの返信で紹介した、DSL でエージェントの出力を縛る設計論。制御言語を DSL の一種として並べた
 - [[concepts/feynman-technique-ai-era]] — 「わかった気」を説明で検証する学習法。読む側の理解を確かめる別方向の打ち手

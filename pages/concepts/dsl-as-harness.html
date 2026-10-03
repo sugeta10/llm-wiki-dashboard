@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dsl-as-harness - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>dsl-as-harness</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="dsl-as-harness.md">Markdownで表示</a></div>
+  <div class="meta">concepts/dsl-as-harness · concepts · <span title="2026-10-03">今日</span></div>
+  <article><h1>DSL をハーネスにする｜表現力を捨てた言語がエージェントを安定させる</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 汎用コードでなく、語彙が有限で検証器付きの DSL（ドメイン固有言語）をエージェントに書かせ、実行は決定的なレンダラーに任せると、長時間・無人の委任でも出力が検証可能で再現可能になる、という設計論。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  U[&quot;ユーザーの意図&quot;] --&gt; A[&quot;エージェントが DSL を書く&quot;]
+  A --&gt; V[&quot;パーサー / スキーマ検証&quot;]
+  V -- &quot;不正: 局所的なエラー&quot; --&gt; A
+  V -- &quot;正しい&quot; --&gt; R[&quot;決定的なレンダラー / reconciler&quot;]
+  R --&gt; O[&quot;成果物（動画・アプリ・通知）&quot;]
+  A -. &quot;DSL で書けない部分&quot; .-&gt; E[&quot;脱出口: 道具付きチャット / 任意 HTML&quot;]</pre>
+<p>汎用言語はチューリング完全なので、同じ振る舞いを無数の書き方で表せ、その書き方が「このドメインで正しいか」を言語自体は教えてくれない。receptron/mulmoclaude リポジトリのエッセイ「DSLs as Harnesses」（2026-05-31 付）はここをエージェントの迷走の原因と見て、<strong>DSL は表現力を手放すからこそ強いハーネスになる</strong>と主張する。<a href="../concepts/harness-engineering.html">harness-engineering</a> の「同じモデルでもハーネス次第で出力が大きく変わる」という前提に立ち、その中で DSL という1つの設計判断から定番のハーネスパターン4つがまとめて得られる、というのがエッセイの論旨である。</p>
+<p>@snakajima は Karpathy の「LLM に ASD-STE100 で説明させる」という tip（<a href="../concepts/asd-ste100-llm-writing.html">asd-ste100-llm-writing</a>）に返信する形でこのエッセイを紹介し、HTML・Markdown・ASD-STE100・ShapeScript などの DSL が LLM を制御する良い方法だと述べた。制御言語で LLM の文章を縛る話と、DSL でエージェントの出力を縛る話を同じ線上に置いた形である。</p>
+<h2>DSL が与える4つのハーネス性質</h2>
+<p>エッセイは DSL の効用を次の4つに分ける。SWE-agent の研究（編集のたびに走って壊れた変更を即座に弾く linter、絞り込みを促す検索結果の上限）を引き合いに出している。</p>
+<ul>
+<li><strong>スキーマが記録の正本になる</strong>: ユーザーの意図が命令型コードの細部に溶けず、diff・バージョン管理・検証ができる構造化オブジェクトとして残る</li>
+<li><strong>検証器が無料のフィードバックループになる</strong>: DSL には必ずパーサーがあり、多くはスキーマ検査器も持つ。不正な構造は出力した瞬間に、場所を特定したエラーで弾かれる</li>
+<li><strong>文法が強制関数になる</strong>: 語彙が有限なので、文法に無いオプションを捏造する余地が構造的に小さい</li>
+<li><strong>言語の単位がコンテキストの単位になる</strong>: beat・レコード・ルールといった DSL の自然な区切りがそのままエージェントの編集単位になり、文書全体を抱えずに一部を直せる</li>
+</ul>
+<h2>3つの実例（MulmoClaude）</h2>
+<ul>
+<li><strong>MulmoScript</strong>: マルチモーダルなプレゼン・動画を beat（テキスト・画像・音声・タイミング）の列として書く JSON の DSL。エージェントが作るのは動画でなくスクリプトで、決定的なレンダラーが動画にする。描画前に中身を検査でき、同じスクリプトからは同じ動画が出る。画像タイプは <code>markdown</code>・<code>slide</code>・<code>textSlide</code>・<code>mermaid</code>・<code>html_tailwind</code> などの閉じた集合に限られる</li>
+<li><strong>Collections</strong>: データの形（フィールドと型・関係・完了とみなす値・通知の時期・繰り返し）を <code>schema.json</code> で宣言し、エージェントはそこから生成された <code>SKILL.md</code> に従ってレコードを読み書きする。通貨の無い money フィールドや、存在しないコレクションを指す ref、生まれた時点で完了済みになる spawn（無限に再生成される）は、ロード時に Zod の検証器が弾く。通知の発火・解除や暦日計算は、ホスト側の reconciler（宣言どおりの状態に毎回揃える常駐処理）が毎回同じように実行する</li>
+<li><strong>繰り返しの支払い</strong>: 「毎月10日締め・3日前に通知・支払済みにしたら翌月分を作る」を、タイマーや cron を書かずにスキーマのキー（<code>triggerField</code>・<code>triggerLeadDays</code>・<code>spawn</code>）だけで宣言する。以前は専用サブシステムだったものがコレクションのキー数個に置き換わった、とエッセイは書く</li>
+</ul>
+<p>エッセイが新しい点として強調するのは <strong>DSL を誰が書くか</strong>である。Collections ではスキーマを書くのはエンジニアでなくエンドユーザーで、宣言するだけで非エンジニアがエージェントの作業環境を設計していることになる。エッセイはこれを「ハーネスエンジニアリングの民主化」と呼び、ユーザーが「優先度フィールドを足して」「カンバンで見たい」と頼むだけでデータアプリができる体験を <strong>vibe crafting</strong> と名付けている。vibe coding の開発者は diff を読みテストを回せるが、エンドユーザーは出力を監査できない。その差を埋めるのはより良いモデルでなくハーネス（DSL・検証器・サンドボックス化された HTML ビュー）だ、というのがエッセイの主張である。</p>
+<h2>唯一の危険: 脱出口を設計する</h2>
+<p>DSL の硬さはそのまま失敗の原因にもなる。必要なことを言語で表せないと、エージェントは諦めるか、DSL を本来の用途から捻じ曲げる。エッセイは、良い DSL はどれも<strong>より表現力の高い層への意図的な出口</strong>を用意している、と述べる。Collections では判断が要るレコードを道具付きのチャットへ渡す action ボタンと、フィールド型で表せない表示を任意の HTML で描くカスタムビューがこれに当たる。MulmoScript では外部アセットや生の HTML を埋め込める。エッセイの言葉では、肝は制約を最大化することでなく「どこで制約を効かせ、どこに出口を開けるか」を選ぶことにある。</p>
+<h2>モデルが賢くなるほど効く</h2>
+<p>「DSL は弱いモデルの松葉杖で、賢くなれば汎用コードを渡せばよい」という直感に対し、エッセイは逆だと主張する。人間が各ステップを見ない長時間の自律委任では、出力が検証でき、実行が決定的で、やり直せることがむしろ重要になるからである。賢いモデルの能力は「何を言うか・何を作るか」の判断に向け、残りを言語が保証する、という分担になる。</p>
+<p>この「エージェントが中身を決め、決定的なコードが実行する」分割は、AI に GUI でなく DSL を操作させる <a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> や、生成と判断と実行を分ける <a href="../concepts/decision-layer-model.html">decision-layer-model</a> と同じ構造と考えられる（wiki 側の関連づけ）。中間記法パターンが主に精度とトークン量の面から DSL を勧めるのに対し、このエッセイは長期の無人委任での検証可能性を前面に出し、作り手をエンドユーザーにまで広げている点が異なる。</p>
+<h2>問い</h2>
+<ul>
+<li>この vault の wiki ページ（frontmatter・<code>[[]]</code> リンク・index 登録）を DSL と見なすと、<code>validate_wiki.py</code> が検証器にあたる。DSL として足りない性質（閉じた語彙・脱出口）は何か</li>
+<li>日本語の文章に対して、ASD-STE100 や Markdown のように名指しで指定できる「書き方の DSL」はあるか</li>
+<li>エンドユーザーが書いたスキーマが検証を通っても、意図と違うアプリになる場合（形式は正しいが中身が違う）はどう検出するか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — エッセイが前提にする「モデルよりハーネス」という枠組み</li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a> — AI に GUI でなく DSL を操作させる設計パターン。同じ分割を精度・トークン量の面から論じる</li>
+<li><a href="../concepts/asd-ste100-llm-writing.html">asd-ste100-llm-writing</a> — @snakajima がこのエッセイを紹介した返信先の Karpathy の tip。制御言語で LLM の文章を縛る</li>
+<li><a href="../concepts/decision-layer-model.html">decision-layer-model</a> — LLM が作り、判断モデルが決め、コードが実行する分割。生成と実行を分ける別の型</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/asd-ste100-llm-writing.html">asd-ste100-llm-writing</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
+<li><a href="../concepts/intermediate-notation-pattern.html">intermediate-notation-pattern</a></li>
+<li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/receptron/mulmoclaude/blob/main/docs/papers/dsl-as-harness.md" rel="noopener" target="_blank">https://github.com/receptron/mulmoclaude/blob/main/docs/papers/dsl-as-harness.md</a></li>
+<li><a href="https://x.com/i/web/status/2105882406876311655" rel="noopener" target="_blank">https://x.com/i/web/status/2105882406876311655</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># DSL をハーネスにする｜表現力を捨てた言語がエージェントを安定させる
+
+&gt; **TL;DR**: 汎用コードでなく、語彙が有限で検証器付きの DSL（ドメイン固有言語）をエージェントに書かせ、実行は決定的なレンダラーに任せると、長時間・無人の委任でも出力が検証可能で再現可能になる、という設計論。
+
+```mermaid
+flowchart LR
+  U[&quot;ユーザーの意図&quot;] --&gt; A[&quot;エージェントが DSL を書く&quot;]
+  A --&gt; V[&quot;パーサー / スキーマ検証&quot;]
+  V -- &quot;不正: 局所的なエラー&quot; --&gt; A
+  V -- &quot;正しい&quot; --&gt; R[&quot;決定的なレンダラー / reconciler&quot;]
+  R --&gt; O[&quot;成果物（動画・アプリ・通知）&quot;]
+  A -. &quot;DSL で書けない部分&quot; .-&gt; E[&quot;脱出口: 道具付きチャット / 任意 HTML&quot;]
+```
+
+汎用言語はチューリング完全なので、同じ振る舞いを無数の書き方で表せ、その書き方が「このドメインで正しいか」を言語自体は教えてくれない。receptron/mulmoclaude リポジトリのエッセイ「DSLs as Harnesses」（2026-05-31 付）はここをエージェントの迷走の原因と見て、**DSL は表現力を手放すからこそ強いハーネスになる**と主張する。[[concepts/harness-engineering]] の「同じモデルでもハーネス次第で出力が大きく変わる」という前提に立ち、その中で DSL という1つの設計判断から定番のハーネスパターン4つがまとめて得られる、というのがエッセイの論旨である。
+
+@snakajima は Karpathy の「LLM に ASD-STE100 で説明させる」という tip（[[concepts/asd-ste100-llm-writing]]）に返信する形でこのエッセイを紹介し、HTML・Markdown・ASD-STE100・ShapeScript などの DSL が LLM を制御する良い方法だと述べた。制御言語で LLM の文章を縛る話と、DSL でエージェントの出力を縛る話を同じ線上に置いた形である。
+
+## DSL が与える4つのハーネス性質
+
+エッセイは DSL の効用を次の4つに分ける。SWE-agent の研究（編集のたびに走って壊れた変更を即座に弾く linter、絞り込みを促す検索結果の上限）を引き合いに出している。
+
+- **スキーマが記録の正本になる**: ユーザーの意図が命令型コードの細部に溶けず、diff・バージョン管理・検証ができる構造化オブジェクトとして残る
+- **検証器が無料のフィードバックループになる**: DSL には必ずパーサーがあり、多くはスキーマ検査器も持つ。不正な構造は出力した瞬間に、場所を特定したエラーで弾かれる
+- **文法が強制関数になる**: 語彙が有限なので、文法に無いオプションを捏造する余地が構造的に小さい
+- **言語の単位がコンテキストの単位になる**: beat・レコード・ルールといった DSL の自然な区切りがそのままエージェントの編集単位になり、文書全体を抱えずに一部を直せる
+
+## 3つの実例（MulmoClaude）
+
+- **MulmoScript**: マルチモーダルなプレゼン・動画を beat（テキスト・画像・音声・タイミング）の列として書く JSON の DSL。エージェントが作るのは動画でなくスクリプトで、決定的なレンダラーが動画にする。描画前に中身を検査でき、同じスクリプトからは同じ動画が出る。画像タイプは `markdown`・`slide`・`textSlide`・`mermaid`・`html_tailwind` などの閉じた集合に限られる
+- **Collections**: データの形（フィールドと型・関係・完了とみなす値・通知の時期・繰り返し）を `schema.json` で宣言し、エージェントはそこから生成された `SKILL.md` に従ってレコードを読み書きする。通貨の無い money フィールドや、存在しないコレクションを指す ref、生まれた時点で完了済みになる spawn（無限に再生成される）は、ロード時に Zod の検証器が弾く。通知の発火・解除や暦日計算は、ホスト側の reconciler（宣言どおりの状態に毎回揃える常駐処理）が毎回同じように実行する
+- **繰り返しの支払い**: 「毎月10日締め・3日前に通知・支払済みにしたら翌月分を作る」を、タイマーや cron を書かずにスキーマのキー（`triggerField`・`triggerLeadDays`・`spawn`）だけで宣言する。以前は専用サブシステムだったものがコレクションのキー数個に置き換わった、とエッセイは書く
+
+エッセイが新しい点として強調するのは **DSL を誰が書くか**である。Collections ではスキーマを書くのはエンジニアでなくエンドユーザーで、宣言するだけで非エンジニアがエージェントの作業環境を設計していることになる。エッセイはこれを「ハーネスエンジニアリングの民主化」と呼び、ユーザーが「優先度フィールドを足して」「カンバンで見たい」と頼むだけでデータアプリができる体験を **vibe crafting** と名付けている。vibe coding の開発者は diff を読みテストを回せるが、エンドユーザーは出力を監査できない。その差を埋めるのはより良いモデルでなくハーネス（DSL・検証器・サンドボックス化された HTML ビュー）だ、というのがエッセイの主張である。
+
+## 唯一の危険: 脱出口を設計する
+
+DSL の硬さはそのまま失敗の原因にもなる。必要なことを言語で表せないと、エージェントは諦めるか、DSL を本来の用途から捻じ曲げる。エッセイは、良い DSL はどれも**より表現力の高い層への意図的な出口**を用意している、と述べる。Collections では判断が要るレコードを道具付きのチャットへ渡す action ボタンと、フィールド型で表せない表示を任意の HTML で描くカスタムビューがこれに当たる。MulmoScript では外部アセットや生の HTML を埋め込める。エッセイの言葉では、肝は制約を最大化することでなく「どこで制約を効かせ、どこに出口を開けるか」を選ぶことにある。
+
+## モデルが賢くなるほど効く
+
+「DSL は弱いモデルの松葉杖で、賢くなれば汎用コードを渡せばよい」という直感に対し、エッセイは逆だと主張する。人間が各ステップを見ない長時間の自律委任では、出力が検証でき、実行が決定的で、やり直せることがむしろ重要になるからである。賢いモデルの能力は「何を言うか・何を作るか」の判断に向け、残りを言語が保証する、という分担になる。
+
+この「エージェントが中身を決め、決定的なコードが実行する」分割は、AI に GUI でなく DSL を操作させる [[concepts/intermediate-notation-pattern]] や、生成と判断と実行を分ける [[concepts/decision-layer-model]] と同じ構造と考えられる（wiki 側の関連づけ）。中間記法パターンが主に精度とトークン量の面から DSL を勧めるのに対し、このエッセイは長期の無人委任での検証可能性を前面に出し、作り手をエンドユーザーにまで広げている点が異なる。
+
+## 問い
+
+- この vault の wiki ページ（frontmatter・`[[]]` リンク・index 登録）を DSL と見なすと、`validate_wiki.py` が検証器にあたる。DSL として足りない性質（閉じた語彙・脱出口）は何か
+- 日本語の文章に対して、ASD-STE100 や Markdown のように名指しで指定できる「書き方の DSL」はあるか
+- エンドユーザーが書いたスキーマが検証を通っても、意図と違うアプリになる場合（形式は正しいが中身が違う）はどう検出するか
+
+## 関連
+
+- [[concepts/harness-engineering]] — エッセイが前提にする「モデルよりハーネス」という枠組み
+- [[concepts/intermediate-notation-pattern]] — AI に GUI でなく DSL を操作させる設計パターン。同じ分割を精度・トークン量の面から論じる
+- [[concepts/asd-ste100-llm-writing]] — @snakajima がこのエッセイを紹介した返信先の Karpathy の tip。制御言語で LLM の文章を縛る
+- [[concepts/decision-layer-model]] — LLM が作り、判断モデルが決め、コードが実行する分割。生成と実行を分ける別の型
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>
