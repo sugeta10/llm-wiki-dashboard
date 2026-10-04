@@ -145,6 +145,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a> — キャッシングの導入場面・効果・注意点を採用面接で問う質問例（第2弾Q2）</li>
 <li><a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a> — TTL経済を艦隊規模の既定値に落とした実例（Uber）：アイドルの長い対話セッションは1時間TTL・短命なサブエージェントは5分TTLに使い分け</li>
 <li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a> — ターンごとのモデルルーターがメインモデルを切り替えるとキャッシュを捨てて逆に高くつくため、メイン切替を既定オフにする設計例（jev-model-router・jcm-router）</li>
+<li><a href="../tools/claude-code-mods.html">claude-code-mods</a> — 5分キャッシュの残り時間を Claude Code の画面にバー表示し、温め直しを通知で促す Cache Control Mod（@dani_avila7 推薦）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a></li>
 <li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a></li>
 <li><a href="../concepts/attention.html">attention</a></li>
@@ -269,6 +270,7 @@ response = client.messages.create(
 - [[concepts/ai-engineer-interview-questions]] — キャッシングの導入場面・効果・注意点を採用面接で問う質問例（第2弾Q2）
 - [[concepts/software-factory-cost-equation]] — TTL経済を艦隊規模の既定値に落とした実例（Uber）：アイドルの長い対話セッションは1時間TTL・短命なサブエージェントは5分TTLに使い分け
 - [[concepts/jev-claude-code-integration]] — ターンごとのモデルルーターがメインモデルを切り替えるとキャッシュを捨てて逆に高くつくため、メイン切替を既定オフにする設計例（jev-model-router・jcm-router）
+- [[tools/claude-code-mods]] — 5分キャッシュの残り時間を Claude Code の画面にバー表示し、温め直しを通知で促す Cache Control Mod（@dani_avila7 推薦）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

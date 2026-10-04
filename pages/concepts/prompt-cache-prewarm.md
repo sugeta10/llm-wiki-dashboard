@@ -35,3 +35,4 @@ Claude APIで **time-to-first-token（初回トークン生成までの時間）
 - [[concepts/prompt-caching]] — プロンプトキャッシングの仕組み・価格・ベストプラクティス詳細
 - [[concepts/prompt-engineering]] — プロンプト設計全般の最適化テクニック
 - [[companies/anthropic]] — Claude API提供元（公式ドキュメントでキャッシュ仕様を参照）
+- [[tools/claude-code-mods]] — Claude Code 側でキャッシュの5分の残り時間をバー表示し、温め直しを通知で促す Cache Control Mod の紹介を含む

@@ -97,3 +97,4 @@ response = client.messages.create(
 - [[concepts/ai-engineer-interview-questions]] — キャッシングの導入場面・効果・注意点を採用面接で問う質問例（第2弾Q2）
 - [[concepts/software-factory-cost-equation]] — TTL経済を艦隊規模の既定値に落とした実例（Uber）：アイドルの長い対話セッションは1時間TTL・短命なサブエージェントは5分TTLに使い分け
 - [[concepts/jev-claude-code-integration]] — ターンごとのモデルルーターがメインモデルを切り替えるとキャッシュを捨てて逆に高くつくため、メイン切替を既定オフにする設計例（jev-model-router・jcm-router）
+- [[tools/claude-code-mods]] — 5分キャッシュの残り時間を Claude Code の画面にバー表示し、温め直しを通知で促す Cache Control Mod（@dani_avila7 推薦）

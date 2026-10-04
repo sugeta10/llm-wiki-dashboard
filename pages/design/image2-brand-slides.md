@@ -36,3 +36,4 @@ AIスライド生成が実務で使えない最大の理由は「AIで作った�
 - [[design/design-md]] — デザイン仕様を.md化してエージェントに参照させる「AIデザインがダサい」対策。ロゴ起点デザインシステムと同系の発想
 - [[tools/openai-codex]] — 本スキルの実行基盤（Codexアプリ）
 - [[design/ai-presentation-workflow]] — 構成→視覚→仕上げの工程分業ワークフロー（本ページの画像生成は「視覚確認」工程に当たる）
+- [[design/chatgpt-image-anti-ai-look]] — 入力の固定でなく、プロンプトへのフレーズ追加で ChatGPT 画像の「AI臭」を消す対照的なアプローチ

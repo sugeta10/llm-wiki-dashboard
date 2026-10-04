@@ -39,3 +39,4 @@ mindmap
 - [[tools/emil-kowalski-skills]] — 同じ「agents don't have taste」問題意識のデザインエンジニア版スキル集
 - [[tools/ui-skills]] — 同ジャンルのUI品質スキルカタログ（[[tools/ui-ux-pro-max]] / impeccable 掲載）
 - [[tools/ui-ux-pro-max]] — 同じ6選のPRODUCT DESIGNER枠・構造化データベース内蔵型の対照アプローチ
+- [[design/chatgpt-image-anti-ai-look]] — ChatGPT生成画像の「AI臭」をプロンプトへの一言追加で消す、という同じ問題意識の画像側の手法（@osabori_code）
