@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-mods</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-mods.md">Markdownで表示</a></div>
-  <div class="meta">tools/claude-code-mods · tools · <span title="2026-10-04">1日前</span></div>
+  <div class="meta">tools/claude-code-mods · tools · <span title="2026-10-05">今日</span></div>
   <article><h1>Claude Mods / Function Hooks｜Claude Code 本体に TypeScript 関数を差し込む拡張機構</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 従来の Hooks が「外部プロセスを起動して JSON をやり取りする」仕組みだったのに対し、Claude Mods は TypeScript の関数（Function Hooks）を Claude Code のエンジンプロセスへ直接ロードし、Koa 風のミドルウェア <code>($, e, next)</code> として画面描画・状態・ツール登録まで書き換えられるようにした拡張機構。<code>/diff</code> や AGENTS.md 対応といった標準機能自体も Mod で実装されている、と nogu が解説している。</p>
@@ -106,6 +106,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>cc-arcade</strong>（コミュニティ製・sezaakgun）: プロンプト欄の上で Snake・Tetris・Doom を遊べる、7イベントだけで作られた Mod。<code>turn.complete</code> と <code>tool.call</code> は <code>next(e)</code> を先に呼んで本来の処理を邪魔せず結果だけ観測する。毎秒10回（Doom は20回）の描画は <code>ui.render</code> のハンドラに載せず別の実行コンテキスト（<code>Client</code> モジュール）に切り出し、<code>surface.every(100, ...)</code> の独自クロックで回して <code>surface.post</code> で親に結果を返す。メインのフックチェーンを重くしない「メインとワーカーの分離」だと nogu は解説する</li>
 <li><strong>Jev Model Router</strong>（コミュニティ製・@dani_avila7）: リクエストごとに判断モデル Jev がサブエージェントのモデルを分類し、メインモデルはセッション開始時だけ選ぶ（<a href="../tools/jev-model-router.html">jev-model-router</a>）。エンジンのモデル選択まで Mod から差し替えられる例と考えられる</li>
 <li><strong>Cache Control</strong>（コミュニティ製・@dani_avila7 が推薦）: Claude の5分間のプロンプトキャッシュの残り時間をバーで表示し、キャッシュを温かく保つ（期限切れ前に操作を促す）通知を送る。@dani_avila7 は「トークンを最も節約し、セッションをずっと長く続けられる Mod の一つ」と推している。インストール手順は短縮URLのみで作者・中身は未収集。キャッシュの仕組みは <a href="../concepts/prompt-caching.html">prompt-caching</a> を参照。<code>$.ui</code> で描画し、時間で通知を出す Mod の例と考えられる</li>
+<li><strong>qa-guide</strong>（コミュニティ製・@otani_ai_memo）: Claude Code から質問が来たとき、選択肢だけ見ても「何の話だっけ？」となる問題を解くため、「なぜ聞いているのか」「各選択肢を選ぶとどうなるか」「おすすめ」を AI がまとめて横のペインに表示する、と作者の @otani_ai_memo が紹介している。<code>/plugin</code> に短縮URLを渡してインストールする。実装は未収集だが、質問のイベントにフックして <code>$.model</code> で解説を作り <code>$.ui.open</code> 系のペインに描く構成と考えられる</li>
 </ul>
 <p>nogu はこれらを「標準機能と同じ土俵」とまとめる。nogu は記事の告知ポストでも、Claude Mods を「画面表示の変更や独自ツールの追加など、Claude Code ハーネスを深く拡張できる仕組み」と紹介している。公式の標準機能もコミュニティ製 Mod も、同じ <code>register</code> とイベントへのフックで作られている。</p>
 <p>指示の置き場所を整理した <a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> では、決定論的に強制できるのは hook と permission だった。Function Hooks はその hook の層を、可否判定だけでなく結果の書き換え・UI・ツール追加まで広げたものと考えられる。また <a href="../concepts/agents-md-canonical.html">agents-md-canonical</a> が扱う「AGENTS.md を正本にする」運用は、Claude Code 側では <code>agents-md</code> Mod の <code>instructionFiles</code> で読み方を選べるようになった。</p>
@@ -114,6 +115,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>このvaultの hooks（SessionStart や PostToolUse で動かしている外部スクリプト）のうち、Function Hooks に移すと何が良くなるか。<code>classic.*</code> として1:1でラップされるなら、移さなくても壊れないのか</li>
 <li>AGENTS.md と CLAUDE.md をシンボリックリンクで同一にしている現状は、<code>agents-md</code> の <code>claude-md-and-agents-md</code> モードで二重読み込みにならないか</li>
 <li>このvaultで「毎回手で止めている1つの操作」は何か。<code>tool.call</code> ＋ <code>$.state</code> ＋ <code>ui.render</code> の最小構成で、ingest 中の処理件数をプロンプト欄の上に出すような Mod が <code>--plugin-dir</code> で作れるか</li>
+<li>qa-guide のように「質問の文脈を別ペインで補う」Mod は、ingest やレビューで Claude から選択肢を出されたときの判断時間を実際に縮めるか。解説生成の分だけ応答が遅れないか</li>
 <li>「位置がそのまま権威」の5層は、<a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> の Enterprise → Global → Project の4層とどう対応するか</li>
 </ul>
 <h2>関連</h2>
@@ -132,7 +134,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/nogu66/articles/claude-code-function-hooks-claude-mods" rel="noopener" target="_blank">https://zenn.dev/nogu66/articles/claude-code-function-hooks-claude-mods</a></li>
 <li><a href="https://x.com/i/web/status/2101098193585045955" rel="noopener" target="_blank">https://x.com/i/web/status/2101098193585045955</a></li>
 <li><a href="https://x.com/i/web/status/2105818699248898316" rel="noopener" target="_blank">https://x.com/i/web/status/2105818699248898316</a></li>
-<li><a href="https://x.com/i/web/status/2106455605925822967" rel="noopener" target="_blank">https://x.com/i/web/status/2106455605925822967</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2106455605925822967" rel="noopener" target="_blank">https://x.com/i/web/status/2106455605925822967</a></li>
+<li><a href="https://x.com/i/web/status/2106612755008786455" rel="noopener" target="_blank">https://x.com/i/web/status/2106612755008786455</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -230,6 +233,7 @@ Mod は隔離環境で動き、`$` を使わない限り外の世界に何もで
 - **cc-arcade**（コミュニティ製・sezaakgun）: プロンプト欄の上で Snake・Tetris・Doom を遊べる、7イベントだけで作られた Mod。`turn.complete` と `tool.call` は `next(e)` を先に呼んで本来の処理を邪魔せず結果だけ観測する。毎秒10回（Doom は20回）の描画は `ui.render` のハンドラに載せず別の実行コンテキスト（`Client` モジュール）に切り出し、`surface.every(100, ...)` の独自クロックで回して `surface.post` で親に結果を返す。メインのフックチェーンを重くしない「メインとワーカーの分離」だと nogu は解説する
 - **Jev Model Router**（コミュニティ製・@dani_avila7）: リクエストごとに判断モデル Jev がサブエージェントのモデルを分類し、メインモデルはセッション開始時だけ選ぶ（[[tools/jev-model-router]]）。エンジンのモデル選択まで Mod から差し替えられる例と考えられる
 - **Cache Control**（コミュニティ製・@dani_avila7 が推薦）: Claude の5分間のプロンプトキャッシュの残り時間をバーで表示し、キャッシュを温かく保つ（期限切れ前に操作を促す）通知を送る。@dani_avila7 は「トークンを最も節約し、セッションをずっと長く続けられる Mod の一つ」と推している。インストール手順は短縮URLのみで作者・中身は未収集。キャッシュの仕組みは [[concepts/prompt-caching]] を参照。`$.ui` で描画し、時間で通知を出す Mod の例と考えられる
+- **qa-guide**（コミュニティ製・@otani_ai_memo）: Claude Code から質問が来たとき、選択肢だけ見ても「何の話だっけ？」となる問題を解くため、「なぜ聞いているのか」「各選択肢を選ぶとどうなるか」「おすすめ」を AI がまとめて横のペインに表示する、と作者の @otani_ai_memo が紹介している。`/plugin` に短縮URLを渡してインストールする。実装は未収集だが、質問のイベントにフックして `$.model` で解説を作り `$.ui.open` 系のペインに描く構成と考えられる
 
 nogu はこれらを「標準機能と同じ土俵」とまとめる。nogu は記事の告知ポストでも、Claude Mods を「画面表示の変更や独自ツールの追加など、Claude Code ハーネスを深く拡張できる仕組み」と紹介している。公式の標準機能もコミュニティ製 Mod も、同じ `register` とイベントへのフックで作られている。
 
@@ -240,6 +244,7 @@ nogu はこれらを「標準機能と同じ土俵」とまとめる。nogu は�
 - このvaultの hooks（SessionStart や PostToolUse で動かしている外部スクリプト）のうち、Function Hooks に移すと何が良くなるか。`classic.*` として1:1でラップされるなら、移さなくても壊れないのか
 - AGENTS.md と CLAUDE.md をシンボリックリンクで同一にしている現状は、`agents-md` の `claude-md-and-agents-md` モードで二重読み込みにならないか
 - このvaultで「毎回手で止めている1つの操作」は何か。`tool.call` ＋ `$.state` ＋ `ui.render` の最小構成で、ingest 中の処理件数をプロンプト欄の上に出すような Mod が `--plugin-dir` で作れるか
+- qa-guide のように「質問の文脈を別ペインで補う」Mod は、ingest やレビューで Claude から選択肢を出されたときの判断時間を実際に縮めるか。解説生成の分だけ応答が遅れないか
 - 「位置がそのまま権威」の5層は、[[concepts/claude-code-context-hierarchy]] の Enterprise → Global → Project の4層とどう対応するか
 
 ## 関連
