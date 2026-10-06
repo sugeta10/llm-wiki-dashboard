@@ -49,3 +49,4 @@ Dex Horthyは、これらがHTMLより軽く速く、開発作業の形をした
 - [[concepts/12-factor-agents]] — 同じDex Horthy／HumanLayerによる信頼性の高いLLMアプリ構築の12原則
 - [[tools/html-share]] — 作業報告のマークダウンが読みづらいという同じ動機から出た日本発のツール。こちらは出力の置き場所と配布経路を作る
 - [[tools/matt-pocock-skills]] — Dex Horthyが良い先行例として挙げた `/teach` スキルを含むコレクション
+- [[tools/html-plan]] — コールスタック・スキーマ・コード片を「主張の木」の階層2に置き、実装プランを HTML 1枚で質疑させる @trq212 のスキル

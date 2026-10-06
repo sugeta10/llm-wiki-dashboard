@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>grill-me</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="grill-me.md">Markdownで表示</a></div>
-  <div class="meta">tools/grill-me · tools · <span title="2026-09-25">1週間前</span></div>
+  <div class="meta">tools/grill-me · tools · <span title="2026-10-06">今日</span></div>
   <article><p>Matt Pocock作の3行で書かれた<a href="../concepts/claude-skills.html">Agent Skill</a>。<code>/grill-me</code> をコマンドとして使い、実装前にAIが徹底的に要件を掘り下げる対話セッションを行わせる。</p>
 <h2>概要</h2>
 <p>スキル本文は以下の3行のみ：</p>
@@ -87,6 +87,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a> — AIに質問させる代わりにゴールを言い直させ人間が添削する逆向きの1往復版（@poteto）</li>
 <li><a href="../concepts/thought-eliciting-questions.html">thought-eliciting-questions</a> — 人間側の質問技術10フレーズ（@antoshia2n）。grill-meはAIに質問させる側で、問いが思考を引き出す機構が共通</li>
 <li><a href="../concepts/likable-questioning.html">likable-questioning</a> — 人間が教わる側の質問術（@antoshia2n）。「一度で全部聞かず、答えに応じて次の段へ進む」がgrill-meの一問ずつと重なる</li>
+<li><a href="../tools/html-plan.html">html-plan</a> — 実装前の質問を番号付きで HTML 1枚に並べ、まとめて回答させる @trq212 のスキル。grill-me の一問ずつの対話と対照的</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../concepts/finding-unknowns.html">finding-unknowns</a></li>
 <li><a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a></li>
@@ -157,6 +158,7 @@ AIが2〜5択形式で質問を繰り返し、1セッションで最大18〜24�
 - [[concepts/goal-restatement-prompt]] — AIに質問させる代わりにゴールを言い直させ人間が添削する逆向きの1往復版（@poteto）
 - [[concepts/thought-eliciting-questions]] — 人間側の質問技術10フレーズ（@antoshia2n）。grill-meはAIに質問させる側で、問いが思考を引き出す機構が共通
 - [[concepts/likable-questioning]] — 人間が教わる側の質問術（@antoshia2n）。「一度で全部聞かず、答えに応じて次の段へ進む」がgrill-meの一問ずつと重なる
+- [[tools/html-plan]] — 実装前の質問を番号付きで HTML 1枚に並べ、まとめて回答させる @trq212 のスキル。grill-me の一問ずつの対話と対照的
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

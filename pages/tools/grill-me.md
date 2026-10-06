@@ -43,3 +43,4 @@ AIが2〜5択形式で質問を繰り返し、1セッションで最大18〜24�
 - [[concepts/goal-restatement-prompt]] — AIに質問させる代わりにゴールを言い直させ人間が添削する逆向きの1往復版（@poteto）
 - [[concepts/thought-eliciting-questions]] — 人間側の質問技術10フレーズ（@antoshia2n）。grill-meはAIに質問させる側で、問いが思考を引き出す機構が共通
 - [[concepts/likable-questioning]] — 人間が教わる側の質問術（@antoshia2n）。「一度で全部聞かず、答えに応じて次の段へ進む」がgrill-meの一問ずつと重なる
+- [[tools/html-plan]] — 実装前の質問を番号付きで HTML 1枚に並べ、まとめて回答させる @trq212 のスキル。grill-me の一問ずつの対話と対照的

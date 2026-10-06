@@ -430,3 +430,4 @@ Claude Codeにアプリのフロー構造をHTML + JSONで文書化させ、そ�
 - [[tools/claude-academy]]（Anthropic公式の無料学習サイト。Claude Code専用トラックあり）
 - [[tools/claude-code-plugin-eval]]（`claude plugin eval`：自作プラグイン・スキルをあり/なしで対比して効果を測るコマンド）
 - [[tools/claude-code-mods]]（Claude Mods / Function Hooks：TypeScript関数をエンジンに直接ロードして画面描画・ツール登録まで書き換える拡張機構）
+- [[tools/html-plan]]（`/html-plan <指示>` で実装プランを「主張の木」の HTML 1枚にし、選択・コメントをまとめて貼り戻させるコミュニティプラグイン・@trq212 作）

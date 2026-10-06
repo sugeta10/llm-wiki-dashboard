@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>prompt-caching</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="prompt-caching.md">Markdownで表示</a></div>
-  <div class="meta">concepts/prompt-caching · concepts · <span title="2026-09-25">1週間前</span></div>
+  <div class="meta">concepts/prompt-caching · concepts · <span title="2026-10-06">今日</span></div>
   <article><h1>プロンプトキャッシング（Prompt Caching）</h1>
 <p>Anthropic Claude APIが提供する<strong>プロンプトの前処理結果を再利用する機能</strong>。同一のプレフィックスを含むリクエストで、処理時間とコストを大幅に削減できる。</p>
 <p>関連: <a href="../concepts/prompt-cache-prewarm.html">prompt-cache-prewarm</a> | <a href="../concepts/prompt-engineering.html">prompt-engineering</a> | <a href="../companies/anthropic.html">anthropic</a></p>
@@ -133,6 +133,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </ul>
 <h2>キャッシュ分離</h2>
 <p>2026-02-05以降、Claude APIはワークスペース単位でキャッシュ分離（従来は組織単位）。Bedrock/Vertex AIは引き続き組織単位。</p>
+<h2>Claude Code での残り時間の可視化</h2>
+<p>@Voxyz_ai は Claude Code のステータスライン（<code>/statusline</code> でカスタマイズできる入力欄下の表示）に<strong>キャッシュのカウントダウン</strong>を足すことを強く勧めている。@Voxyz_ai の説明では、Claude Code はメッセージを送るたびに会話全体をモデルへ送り直し、キャッシュがあるおかげでそれ以前の部分の再処理を飛ばせて返答が速く返る（ポスト本文はここで途切れ、設定例は画像のみで未収集）。</p>
+<p>上の TTL（既定5分）が切れると次の送信で会話全体が書き込み扱い（1.25倍）に戻るため、残り時間が見えていれば「切れる前に送る」「切れたなら区切りとして新しいセッションにする」を選べる、というのが効用と考えられる（wiki 側の推論）。同じ発想を Mod で実装し、期限前に通知まで出すのが <a href="../tools/claude-code-mods.html">claude-code-mods</a> の Cache Control。</p>
+<h2>問い</h2>
+<ul>
+<li>ステータスラインのカウントダウンは何を起点に測るのが正しいか（最後の送信時刻か、最後の応答完了時刻か）。1時間TTLの環境では表示の意味が変わるか</li>
+</ul>
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/prompt-cache-prewarm.html">prompt-cache-prewarm</a> — キャッシュを事前ウォームアップして初回レイテンシを削減するテクニック</li>
@@ -150,7 +157,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a></li>
 <li><a href="../concepts/attention.html">attention</a></li>
 <li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
-<li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache</a></li></ul></section></article>
+<li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache" rel="noopener" target="_blank">https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache</a></li>
+<li><a href="https://x.com/i/web/status/2107184044228452491" rel="noopener" target="_blank">https://x.com/i/web/status/2107184044228452491</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -257,6 +265,16 @@ response = client.messages.create(
 ## キャッシュ分離
 
 2026-02-05以降、Claude APIはワークスペース単位でキャッシュ分離（従来は組織単位）。Bedrock/Vertex AIは引き続き組織単位。
+
+## Claude Code での残り時間の可視化
+
+@Voxyz_ai は Claude Code のステータスライン（`/statusline` でカスタマイズできる入力欄下の表示）に**キャッシュのカウントダウン**を足すことを強く勧めている。@Voxyz_ai の説明では、Claude Code はメッセージを送るたびに会話全体をモデルへ送り直し、キャッシュがあるおかげでそれ以前の部分の再処理を飛ばせて返答が速く返る（ポスト本文はここで途切れ、設定例は画像のみで未収集）。
+
+上の TTL（既定5分）が切れると次の送信で会話全体が書き込み扱い（1.25倍）に戻るため、残り時間が見えていれば「切れる前に送る」「切れたなら区切りとして新しいセッションにする」を選べる、というのが効用と考えられる（wiki 側の推論）。同じ発想を Mod で実装し、期限前に通知まで出すのが [[tools/claude-code-mods]] の Cache Control。
+
+## 問い
+
+- ステータスラインのカウントダウンは何を起点に測るのが正しいか（最後の送信時刻か、最後の応答完了時刻か）。1時間TTLの環境では表示の意味が変わるか
 
 ## 関連
 

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>html-plan - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>html-plan</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="html-plan.md">Markdownで表示</a></div>
+  <div class="meta">tools/html-plan · tools · <span title="2026-10-06">今日</span></div>
+  <article><h1>html-plan（Claude Code プラグイン）</h1>
+<p>Claude Code の実装プランを、1分で読めてその場で回答できる1枚の HTML ページとして出すスキル。<code>anthropics/claude-plugins-community</code> リポジトリで配布されている。作者の @trq212 は「Claude Code でより良い HTML プランを作るスキル」と紹介し、平易な言葉・コード片の提示・質問の浮上・モックアップを特徴に挙げている。@trq212 によれば、lint（生成した HTML の機械チェック）で Claude がよく陥る失敗を減らしている。告知時点では「広く出す前にフィードバックがほしい」段階だった。</p>
+<h2>使い方</h2>
+<p>@oikon48 の紹介によるインストール手順:</p>
+<pre><code class="language-bash">claude plugin marketplace add anthropics/claude-plugins-community
+claude plugin install html-plan@claude-community
+</code></pre>
+<p><code>/html-plan &lt;指示&gt;</code>（README の例は <code>/html-plan add send later to the composer</code>）で HTML ページを1枚生成する。単一ファイルにまとめるために <code>node</code> が必要で、ほかの依存はない。</p>
+<h2>プランの構造: 主張の木</h2>
+<p>README によると、プランは「主張の木」として組まれ、階層ごとに答える問いと表示形式が決まっている。</p>
+<table>
+<thead>
+<tr>
+<th>階層</th>
+<th>答える問い</th>
+<th>表示形式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>タイトル</td>
+<td>これは何か</td>
+<td>短い名前と、依頼者自身の言葉による「Why」</td>
+</tr>
+<tr>
+<td>1</td>
+<td>誰が何をできる・見られるようになるか</td>
+<td>UI モックアップまたは状態機械</td>
+</tr>
+<tr>
+<td>2</td>
+<td>それはどう動くか</td>
+<td>コールスタック・スキーマ・コード片</td>
+</tr>
+<tr>
+<td>3</td>
+<td>どこに書くか</td>
+<td>コード</td>
+</tr>
+</tbody>
+</table>
+<p>閉じた状態の木がそのまま要約になり、1階層ずつ開いて読む。判断ごとに番号が振られ、下部のボタン（「3 to answer」など）でまだ開いていない次の判断へ飛べる。読み手は選択肢を選び、スキーマを編集し、任意の主張や行にコメントしてから <strong>Respond</strong> を押し、出てきた回答1つを Claude に貼り戻す。</p>
+<p>成果物を「読む→要約から掘る」順に並べ、回答を1回の貼り戻しにまとめる設計は、プランのレビューで人間が散文を読み切れず質問を見落とす問題への対策と考えられる（wiki 側の推論）。完全な例は README が <code>skills/html-plan/examples/scheduled-send.html</code> を挙げている（未収集）。</p>
+<h2>問い</h2>
+<ul>
+<li>自分のプランモード運用（Markdown のプラン）と比べて、回答の往復回数と見落としが実際に減るか試す</li>
+<li>「主張の木」の階層化は HTML でなくても（Markdown の折りたたみ等で）再現できるか。HTML 固有の利点はモックアップと Respond の集約だけか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/html-output-format.html">html-output-format</a> — Anthropic が示した「LLM の出力フォーマットとして HTML を使う」設計思想。html-plan はそれを実装プランの質疑に絞った実装例</li>
+<li><a href="../tools/show-me.html">show-me</a> — コールスタック・型シグネチャなど軽い視覚表現で応答させるスキル。html-plan の階層2の表示形式と重なる</li>
+<li><a href="../tools/grill-me.html">grill-me</a> — 実装前に要件を一問ずつ掘るスキル。html-plan は質問を番号付きで一覧化し、まとめて回答させる点が対照的</li>
+<li><a href="../tools/artifact-share.html">artifact-share</a> — HTML 上で指摘してエージェントに返す別経路。html-plan は貼り戻し1回で返す</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — 配布先のプラグインの仕組みと HTML 出力の活用</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/html-output-format.html">html-output-format</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/grill-me.html">grill-me</a></li>
+<li><a href="../tools/show-me.html">show-me</a></li>
+<li><a href="../tools/artifact-share.html">artifact-share</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107237926883172409" rel="noopener" target="_blank">https://x.com/i/web/status/2107237926883172409</a></li>
+<li><a href="https://github.com/anthropics/claude-plugins-community/tree/main/html-plan" rel="noopener" target="_blank">https://github.com/anthropics/claude-plugins-community/tree/main/html-plan</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># html-plan（Claude Code プラグイン）
+
+Claude Code の実装プランを、1分で読めてその場で回答できる1枚の HTML ページとして出すスキル。`anthropics/claude-plugins-community` リポジトリで配布されている。作者の @trq212 は「Claude Code でより良い HTML プランを作るスキル」と紹介し、平易な言葉・コード片の提示・質問の浮上・モックアップを特徴に挙げている。@trq212 によれば、lint（生成した HTML の機械チェック）で Claude がよく陥る失敗を減らしている。告知時点では「広く出す前にフィードバックがほしい」段階だった。
+
+## 使い方
+
+@oikon48 の紹介によるインストール手順:
+
+```bash
+claude plugin marketplace add anthropics/claude-plugins-community
+claude plugin install html-plan@claude-community
+```
+
+`/html-plan &lt;指示&gt;`（README の例は `/html-plan add send later to the composer`）で HTML ページを1枚生成する。単一ファイルにまとめるために `node` が必要で、ほかの依存はない。
+
+## プランの構造: 主張の木
+
+README によると、プランは「主張の木」として組まれ、階層ごとに答える問いと表示形式が決まっている。
+
+| 階層 | 答える問い | 表示形式 |
+| --- | --- | --- |
+| タイトル | これは何か | 短い名前と、依頼者自身の言葉による「Why」 |
+| 1 | 誰が何をできる・見られるようになるか | UI モックアップまたは状態機械 |
+| 2 | それはどう動くか | コールスタック・スキーマ・コード片 |
+| 3 | どこに書くか | コード |
+
+閉じた状態の木がそのまま要約になり、1階層ずつ開いて読む。判断ごとに番号が振られ、下部のボタン（「3 to answer」など）でまだ開いていない次の判断へ飛べる。読み手は選択肢を選び、スキーマを編集し、任意の主張や行にコメントしてから **Respond** を押し、出てきた回答1つを Claude に貼り戻す。
+
+成果物を「読む→要約から掘る」順に並べ、回答を1回の貼り戻しにまとめる設計は、プランのレビューで人間が散文を読み切れず質問を見落とす問題への対策と考えられる（wiki 側の推論）。完全な例は README が `skills/html-plan/examples/scheduled-send.html` を挙げている（未収集）。
+
+## 問い
+
+- 自分のプランモード運用（Markdown のプラン）と比べて、回答の往復回数と見落としが実際に減るか試す
+- 「主張の木」の階層化は HTML でなくても（Markdown の折りたたみ等で）再現できるか。HTML 固有の利点はモックアップと Respond の集約だけか
+
+## 関連
+
+- [[concepts/html-output-format]] — Anthropic が示した「LLM の出力フォーマットとして HTML を使う」設計思想。html-plan はそれを実装プランの質疑に絞った実装例
+- [[tools/show-me]] — コールスタック・型シグネチャなど軽い視覚表現で応答させるスキル。html-plan の階層2の表示形式と重なる
+- [[tools/grill-me]] — 実装前に要件を一問ずつ掘るスキル。html-plan は質問を番号付きで一覧化し、まとめて回答させる点が対照的
+- [[tools/artifact-share]] — HTML 上で指摘してエージェントに返す別経路。html-plan は貼り戻し1回で返す
+- [[tools/claude-code]] — 配布先のプラグインの仕組みと HTML 出力の活用
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

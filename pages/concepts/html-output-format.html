@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>html-output-format</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="html-output-format.md">Markdownで表示</a></div>
-  <div class="meta">concepts/html-output-format · concepts · <span title="2026-09-28">1週間前</span></div>
+  <div class="meta">concepts/html-output-format · concepts · <span title="2026-10-06">今日</span></div>
   <article><h1>HTMLを柔軟な出力フォーマットとして使う</h1>
 <p>Anthropicが公開した実例ギャラリーリポジトリ「html-effectiveness」。ブログ記事「The unreasonable effectiveness of HTML」に付随し、LLMの<strong>出力</strong>フォーマットとしてHTMLを使う設計思想を、ビルド不要・依存なしの自己完結型HTMLファイル群で示す。各ファイルは単体の<code>.html</code>で、ブラウザで直接開くだけで動く。</p>
 <h2>収録カテゴリと用途</h2>
@@ -88,6 +88,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a> — dashboard-builder のような出力専用サブエージェントの定義方法</li>
 <li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a> — 長時間タスク前にダッシュボードを作らせる運用の対象モデル（@Voxyz_ai）</li>
 <li>html-slide-presenter — HTMLスライドの横に presenter.html を置き、元HTMLを変えずに発表者ツールを外付けする応用例（梶谷健人製）</li>
+<li><a href="../tools/html-plan.html">html-plan</a> — HTML 出力を実装プランの質疑に絞った実装例（@trq212 作）。主張の木を1階層ずつ開き、回答を1回の貼り戻しで返す</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/llm-doc-management.html">llm-doc-management</a></li>
 <li><a href="../design/claude-design-workflow.html">claude-design-workflow</a></li>
 <li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a></li>
@@ -154,6 +155,7 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 - [[tools/claude-code-subagents]] — dashboard-builder のような出力専用サブエージェントの定義方法
 - [[models/claude-opus-5-5]] — 長時間タスク前にダッシュボードを作らせる運用の対象モデル（@Voxyz_ai）
 - [[tools/html-slide-presenter]] — HTMLスライドの横に presenter.html を置き、元HTMLを変えずに発表者ツールを外付けする応用例（梶谷健人製）
+- [[tools/html-plan]] — HTML 出力を実装プランの質疑に絞った実装例（@trq212 作）。主張の木を1階層ずつ開き、回答を1回の貼り戻しで返す
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

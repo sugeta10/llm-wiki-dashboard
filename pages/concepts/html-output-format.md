@@ -37,3 +37,4 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 - [[tools/claude-code-subagents]] — dashboard-builder のような出力専用サブエージェントの定義方法
 - [[models/claude-opus-5-5]] — 長時間タスク前にダッシュボードを作らせる運用の対象モデル（@Voxyz_ai）
 - [[tools/html-slide-presenter]] — HTMLスライドの横に presenter.html を置き、元HTMLを変えずに発表者ツールを外付けする応用例（梶谷健人製）
+- [[tools/html-plan]] — HTML 出力を実装プランの質疑に絞った実装例（@trq212 作）。主張の木を1階層ずつ開き、回答を1回の貼り戻しで返す
