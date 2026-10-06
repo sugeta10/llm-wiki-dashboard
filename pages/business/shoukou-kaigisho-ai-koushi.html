@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>shoukou-kaigisho-ai-koushi - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>shoukou-kaigisho-ai-koushi</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="shoukou-kaigisho-ai-koushi.md">Markdownで表示</a></div>
+  <div class="meta">business/shoukou-kaigisho-ai-koushi · business · <span title="2026-10-07">今日</span></div>
+  <article><h1>商工会議所を入口にしたAI・SNS支援の案件化</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 小規模事業者持続化補助金の申請に商工会議所の書類（様式4）が必須なので、予算を持った事業者が窓口に集まる。AI・SNSを教えられる人はそこで講師・派遣専門家として「信用を借りて」案件化できる、という導線設計（@yukarin_spi のX記事）。</p>
+</blockquote>
+<p>@yukarin_spi が問題にするのは、AIやSNSを教えられる人ほどリアル集客をしておらず、最も需要がある場所に行っていないことだ。その場所として商工会議所（全国516）を挙げる。会員の多くは専任のIT・DX担当がいない中小企業と個人事業主で、「ツールは知っているが自分のビジネスにどう使えばいいかわからない」という質問を抱えている。広告で知らない人を集めるのと比べ、商工会議所から呼ばれて行く場合は信用を借りた状態で始まり、相手は補助金という予算の裏づけを持っている。だから「高いから無理」で止まる話が「実質いくら」の話になる、と著者は述べる。記事は LINE 登録（動画プレゼント）への誘導つきで、手順部分は公開情報をもとにした筆者の解釈だと著者自身が断っている。</p>
+<h2>入会コストと使えるもの</h2>
+<p>著者が挙げる公開事例では、東京商工会議所が加入金3,000円（初年度のみ）＋個人事業主の年会費10,000円〜、大阪商工会議所が個人会員の加入金5,000円＋年会費1口10,000円〜。相場は個人で年1万〜1.5万円で、全額が損金または必要経費になるという。会員になると次が使える。</p>
+<ul>
+<li>専門家への無料相談（税理士・中小企業診断士・弁護士など）</li>
+<li>マル経融資（限度額2,000万円・無担保無保証人・返済10年以内）</li>
+<li>会員同士の交流会・勉強会</li>
+<li>会員向けの無料〜低額セミナー</li>
+</ul>
+<p>ここまでは「入会案内に書いてあること」で、本題は次の補助金の構造だと著者は位置づける。</p>
+<h2>予算を持った事業者が集まる理由：持続化補助金の様式4</h2>
+<p>小規模事業者持続化補助金の申請には「事業支援計画書（様式4）」が必須で、これは商工会議所・商工会しか発行できない。申請者が自作できないため、この補助金を取りたい小規模事業者は全員が窓口に来る、というのが著者の論点の中心である。</p>
+<p>著者が示す2026年・第20回時点の補助上限と補助率:</p>
+<table>
+<thead>
+<tr>
+<th>枠</th>
+<th>上限</th>
+<th>補助率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一般型（通常枠）</td>
+<td>50万円</td>
+<td>2/3</td>
+</tr>
+<tr>
+<td>＋インボイス特例</td>
+<td>100万円</td>
+<td>2/3</td>
+</tr>
+<tr>
+<td>＋賃金引上げ特例も併用</td>
+<td>250万円</td>
+<td>2/3</td>
+</tr>
+</tbody>
+</table>
+<p>対象経費に「ウェブサイト関連費・広報費」があり、それぞれ補助額の上限が30万円（税込）。ウェブサイト関連費は単独では申請できない。著者の計算例では、45万円の施策なら補助が30万円で事業者の持ち出しは15万円になり、「SNS運用に45万円」では止まる相談が「実質15万円、しかも商工会議所の支援つき」なら前に進む。著者はこれを「補助金はあなたのサービスの決済手段になる」と表現する（計算例は公表上限と補助率からの試算で採択を保証しない、と著者が注記）。</p>
+<h2>通っているセミナー企画の型</h2>
+<p>著者は実在のセミナー名から通る企画の型を読み取る。東京商工会議所の「実演特化の生成AI活用・営業DXセミナー」「中小企業のための生成AI活用入門」「いまさら聞けない『生成AI』！」、小浜商工会議所の「生成AI×SNSで実現 販路開拓＆業務効率化セミナー」、燕商工会議所の「生成AI活用セミナー」などである。共通点として著者が挙げるのは次の4つ。</p>
+<ol>
+<li>生成AI単体でなく課題（販路開拓・業務効率化・営業DX）とセット。主語は会員の課題で、AIは手段</li>
+<li>「入門」「いまさら聞けない」「基礎体験」。対象はまだ触っていない人</li>
+<li>「実演特化」「体験」。その場で手を動かす形</li>
+<li>AI×SNS×販路開拓の3点セット（小浜の例が象徴的とする）</li>
+</ol>
+<h2>活動の入口3つ</h2>
+<ul>
+<li><strong>講師登録</strong>: 公募していない会議所も多いが、登録フォームを持つところはある。京都商工会議所「京商ビジネススクール」は会員種別に「一般」があり非会員でも登録できる。提出物は得意分野・顔写真・企画書・200字以内の自己紹介で、勝負は企画書だと著者は言う</li>
+<li><strong>エキスパートバンク</strong>（著者が最初に狙うべきとする入口）: 登録専門家を事業所へ直接派遣する制度。事業者の費用は無料（謝金は会議所負担）、選定は会議所が行う。東京の例では対象が商業・サービス業で従業員5名以下、その他で20名以下。登録分野に「各種コンサルタント」がある。著者はセミナーより効率がいい理由を、1対1で済む・相手が自分から相談に来ている・会議所の紹介つきで会える・謝金が出る、の4点とし、弱点は選ぶのが会議所なので知られていなければ指名されないことだとする</li>
+<li><strong>中小企業119</strong>（国の制度）: 実務10年以上・中小企業支援3年以上・指導教育研究5年以上・公的資格のいずれかと、派遣可能機関の推薦が要る。事業者負担は初回無料、2〜3回目8,800円、4〜5回目17,600円。著者は要件が重いので実務年数が足りないうちは前の2つから入るのが現実的とする</li>
+</ul>
+<p>IT導入補助金の「IT導入支援事業者」は法人登記・ソフトウェアの提供販売実績・財務情報の提出などを求めるため、著者は「法人化してツールを持ってから」の選択肢と位置づける。</p>
+<h2>案件化の導線と守るルール</h2>
+<p>前提ルールは「セミナーの場で直接売り込まない」こと。著者によれば、担当者はリスクを徹底的に避け、1人の講師の不適切な内容で出入禁止になることもある。無料セミナーと称して集めて高額商品を売り込むのは特定商取引法で勧誘目的の隠匿として禁止されている。著者は「売らないから次に呼ばれる」とまとめる。</p>
+<p>案件になる導線として著者が挙げるのは5本。</p>
+<ol>
+<li>会議所が設定するセミナー後の個別相談（正規の導線）</li>
+<li>セミナーで顔が知られた後のエキスパートバンクでの指名</li>
+<li><strong>補助金申請の支援から制作・運用へ</strong>（著者が「いちばん太い」とする導線）: 様式4を出すには様式2・様式3がほぼ仕上がっている必要があり、事業者は「計画を書く」壁に必ずぶつかる。そこで販路開拓のためのSNS活用計画づくりを手伝うと、ウェブサイト関連費・広報費の対象になる実行支援にそのままつながる</li>
+<li>同じ会議所からの次の依頼（1本目は2本目を取るための仕事）</li>
+<li>他の会議所への横展開（「〇〇商工会議所で登壇」が次の名刺になり複利が効く）</li>
+</ol>
+<h2>実際の手順（著者の解釈）</h2>
+<ol>
+<li>管轄を調べる（市区なら商工会議所・町村なら商工会。根拠法と所管も違い、住所で決まる）</li>
+<li>会員になる（年1万円前後・経費）</li>
+<li>まず一事業者として経営相談を使う（担当者と会う正当な理由になる）</li>
+<li>講師推薦も専門家選定も見ている経営指導員と関係を作る</li>
+<li>エキスパートバンクにAI活用・SNS運用分野で登録できるか相談する（制度は会議所ごとに違うので管轄に直接確認）</li>
+<li>過去の開催一覧を見てから、企画の型に沿った企画書を1枚持っていく</li>
+<li>1本やったら実績を持って近隣の会議所へ広げる</li>
+</ol>
+<p>この導線は、<a href="../business/chiho-business-trend.html">chiho-business-trend</a> が言う「需要が残り供給が消えた地方」の歪みを、公的機関の信用と補助金の予算で埋める具体策の一つと読めると考えられる（wiki 側の関連づけ）。また <a href="../business/ai-agency-180-day-plan.html">ai-agency-180-day-plan</a> の「フックオファーで商談を取る」設計と比べると、集客と与信を商工会議所が肩代わりしている点が違う。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-07: 持続化補助金のウェブサイト関連費・広報費の補助上限が、2026年から「補助金交付申請額の1/4」から申請額を問わず30万円に統一された、と @yukarin_spi が記載（公募回ごとに変わるため最新の公募要領で要確認）。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>エキスパートバンクの「各種コンサルタント」枠に、AI活用・SNS運用の分野で実際に登録できる会議所はどれくらいあるか。管轄の会議所で確かめられるか。</li>
+<li>補助金申請支援から制作・運用へつなぐ導線は、会議所側の中立性の要請（特定業者への誘導を避ける）とどこで衝突するか。</li>
+<li><a href="../business/jigyou-saikouchiku.html">jigyou-saikouchiku</a> のような大型補助金と比べ、持続化補助金の30万円上限の案件は継続収益（運用リテイナー）に育つか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/chiho-business-trend.html">chiho-business-trend</a> — 需要が残り供給が消えた地方という「歪み」の見立て。商工会議所はその歪みに公的な窓口から入る具体策</li>
+<li><a href="../business/ai-agency-180-day-plan.html">ai-agency-180-day-plan</a> — 自前の営業量で商談を作るAIエージェンシー計画。集客と与信を商工会議所に借りる本ページの導線と対照的</li>
+<li><a href="../business/jigyou-saikouchiku.html">jigyou-saikouchiku</a> — 別の中小企業向け補助金（事業再構築補助金）。補助金を予算の裏づけとして使う発想の比較対象</li>
+<li><a href="../business/roi-qualification-sales.html">roi-qualification-sales</a> — 投資対効果が合わない案件を断るBtoB営業。補助金で「実質いくら」に変える本ページの論点と同じく、価格の止まり方を扱う</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-agency-180-day-plan.html">ai-agency-180-day-plan</a></li>
+<li><a href="../business/chiho-business-trend.html">chiho-business-trend</a></li>
+<li><a href="../business/jigyou-saikouchiku.html">jigyou-saikouchiku</a></li>
+<li><a href="../business/roi-qualification-sales.html">roi-qualification-sales</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2106679847934435480" rel="noopener" target="_blank">https://x.com/i/web/status/2106679847934435480</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 商工会議所を入口にしたAI・SNS支援の案件化
+
+&gt; **TL;DR**: 小規模事業者持続化補助金の申請に商工会議所の書類（様式4）が必須なので、予算を持った事業者が窓口に集まる。AI・SNSを教えられる人はそこで講師・派遣専門家として「信用を借りて」案件化できる、という導線設計（@yukarin_spi のX記事）。
+
+@yukarin_spi が問題にするのは、AIやSNSを教えられる人ほどリアル集客をしておらず、最も需要がある場所に行っていないことだ。その場所として商工会議所（全国516）を挙げる。会員の多くは専任のIT・DX担当がいない中小企業と個人事業主で、「ツールは知っているが自分のビジネスにどう使えばいいかわからない」という質問を抱えている。広告で知らない人を集めるのと比べ、商工会議所から呼ばれて行く場合は信用を借りた状態で始まり、相手は補助金という予算の裏づけを持っている。だから「高いから無理」で止まる話が「実質いくら」の話になる、と著者は述べる。記事は LINE 登録（動画プレゼント）への誘導つきで、手順部分は公開情報をもとにした筆者の解釈だと著者自身が断っている。
+
+## 入会コストと使えるもの
+
+著者が挙げる公開事例では、東京商工会議所が加入金3,000円（初年度のみ）＋個人事業主の年会費10,000円〜、大阪商工会議所が個人会員の加入金5,000円＋年会費1口10,000円〜。相場は個人で年1万〜1.5万円で、全額が損金または必要経費になるという。会員になると次が使える。
+
+- 専門家への無料相談（税理士・中小企業診断士・弁護士など）
+- マル経融資（限度額2,000万円・無担保無保証人・返済10年以内）
+- 会員同士の交流会・勉強会
+- 会員向けの無料〜低額セミナー
+
+ここまでは「入会案内に書いてあること」で、本題は次の補助金の構造だと著者は位置づける。
+
+## 予算を持った事業者が集まる理由：持続化補助金の様式4
+
+小規模事業者持続化補助金の申請には「事業支援計画書（様式4）」が必須で、これは商工会議所・商工会しか発行できない。申請者が自作できないため、この補助金を取りたい小規模事業者は全員が窓口に来る、というのが著者の論点の中心である。
+
+著者が示す2026年・第20回時点の補助上限と補助率:
+
+| 枠 | 上限 | 補助率 |
+|---|---|---|
+| 一般型（通常枠） | 50万円 | 2/3 |
+| ＋インボイス特例 | 100万円 | 2/3 |
+| ＋賃金引上げ特例も併用 | 250万円 | 2/3 |
+
+対象経費に「ウェブサイト関連費・広報費」があり、それぞれ補助額の上限が30万円（税込）。ウェブサイト関連費は単独では申請できない。著者の計算例では、45万円の施策なら補助が30万円で事業者の持ち出しは15万円になり、「SNS運用に45万円」では止まる相談が「実質15万円、しかも商工会議所の支援つき」なら前に進む。著者はこれを「補助金はあなたのサービスの決済手段になる」と表現する（計算例は公表上限と補助率からの試算で採択を保証しない、と著者が注記）。
+
+## 通っているセミナー企画の型
+
+著者は実在のセミナー名から通る企画の型を読み取る。東京商工会議所の「実演特化の生成AI活用・営業DXセミナー」「中小企業のための生成AI活用入門」「いまさら聞けない『生成AI』！」、小浜商工会議所の「生成AI×SNSで実現 販路開拓＆業務効率化セミナー」、燕商工会議所の「生成AI活用セミナー」などである。共通点として著者が挙げるのは次の4つ。
+
+1. 生成AI単体でなく課題（販路開拓・業務効率化・営業DX）とセット。主語は会員の課題で、AIは手段
+2. 「入門」「いまさら聞けない」「基礎体験」。対象はまだ触っていない人
+3. 「実演特化」「体験」。その場で手を動かす形
+4. AI×SNS×販路開拓の3点セット（小浜の例が象徴的とする）
+
+## 活動の入口3つ
+
+- **講師登録**: 公募していない会議所も多いが、登録フォームを持つところはある。京都商工会議所「京商ビジネススクール」は会員種別に「一般」があり非会員でも登録できる。提出物は得意分野・顔写真・企画書・200字以内の自己紹介で、勝負は企画書だと著者は言う
+- **エキスパートバンク**（著者が最初に狙うべきとする入口）: 登録専門家を事業所へ直接派遣する制度。事業者の費用は無料（謝金は会議所負担）、選定は会議所が行う。東京の例では対象が商業・サービス業で従業員5名以下、その他で20名以下。登録分野に「各種コンサルタント」がある。著者はセミナーより効率がいい理由を、1対1で済む・相手が自分から相談に来ている・会議所の紹介つきで会える・謝金が出る、の4点とし、弱点は選ぶのが会議所なので知られていなければ指名されないことだとする
+- **中小企業119**（国の制度）: 実務10年以上・中小企業支援3年以上・指導教育研究5年以上・公的資格のいずれかと、派遣可能機関の推薦が要る。事業者負担は初回無料、2〜3回目8,800円、4〜5回目17,600円。著者は要件が重いので実務年数が足りないうちは前の2つから入るのが現実的とする
+
+IT導入補助金の「IT導入支援事業者」は法人登記・ソフトウェアの提供販売実績・財務情報の提出などを求めるため、著者は「法人化してツールを持ってから」の選択肢と位置づける。
+
+## 案件化の導線と守るルール
+
+前提ルールは「セミナーの場で直接売り込まない」こと。著者によれば、担当者はリスクを徹底的に避け、1人の講師の不適切な内容で出入禁止になることもある。無料セミナーと称して集めて高額商品を売り込むのは特定商取引法で勧誘目的の隠匿として禁止されている。著者は「売らないから次に呼ばれる」とまとめる。
+
+案件になる導線として著者が挙げるのは5本。
+
+1. 会議所が設定するセミナー後の個別相談（正規の導線）
+2. セミナーで顔が知られた後のエキスパートバンクでの指名
+3. **補助金申請の支援から制作・運用へ**（著者が「いちばん太い」とする導線）: 様式4を出すには様式2・様式3がほぼ仕上がっている必要があり、事業者は「計画を書く」壁に必ずぶつかる。そこで販路開拓のためのSNS活用計画づくりを手伝うと、ウェブサイト関連費・広報費の対象になる実行支援にそのままつながる
+4. 同じ会議所からの次の依頼（1本目は2本目を取るための仕事）
+5. 他の会議所への横展開（「〇〇商工会議所で登壇」が次の名刺になり複利が効く）
+
+## 実際の手順（著者の解釈）
+
+1. 管轄を調べる（市区なら商工会議所・町村なら商工会。根拠法と所管も違い、住所で決まる）
+2. 会員になる（年1万円前後・経費）
+3. まず一事業者として経営相談を使う（担当者と会う正当な理由になる）
+4. 講師推薦も専門家選定も見ている経営指導員と関係を作る
+5. エキスパートバンクにAI活用・SNS運用分野で登録できるか相談する（制度は会議所ごとに違うので管轄に直接確認）
+6. 過去の開催一覧を見てから、企画の型に沿った企画書を1枚持っていく
+7. 1本やったら実績を持って近隣の会議所へ広げる
+
+この導線は、[[business/chiho-business-trend]] が言う「需要が残り供給が消えた地方」の歪みを、公的機関の信用と補助金の予算で埋める具体策の一つと読めると考えられる（wiki 側の関連づけ）。また [[business/ai-agency-180-day-plan]] の「フックオファーで商談を取る」設計と比べると、集客と与信を商工会議所が肩代わりしている点が違う。
+
+## 観察ログ（未検証）
+
+- 2026-10-07: 持続化補助金のウェブサイト関連費・広報費の補助上限が、2026年から「補助金交付申請額の1/4」から申請額を問わず30万円に統一された、と @yukarin_spi が記載（公募回ごとに変わるため最新の公募要領で要確認）。
+
+## 問い
+
+- エキスパートバンクの「各種コンサルタント」枠に、AI活用・SNS運用の分野で実際に登録できる会議所はどれくらいあるか。管轄の会議所で確かめられるか。
+- 補助金申請支援から制作・運用へつなぐ導線は、会議所側の中立性の要請（特定業者への誘導を避ける）とどこで衝突するか。
+- [[business/jigyou-saikouchiku]] のような大型補助金と比べ、持続化補助金の30万円上限の案件は継続収益（運用リテイナー）に育つか。
+
+## 関連
+
+- [[business/chiho-business-trend]] — 需要が残り供給が消えた地方という「歪み」の見立て。商工会議所はその歪みに公的な窓口から入る具体策
+- [[business/ai-agency-180-day-plan]] — 自前の営業量で商談を作るAIエージェンシー計画。集客と与信を商工会議所に借りる本ページの導線と対照的
+- [[business/jigyou-saikouchiku]] — 別の中小企業向け補助金（事業再構築補助金）。補助金を予算の裏づけとして使う発想の比較対象
+- [[business/roi-qualification-sales]] — 投資対効果が合わない案件を断るBtoB営業。補助金で「実質いくら」に変える本ページの論点と同じく、価格の止まり方を扱う
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

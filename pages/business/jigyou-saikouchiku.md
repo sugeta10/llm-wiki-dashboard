@@ -22,4 +22,5 @@
 
 ## 関連リンク
 
+- [[business/shoukou-kaigisho-ai-koushi]] — 小規模事業者持続化補助金（商工会議所の様式4が必須）を予算の裏づけにしてAI・SNS支援を案件化する導線
 - 採択結果: https://jigyou-saikouchiku.go.jp/result.html

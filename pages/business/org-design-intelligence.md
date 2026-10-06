@@ -125,3 +125,4 @@ AnthropicもOpenAIも「組織の構成員・調整層としてのAI」（[[conc
 - [[concepts/structuring-ability]] — 組織の内部構造（目標→評価→基準→人物像→確認）を分解する個人の思考力「構造化力」の習得法
 - [[concepts/team-leader-transition]] — 「自分が動く」から「チームが動ける環境を設計する」への新任リーダーの転換（個人スケールの委譲・組織アウトプット観）
 - [[people/pieter-levels]] — 本ページが「ピュアソロ」事例として挙げる本人のアーカイブ（levels.io）と、そこから追える発信の実態
+- [[concepts/forward-deployed-engineer]] — 既存フローに張り付くFDEは組織図を作り直さない限り筋の悪い問題を解く、という批判（@quxiaoyin）を含むFDEページ

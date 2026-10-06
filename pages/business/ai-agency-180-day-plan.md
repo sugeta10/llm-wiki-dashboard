@@ -59,3 +59,4 @@
 - [[business/hensu-kyokushouka]] — 変数を絞って高粗利を狙う設計。業界を1つに固定し部品を再利用する「納品のフライホイール」と重なる
 - [[business/ai-vertical-integration]] — AI 企業の垂直統合が受託業界に与える圧力。本計画の価格前提に対する外部リスク
 - [[business/backoffice-ai-implementation]] — 事業会社の管理部門が自分たちで AI を実装した事例。エージェンシーに外注せず内製する側の選択肢
+- [[business/shoukou-kaigisho-ai-koushi]] — 商談を自前の営業量で作る本計画に対し、集客と与信を商工会議所に借り補助金を決済手段にする導線

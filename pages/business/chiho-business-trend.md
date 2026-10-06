@@ -48,3 +48,4 @@
 - [[business/kaigai-mifukyuu-business]] — 「まだ供給されていない空白」を海外との差で見抜く同型の市場選定論（同じく LINE 誘導つき）
 - [[business/hensu-kyokushouka]] — 変数を絞って高粗利の一人ビジネスを設計する論。本ページの「誤差しか生まない変数は追わない」と対照になる
 - [[business/ai-strategy-officer]] — 市場選定・未来予測まで AI に委任する副業論。本ページの著者が「5年後も同じ単価か」と疑問視する側の仕事を扱う
+- [[business/shoukou-kaigisho-ai-koushi]] — 地方・中小の事業者にAI・SNS支援を届ける入口として商工会議所（持続化補助金の様式4・エキスパートバンク）を使う具体的な導線
