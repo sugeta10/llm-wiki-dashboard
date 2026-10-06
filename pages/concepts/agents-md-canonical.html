@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agents-md-canonical</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agents-md-canonical.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agents-md-canonical · concepts · <span title="2026-09-06">4週間前</span></div>
+  <div class="meta">concepts/agents-md-canonical · concepts · <span title="2026-10-06">今日</span></div>
   <article><h1>AGENTS.md を正本にしたクロスエージェント設定</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Claude Code（CLAUDE.md を読む）とCodex（AGENTS.md を読む）で同じフォルダ環境を使うには、共通指示を AGENTS.md に一本化し、CLAUDE.md は @AGENTS.md で取り込む薄い補足にする。ただし共通化できるのは「指示文」だけで、skills/agents/hooks/MCP のような実行機構はツールごとに入口を分ける必要がある。</p>
@@ -95,11 +95,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a> — AGENTS.md/CLAUDE.md のアドホックな慣習を、フォーマットとして標準化しようとするGoogle Cloud発の仕様</li>
 <li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a> — Codex チーム（Eric Provencher）が GPT-6 Astra 向けに AGENTS.md の各行を「まだ要るか」で再審査せよと述べる指針。正本に集めた後の減らし方の側</li>
 <li><a href="../concepts/no-backward-compat-agents-md.html">no-backward-compat-agents-md</a> — AGENTS.md に書く中身の一例：開発中・社内向けという前提を宣言して後方互換とデータ移行を止める1文（@sesere115・Codex）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
+<li><a href="../concepts/ai-coding-loop-formal.html">ai-coding-loop-formal</a> — AGENTS.md のグローバルプロンプトは基本書かず、選択肢が複数あるときの判断基準と一般的でない制約だけ書くという中身側の方針（mizchi）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-coding-loop-formal.html">ai-coding-loop-formal</a></li>
+<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
 <li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a></li>
 <li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a></li>
-<li><a href="../concepts/no-backward-compat-agents-md.html">no-backward-compat-agents-md</a></li>
-<li><a href="../concepts/open-knowledge-format.html">open-knowledge-format</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066475738304279011" rel="noopener" target="_blank">https://x.com/i/web/status/2066475738304279011</a></li>
+<li><a href="../concepts/no-backward-compat-agents-md.html">no-backward-compat-agents-md</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066475738304279011" rel="noopener" target="_blank">https://x.com/i/web/status/2066475738304279011</a></li>
 <li><a href="https://x.com/i/web/status/2093670963330363470" rel="noopener" target="_blank">https://x.com/i/web/status/2093670963330363470</a></li></ul></section></article>
 </main>
 <script>
@@ -174,6 +175,7 @@ flowchart TD
 - [[concepts/open-knowledge-format]] — AGENTS.md/CLAUDE.md のアドホックな慣習を、フォーマットとして標準化しようとするGoogle Cloud発の仕様
 - [[concepts/gpt-6-astra-skills-prompting]] — Codex チーム（Eric Provencher）が GPT-6 Astra 向けに AGENTS.md の各行を「まだ要るか」で再審査せよと述べる指針。正本に集めた後の減らし方の側
 - [[concepts/no-backward-compat-agents-md]] — AGENTS.md に書く中身の一例：開発中・社内向けという前提を宣言して後方互換とデータ移行を止める1文（@sesere115・Codex）
+- [[concepts/ai-coding-loop-formal]] — AGENTS.md のグローバルプロンプトは基本書かず、選択肢が複数あるときの判断基準と一般的でない制約だけ書くという中身側の方針（mizchi）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

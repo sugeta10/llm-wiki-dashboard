@@ -161,3 +161,4 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[concepts/agent-autonomy-levels]] — ループを「レベル3→4へ上げる部品」として位置づける梯子（@Mahaximus_）。採用率50%を採算ラインとする点が別ソースで一致
 - [[concepts/github-runner-agent-factory]] — ループを24/365回し続ける実行基盤を GitHub（Self-hosted runner・情報集約・Blacksmith で CI 高速化）に置いた個人実践（@k1ito）
 - [[concepts/overnight-delegation-prompt]] — 就寝中の8時間をエージェントに委ねる一文プロンプト（ループ設計の軽量な実例）
+- [[concepts/ai-coding-loop-formal]] — 人間の役割（モデル評価・ループ構築・評価指標・CI優先度）から逆算したループ実務と形式手法の棚卸し（mizchi）

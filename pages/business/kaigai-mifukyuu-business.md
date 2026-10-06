@@ -31,3 +31,4 @@
 - [[business/stock-gata-fukugyo]] — 同じ @client2728770 のストック型副業論。「まだ誰もまとめていない場所に先に書く」という選定理由が本記事の「6つ目」と同じ
 - [[concepts/ai-news-source-automation]] — 海外メディア等から発信ネタを自動収集する7つの情報源。本記事の「海外一次情報を日本語で最初に説明する」作業の上流にあたる
 - [[business/ai-strategy-officer]] — AI に市場選定・商品決定まで任せる副業論。空白市場を探す作業を AI に委ねる側の議論
+- [[business/chiho-business-trend]] — 空白を海外との差でなく「地方で需要が残り供給が消えた場所」に求める同型の市場選定論（@minatoku_genkai・LINE 誘導つき）

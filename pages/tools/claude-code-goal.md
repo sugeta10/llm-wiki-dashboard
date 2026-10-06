@@ -119,3 +119,4 @@ flowchart TD
 - [[tools/claude-code-ultracode]] — `/goal`と1行で同居させる総力戦モード。実例の指示文は両者の組み合わせだった
 - [[concepts/gemini-rewrite-stop-hook]] — CodexのStop Hookで終了前に日本語校正（Gemini呼び出し）を差し込む実装例。Stop hookで次の作業を差し込む同じ使い方
 - [[concepts/jev-claude-code-integration]] — Stop フックで完了の主張に証拠を求める limpet・jev-belay。評価器の位置に Haiku でなく生成しない判定モデル Jev を置いた実装例
+- [[concepts/ai-coding-loop-formal]] — /goal と組む評価指標の具体例と、Umbrella Issue を /goal に渡す使い方（mizchi）

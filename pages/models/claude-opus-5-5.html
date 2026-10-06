@@ -29,13 +29,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-opus-5-5</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-opus-5-5.md">Markdownで表示</a></div>
-  <div class="meta">models/claude-opus-5-5 · models · <span title="2026-09-30">5日前</span></div>
+  <div class="meta">models/claude-opus-5-5 · models · <span title="2026-10-06">今日</span></div>
   <article><h1>Claude Opus 5.5</h1>
 <p><a href="../companies/anthropic.html">anthropic</a> の Claude 系列で「Opus 5.5」の名を持つモデル。本vaultで捕捉できているのは、@nukonuko が2026-09-22に「Claude Opus 5.5 system prompts」として投稿したシステムプロンプトの冒頭部分だけで、Anthropic 公式の発表・価格・ベンチマークは未収集である。</p>
 <p>捕捉できた冒頭は、<code>&lt;claude_behavior&gt;</code> の中に <code>&lt;product_information&gt;</code> という節があり、ユーザーに聞かれた場合に備えて Claude と Anthropic の製品情報を持たせる形になっている。そこには「現在選択されている Claude のバージョンは Claude Opus 5.5」「Claude Opus 5.5 は complex（複雑な〜）のための強力なモデル」と書かれ、文はここで途切れている。投稿者は個人で、プロンプトの入手経路は投稿に書かれておらず、公式が公開したものかどうかも確認できていない。</p>
 <p><a href="../models/claude-opus-5.html">claude-opus-5</a> の後継と考えられるが、系列内の位置づけを示す一次情報はまだ手元に無い。システムプロンプトをタグで節に分けて振る舞いを規定する作りは、Opus 5 移行時に利用者が実測した lean system prompt 化（<a href="../concepts/lean-prompt-rules-adaptation.html">lean-prompt-rules-adaptation</a>）の続きとして読める可能性がある（推論）。</p>
+<h2>公式プロンプティングガイド（未収集）</h2>
+<p>@hqmank は2026-10-05、Claude チームが Opus 5.5 を使いこなすためのガイドを書いたと紹介した。@hqmank の要約では、Opus 5.5 は自律的により長く作業し、毎回の返信の前に考えるので、プロンプトの書き方を変える必要がある。最初に試すべき tip として「タスク全体を1メッセージで渡し、何をもって完了（done）とするかを伝える」を挙げたところで投稿の捕捉が途切れており、残りの tip とガイド本体の URL は未収集である。</p>
+<p>「1メッセージで全体を渡し完了条件を言う」は、<a href="../concepts/fable-5-prompting.html">fable-5-prompting</a> など自律性の高いモデル向けの指針に共通する方向と考えられる（推論）。</p>
 <h2>問い</h2>
 <ul>
+<li>Claude チームのガイド本体を取り込み、@hqmank が挙げた tip の全体と、Opus 5 からの書き方の変更点を確認する</li>
 <li>Anthropic 公式の発表で、Opus 5.5 の発表日・価格・Opus 5 との性能差を確認する</li>
 <li>投稿されたシステムプロンプトの全文を入手し、Opus 5 時代の lean system prompt から何が増減したかを比べる。自分の CLAUDE.md・rules と噛み合わなくなる箇所があるか</li>
 </ul>
@@ -51,7 +55,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/effort-level-selection.html">effort-level-selection</a></li>
 <li><a href="../concepts/html-output-format.html">html-output-format</a></li>
 <li><a href="../concepts/lean-prompt-rules-adaptation.html">lean-prompt-rules-adaptation</a></li>
-<li><a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2102459898911203813" rel="noopener" target="_blank">https://x.com/i/web/status/2102459898911203813</a></li></ul></section></article>
+<li><a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2102459898911203813" rel="noopener" target="_blank">https://x.com/i/web/status/2102459898911203813</a></li>
+<li><a href="https://x.com/i/web/status/2107012754359927276" rel="noopener" target="_blank">https://x.com/i/web/status/2107012754359927276</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -80,8 +85,15 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 
 [[models/claude-opus-5]] の後継と考えられるが、系列内の位置づけを示す一次情報はまだ手元に無い。システムプロンプトをタグで節に分けて振る舞いを規定する作りは、Opus 5 移行時に利用者が実測した lean system prompt 化（[[concepts/lean-prompt-rules-adaptation]]）の続きとして読める可能性がある（推論）。
 
+## 公式プロンプティングガイド（未収集）
+
+@hqmank は2026-10-05、Claude チームが Opus 5.5 を使いこなすためのガイドを書いたと紹介した。@hqmank の要約では、Opus 5.5 は自律的により長く作業し、毎回の返信の前に考えるので、プロンプトの書き方を変える必要がある。最初に試すべき tip として「タスク全体を1メッセージで渡し、何をもって完了（done）とするかを伝える」を挙げたところで投稿の捕捉が途切れており、残りの tip とガイド本体の URL は未収集である。
+
+「1メッセージで全体を渡し完了条件を言う」は、[[concepts/fable-5-prompting]] など自律性の高いモデル向けの指針に共通する方向と考えられる（推論）。
+
 ## 問い
 
+- Claude チームのガイド本体を取り込み、@hqmank が挙げた tip の全体と、Opus 5 からの書き方の変更点を確認する
 - Anthropic 公式の発表で、Opus 5.5 の発表日・価格・Opus 5 との性能差を確認する
 - 投稿されたシステムプロンプトの全文を入手し、Opus 5 時代の lean system prompt から何が増減したかを比べる。自分の CLAUDE.md・rules と噛み合わなくなる箇所があるか
 

@@ -59,3 +59,4 @@ flowchart TD
 - [[concepts/claude-code-loop-types]] — 公式チーム版の分類。本ページの3動詞に turn-based（素の agentic loop）と proactive（合成）を加えた4類型
 - [[concepts/dynamic-agent-org]] — 本ページが動詞（単体エージェントの止まり方）を扱うのに対し、こちらは複数エージェントの接続構造（グラフ）が実行中に書き換わる次の抽象化レイヤー
 - [[tools/claude-projects-threads]] — Claude Projects の Routines タブ。コーディネーターに頼むとプロジェクト内でスレッドとして走るルーティンが作られる
+- [[concepts/ai-coding-loop-formal]] — mizchi の実務棚卸し：/goal に渡す数値の評価指標（RSS・lint warning数・Mutation Kill率・VRT一致率）と Umbrella Issue でまとめてから渡す流れ

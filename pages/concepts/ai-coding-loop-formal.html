@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-coding-loop-formal - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-coding-loop-formal</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-coding-loop-formal.md">Markdownで表示</a></div>
+  <div class="meta">concepts/ai-coding-loop-formal · concepts · <span title="2026-10-06">今日</span></div>
+  <article><h1>AIコーディングのループ設計と形式手法（mizchi の棚卸し）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 人間の仕事を「モデル評価・ループ構築・評価指標づくり・CIの優先度づけ」に移し、数値化できる指標と /goal でループを回し、仕様の正しさは TLA+/Z3 などの形式手法で検査する、という mizchi の 2026年10月時点の実務まとめ。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  A[&quot;AIに任せられる仕事か&quot;] --&gt; B[&quot;完了の定義・評価指標は何か&quot;]
+  B --&gt; C[&quot;一度やらせて振る舞いを観察&quot;]
+  C --&gt;|できた| D[&quot;判断基準を作って自動化できるか&quot;]
+  C --&gt;|できなかった| E[&quot;理由は何か&quot;]
+  E --&gt; F[&quot;コンテキスト不足→指示・テスト追加&quot;]
+  E --&gt; G[&quot;権限不足→付与を検討&quot;]
+  E --&gt; H[&quot;性能不足→半年待つ&quot;]</pre>
+<p>mizchi が仕事先への共有用に書いた Zenn 記事で、本人は冒頭で「棚卸し的な記事」、末尾で「またすぐ変わると思います」と位置づけている。コードを書く作業が AI に移った後、人間に残る仕事は何かを先に定義し、そこから逆算してループ・評価指標・理解の方法・形式手法を並べる構成になっている。X 投稿は 2,356 ブックマーク（2026-10-05 時点）。</p>
+<h2>人間の役割と考える順番</h2>
+<p>mizchi は人間の役割を次の5つに置く。</p>
+<ul>
+<li><strong>モデルの性能を評価する</strong>: 無茶振りしてどこまでできるか観察する。何ができて何ができなかったかがドメイン知識になる</li>
+<li><strong>ループを構築する</strong>: 自動化で浮いた時間を評価指標の改善に回す</li>
+<li><strong>評価指標を作る</strong>: どの数値を改善すべきか、トレードオフで何を優先するか決める</li>
+<li><strong>ループのイテレーションを評価する</strong>: AI の行動ログを見て、評価指標を正しく追えているか確かめる</li>
+<li><strong>テストと CI をチューニングする</strong>: 指標が増えると CI が長くなるので、何を優先し何をやらないかを決める</li>
+</ul>
+<p>仕事ごとの考える順番は上の図のとおりで、「数値化できるものなら AI で自動化できる」「人間がつきっきりでなく判断基準自体を作れるか」が分岐点だと mizchi は書く。できなかった理由の切り分け（コンテキスト・権限・性能）は、<a href="../concepts/eval-loop.html">eval-loop</a> の「閾値未満を止める」より手前の、タスクを AI に渡せるかの診断にあたると考えられる。</p>
+<h2>常にアンラーニングする</h2>
+<p>mizchi は「プロンプトは高速に陳腐化する」とし、「あなたは優秀なプログラマです」や「ゆっくり深呼吸して」（数学性能が7ポイント改善した、と記事は紹介）をもう古い例に挙げる。そのうえで次の方針を示す。</p>
+<ul>
+<li>AGENTS.md のグローバルプロンプトは基本的に<strong>書かない</strong></li>
+<li>書くなら「選択肢が複数あるときの判断基準」だけ（node は 24+、新規は npm でなく pnpm、nix の使用有無、Rust stable 1.99、gh stack など）</li>
+<li>一般的でないこだわりや制約は AGENTS.md に書く</li>
+<li>モデルの組み込み知識は半年ほど古い。skill は（おそらく）重点的に学習されるので不要になるのが速い</li>
+</ul>
+<p>既存リポジトリへの適用は「現状の構成を読み取って解説して」から始め、速習しながら自分の理解とのズレを確かめる、と mizchi は書く。</p>
+<p><strong>世界知識と /compact</strong>: コンテキストに与えた情報はモデル内の世界知識より優先される。モデルにとって既知の情報が多くなるように（よく知られた OSS で構築するように）すると高効率で動く。<code>/compact</code> は判断基準が正しく与えられていないと間違っている側に倒れる、と注意している。</p>
+<h2>ループの道具立て</h2>
+<ul>
+<li><strong>原始的な Ralph Loop</strong>: <code>while :; do claude -p "Git 履歴を見て次にやることを探して"; done</code> の無限ループ</li>
+<li><strong>/goal</strong>: セッション終了のたびにフックで目標文が再送され、goal を満たすまで自律ループする（<a href="../tools/claude-code-goal.html">claude-code-goal</a>）</li>
+<li><strong>dspy/RLM（実験的）</strong>: ワークフローがある程度決まったものについて、巨大コンテキストをインタプリタで実行されるコード断片に分解する（<a href="../tools/dspy.html">dspy</a>）</li>
+<li><strong>マルチエージェント（実験的）</strong>: mizchi は「現在決定的な解がない。難しいなら無理して使わなくていい」と書き、使うなら「干渉が少ないものをレーンに分割して、レーンごとにサブエージェントを分割して」と指示する</li>
+</ul>
+<p><strong>探索的改善</strong>: エージェントを信用してある程度丸投げする。例として「現在の実装と最新の研究を比較して」「SRE視点でテレメトリを計装して」「データベースに対するN+1を見つけて潰して」「攻撃側としてチェックリストを作り localhost に閉じてペネトレーションして」を挙げ、<strong>視点</strong>（誰にとって何の数値が大事か）が改善理由になると述べる。見つかったものは「Umbrella Issue でまとめて」で GitHub の1 Issue に集め、それを /goal に渡す流れになっている。</p>
+<h2>/goal と組む評価指標</h2>
+<p>mizchi は「具体的な数値に落とせるものが望ましい。主観的な判断が必要だと、ユーザーが都度呼び出される」として次を挙げる。</p>
+<ul>
+<li>パフォーマンスベンチマーク（CI では安定しないので RSS や Fuel など決定的な指標を優先）</li>
+<li>メモリ使用率の RSS（hyperfine・perf・valgrind）</li>
+<li>厳しいルールの lint warning 数（循環複雑度の moznion/cccc、コード重複率の mizchi/similarity）</li>
+<li>Mutation Test の Kill 率</li>
+<li>VRT（ビジュアルリグレッションテスト）の一致率</li>
+</ul>
+<h2>理解する・マージする</h2>
+<p>具体のコードを全部読むのは間に合わないので、せめて振る舞い（E2E のケース名・テストコード・関数シグネチャ）を把握し、スキルで AI に概念的に解説させる、と mizchi は書く。自作の mizchi/explainer で説明画像を作らせ PR に添付する使い方も紹介している。これは <a href="../concepts/cognitive-debt.html">cognitive-debt</a> が扱う「AI が書いたコードを人間が理解しなくなる」問題への、読む対象を絞る側の対処と読める。</p>
+<p>マージ自動化は実験段階として、OpenAI が AI トリアージで安全なコードはそのままマージし、DB スキーマ変更や terraform 変更は人間にエスカレートしている「らしい」と伝聞で紹介し、mizchi 自身も同種のレビューツールを作成中だと書く。</p>
+<h2>形式手法</h2>
+<p>mizchi は形式手法を「実装しようとしている仕様がそもそも合っているか」の検査に使う。自然言語がそのまま形式仕様になるのでなく、性質を記述するイメージだという。</p>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>道具（記事の指定）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>マイクロサービス、マルチスレッドのキャッシュ制御</td>
+<td>TLA+ か Quint</td>
+</tr>
+<tr>
+<td>述語論理で書ける制約</td>
+<td>Z3</td>
+</tr>
+<tr>
+<td>アルゴリズム自体の開発</td>
+<td>Lean</td>
+</tr>
+<tr>
+<td>ユーザー権限まわり</td>
+<td>Alloy</td>
+</tr>
+</tbody>
+</table>
+<p>「マイクロサービス、マルチスレッドのキャッシュ制御はほぼ確実に漏れがある」は mizchi の経験則で、「困ったら Z3 か TLA+ を使っておくとよい」としている。実際の指示例は次の3つ。</p>
+<ul>
+<li>「今あるコードを形式化できる部分を形式化して、それをテストオラクルに、実装がそれに従ってるか確認して」</li>
+<li>「モデル検査で反例が出たら、それを実際のテストケースに落として」</li>
+<li>「何を検査したか、ドメインの言葉を使わずに例え話で説明して」</li>
+</ul>
+<p>形式仕様をテストオラクル（正解判定器）にする発想は、<a href="../concepts/eval-loop.html">eval-loop</a> の評価器を「人が決めた数値」から「仕様からの導出」に置き換えるものと考えられる。</p>
+<h2>問い</h2>
+<ul>
+<li>「AGENTS.md は基本書かない・判断基準だけ書く」は、このリポの CLAUDE.md の厚さと比べてどこまで削れるか？</li>
+<li>形式仕様→反例→テストケースの流れは、仕様のない既存コードでどこまで実用になるか（何を「形式化できる部分」と判定させるのか）？</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — /goal・loop・routine の使い分け。本ページは /goal に渡す評価指標と Umbrella Issue の作り方の側</li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — 本ページの /goal の具体実装</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — ループ設計の全体論。本ページはその実務版の棚卸し</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 数値化した評価指標でループを止める品質ゲートの一般形</li>
+<li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a> — AGENTS.md の置き場所の設計。本ページは中身を「判断基準だけ」に絞る方針</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — 本ページが「決定的な解がない」とするマルチエージェントの型</li>
+<li><a href="../concepts/cognitive-debt.html">cognitive-debt</a> — AI が書いたコードを理解しなくなる問題。振る舞いと説明画像で理解する対処</li>
+<li><a href="../tools/dspy.html">dspy</a> — 実験的手法として挙げられた dspy</li>
+<li><a href="../tools/laya-mlx.html">laya-mlx</a> — 同著者（mizchi）の小型判断モデル実測</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107001240882475283" rel="noopener" target="_blank">https://x.com/i/web/status/2107001240882475283</a></li>
+<li><a href="https://zenn.dev/mizchi/articles/ai-coding-loop-formal" rel="noopener" target="_blank">https://zenn.dev/mizchi/articles/ai-coding-loop-formal</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AIコーディングのループ設計と形式手法（mizchi の棚卸し）
+
+&gt; **TL;DR**: 人間の仕事を「モデル評価・ループ構築・評価指標づくり・CIの優先度づけ」に移し、数値化できる指標と /goal でループを回し、仕様の正しさは TLA+/Z3 などの形式手法で検査する、という mizchi の 2026年10月時点の実務まとめ。
+
+```mermaid
+flowchart TD
+  A[&quot;AIに任せられる仕事か&quot;] --&gt; B[&quot;完了の定義・評価指標は何か&quot;]
+  B --&gt; C[&quot;一度やらせて振る舞いを観察&quot;]
+  C --&gt;|できた| D[&quot;判断基準を作って自動化できるか&quot;]
+  C --&gt;|できなかった| E[&quot;理由は何か&quot;]
+  E --&gt; F[&quot;コンテキスト不足→指示・テスト追加&quot;]
+  E --&gt; G[&quot;権限不足→付与を検討&quot;]
+  E --&gt; H[&quot;性能不足→半年待つ&quot;]
+```
+
+mizchi が仕事先への共有用に書いた Zenn 記事で、本人は冒頭で「棚卸し的な記事」、末尾で「またすぐ変わると思います」と位置づけている。コードを書く作業が AI に移った後、人間に残る仕事は何かを先に定義し、そこから逆算してループ・評価指標・理解の方法・形式手法を並べる構成になっている。X 投稿は 2,356 ブックマーク（2026-10-05 時点）。
+
+## 人間の役割と考える順番
+
+mizchi は人間の役割を次の5つに置く。
+
+- **モデルの性能を評価する**: 無茶振りしてどこまでできるか観察する。何ができて何ができなかったかがドメイン知識になる
+- **ループを構築する**: 自動化で浮いた時間を評価指標の改善に回す
+- **評価指標を作る**: どの数値を改善すべきか、トレードオフで何を優先するか決める
+- **ループのイテレーションを評価する**: AI の行動ログを見て、評価指標を正しく追えているか確かめる
+- **テストと CI をチューニングする**: 指標が増えると CI が長くなるので、何を優先し何をやらないかを決める
+
+仕事ごとの考える順番は上の図のとおりで、「数値化できるものなら AI で自動化できる」「人間がつきっきりでなく判断基準自体を作れるか」が分岐点だと mizchi は書く。できなかった理由の切り分け（コンテキスト・権限・性能）は、[[concepts/eval-loop]] の「閾値未満を止める」より手前の、タスクを AI に渡せるかの診断にあたると考えられる。
+
+## 常にアンラーニングする
+
+mizchi は「プロンプトは高速に陳腐化する」とし、「あなたは優秀なプログラマです」や「ゆっくり深呼吸して」（数学性能が7ポイント改善した、と記事は紹介）をもう古い例に挙げる。そのうえで次の方針を示す。
+
+- AGENTS.md のグローバルプロンプトは基本的に**書かない**
+- 書くなら「選択肢が複数あるときの判断基準」だけ（node は 24+、新規は npm でなく pnpm、nix の使用有無、Rust stable 1.99、gh stack など）
+- 一般的でないこだわりや制約は AGENTS.md に書く
+- モデルの組み込み知識は半年ほど古い。skill は（おそらく）重点的に学習されるので不要になるのが速い
+
+既存リポジトリへの適用は「現状の構成を読み取って解説して」から始め、速習しながら自分の理解とのズレを確かめる、と mizchi は書く。
+
+**世界知識と /compact**: コンテキストに与えた情報はモデル内の世界知識より優先される。モデルにとって既知の情報が多くなるように（よく知られた OSS で構築するように）すると高効率で動く。`/compact` は判断基準が正しく与えられていないと間違っている側に倒れる、と注意している。
+
+## ループの道具立て
+
+- **原始的な Ralph Loop**: `while :; do claude -p &quot;Git 履歴を見て次にやることを探して&quot;; done` の無限ループ
+- **/goal**: セッション終了のたびにフックで目標文が再送され、goal を満たすまで自律ループする（[[tools/claude-code-goal]]）
+- **dspy/RLM（実験的）**: ワークフローがある程度決まったものについて、巨大コンテキストをインタプリタで実行されるコード断片に分解する（[[tools/dspy]]）
+- **マルチエージェント（実験的）**: mizchi は「現在決定的な解がない。難しいなら無理して使わなくていい」と書き、使うなら「干渉が少ないものをレーンに分割して、レーンごとにサブエージェントを分割して」と指示する
+
+**探索的改善**: エージェントを信用してある程度丸投げする。例として「現在の実装と最新の研究を比較して」「SRE視点でテレメトリを計装して」「データベースに対するN+1を見つけて潰して」「攻撃側としてチェックリストを作り localhost に閉じてペネトレーションして」を挙げ、**視点**（誰にとって何の数値が大事か）が改善理由になると述べる。見つかったものは「Umbrella Issue でまとめて」で GitHub の1 Issue に集め、それを /goal に渡す流れになっている。
+
+## /goal と組む評価指標
+
+mizchi は「具体的な数値に落とせるものが望ましい。主観的な判断が必要だと、ユーザーが都度呼び出される」として次を挙げる。
+
+- パフォーマンスベンチマーク（CI では安定しないので RSS や Fuel など決定的な指標を優先）
+- メモリ使用率の RSS（hyperfine・perf・valgrind）
+- 厳しいルールの lint warning 数（循環複雑度の moznion/cccc、コード重複率の mizchi/similarity）
+- Mutation Test の Kill 率
+- VRT（ビジュアルリグレッションテスト）の一致率
+
+## 理解する・マージする
+
+具体のコードを全部読むのは間に合わないので、せめて振る舞い（E2E のケース名・テストコード・関数シグネチャ）を把握し、スキルで AI に概念的に解説させる、と mizchi は書く。自作の mizchi/explainer で説明画像を作らせ PR に添付する使い方も紹介している。これは [[concepts/cognitive-debt]] が扱う「AI が書いたコードを人間が理解しなくなる」問題への、読む対象を絞る側の対処と読める。
+
+マージ自動化は実験段階として、OpenAI が AI トリアージで安全なコードはそのままマージし、DB スキーマ変更や terraform 変更は人間にエスカレートしている「らしい」と伝聞で紹介し、mizchi 自身も同種のレビューツールを作成中だと書く。
+
+## 形式手法
+
+mizchi は形式手法を「実装しようとしている仕様がそもそも合っているか」の検査に使う。自然言語がそのまま形式仕様になるのでなく、性質を記述するイメージだという。
+
+| 対象 | 道具（記事の指定） |
+|---|---|
+| マイクロサービス、マルチスレッドのキャッシュ制御 | TLA+ か Quint |
+| 述語論理で書ける制約 | Z3 |
+| アルゴリズム自体の開発 | Lean |
+| ユーザー権限まわり | Alloy |
+
+「マイクロサービス、マルチスレッドのキャッシュ制御はほぼ確実に漏れがある」は mizchi の経験則で、「困ったら Z3 か TLA+ を使っておくとよい」としている。実際の指示例は次の3つ。
+
+- 「今あるコードを形式化できる部分を形式化して、それをテストオラクルに、実装がそれに従ってるか確認して」
+- 「モデル検査で反例が出たら、それを実際のテストケースに落として」
+- 「何を検査したか、ドメインの言葉を使わずに例え話で説明して」
+
+形式仕様をテストオラクル（正解判定器）にする発想は、[[concepts/eval-loop]] の評価器を「人が決めた数値」から「仕様からの導出」に置き換えるものと考えられる。
+
+## 問い
+
+- 「AGENTS.md は基本書かない・判断基準だけ書く」は、このリポの CLAUDE.md の厚さと比べてどこまで削れるか？
+- 形式仕様→反例→テストケースの流れは、仕様のない既存コードでどこまで実用になるか（何を「形式化できる部分」と判定させるのか）？
+
+## 関連
+
+- [[concepts/goal-loop-routine]] — /goal・loop・routine の使い分け。本ページは /goal に渡す評価指標と Umbrella Issue の作り方の側
+- [[tools/claude-code-goal]] — 本ページの /goal の具体実装
+- [[concepts/loop-engineering]] — ループ設計の全体論。本ページはその実務版の棚卸し
+- [[concepts/eval-loop]] — 数値化した評価指標でループを止める品質ゲートの一般形
+- [[concepts/agents-md-canonical]] — AGENTS.md の置き場所の設計。本ページは中身を「判断基準だけ」に絞る方針
+- [[concepts/multi-agent-patterns]] — 本ページが「決定的な解がない」とするマルチエージェントの型
+- [[concepts/cognitive-debt]] — AI が書いたコードを理解しなくなる問題。振る舞いと説明画像で理解する対処
+- [[tools/dspy]] — 実験的手法として挙げられた dspy
+- [[tools/laya-mlx]] — 同著者（mizchi）の小型判断モデル実測
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>
