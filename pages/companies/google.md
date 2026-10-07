@@ -36,3 +36,4 @@ Googleの消費者向けAI戦略は、個別プロダクト課金ではなく**�
 - [[concepts/reasoning-vs-japanese-fluency]] — Gemini 3.8 Flashが500本超の日本語検査Hookを警告ゼロで通過したという@yugen_matuniの実測。日本語の最終成果物では上位モデルより手離れが良いという評価
 - [[concepts/gemini-rewrite-stop-hook]] — 内容は別モデル・日本語はGeminiで整える分業を、CodexのStop HookからCursor CLI経由（Gemini 3.8 Flash High）で自動化した@yugen_matuniの実装
 - [[models/diffusiongemma-jev]] — Gemma 公式が紹介した Jev API 互換モデル（djev）。Cloud Run に1コマンドでデプロイ
+- [[concepts/gmail-ai-default-access]] — Gmail の AI が既定で受信トレイ（添付・明細・医療文書を含む）を読む導入が集団訴訟の対象になったとする警告ポスト（@Nyx_Tech_AI・詳細は未収集）
