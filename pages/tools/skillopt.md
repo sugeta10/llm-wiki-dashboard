@@ -67,3 +67,4 @@ v0.2.0（2026-07-02）の目玉機能で、`skillopt-sleep` CLI として提供�
 - [[tools/hermes-agent-self-evolution]] — DSPy+GEPA でスキルを自動進化させるリポ。同じ目的の別実装
 - [[tools/claude-managed-agents]] — Dreaming（睡眠中の記憶整理）という同じ比喩を持つ機能。SkillOpt-Sleep と比較できる
 - [[papers/2026-hao-skill-mining]] — 軌跡からのスキル採掘は転移しなかったという負の結果。SkillOpt の転移の主張と対照
+- [[tools/claude-api-build-eval-hillclimb]] — Claude Code公式の hillclimb。train/test に分け、隠した test でも伸びた変更だけ残す同型の採否ゲート

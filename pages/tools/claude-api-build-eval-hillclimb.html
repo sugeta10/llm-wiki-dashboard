@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-api-build-eval-hillclimb - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-api-build-eval-hillclimb</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-api-build-eval-hillclimb.md">Markdownで表示</a></div>
+  <div class="meta">tools/claude-api-build-eval-hillclimb · tools · <span title="2026-10-08">今日</span></div>
+  <article><h1>/claude-api build-eval と /claude-api hillclimb（Claude Code の eval 用2コマンド）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Claude Code 同梱の claude-api スキルに追加された、試験（eval）を人の確認つきで組む <code>build-eval</code> と、変更を1回1つずつ試して「改善役に見せない test 側でも点が上がった修正だけ」を残す <code>hillclimb</code> の2コマンド。点数だけ上がる過剰適合を手順で防ぐのが核心。</p>
+</blockquote>
+<p>問題集め・採点役の検証・問題の分割・修正の採否判定は、これまで人が自分で組み立てていた作業だった。まさお（note「まさお@未経験からプロまでAI活用」）は、Anthropic 公式ブログを読み自分でも動かしたうえで、変わったのは「誰が手を動かすか」で、2コマンドでは Claude が手を動かし要所で人に承認を求める形になったと解説する。公式の位置づけは新しいモデルや製品ではなく、<a href="../tools/claude-code.html">claude-code</a> に同梱された claude-api スキル（Anthropic API の使い方や Claude との仕事のコツを Claude に渡すスキル）へのコマンド追加である。<code>claude update</code> で最新版が入り、アプリのリポジトリで Claude Code を開いてコマンドを打つだけで使える、と同氏は書く。</p>
+<pre class="mermaid">flowchart LR
+  A[&quot;build-eval: 問題を集める&quot;] --&gt; B[&quot;人が入力を確認&quot;]
+  B --&gt; C[&quot;採点役を提案・人が試し採点を確認&quot;]
+  C --&gt; D[&quot;ベースライン計測&quot;]
+  D --&gt; E[&quot;hillclimb: train/test に無作為分割&quot;]
+  E --&gt; F[&quot;変更を1つ試す&quot;]
+  F --&gt; G{&quot;test でも伸びた？&quot;}
+  G -- yes --&gt; H[&quot;残す&quot;]
+  G -- no --&gt; I[&quot;捨てる&quot;]
+  H --&gt; F
+  I --&gt; F</pre>
+<h2>build-eval：質問に答えるだけで試験とベースラインができる</h2>
+<p>まさおが実際に動かした範囲では、<code>/claude-api</code> と打つと補完候補に build-eval と hillclimb が出る。最初に「問題を本番ログから取るか」などの選択式の質問が来て、次に採点をプログラム判定にするか LLM 採点にするかを選び、そのまま直す前の点数（ベースライン）の計測へ進んだという。</p>
+<p>同氏が紹介する公式の説明では、Claude は決まった所で手を止めて人の確認を待つ。人が確かめるのは<strong>入力</strong>と<strong>採点</strong>の2か所で、集めた入力は簡単なページに全部並べて見せ、採点役は試しに数件を採点して「違う点にしたいものは無いか」を尋ねる。ベースラインの計測はその後に来る。</p>
+<ul>
+<li><strong>問題の集め先の優先順</strong>（公式）: 本番の記録 → バグ報告・サポートチケット → 人が手で書く数件 → コードベースから合成した問題（こちらが出した数件の実例を手本に作れる）</li>
+<li><strong>採点役の選び方</strong>（公式）: 出力に合う一番安い方法を Claude が提案する。答えの形が限られていればプログラムで確かめ、何通りもあるなら LLM に採点させる</li>
+<li>公式は採点の失敗を eval の設定ミスの中で特によくあるものに挙げており、まさおは採点済みの記録を自分で何件か読む手間は省かないほうがよいと勧める</li>
+</ul>
+<h2>信頼できる試験の条件</h2>
+<p>公式ブログは頼りになる eval の条件を4つ挙げている（条件の一覧表は画像でソース本文に転記されておらず未収集）。本文から読めるのは次の点である。</p>
+<ul>
+<li><strong>満点に余地を残す</strong>: 変更で性能が動いたかを判定できるようにするため。まさおは、余地を残しつつ強いモデルほど点が上がるように作るのは難しいと自身の経験を書く</li>
+<li><strong>良い問題の目安</strong>（公式）: その分野の専門家2人が同じ判定になり、採点役が確かめることがすべて問題文に書かれている問題</li>
+<li><strong>問題の選び方</strong>（公式）: 今のモデルが落とす問題だけを集めると、そのモデルの失敗の癖を測る試験になりかねない。人が難しいと判断した問題を選び、なぜ難しいかを言えるか確かめる。本番の記録も、ユーザーがうまくいきそうなことを試しがちなため易しい側に寄ることがある</li>
+</ul>
+<h2>過剰適合：試験の点だけ上がって本番が変わらない</h2>
+<p>よく設計した eval でも本番のタスク分布とは完全には一致せず、そのずれに合わせて直すと「本番より試験で良い成績を出すアプリ」になる。公式の例では、試験の問題は OCR があると有利なのに本番では OCR がほとんど役に立たず、改善を回すと OCR ツールが追加されて試験の点だけ上がる。プロンプトやツールなどモデル周りのコード（ハーネス）には、試験の癖が漏れる経路がたくさんあると公式は述べる。まさおも、動画台本を書かせるスキルに評価項目を増やし続けた結果、一見ルールを守っているのに全体で読むと機械っぽい台本になった経験を挙げている。</p>
+<p>公式が挙げる防ぎ方は3つ。</p>
+<ol>
+<li><strong>問題を2つの束に分ける</strong>: 改善役が読める束を train、最後まで見せない束を test と呼ぶ</li>
+<li><strong>失敗の中身をプロンプトに写さない</strong>: 改善役が失敗の記録を読むのは構わないが、貼り付けて直すのは禁じ手</li>
+<li><strong>答えをモデルの手が届かない場所にしまう</strong>: モデルは答えそのものを探し当てて点を稼ぐことがある</li>
+</ol>
+<p>見るべき合図は「train の点が上がったのに test が横ばいなら過剰適合を疑う」である。</p>
+<h2>hillclimb：隠した問題で伸びない直しは捨てる</h2>
+<p><code>/claude-api hillclimb</code> はこの分け方を手順にしたコマンドだ。始める前に Claude は「性能を上げたいのか、性能を保ったまま費用を下げたいのか」を尋ね、問題を無作為に train と test に分ける。書き換えてよい場所は人が選び、候補はシステムプロンプト・スキルや指示ファイル・ツールの説明・モデルや effort の設定・ハーネスのコードである。</p>
+<ul>
+<li><strong>1周で試す変更は1つだけ</strong>。まさおは、そのため点が動いたときに原因がその変更だと分かるのだろうと推測している。提案の中身も言い回しの調整でなく、原因になっている節の書き直しや足りないルールの追加だという</li>
+<li><strong>全体の点が一番高い版がそのまま選ばれるわけではない</strong>。隠しておいた問題で伸びなかった直しは、数字が良く見えても捨てる。まさおの手元でも、両方上がる場合と train しか伸びない場合の両方が起きた</li>
+<li><strong>点が2〜3周伸びないとき</strong>は、直すのをやめて残った train の失敗を1件ずつ読み原因ごとに分類し、本当の失敗だけを次のラウンドに回す</li>
+<li><strong>終了時</strong>は test が一番良かった版のコードが残り、結果はベースラインと比べて信頼区間つきで報告される。伸びがブレの範囲に収まるなら取り込まないよう勧める</li>
+</ul>
+<h2>最初に回す場所の選び方</h2>
+<p>公式が挙げる hillclimb の当て所の基準は、安く試せること・点の変化を変えた所に結びつけられること・目標を絞ることの3つ。まさおは、プロンプトやスキルのような文章は変えるのも戻すのも簡単なので最初の対象に向き、自前で仕組みを組む前に公式の2コマンドに乗るのが一番楽な入口だと勧める。build-eval には本番の記録などの実例を渡すと問題の作り方を方向づけられる。</p>
+<p>余地を考えずに「性能を上げて」と頼むのはよくある失敗で、build-eval はベースラインがすでに約95%以上だと警告を出し、品質でなく費用か速さを狙うよう知らせる、と公式は説明する。</p>
+<p>まさおは、Opus 5.5 なら誰でも高品質なものが出せて差がつきにくくなったが、評価をちゃんと作れているかどうかではまだ差がつくと見ている。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-07: Anthropic 社内の顧客サポートのベンチマーク（チケット44件、一部を改善に使い残りは非公開）で「費用を下げつつ性能を上げる」目標で hillclimb を回し、見せなかった問題でも控えめながら点が上がり、費用は元のおよそ5分の1になったと公式ブログが報告（まさおの紹介経由・数値の詳細は画像で未収集）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li><a href="../tools/claude-code-plugin-eval.html">claude-code-plugin-eval</a> の「プラグインあり/なしの対試験」と、hillclimb の「train/test 分割＋1変更ずつ」はどう使い分けるか。スキル単体の寄与を測るなら前者、スキル文面を改善するなら後者、という分担で合っているか</li>
+<li>このvaultの wiki-ingest スキルに hillclimb を当てられるか。カテゴリ・粒度判定は LESSONS.md に正解例が溜まっているので、それを問題集にして train/test に割れるか</li>
+<li><a href="../tools/skillopt.html">skillopt</a> の held-out 検証ゲートと hillclimb は同じ発想に見えるが、変更の提案単位や採否基準（厳密改善か信頼区間か）はどこまで違うか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a> — 2コマンドが載る CLI 本体（claude-api スキル同梱）</li>
+<li><a href="../tools/claude-code-plugin-eval.html">claude-code-plugin-eval</a> — 同じ Claude Code の公式 eval コマンド。プラグインあり/なしの差を測る対試験型</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 出力を採点して閾値未満を止める品質ゲートの一般論。build-eval はその試験づくりを対話で自動化したもの</li>
+<li><a href="../tools/skillopt.html">skillopt</a> — スキル文書を採点付き rollout と held-out 検証ゲートで最適化する Microsoft の OSS。train/test を分けて隠した側で採否を決める点が hillclimb と同型</li>
+<li><a href="../tools/ant-cli.html">ant-cli</a> — 同じ claude-api スキルと連携する公式 CLI</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../tools/claude-code-plugin-eval.html">claude-code-plugin-eval</a></li>
+<li><a href="../tools/skillopt.html">skillopt</a></li>
+<li><a href="../tools/ant-cli.html">ant-cli</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/masa_wunder/n/n8adbb2f8bba8" rel="noopener" target="_blank">https://note.com/masa_wunder/n/n8adbb2f8bba8</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># /claude-api build-eval と /claude-api hillclimb（Claude Code の eval 用2コマンド）
+
+&gt; **TL;DR**: Claude Code 同梱の claude-api スキルに追加された、試験（eval）を人の確認つきで組む `build-eval` と、変更を1回1つずつ試して「改善役に見せない test 側でも点が上がった修正だけ」を残す `hillclimb` の2コマンド。点数だけ上がる過剰適合を手順で防ぐのが核心。
+
+問題集め・採点役の検証・問題の分割・修正の採否判定は、これまで人が自分で組み立てていた作業だった。まさお（note「まさお@未経験からプロまでAI活用」）は、Anthropic 公式ブログを読み自分でも動かしたうえで、変わったのは「誰が手を動かすか」で、2コマンドでは Claude が手を動かし要所で人に承認を求める形になったと解説する。公式の位置づけは新しいモデルや製品ではなく、[[tools/claude-code]] に同梱された claude-api スキル（Anthropic API の使い方や Claude との仕事のコツを Claude に渡すスキル）へのコマンド追加である。`claude update` で最新版が入り、アプリのリポジトリで Claude Code を開いてコマンドを打つだけで使える、と同氏は書く。
+
+```mermaid
+flowchart LR
+  A[&quot;build-eval: 問題を集める&quot;] --&gt; B[&quot;人が入力を確認&quot;]
+  B --&gt; C[&quot;採点役を提案・人が試し採点を確認&quot;]
+  C --&gt; D[&quot;ベースライン計測&quot;]
+  D --&gt; E[&quot;hillclimb: train/test に無作為分割&quot;]
+  E --&gt; F[&quot;変更を1つ試す&quot;]
+  F --&gt; G{&quot;test でも伸びた？&quot;}
+  G -- yes --&gt; H[&quot;残す&quot;]
+  G -- no --&gt; I[&quot;捨てる&quot;]
+  H --&gt; F
+  I --&gt; F
+```
+
+## build-eval：質問に答えるだけで試験とベースラインができる
+
+まさおが実際に動かした範囲では、`/claude-api` と打つと補完候補に build-eval と hillclimb が出る。最初に「問題を本番ログから取るか」などの選択式の質問が来て、次に採点をプログラム判定にするか LLM 採点にするかを選び、そのまま直す前の点数（ベースライン）の計測へ進んだという。
+
+同氏が紹介する公式の説明では、Claude は決まった所で手を止めて人の確認を待つ。人が確かめるのは**入力**と**採点**の2か所で、集めた入力は簡単なページに全部並べて見せ、採点役は試しに数件を採点して「違う点にしたいものは無いか」を尋ねる。ベースラインの計測はその後に来る。
+
+- **問題の集め先の優先順**（公式）: 本番の記録 → バグ報告・サポートチケット → 人が手で書く数件 → コードベースから合成した問題（こちらが出した数件の実例を手本に作れる）
+- **採点役の選び方**（公式）: 出力に合う一番安い方法を Claude が提案する。答えの形が限られていればプログラムで確かめ、何通りもあるなら LLM に採点させる
+- 公式は採点の失敗を eval の設定ミスの中で特によくあるものに挙げており、まさおは採点済みの記録を自分で何件か読む手間は省かないほうがよいと勧める
+
+## 信頼できる試験の条件
+
+公式ブログは頼りになる eval の条件を4つ挙げている（条件の一覧表は画像でソース本文に転記されておらず未収集）。本文から読めるのは次の点である。
+
+- **満点に余地を残す**: 変更で性能が動いたかを判定できるようにするため。まさおは、余地を残しつつ強いモデルほど点が上がるように作るのは難しいと自身の経験を書く
+- **良い問題の目安**（公式）: その分野の専門家2人が同じ判定になり、採点役が確かめることがすべて問題文に書かれている問題
+- **問題の選び方**（公式）: 今のモデルが落とす問題だけを集めると、そのモデルの失敗の癖を測る試験になりかねない。人が難しいと判断した問題を選び、なぜ難しいかを言えるか確かめる。本番の記録も、ユーザーがうまくいきそうなことを試しがちなため易しい側に寄ることがある
+
+## 過剰適合：試験の点だけ上がって本番が変わらない
+
+よく設計した eval でも本番のタスク分布とは完全には一致せず、そのずれに合わせて直すと「本番より試験で良い成績を出すアプリ」になる。公式の例では、試験の問題は OCR があると有利なのに本番では OCR がほとんど役に立たず、改善を回すと OCR ツールが追加されて試験の点だけ上がる。プロンプトやツールなどモデル周りのコード（ハーネス）には、試験の癖が漏れる経路がたくさんあると公式は述べる。まさおも、動画台本を書かせるスキルに評価項目を増やし続けた結果、一見ルールを守っているのに全体で読むと機械っぽい台本になった経験を挙げている。
+
+公式が挙げる防ぎ方は3つ。
+
+1. **問題を2つの束に分ける**: 改善役が読める束を train、最後まで見せない束を test と呼ぶ
+2. **失敗の中身をプロンプトに写さない**: 改善役が失敗の記録を読むのは構わないが、貼り付けて直すのは禁じ手
+3. **答えをモデルの手が届かない場所にしまう**: モデルは答えそのものを探し当てて点を稼ぐことがある
+
+見るべき合図は「train の点が上がったのに test が横ばいなら過剰適合を疑う」である。
+
+## hillclimb：隠した問題で伸びない直しは捨てる
+
+`/claude-api hillclimb` はこの分け方を手順にしたコマンドだ。始める前に Claude は「性能を上げたいのか、性能を保ったまま費用を下げたいのか」を尋ね、問題を無作為に train と test に分ける。書き換えてよい場所は人が選び、候補はシステムプロンプト・スキルや指示ファイル・ツールの説明・モデルや effort の設定・ハーネスのコードである。
+
+- **1周で試す変更は1つだけ**。まさおは、そのため点が動いたときに原因がその変更だと分かるのだろうと推測している。提案の中身も言い回しの調整でなく、原因になっている節の書き直しや足りないルールの追加だという
+- **全体の点が一番高い版がそのまま選ばれるわけではない**。隠しておいた問題で伸びなかった直しは、数字が良く見えても捨てる。まさおの手元でも、両方上がる場合と train しか伸びない場合の両方が起きた
+- **点が2〜3周伸びないとき**は、直すのをやめて残った train の失敗を1件ずつ読み原因ごとに分類し、本当の失敗だけを次のラウンドに回す
+- **終了時**は test が一番良かった版のコードが残り、結果はベースラインと比べて信頼区間つきで報告される。伸びがブレの範囲に収まるなら取り込まないよう勧める
+
+## 最初に回す場所の選び方
+
+公式が挙げる hillclimb の当て所の基準は、安く試せること・点の変化を変えた所に結びつけられること・目標を絞ることの3つ。まさおは、プロンプトやスキルのような文章は変えるのも戻すのも簡単なので最初の対象に向き、自前で仕組みを組む前に公式の2コマンドに乗るのが一番楽な入口だと勧める。build-eval には本番の記録などの実例を渡すと問題の作り方を方向づけられる。
+
+余地を考えずに「性能を上げて」と頼むのはよくある失敗で、build-eval はベースラインがすでに約95%以上だと警告を出し、品質でなく費用か速さを狙うよう知らせる、と公式は説明する。
+
+まさおは、Opus 5.5 なら誰でも高品質なものが出せて差がつきにくくなったが、評価をちゃんと作れているかどうかではまだ差がつくと見ている。
+
+## 観察ログ（未検証）
+
+- 2026-10-07: Anthropic 社内の顧客サポートのベンチマーク（チケット44件、一部を改善に使い残りは非公開）で「費用を下げつつ性能を上げる」目標で hillclimb を回し、見せなかった問題でも控えめながら点が上がり、費用は元のおよそ5分の1になったと公式ブログが報告（まさおの紹介経由・数値の詳細は画像で未収集）
+
+## 問い
+
+- [[tools/claude-code-plugin-eval]] の「プラグインあり/なしの対試験」と、hillclimb の「train/test 分割＋1変更ずつ」はどう使い分けるか。スキル単体の寄与を測るなら前者、スキル文面を改善するなら後者、という分担で合っているか
+- このvaultの wiki-ingest スキルに hillclimb を当てられるか。カテゴリ・粒度判定は LESSONS.md に正解例が溜まっているので、それを問題集にして train/test に割れるか
+- [[tools/skillopt]] の held-out 検証ゲートと hillclimb は同じ発想に見えるが、変更の提案単位や採否基準（厳密改善か信頼区間か）はどこまで違うか
+
+## 関連
+
+- [[tools/claude-code]] — 2コマンドが載る CLI 本体（claude-api スキル同梱）
+- [[tools/claude-code-plugin-eval]] — 同じ Claude Code の公式 eval コマンド。プラグインあり/なしの差を測る対試験型
+- [[concepts/eval-loop]] — 出力を採点して閾値未満を止める品質ゲートの一般論。build-eval はその試験づくりを対話で自動化したもの
+- [[tools/skillopt]] — スキル文書を採点付き rollout と held-out 検証ゲートで最適化する Microsoft の OSS。train/test を分けて隠した側で採否を決める点が hillclimb と同型
+- [[tools/ant-cli]] — 同じ claude-api スキルと連携する公式 CLI
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

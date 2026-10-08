@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>jev</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="jev.md">Markdownで表示</a></div>
-  <div class="meta">models/jev · models · <span title="2026-10-04">3日前</span></div>
+  <div class="meta">models/jev · models · <span title="2026-10-04">4日前</span></div>
   <article><h1>Jev（RLCDで訓練された新型フロンティアモデル）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: ChatGPTの共同発明者を名乗る@CompleteSkepticが、2年間ステルスで開発した新しい訓練手法「RLCD」と、それで作った新型フロンティアモデル「Jev」を2026-09-15に発表した。告知文は「20-200x faster」「40-400x」で途切れており、手法とスペックの詳細は未収集。</p>
@@ -90,7 +90,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li>jaggedness page の「状態に埋め込まれた指示で答えが動く」は、ブックマークや外部記事の本文を状態として渡す用途（このwikiのカテゴリ判定など）でどの程度効くか。自前のエッジケースで確かめる</li>
 <li>RLCDは何の略で、既存のRLHF・RLVRと何が違うのか。発表本文かリンク先の技術資料を別途ingestして確認する</li>
-<li>「チャットモデルの延長ではAGIに届かない」という問題設定は、<a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a>など既存ページのAGI観とどう噛み合うか</li>
+<li>「チャットモデルの延長ではAGIに届かない」という問題設定は、agi-knowledge-moatなど既存ページのAGI観とどう噛み合うか</li>
 <li>「Jev's Architecture Unmasked」の原記事を取得し、API 約1万回の呼び出しから何を推測したのか（encoder＋decision head 型か、Laya との構造の近さ）を確かめる</li>
 <li>評価の正解ラベルが「Astra と Fable 5.1 の合意」なら、Jev の67.8%は最前線モデルの癖まで含めた一致率になる。人手ラベルの自前データで測ると順位はどう動くか</li>
 <li>@CompleteSkeptic と TypeSafe AI の関係（@akira_papa_IT は Diogo Almeida 氏＝CEO と紹介）を公式発表・公式プロフィールで確かめる。confidence が3段階ラベルか0〜1の値かも公式ドキュメントで確かめる。同一なら、選択型の出力を持つモデルはブラウザ操作以外のエージェント（CLI操作・フォーム入力）でどこまで速度を出せるか</li>
@@ -102,17 +102,17 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/jev-ultrafast.html">jev-ultrafast</a> — 「TypeSafe's Jev」を操作・対象の同時予測に使うbrowser-useのブラウザエージェント（本ページのJevと同一と考えられるが未確認）</li>
 <li><a href="../tools/laya-mlx.html">laya-mlx</a> — Jev 型のオープンウェイトクローン Laya を MLX で1判断8msで回すライブラリ（mizchi の実測・ブラウザ WebGPU では約50ms）</li>
 <li><a href="../companies/openai.html">openai</a> — 発表者が共同発明したと述べるChatGPTの開発元</li>
-<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a> — AGI時代の競争優位を論じる既存ページ。発表の「チャットモデルはなぜAGIに届かないか」という問いの対照</li>
+<li>agi-knowledge-moat — AGI時代の競争優位を論じる既存ページ。発表の「チャットモデルはなぜAGIに届かないか」という問いの対照</li>
 <li><a href="../concepts/small-llm-fine-tuning.html">small-llm-fine-tuning</a> — 狭いタスクを小さなモデルで解く方向を、専用モデルでなく小型LLMのファインチューニングで実現する手順</li>
 <li><a href="../tools/jev-model-router.html">jev-model-router</a> — Jev に Claude Code のサブエージェント・メインモデルの選択を任せる Claude Code Mod（@dani_avila7）</li>
 <li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a> — 公式スキル・MCPサーバ・モデルルーターの3ルートで Claude Code に Jev をつなぐ方法と、Stop フック等の周辺ツール（@karoukun_ai）</li>
 <li><a href="../concepts/jev-codex-integration.html">jev-codex-integration</a> — 同じ公式スキルを Codex に入れる手順・応用案7つ・精度を上げる6つの設計（@MakeAI_CEO）</li>
 <li><a href="../models/diffusiongemma-jev.html">diffusiongemma-jev</a> — Google Gemma 公式が紹介した Jev API 互換のモデル。Cloud Run に1コマンドでエンドポイントを立てられ、1ステップ約35〜60ms</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/openai.html">openai</a></li>
-<li><a href="../concepts/agi-knowledge-moat.html">agi-knowledge-moat</a></li>
 <li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li>
 <li><a href="../concepts/jev-claude-code-integration.html">jev-claude-code-integration</a></li>
-<li><a href="../concepts/jev-codex-integration.html">jev-codex-integration</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2099925682726002904" rel="noopener" target="_blank">https://x.com/i/web/status/2099925682726002904</a></li>
+<li><a href="../concepts/jev-codex-integration.html">jev-codex-integration</a></li>
+<li><a href="../concepts/small-llm-fine-tuning.html">small-llm-fine-tuning</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2099925682726002904" rel="noopener" target="_blank">https://x.com/i/web/status/2099925682726002904</a></li>
 <li><a href="https://github.com/browser-use/jev-ultrafast" rel="noopener" target="_blank">https://github.com/browser-use/jev-ultrafast</a></li>
 <li><a href="https://zenn.dev/mizchi/articles/laya-mlx-60fps" rel="noopener" target="_blank">https://zenn.dev/mizchi/articles/laya-mlx-60fps</a></li>
 <li><a href="https://x.com/i/web/status/2100713337436930288" rel="noopener" target="_blank">https://x.com/i/web/status/2100713337436930288</a></li>

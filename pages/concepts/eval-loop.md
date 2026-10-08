@@ -86,3 +86,4 @@ eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
 - [[tools/first-reader]] — 文章にスコアも修正案も付けず、読者の離脱位置と記憶だけを観測して返すスキル。ゲートの手前に置く計測器にあたる
 - [[concepts/small-llm-fine-tuning]] — 小型LLMのファインチューニングを訓練損失でなく固定ベースラインと隔離テストで判定する手順。品質ゲートを学習パイプラインへ持ち込んだ例
 - [[concepts/ai-coding-loop-formal]] — 主観判断が要る指標ではユーザーが都度呼ばれるとして決定的な数値指標を選び、形式仕様をテストオラクルにする実務例（mizchi）
+- [[tools/claude-api-build-eval-hillclimb]] — 試験づくりを人の確認つきで対話的に進める build-eval と、train/test 分割で過剰適合を防ぎながら1変更ずつ改善する hillclimb（Claude Code公式）

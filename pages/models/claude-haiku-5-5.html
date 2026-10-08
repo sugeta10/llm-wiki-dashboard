@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-haiku-5-5 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb950"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-haiku-5-5</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-haiku-5-5.md">Markdownで表示</a></div>
+  <div class="meta">models/claude-haiku-5-5 · models · <span title="2026-10-08">今日</span></div>
+  <article><h1>Claude Haiku 5.5</h1>
+<p><a href="../companies/anthropic.html">anthropic</a> の小型モデル。@claudeai は2026-10-07に「これまでで最も安く、最も速く、最も高性能な小型モデル」として発表し、@ClaudeDevs は同日「Claude Platform と Claude Code で利用可能になった」と告知した。両アカウントとも、実行コストは平均で Claude Haiku 4.5 より約75%安いと述べている。</p>
+<p>@ClaudeDevs は使いどころとして、<a href="../models/claude-opus-5-5.html">claude-opus-5-5</a> や Sonnet 5.5 のサブエージェントとして組み合わせること、要約・コンパクション（会話履歴の圧縮）・データベースクエリのような大量でコストに敏感なタスクを挙げた。上位モデルに判断を、Haiku に量の多い下請けを任せる分担は、<a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> や <a href="../concepts/cost-effective-harness.html">cost-effective-harness</a> の「モデルを役割で使い分ける」設計と同じ方向と考えられる（推論）。</p>
+<p>同じ @ClaudeDevs のスレッド内には、10万トークン未満のプロンプトは入力 $0.10／出力 $0.50（100万トークンあたり）・キャッシュ読み取り $0.01、10万トークン超は $0.50／$2.50・キャッシュ読み取り $0.05 という価格の投稿がある。本vaultが捕捉したのは Max/Team プランの API クレジット告知（<a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a>）のリプライ先としてのこの1投稿だけで、投稿本文にはモデル名が書かれていない。スレッドの流れから Haiku 5.5 の価格と考えられるが、未確認である（推論）。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-07: @claudeai／@ClaudeDevs「平均で Haiku 4.5 より約75%安く動く」。どのタスク構成での平均かは投稿に書かれていない</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>公式発表本体で、ベンチマーク・価格表・コンテキスト長を確認し、スレッド内の価格投稿が Haiku 5.5 のものかを確かめる</li>
+<li>このリポの headless ingest（<code>claude -p</code>）の要約・分類系の下請けを Haiku 5.5 に回すと、品質を落とさずにコストが下がるか</li>
+<li>「10万トークンで価格が段階的に変わる」体系なら、長文脈の要約タスクではどこで分割するのが得か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a> — @ClaudeDevs がサブエージェントの組み合わせ相手として挙げた上位モデル</li>
+<li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> — 高知能モデルと安価モデルを役割で組み合わせる連携パターン</li>
+<li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a> — 安価モデルへの委譲がいつ引き合うかの経済分析</li>
+<li><a href="../concepts/claude-code-compact-recovery.html">claude-code-compact-recovery</a> — 用途に挙がったコンパクションの Claude Code 側の挙動</li>
+<li><a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a> — Max/Team プランの月次 API クレジット。Haiku 5.5 にも使える</li>
+<li><a href="../companies/anthropic.html">anthropic</a> — 開発元</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a></li>
+<li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
+<li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
+<li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107895955144208813" rel="noopener" target="_blank">https://x.com/i/web/status/2107895955144208813</a></li>
+<li><a href="https://x.com/i/web/status/2107895957933408429" rel="noopener" target="_blank">https://x.com/i/web/status/2107895957933408429</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Haiku 5.5
+
+[[companies/anthropic]] の小型モデル。@claudeai は2026-10-07に「これまでで最も安く、最も速く、最も高性能な小型モデル」として発表し、@ClaudeDevs は同日「Claude Platform と Claude Code で利用可能になった」と告知した。両アカウントとも、実行コストは平均で Claude Haiku 4.5 より約75%安いと述べている。
+
+@ClaudeDevs は使いどころとして、[[models/claude-opus-5-5]] や Sonnet 5.5 のサブエージェントとして組み合わせること、要約・コンパクション（会話履歴の圧縮）・データベースクエリのような大量でコストに敏感なタスクを挙げた。上位モデルに判断を、Haiku に量の多い下請けを任せる分担は、[[concepts/advisor-executor-pattern]] や [[concepts/cost-effective-harness]] の「モデルを役割で使い分ける」設計と同じ方向と考えられる（推論）。
+
+同じ @ClaudeDevs のスレッド内には、10万トークン未満のプロンプトは入力 $0.10／出力 $0.50（100万トークンあたり）・キャッシュ読み取り $0.01、10万トークン超は $0.50／$2.50・キャッシュ読み取り $0.05 という価格の投稿がある。本vaultが捕捉したのは Max/Team プランの API クレジット告知（[[business/claude-plan-api-credits]]）のリプライ先としてのこの1投稿だけで、投稿本文にはモデル名が書かれていない。スレッドの流れから Haiku 5.5 の価格と考えられるが、未確認である（推論）。
+
+## 観察ログ（未検証）
+
+- 2026-10-07: @claudeai／@ClaudeDevs「平均で Haiku 4.5 より約75%安く動く」。どのタスク構成での平均かは投稿に書かれていない
+
+## 問い
+
+- 公式発表本体で、ベンチマーク・価格表・コンテキスト長を確認し、スレッド内の価格投稿が Haiku 5.5 のものかを確かめる
+- このリポの headless ingest（`claude -p`）の要約・分類系の下請けを Haiku 5.5 に回すと、品質を落とさずにコストが下がるか
+- 「10万トークンで価格が段階的に変わる」体系なら、長文脈の要約タスクではどこで分割するのが得か
+
+## 関連
+
+- [[models/claude-opus-5-5]] — @ClaudeDevs がサブエージェントの組み合わせ相手として挙げた上位モデル
+- [[concepts/advisor-executor-pattern]] — 高知能モデルと安価モデルを役割で組み合わせる連携パターン
+- [[concepts/cost-effective-harness]] — 安価モデルへの委譲がいつ引き合うかの経済分析
+- [[concepts/claude-code-compact-recovery]] — 用途に挙がったコンパクションの Claude Code 側の挙動
+- [[business/claude-plan-api-credits]] — Max/Team プランの月次 API クレジット。Haiku 5.5 にも使える
+- [[companies/anthropic]] — 開発元
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

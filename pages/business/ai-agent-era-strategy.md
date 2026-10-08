@@ -47,4 +47,4 @@ AIによる生産性向上は、ソロプレナー（少人数・極小資本で
 
 ## 関連
 
-関連: [[business/org-design-intelligence]], [[business/ai-vertical-integration]], [[concepts/agentic-coding]], [[business/saas-inside-ai-agents]], [[business/founders-playbook]]（同じAIネイティブ思想を起業ライフサイクル側に当てたAnthropic公式プレイブック）, [[tools/html-slide-presenter]]（同じ梶谷健人によるHTMLスライド用発表者ツール）
+関連: [[business/org-design-intelligence]], [[business/ai-vertical-integration]], [[concepts/agentic-coding]], [[business/saas-inside-ai-agents]], [[business/founders-playbook]]（同じAIネイティブ思想を起業ライフサイクル側に当てたAnthropic公式プレイブック）, [[tools/html-slide-presenter]]（同じ梶谷健人によるHTMLスライド用発表者ツール）, [[concepts/agi-knowledge-moat]]（同じ梶谷健人の「AI時代の唯一のMOAT戦略」問題設定を統合したページ）

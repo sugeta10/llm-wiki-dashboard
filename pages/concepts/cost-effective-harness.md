@@ -60,3 +60,5 @@ Tarun Amasa（@trq212）の「Claude がタスクに応じて自分でハーネ�
 - [[concepts/delegation-management-style]] — 同じ委任コスト論を、別著者（Cognition社/Devin Fusion）が「リードモデルの管理スタイルの違い」という別軸で実測した実験
 - [[concepts/agent-command-wrappers]] — 同じコスト構造をモデル配分ではなく「操作をコードに固定してターンを消す」側から扱う。委譲するまでもない定型操作の受け皿
 - [[concepts/decision-layer-model]] — エージェント内の分岐判断を安い専用モデルへ切り出す設計。完了タスクあたりの請求額で追うべきという同じコスト観
+- [[models/claude-haiku-5-5]] — 委譲先の安価モデル候補（Haiku 4.5 比で平均約75%安いと公式が説明）
+- [[business/claude-plan-api-credits]] — Max/Team プランの月次 API クレジット。委譲先の試算で無料枠になる

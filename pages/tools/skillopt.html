@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>skillopt</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="skillopt.md">Markdownで表示</a></div>
-  <div class="meta">tools/skillopt · tools · <span title="2026-09-28">1週間前</span></div>
+  <div class="meta">tools/skillopt · tools · <span title="2026-10-08">今日</span></div>
   <article><h1>SkillOpt（Microsoft）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: スキル文書（SKILL.md 相当）を「凍結したエージェントの学習可能パラメータ」とみなし、エポック・バッチ・学習率・検証ゲートというニューラルネット訓練の規律で、モデルの重みに触れずにスキルを最適化する Microsoft 製 OSS（MIT・<code>pip install skillopt</code>）。</p>
@@ -89,11 +89,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/hermes-agent-self-evolution.html">hermes-agent-self-evolution</a> — DSPy+GEPA でスキルを自動進化させるリポ。同じ目的の別実装</li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — Dreaming（睡眠中の記憶整理）という同じ比喩を持つ機能。SkillOpt-Sleep と比較できる</li>
 <li><a href="../papers/2026-hao-skill-mining.html">2026-hao-skill-mining</a> — 軌跡からのスキル採掘は転移しなかったという負の結果。SkillOpt の転移の主張と対照</li>
+<li><a href="../tools/claude-api-build-eval-hillclimb.html">claude-api-build-eval-hillclimb</a> — Claude Code公式の hillclimb。train/test に分け、隠した test でも伸びた変更だけ残す同型の採否ゲート</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/improver-skill-pattern.html">improver-skill-pattern</a></li>
 <li><a href="../concepts/self-refining-skills.html">self-refining-skills</a></li>
 <li><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a></li>
-<li><a href="../tools/dspy.html">dspy</a></li>
-<li><a href="../papers/2026-hao-skill-mining.html">2026-hao-skill-mining</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/microsoft/SkillOpt" rel="noopener" target="_blank">https://github.com/microsoft/SkillOpt</a></li>
+<li><a href="../tools/claude-api-build-eval-hillclimb.html">claude-api-build-eval-hillclimb</a></li>
+<li><a href="../tools/dspy.html">dspy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://github.com/microsoft/SkillOpt" rel="noopener" target="_blank">https://github.com/microsoft/SkillOpt</a></li>
 <li><a href="https://x.com/i/web/status/2104235868298924252" rel="noopener" target="_blank">https://x.com/i/web/status/2104235868298924252</a></li></ul></section></article>
 </main>
 <script>
@@ -184,6 +185,7 @@ v0.2.0（2026-07-02）の目玉機能で、`skillopt-sleep` CLI として提供�
 - [[tools/hermes-agent-self-evolution]] — DSPy+GEPA でスキルを自動進化させるリポ。同じ目的の別実装
 - [[tools/claude-managed-agents]] — Dreaming（睡眠中の記憶整理）という同じ比喩を持つ機能。SkillOpt-Sleep と比較できる
 - [[papers/2026-hao-skill-mining]] — 軌跡からのスキル採掘は転移しなかったという負の結果。SkillOpt の転移の主張と対照
+- [[tools/claude-api-build-eval-hillclimb]] — Claude Code公式の hillclimb。train/test に分け、隠した test でも伸びた変更だけ残す同型の採否ゲート
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

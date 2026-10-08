@@ -54,6 +54,21 @@ Anthropicが公開したマルチエージェント構成では：
 
 応募窓口の公式ページ（claude.com/ja/community/ambassadors）が公開済みで、Anthropic自身が「Claude で開発する仲間と出会い、共に未来を考え続けよう」と募集メッセージを掲げている。これによりプログラムは@ClaudeDevsのツイート発表に加えて公式サイト上でも確認できる一次情報になった。
 
+## Claude Startups プログラムの拡大（2026-10）
+
+@claudeai は2026-10-06、Claude Startups プログラムをより多くの創業者に広げると発表した。メンバーが受けられるものとして、@claudeai は次の4つを挙げている。
+
+- **Claude Team を1年間**
+- **API クレジット**
+- スタートアップが使うツール群の**特別オファー**
+- Anthropic の **Applied AI チームとのオフィスアワー**
+
+> 📌 X bookmark: 17,152（2026-10-07 時点）
+
+投稿は動画と短縮リンク付きで、応募条件・クレジット額・対象となる創業者の範囲は本vaultでは未収集である。Applied AI チームを顧客の現場に付ける形は、上の企業向けAIサービス会社と同じ「Applied AI エンジニアが導入を伴走する」型をスタートアップ向けに薄く広げたものと読める（推論）。無料の Team 席と API クレジットで創業初期から Claude を業務と製品の両方に組み込ませる施策であり、AIネイティブ創業の手順を示した [[business/founders-playbook]] と対になる採用チャネルと考えられる（推論）。
+
+翌日の2026-10-07には、Max/Team の既存契約者向けにも月次 API クレジットが付与されるようになり（[[business/claude-plan-api-credits]]）、同日に小型モデル [[models/claude-haiku-5-5]] も公開された。
+
 ## 関連
 
 - [[tools/claude-code]]
@@ -71,3 +86,5 @@ Anthropicが公開したマルチエージェント構成では：
 - [[concepts/product-role-archetypes]]（Boris Cherny が Anthropic 内で観察した職能横断の5アーキタイプ）
 - [[tools/claude-academy]]（公式の無料学習サイト・2026-08-20公開。製品別5トラック＋AI Fluency）
 - [[models/claude-opus-5-5]]（Opus 5 後継と考えられるモデル。個人が投稿したシステムプロンプト冒頭のみ捕捉・公式情報は未収集）
+- [[models/claude-haiku-5-5]]（小型モデル・2026-10-07発表。Haiku 4.5 比で平均約75%安く動くと公式が説明）
+- [[business/claude-plan-api-credits]]（Max/Team プランの月次 API クレジット・2026-10-07発表）
