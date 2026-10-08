@@ -108,8 +108,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>使い切ったとき、購入クレジットや auto-reload があればそちらで継続し、無ければ次の付与まで API リクエストが止まる。Claude プラン側に課金されることはない</li>
 <li>解約・対象外プランへのダウングレードで新規付与は止まり、付与済み分は失効まで使える。Max 5x→20x のアップグレードは日割りで即時付与</li>
 </ul>
+<h2>始め方の入口：<code>/claude-api managed-agents-onboard</code></h2>
+<p>@ClaudeDevs の告知を引用した @katelyn_lesse は「ずっとやりたかった」と書き（ソース内では所属を確認できない）、クレジットの使い始めとして Claude Code で <code>/claude-api managed-agents-onboard</code> を実行するよう勧めている。名前からは、Claude Code 同梱の claude-api スキル（<a href="../tools/claude-api-build-eval-hillclimb.html">claude-api-build-eval-hillclimb</a> と同じスキル）のサブコマンドで、<a href="../tools/claude-managed-agents.html">claude-managed-agents</a> の初期設定を対話で進めるものと考えられるが、中身はソースに無く未確認である。対話型 Claude Code の利用自体はクレジット対象外なので、このコマンドで作ったエージェントを Managed Agents 側で動かした分がクレジットから引かれる、という使い分けになると推測される。</p>
 <h2>問い</h2>
 <ul>
+<li><code>/claude-api managed-agents-onboard</code> が実際に何を生成・設定するかを1回動かして確かめ、クレジット内で回せる小さなエージェント（例: ingest の下請け）の雛形になるか見る</li>
 <li>このリポの launchd headless ingest（<code>claude -p</code>）をプランのサインインから Console 組織の API キーに切り替えると、月 $100〜$200 の範囲に収まるか。プラン使用量の圧迫が減る分と、切り替えの手間は見合うか</li>
 <li>付与額で <a href="../models/claude-haiku-5-5.html">claude-haiku-5-5</a> を下請けに回す構成なら、どの程度の量を毎月無料で回せるか</li>
 </ul>
@@ -119,11 +122,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a> — 対話型利用はクレジット対象外。<code>claude -p</code> は認証方法で扱いが分かれる</li>
 <li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a> — 安価モデルへの委譲の損益分岐。クレジットで試算の前提が変わる</li>
 <li><a href="../companies/anthropic.html">anthropic</a> — 提供元</li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — クレジットの対象。<code>/claude-api managed-agents-onboard</code> で始めるよう勧められた先</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../concepts/cost-effective-harness.html">cost-effective-harness</a></li>
 <li><a href="../models/claude-haiku-5-5.html">claude-haiku-5-5</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107895957933408429" rel="noopener" target="_blank">https://x.com/i/web/status/2107895957933408429</a></li>
-<li><a href="https://support.claude.com/en/articles/17154008-monthly-api-credits-for-max-and-team-plans" rel="noopener" target="_blank">https://support.claude.com/en/articles/17154008-monthly-api-credits-for-max-and-team-plans</a></li></ul></section></article>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
+<li><a href="../tools/claude-api-build-eval-hillclimb.html">claude-api-build-eval-hillclimb</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107895957933408429" rel="noopener" target="_blank">https://x.com/i/web/status/2107895957933408429</a></li>
+<li><a href="https://support.claude.com/en/articles/17154008-monthly-api-credits-for-max-and-team-plans" rel="noopener" target="_blank">https://support.claude.com/en/articles/17154008-monthly-api-credits-for-max-and-team-plans</a></li>
+<li><a href="https://x.com/i/web/status/2107898415480700955" rel="noopener" target="_blank">https://x.com/i/web/status/2107898415480700955</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -186,8 +192,13 @@ Team は全席分を1つの月次残高にプールし、上限は $500。サポ
 - 使い切ったとき、購入クレジットや auto-reload があればそちらで継続し、無ければ次の付与まで API リクエストが止まる。Claude プラン側に課金されることはない
 - 解約・対象外プランへのダウングレードで新規付与は止まり、付与済み分は失効まで使える。Max 5x→20x のアップグレードは日割りで即時付与
 
+## 始め方の入口：`/claude-api managed-agents-onboard`
+
+@ClaudeDevs の告知を引用した @katelyn_lesse は「ずっとやりたかった」と書き（ソース内では所属を確認できない）、クレジットの使い始めとして Claude Code で `/claude-api managed-agents-onboard` を実行するよう勧めている。名前からは、Claude Code 同梱の claude-api スキル（[[tools/claude-api-build-eval-hillclimb]] と同じスキル）のサブコマンドで、[[tools/claude-managed-agents]] の初期設定を対話で進めるものと考えられるが、中身はソースに無く未確認である。対話型 Claude Code の利用自体はクレジット対象外なので、このコマンドで作ったエージェントを Managed Agents 側で動かした分がクレジットから引かれる、という使い分けになると推測される。
+
 ## 問い
 
+- `/claude-api managed-agents-onboard` が実際に何を生成・設定するかを1回動かして確かめ、クレジット内で回せる小さなエージェント（例: ingest の下請け）の雛形になるか見る
 - このリポの launchd headless ingest（`claude -p`）をプランのサインインから Console 組織の API キーに切り替えると、月 $100〜$200 の範囲に収まるか。プラン使用量の圧迫が減る分と、切り替えの手間は見合うか
 - 付与額で [[models/claude-haiku-5-5]] を下請けに回す構成なら、どの程度の量を毎月無料で回せるか
 
@@ -197,6 +208,7 @@ Team は全席分を1つの月次残高にプールし、上限は $500。サポ
 - [[tools/claude-code]] — 対話型利用はクレジット対象外。`claude -p` は認証方法で扱いが分かれる
 - [[concepts/cost-effective-harness]] — 安価モデルへの委譲の損益分岐。クレジットで試算の前提が変わる
 - [[companies/anthropic]] — 提供元
+- [[tools/claude-managed-agents]] — クレジットの対象。`/claude-api managed-agents-onboard` で始めるよう勧められた先
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

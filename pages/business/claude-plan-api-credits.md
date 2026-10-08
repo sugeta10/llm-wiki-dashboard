@@ -40,8 +40,13 @@ Team は全席分を1つの月次残高にプールし、上限は $500。サポ
 - 使い切ったとき、購入クレジットや auto-reload があればそちらで継続し、無ければ次の付与まで API リクエストが止まる。Claude プラン側に課金されることはない
 - 解約・対象外プランへのダウングレードで新規付与は止まり、付与済み分は失効まで使える。Max 5x→20x のアップグレードは日割りで即時付与
 
+## 始め方の入口：`/claude-api managed-agents-onboard`
+
+@ClaudeDevs の告知を引用した @katelyn_lesse は「ずっとやりたかった」と書き（ソース内では所属を確認できない）、クレジットの使い始めとして Claude Code で `/claude-api managed-agents-onboard` を実行するよう勧めている。名前からは、Claude Code 同梱の claude-api スキル（[[tools/claude-api-build-eval-hillclimb]] と同じスキル）のサブコマンドで、[[tools/claude-managed-agents]] の初期設定を対話で進めるものと考えられるが、中身はソースに無く未確認である。対話型 Claude Code の利用自体はクレジット対象外なので、このコマンドで作ったエージェントを Managed Agents 側で動かした分がクレジットから引かれる、という使い分けになると推測される。
+
 ## 問い
 
+- `/claude-api managed-agents-onboard` が実際に何を生成・設定するかを1回動かして確かめ、クレジット内で回せる小さなエージェント（例: ingest の下請け）の雛形になるか見る
 - このリポの launchd headless ingest（`claude -p`）をプランのサインインから Console 組織の API キーに切り替えると、月 $100〜$200 の範囲に収まるか。プラン使用量の圧迫が減る分と、切り替えの手間は見合うか
 - 付与額で [[models/claude-haiku-5-5]] を下請けに回す構成なら、どの程度の量を毎月無料で回せるか
 
@@ -51,3 +56,4 @@ Team は全席分を1つの月次残高にプールし、上限は $500。サポ
 - [[tools/claude-code]] — 対話型利用はクレジット対象外。`claude -p` は認証方法で扱いが分かれる
 - [[concepts/cost-effective-harness]] — 安価モデルへの委譲の損益分岐。クレジットで試算の前提が変わる
 - [[companies/anthropic]] — 提供元
+- [[tools/claude-managed-agents]] — クレジットの対象。`/claude-api managed-agents-onboard` で始めるよう勧められた先

@@ -68,3 +68,4 @@ Thariq の主な読み取りは「高 effort は隠れたエッジケースが�
 - [[concepts/llm-model-selection-strategy]] — 工程ごとにモデル×effort を割り当てる実務戦略
 - [[concepts/opus-motion-design-studio]] — 動画制作での effort 運用例（小修正 medium・新作 xhigh・ローンチ max）
 - [[tools/claude-projects-threads]] — コーディネーターとスレッドで effort を分けて設定する Claude Projects。既定はスレッド high・コーディネーター low
+- [[concepts/claude-code-long-task-harness]] — 本体 medium・レビュアーだけ high とし、受け入れチェックの通過数で effort を仕事単位に決める運用（@beamnxw）

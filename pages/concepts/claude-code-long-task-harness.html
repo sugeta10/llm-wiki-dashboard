@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-long-task-harness - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-long-task-harness</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-long-task-harness.md">Markdownで表示</a></div>
+  <div class="meta">concepts/claude-code-long-task-harness · concepts · <span title="2026-10-08">今日</span></div>
+  <article><h1>Claude Code で長時間タスクを完走させる7層ハーネス</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Opus 5.5 の長いタスクを「開ける成果物・検証できる証拠・翌日続けられる進捗記録」で終わらせるために、Claude Code の既存機能（CLAUDE.md・スキル・MCP・権限とフック・レビュー用サブエージェント・effort・<code>/goal</code>）を7層に割り当てて組む再利用前提のセットアップ（@beamnxw）。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  A[&quot;1. CLAUDE.md（タスク横断の事実）&quot;] --&gt; B[&quot;2. スキル（繰り返す手順）&quot;]
+  B --&gt; C[&quot;3. MCP（ソース取得）&quot;]
+  C --&gt; D[&quot;4. 権限・PreToolUse フック（実行境界）&quot;]
+  D --&gt; E[&quot;5. 証拠を返すレビュアー（サブエージェント）&quot;]
+  E --&gt; F[&quot;6. effort の割り当て&quot;]
+  F --&gt; G[&quot;7. /goal（完了条件＝保存物＋検証結果）&quot;]
+  G --&gt; H[&quot;progress.md（次セッションへの引き継ぎ）&quot;]</pre>
+<p>途中で止まった長い実行は予算を食うだけで何も残さない、というのが @beamnxw の出発点である。そこで「実行を始める前に、出力（成果物・証拠・進捗）をワークフローに組み込む」ことを提案する。ハーネスは「モデルの周りにある指示・ツール・権限・状態・チェックを調整するもの」と定義され（<a href="../concepts/harness-engineering.html">harness-engineering</a> の「モデル以外のすべて」と同じ見方）、本記事はそれを Claude Code の設定ファイル4つ・任意の外部接続1つ・タスクごとのゴール1つに落とした実装手順版にあたる。例は文書作成ワークフローで、参照資料を <code>sources/</code>、作業中の下書きを <code>drafts/</code>、承認済みを <code>published/</code> に置く。なお記事中の貼り付け用スニペット（CLAUDE.md・SKILL.md・settings.json・エージェント定義・起動コマンド・<code>/goal</code> 文）は画像または埋め込みで、ソースには本文テキストしか残っていない。</p>
+<h2>7層の中身</h2>
+<p><strong>1. ワークスペースに必要な事実を置く</strong>: ルートの CLAUDE.md にはタスクをまたいで有効な情報（出力先・ソース要件・文体規約）だけを書き、一時的な締め切りや未解決の疑問はタスク側に置く。@beamnxw は、<code>@path</code> インポートで分割しても読み込みはセッション開始時なので「整理には使えるが、たまにしか使わない手順はスキルへ」と区別する。1回の下書きで見つかった好みは、今後にも適用すると確認してから常設ルールに昇格させる（<a href="../concepts/claude-md-rules.html">claude-md-rules</a>）。</p>
+<p><strong>2. 繰り返す手順をスキルに保存する</strong>: 「読む→作る→レビューする→保存する」を <code>.claude/skills/write-draft/SKILL.md</code> にし、<code>$ARGUMENTS</code> でトピックを差し替える。各ステップに観察可能な結果（ソースの選定・保存されたファイル・書き手が解決できる指摘）を持たせ、「正確性を確認する」のような判断が開いたままの指示を避ける。公開の承認は下書き準備と分け、手順の改善はスキルを直す形で行う（例: 発表日と提供開始日の取り違えが続くならチェックを足す）。</p>
+<p><strong>3. ソースへのアクセスを与える</strong>: MCP 接続は特定のステップに役立つときだけ足す。長いタスクに頼る前に既知のページを1つ取得して中身を確かめ、取得失敗時は文書 ID と失敗理由を残して認証・アクセスを確認してから再試行する。使わないサーバーは <code>/mcp</code> で無効化する（<a href="../tools/claude-mcp.html">claude-mcp</a>）。</p>
+<p><strong>4. 行動ルールを実行層に置く</strong>: 変更してよいファイルと承認が要る操作を <code>.claude/settings.json</code> の権限で定義し、引数やタスク状態で判断が変わるものは PreToolUse フックで検査する。例では <code>published/</code> 配下への Edit を拒否し、<code>/permissions</code> で実効ルールを確かめ、ダミー文書の編集が拒否されることを試す。@beamnxw は、ファイルツールの制限は任意の Python/Node プロセスには及ばないので、必要なら OS のサンドボックスで縛ると注意している。外部書き込みがタイムアウトしたら、1回目が完了している可能性があるので再試行前に書き込み先を確認する。</p>
+<p><strong>5. レビュアーに証拠を返させる</strong>: <code>.claude/agents/evidence-reviewer.md</code> に読み取り・検索ツールだけを持つサブエージェントを置き、下書きのパス・関連ソースの場所・検査すべき主張を渡す。各指摘は「主張と開いたソース」を結び、「誤り」判定には矛盾する証拠と適用できる修正を、「未解決」判定には欠けている証拠を求める。修正は本体エージェントが行い、意味が変わったら隣の文も再確認する（<a href="../tools/claude-code-subagents.html">claude-code-subagents</a>）。トランスクリプトでなく環境に残った成果物を検査する、という Anthropic の評価ガイダンスに沿っていると @beamnxw は説明する。</p>
+<p><strong>6. 作業に effort を割り当てる</strong>: 本体は Opus 5.5 の既定 <code>medium</code> で始め、レビュアーだけ <code>high</code> を要求する。@beamnxw は「考える深さについての指示文を書いても effort 設定は変わらない」と区別し、受け入れチェックの通過数と必要だった修正を記録して effort を仕事単位の判断にするよう勧める（<a href="../concepts/effort-level-selection.html">effort-level-selection</a>・<a href="../concepts/claude-code-model-effort.html">claude-code-model-effort</a>）。初回の前に <code>/context</code>・<code>/agents</code>・<code>/permissions</code> で読み込み状態を確認する。</p>
+<p><strong>7. 何を証明すべきかを伝える</strong>: 完了を「保存された成果物と検証結果」で定義し、<code>/goal</code> に渡す（<a href="../tools/claude-code-goal.html">claude-code-goal</a>）。<code>/goal</code> は会話に表れた証拠をターン間で評価するので、エージェントが結果を示す必要がある。ターン数の条項はモデル評価なので、厳密な実行時間・支出の上限には実行制御が要る、と @beamnxw は書く。期待する出力は <code>drafts/article.md</code>・<code>drafts/checks.md</code>・<code>progress.md</code> の3つ。</p>
+<h2>引き継ぎと計測</h2>
+<p><code>progress.md</code> には意味のある段階ごとに「現在のファイル・完了したチェック・未解決の問い・次の行動」を記録し、新しいセッションで再開させて、最初からやり直すなら欠けた判断やパスを補う（<a href="../concepts/ai-session-handover.html">ai-session-handover</a>）。ルートの CLAUDE.md は compaction 後に再読込されるので、恒常的な事実はそこに置く。復旧について、<code>/rewind</code> は追跡しているファイル編集を戻せるが、シェルでの変更や多くのサブエージェントの編集は別途の復旧が要り、永続的な履歴は git が持つ、と @beamnxw は整理している。</p>
+<p>計測は「受け入れた成果物」単位で行う。<code>/usage</code> と <code>/context</code> を見て、委任したレビューと再試行もタスクの総量に含め、レビュー時間と必要だった修正も記録する。設定変更を試すときはタスクと受け入れ基準を固定して1要素だけ変える。@beamnxw は、Anthropic の Opus 5.5 発表で早期テスターが報告した 60% のトークン削減はその実験に属する数字で、自分のハーネスの節約は完了タスクの計測で確かめるべきだと釘を刺している（<a href="../models/claude-opus-5-5.html">claude-opus-5-5</a>）。</p>
+<h2>問い</h2>
+<ul>
+<li>このリポの wiki-ingest は「スキル＋/tmp/ingest_result.json」までで、7層のうち証拠を返すレビュアー（主張とソースの対応表）を持たない。ingest 後に <code>checks.md</code> 相当の主張–ソース対応表を出させると、捏造事故の検出が速くなるか。独立審判を撤去した経緯と矛盾しない形（判定でなく対応表の提示に留める）は作れるか</li>
+<li>「受け入れた成果物あたりのトークン＋レビュー時間」で effort を比べる計測を、weekly 生成など定型タスクで1回やってみる価値はあるか</li>
+<li><a href="../concepts/harness-engineering-roadmap.html">harness-engineering-roadmap</a> の14ステップのうち、本ページの7層はどこまでをカバーし、ループ層・システム層のどこが抜けているか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — ハーネス＝モデル以外のすべて、という全体論。本ページはそれを Claude Code の設定ファイルに落とした実装手順</li>
+<li><a href="../concepts/harness-engineering-roadmap.html">harness-engineering-roadmap</a> — 1体から自己改善システムまでの14ステップ。本ページは1体のハーネス層の具体例</li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — 7層目で完了条件を渡す機能。会話に表れた証拠で評価する仕様が本ページの「証拠を返させる」設計の前提</li>
+<li><a href="../concepts/effort-level-selection.html">effort-level-selection</a> — effort を仕事単位で決める判断の実験記録</li>
+<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a> — progress.md による引き継ぎと同じ課題を扱う手法集</li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a> — 証拠を返すレビュアーを置く仕組み</li>
+<li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a> — 対象モデル</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
+<li><a href="../concepts/effort-level-selection.html">effort-level-selection</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li>
+<li><a href="../concepts/harness-engineering-roadmap.html">harness-engineering-roadmap</a></li>
+<li><a href="../models/claude-opus-5-5.html">claude-opus-5-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107522996046905797" rel="noopener" target="_blank">https://x.com/i/web/status/2107522996046905797</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Code で長時間タスクを完走させる7層ハーネス
+
+&gt; **TL;DR**: Opus 5.5 の長いタスクを「開ける成果物・検証できる証拠・翌日続けられる進捗記録」で終わらせるために、Claude Code の既存機能（CLAUDE.md・スキル・MCP・権限とフック・レビュー用サブエージェント・effort・`/goal`）を7層に割り当てて組む再利用前提のセットアップ（@beamnxw）。
+
+```mermaid
+flowchart TD
+  A[&quot;1. CLAUDE.md（タスク横断の事実）&quot;] --&gt; B[&quot;2. スキル（繰り返す手順）&quot;]
+  B --&gt; C[&quot;3. MCP（ソース取得）&quot;]
+  C --&gt; D[&quot;4. 権限・PreToolUse フック（実行境界）&quot;]
+  D --&gt; E[&quot;5. 証拠を返すレビュアー（サブエージェント）&quot;]
+  E --&gt; F[&quot;6. effort の割り当て&quot;]
+  F --&gt; G[&quot;7. /goal（完了条件＝保存物＋検証結果）&quot;]
+  G --&gt; H[&quot;progress.md（次セッションへの引き継ぎ）&quot;]
+```
+
+途中で止まった長い実行は予算を食うだけで何も残さない、というのが @beamnxw の出発点である。そこで「実行を始める前に、出力（成果物・証拠・進捗）をワークフローに組み込む」ことを提案する。ハーネスは「モデルの周りにある指示・ツール・権限・状態・チェックを調整するもの」と定義され（[[concepts/harness-engineering]] の「モデル以外のすべて」と同じ見方）、本記事はそれを Claude Code の設定ファイル4つ・任意の外部接続1つ・タスクごとのゴール1つに落とした実装手順版にあたる。例は文書作成ワークフローで、参照資料を `sources/`、作業中の下書きを `drafts/`、承認済みを `published/` に置く。なお記事中の貼り付け用スニペット（CLAUDE.md・SKILL.md・settings.json・エージェント定義・起動コマンド・`/goal` 文）は画像または埋め込みで、ソースには本文テキストしか残っていない。
+
+## 7層の中身
+
+**1. ワークスペースに必要な事実を置く**: ルートの CLAUDE.md にはタスクをまたいで有効な情報（出力先・ソース要件・文体規約）だけを書き、一時的な締め切りや未解決の疑問はタスク側に置く。@beamnxw は、`@path` インポートで分割しても読み込みはセッション開始時なので「整理には使えるが、たまにしか使わない手順はスキルへ」と区別する。1回の下書きで見つかった好みは、今後にも適用すると確認してから常設ルールに昇格させる（[[concepts/claude-md-rules]]）。
+
+**2. 繰り返す手順をスキルに保存する**: 「読む→作る→レビューする→保存する」を `.claude/skills/write-draft/SKILL.md` にし、`$ARGUMENTS` でトピックを差し替える。各ステップに観察可能な結果（ソースの選定・保存されたファイル・書き手が解決できる指摘）を持たせ、「正確性を確認する」のような判断が開いたままの指示を避ける。公開の承認は下書き準備と分け、手順の改善はスキルを直す形で行う（例: 発表日と提供開始日の取り違えが続くならチェックを足す）。
+
+**3. ソースへのアクセスを与える**: MCP 接続は特定のステップに役立つときだけ足す。長いタスクに頼る前に既知のページを1つ取得して中身を確かめ、取得失敗時は文書 ID と失敗理由を残して認証・アクセスを確認してから再試行する。使わないサーバーは `/mcp` で無効化する（[[tools/claude-mcp]]）。
+
+**4. 行動ルールを実行層に置く**: 変更してよいファイルと承認が要る操作を `.claude/settings.json` の権限で定義し、引数やタスク状態で判断が変わるものは PreToolUse フックで検査する。例では `published/` 配下への Edit を拒否し、`/permissions` で実効ルールを確かめ、ダミー文書の編集が拒否されることを試す。@beamnxw は、ファイルツールの制限は任意の Python/Node プロセスには及ばないので、必要なら OS のサンドボックスで縛ると注意している。外部書き込みがタイムアウトしたら、1回目が完了している可能性があるので再試行前に書き込み先を確認する。
+
+**5. レビュアーに証拠を返させる**: `.claude/agents/evidence-reviewer.md` に読み取り・検索ツールだけを持つサブエージェントを置き、下書きのパス・関連ソースの場所・検査すべき主張を渡す。各指摘は「主張と開いたソース」を結び、「誤り」判定には矛盾する証拠と適用できる修正を、「未解決」判定には欠けている証拠を求める。修正は本体エージェントが行い、意味が変わったら隣の文も再確認する（[[tools/claude-code-subagents]]）。トランスクリプトでなく環境に残った成果物を検査する、という Anthropic の評価ガイダンスに沿っていると @beamnxw は説明する。
+
+**6. 作業に effort を割り当てる**: 本体は Opus 5.5 の既定 `medium` で始め、レビュアーだけ `high` を要求する。@beamnxw は「考える深さについての指示文を書いても effort 設定は変わらない」と区別し、受け入れチェックの通過数と必要だった修正を記録して effort を仕事単位の判断にするよう勧める（[[concepts/effort-level-selection]]・[[concepts/claude-code-model-effort]]）。初回の前に `/context`・`/agents`・`/permissions` で読み込み状態を確認する。
+
+**7. 何を証明すべきかを伝える**: 完了を「保存された成果物と検証結果」で定義し、`/goal` に渡す（[[tools/claude-code-goal]]）。`/goal` は会話に表れた証拠をターン間で評価するので、エージェントが結果を示す必要がある。ターン数の条項はモデル評価なので、厳密な実行時間・支出の上限には実行制御が要る、と @beamnxw は書く。期待する出力は `drafts/article.md`・`drafts/checks.md`・`progress.md` の3つ。
+
+## 引き継ぎと計測
+
+`progress.md` には意味のある段階ごとに「現在のファイル・完了したチェック・未解決の問い・次の行動」を記録し、新しいセッションで再開させて、最初からやり直すなら欠けた判断やパスを補う（[[concepts/ai-session-handover]]）。ルートの CLAUDE.md は compaction 後に再読込されるので、恒常的な事実はそこに置く。復旧について、`/rewind` は追跡しているファイル編集を戻せるが、シェルでの変更や多くのサブエージェントの編集は別途の復旧が要り、永続的な履歴は git が持つ、と @beamnxw は整理している。
+
+計測は「受け入れた成果物」単位で行う。`/usage` と `/context` を見て、委任したレビューと再試行もタスクの総量に含め、レビュー時間と必要だった修正も記録する。設定変更を試すときはタスクと受け入れ基準を固定して1要素だけ変える。@beamnxw は、Anthropic の Opus 5.5 発表で早期テスターが報告した 60% のトークン削減はその実験に属する数字で、自分のハーネスの節約は完了タスクの計測で確かめるべきだと釘を刺している（[[models/claude-opus-5-5]]）。
+
+## 問い
+
+- このリポの wiki-ingest は「スキル＋/tmp/ingest_result.json」までで、7層のうち証拠を返すレビュアー（主張とソースの対応表）を持たない。ingest 後に `checks.md` 相当の主張–ソース対応表を出させると、捏造事故の検出が速くなるか。独立審判を撤去した経緯と矛盾しない形（判定でなく対応表の提示に留める）は作れるか
+- 「受け入れた成果物あたりのトークン＋レビュー時間」で effort を比べる計測を、weekly 生成など定型タスクで1回やってみる価値はあるか
+- [[concepts/harness-engineering-roadmap]] の14ステップのうち、本ページの7層はどこまでをカバーし、ループ層・システム層のどこが抜けているか
+
+## 関連
+
+- [[concepts/harness-engineering]] — ハーネス＝モデル以外のすべて、という全体論。本ページはそれを Claude Code の設定ファイルに落とした実装手順
+- [[concepts/harness-engineering-roadmap]] — 1体から自己改善システムまでの14ステップ。本ページは1体のハーネス層の具体例
+- [[tools/claude-code-goal]] — 7層目で完了条件を渡す機能。会話に表れた証拠で評価する仕様が本ページの「証拠を返させる」設計の前提
+- [[concepts/effort-level-selection]] — effort を仕事単位で決める判断の実験記録
+- [[concepts/ai-session-handover]] — progress.md による引き継ぎと同じ課題を扱う手法集
+- [[tools/claude-code-subagents]] — 証拠を返すレビュアーを置く仕組み
+- [[models/claude-opus-5-5]] — 対象モデル
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

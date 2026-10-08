@@ -170,3 +170,4 @@ Dreams のAPI仕様・ライフサイクル・エラー種別の詳細は [[conc
 - [[concepts/managed-agents-dreams]]（Dreams APIの詳細仕様）
 - [[tools/ant-cli]] — ターミナルから Managed Agents を起動できる公式CLI
 - [[business/dinii-ask-anything]] — Managed Agentsで社内問い合わせ代行botを構築した実運用事例（KPI付き・自前orchestration7割削減）
+- [[business/claude-plan-api-credits]] — Max/Team プランの月次 API クレジットで Managed Agents を動かせる。始め方として `/claude-api managed-agents-onboard` が勧められている

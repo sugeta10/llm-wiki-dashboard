@@ -27,3 +27,4 @@
 - [[concepts/html-output-format]] — 長いタスクを任せる前に HTML ダッシュボードを作らせる運用（@Voxyz_ai）
 - [[concepts/opus-motion-design-studio]] — 公開直後に流行したコード描画動画の作り方を12ステップにまとめた講座（@0xMovez）。xhigh/max と画像読解による自己批評ループが要
 - [[models/claude-haiku-5-5]] — @ClaudeDevs が「Opus 5.5 と組むサブエージェント」として勧めた小型モデル
+- [[concepts/claude-code-long-task-harness]] — Opus 5.5 の長いタスクを完走させる Claude Code 7層ハーネス。発表時の 60% トークン削減は自分の計測で確かめよと注意（@beamnxw）
