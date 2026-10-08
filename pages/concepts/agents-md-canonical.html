@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agents-md-canonical</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agents-md-canonical.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agents-md-canonical · concepts · <span title="2026-10-06">2日前</span></div>
+  <div class="meta">concepts/agents-md-canonical · concepts · <span title="2026-10-08">今日</span></div>
   <article><h1>AGENTS.md を正本にしたクロスエージェント設定</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Claude Code（CLAUDE.md を読む）とCodex（AGENTS.md を読む）で同じフォルダ環境を使うには、共通指示を AGENTS.md に一本化し、CLAUDE.md は @AGENTS.md で取り込む薄い補足にする。ただし共通化できるのは「指示文」だけで、skills/agents/hooks/MCP のような実行機構はツールごとに入口を分ける必要がある。</p>
@@ -71,6 +71,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </tbody>
 </table>
 <p>したがって、Claude Code で育てた環境を Codex でも近い感覚で使うには、(1) 設定ファイルを AGENTS.md に一本化したうえで、(2) Codex 側の実行環境を別途足す、の二段構えになる。subagent の起動方法・hooks の有効化・外部連携の承認は、見た目が揃っても挙動確認が要る部分として残る。</p>
+<h2>正本のサイズ上限</h2>
+<p>1ファイルに寄せると、正本は両ツールの読み込み上限の両方に収める必要がある。@Voxyz_ai（2026-10-07）は AGENTS.md を細くするよう勧め、根拠として2つの上限を挙げた。Claude Code のドキュメントは各ファイルを200行未満に保つよう書いており、長くなるほど Claude が指示に従わなくなる。Codex は既定で最大32KiBまでしか読まず、それを超えた部分は読み飛ばす。</p>
+<p>200行のほうは「従う度合いが下がる」柔らかい上限、32KiBのほうは超えた分が文字どおり読まれない硬い上限で、性質が違う。正本の末尾に書いたルールほど Codex で黙って欠落する恐れがあるので、重要な指示は前に置き、詳細は別ファイルへ逃がす構成が安全と考えられる（推論）。200行基準の詳しい背景は <a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> にある。</p>
 <h2>実践者の運用例</h2>
 <ul>
 <li><strong>@showheyohtaki（2026-06-15）</strong>: Claude の自動化系料金変更（2026-06-15 開始）をきっかけに、Claude Code 環境を Codex でも使えるよう棚卸しした実践として発信。自身は「10部門・約20人の仮想社員」を、guidelines/（思想と文体）・.claude/skills/（ワークフロー）・.claude/agents/（専門エージェント）・.claude/rules/（作業ルール）・hooks/（自動実行）・scripts/（よく使う処理）というフォルダ構成で運用していると述べる。棚卸しから移行までを人力で設計するのは重いとして、既存の Claude Code 環境を壊さず棚卸しして Codex 環境を構築する「一括移行プロンプト」を LINE で無料配布すると告知した（プロンプト本体は本ソースに含まれない）</li>
@@ -79,6 +82,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>問い</h2>
 <ul>
 <li>このvault（CLAUDE.md と AGENTS.md がシンボリックリンクで同一内容）は既に一本化されているが、Codex 等から開いたとき skills/hooks の実行機構までは移植されない。Codex 側で発火させたいスキル・フックはどれで、どう別登録するか</li>
+<li>このvaultの CLAUDE.md（＝AGENTS.md）は200行・32KiBの両上限に収まっているか。収まらないなら、どの節をスキルや docs/ へ逃がすか</li>
 <li>@import で取り込む方式と、シンボリックリンクで同一ファイルを指す方式は、保守性・他ツール互換でどちらが優れるか</li>
 <li>「共通指示 vs 実行機構」の線引きは、<a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a> の5分類（AGENTS.md/Rules/Commands/Skills/Subagents）とどう対応するか</li>
 <li>@masahirochaen の言う「どちらを使っても同じ基準で仕事が進む」を満たす最小の共通層はどこまでか。共通ルール（AGENTS.md）だけで足りるか、レビュー基準・完了条件まで揃えて初めて二刀流と言えるか</li>
@@ -98,10 +102,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/ai-coding-loop-formal.html">ai-coding-loop-formal</a> — AGENTS.md のグローバルプロンプトは基本書かず、選択肢が複数あるときの判断基準と一般的でない制約だけ書くという中身側の方針（mizchi）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-coding-loop-formal.html">ai-coding-loop-formal</a></li>
 <li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
 <li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a></li>
-<li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a></li>
-<li><a href="../concepts/no-backward-compat-agents-md.html">no-backward-compat-agents-md</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066475738304279011" rel="noopener" target="_blank">https://x.com/i/web/status/2066475738304279011</a></li>
-<li><a href="https://x.com/i/web/status/2093670963330363470" rel="noopener" target="_blank">https://x.com/i/web/status/2093670963330363470</a></li></ul></section></article>
+<li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2066475738304279011" rel="noopener" target="_blank">https://x.com/i/web/status/2066475738304279011</a></li>
+<li><a href="https://x.com/i/web/status/2093670963330363470" rel="noopener" target="_blank">https://x.com/i/web/status/2093670963330363470</a></li>
+<li><a href="https://x.com/i/web/status/2107939019091005836" rel="noopener" target="_blank">https://x.com/i/web/status/2107939019091005836</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -151,6 +156,12 @@ flowchart TD
 
 したがって、Claude Code で育てた環境を Codex でも近い感覚で使うには、(1) 設定ファイルを AGENTS.md に一本化したうえで、(2) Codex 側の実行環境を別途足す、の二段構えになる。subagent の起動方法・hooks の有効化・外部連携の承認は、見た目が揃っても挙動確認が要る部分として残る。
 
+## 正本のサイズ上限
+
+1ファイルに寄せると、正本は両ツールの読み込み上限の両方に収める必要がある。@Voxyz_ai（2026-10-07）は AGENTS.md を細くするよう勧め、根拠として2つの上限を挙げた。Claude Code のドキュメントは各ファイルを200行未満に保つよう書いており、長くなるほど Claude が指示に従わなくなる。Codex は既定で最大32KiBまでしか読まず、それを超えた部分は読み飛ばす。
+
+200行のほうは「従う度合いが下がる」柔らかい上限、32KiBのほうは超えた分が文字どおり読まれない硬い上限で、性質が違う。正本の末尾に書いたルールほど Codex で黙って欠落する恐れがあるので、重要な指示は前に置き、詳細は別ファイルへ逃がす構成が安全と考えられる（推論）。200行基準の詳しい背景は [[concepts/claude-code-instruction-methods]] にある。
+
 ## 実践者の運用例
 
 - **@showheyohtaki（2026-06-15）**: Claude の自動化系料金変更（2026-06-15 開始）をきっかけに、Claude Code 環境を Codex でも使えるよう棚卸しした実践として発信。自身は「10部門・約20人の仮想社員」を、guidelines/（思想と文体）・.claude/skills/（ワークフロー）・.claude/agents/（専門エージェント）・.claude/rules/（作業ルール）・hooks/（自動実行）・scripts/（よく使う処理）というフォルダ構成で運用していると述べる。棚卸しから移行までを人力で設計するのは重いとして、既存の Claude Code 環境を壊さず棚卸しして Codex 環境を構築する「一括移行プロンプト」を LINE で無料配布すると告知した（プロンプト本体は本ソースに含まれない）
@@ -159,6 +170,7 @@ flowchart TD
 ## 問い
 
 - このvault（CLAUDE.md と AGENTS.md がシンボリックリンクで同一内容）は既に一本化されているが、Codex 等から開いたとき skills/hooks の実行機構までは移植されない。Codex 側で発火させたいスキル・フックはどれで、どう別登録するか
+- このvaultの CLAUDE.md（＝AGENTS.md）は200行・32KiBの両上限に収まっているか。収まらないなら、どの節をスキルや docs/ へ逃がすか
 - @import で取り込む方式と、シンボリックリンクで同一ファイルを指す方式は、保守性・他ツール互換でどちらが優れるか
 - 「共通指示 vs 実行機構」の線引きは、[[concepts/cursor-instruction-methods]] の5分類（AGENTS.md/Rules/Commands/Skills/Subagents）とどう対応するか
 - @masahirochaen の言う「どちらを使っても同じ基準で仕事が進む」を満たす最小の共通層はどこまでか。共通ルール（AGENTS.md）だけで足りるか、レビュー基準・完了条件まで揃えて初めて二刀流と言えるか

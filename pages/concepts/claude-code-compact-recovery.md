@@ -48,3 +48,4 @@ Claude Code の PostCompact hook は additionalContext を返せない仕様の�
 - [[concepts/codex-agent-loop]] — Codex 側の Compaction 実装（潜在表現を保持する圧縮）。テキスト要約ベースで判断構造が落ちる Claude Code compact との対比
 - [[concepts/semantic-generation-skill]] — 同著者（@u1）の別記事。こちらは判断構造の喪失でなく、対象の定まらない独自語の生成という別のCodex運用課題への対策
 - [[papers/2026-dairai-top-ai-papers-w35]] — 圧縮の喪失を定量化した研究「What Compaction Destroys」（Claude Code compactは安全ルールを1回で53%・5回で10%しか保持しない）。本ページのstate file退避の必要性を研究側から裏付ける
+- [[models/claude-haiku-5-5]] — `/autocompact 100k` で Haiku 5.5 の自動コンパクトを早め、安い価格帯（10万トークン未満）に留める設定（@lydiahallie）。圧縮回数が増えるぶん本ページの対策が効く場面
