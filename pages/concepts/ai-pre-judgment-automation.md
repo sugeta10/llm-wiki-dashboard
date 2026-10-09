@@ -70,4 +70,5 @@ AIエージェントを始めるなら、いきなり全自動にせず、**自�
 - [[concepts/claude-code-loop-types]] — Proactive ループ（イベント/スケジュール起動・小型モデルと最上位モデルの使い分け）の公式整理
 - [[tools/line-harness]] — 送信だけ人間承認に残すClaude Code運用。外部送信の手前で止める同じ境界
 - [[tools/openai-codex]] — 本運用の実行基盤
+- [[concepts/scheduled-agent-automation]] — 同じく Slack/GitHub を定時に読むが、承認を挟まず投稿まで無人で行い、書き込み先を1つに絞って他を読み取り専用にする対照例（Anthropic 公式の参照実装）
 - [[concepts/gmail-ai-default-access]] — 提供側が既定で受信トレイを AI に読ませて訴訟になった事例。Gmail を AI に常時検知させるとき読ませる範囲を自分で決める論点

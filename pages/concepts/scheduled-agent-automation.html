@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>scheduled-agent-automation - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>scheduled-agent-automation</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="scheduled-agent-automation.md">Markdownで表示</a></div>
+  <div class="meta">concepts/scheduled-agent-automation · concepts · <span title="2026-10-09">今日</span></div>
+  <article><h1>スケジュール実行エージェント自動化の設計（Daily brief）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Slack や GitHub を定時に読んで要点だけ投稿するエージェントを Claude Managed Agents で組むときの、Anthropic 公式の参照実装と6つの設計ルール（ブックマーク読み・読取失敗の明示・投稿直前の再確認・確認後に記録・設定は毎回読み直し・読み取り専用と予算上限）。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  S[&quot;Schedule（cron）&quot;] --&gt; A[&quot;Agent（agent.md）&quot;]
+  P[&quot;preferences（読み取り専用）&quot;] --&gt; A
+  ST[&quot;state: bookmarks / ledger / runs&quot;] &lt;--&gt; A
+  SRC[&quot;Sources: Slack・GitHub（Vault の資格情報）&quot;] --&gt; A
+  A --&gt; V[&quot;投稿直前に再確認&quot;]
+  V --&gt; D[&quot;Destination: Slack 1チャンネル&quot;]
+  D --&gt;|&quot;ok:true を確認&quot;| ST</pre>
+<p>背景のジョブを無人で回すと、資格情報が切れて情報源を読めなくなっても誰も気づかず、好みの指定も守られなくなる。Anthropic の公式ブログ（claude.dev）はこの問題を挙げ、社内で使っている「定時に情報を集めて知るべきことだけ知らせる」自動化を <a href="../tools/claude-managed-agents.html">claude-managed-agents</a> で作り直した参照実装 daily-brief を公開した（コードは anthropics/claude-quickstarts の managed-agents/daily-brief）。@ClaudeDevs（Anthropic 公式の開発者向けアカウント）はこの記事を「資格情報とメモリを持って Slack/GitHub を定時に読み、更新を投稿するエージェント」の作り方として紹介し、Claude Code のコマンド1つで設定でき、Max/Team プランに含まれる新しい API クレジットで動かせると告げている（クレジットの内訳は <a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a>）。</p>
+<h2>構成要素と設定ファイル</h2>
+<p>記事は自動化を6部品に分ける: Sources（読む場所の名前つき一覧）・Destination（書き込んでよい唯一の場所）・Agent（モデル・ツール・手順）・Schedule（cron）・Memory（読み手の好みとエージェント自身の記憶）・Guardrails（読むだけの場所は読み取り専用、1回あたりの支出上限）。</p>
+<p>参照実装のファイル構成（記事からの転記）:</p>
+<table>
+<thead>
+<tr>
+<th>ファイル</th>
+<th>中身</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agent.md</code></td>
+<td>モデル・ツール・指示</td>
+</tr>
+<tr>
+<td><code>deployment.md</code></td>
+<td>スケジュール・タイムゾーン・予算・最初のメッセージ</td>
+</tr>
+<tr>
+<td><code>environment.yaml</code></td>
+<td>ネットワークの許可リスト</td>
+</tr>
+<tr>
+<td><code>memory_store_preferences.yaml</code></td>
+<td>利用者の好み</td>
+</tr>
+<tr>
+<td><code>memory_store_state.yaml</code></td>
+<td>エージェントのブックマーク・台帳・メモ・実行記録</td>
+</tr>
+<tr>
+<td><code>vault.yaml</code></td>
+<td>資格情報を入れる Vault</td>
+</tr>
+<tr>
+<td><code>claude-lock.json</code></td>
+<td><code>ant apply</code> が書くリソース ID</td>
+</tr>
+<tr>
+<td><code>slack/manifest.yaml</code></td>
+<td>Slack ボットアプリ1つ</td>
+</tr>
+</tbody>
+</table>
+<p><a href="../tools/ant-cli.html">ant-cli</a> の <code>ant apply</code> コマンドがこれらを読んで Claude API のワークスペースにリソースを作り、ID を <code>claude-lock.json</code> に記録する。以後は Anthropic のインフラ上で定時実行されるので、手元のマシンを起動しておく必要はない。Managed Agents では agent.md はモデル・システムプロンプト・ツールの版つき設定にすぎず、実際に動かすのは deployment（Scheduled Deployments）で、スケジュール・Vault・メモリストア・予算を持ち、発火のたびに新しいセッションを起動する。スケジュールを待たずに試すには <code>ant beta:deployments run --deployment-id &lt;id&gt;</code> で手動起動する。</p>
+<h2>Sources: 専用の資格情報とブックマーク</h2>
+<p>資格情報は Vault に置き、本物の値はコードが走るサンドボックスの外に留まる。記事によると経路は2通りある。GitHub は MCP サーバー経由で、サンドボックス外のプロキシが URL の一致する Vault 資格情報を探して付ける。Slack はサンドボックス内から bash ツールで curl を叩き、サンドボックスには <code>$SLACK_BOT_TOKEN</code> という不透明なプレースホルダーだけがあり、許可したホストへのリクエストが外に出る時点でプラットフォームが本物のトークンに差し替える。</p>
+<p>記事は「直近24時間」のような固定窓で読ませるのをよくある誤りとする。実行が遅れれば取りこぼし、早まれば重複するからだ。代わりに情報源ごとのブックマーク（最後に読んだ最新項目のタイムスタンプ）を <code>bookmarks.json</code> に書かせ、次回はそこから読ませる。保存先はメモリストア <code>state</code> で、各実行のサンドボックスの <code>/mnt/memory/</code> にマウントされ実行をまたいで残る。</p>
+<p><strong>読み取り失敗を「静かな日」と取り違えない</strong>: MCP サーバーが落ちていたりトークンが切れていても実行は始まり、そのサーバーのツールが無いだけなので、エージェントは「新着なし」と報告してしまう。記事の対策は agent.md の3規則で、失敗した情報源のブックマークは動かさない・他の情報源でブリーフを書く・末尾に読めなかった情報源を1行で明記する（「pull requests unavailable this run」）。</p>
+<h2>Destination: 投稿の確認と記録の順序</h2>
+<p>投稿先は Slack の1チャンネルで、読みに使うのと同じボットトークンで bash から <code>chat.postMessage</code> を叩く。bash ツールは既定で承認なしに動き、<code>slack.com</code> は environment の許可リストに入っているので、投稿に承認者は要らない。</p>
+<p>記事が挙げる失敗は2方向ある。届いていない投稿を記録するとブックマークが進んで項目が永久に報告されず、届いたか不確かで再投稿すると読み手に同じブリーフが2回届く。agent.md の3規則で防ぐ:</p>
+<ol>
+<li>チャンネルの直近メッセージに今日のタイトルがあれば投稿しない</li>
+<li>Slack が <code>"ok": true</code> とメッセージ ts を返したときだけ送信済みとみなす</li>
+<li>台帳とブックマークはその確認の後でだけ更新する。結果が不明なら実行を「maybe posted」とし、他は何も変えない</li>
+</ol>
+<p>実行記録 <code>runs/&lt;date&gt;.md</code> には投稿前に「posting」、確認後に「posted」とメッセージ ID、または「maybe posted」を書く。外部への書き込みを冪等にし状態の確定を最後に回すこの順序は、<a href="../concepts/graph-reliability-design.html">graph-reliability-design</a> の「ノード単位の失敗方針（冪等な書き込み）」を1エージェントの実行単位に当てはめたものと読める（wiki 側の関連づけ）。</p>
+<h2>Agent: 短く保ち、投稿直前に確かめる</h2>
+<p>参照実装のモデルは <code>claude-sonnet-5-5</code> で、web_search と web_fetch は無効化している。MCP ツールは既定で承認を求めるが無人実行では承認する人がいないので、GitHub ツールセットを <code>always_allow</code> にし、代わりに GitHub トークンを読み取り専用にしている。</p>
+<p>agent.md の判断規則（記事からの抜粋）は、項目を載せる条件を「読み手が今日それに対して動く、または直前の判断を変える」に絞り、迷ったら載せない。件数（「12 open reviews」）は項目ではなく、詰まっているものにリンクする。台帳にあってまだ開いている項目は「still waiting, day 3」の1行で持ち越し、閉じたものは黙って落とす。投稿直前には報告する全項目の現況を情報源で再確認し、解決済みなら落とし、変化していれば直し、確認できなければ落として実行記録の cuts に残す。記事は「古い『まだあなた待ち』1件は、欠けた10件より信頼を損なう」として、状態をぼかさず断定するか落とすかを求める。リンクは手で組み立てず、PR の html_url や Slack の permalink を情報源からコピーさせる。</p>
+<p>タイムゾーンも罠に挙がっている。サーバーのタイムゾーンで日付を計算して今朝を「昨日」と呼ぶ誤りを防ぐため、deployment.md の <code>timezone</code> で発火時刻を決め、本文2行目でエージェントに日付計算用のゾーンを伝える。</p>
+<h2>Memory: 好みは読み取り専用、状態は台帳で</h2>
+<p>各実行は記憶のない新しいサンドボックスで始まるので、記憶が無ければフィードバックが定着しない。一方で記事は、古い記憶が解決済みの項目を「まだ待ち」と報告させたり、開いている項目を「報告済み」として落とさせたりすると指摘する。そこでメモリストアを2つに分ける。</p>
+<ul>
+<li><strong>preferences</strong>（利用者のもの・エージェントは読み取り専用）: 読むチャンネルとリポジトリ、除外するもの、長さの上限、投稿先、止める条件</li>
+<li><strong>state</strong>（エージェントのもの・読み書き）: ブックマーク、報告済み項目の台帳 <code>ledger.md</code>、実行ごとの記録、好みへの変更提案、情報源の癖のメモ（「最新50件しか返さない」）</li>
+</ul>
+<p>好みのコピーをプロンプトに焼き込むと、変更済みの規則を適用し続ける。記事は毎回ファイルを読み直させ、読めなければ既定値で走らず停止して報告させる。台帳の各行は報告日・出どころ・変わらない ID（Slack のメッセージ ts や PR 番号）・最後に把握した状態を持つ。</p>
+<h2>Guardrails: 読み取り専用と予算上限</h2>
+<p>エージェントは他人が書いたメッセージや issue を読み、その文章が指示として解釈されうる。記事は「従ってしまった場合にできること」を絞る方針を取る。GitHub トークンと preferences は読み取り専用、environment は許可リストのホストにしか出られない。仕込まれた指示はブリーフの中身（実行間で持ち越すメモ経由を含む）を変えうるが、GitHub への書き込みや規則の編集はできない。例外は Slack で、同じトークンで投稿もするため、ボットは読む・書く必要のあるチャンネルにだけ招待する。</p>
+<p>支出上限は deployment.md の <code>budget</code>（<code>max_list_cost</code> をセント単位の文字列で指定、"500" は $5.00）で、各実行に満額が与えられる。記事は通常の実行コストの3〜5倍から始め、実測を見て締めるよう勧める。上限に達した実行は失敗せず <code>budget_reached</code> で一時停止するので、低すぎる上限は「ブリーフが静かになった」ように見える。ここでも「黙った」と「何もなかった」の区別が要点になっている。</p>
+<h2>始め方</h2>
+<p><code>claude update</code> の後、Claude Code で <code>/claude-api managed-agents-onboard https://claude.dev/blog/building-effective-agent-automations/</code> を実行すると、claude-api スキルが記事を読んで構成を提案し、プロジェクトの agents/ フォルダにファイルを書き、<code>ant apply</code> でリソースを作る。記事はこれを出発点とし、情報源・投稿先・好みに合わせて改変するよう述べている。前提として Slack アプリ（manifest から作成）と GitHub トークンが要る。</p>
+<p><a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a> は検知を普通のプログラムに任せ、モデルは提案までに留めて人間の承認後に実行する。本ページの設計は投稿まで無人で行う代わりに、書き込み先を1つに絞り、それ以外を読み取り専用にして安全側に倒している。外部への書き込み範囲が、承認を挟むかどうかの判断軸になっていると考えられる（wiki 側の推論）。</p>
+<h2>問い</h2>
+<ul>
+<li>このwikiの launchd 定時ジョブ（auto-sync・weekly 生成）に「読取失敗を静かな日と区別する」「状態の確定は確認後」の2規則を当てはめると、どこが今は黙って失敗しうるか？</li>
+<li>実行間で持ち越す state のメモ経由でのプロンプトインジェクションは、読み取り専用化では防げない。メモの汚染を検出する手段はあるか？</li>
+<li>予算上限による一時停止を、読み手側でどう「静かな日」と見分けるか（記事の図にある heartbeat の具体像は本文に書かれていない）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — 本設計の実行基盤（Vault・メモリストア・Scheduled Deployments・budget）</li>
+<li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a> — 冪等な書き込みとノード単位の失敗方針。投稿確認後にだけ状態を確定する順序の一般形</li>
+<li><a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a> — 同じく Slack/GitHub を定時検知する自動化だが、実行前に人間の承認を挟む対照例</li>
+<li><a href="../tools/ant-cli.html">ant-cli</a> — <code>ant apply</code> でファイル群から API リソースを作る CLI</li>
+<li><a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a> — Max/Team の月次 API クレジットで本自動化を動かせる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a></li>
+<li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a></li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
+<li><a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a></li>
+<li><a href="../tools/ant-cli.html">ant-cli</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2108320296323477683" rel="noopener" target="_blank">https://x.com/i/web/status/2108320296323477683</a></li>
+<li><a href="https://claude.dev/blog/building-effective-agent-automations/" rel="noopener" target="_blank">https://claude.dev/blog/building-effective-agent-automations/</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># スケジュール実行エージェント自動化の設計（Daily brief）
+
+&gt; **TL;DR**: Slack や GitHub を定時に読んで要点だけ投稿するエージェントを Claude Managed Agents で組むときの、Anthropic 公式の参照実装と6つの設計ルール（ブックマーク読み・読取失敗の明示・投稿直前の再確認・確認後に記録・設定は毎回読み直し・読み取り専用と予算上限）。
+
+```mermaid
+flowchart LR
+  S[&quot;Schedule（cron）&quot;] --&gt; A[&quot;Agent（agent.md）&quot;]
+  P[&quot;preferences（読み取り専用）&quot;] --&gt; A
+  ST[&quot;state: bookmarks / ledger / runs&quot;] &lt;--&gt; A
+  SRC[&quot;Sources: Slack・GitHub（Vault の資格情報）&quot;] --&gt; A
+  A --&gt; V[&quot;投稿直前に再確認&quot;]
+  V --&gt; D[&quot;Destination: Slack 1チャンネル&quot;]
+  D --&gt;|&quot;ok:true を確認&quot;| ST
+```
+
+背景のジョブを無人で回すと、資格情報が切れて情報源を読めなくなっても誰も気づかず、好みの指定も守られなくなる。Anthropic の公式ブログ（claude.dev）はこの問題を挙げ、社内で使っている「定時に情報を集めて知るべきことだけ知らせる」自動化を [[tools/claude-managed-agents]] で作り直した参照実装 daily-brief を公開した（コードは anthropics/claude-quickstarts の managed-agents/daily-brief）。@ClaudeDevs（Anthropic 公式の開発者向けアカウント）はこの記事を「資格情報とメモリを持って Slack/GitHub を定時に読み、更新を投稿するエージェント」の作り方として紹介し、Claude Code のコマンド1つで設定でき、Max/Team プランに含まれる新しい API クレジットで動かせると告げている（クレジットの内訳は [[business/claude-plan-api-credits]]）。
+
+## 構成要素と設定ファイル
+
+記事は自動化を6部品に分ける: Sources（読む場所の名前つき一覧）・Destination（書き込んでよい唯一の場所）・Agent（モデル・ツール・手順）・Schedule（cron）・Memory（読み手の好みとエージェント自身の記憶）・Guardrails（読むだけの場所は読み取り専用、1回あたりの支出上限）。
+
+参照実装のファイル構成（記事からの転記）:
+
+| ファイル | 中身 |
+|---|---|
+| `agent.md` | モデル・ツール・指示 |
+| `deployment.md` | スケジュール・タイムゾーン・予算・最初のメッセージ |
+| `environment.yaml` | ネットワークの許可リスト |
+| `memory_store_preferences.yaml` | 利用者の好み |
+| `memory_store_state.yaml` | エージェントのブックマーク・台帳・メモ・実行記録 |
+| `vault.yaml` | 資格情報を入れる Vault |
+| `claude-lock.json` | `ant apply` が書くリソース ID |
+| `slack/manifest.yaml` | Slack ボットアプリ1つ |
+
+[[tools/ant-cli]] の `ant apply` コマンドがこれらを読んで Claude API のワークスペースにリソースを作り、ID を `claude-lock.json` に記録する。以後は Anthropic のインフラ上で定時実行されるので、手元のマシンを起動しておく必要はない。Managed Agents では agent.md はモデル・システムプロンプト・ツールの版つき設定にすぎず、実際に動かすのは deployment（Scheduled Deployments）で、スケジュール・Vault・メモリストア・予算を持ち、発火のたびに新しいセッションを起動する。スケジュールを待たずに試すには `ant beta:deployments run --deployment-id &lt;id&gt;` で手動起動する。
+
+## Sources: 専用の資格情報とブックマーク
+
+資格情報は Vault に置き、本物の値はコードが走るサンドボックスの外に留まる。記事によると経路は2通りある。GitHub は MCP サーバー経由で、サンドボックス外のプロキシが URL の一致する Vault 資格情報を探して付ける。Slack はサンドボックス内から bash ツールで curl を叩き、サンドボックスには `$SLACK_BOT_TOKEN` という不透明なプレースホルダーだけがあり、許可したホストへのリクエストが外に出る時点でプラットフォームが本物のトークンに差し替える。
+
+記事は「直近24時間」のような固定窓で読ませるのをよくある誤りとする。実行が遅れれば取りこぼし、早まれば重複するからだ。代わりに情報源ごとのブックマーク（最後に読んだ最新項目のタイムスタンプ）を `bookmarks.json` に書かせ、次回はそこから読ませる。保存先はメモリストア `state` で、各実行のサンドボックスの `/mnt/memory/` にマウントされ実行をまたいで残る。
+
+**読み取り失敗を「静かな日」と取り違えない**: MCP サーバーが落ちていたりトークンが切れていても実行は始まり、そのサーバーのツールが無いだけなので、エージェントは「新着なし」と報告してしまう。記事の対策は agent.md の3規則で、失敗した情報源のブックマークは動かさない・他の情報源でブリーフを書く・末尾に読めなかった情報源を1行で明記する（「pull requests unavailable this run」）。
+
+## Destination: 投稿の確認と記録の順序
+
+投稿先は Slack の1チャンネルで、読みに使うのと同じボットトークンで bash から `chat.postMessage` を叩く。bash ツールは既定で承認なしに動き、`slack.com` は environment の許可リストに入っているので、投稿に承認者は要らない。
+
+記事が挙げる失敗は2方向ある。届いていない投稿を記録するとブックマークが進んで項目が永久に報告されず、届いたか不確かで再投稿すると読み手に同じブリーフが2回届く。agent.md の3規則で防ぐ:
+
+1. チャンネルの直近メッセージに今日のタイトルがあれば投稿しない
+2. Slack が `&quot;ok&quot;: true` とメッセージ ts を返したときだけ送信済みとみなす
+3. 台帳とブックマークはその確認の後でだけ更新する。結果が不明なら実行を「maybe posted」とし、他は何も変えない
+
+実行記録 `runs/&lt;date&gt;.md` には投稿前に「posting」、確認後に「posted」とメッセージ ID、または「maybe posted」を書く。外部への書き込みを冪等にし状態の確定を最後に回すこの順序は、[[concepts/graph-reliability-design]] の「ノード単位の失敗方針（冪等な書き込み）」を1エージェントの実行単位に当てはめたものと読める（wiki 側の関連づけ）。
+
+## Agent: 短く保ち、投稿直前に確かめる
+
+参照実装のモデルは `claude-sonnet-5-5` で、web_search と web_fetch は無効化している。MCP ツールは既定で承認を求めるが無人実行では承認する人がいないので、GitHub ツールセットを `always_allow` にし、代わりに GitHub トークンを読み取り専用にしている。
+
+agent.md の判断規則（記事からの抜粋）は、項目を載せる条件を「読み手が今日それに対して動く、または直前の判断を変える」に絞り、迷ったら載せない。件数（「12 open reviews」）は項目ではなく、詰まっているものにリンクする。台帳にあってまだ開いている項目は「still waiting, day 3」の1行で持ち越し、閉じたものは黙って落とす。投稿直前には報告する全項目の現況を情報源で再確認し、解決済みなら落とし、変化していれば直し、確認できなければ落として実行記録の cuts に残す。記事は「古い『まだあなた待ち』1件は、欠けた10件より信頼を損なう」として、状態をぼかさず断定するか落とすかを求める。リンクは手で組み立てず、PR の html_url や Slack の permalink を情報源からコピーさせる。
+
+タイムゾーンも罠に挙がっている。サーバーのタイムゾーンで日付を計算して今朝を「昨日」と呼ぶ誤りを防ぐため、deployment.md の `timezone` で発火時刻を決め、本文2行目でエージェントに日付計算用のゾーンを伝える。
+
+## Memory: 好みは読み取り専用、状態は台帳で
+
+各実行は記憶のない新しいサンドボックスで始まるので、記憶が無ければフィードバックが定着しない。一方で記事は、古い記憶が解決済みの項目を「まだ待ち」と報告させたり、開いている項目を「報告済み」として落とさせたりすると指摘する。そこでメモリストアを2つに分ける。
+
+- **preferences**（利用者のもの・エージェントは読み取り専用）: 読むチャンネルとリポジトリ、除外するもの、長さの上限、投稿先、止める条件
+- **state**（エージェントのもの・読み書き）: ブックマーク、報告済み項目の台帳 `ledger.md`、実行ごとの記録、好みへの変更提案、情報源の癖のメモ（「最新50件しか返さない」）
+
+好みのコピーをプロンプトに焼き込むと、変更済みの規則を適用し続ける。記事は毎回ファイルを読み直させ、読めなければ既定値で走らず停止して報告させる。台帳の各行は報告日・出どころ・変わらない ID（Slack のメッセージ ts や PR 番号）・最後に把握した状態を持つ。
+
+## Guardrails: 読み取り専用と予算上限
+
+エージェントは他人が書いたメッセージや issue を読み、その文章が指示として解釈されうる。記事は「従ってしまった場合にできること」を絞る方針を取る。GitHub トークンと preferences は読み取り専用、environment は許可リストのホストにしか出られない。仕込まれた指示はブリーフの中身（実行間で持ち越すメモ経由を含む）を変えうるが、GitHub への書き込みや規則の編集はできない。例外は Slack で、同じトークンで投稿もするため、ボットは読む・書く必要のあるチャンネルにだけ招待する。
+
+支出上限は deployment.md の `budget`（`max_list_cost` をセント単位の文字列で指定、&quot;500&quot; は $5.00）で、各実行に満額が与えられる。記事は通常の実行コストの3〜5倍から始め、実測を見て締めるよう勧める。上限に達した実行は失敗せず `budget_reached` で一時停止するので、低すぎる上限は「ブリーフが静かになった」ように見える。ここでも「黙った」と「何もなかった」の区別が要点になっている。
+
+## 始め方
+
+`claude update` の後、Claude Code で `/claude-api managed-agents-onboard https://claude.dev/blog/building-effective-agent-automations/` を実行すると、claude-api スキルが記事を読んで構成を提案し、プロジェクトの agents/ フォルダにファイルを書き、`ant apply` でリソースを作る。記事はこれを出発点とし、情報源・投稿先・好みに合わせて改変するよう述べている。前提として Slack アプリ（manifest から作成）と GitHub トークンが要る。
+
+[[concepts/ai-pre-judgment-automation]] は検知を普通のプログラムに任せ、モデルは提案までに留めて人間の承認後に実行する。本ページの設計は投稿まで無人で行う代わりに、書き込み先を1つに絞り、それ以外を読み取り専用にして安全側に倒している。外部への書き込み範囲が、承認を挟むかどうかの判断軸になっていると考えられる（wiki 側の推論）。
+
+## 問い
+
+- このwikiの launchd 定時ジョブ（auto-sync・weekly 生成）に「読取失敗を静かな日と区別する」「状態の確定は確認後」の2規則を当てはめると、どこが今は黙って失敗しうるか？
+- 実行間で持ち越す state のメモ経由でのプロンプトインジェクションは、読み取り専用化では防げない。メモの汚染を検出する手段はあるか？
+- 予算上限による一時停止を、読み手側でどう「静かな日」と見分けるか（記事の図にある heartbeat の具体像は本文に書かれていない）
+
+## 関連
+
+- [[tools/claude-managed-agents]] — 本設計の実行基盤（Vault・メモリストア・Scheduled Deployments・budget）
+- [[concepts/graph-reliability-design]] — 冪等な書き込みとノード単位の失敗方針。投稿確認後にだけ状態を確定する順序の一般形
+- [[concepts/ai-pre-judgment-automation]] — 同じく Slack/GitHub を定時検知する自動化だが、実行前に人間の承認を挟む対照例
+- [[tools/ant-cli]] — `ant apply` でファイル群から API リソースを作る CLI
+- [[business/claude-plan-api-credits]] — Max/Team の月次 API クレジットで本自動化を動かせる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

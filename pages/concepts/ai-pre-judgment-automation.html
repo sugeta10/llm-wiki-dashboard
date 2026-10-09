@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-pre-judgment-automation</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-pre-judgment-automation.md">Markdownで表示</a></div>
-  <div class="meta">concepts/ai-pre-judgment-automation · concepts · <span title="2026-09-23">2週間前</span></div>
+  <div class="meta">concepts/ai-pre-judgment-automation · concepts · <span title="2026-10-09">今日</span></div>
   <article><h1>AIに任せるのは「判断の手前まで」— 仕事の入口を常時監視して提案させる運用</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Slack・Gmail・GitHub・カレンダーなど「仕事が発生する入口」をAIに常時見張らせ、背景調査から「こう進めますか？」の提案までを先にやらせる運用。人間は提案を読んで承認・修正・却下だけを判断し、承認後の実作業は再びAIが進める（入江慎吾の実践記）。</p>
@@ -85,12 +85,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — Proactive ループ（イベント/スケジュール起動・小型モデルと最上位モデルの使い分け）の公式整理</li>
 <li><a href="../tools/line-harness.html">line-harness</a> — 送信だけ人間承認に残すClaude Code運用。外部送信の手前で止める同じ境界</li>
 <li>openai-codex — 本運用の実行基盤</li>
+<li><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a> — 同じく Slack/GitHub を定時に読むが、承認を挟まず投稿まで無人で行い、書き込み先を1つに絞って他を読み取り専用にする対照例（Anthropic 公式の参照実装）</li>
 <li><a href="../concepts/gmail-ai-default-access.html">gmail-ai-default-access</a> — 提供側が既定で受信トレイを AI に読ませて訴訟になった事例。Gmail を AI に常時検知させるとき読ませる範囲を自分で決める論点</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a></li>
 <li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
 <li><a href="../concepts/gmail-ai-default-access.html">gmail-ai-default-access</a></li>
-<li><a href="../tools/line-harness.html">line-harness</a></li>
-<li><a href="../business/ai-tenbagger-research.html">ai-tenbagger-research</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/iritec/n/n07e54d070700" rel="noopener" target="_blank">https://note.com/iritec/n/n07e54d070700</a></li></ul></section></article>
+<li><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a></li>
+<li><a href="../tools/line-harness.html">line-harness</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/iritec/n/n07e54d070700" rel="noopener" target="_blank">https://note.com/iritec/n/n07e54d070700</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -183,6 +184,7 @@ AIエージェントを始めるなら、いきなり全自動にせず、**自�
 - [[concepts/claude-code-loop-types]] — Proactive ループ（イベント/スケジュール起動・小型モデルと最上位モデルの使い分け）の公式整理
 - [[tools/line-harness]] — 送信だけ人間承認に残すClaude Code運用。外部送信の手前で止める同じ境界
 - [[tools/openai-codex]] — 本運用の実行基盤
+- [[concepts/scheduled-agent-automation]] — 同じく Slack/GitHub を定時に読むが、承認を挟まず投稿まで無人で行い、書き込み先を1つに絞って他を読み取り専用にする対照例（Anthropic 公式の参照実装）
 - [[concepts/gmail-ai-default-access]] — 提供側が既定で受信トレイを AI に読ませて訴訟になった事例。Gmail を AI に常時検知させるとき読ませる範囲を自分で決める論点
 </script>
 <script>
