@@ -36,6 +36,12 @@
 - **Netflix**: 数百ビルドのログを並列分析し、複数ビルドにまたがるパターンのみを抽出
 - **Spiral by Every**: Haiku がオーケストレーターとして受付・フォローアップを担当し、複数ドラフトは Opus サブエージェントが並列生成。Outcomes でブランドボイス評価ルーブリックをメモリから参照しスコアリング
 
+### Dynamic Workflows（2026-10-09 Public Beta）
+
+@ClaudeDevs（公式）が、Managed Agents の dynamic workflows を public beta として提供開始したと発表した。公式は「新しい種類のマルチエージェント・オーケストレーション」で「最も野心的なワークロード向け」と位置づける。仕組みは、リードエージェントが計画を書き、その計画が多数のエージェントにまたがってフェーズ単位で実行され、最後に結果を統合するというもの。
+
+上の Multiagent Orchestration は、リードエージェントが専門エージェントへ都度委譲する。それに対して dynamic workflows は、計画を先に書いてフェーズに分けて走らせる点が違うと読める（推論）。Claude Code 側の同名機能 [[concepts/claude-code-dynamic-workflows]] では、Claude がオーケストレーションスクリプトをその場で書き、fan-out-and-synthesize などのパターンで実行する。告知の「計画→フェーズ実行→最後に統合」はこの構造と同型なので、API 版の展開である可能性が高い（推論。告知文には Claude Code との関係やスクリプト形式の記述がない）。
+
 ### Webhooks
 
 エージェントの完了通知を任意のエンドポイントに送信。非同期ワークフローとの統合が容易。
@@ -172,4 +178,5 @@ Dreams のAPI仕様・ライフサイクル・エラー種別の詳細は [[conc
 - [[business/dinii-ask-anything]] — Managed Agentsで社内問い合わせ代行botを構築した実運用事例（KPI付き・自前orchestration7割削減）
 - [[business/claude-plan-api-credits]] — Max/Team プランの月次 API クレジットで Managed Agents を動かせる。始め方として `/claude-api managed-agents-onboard` が勧められている
 - [[concepts/scheduled-agent-automation]] — Scheduled Deployments・Vault・2つのメモリストア・budget で Slack/GitHub を定時に読んで投稿する公式参照実装 daily-brief と6つの設計ルール
+- [[concepts/claude-code-dynamic-workflows]] — Claude Code 側の同名機能。2026-10-09 に public beta となった Managed Agents の dynamic workflows（リードエージェントが計画を書き、フェーズ実行して統合する）と同型の構造
 - [[tools/ai-newtab]] — Chrome 拡張のバックグラウンドワーカーがサーバーなしで Managed Agents セッションを直接駆動する個人用の実装例（@trq212）
