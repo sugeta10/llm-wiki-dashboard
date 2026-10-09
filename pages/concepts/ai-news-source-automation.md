@@ -49,3 +49,4 @@ flowchart LR
 - [[tools/x-research-skills]] — Grok を使ったXリサーチをスキル化した構成。本ページの7源にX自体は含まれないため、補完関係にある
 - [[models/gpt-6-astra]] — 著者がリサーチ担当に使っているモデル
 - [[business/kaigai-mifukyuu-business]] — 海外の一次情報を日本語で最初に説明することを「いちばん空いている場所」とする @client2728770 の記事。業界特化の有料ニュースレターを B2B 商品として挙げる
+- [[tools/ai-newtab]] — 情報源を人が選ばず閲覧履歴から選ばせ、毎日の新しいタブを書き直す Chrome 拡張（@trq212）

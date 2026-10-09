@@ -57,3 +57,4 @@ Team は全席分を1つの月次残高にプールし、上限は $500。サポ
 - [[concepts/cost-effective-harness]] — 安価モデルへの委譲の損益分岐。クレジットで試算の前提が変わる
 - [[companies/anthropic]] — 提供元
 - [[tools/claude-managed-agents]] — クレジットの対象。`/claude-api managed-agents-onboard` で始めるよう勧められた先
+- [[tools/ai-newtab]] — @trq212 がクレジットの使い道の例として公開した、閲覧履歴から毎日書き直す新しいタブ（Managed Agents を自分の API キーで駆動）

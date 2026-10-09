@@ -88,3 +88,4 @@ Anthropicが公開したマルチエージェント構成では：
 - [[models/claude-opus-5-5]]（Opus 5 後継と考えられるモデル。個人が投稿したシステムプロンプト冒頭のみ捕捉・公式情報は未収集）
 - [[models/claude-haiku-5-5]]（小型モデル・2026-10-07発表。Haiku 4.5 比で平均約75%安く動くと公式が説明）
 - [[business/claude-plan-api-credits]]（Max/Team プランの月次 API クレジット・2026-10-07発表）
+- [[tools/claude-google-workspace]]（Google Docs・Sheets・Slides のサイドバーで動く Claude・2026-10-06発表。編集は反映前に1件ずつ承認できる）

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-newtab - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-newtab</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-newtab.md">Markdownで表示</a></div>
+  <div class="meta">tools/ai-newtab · tools · <span title="2026-10-09">今日</span></div>
+  <article><h1>AI Homepage（ai-newtab）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 閲覧履歴から自分がよく読むサイトを選び、ログイン済みのブラウザで最大8ページを開いて、Claude Managed Agents のエージェントが毎回書き直す「新しいタブ」ページ。@trq212 が自作して毎日使っている Chrome 拡張で、自分の API キーで動かす。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  H[&quot;getHistory: 閲覧履歴の上位ドメイン&quot;] --&gt; P[&quot;getPageHtml: 最大8ページを裏で開き整形&quot;]
+  P --&gt; S[&quot;サンドボックスにファイルとして配置&quot;]
+  S --&gt; G[&quot;grep / read: 見出し・投稿・リンクを抽出&quot;]
+  G --&gt; W[&quot;write: React コンポーネント1つを生成&quot;]
+  W --&gt; T[&quot;新しいタブで描画&quot;]</pre>
+<p>@trq212 は、Max プランに月次の Claude API クレジットが付くという告知（<a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a>）に添えて「自分のためのパーソナル AI をもっと作ろう」と書き、その例としてこの拡張を公開した。最初の投稿ではリポジトリが非公開のままで、後から公開したと本人が追記している。RSS や固定の情報源リストを持たず、ユーザーの実際の閲覧履歴を入力にする点が、情報源を人が選ぶ自動収集（<a href="../concepts/ai-news-source-automation.html">ai-news-source-automation</a>）との違いである。</p>
+<h2>仕組み</h2>
+<p>README の説明では、拡張のバックグラウンドワーカーが <a href="../tools/claude-managed-agents.html">claude-managed-agents</a> のセッションをサーバーを挟まず直接動かす。<code>chrome.history</code> と <code>chrome.tabs</code> が必要な <code>getHistory</code>・<code>getPageHtml</code> の2つのカスタムツールだけを拡張側で実行し、それ以外はエージェントのサンドボックス内で処理する。取得したページは信頼できない入力として扱い、サンドボックスのシェルアクセスは切ってある。</p>
+<ul>
+<li>検索エンジン・Web メール・銀行・ログアウト状態のマーケティングページは開く対象から外す。開けなかったページは隠さず報告する</li>
+<li>ページ上のリンクはすべてエージェントが実際に読んだページ由来で、URL を捏造しないよう指示している</li>
+<li>設定の「Instructions」に書いた内容は毎回のビルドに入り、エージェントの既定より優先される。中身（「スポーツと政治は省く」）と見た目（朝刊風・1カラムの静かな読書リスト・GitHub 優先のダッシュボード・緑字の端末風）の両方をここで指定する</li>
+<li>モデルは Claude Sonnet 5.5（既定）・<a href="../models/claude-haiku-5-5.html">claude-haiku-5-5</a>（最速・最安）・<a href="../models/claude-opus-5-5.html">claude-opus-5-5</a>（最も丁寧で最も高い）から選ぶ</li>
+<li>自動再ビルドは既定でオンで、6・12・24・48時間の間隔を選ぶ。最初の1回を手動で作るまで始まらず、失敗したビルドは次の間隔まで再試行しない</li>
+</ul>
+<h2>コストとプライバシー</h2>
+<p>1回のビルドが API キーに課金される1つのエージェントセッションで、費用はモデルと読む量で決まると README は説明する。拡張は閲覧履歴の要約（上位ドメイン・訪問回数・一部のページタイトル）と最大8ページ分の整形済み HTML を Anthropic API に送り、ページはログイン状態で読み込むため非公開の内容を含みうる。セッションとアップロードしたページはビルド終了ごとに削除され、API キーは拡張のローカルストレージに置かれる。作者は「初期の実験段階」と位置づけ、ブラウザプロファイルに触れられる人なら誰でも保存されたキーを読めるため、そのままストアに公開しないよう README に書いている。</p>
+<h2>問い</h2>
+<ul>
+<li>Haiku 5.5 で24時間ごとに回した場合、月次 API クレジットのうちどれだけを消費するか。クレジット内で常用できる規模か</li>
+<li>閲覧履歴を入力にすると、すでに読んでいるサイトの要約に閉じて新しい情報源に出会えない。このリポの X ブックマーク ingest と組み合わせ、「読んだもの」と「保存したもの」のどちらを起点にするかで出てくる面がどう変わるか</li>
+<li>ログイン状態で開いたページの内容がプロンプトインジェクションを含む場合、シェルを切ったサンドボックスと「読んだページのリンクだけ使う」指示で、生成されるページにどこまで影響が残るか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a> — 公開のきっかけになった月次 API クレジット。拡張は自分の API キーで動くためクレジットの使い道になる</li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — 拡張がサーバーを挟まず直接駆動するエージェント基盤</li>
+<li><a href="../concepts/ai-news-source-automation.html">ai-news-source-automation</a> — 人が選んだ7つの情報源をAIに巡回させて朝のレポートにする型。本拡張は情報源の選定も閲覧履歴に任せる</li>
+<li><a href="../concepts/finding-unknowns.html">finding-unknowns</a> — 同じ @trq212 の運用フレーム</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a></li>
+<li><a href="../concepts/ai-news-source-automation.html">ai-news-source-automation</a></li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
+<li><a href="../concepts/finding-unknowns.html">finding-unknowns</a></li>
+<li><a href="../models/claude-haiku-5-5.html">claude-haiku-5-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2108312534222778407" rel="noopener" target="_blank">https://x.com/i/web/status/2108312534222778407</a></li>
+<li><a href="https://github.com/ThariqS/ai-newtab" rel="noopener" target="_blank">https://github.com/ThariqS/ai-newtab</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AI Homepage（ai-newtab）
+
+&gt; **TL;DR**: 閲覧履歴から自分がよく読むサイトを選び、ログイン済みのブラウザで最大8ページを開いて、Claude Managed Agents のエージェントが毎回書き直す「新しいタブ」ページ。@trq212 が自作して毎日使っている Chrome 拡張で、自分の API キーで動かす。
+
+```mermaid
+flowchart LR
+  H[&quot;getHistory: 閲覧履歴の上位ドメイン&quot;] --&gt; P[&quot;getPageHtml: 最大8ページを裏で開き整形&quot;]
+  P --&gt; S[&quot;サンドボックスにファイルとして配置&quot;]
+  S --&gt; G[&quot;grep / read: 見出し・投稿・リンクを抽出&quot;]
+  G --&gt; W[&quot;write: React コンポーネント1つを生成&quot;]
+  W --&gt; T[&quot;新しいタブで描画&quot;]
+```
+
+@trq212 は、Max プランに月次の Claude API クレジットが付くという告知（[[business/claude-plan-api-credits]]）に添えて「自分のためのパーソナル AI をもっと作ろう」と書き、その例としてこの拡張を公開した。最初の投稿ではリポジトリが非公開のままで、後から公開したと本人が追記している。RSS や固定の情報源リストを持たず、ユーザーの実際の閲覧履歴を入力にする点が、情報源を人が選ぶ自動収集（[[concepts/ai-news-source-automation]]）との違いである。
+
+## 仕組み
+
+README の説明では、拡張のバックグラウンドワーカーが [[tools/claude-managed-agents]] のセッションをサーバーを挟まず直接動かす。`chrome.history` と `chrome.tabs` が必要な `getHistory`・`getPageHtml` の2つのカスタムツールだけを拡張側で実行し、それ以外はエージェントのサンドボックス内で処理する。取得したページは信頼できない入力として扱い、サンドボックスのシェルアクセスは切ってある。
+
+- 検索エンジン・Web メール・銀行・ログアウト状態のマーケティングページは開く対象から外す。開けなかったページは隠さず報告する
+- ページ上のリンクはすべてエージェントが実際に読んだページ由来で、URL を捏造しないよう指示している
+- 設定の「Instructions」に書いた内容は毎回のビルドに入り、エージェントの既定より優先される。中身（「スポーツと政治は省く」）と見た目（朝刊風・1カラムの静かな読書リスト・GitHub 優先のダッシュボード・緑字の端末風）の両方をここで指定する
+- モデルは Claude Sonnet 5.5（既定）・[[models/claude-haiku-5-5]]（最速・最安）・[[models/claude-opus-5-5]]（最も丁寧で最も高い）から選ぶ
+- 自動再ビルドは既定でオンで、6・12・24・48時間の間隔を選ぶ。最初の1回を手動で作るまで始まらず、失敗したビルドは次の間隔まで再試行しない
+
+## コストとプライバシー
+
+1回のビルドが API キーに課金される1つのエージェントセッションで、費用はモデルと読む量で決まると README は説明する。拡張は閲覧履歴の要約（上位ドメイン・訪問回数・一部のページタイトル）と最大8ページ分の整形済み HTML を Anthropic API に送り、ページはログイン状態で読み込むため非公開の内容を含みうる。セッションとアップロードしたページはビルド終了ごとに削除され、API キーは拡張のローカルストレージに置かれる。作者は「初期の実験段階」と位置づけ、ブラウザプロファイルに触れられる人なら誰でも保存されたキーを読めるため、そのままストアに公開しないよう README に書いている。
+
+## 問い
+
+- Haiku 5.5 で24時間ごとに回した場合、月次 API クレジットのうちどれだけを消費するか。クレジット内で常用できる規模か
+- 閲覧履歴を入力にすると、すでに読んでいるサイトの要約に閉じて新しい情報源に出会えない。このリポの X ブックマーク ingest と組み合わせ、「読んだもの」と「保存したもの」のどちらを起点にするかで出てくる面がどう変わるか
+- ログイン状態で開いたページの内容がプロンプトインジェクションを含む場合、シェルを切ったサンドボックスと「読んだページのリンクだけ使う」指示で、生成されるページにどこまで影響が残るか
+
+## 関連
+
+- [[business/claude-plan-api-credits]] — 公開のきっかけになった月次 API クレジット。拡張は自分の API キーで動くためクレジットの使い道になる
+- [[tools/claude-managed-agents]] — 拡張がサーバーを挟まず直接駆動するエージェント基盤
+- [[concepts/ai-news-source-automation]] — 人が選んだ7つの情報源をAIに巡回させて朝のレポートにする型。本拡張は情報源の選定も閲覧履歴に任せる
+- [[concepts/finding-unknowns]] — 同じ @trq212 の運用フレーム
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

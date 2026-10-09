@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-google-workspace - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-google-workspace</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-google-workspace.md">Markdownで表示</a></div>
+  <div class="meta">tools/claude-google-workspace · tools · <span title="2026-10-09">今日</span></div>
+  <article><h1>Claude の Google Workspace 連携（Docs・Sheets・Slides）</h1>
+<p>Anthropic の公式アカウント @claudeai が2026-10-06に、Claude が Google Docs・Sheets・Slides の中で動くようになり、逆にそれらのファイルを Claude 側で開けるようになったと発表した。連携は双方向で、Google のファイル画面に Claude を呼び込む入口と、Claude の画面に Google のファイルを持ち込む入口の2つがある。</p>
+<blockquote>
+<p>📌 X bookmark: 20,964（2026-10-09 時点）</p>
+</blockquote>
+<h2>何ができるか</h2>
+<p>@claudeai の説明では、Google Workspace 側では Claude がファイル横のサイドバーに常駐し、いま開いているファイルを読み、その場でファイルを直接編集する。編集は1件ずつ、反映される前にユーザーが承認できる。告知に付いた動画は未収集のため、承認画面の見た目・対応プラン・対応地域・Claude 側でファイルを開く操作の具体的な手順はソースからは分からない。</p>
+<h2>位置づけ（wiki 側の推論）</h2>
+<p>Anthropic は Slack に Claude を常駐させる <a href="../tools/claude-tag.html">claude-tag</a> を先に出しており、今回の連携も「Claude のアプリに作業を持ってくる」のでなく「人が普段使う業務ツールの中に Claude が入っていく」方向の製品と考えられる。Google 自身も Gemini を Gmail・Docs に組み込んで AI 統合プランで売っている（<a href="../companies/google.html">google</a>）ため、Workspace のサイドバーは Gemini と Claude が同じ画面で競う場所になると推測される。</p>
+<p>編集の都度承認を挟む設計は、AI が既定で受信トレイを読む導入が批判された Gmail の事例（<a href="../concepts/gmail-ai-default-access.html">gmail-ai-default-access</a>）と比べると、AI に書き込ませる範囲をユーザーが1件ずつ決める側に寄せたものと読める。ただし「開いているファイルを読む」範囲が、同じフォルダの他ファイルやリンク先にまで及ぶかはソースに書かれておらず未確認である。</p>
+<h2>問い</h2>
+<ul>
+<li>承認ステップは編集単位でどこまで細かいか（セル1つ・段落1つか、まとめて1回か）。Sheets の数式や Slides のレイアウトを壊さずに編集できるか、実物で1回試す</li>
+<li>Claude 側で Google ファイルを開いたときの読み込み範囲は、既存の Google Drive コネクタと何が違うのか</li>
+<li>Gemini in Docs と並べたとき、同じ文書の推敲・表の集計でどちらに任せるかの判断軸は何か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../companies/anthropic.html">anthropic</a> — 提供元</li>
+<li><a href="../companies/google.html">google</a> — Workspace の提供元。Gemini を同じ Docs・Gmail に組み込んでいる競合でもある</li>
+<li><a href="../tools/claude-tag.html">claude-tag</a> — Slack に Claude を常駐させる製品。業務ツールの中に Claude を入れる同じ方向の先行例</li>
+<li><a href="../concepts/gmail-ai-default-access.html">gmail-ai-default-access</a> — AI が既定で受信トレイを読む導入への批判。AI にファイルを読ませる・書かせる範囲を誰が決めるかという論点で対になる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../companies/google.html">google</a></li>
+<li><a href="../concepts/gmail-ai-default-access.html">gmail-ai-default-access</a></li>
+<li><a href="../tools/claude-tag.html">claude-tag</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107522596845822135" rel="noopener" target="_blank">https://x.com/i/web/status/2107522596845822135</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude の Google Workspace 連携（Docs・Sheets・Slides）
+
+Anthropic の公式アカウント @claudeai が2026-10-06に、Claude が Google Docs・Sheets・Slides の中で動くようになり、逆にそれらのファイルを Claude 側で開けるようになったと発表した。連携は双方向で、Google のファイル画面に Claude を呼び込む入口と、Claude の画面に Google のファイルを持ち込む入口の2つがある。
+
+&gt; 📌 X bookmark: 20,964（2026-10-09 時点）
+
+## 何ができるか
+
+@claudeai の説明では、Google Workspace 側では Claude がファイル横のサイドバーに常駐し、いま開いているファイルを読み、その場でファイルを直接編集する。編集は1件ずつ、反映される前にユーザーが承認できる。告知に付いた動画は未収集のため、承認画面の見た目・対応プラン・対応地域・Claude 側でファイルを開く操作の具体的な手順はソースからは分からない。
+
+## 位置づけ（wiki 側の推論）
+
+Anthropic は Slack に Claude を常駐させる [[tools/claude-tag]] を先に出しており、今回の連携も「Claude のアプリに作業を持ってくる」のでなく「人が普段使う業務ツールの中に Claude が入っていく」方向の製品と考えられる。Google 自身も Gemini を Gmail・Docs に組み込んで AI 統合プランで売っている（[[companies/google]]）ため、Workspace のサイドバーは Gemini と Claude が同じ画面で競う場所になると推測される。
+
+編集の都度承認を挟む設計は、AI が既定で受信トレイを読む導入が批判された Gmail の事例（[[concepts/gmail-ai-default-access]]）と比べると、AI に書き込ませる範囲をユーザーが1件ずつ決める側に寄せたものと読める。ただし「開いているファイルを読む」範囲が、同じフォルダの他ファイルやリンク先にまで及ぶかはソースに書かれておらず未確認である。
+
+## 問い
+
+- 承認ステップは編集単位でどこまで細かいか（セル1つ・段落1つか、まとめて1回か）。Sheets の数式や Slides のレイアウトを壊さずに編集できるか、実物で1回試す
+- Claude 側で Google ファイルを開いたときの読み込み範囲は、既存の Google Drive コネクタと何が違うのか
+- Gemini in Docs と並べたとき、同じ文書の推敲・表の集計でどちらに任せるかの判断軸は何か
+
+## 関連
+
+- [[companies/anthropic]] — 提供元
+- [[companies/google]] — Workspace の提供元。Gemini を同じ Docs・Gmail に組み込んでいる競合でもある
+- [[tools/claude-tag]] — Slack に Claude を常駐させる製品。業務ツールの中に Claude を入れる同じ方向の先行例
+- [[concepts/gmail-ai-default-access]] — AI が既定で受信トレイを読む導入への批判。AI にファイルを読ませる・書かせる範囲を誰が決めるかという論点で対になる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
