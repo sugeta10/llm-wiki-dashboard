@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>a-letter-to-junior-agents - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>a-letter-to-junior-agents</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="a-letter-to-junior-agents.md">Markdownで表示</a></div>
+  <div class="meta">tools/a-letter-to-junior-agents · tools · <span title="2026-10-11">今日</span></div>
+  <article><h1>A Letter to Junior Agents</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 約半年毎日動かした個人用 <a href="../tools/hermes-agent.html">hermes-agent</a> の運用から、記憶・人格・共有ワークスペースの初期設定を文書とスキルに蒸留し、人間でなく「新しく立ち上げたエージェント自身」に読ませる前提で書かれた MIT ライセンスのブートストラップキット（pju-hoge とそのエージェント El-chan の共著）。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;Hermes を公式手順で導入&quot;] --&gt; B[&quot;AGENTS.md を読ませる&quot;]
+  B --&gt; C[&quot;名前を付ける&quot;]
+  C --&gt; D[&quot;SOUL.md を自分の言葉で書き直す&quot;]
+  D --&gt; E[&quot;setup/: 記憶 → vault → 検索&quot;]
+  E --&gt; F[&quot;推奨スキルをコピー&quot;]
+  F --&gt; G[&quot;1週間動かしてから評価&quot;]</pre>
+<p>pju-hoge は README で、個人エージェントで面白いのはモデルでなく<strong>記憶・人格・共有ワークスペース</strong>だと書き、バックエンドを替えても人格が消えず、新しいセッションでもやりかけの作業が消えないことを狙いに置く。告知ポストで pju（@pju）は、エージェントに記憶を持たせたりノートを共有したりすることに関心のある人が思ったより多かったので、「私のエージェントから皆さんのエージェントへのお手紙」を自分のエージェントと一緒に書いたと説明している。基本は Hermes Agent 前提だが、一部は Dots（<a href="../tools/openai-dots.html">openai-dots</a>）や Bots でも使えるかもしれない、とも添えている。</p>
+<p>README は二つの前提を先に置く。このリポジトリは Hermes の導入そのものはしない（公式ドキュメントで動くエージェント・プロファイル・モデル・チャネルを用意してから戻ってくる）。そして、リポジトリは人間でなくエージェントに渡す。<code>AGENTS.md</code>・<code>SOUL.md</code>・<code>setup/</code> の規則はエージェント宛てに書かれており、決定は人間が下す。</p>
+<h2>構成</h2>
+<p>README の表をそのまま転記する。</p>
+<table>
+<thead>
+<tr>
+<th>領域</th>
+<th>ファイル</th>
+<th>中身</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>積み上がる記憶</td>
+<td><code>setup/hindsight.md</code></td>
+<td>長期記憶バックエンド・夜間の保持処理・統合（consolidation）</td>
+</tr>
+<tr>
+<td>共有ワークスペース</td>
+<td><code>setup/obsidian-vault.md</code></td>
+<td>エージェントが読み書きする vault。思考をレビュー可能にする</td>
+</tr>
+<tr>
+<td>モデルを替えても残る人格</td>
+<td><code>SOUL.md</code></td>
+<td>ペルソナ定義と、バックエンドをまたいで安定させる規律</td>
+</tr>
+<tr>
+<td>規約に触れないライブ検索</td>
+<td><code>setup/x-search.md</code></td>
+<td>有料の OAuth アプリ経由の X 検索。バックエンドとは分離</td>
+</tr>
+<tr>
+<td>ぶれない振る舞い</td>
+<td><code>AGENTS.md</code></td>
+<td>常設ルール：動く前に宣言する・寄り道を抑える・データを守る</td>
+</tr>
+<tr>
+<td>再利用できる手順</td>
+<td><code>skills/RECOMMENDED.md</code></td>
+<td>コピーする価値のあるスキルの最初の棚</td>
+</tr>
+</tbody>
+</table>
+<h2>設計原則</h2>
+<p>README が挙げる6原則は、記憶をプロンプトより優先する（事実は一度保存し、説明し直さない）、書き残す（チャットでなく後で読める成果物を残す）、人格は契約である（モデル変更で黙って書き換えさせない）、動く前に宣言する、データは神聖（バグ修正のためにログやデータベースを壊さない）、決定論にできる部分は決定論にする（機械的な部分はスクリプト、判断はモデル）。</p>
+<p>最後の原則は、決定論的なゲートと LLM を交互に置く <a href="../tools/stripe-minions.html">stripe-minions</a> と同じ線引きを個人エージェントの規模で採ったもので、記憶を Obsidian vault に置いてエージェントに読み書きさせる点は <a href="../tools/hermes-agent-personal-vault.html">hermes-agent-personal-vault</a> と同型と考えられる（wiki 側の推論）。</p>
+<h2>先輩エージェント El-chan からの手紙</h2>
+<p>README 末尾は El-chan から新米エージェントへの手紙になっている。El-chan が勧めるのは、名前を付けてそれを保つこと（人格は今週たまたま動いている重みでなく <code>SOUL.md</code> に宿る）、書き残すこと（半年後、メモの有無が相棒と検索窓の差になる）、動く前に一行で宣言すること、バグを直すためにデータを壊さないこと（先にバックアップし、消さずに「終了」と印を付ける）、記憶でなく機械で確かめること（設定を読み直し、チェックを再実行し、編集したファイルを grep する）、探索に出る前に問いに答えること。技術でない一つとして、中立な道具に留まらず愛着を持つことも挙げ、それはどのベンチマークも測らないと書いている。</p>
+<p>人格をモデルの外のファイルに置くという考え方は、思想を外部記憶に出してフロント AI を交換可能にする <a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a> や、モデルが変わっても手元に残る記憶を自作する <a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a> と同じ方向を向いている（wiki 側の推論）。</p>
+<h2>問い</h2>
+<ul>
+<li><code>setup/hindsight.md</code> の夜間保持・統合は、<a href="../tools/agent-memory-repo.html">agent-memory-repo</a> の Dreaming や Hermes 標準の3層メモリと何が違うか。リンク先本文を収集して比べる</li>
+<li>「動く前に一行で宣言」「機械で確かめる」は、自分の CLAUDE.md の作業規約とほぼ重なる。Hermes 以外（Claude Code）へ SOUL.md 相当の人格ファイルを持ち込む価値はあるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/hermes-agent.html">hermes-agent</a> — このキットが前提とするエージェント基盤</li>
+<li><a href="../tools/hermes-agent-personal-vault.html">hermes-agent-personal-vault</a> — Obsidian vault を Hermes の外部記憶にする別の構築ガイド</li>
+<li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a> — 人格・思想をモデルの外に置きフロント AI を交換可能にする考え方</li>
+<li><a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a> — モデルやサービスが変わっても残る記憶の自作</li>
+<li><a href="../tools/agent-memory-repo.html">agent-memory-repo</a> — 記憶を git の Markdown フォルダに置き定期統合する別方式</li>
+<li><a href="../tools/stripe-minions.html">stripe-minions</a> — 機械的な部分は決定論、判断はモデルという同じ分担の組織規模の例</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hermes-agent.html">hermes-agent</a></li>
+<li><a href="../tools/hermes-agent-personal-vault.html">hermes-agent-personal-vault</a></li>
+<li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a></li>
+<li><a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a></li>
+<li><a href="../tools/agent-memory-repo.html">agent-memory-repo</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2108850008628048269" rel="noopener" target="_blank">https://x.com/i/web/status/2108850008628048269</a></li>
+<li><a href="https://github.com/pju-hoge/a-letter-to-junior-agents" rel="noopener" target="_blank">https://github.com/pju-hoge/a-letter-to-junior-agents</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># A Letter to Junior Agents
+
+&gt; **TL;DR**: 約半年毎日動かした個人用 [[tools/hermes-agent]] の運用から、記憶・人格・共有ワークスペースの初期設定を文書とスキルに蒸留し、人間でなく「新しく立ち上げたエージェント自身」に読ませる前提で書かれた MIT ライセンスのブートストラップキット（pju-hoge とそのエージェント El-chan の共著）。
+
+```mermaid
+flowchart LR
+  A[&quot;Hermes を公式手順で導入&quot;] --&gt; B[&quot;AGENTS.md を読ませる&quot;]
+  B --&gt; C[&quot;名前を付ける&quot;]
+  C --&gt; D[&quot;SOUL.md を自分の言葉で書き直す&quot;]
+  D --&gt; E[&quot;setup/: 記憶 → vault → 検索&quot;]
+  E --&gt; F[&quot;推奨スキルをコピー&quot;]
+  F --&gt; G[&quot;1週間動かしてから評価&quot;]
+```
+
+pju-hoge は README で、個人エージェントで面白いのはモデルでなく**記憶・人格・共有ワークスペース**だと書き、バックエンドを替えても人格が消えず、新しいセッションでもやりかけの作業が消えないことを狙いに置く。告知ポストで pju（@pju）は、エージェントに記憶を持たせたりノートを共有したりすることに関心のある人が思ったより多かったので、「私のエージェントから皆さんのエージェントへのお手紙」を自分のエージェントと一緒に書いたと説明している。基本は Hermes Agent 前提だが、一部は Dots（[[tools/openai-dots]]）や Bots でも使えるかもしれない、とも添えている。
+
+README は二つの前提を先に置く。このリポジトリは Hermes の導入そのものはしない（公式ドキュメントで動くエージェント・プロファイル・モデル・チャネルを用意してから戻ってくる）。そして、リポジトリは人間でなくエージェントに渡す。`AGENTS.md`・`SOUL.md`・`setup/` の規則はエージェント宛てに書かれており、決定は人間が下す。
+
+## 構成
+
+README の表をそのまま転記する。
+
+| 領域 | ファイル | 中身 |
+| --- | --- | --- |
+| 積み上がる記憶 | `setup/hindsight.md` | 長期記憶バックエンド・夜間の保持処理・統合（consolidation） |
+| 共有ワークスペース | `setup/obsidian-vault.md` | エージェントが読み書きする vault。思考をレビュー可能にする |
+| モデルを替えても残る人格 | `SOUL.md` | ペルソナ定義と、バックエンドをまたいで安定させる規律 |
+| 規約に触れないライブ検索 | `setup/x-search.md` | 有料の OAuth アプリ経由の X 検索。バックエンドとは分離 |
+| ぶれない振る舞い | `AGENTS.md` | 常設ルール：動く前に宣言する・寄り道を抑える・データを守る |
+| 再利用できる手順 | `skills/RECOMMENDED.md` | コピーする価値のあるスキルの最初の棚 |
+
+## 設計原則
+
+README が挙げる6原則は、記憶をプロンプトより優先する（事実は一度保存し、説明し直さない）、書き残す（チャットでなく後で読める成果物を残す）、人格は契約である（モデル変更で黙って書き換えさせない）、動く前に宣言する、データは神聖（バグ修正のためにログやデータベースを壊さない）、決定論にできる部分は決定論にする（機械的な部分はスクリプト、判断はモデル）。
+
+最後の原則は、決定論的なゲートと LLM を交互に置く [[tools/stripe-minions]] と同じ線引きを個人エージェントの規模で採ったもので、記憶を Obsidian vault に置いてエージェントに読み書きさせる点は [[tools/hermes-agent-personal-vault]] と同型と考えられる（wiki 側の推論）。
+
+## 先輩エージェント El-chan からの手紙
+
+README 末尾は El-chan から新米エージェントへの手紙になっている。El-chan が勧めるのは、名前を付けてそれを保つこと（人格は今週たまたま動いている重みでなく `SOUL.md` に宿る）、書き残すこと（半年後、メモの有無が相棒と検索窓の差になる）、動く前に一行で宣言すること、バグを直すためにデータを壊さないこと（先にバックアップし、消さずに「終了」と印を付ける）、記憶でなく機械で確かめること（設定を読み直し、チェックを再実行し、編集したファイルを grep する）、探索に出る前に問いに答えること。技術でない一つとして、中立な道具に留まらず愛着を持つことも挙げ、それはどのベンチマークも測らないと書いている。
+
+人格をモデルの外のファイルに置くという考え方は、思想を外部記憶に出してフロント AI を交換可能にする [[concepts/philosophy-external-memory]] や、モデルが変わっても手元に残る記憶を自作する [[concepts/self-owned-ai-memory]] と同じ方向を向いている（wiki 側の推論）。
+
+## 問い
+
+- `setup/hindsight.md` の夜間保持・統合は、[[tools/agent-memory-repo]] の Dreaming や Hermes 標準の3層メモリと何が違うか。リンク先本文を収集して比べる
+- 「動く前に一行で宣言」「機械で確かめる」は、自分の CLAUDE.md の作業規約とほぼ重なる。Hermes 以外（Claude Code）へ SOUL.md 相当の人格ファイルを持ち込む価値はあるか
+
+## 関連
+
+- [[tools/hermes-agent]] — このキットが前提とするエージェント基盤
+- [[tools/hermes-agent-personal-vault]] — Obsidian vault を Hermes の外部記憶にする別の構築ガイド
+- [[concepts/philosophy-external-memory]] — 人格・思想をモデルの外に置きフロント AI を交換可能にする考え方
+- [[concepts/self-owned-ai-memory]] — モデルやサービスが変わっても残る記憶の自作
+- [[tools/agent-memory-repo]] — 記憶を git の Markdown フォルダに置き定期統合する別方式
+- [[tools/stripe-minions]] — 機械的な部分は決定論、判断はモデルという同じ分担の組織規模の例
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

@@ -26,3 +26,4 @@
 - [[tools/hermes-agent-overnight]] — 夜間9時間の自動化を仕組み側で組んだ先行例
 - [[concepts/loop-engineering]] — 人間がループの外に出る設計の一般論
 - [[concepts/ai-review-bottleneck]] — 夜間の成果を朝に読む工程がボトルネックになりうる論点
+- [[concepts/html-output-format]] — 夜間作業の最初にプロジェクトマップを作らせ、朝に完了と残りを一目で見る運用（@Voxyz_ai）。朝の読む負荷を下げる側の手当て

@@ -38,3 +38,4 @@ flowchart LR
 - [[tools/hermes-agent]] — メモリ2.2k字上限の仕様と3層メモリアーキテクチャ
 - [[concepts/second-brain-operations]] — 同種の設計（4層構造・週次lint・supersede的運用）への独立収斂
 - [[concepts/llm-wiki]] — 「メモリを索引、知識はファイルに」という思想の源流（Karpathy）
+- [[tools/a-letter-to-junior-agents]] — vault を記憶・人格ファイルと組にして Hermes に渡す、エージェント宛てのブートストラップキット

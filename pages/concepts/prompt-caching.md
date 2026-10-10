@@ -91,9 +91,16 @@ response = client.messages.create(
 
 上の TTL（既定5分）が切れると次の送信で会話全体が書き込み扱い（1.25倍）に戻るため、残り時間が見えていれば「切れる前に送る」「切れたなら区切りとして新しいセッションにする」を選べる、というのが効用と考えられる（wiki 側の推論）。同じ発想を Mod で実装し、期限前に通知まで出すのが [[tools/claude-code-mods]] の Cache Control。
 
+## Claude Code のサブエージェントの TTL
+
+@lydiahallie は、Claude Code のキャッシュ TTL がサブスクリプション利用のメインエージェントでは1時間、サブエージェントと API 課金の利用では5分だと説明し、`settings.json` の `promptCacheTtl`（サブエージェントは `subagentPromptCacheTtl`）で変えられると返信している。これを引用した @alexgetmancom は、長時間動くサブエージェントを使うならサブエージェントの TTL も1時間に上げるよう勧めている（具体的な設定値の書式は短縮URLの先にあり未収集）。
+
+上の価格表に照らすと、1時間 TTL は書き込みが1.25倍から2倍に上がる代わりに、5分以上間が空く再利用でもヒットが続く。したがって得になるのは、同じサブエージェントが5分を超える間隔で同じ文脈を読み直す使い方に限られ、短命で使い捨てのサブエージェントでは書き込みの割増だけが残ると考えられる（wiki 側の推論）。Uber が短命なサブエージェントを5分 TTL のままにした判断（[[concepts/software-factory-cost-equation]]）は、この裏側にあたる。サブエージェント機能そのものは [[tools/claude-code-subagents]]。
+
 ## 問い
 
 - ステータスラインのカウントダウンは何を起点に測るのが正しいか（最後の送信時刻か、最後の応答完了時刻か）。1時間TTLの環境では表示の意味が変わるか
+- `subagentPromptCacheTtl` を1時間にしたとき、自分のサブエージェント運用で書き込み割増を上回るヒットが本当に出るか。`cache_read_input_tokens` と `cache_creation_input_tokens` の比で測る
 
 ## 関連
 

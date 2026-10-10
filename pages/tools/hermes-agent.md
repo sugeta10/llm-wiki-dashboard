@@ -100,3 +100,4 @@ Hermesを「チャットアプリ」として使うと機能の90%を残すこ�
 - [[tools/hermes-agent-research-department]] — プロファイル分離を使った3エージェント（Scout/Analyst/Briefer）リサーチ部門の具体的構築ガイド
 - [[business/startups-for-agents]] — 本ツールがエージェントの動く「ハーネス」の例として名指しされた投資テーゼ（@gregisenberg）
 - [[tools/hermes-agent-personal-vault]] — メモリ2.2k字上限を回避しObsidianボルトを個人生活ナレッジベース化する6プロンプト構築ガイド
+- [[tools/a-letter-to-junior-agents]] — 半年の個人運用から記憶・人格（SOUL.md）・共有vaultの初期設定を蒸留し、新米エージェント自身に読ませるMITキット（pju-hoge）

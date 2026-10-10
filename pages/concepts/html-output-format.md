@@ -19,10 +19,13 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 
 @Voxyz_ai は、[[models/claude-opus-5-5]] に長いタスクを任せるときは毎回、まず簡単な HTML ダッシュボードを vibe-code させるよう勧めている。そのうえでダッシュボード作成だけを担当するサブエージェントを用意し、名前を `dashboard-builder`、effort を medium に設定すると述べる。ポスト本文はここで途切れ、続きの設定とダッシュボードの見本は画像のため未捕捉。自律実行の途中経過を人間が読める形に出させる、という点で Communication カテゴリの「ステータスレポート」を常駐させる使い方と読める（wiki側の解釈）。
 
+@Voxyz_ai は 2026-10-06 の別ポストで、同じ型を夜間の作業に絞って言い直している。Opus 5.5 にプロジェクトを夜通し任せるときは毎回、最初に簡単な**プロジェクトマップ**を vibe-code させれば、朝に何が終わり何が残っているかを一目で把握できる、という主張で、続けて「プロジェクトマップだけを描くサブエージェント」を持たせるよう勧め、その定義を短縮URLで示している（リンク先の定義本文とマップの見本画像は未収集）。ダッシュボードが途中経過の監視用なのに対し、プロジェクトマップは朝の答え合わせ（完了と残りの区別）に用途を絞った版と読める（wiki側の解釈）。夜間の委任プロンプト側の論点は [[concepts/overnight-delegation-prompt]] にある。
+
 ## 問い
 
 - ブログ本文「The unreasonable effectiveness of HTML」がHTML出力を推す具体的な理由（Markdownやプレーンテキストとの比較根拠）を読む
 - dashboard-builder サブエージェントの定義本文（ツール・出力先・更新頻度）は何か。途切れた続きと画像の捕捉待ち
+- プロジェクトマップ専用サブエージェントの定義は dashboard-builder と同じものか別物か。短縮URLの先を収集して比べる
 - このパターンと[[concepts/llm-doc-management]]（LLMへの入力としてHTMLを使うパターン）を組み合わせ、入出力の両方をHTML+JSONで統一できるか試す
 
 ## 関連
@@ -36,5 +39,6 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 - [[tools/slack-html]] — 自己完結HTMLをSlackに添付してアプリ内で展開する配布経路（@geeorgeyの造語「SlackHTML」）。単一ファイル・依存なしという本リポジトリの前提がそのまま条件になる
 - [[tools/claude-code-subagents]] — dashboard-builder のような出力専用サブエージェントの定義方法
 - [[models/claude-opus-5-5]] — 長時間タスク前にダッシュボードを作らせる運用の対象モデル（@Voxyz_ai）
+- [[concepts/overnight-delegation-prompt]] — 夜間に任せる側の一文プロンプト。朝に成果を読む工程をプロジェクトマップで軽くする組み合わせ先
 - [[tools/html-slide-presenter]] — HTMLスライドの横に presenter.html を置き、元HTMLを変えずに発表者ツールを外付けする応用例（梶谷健人製）
 - [[tools/html-plan]] — HTML 出力を実装プランの質疑に絞った実装例（@trq212 作）。主張の木を1階層ずつ開き、回答を1回の貼り戻しで返す

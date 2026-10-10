@@ -93,7 +93,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-google-cloud.html">claude-code-google-cloud</a> — API/パイプライン/ダッシュボードを並列実装する実演例</li>
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — subagent定義を agent teams/worktree と組み合わせる並列運用フレーム</li>
 <li><a href="../concepts/x-ops-subagent-company.html">x-ops-subagent-company</a> — <code>.claude/agents/</code> に9チームを定義し統括が束ねる X 運用の実例（@giver_itora26）</li>
-<li><a href="../concepts/html-output-format.html">html-output-format</a> — 長時間タスク用の <code>dashboard-builder</code> サブエージェント（effort medium）を置く運用例（@Voxyz_ai）</li>
+<li><a href="../concepts/html-output-format.html">html-output-format</a> — 長時間タスク用の <code>dashboard-builder</code> サブエージェント（effort medium）や夜間用のプロジェクトマップ専用サブエージェントを置く運用例（@Voxyz_ai）</li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a> — サブエージェントのキャッシュ TTL は既定5分で、<code>subagentPromptCacheTtl</code> で1時間に変えられる（@lydiahallie・@alexgetmancom）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-google-cloud.html">claude-code-google-cloud</a></li>
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li>
 <li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a></li>
@@ -176,7 +177,8 @@ Claude Code には以下のサブエージェントが同梱されている。
 - [[concepts/claude-code-google-cloud]] — API/パイプライン/ダッシュボードを並列実装する実演例
 - [[concepts/claude-code-orchestration]] — subagent定義を agent teams/worktree と組み合わせる並列運用フレーム
 - [[concepts/x-ops-subagent-company]] — `.claude/agents/` に9チームを定義し統括が束ねる X 運用の実例（@giver_itora26）
-- [[concepts/html-output-format]] — 長時間タスク用の `dashboard-builder` サブエージェント（effort medium）を置く運用例（@Voxyz_ai）
+- [[concepts/html-output-format]] — 長時間タスク用の `dashboard-builder` サブエージェント（effort medium）や夜間用のプロジェクトマップ専用サブエージェントを置く運用例（@Voxyz_ai）
+- [[concepts/prompt-caching]] — サブエージェントのキャッシュ TTL は既定5分で、`subagentPromptCacheTtl` で1時間に変えられる（@lydiahallie・@alexgetmancom）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
