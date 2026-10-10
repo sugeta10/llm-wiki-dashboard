@@ -38,3 +38,4 @@
 - [[concepts/agents-md-canonical]] — AGENTS.md を正本にツール間で設定を共通化するパターン（こちらはツール間の移植、本ページはセッション間の引き継ぎ）
 - [[concepts/claude-code-compact-recovery]] — 引き継ぎを compact のライフサイクルに機械的に結線した発展形（state file 退避＋marker 経由 2 段 hook で圧縮直後に自動復元）
 - [[concepts/claude-code-long-task-harness]] — progress.md に「現在のファイル・完了チェック・未解決の問い・次の行動」を段階ごとに残し、新セッションで再開を試して不足を補う手順
+- [[tools/claude-projects-threads]] — Claude Code Projects。毎回説明し直す背景を過去セッションから抽出し Project instructions に常設する方向（引き継ぎの恒久化）

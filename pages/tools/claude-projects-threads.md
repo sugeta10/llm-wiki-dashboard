@@ -45,11 +45,14 @@ flowchart LR
 
 @ClaudeDevs（公式）は 2026-10-09、Claude Code Projects の waitlist に登録していた Pro と Max の全ユーザーを利用可能にしたと発表し、初めて使う人向けに4分のウォークスルー動画を添えた。告知の名称は「Claude Code Projects」で、本ページのコーディネーター＋スレッド型 Projects と同じ製品を指すと考えられる（推論。告知文にはスレッドなど機能の記述がない）。この告知から、少なくとも Pro と Max では waitlist 制で段階的に提供されていたことがわかる。
 
+同日に @Voxyz_ai は、Anthropic が Claude Code Projects の「完全ガイド」を公開したと紹介し、Opus 5.5 にそのガイドを読ませて最近のセッションを振り返らせ、毎回セッション冒頭で説明し直している背景を（Projects の設定へ）移す使い方を勧めた。投稿はガイド本体へのリンクや中身を含まず、移し先が Goal・Project instructions・Memory のどれかも書いていない（括弧内は推論）。ガイドが本ページの元になった @dani_avila7 の解説と同じ内容かは未確認。過去セッションから繰り返し説明している文脈を抽出して常設の指示へ昇格させる発想は、[[concepts/ai-session-handover]] の引き継ぎを都度でなく恒久化する方向と考えられる（推論）。
+
 ## 問い
 
 - 自分のリポジトリ群で、Project instructions の「正本と衝突時の優先」節を書くと、各リポの CLAUDE.md とどこで食い違うか
 - API credentials のプロキシ注入は、ローカル Claude Code で .env にキーを置く運用と比べてどこまで漏えい面を減らすか。ローカルに同等の仕組みを持てるか
 - waitlist 解放後の Pro / Max で、1日200スレッドの上限や初期セットアップの25ドル負担は変わったか。公式のウォークスルー動画で確かめる
+- 自分の直近セッションを Opus 5.5 に振り返らせたとき、毎回説明し直している背景はどれくらいあり、Project instructions の16,000字に収まるか。公式ガイドの所在も確かめる
 - 「PR 1本 = スレッド1本」は、判断理由の追跡を PR description に頼る運用とどちらが後で読みやすいか
 
 ## 関連
@@ -60,3 +63,4 @@ flowchart LR
 - [[concepts/goal-loop-routine]] — ルーティンを含む goal / loop / routine の使い分け
 - [[concepts/effort-level-selection]] — コーディネーター／スレッドの effort 選びの判断軸
 - [[tools/claude-mcp]] — Connectors の中身
+- [[concepts/ai-session-handover]] — 都度の引き継ぎ。過去セッションで繰り返し説明した背景を Project instructions へ恒久化する使い方（@Voxyz_ai）の対になる手法

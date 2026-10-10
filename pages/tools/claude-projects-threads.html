@@ -66,11 +66,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>コーディネーターとの1本の会話に、できれば完結した仕事単位（例: Linear チケットを渡して「取り組み、疑問があれば聞いて」）を渡す。Overview ペインはスレッドを Ready for review（PR がレビュー待ち）・Waiting on you（返答や承認待ち、または失敗）・Working・Landing（承認済み・マージ待ち）・Idle・Resolved（手動・最後の手順後に Claude が・1週間放置で自動）の状態で束ねる。1スレッドに複数 PR も持てるが、@dani_avila7 は同じタスクでも PR ごとに新スレッドを開き、PR とスレッドを1対1にすると、マージされた変更ごとの判断理由を後で辿りやすいと勧める。Library タブには追加したファイルとスレッドの生成物（レポート・分析など非コードの成果）が入り、Routines タブには定期実行の仕事が並ぶ。コーディネーターに「毎週依存関係レポートを」と頼むと、プロジェクト内でスレッドとして走るルーティンが作られる（<a href="../concepts/goal-loop-routine.html">goal-loop-routine</a>）。</p>
 <h2>提供状況</h2>
 <p>@ClaudeDevs（公式）は 2026-10-09、Claude Code Projects の waitlist に登録していた Pro と Max の全ユーザーを利用可能にしたと発表し、初めて使う人向けに4分のウォークスルー動画を添えた。告知の名称は「Claude Code Projects」で、本ページのコーディネーター＋スレッド型 Projects と同じ製品を指すと考えられる（推論。告知文にはスレッドなど機能の記述がない）。この告知から、少なくとも Pro と Max では waitlist 制で段階的に提供されていたことがわかる。</p>
+<p>同日に @Voxyz_ai は、Anthropic が Claude Code Projects の「完全ガイド」を公開したと紹介し、Opus 5.5 にそのガイドを読ませて最近のセッションを振り返らせ、毎回セッション冒頭で説明し直している背景を（Projects の設定へ）移す使い方を勧めた。投稿はガイド本体へのリンクや中身を含まず、移し先が Goal・Project instructions・Memory のどれかも書いていない（括弧内は推論）。ガイドが本ページの元になった @dani_avila7 の解説と同じ内容かは未確認。過去セッションから繰り返し説明している文脈を抽出して常設の指示へ昇格させる発想は、<a href="../concepts/ai-session-handover.html">ai-session-handover</a> の引き継ぎを都度でなく恒久化する方向と考えられる（推論）。</p>
 <h2>問い</h2>
 <ul>
 <li>自分のリポジトリ群で、Project instructions の「正本と衝突時の優先」節を書くと、各リポの CLAUDE.md とどこで食い違うか</li>
 <li>API credentials のプロキシ注入は、ローカル Claude Code で .env にキーを置く運用と比べてどこまで漏えい面を減らすか。ローカルに同等の仕組みを持てるか</li>
 <li>waitlist 解放後の Pro / Max で、1日200スレッドの上限や初期セットアップの25ドル負担は変わったか。公式のウォークスルー動画で確かめる</li>
+<li>自分の直近セッションを Opus 5.5 に振り返らせたとき、毎回説明し直している背景はどれくらいあり、Project instructions の16,000字に収まるか。公式ガイドの所在も確かめる</li>
 <li>「PR 1本 = スレッド1本」は、判断理由の追跡を PR description に頼る運用とどちらが後で読みやすいか</li>
 </ul>
 <h2>関連</h2>
@@ -81,12 +83,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — ルーティンを含む goal / loop / routine の使い分け</li>
 <li><a href="../concepts/effort-level-selection.html">effort-level-selection</a> — コーディネーター／スレッドの effort 選びの判断軸</li>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a> — Connectors の中身</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-projects-setup.html">claude-projects-setup</a></li>
+<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a> — 都度の引き継ぎ。過去セッションで繰り返し説明した背景を Project instructions へ恒久化する使い方（@Voxyz_ai）の対になる手法</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
+<li><a href="../concepts/claude-projects-setup.html">claude-projects-setup</a></li>
 <li><a href="../concepts/effort-level-selection.html">effort-level-selection</a></li>
 <li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a></li>
-<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
-<li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2104356640749187329" rel="noopener" target="_blank">https://x.com/i/web/status/2104356640749187329</a></li>
-<li><a href="https://x.com/i/web/status/2108621476538781878" rel="noopener" target="_blank">https://x.com/i/web/status/2108621476538781878</a></li></ul></section></article>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2104356640749187329" rel="noopener" target="_blank">https://x.com/i/web/status/2104356640749187329</a></li>
+<li><a href="https://x.com/i/web/status/2108621476538781878" rel="noopener" target="_blank">https://x.com/i/web/status/2108621476538781878</a></li>
+<li><a href="https://x.com/i/web/status/2108635045527515434" rel="noopener" target="_blank">https://x.com/i/web/status/2108635045527515434</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -154,11 +158,14 @@ flowchart LR
 
 @ClaudeDevs（公式）は 2026-10-09、Claude Code Projects の waitlist に登録していた Pro と Max の全ユーザーを利用可能にしたと発表し、初めて使う人向けに4分のウォークスルー動画を添えた。告知の名称は「Claude Code Projects」で、本ページのコーディネーター＋スレッド型 Projects と同じ製品を指すと考えられる（推論。告知文にはスレッドなど機能の記述がない）。この告知から、少なくとも Pro と Max では waitlist 制で段階的に提供されていたことがわかる。
 
+同日に @Voxyz_ai は、Anthropic が Claude Code Projects の「完全ガイド」を公開したと紹介し、Opus 5.5 にそのガイドを読ませて最近のセッションを振り返らせ、毎回セッション冒頭で説明し直している背景を（Projects の設定へ）移す使い方を勧めた。投稿はガイド本体へのリンクや中身を含まず、移し先が Goal・Project instructions・Memory のどれかも書いていない（括弧内は推論）。ガイドが本ページの元になった @dani_avila7 の解説と同じ内容かは未確認。過去セッションから繰り返し説明している文脈を抽出して常設の指示へ昇格させる発想は、[[concepts/ai-session-handover]] の引き継ぎを都度でなく恒久化する方向と考えられる（推論）。
+
 ## 問い
 
 - 自分のリポジトリ群で、Project instructions の「正本と衝突時の優先」節を書くと、各リポの CLAUDE.md とどこで食い違うか
 - API credentials のプロキシ注入は、ローカル Claude Code で .env にキーを置く運用と比べてどこまで漏えい面を減らすか。ローカルに同等の仕組みを持てるか
 - waitlist 解放後の Pro / Max で、1日200スレッドの上限や初期セットアップの25ドル負担は変わったか。公式のウォークスルー動画で確かめる
+- 自分の直近セッションを Opus 5.5 に振り返らせたとき、毎回説明し直している背景はどれくらいあり、Project instructions の16,000字に収まるか。公式ガイドの所在も確かめる
 - 「PR 1本 = スレッド1本」は、判断理由の追跡を PR description に頼る運用とどちらが後で読みやすいか
 
 ## 関連
@@ -169,6 +176,7 @@ flowchart LR
 - [[concepts/goal-loop-routine]] — ルーティンを含む goal / loop / routine の使い分け
 - [[concepts/effort-level-selection]] — コーディネーター／スレッドの effort 選びの判断軸
 - [[tools/claude-mcp]] — Connectors の中身
+- [[concepts/ai-session-handover]] — 都度の引き継ぎ。過去セッションで繰り返し説明した背景を Project instructions へ恒久化する使い方（@Voxyz_ai）の対になる手法
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
