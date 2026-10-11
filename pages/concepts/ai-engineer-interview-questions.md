@@ -63,3 +63,4 @@ Q9 が「どのモデルで増えたか」を明示的に否定している点�
 - [[concepts/graph-reliability-design]] — 耐久状態・冪等な書き込み・ノード単位の失敗方針・「許可されたルートは決定論的」。Q5・Q6・Q7 に具体的な設計語彙を与える
 - [[concepts/token-management]] — トークン消費を経営イシューとして可視化する議論。Q9 のコスト分解の上位文脈
 - [[concepts/prompt-caching]] — 第2弾Q2が経験を問うキャッシング機構の技術詳細（TTL・価格倍率・ブレークポイント設計）
+- [[concepts/models-as-insider-risks]] — 責任分離・暴走停止を「モデルを内部脅威として扱う」原則群にまとめた Satya Nadella の論

@@ -33,3 +33,4 @@
 - [[business/self-improving-company]] — 会社を学習ループの集合として再設計するYC構想（企業内ループの具体化）
 - [[business/org-design-intelligence]] — 組織をインテリジェンス層中心に再設計する隣接構想
 - [[concepts/loop-engineering]] — 同じSatya引用が登場するエージェント工学側の論（L4ヒルクライミングループ）
+- [[concepts/models-as-insider-risks]] — 同じ Nadella のガバナンス論。単一モデルに依存しない Model diversity を統制面から求める

@@ -86,3 +86,4 @@ OpenAI・Anthropic・ThoughtWorksが調整なく同じ壁にぶつかり、異�
 - [[concepts/opus-motion-design-studio]] — 「プロンプト10%・ハーネス90%」を動画制作に当てはめた講座（@0xMovez）
 - [[concepts/dsl-as-harness]] — 表現力を捨てた DSL を書かせると、スキーマ・検証器・文法・編集単位の4つのハーネス性質がまとめて得られるという設計論（MulmoClaude のエッセイ）
 - [[concepts/claude-code-long-task-harness]] — ハーネスの定義を Claude Code の設定ファイル4つ＋/goal の7層に落とし、成果物・証拠・進捗記録を残させる実装手順（@beamnxw）
+- [[concepts/models-as-insider-risks]] — モデル・ハーネス・操作空間を性能でなく統制のために分離せよという Satya Nadella の論

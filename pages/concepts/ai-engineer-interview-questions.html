@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-engineer-interview-questions</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-engineer-interview-questions.md">Markdownで表示</a></div>
-  <div class="meta">concepts/ai-engineer-interview-questions · concepts · <span title="2026-08-26">1ヶ月前</span></div>
+  <div class="meta">concepts/ai-engineer-interview-questions · concepts · <span title="2026-10-12">今日</span></div>
   <article><h1>AIエンジニア面接の10問（本番運用能力の診断）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 「AI使ってます」の自己申告を、モデルとコードの責任分離・変更時の回帰検知・副作用のあるツール実行・暴走の停止条件・コストの分解といった本番運用の質問に翻訳する10問（@voidwarriorchan）。</p>
@@ -184,11 +184,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a> — 耐久状態・冪等な書き込み・ノード単位の失敗方針・「許可されたルートは決定論的」。Q5・Q6・Q7 に具体的な設計語彙を与える</li>
 <li><a href="../concepts/token-management.html">token-management</a> — トークン消費を経営イシューとして可視化する議論。Q9 のコスト分解の上位文脈</li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — 第2弾Q2が経験を問うキャッシング機構の技術詳細（TTL・価格倍率・ブレークポイント設計）</li>
+<li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a> — 責任分離・暴走停止を「モデルを内部脅威として扱う」原則群にまとめた Satya Nadella の論</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-engineer-roadmap.html">ai-engineer-roadmap</a></li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a></li>
 <li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a></li>
-<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
-<li><a href="../concepts/token-management.html">token-management</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2089094496663535618" rel="noopener" target="_blank">https://x.com/i/web/status/2089094496663535618</a></li>
+<li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a></li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2089094496663535618" rel="noopener" target="_blank">https://x.com/i/web/status/2089094496663535618</a></li>
 <li><a href="https://x.com/i/web/status/2092059427029536774" rel="noopener" target="_blank">https://x.com/i/web/status/2092059427029536774</a></li></ul></section></article>
 </main>
 <script>
@@ -275,6 +276,7 @@ Q9 が「どのモデルで増えたか」を明示的に否定している点�
 - [[concepts/graph-reliability-design]] — 耐久状態・冪等な書き込み・ノード単位の失敗方針・「許可されたルートは決定論的」。Q5・Q6・Q7 に具体的な設計語彙を与える
 - [[concepts/token-management]] — トークン消費を経営イシューとして可視化する議論。Q9 のコスト分解の上位文脈
 - [[concepts/prompt-caching]] — 第2弾Q2が経験を問うキャッシング機構の技術詳細（TTL・価格倍率・ブレークポイント設計）
+- [[concepts/models-as-insider-risks]] — 責任分離・暴走停止を「モデルを内部脅威として扱う」原則群にまとめた Satya Nadella の論
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

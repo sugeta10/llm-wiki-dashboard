@@ -59,3 +59,4 @@ flowchart TD
 - [[concepts/claude-code-instruction-methods]] — 公式フレーム版の7手段振り分け（ロード時点×圧縮生存×権威×コスト）。本ページは同じ結論を「検査可能な契約への書き換え」と実装テンプレートで補う
 - [[concepts/claude-md-persistent-contract]] — CLAUDE.md=永続契約という同じ捉え直しの非エンジニア向け5領域版
 - [[concepts/claude-code-context-hierarchy]] — 複数階層のCLAUDE.md結合・遅延ロードを階層構造の側から整理した公式仕様ページ
+- [[concepts/models-as-insider-risks]] — 「モデルに自分の仕事を検証させない」「独立した監査」を組織ガバナンスの水準で求める Satya Nadella の論

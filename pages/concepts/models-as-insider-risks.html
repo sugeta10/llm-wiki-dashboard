@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>models-as-insider-risks - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>models-as-insider-risks</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="models-as-insider-risks.md">Markdownで表示</a></div>
+  <div class="meta">concepts/models-as-insider-risks · concepts · <span title="2026-10-12">今日</span></div>
+  <article><h1>モデルを内部脅威として扱う（Models as Insider Risks）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 挙動を内部から説明できないフロンティアモデルを「悪意はなくても誤りや乗っ取りがありうる社内の強い権限者」とみなし、権限・観測・停止の制御をモデルの外側に置いて封じ込めるべきだ、という Microsoft CEO Satya Nadella の設計論。</p>
+<p>📌 X bookmark: 18,000（2026-10-11 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Model[&quot;Model（知能の供給）&quot;] --&gt; Harness[&quot;Harness（作業の編成）&quot;]
+  Harness --&gt; Action[&quot;Action space（できる操作）&quot;]
+  Controls[&quot;外部の制御（権限・停止）&quot;] --&gt; Harness
+  Controls --&gt; Action
+  Action --&gt; Evidence[&quot;改ざん不能な証跡&quot;]
+  Evidence --&gt; Audit[&quot;独立した監査&quot;]
+  Human[&quot;権限を持つ人間&quot;] --&gt; Controls
+  Audit --&gt; Human</pre>
+<p>従来のソフトウェアは振る舞いを特定のコードパスまで遡れたが、いまのモデルは出力を学習データや重みの構成に帰属できない、と Nadella は出発点を置く。それでも機密データへのアクセスと重要な操作の権限をエージェントに渡している以上、信頼の設計を組み直す必要があり、責任はモデル提供者の保証では免除されないと述べる。Nadella はこれを「<strong>知能の供給（supply of intelligence）と、それに対する権限（authority）を分離する</strong>」と言い表す。アラインメントという難問はいったん脇に置き、非決定的なモデルを決定論的なシステム設計・人間による統制・運用手順で囲む工学的アプローチから始めるべきだ、というのが主張の骨格になる。</p>
+<p>「内部脅威（insider risk）」の比喩について、Nadella は「モデルが悪意を持つからではなく、重要なシステムに触れる十分に有能な主体は誰でも誤り得るし侵害され得るから」と説明する。企業は強い権限を持つ人間に対して、ID の確立・最小権限・活動ログ・封じ込め境界といった実践を数十年かけて磨いてきたので、それをモデルにも当てはめればよい、という立場である。</p>
+<h2>CoT 透明性とその限界</h2>
+<p>Nadella は思考過程（CoT）の透明性を「譲れない条件」とし、「Neuralese（人間に読めない内部表現）」を推論が不透明であることの言い訳にしてはならないと述べる。ただし CoT の透明性だけでは十分でも信頼できるものでもない。モデルの出力を一貫して忠実（faithful）にする方法がまだ分かっていないからだ、と同じ記事で限界も認めている。</p>
+<p>モデル同士で敵対的にテスト・検証させることは「やるべき」としつつ、それだけでは「不透明なオーケストレーション層の中の不透明なモデルを、別の不透明なモデルが見張る」入れ子のブラックボックスになると Nadella は指摘する。</p>
+<h2>制御をモデルの外に置く</h2>
+<p>だからモデルのアクセス範囲と実行できる操作を統制する仕組みはモデルの外側に置く必要がある、と Nadella は結論づける。根拠として挙げるのは「プログラムは自分の権限を強制する機構を迂回・改ざんできてはならない」という1970年代からの情報セキュリティの原則である。現在の文脈では、モデルを作業を編成するハーネス（harness）から分離し、さらに「何ができるか」を定める操作空間（action space）からも分離し、制御と安全装置を外部化することを指す、と Nadella は書く。</p>
+<h2>観測可能性の7原則</h2>
+<p>Nadella が「観測可能性（observability）の原則」として挙げる7項目（原文の要旨）：</p>
+<table>
+<thead>
+<tr>
+<th>原則</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model diversity</td>
+<td>重要な成果を1つのモデルだけに依存させず、モデルに自分の仕事を検証させない</td>
+</tr>
+<tr>
+<td>Observe everything</td>
+<td>意味のあるモデルの行動はすべて、改ざん不能で人間が読める証跡を残す。結果に至る過程をモデルの自己申告に頼らず再現できるようにする</td>
+</tr>
+<tr>
+<td>Verifiability</td>
+<td>成功タスクだけでなく、失敗・攻撃・エッジケース・システム変更を含めてシステム全体を継続的にテストする</td>
+</tr>
+<tr>
+<td>Independent controls</td>
+<td>モデルが何にアクセスでき何を実行できるかを、組織が独立して決められる</td>
+</tr>
+<tr>
+<td>Independent auditability</td>
+<td>検証は検証対象の知能から独立させる。システムの振る舞いと、その振る舞いが意図どおりかを判断する証拠の両方を、単一のモデルに握らせない</td>
+</tr>
+<tr>
+<td>Containment</td>
+<td>最初から侵害されている前提で封じ込める。権限を持つ人がタスク途中でも停止・遮断できる「非常ブレーキ」を持つ。高度なモデルほど高度な封じ込め技術が要り、標準化が必要</td>
+</tr>
+<tr>
+<td>Incident disclosure</td>
+<td>失敗・侵害時は影響を受けた相手へ速やかに開示し、何がなぜ失敗したか・どの制御が効かなかったかを業界で共有する。実行時にエージェントの挙動を変える実装詳細も含める</td>
+</tr>
+</tbody>
+</table>
+<p>記事は「最も信頼できるシステムは、最も信頼できるモデルを持つシステムではなく、モデルを最も信頼しなくて済むシステムになる」という一文で締めくくられている。</p>
+<h2>wiki 内の他の議論との関係（推論）</h2>
+<ul>
+<li>「制御をモデルの外に置く」は、<a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> が AWS Rex の例で示す「実行内容の生成と許可ポリシーを同じ場所に置かない」設計と同じ方向を向いていると考えられる。Nadella の記事はそれを企業 CEO の立場から業界標準の要求にまで広げている。</li>
+<li>モデル・ハーネス・操作空間の三分離は、<a href="../concepts/harness-engineering.html">harness-engineering</a> の「エージェント = モデル + ハーネス」をさらに一段割った見方とも読める。ハーネス論が性能のための分離を語るのに対し、こちらは統制のための分離を語っている点が違う。</li>
+<li>「モデルに自分の仕事を検証させない」「独立した監査」は、<a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a> の Writer/Reviewer 分離や、<a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a> が問う暴走停止・責任分離を、組織ガバナンスの水準で言い直したものと考えられる。</li>
+<li>同じ Nadella の <a href="../business/frontier-ecosystem.html">frontier-ecosystem</a> は「最良のモデルを選ぶこと」に優位を置かない論で、本記事の Model diversity（単一モデル依存を避ける）とは戦略面とガバナンス面から同じ結論に向かっているように見える。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「モデルに検証させるが、検証の独立性は別系統で担保する」を、個人規模のエージェント運用（夜間の自動処理など）でどこまで実装できるか。改ざん不能な証跡と非常ブレーキの最小構成は何か。</li>
+<li>別モデルによる検証は誤検知が多いと実運用で撤去されることもある。Model diversity と運用コストの釣り合いをどう取るか。</li>
+<li>Incident disclosure の業界標準は、誰（ベンダー・利用企業・規制当局）が主導して形になるか。</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — 外部ポリシー（Cedar/Rex）で実行を縛る設計。「制御をモデルの外に置く」の具体実装例</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — モデルとハーネスを分ける全体論。本ページは統制の観点からの三分離</li>
+<li><a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a> — 独立 Reviewer と Permission・Hooks の強制境界</li>
+<li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a> — 責任分離・暴走停止を面接で問う運用ガバナンス</li>
+<li><a href="../business/frontier-ecosystem.html">frontier-ecosystem</a> — 同じ Nadella によるモデル非依存の戦略論</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/frontier-ecosystem.html">frontier-ecosystem</a></li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
+<li><a href="../concepts/ai-engineer-interview-questions.html">ai-engineer-interview-questions</a></li>
+<li><a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a></li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2108931348857827686" rel="noopener" target="_blank">https://x.com/i/web/status/2108931348857827686</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># モデルを内部脅威として扱う（Models as Insider Risks）
+
+&gt; **TL;DR**: 挙動を内部から説明できないフロンティアモデルを「悪意はなくても誤りや乗っ取りがありうる社内の強い権限者」とみなし、権限・観測・停止の制御をモデルの外側に置いて封じ込めるべきだ、という Microsoft CEO Satya Nadella の設計論。
+
+&gt; 📌 X bookmark: 18,000（2026-10-11 時点）
+
+```mermaid
+flowchart LR
+  Model[&quot;Model（知能の供給）&quot;] --&gt; Harness[&quot;Harness（作業の編成）&quot;]
+  Harness --&gt; Action[&quot;Action space（できる操作）&quot;]
+  Controls[&quot;外部の制御（権限・停止）&quot;] --&gt; Harness
+  Controls --&gt; Action
+  Action --&gt; Evidence[&quot;改ざん不能な証跡&quot;]
+  Evidence --&gt; Audit[&quot;独立した監査&quot;]
+  Human[&quot;権限を持つ人間&quot;] --&gt; Controls
+  Audit --&gt; Human
+```
+
+従来のソフトウェアは振る舞いを特定のコードパスまで遡れたが、いまのモデルは出力を学習データや重みの構成に帰属できない、と Nadella は出発点を置く。それでも機密データへのアクセスと重要な操作の権限をエージェントに渡している以上、信頼の設計を組み直す必要があり、責任はモデル提供者の保証では免除されないと述べる。Nadella はこれを「**知能の供給（supply of intelligence）と、それに対する権限（authority）を分離する**」と言い表す。アラインメントという難問はいったん脇に置き、非決定的なモデルを決定論的なシステム設計・人間による統制・運用手順で囲む工学的アプローチから始めるべきだ、というのが主張の骨格になる。
+
+「内部脅威（insider risk）」の比喩について、Nadella は「モデルが悪意を持つからではなく、重要なシステムに触れる十分に有能な主体は誰でも誤り得るし侵害され得るから」と説明する。企業は強い権限を持つ人間に対して、ID の確立・最小権限・活動ログ・封じ込め境界といった実践を数十年かけて磨いてきたので、それをモデルにも当てはめればよい、という立場である。
+
+## CoT 透明性とその限界
+
+Nadella は思考過程（CoT）の透明性を「譲れない条件」とし、「Neuralese（人間に読めない内部表現）」を推論が不透明であることの言い訳にしてはならないと述べる。ただし CoT の透明性だけでは十分でも信頼できるものでもない。モデルの出力を一貫して忠実（faithful）にする方法がまだ分かっていないからだ、と同じ記事で限界も認めている。
+
+モデル同士で敵対的にテスト・検証させることは「やるべき」としつつ、それだけでは「不透明なオーケストレーション層の中の不透明なモデルを、別の不透明なモデルが見張る」入れ子のブラックボックスになると Nadella は指摘する。
+
+## 制御をモデルの外に置く
+
+だからモデルのアクセス範囲と実行できる操作を統制する仕組みはモデルの外側に置く必要がある、と Nadella は結論づける。根拠として挙げるのは「プログラムは自分の権限を強制する機構を迂回・改ざんできてはならない」という1970年代からの情報セキュリティの原則である。現在の文脈では、モデルを作業を編成するハーネス（harness）から分離し、さらに「何ができるか」を定める操作空間（action space）からも分離し、制御と安全装置を外部化することを指す、と Nadella は書く。
+
+## 観測可能性の7原則
+
+Nadella が「観測可能性（observability）の原則」として挙げる7項目（原文の要旨）：
+
+| 原則 | 内容 |
+|---|---|
+| Model diversity | 重要な成果を1つのモデルだけに依存させず、モデルに自分の仕事を検証させない |
+| Observe everything | 意味のあるモデルの行動はすべて、改ざん不能で人間が読める証跡を残す。結果に至る過程をモデルの自己申告に頼らず再現できるようにする |
+| Verifiability | 成功タスクだけでなく、失敗・攻撃・エッジケース・システム変更を含めてシステム全体を継続的にテストする |
+| Independent controls | モデルが何にアクセスでき何を実行できるかを、組織が独立して決められる |
+| Independent auditability | 検証は検証対象の知能から独立させる。システムの振る舞いと、その振る舞いが意図どおりかを判断する証拠の両方を、単一のモデルに握らせない |
+| Containment | 最初から侵害されている前提で封じ込める。権限を持つ人がタスク途中でも停止・遮断できる「非常ブレーキ」を持つ。高度なモデルほど高度な封じ込め技術が要り、標準化が必要 |
+| Incident disclosure | 失敗・侵害時は影響を受けた相手へ速やかに開示し、何がなぜ失敗したか・どの制御が効かなかったかを業界で共有する。実行時にエージェントの挙動を変える実装詳細も含める |
+
+記事は「最も信頼できるシステムは、最も信頼できるモデルを持つシステムではなく、モデルを最も信頼しなくて済むシステムになる」という一文で締めくくられている。
+
+## wiki 内の他の議論との関係（推論）
+
+- 「制御をモデルの外に置く」は、[[concepts/ai-agent-governance]] が AWS Rex の例で示す「実行内容の生成と許可ポリシーを同じ場所に置かない」設計と同じ方向を向いていると考えられる。Nadella の記事はそれを企業 CEO の立場から業界標準の要求にまで広げている。
+- モデル・ハーネス・操作空間の三分離は、[[concepts/harness-engineering]] の「エージェント = モデル + ハーネス」をさらに一段割った見方とも読める。ハーネス論が性能のための分離を語るのに対し、こちらは統制のための分離を語っている点が違う。
+- 「モデルに自分の仕事を検証させない」「独立した監査」は、[[concepts/claude-md-multilayer-design]] の Writer/Reviewer 分離や、[[concepts/ai-engineer-interview-questions]] が問う暴走停止・責任分離を、組織ガバナンスの水準で言い直したものと考えられる。
+- 同じ Nadella の [[business/frontier-ecosystem]] は「最良のモデルを選ぶこと」に優位を置かない論で、本記事の Model diversity（単一モデル依存を避ける）とは戦略面とガバナンス面から同じ結論に向かっているように見える。
+
+## 問い
+
+- 「モデルに検証させるが、検証の独立性は別系統で担保する」を、個人規模のエージェント運用（夜間の自動処理など）でどこまで実装できるか。改ざん不能な証跡と非常ブレーキの最小構成は何か。
+- 別モデルによる検証は誤検知が多いと実運用で撤去されることもある。Model diversity と運用コストの釣り合いをどう取るか。
+- Incident disclosure の業界標準は、誰（ベンダー・利用企業・規制当局）が主導して形になるか。
+
+## 関連
+
+- [[concepts/ai-agent-governance]] — 外部ポリシー（Cedar/Rex）で実行を縛る設計。「制御をモデルの外に置く」の具体実装例
+- [[concepts/harness-engineering]] — モデルとハーネスを分ける全体論。本ページは統制の観点からの三分離
+- [[concepts/claude-md-multilayer-design]] — 独立 Reviewer と Permission・Hooks の強制境界
+- [[concepts/ai-engineer-interview-questions]] — 責任分離・暴走停止を面接で問う運用ガバナンス
+- [[business/frontier-ecosystem]] — 同じ Nadella によるモデル非依存の戦略論
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

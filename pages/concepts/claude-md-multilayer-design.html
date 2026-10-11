@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-md-multilayer-design</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-md-multilayer-design.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-md-multilayer-design · concepts · <span title="2026-08-29">1ヶ月前</span></div>
+  <div class="meta">concepts/claude-md-multilayer-design · concepts · <span title="2026-10-12">今日</span></div>
   <article><h1>CLAUDE.md 多層設計</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: CLAUDE.md単体に全てを書くのをやめ、常設の契約（CLAUDE.md）・パス別Rules・遅延ロードSkills・独立Reviewer・Permission/Hooksの強制境界へ役割分担し、精神論を観測可能な契約文へ書き換える設計論。</p>
@@ -77,11 +77,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 公式フレーム版の7手段振り分け（ロード時点×圧縮生存×権威×コスト）。本ページは同じ結論を「検査可能な契約への書き換え」と実装テンプレートで補う</li>
 <li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a> — CLAUDE.md=永続契約という同じ捉え直しの非エンジニア向け5領域版</li>
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> — 複数階層のCLAUDE.md結合・遅延ロードを階層構造の側から整理した公式仕様ページ</li>
+<li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a> — 「モデルに自分の仕事を検証させない」「独立した監査」を組織ガバナンスの水準で求める Satya Nadella の論</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
 <li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
 <li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
-<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
-<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2093168450726457702" rel="noopener" target="_blank">https://x.com/i/web/status/2093168450726457702</a></li></ul></section></article>
+<li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a></li>
+<li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2093168450726457702" rel="noopener" target="_blank">https://x.com/i/web/status/2093168450726457702</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -163,6 +164,7 @@ flowchart TD
 - [[concepts/claude-code-instruction-methods]] — 公式フレーム版の7手段振り分け（ロード時点×圧縮生存×権威×コスト）。本ページは同じ結論を「検査可能な契約への書き換え」と実装テンプレートで補う
 - [[concepts/claude-md-persistent-contract]] — CLAUDE.md=永続契約という同じ捉え直しの非エンジニア向け5領域版
 - [[concepts/claude-code-context-hierarchy]] — 複数階層のCLAUDE.md結合・遅延ロードを階層構造の側から整理した公式仕様ページ
+- [[concepts/models-as-insider-risks]] — 「モデルに自分の仕事を検証させない」「独立した監査」を組織ガバナンスの水準で求める Satya Nadella の論
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
