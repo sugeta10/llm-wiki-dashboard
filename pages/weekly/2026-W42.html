@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-W42 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb9a0"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>2026-W42</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="2026-W42.md">Markdownで表示</a></div>
+  <div class="meta">weekly/2026-W42 · weekly · <span title="2026-10-12">今日</span></div>
+  <article><h1>Weekly Insights: 2026-W42（2026-10-12〜10-18）</h1>
+<h2>今週のホットトピック</h2>
+<p><img alt="infographic-hot-topics.png" src="2026-W42/infographic-hot-topics.png"></p>
+<ul>
+<li><strong><a href="../tools/claude-google-workspace.html">claude-google-workspace</a> Claude が Google Docs・Sheets・Slides の中で動く</strong> — @claudeai が発表した双方向の連携です。サイドバーの Claude が開いているファイルを直接編集し、反映前に1件ずつ承認できます。今週最多の約2.1万ブックマークでした。</li>
+<li><strong><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a> モデルを「社内の強い権限者」として扱う</strong> — Microsoft CEO の Satya Nadella が、権限・観測・停止の制御をモデルの外側に置くべきだと論じ、観測可能性の7原則を挙げました（約1.8万ブックマーク）。</li>
+<li><strong><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a> 定時に動くエージェントの6つの設計ルール</strong> — Anthropic が Slack・GitHub を定時に読んで要点を投稿する参照実装 daily-brief を公開しました。同じ週に Max・Team プランへ月次 API クレジットが付き、これを動かす費用の当てができました。</li>
+<li><strong><a href="../business/line-group-ai-crm.html">line-group-ai-crm</a> LINE グループに「記録係」を入れて顧客台帳を作る</strong> — 地方のリフォーム・塗装会社で、発言を Claude API で仕分け、迷った発言だけ「要確認」に回す導入支援の実例です（安松谷直登による自己申告）。</li>
+</ul>
+<h3>深掘り</h3>
+<p><strong><a href="../tools/claude-google-workspace.html">claude-google-workspace</a> 業務ツールの中に入る Claude</strong>
+読みどころは機能の新しさより、「編集は1件ずつ、反映前に承認できる」という書き込みの渡し方です。AI に書かせる範囲を、利用者が編集単位で決める側に置いています。ただし告知の動画は未収集で、承認の粒度・対応プラン・読み込み範囲がどこまで及ぶかは分かっていません。現時点で言えるのは設計の向きまでで、使い勝手の評価は実物を触るまで保留です。</p>
+<p><strong><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a> 制御をモデルの外に置く</strong>
+Nadella の出発点は、いまのモデルは出力を重みや学習データに遡って説明できない、という点です。そこから「悪意が無くても誤り得るし乗っ取られ得る強い権限者」として、企業が人間に対して磨いてきた最小権限・活動ログ・封じ込めをそのまま当てはめよ、と主張します。7原則のうち「Observe everything」は、結果に至る過程をモデルの自己申告に頼らず再現できるようにせよ、という要求です。締めの一文は「最も信頼できるシステムは、モデルを最も信頼しなくて済むシステムになる」でした。</p>
+<p><strong><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a> 「静かな日」と「読めなかった日」を分ける</strong>
+6ルールの多くは、無人実行で起きる取り違えへの対策です。トークン切れで情報源を読めなくても実行は始まり、エージェントは「新着なし」と報告してしまいます。そこで読めなかった情報源を末尾に明記させます。投稿が届いたか不明なら「maybe posted」と記録して、ほかの状態は動かしません。予算上限に達した実行は失敗せず一時停止するため、低すぎる上限は「ブリーフが静かになった」ように見える、という指摘もあります。Max 5x で月 $100、Max 20x で月 $200 のクレジットが Managed Agents に使えるので、このような無人実行を試す費用の障壁は下がりました（<a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a>）。</p>
+<p><strong><a href="../business/line-group-ai-crm.html">line-group-ai-crm</a> 迷ったものは台帳に書かない</strong>
+安松谷は「新しく書いてもらうのをやめて、LINE に書いたものを裏で写す」を芯に置きました。そのうえで、AI が迷う発言（1通に2人分の話が混ざる等）は台帳に書かず「要確認」へ回し、「間違ったまま台帳に入る方が後で大変」だと述べます。既存の約870行を整理すると、ステータスが「現調」のまま止まった行が8割ありました。その後の見積・受注・失注が、現場と事務の間で記録から抜けていたのです。AI 導入の前から、台帳の中に「止まっているのか、終わったのか分からない」状態が大量に眠っていた、という実例として読めます。</p>
+<h2>今週の中心テーマ</h2>
+<p><strong>無人で回すエージェントを安く動かせるようになった週に、素材が揃って設計していたのは、成功でも失敗でもない状態でした。読めなかった・届いたか分からない・判断に迷った——この3つを「何もなかった」に化けさせず、モデルの外に記録する場所です。</strong></p>
+<p><img alt="infographic-theme.png" src="2026-W42/infographic-theme.png"></p>
+<p>今週の素材を並べると、同じ手が別々の現場で使われています。daily-brief は、読めなかった情報源を明記させ、届いたか不明な投稿を「maybe posted」として記録します（<a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a>）。記録係の公式 LINE は、迷った発言を台帳でなく「要確認」に回します（<a href="../business/line-group-ai-crm.html">line-group-ai-crm</a>）。AI Homepage は、開けなかったページを隠さず報告させます（<a href="../tools/ai-newtab.html">ai-newtab</a>）。7層ハーネスのレビュアーは、「誤り」と別に「未解決」の判定を持ち、そこには欠けている証拠を書かせます（<a href="../concepts/claude-code-long-task-harness.html">claude-code-long-task-harness</a>）。hillclimb は、伸びが信頼区間のブレの範囲に収まる変更を取り込まないよう勧めます（<a href="../tools/claude-api-build-eval-hillclimb.html">claude-api-build-eval-hillclimb</a>）。どれも「はい／いいえ」の二値に、第三の値を足しています。</p>
+<p>なぜいまこれが目立つのかについて、私の仮説を述べます。人が毎回結果を見ている間は、沈黙が「本当に何も無かった」のか「取れなかった」のかを人が文脈で見分けられます。月次クレジットで定時実行が手軽になると、人が見ない実行の回数が増えます。すると沈黙の意味が曖昧になります。第三の状態を明示する設計は、その曖昧さを人の注意の代わりに記録で埋める手だと考えます。素材の著者たちがクレジットとこの設計を結びつけて論じているわけではなく、並べて読んだ本 wiki 側の推論です。</p>
+<p>記録の置き場所にも共通点があります。どの例でも、第三の状態を判定するのはモデルの自己申告ではありません。外部の事実です。daily-brief では、送信済みとみなすのは Slack が <code>"ok": true</code> を返したときだけです。hillclimb では、改善役に見せない test 側の点で採否を決めます。Nadella の「Observe everything」「Independent auditability」が求めるのも同じ向きです（<a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a>）。</p>
+<p>過去の週との差を整理します。<a href="../weekly/2026-W40.html">2026-W40</a> は「AI の判断を何と照合するか」、<a href="../weekly/2026-W41.html">2026-W41</a> は「人間が理解したかを検査する工程」の話でした。今週はその手前の話です。照合も検査もできなかったとき、それを記録に残すかどうかを扱っています。</p>
+<p>このvaultの定時ジョブにも当てはめてみました。ingest 側はすでにこの区別を持っています。<code>check_ingest_health.py</code>（ingest の連続失敗を数える検知スクリプト）は、キューが空の回と失敗が続く回を分けて扱います。検知スクリプト自身が死んだ場合（終了コード2以上）も、<code>run_x_bookmarks.sh</code> が別の Slack 通知に分けています。一方、入口の <code>scripts/x_bookmarks.py</code> は、API 応答から <code>data.get("data", [])</code> で一覧を取り、空なら「新規ブックマークなし」と出して正常終了します。xurl コマンドが HTTP エラー（認証切れ等）のときに非0で終わるなら、<code>check=True</code> で例外になり、ERR トラップが Slack に通知します。0で終わる場合は、取得失敗が「新規ブックマークなし」と同じ出力になります。xurl がどちらの挙動かは、今回は確かめていません。</p>
+<p>反証と、見落としやすい前提を二つ置きます。一つ目は、「要確認」が誰の判断で決まるかです。安松谷の記事は、迷いの判定が AI の自己申告の自信度なのか、「1通に複数人」のような規則なのかを書いていません。前者なら、第三の状態の判定そのものがモデルの自己申告に戻ってしまい、Nadella の原則とぶつかります。二つ目は、第三の状態には「捌く人」が要ることです。安松谷は最初の月に月3〜4回、人の目でデータを確認しています。daily-brief は「maybe posted」の後始末を人に委ねています。要確認の箱を作っても、誰も見なければ「現調」で止まった8割と同じ滞留が新しい場所に移るだけです。なお、Nadella の Model diversity（別モデルに検証させる）は、このvaultが独立審判として試し、誤検知の多さで撤去した方式と重なります。今週の素材が示す「取れなかったことを記録する」設計は、別モデルに正誤を判定させる方式とは別物です。誤検知の問題を抱えずに導入できる可能性が高いと考えます（確信度は中程度です）。</p>
+<h2>根拠ページ</h2>
+<ul>
+<li><a href="../tools/claude-google-workspace.html">claude-google-workspace</a>（→ 今週のホットトピック#1）</li>
+<li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a>（→ 今週のホットトピック#2）</li>
+<li><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a>（→ 今週のホットトピック#3）</li>
+<li><a href="../business/line-group-ai-crm.html">line-group-ai-crm</a>（→ 今週のホットトピック#4）</li>
+<li><a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a> — Max・Team プランに付いた月次 API クレジットの条件表です。Managed Agents と、紐づけた Console 組織の API キーで動かす <code>claude -p</code> は対象になり、対話型の Claude Code は対象外です。このvaultの launchd ingest をどちらの認証で回すかで扱いが分かれる、という点が実務上の要点です。</li>
+<li><a href="../tools/ai-newtab.html">ai-newtab</a> — @trq212 がクレジットの使い道の例として公開した、閲覧履歴から毎回書き直す「新しいタブ」です。人が情報源を選ばず閲覧履歴に任せる設計なので、すでに読んでいるサイトの中に閉じやすい、という限界をページ自身が問いに残しています。</li>
+<li><a href="../concepts/claude-code-long-task-harness.html">claude-code-long-task-harness</a> — @beamnxw が Claude Code の既存機能を7層に割り当てた、長時間タスクの完走手順です。完了を「保存された成果物と検証結果」で定義し、レビュアーには主張と開いたソースを結んだ証拠を返させます。</li>
+<li><a href="../tools/claude-api-build-eval-hillclimb.html">claude-api-build-eval-hillclimb</a> — claude-api スキルに追加された eval 用2コマンドです。train と test を分け、test でも伸びた変更だけを残します。点数だけが上がる過剰適合を、手順で防ぐ点が核心です。</li>
+<li><a href="../tools/a-letter-to-junior-agents.html">a-letter-to-junior-agents</a> — pju-hoge と、そのエージェント El-chan が共著した、新しく立ち上げたエージェント自身に読ませる初期設定キットです。「データを壊さず、消さずに『終了』と印を付ける」「記憶でなく機械で確かめる」という手紙の勧めは、今週のテーマを個人エージェントの作法として書いたものと読めます。</li>
+<li><a href="../business/chiho-business-trend.html">chiho-business-trend</a> — @minatoku_genkai が「需要が残り供給だけが消えた地方」を次の市場の歪みと見る記事です（約3千ブックマーク）。数値はすべて自己申告で、記事全体が無料セミナーへの誘導です。枠組みとしては、LINE 記録係の事例と並べて読めます。</li>
+</ul>
+<h2>既存wikiとの接続</h2>
+<ul>
+<li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a> — 冪等な書き込みと、ノード単位の失敗方針を扱うページです。daily-brief の「確認できてから状態を確定する」順序は、この一般形を1エージェントの実行に当てはめたものです。今週の素材は、そこに「確定できなかった」という値を足しています。</li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — 実行内容の生成と許可ポリシーを同じ場所に置かない設計です。Nadella の「制御をモデルの外に置く」の具体的な実装例にあたります。今週の観点で言えば、権限と並んで「状態の判定」もモデルの外に置く対象になります。</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 出力を採点し、閾値未満を止める品質ゲートの一般論で、wiki の主要なハブの一つです。hillclimb の「ブレの範囲の伸びは取り込まない」は、ゲートに「通過・不通過」のほかに「判定不能」を持たせる考え方と読めます。</li>
+</ul>
+<h2>sugeta-san への問い</h2>
+<p><strong>このvaultの定時ジョブで、「取れなかった」が「新着なし」と同じ出力になる箇所はどこに残っていますか。</strong></p>
+<p>→ ingest 側は、キュー空と連続失敗、さらに検知器自身の死亡まで区別済みです。残る候補は、入口の X 取得（<code>x_bookmarks.py</code>）と、ほかの取得系スクリプトです。xurl の終了コードが確かめられれば、入口の判定はすぐに確定します。</p>
+<h2>今週の小アクション（5分）</h2>
+<p>ターミナルで、エラーになると分かっている X API リクエストを1回だけ xurl で送り、直後に <code>echo $?</code> で終了コードを見てください。例えば、存在しないユーザー ID のブックマーク取得です。0 以外なら、<code>x_bookmarks.py</code> の <code>check=True</code> が取得失敗を拾っています。0 なら、取得失敗は「新規ブックマークなし」として静かに通過しています。</p>
+<h2>いますぐAIと一緒に（コピペ）</h2>
+<p>以下をそのまま Claude Code に貼ると、今週の daily-brief の規則で、このvaultの定時ジョブを点検できます。</p>
+<pre><code>このvaultの launchd 定時ジョブを、「読み取り失敗を静かな日と取り違えない」という観点で点検してください。編集はしないでください。
+
+1. scripts/run_*.sh と、そこから呼ばれる取得系の Python スクリプト（x_bookmarks.py、ingest_tweet_urls.py など）を読み、
+   外部から何かを取得している箇所を列挙してください
+2. 各箇所について、「取得に失敗した場合」と「取得できたが0件だった場合」で、出力・終了コード・Slack通知・ログが
+   区別されるかを、ファイル:行番号つきの表にしてください。区別されない箇所は、どの条件でそうなるかも書いてください
+3. 外部ツール（xurl など）の挙動に依存して判定が変わる箇所は「未確認」として分け、確かめるための最小コマンドを添えてください
+4. 区別されない箇所ごとに、最小の修正案を1行で出してください（実装は私が承認してから）
+
+参照: wiki/concepts/scheduled-agent-automation.md（「Sources: 専用の資格情報とブックマーク」節の3規則）
+</code></pre>
+<h2>さらに読むべきページ</h2>
+<ul>
+<li><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a> — 「Destination」節の投稿確認と記録の順序が核心です。「posting → posted / maybe posted」の3段の実行記録は、外部に書き込むあらゆる定時処理にそのまま流用できます。</li>
+<li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a> — 観測可能性の7原則の表を、自分の運用の点検表として読めます。特に「Containment」の非常ブレーキと「Incident disclosure」は、個人規模ではどこまで要るかを考える材料になります。</li>
+<li><a href="../tools/claude-api-build-eval-hillclimb.html">claude-api-build-eval-hillclimb</a> — 「点が2〜3周伸びないときは直すのをやめ、失敗を1件ずつ読んで分類する」という止めどきの規則が、スキル改善全般に使えます。wiki-ingest の判定を改善するときの手順の候補です。</li>
+</ul>
+<h2>今週の音声ニュース</h2>
+<audio controls style="width:100%;margin:1rem 0"><source src="2026-W42/audio.mp3" type="audio/mpeg"></audio>
+<p><a href="https://notebooklm.google.com/notebook/7b53e42f-b8a3-4098-b91e-a604b1efc24e">NotebookLM で開く →</a></p><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/chiho-business-trend.html">chiho-business-trend</a></li>
+<li><a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a></li>
+<li><a href="../business/line-group-ai-crm.html">line-group-ai-crm</a></li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
+<li><a href="../concepts/claude-code-long-task-harness.html">claude-code-long-task-harness</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Weekly Insights: 2026-W42（2026-10-12〜10-18）
+
+## 今週のホットトピック
+
+![[2026-W42/infographic-hot-topics.png]]
+
+- **[[tools/claude-google-workspace]] Claude が Google Docs・Sheets・Slides の中で動く** — @claudeai が発表した双方向の連携です。サイドバーの Claude が開いているファイルを直接編集し、反映前に1件ずつ承認できます。今週最多の約2.1万ブックマークでした。
+- **[[concepts/models-as-insider-risks]] モデルを「社内の強い権限者」として扱う** — Microsoft CEO の Satya Nadella が、権限・観測・停止の制御をモデルの外側に置くべきだと論じ、観測可能性の7原則を挙げました（約1.8万ブックマーク）。
+- **[[concepts/scheduled-agent-automation]] 定時に動くエージェントの6つの設計ルール** — Anthropic が Slack・GitHub を定時に読んで要点を投稿する参照実装 daily-brief を公開しました。同じ週に Max・Team プランへ月次 API クレジットが付き、これを動かす費用の当てができました。
+- **[[business/line-group-ai-crm]] LINE グループに「記録係」を入れて顧客台帳を作る** — 地方のリフォーム・塗装会社で、発言を Claude API で仕分け、迷った発言だけ「要確認」に回す導入支援の実例です（安松谷直登による自己申告）。
+
+### 深掘り
+
+**[[tools/claude-google-workspace]] 業務ツールの中に入る Claude**
+読みどころは機能の新しさより、「編集は1件ずつ、反映前に承認できる」という書き込みの渡し方です。AI に書かせる範囲を、利用者が編集単位で決める側に置いています。ただし告知の動画は未収集で、承認の粒度・対応プラン・読み込み範囲がどこまで及ぶかは分かっていません。現時点で言えるのは設計の向きまでで、使い勝手の評価は実物を触るまで保留です。
+
+**[[concepts/models-as-insider-risks]] 制御をモデルの外に置く**
+Nadella の出発点は、いまのモデルは出力を重みや学習データに遡って説明できない、という点です。そこから「悪意が無くても誤り得るし乗っ取られ得る強い権限者」として、企業が人間に対して磨いてきた最小権限・活動ログ・封じ込めをそのまま当てはめよ、と主張します。7原則のうち「Observe everything」は、結果に至る過程をモデルの自己申告に頼らず再現できるようにせよ、という要求です。締めの一文は「最も信頼できるシステムは、モデルを最も信頼しなくて済むシステムになる」でした。
+
+**[[concepts/scheduled-agent-automation]] 「静かな日」と「読めなかった日」を分ける**
+6ルールの多くは、無人実行で起きる取り違えへの対策です。トークン切れで情報源を読めなくても実行は始まり、エージェントは「新着なし」と報告してしまいます。そこで読めなかった情報源を末尾に明記させます。投稿が届いたか不明なら「maybe posted」と記録して、ほかの状態は動かしません。予算上限に達した実行は失敗せず一時停止するため、低すぎる上限は「ブリーフが静かになった」ように見える、という指摘もあります。Max 5x で月 $100、Max 20x で月 $200 のクレジットが Managed Agents に使えるので、このような無人実行を試す費用の障壁は下がりました（[[business/claude-plan-api-credits]]）。
+
+**[[business/line-group-ai-crm]] 迷ったものは台帳に書かない**
+安松谷は「新しく書いてもらうのをやめて、LINE に書いたものを裏で写す」を芯に置きました。そのうえで、AI が迷う発言（1通に2人分の話が混ざる等）は台帳に書かず「要確認」へ回し、「間違ったまま台帳に入る方が後で大変」だと述べます。既存の約870行を整理すると、ステータスが「現調」のまま止まった行が8割ありました。その後の見積・受注・失注が、現場と事務の間で記録から抜けていたのです。AI 導入の前から、台帳の中に「止まっているのか、終わったのか分からない」状態が大量に眠っていた、という実例として読めます。
+
+## 今週の中心テーマ
+
+**無人で回すエージェントを安く動かせるようになった週に、素材が揃って設計していたのは、成功でも失敗でもない状態でした。読めなかった・届いたか分からない・判断に迷った——この3つを「何もなかった」に化けさせず、モデルの外に記録する場所です。**
+
+![[2026-W42/infographic-theme.png]]
+
+今週の素材を並べると、同じ手が別々の現場で使われています。daily-brief は、読めなかった情報源を明記させ、届いたか不明な投稿を「maybe posted」として記録します（[[concepts/scheduled-agent-automation]]）。記録係の公式 LINE は、迷った発言を台帳でなく「要確認」に回します（[[business/line-group-ai-crm]]）。AI Homepage は、開けなかったページを隠さず報告させます（[[tools/ai-newtab]]）。7層ハーネスのレビュアーは、「誤り」と別に「未解決」の判定を持ち、そこには欠けている証拠を書かせます（[[concepts/claude-code-long-task-harness]]）。hillclimb は、伸びが信頼区間のブレの範囲に収まる変更を取り込まないよう勧めます（[[tools/claude-api-build-eval-hillclimb]]）。どれも「はい／いいえ」の二値に、第三の値を足しています。
+
+なぜいまこれが目立つのかについて、私の仮説を述べます。人が毎回結果を見ている間は、沈黙が「本当に何も無かった」のか「取れなかった」のかを人が文脈で見分けられます。月次クレジットで定時実行が手軽になると、人が見ない実行の回数が増えます。すると沈黙の意味が曖昧になります。第三の状態を明示する設計は、その曖昧さを人の注意の代わりに記録で埋める手だと考えます。素材の著者たちがクレジットとこの設計を結びつけて論じているわけではなく、並べて読んだ本 wiki 側の推論です。
+
+記録の置き場所にも共通点があります。どの例でも、第三の状態を判定するのはモデルの自己申告ではありません。外部の事実です。daily-brief では、送信済みとみなすのは Slack が `&quot;ok&quot;: true` を返したときだけです。hillclimb では、改善役に見せない test 側の点で採否を決めます。Nadella の「Observe everything」「Independent auditability」が求めるのも同じ向きです（[[concepts/models-as-insider-risks]]）。
+
+過去の週との差を整理します。[[weekly/2026-W40]] は「AI の判断を何と照合するか」、[[weekly/2026-W41]] は「人間が理解したかを検査する工程」の話でした。今週はその手前の話です。照合も検査もできなかったとき、それを記録に残すかどうかを扱っています。
+
+このvaultの定時ジョブにも当てはめてみました。ingest 側はすでにこの区別を持っています。`check_ingest_health.py`（ingest の連続失敗を数える検知スクリプト）は、キューが空の回と失敗が続く回を分けて扱います。検知スクリプト自身が死んだ場合（終了コード2以上）も、`run_x_bookmarks.sh` が別の Slack 通知に分けています。一方、入口の `scripts/x_bookmarks.py` は、API 応答から `data.get(&quot;data&quot;, [])` で一覧を取り、空なら「新規ブックマークなし」と出して正常終了します。xurl コマンドが HTTP エラー（認証切れ等）のときに非0で終わるなら、`check=True` で例外になり、ERR トラップが Slack に通知します。0で終わる場合は、取得失敗が「新規ブックマークなし」と同じ出力になります。xurl がどちらの挙動かは、今回は確かめていません。
+
+反証と、見落としやすい前提を二つ置きます。一つ目は、「要確認」が誰の判断で決まるかです。安松谷の記事は、迷いの判定が AI の自己申告の自信度なのか、「1通に複数人」のような規則なのかを書いていません。前者なら、第三の状態の判定そのものがモデルの自己申告に戻ってしまい、Nadella の原則とぶつかります。二つ目は、第三の状態には「捌く人」が要ることです。安松谷は最初の月に月3〜4回、人の目でデータを確認しています。daily-brief は「maybe posted」の後始末を人に委ねています。要確認の箱を作っても、誰も見なければ「現調」で止まった8割と同じ滞留が新しい場所に移るだけです。なお、Nadella の Model diversity（別モデルに検証させる）は、このvaultが独立審判として試し、誤検知の多さで撤去した方式と重なります。今週の素材が示す「取れなかったことを記録する」設計は、別モデルに正誤を判定させる方式とは別物です。誤検知の問題を抱えずに導入できる可能性が高いと考えます（確信度は中程度です）。
+
+## 根拠ページ
+
+- [[tools/claude-google-workspace]]（→ 今週のホットトピック#1）
+- [[concepts/models-as-insider-risks]]（→ 今週のホットトピック#2）
+- [[concepts/scheduled-agent-automation]]（→ 今週のホットトピック#3）
+- [[business/line-group-ai-crm]]（→ 今週のホットトピック#4）
+- [[business/claude-plan-api-credits]] — Max・Team プランに付いた月次 API クレジットの条件表です。Managed Agents と、紐づけた Console 組織の API キーで動かす `claude -p` は対象になり、対話型の Claude Code は対象外です。このvaultの launchd ingest をどちらの認証で回すかで扱いが分かれる、という点が実務上の要点です。
+- [[tools/ai-newtab]] — @trq212 がクレジットの使い道の例として公開した、閲覧履歴から毎回書き直す「新しいタブ」です。人が情報源を選ばず閲覧履歴に任せる設計なので、すでに読んでいるサイトの中に閉じやすい、という限界をページ自身が問いに残しています。
+- [[concepts/claude-code-long-task-harness]] — @beamnxw が Claude Code の既存機能を7層に割り当てた、長時間タスクの完走手順です。完了を「保存された成果物と検証結果」で定義し、レビュアーには主張と開いたソースを結んだ証拠を返させます。
+- [[tools/claude-api-build-eval-hillclimb]] — claude-api スキルに追加された eval 用2コマンドです。train と test を分け、test でも伸びた変更だけを残します。点数だけが上がる過剰適合を、手順で防ぐ点が核心です。
+- [[tools/a-letter-to-junior-agents]] — pju-hoge と、そのエージェント El-chan が共著した、新しく立ち上げたエージェント自身に読ませる初期設定キットです。「データを壊さず、消さずに『終了』と印を付ける」「記憶でなく機械で確かめる」という手紙の勧めは、今週のテーマを個人エージェントの作法として書いたものと読めます。
+- [[business/chiho-business-trend]] — @minatoku_genkai が「需要が残り供給だけが消えた地方」を次の市場の歪みと見る記事です（約3千ブックマーク）。数値はすべて自己申告で、記事全体が無料セミナーへの誘導です。枠組みとしては、LINE 記録係の事例と並べて読めます。
+
+## 既存wikiとの接続
+
+- [[concepts/graph-reliability-design]] — 冪等な書き込みと、ノード単位の失敗方針を扱うページです。daily-brief の「確認できてから状態を確定する」順序は、この一般形を1エージェントの実行に当てはめたものです。今週の素材は、そこに「確定できなかった」という値を足しています。
+- [[concepts/ai-agent-governance]] — 実行内容の生成と許可ポリシーを同じ場所に置かない設計です。Nadella の「制御をモデルの外に置く」の具体的な実装例にあたります。今週の観点で言えば、権限と並んで「状態の判定」もモデルの外に置く対象になります。
+- [[concepts/eval-loop]] — 出力を採点し、閾値未満を止める品質ゲートの一般論で、wiki の主要なハブの一つです。hillclimb の「ブレの範囲の伸びは取り込まない」は、ゲートに「通過・不通過」のほかに「判定不能」を持たせる考え方と読めます。
+
+## sugeta-san への問い
+
+**このvaultの定時ジョブで、「取れなかった」が「新着なし」と同じ出力になる箇所はどこに残っていますか。**
+
+→ ingest 側は、キュー空と連続失敗、さらに検知器自身の死亡まで区別済みです。残る候補は、入口の X 取得（`x_bookmarks.py`）と、ほかの取得系スクリプトです。xurl の終了コードが確かめられれば、入口の判定はすぐに確定します。
+
+## 今週の小アクション（5分）
+
+ターミナルで、エラーになると分かっている X API リクエストを1回だけ xurl で送り、直後に `echo $?` で終了コードを見てください。例えば、存在しないユーザー ID のブックマーク取得です。0 以外なら、`x_bookmarks.py` の `check=True` が取得失敗を拾っています。0 なら、取得失敗は「新規ブックマークなし」として静かに通過しています。
+
+## いますぐAIと一緒に（コピペ）
+
+以下をそのまま Claude Code に貼ると、今週の daily-brief の規則で、このvaultの定時ジョブを点検できます。
+
+```
+このvaultの launchd 定時ジョブを、「読み取り失敗を静かな日と取り違えない」という観点で点検してください。編集はしないでください。
+
+1. scripts/run_*.sh と、そこから呼ばれる取得系の Python スクリプト（x_bookmarks.py、ingest_tweet_urls.py など）を読み、
+   外部から何かを取得している箇所を列挙してください
+2. 各箇所について、「取得に失敗した場合」と「取得できたが0件だった場合」で、出力・終了コード・Slack通知・ログが
+   区別されるかを、ファイル:行番号つきの表にしてください。区別されない箇所は、どの条件でそうなるかも書いてください
+3. 外部ツール（xurl など）の挙動に依存して判定が変わる箇所は「未確認」として分け、確かめるための最小コマンドを添えてください
+4. 区別されない箇所ごとに、最小の修正案を1行で出してください（実装は私が承認してから）
+
+参照: wiki/concepts/scheduled-agent-automation.md（「Sources: 専用の資格情報とブックマーク」節の3規則）
+```
+
+## さらに読むべきページ
+
+- [[concepts/scheduled-agent-automation]] — 「Destination」節の投稿確認と記録の順序が核心です。「posting → posted / maybe posted」の3段の実行記録は、外部に書き込むあらゆる定時処理にそのまま流用できます。
+- [[concepts/models-as-insider-risks]] — 観測可能性の7原則の表を、自分の運用の点検表として読めます。特に「Containment」の非常ブレーキと「Incident disclosure」は、個人規模ではどこまで要るかを考える材料になります。
+- [[tools/claude-api-build-eval-hillclimb]] — 「点が2〜3周伸びないときは直すのをやめ、失敗を1件ずつ読んで分類する」という止めどきの規則が、スキル改善全般に使えます。wiki-ingest の判定を改善するときの手順の候補です。
+
+## 今週の音声ニュース
+
+![[2026-W42/audio.mp3]]
+
+[NotebookLM で開く →](https://notebooklm.google.com/notebook/7b53e42f-b8a3-4098-b91e-a604b1efc24e)
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
