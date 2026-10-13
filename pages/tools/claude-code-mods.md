@@ -98,3 +98,4 @@ nogu はこれらを「標準機能と同じ土俵」とまとめる。nogu は�
 - [[concepts/agents-md-canonical]] — AGENTS.md を正本にする運用。Claude Code 側の AGENTS.md 対応は `agents-md` Mod で実装されている
 - [[tools/jev-model-router]] — Jev でサブエージェント・メインのモデルを振り分けるコミュニティ製 Mod
 - [[concepts/prompt-caching]] — Cache Control Mod が残り時間を表示する5分キャッシュの仕組み
+- [[tools/turn-inspector]] — 各ターンのコンテキストウィンドウの中身（システムプロンプト・ツール・メモリ等）を表示するコミュニティ製 Mod（@dani_avila7）
