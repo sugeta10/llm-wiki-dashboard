@@ -75,3 +75,4 @@ AIO / LLMO については、SEO的な量産・自社推奨記事は短期では
 - [[concepts/software-factory-cost-equation]] — Uber事例の一次情報側。本ページはそれを経営KPIへ翻訳した二次側
 - [[concepts/harness-engineering]] — ハーネスを設計対象として扱う全体論。「アンチハーネス」はその反対極の仮説
 - [[papers/2026-sonyai-hakken]] — 科学発見AIの既存ページ（仕組み・論文本体は未収集）
+- [[business/ai-agent-era-strategy]] — 梶谷健人の「全社員に経営を学ばせる」リスキリング論（AIを部下としてマネジメントする側へ役割が移るという主張）を含む企業戦略ページ
