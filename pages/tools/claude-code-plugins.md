@@ -105,3 +105,4 @@ C/C++・C#・Go・Java・Kotlin・Lua・PHP・Python・Ruby・Rust・Swift・Typ
 - [[tools/claude-code-mods]] — 同じプラグイン形式（`.claude-plugin/plugin.json` + `hooks/hooks.json`）で TypeScript 関数をエンジンに直接差し込む Claude Mods / Function Hooks
 - [[concepts/agentic-coding]] — プラグインが活用されるエージェント開発スタイル
 - [[tools/knowledge-work-plugins]] — 別マーケットプレイス`knowledge-work-plugins`（業務別10プラグイン、Desktop/Cowork主体）。本ページの`claude-plugins-official`とは配布元パッケージが異なる
+- [[tools/code-modernization-plugin]] — Anthropic のレガシーコード刷新プラグイン `code-modernization` v1.0.0（本一覧の時点より後の公開・掲載先は未確認）

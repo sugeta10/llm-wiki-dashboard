@@ -44,3 +44,4 @@ Mythosを一般公開する代わりに立ち上げた防御的サイバーセ�
 - [[models/claude-opus-4-7]]
 - [[concepts/agentic-coding]]
 - [[concepts/recursive-self-improvement]] — Mythos が52倍高速化・脆弱性発見・次手選択の主役として登場するAI開発加速の論考
+- [[tools/code-modernization-plugin]] — レガシーコードを AI に読ませるだけでなく新実装へ置き換えさせる Anthropic の Claude Code プラグイン

@@ -25,3 +25,4 @@ Anthropic 公式（@ClaudeDevs）が2026-09-11に、[[tools/claude-code]] の新
 - [[concepts/eval-loop]] — 出力を採点して閾値未満を止める品質ゲートの一般論。本コマンドは採点対象をプラグイン・スキルに定めた実装にあたる
 - [[tools/claude-code]] — 本コマンドが載るCLI本体
 - [[tools/claude-api-build-eval-hillclimb]] — 同じClaude Codeの公式eval用2コマンド。試験づくり（build-eval）と、train/testに分けて隠した側でも伸びた変更だけ残す改善ループ（hillclimb）
+- [[tools/code-modernization-plugin]] — 新旧の実装で振る舞いが一致することを示そうとするレガシー刷新プラグイン。比較対象を残して差分を根拠にする点が近い（wiki 側の推論）

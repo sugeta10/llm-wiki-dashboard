@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>turn-inspector</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="turn-inspector.md">Markdownで表示</a></div>
-  <div class="meta">tools/turn-inspector · tools · <span title="2026-10-13">今日</span></div>
+  <div class="meta">tools/turn-inspector · tools · <span title="2026-10-13">1日前</span></div>
   <article><h1>Turn Inspector｜Claude Code のコンテキストウィンドウをターンごとに覗く Mod</h1>
 <p>@dani_avila7 が公開した Claude Code Mod（<a href="../tools/claude-code-mods.html">claude-code-mods</a> の仕組みで動く拡張）で、各ターンで Claude のコンテキストウィンドウに何が入っているかを確かめられる。@dani_avila7 の告知によると、表示対象はシステムプロンプト・ツール・メモリ・過去のターン・モデル出力・ツール結果の6種で、ターンを追うごとにコンテキストウィンドウが埋まっていく様子を見られる。告知文は短縮URLの手前で途切れており、インストール方法・リポジトリの所在・どのイベントにフックしているかは未収集。添付動画の中身も未捕捉。</p>
 <p><a href="../concepts/context-engineering.html">context-engineering</a> が論じる「何をコンテキストに置くか」の設計は、実際に何が置かれたかを見られないと効果を確かめにくい。このMod はその観測側を担う道具と考えられる（wiki 側の推論）。たとえば CLAUDE.md やスキルを削ったとき、システムプロンプトやメモリの占める量が本当に減ったかをターン単位で確認する用途が想定できる。Mods の <code>$.session.usage</code>（コンテキスト使用率など）や <code>step</code>（モデルへの1リクエスト）イベントを使って実装されている可能性があるが、未確認である。</p>
@@ -42,10 +42,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li><a href="../tools/claude-code-mods.html">claude-code-mods</a> — この Mod が乗っている Claude Code の関数型拡張機構</li>
 <li><a href="../tools/jev-model-router.html">jev-model-router</a> — 同じ @dani_avila7 による別の Claude Code Mod</li>
+<li><a href="../tools/code-modernization-plugin.html">code-modernization-plugin</a> — 同じ @dani_avila7 が紹介した Anthropic のレガシー刷新プラグイン</li>
 <li><a href="../concepts/context-engineering.html">context-engineering</a> — コンテキストに何を置くかの設計論。本 Mod はその結果を観測する側</li>
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a> — Memory・Slash commands などコンテキストの層構造。Turn Inspector の表示区分と照らし合わせられる</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/context-engineering.html">context-engineering</a></li>
 <li><a href="../tools/claude-code-mods.html">claude-code-mods</a></li>
+<li><a href="../tools/code-modernization-plugin.html">code-modernization-plugin</a></li>
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
 <li><a href="../tools/jev-model-router.html">jev-model-router</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2109822699174559748" rel="noopener" target="_blank">https://x.com/i/web/status/2109822699174559748</a></li></ul></section></article>
 </main>
@@ -83,6 +85,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 
 - [[tools/claude-code-mods]] — この Mod が乗っている Claude Code の関数型拡張機構
 - [[tools/jev-model-router]] — 同じ @dani_avila7 による別の Claude Code Mod
+- [[tools/code-modernization-plugin]] — 同じ @dani_avila7 が紹介した Anthropic のレガシー刷新プラグイン
 - [[concepts/context-engineering]] — コンテキストに何を置くかの設計論。本 Mod はその結果を観測する側
 - [[concepts/claude-code-context-hierarchy]] — Memory・Slash commands などコンテキストの層構造。Turn Inspector の表示区分と照らし合わせられる
 </script>

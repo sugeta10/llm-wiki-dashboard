@@ -13,5 +13,6 @@
 
 - [[tools/claude-code-mods]] — この Mod が乗っている Claude Code の関数型拡張機構
 - [[tools/jev-model-router]] — 同じ @dani_avila7 による別の Claude Code Mod
+- [[tools/code-modernization-plugin]] — 同じ @dani_avila7 が紹介した Anthropic のレガシー刷新プラグイン
 - [[concepts/context-engineering]] — コンテキストに何を置くかの設計論。本 Mod はその結果を観測する側
 - [[concepts/claude-code-context-hierarchy]] — Memory・Slash commands などコンテキストの層構造。Turn Inspector の表示区分と照らし合わせられる
