@@ -33,3 +33,4 @@ Claudeが使う「ツール」へのアクセスは、外部サービスとの�
 - [[tools/claude-academy]] — Anthropic公式の無料学習サイト。Claude Tag の使い方も製品別トラックの1つとして扱われている
 - [[tools/slack-html]] — Slackに1枚のHTMLを添付してアプリ内で展開する使い方。Slack常駐のボットにレポートをHTMLで作らせる発想はClaude Tagにも当てはまると考えられる（未確認）
 - [[tools/claude-google-workspace]] — Google Docs・Sheets・Slides に Claude を入れる連携。業務ツールの中に Claude を常駐させる同じ方向の製品
+- [[concepts/agent-scale-source-control]] — Anthropic のソース管理チームが Claude Tag で、1コンポーネントの健全性だけを監視する Claude（「superfan」）を Slack チャンネルごとに置いた運用例
