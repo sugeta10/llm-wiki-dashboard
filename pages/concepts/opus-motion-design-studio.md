@@ -64,3 +64,4 @@ flowchart LR
 - [[concepts/harness-engineering]] — 「プロンプト10%・ハーネス90%」の一般論
 - [[concepts/effort-level-selection]] — medium / xhigh / max の使い分けの実測版（@trq212）
 - [[concepts/eval-loop]] — 批評ループの一般形
+- [[design/ai-motion-vocabulary]] — 「名指すほうが効く」ための演出名の語彙（スタガー・オーバーシュート等、@showheyohtaki）

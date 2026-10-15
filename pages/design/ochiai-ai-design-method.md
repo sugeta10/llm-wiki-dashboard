@@ -44,3 +44,4 @@ AIにデザインを頼むと「高級感があって、未来的で、かっこ
 - [[design/ai-slide-creation]] — 1スライド1主張・100プロンプトのスライド特化版
 - [[concepts/prompt-engineering]] — 形容詞でなく構造化変数で指示するという発想の一般化
 - [[concepts/multi-agent-patterns]] — 原理7「別AIに制作と採点を分ける」の一般パターン
+- [[design/ai-motion-vocabulary]] — 原理1の発想を動きへ移した、LP・動画の演出名リスト（@showheyohtaki）
