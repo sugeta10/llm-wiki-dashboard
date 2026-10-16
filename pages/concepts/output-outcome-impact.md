@@ -26,3 +26,4 @@ Part 2の「プロジェクトでなくプロダクトに資金を提供する�
 - [[concepts/ai-requirements-definition]] — 整理・文書化はAIが担い人間は「何を作るか/捨てるか」を決断する工程へ。「少ないアウトプット」を選ぶ側の議論
 - [[concepts/development-as-agriculture]] — 生成量が安くなり選別が価値になるという深津貴之の整理。アウトプット過剰時代のアウトカム判定コスト
 - [[concepts/eval-loop]] — 出荷前に基準で採点して止めるループ。アウトカムに先立つ品質ゲートの機構化
+- [[concepts/ai-ambition-four-types]] — QBR資料という出力を早期発見と資源移動という成果から設計し直させるAltitudeの型（Felix Rieseberg）

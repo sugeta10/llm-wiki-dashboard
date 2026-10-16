@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-ambition-four-types - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-ambition-four-types</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-ambition-four-types.md">Markdownで表示</a></div>
+  <div class="meta">concepts/ai-ambition-four-types · concepts · <span title="2026-10-16">今日</span></div>
+  <article><h1>AIの使い方を「もっと野心的に」する4つの型（Speed / Altitude / Depth / Range）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 「AIはもっと野心的に使え」という掛け声を、Anthropic の Felix Rieseberg が Speed（速さ）・Altitude（抽象度）・Depth（深さ）・Range（分野の幅）の4型に分け、型ごとに使えるプロンプトと手順へ落としたチュートリアル。</p>
+<p>📌 X bookmark: 43,876（2026-10-16 時点）</p>
+</blockquote>
+<p>AIの現場で繰り返される「we're not ambitious enough（我々はまだ野心が足りない）」という呼びかけは、聞いた側が何をすればよいか分からない助言だと Felix Rieseberg が認め、その実行手順として2026-10-13に自身のブログで公開した。Rieseberg は Anthropic のエンジニアリングマネージャーで、Claude.ai・Cowork・Claude Code Desktop のエンジニアリングを率いてきた人物（Electron の共同メンテナーでもある）と自ら紹介している。出発点の観察は、Terence Tao の言う「ある方向には驚異的で、別の方向には不十分」というモデル能力の不均一さで、驚異的な側を操縦できる人とそうでない人の差が開いていると Rieseberg は述べる。4型のうち Speed（同じ仕事を短時間で）は既に定着していて工夫が要らないとして記事では扱わず、残り3型を架空の会社 Acme Inc の四半期業績レビュー（QBR）資料づくりという同じ題材で順に深めていく。Rieseberg は自分の助言はモデルに依存しないとしつつ、どの型もモデルにソフトをインストールできるコンピュータと関連データへのアクセス（MCP コネクタ等）を持たせることが前提だと書いている。</p>
+<h2>Altitude：タスクでなく成果を渡す</h2>
+<p>モデルに渡すタスクは「欲しい成果に至る手段についての自分の最善の推測」にすぎないので、「その次に何が起きてほしいか」「ゴールの先のゴールは何か」を問えと Rieseberg は言う。本人の例は、個別クラッシュの修正を頼んでいた状態から「アプリをクラッシュゼロに保って」と頼む状態へ移ったこと。QBR では次の3段で抽象度を上げる（プロンプトは記事からの転記・訳）。</p>
+<ol>
+<li>テンプレの数字更新で済ませず、手に入る限りのデータを渡して「今期何が変わったか、なぜか、何をすべきか」を聞く</li>
+<li>「学んだことを踏まえて最も急ぐ3つの意思決定を割り出し、賛否の論点つきで方向性の検討を始めて」と頼む</li>
+<li>「このレビューは、経営陣が問題を早く捉えて資金と人を正しい場所に動かすためにある。四半期資料より良いやり方を設計し、自社の過去データでそれがより早く問題を捉えたはずだと示し、1四半期は現行と並走させて」と頼む</li>
+</ol>
+<p>Rieseberg によれば、この型は究極の成果を本当に追っているときに効き、創作には向きにくい。見分け方は「その作業について会議をする予定があるか」。「Claude、稼いできて」は2026年時点では多くの事業で単独では機能しないと限界も認めつつ、能力が上がるほどモデルはより高い抽象度で動けるようになっていると見ている。Altitude は人間をループから外す持続的なワークフローが見つかる場所でもあり、そのためには仕事の流れ自体を変える必要がある。クラッシュゼロを任せる前に、クラッシュレポートを取れること・アプリのバージョンと git コミットの対応がわかること・Windows/macOS/Linux の実機で再現と修正確認を自力でできることを整えた、と Rieseberg は書いている。</p>
+<h2>Depth：その分野の最高のプロが使う道具と素材まで降りる</h2>
+<p>タスクを「本当にうまく」やらせたいときの型で、その分野の一流が使う道具・技法・媒体・知識をモデルに使わせ、一流でさえ何か学べる水準まで押し続けることだと Rieseberg は定義する。QBR に顧客離反（churn）問題があると仮定して挙げる技法は5つ。</p>
+<ul>
+<li><strong>一流と同じ計器を使わせる</strong>: プロとして振る舞えと言うとモデルは語彙だけ変えて手法を変えないことが多い。Markdown の表に手を伸ばしたら、データベースと統計モデルを使えと主張する。専門家が何を使うかは自分が知らなくても、たいてい Claude が知っている</li>
+<li><strong>無茶な目標を「十分妥当だ」と伝える</strong>: 10秒の表示を5秒にしたいなら200msを求める。モデルが不可能そうに扱ったら、解ける、続ければいいと繰り返す</li>
+<li><strong>知っていることを疑わせる</strong>: 生データを渡し、前提を敵対的に検証させる（「churn はオンボーディングの問題だと考えている。生データからそれを再現してみて」）</li>
+<li><strong>新しい知識を作らせる</strong>: データの奥に入ったついでに盲点を探させる（「ログから昨年を再現する顧客シミュレーションを作り、まだ知られていない最も早い churn の兆候を見つけ、見ていないデータで予測できることを示して」）</li>
+<li><strong>外部の審判を使う</strong>: モデルに自己採点させない。Rieseberg はいずれモデルの知能向上で解決すると見つつ、2026年10月時点では外部検証を強く求めると書く。理想はモデルが自分で実行してすぐフィードバックを得られるツール</li>
+</ul>
+<p>Rieseberg が「よく効く」として載せている汎用プロンプトは次のとおり（転記・訳）。</p>
+<blockquote>
+<p>大きいのでなく深い版のタスクにしたい。書き直す前に (1) この分野のトップのプロが、私が頼んでいないのにここでやることを言い、(2) 私向けにすでに咀嚼された材料でなく、彼らが出発点にする最も生の素材を挙げ、(3) 彼らが使う具体的な手法と道具を挙げ、(4) あなたや私以外の何が結果の正しさを示すかを言って。そのうえで、まさにそれを頼むよう私のプロンプトを書き直して。</p>
+</blockquote>
+<h2>Range：タスクを動詞で言い換え、他分野のチームを組ませる</h2>
+<p>仕事を表面上必要な1分野だけでなく、かつては経済的に見合わなかったほど多くの分野の視点から見る型。マルチエージェント（スレッド・オーケストレーター・サブエージェント）が手軽になったことで、Claude に追加の分野を持ち込ませると面白い結果が出ると Rieseberg は述べ、最も「魔法」が起きるのはここだとも言う。一方で創造性が要り、同僚の Alex Albert が Blender で室内デザインをレンダリングするのを見るまで、ゲームを作った経験がありながら自分のホームページに3D環境を使う発想がなかったと本人は振り返る。技法は2つ。</p>
+<ul>
+<li><strong>名詞を動詞に置き換える</strong>: Tom Kelley と Jonathan Littman の『The Art of Innovation』の手法。QBR は「資料」でなく「忙しい人に因果の物語を信じさせ、不確実性の下で30分で決めさせること」。動詞にすると、どの分野が固有の視点を持ち込めるかが人にもモデルにも見えやすくなる</li>
+<li><strong>チームを集める</strong>: 「この資料が最高でなければ宇宙人が地球を吹き飛ばす」とき人類が集めるチームを考える。制作品質ならアナリスト・ジャーナリスト・編集者、プレゼンするならモーション/音響デザイナー、敵対的なレッドチームとして空売り投資家と法廷会計士</li>
+</ul>
+<p>ただしロールプレイに陥ると記録が奇妙になるだけで成果は良くならない、と Rieseberg は注意する。この方法は分野と技法を見つけるために使い、「空売り投資家のように書いて」ではなく「空売り投資家が自分のポジションを調べるときにやることをやって」と頼む。</p>
+<h2>なぜ必要か：自己効力感の問題</h2>
+<p>記事の後半で Rieseberg は、人間は昔から「可能だと信じる範囲」に縛られ、しかも狭い専門分野でしか自分を信じない、と論じる（彫刻家を自認したミケランジェロがシスティーナ礼拝堂の天井画を描きたがらなかった例）。心理学ではこれを自己効力感（self-efficacy）と呼び、高い人ほど実際に多くを成し遂げる。Rieseberg はこれを「ハックできる」根拠として、Locke と Latham による35年分の目標設定研究のまとめ（具体的で難しい目標を与えられた人は「ベストを尽くせ」と言われた人より成績が良い）と、Patrick Collison の「Fast」リストを挙げ、よく知られた3つのハックを紹介する。</p>
+<ul>
+<li><strong>可能だと信じて解く</strong>: 1939年、遅刻した George Dantzig が黒板の2問を宿題だと思って解いたら、統計学の未解決問題だった</li>
+<li><strong>誰かがやるのを見てから解く</strong>: 1マイル4分の壁は Roger Bannister が1954年5月に破った後、46日で他の人にも破られた。2時間切りのマラソンでも同じことが起きていると Rieseberg は書く</li>
+<li><strong>失敗を自分に許して解く</strong>: 『The Inner Game of Tennis』の、必死に頑張るほど最高のプレーから遠ざかるという主張と、「ただの趣味」として発表された Linux</li>
+</ul>
+<p>能力が数週間ごとに跳ねる世界では、可能だと思っていなかったことをやる技法がこれまで以上に要る、というのが記事の締めくくり。Altitude と Depth の「無茶な目標を妥当だと伝える」は、この自己効力感のハックを人間でなくモデルとの関係に当てはめたものと読める（wiki側の解釈）。</p>
+<h2>他ページとのつながり</h2>
+<ul>
+<li>Altitude の「ゴールの先のゴールを問う」は、作業前にゴールを復唱させる <a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a> と同じく目的の層を明示する技法だが、復唱が誤読を防ぐ向きなのに対し、Altitude は目的そのものを一段上に置き直す向きと考えられる</li>
+<li>Depth の「外部の審判」と「自己採点させない」は、異種モデルで相互に反証させる <a href="../tools/adversarial-panel.html">adversarial-panel</a> や、人間のレビューの手前で指摘を減らす <a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> と同じ問題に触れている。Rieseberg は理想を「モデルが自分で実行できるツール」に置いており、モデル同士の相互審査よりも決定論的な検証器を優先する立場と読める（wiki側の解釈）</li>
+<li>Phil Chen の「問題の最も野心的な形に取り組む」（<a href="../concepts/career-advice-ai-age.html">career-advice-ai-age</a>）が問題選びの野心を語るのに対し、本ページは選んだ問題に対する AI の使い方の野心を4つに分けている</li>
+<li>Altitude の QBR の3段目（資料という出力を、早期発見と資源移動という成果から設計し直す）は、<a href="../concepts/output-outcome-impact.html">output-outcome-impact</a> のアウトプットからアウトカムへの転換を AI への頼み方で実行した例と考えられる</li>
+</ul>
+<h2>観察ログ（未検証・任意）</h2>
+<ul>
+<li>2026-10-16: Rieseberg は、モデルの自己採点の問題は知能向上でいずれ解決すると予測している（2026年10月時点では外部検証を推奨）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の定例作業のうち「会議をする予定があるもの」を1つ選び、Altitude の3段（変化と理由→急ぐ3つの意思決定→仕組みの再設計と並走）を順に試すと、どの段から結果が変わるか</li>
+<li>Depth の汎用プロンプトの (4)「あなたや私以外の何が正しさを示すか」に、wiki の ingest や weekly 生成で答えられる検証器は何か</li>
+<li>Range の「動詞で言い換える」は、ロールプレイ指示より実際に出力の手法を変えるか。同じタスクで両方を比べて確かめる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a> — 作業前にゴールを復唱させる1文プロンプト。Altitude と同じく目的の層を扱う</li>
+<li><a href="../tools/adversarial-panel.html">adversarial-panel</a> — 多モデル敵対的レビュー。Depth の「外部の審判」をモデル間で実装した形</li>
+<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> — 自己採点を手前に置いて人間のレビューを短くする5策。審判をどこに置くかの別解</li>
+<li><a href="../concepts/career-advice-ai-age.html">career-advice-ai-age</a> — 「問題の最も野心的な形に取り組む」。問題選びの側の野心</li>
+<li><a href="../concepts/output-outcome-impact.html">output-outcome-impact</a> — アウトプットよりアウトカム。Altitude の背景にある価値観</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
+<li><a href="../concepts/career-advice-ai-age.html">career-advice-ai-age</a></li>
+<li><a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a></li>
+<li><a href="../concepts/output-outcome-impact.html">output-outcome-impact</a></li>
+<li><a href="../tools/adversarial-panel.html">adversarial-panel</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2110023283169247623" rel="noopener" target="_blank">https://x.com/i/web/status/2110023283169247623</a></li>
+<li><a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/" rel="noopener" target="_blank">https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AIの使い方を「もっと野心的に」する4つの型（Speed / Altitude / Depth / Range）
+
+&gt; **TL;DR**: 「AIはもっと野心的に使え」という掛け声を、Anthropic の Felix Rieseberg が Speed（速さ）・Altitude（抽象度）・Depth（深さ）・Range（分野の幅）の4型に分け、型ごとに使えるプロンプトと手順へ落としたチュートリアル。
+
+&gt; 📌 X bookmark: 43,876（2026-10-16 時点）
+
+AIの現場で繰り返される「we&#x27;re not ambitious enough（我々はまだ野心が足りない）」という呼びかけは、聞いた側が何をすればよいか分からない助言だと Felix Rieseberg が認め、その実行手順として2026-10-13に自身のブログで公開した。Rieseberg は Anthropic のエンジニアリングマネージャーで、Claude.ai・Cowork・Claude Code Desktop のエンジニアリングを率いてきた人物（Electron の共同メンテナーでもある）と自ら紹介している。出発点の観察は、Terence Tao の言う「ある方向には驚異的で、別の方向には不十分」というモデル能力の不均一さで、驚異的な側を操縦できる人とそうでない人の差が開いていると Rieseberg は述べる。4型のうち Speed（同じ仕事を短時間で）は既に定着していて工夫が要らないとして記事では扱わず、残り3型を架空の会社 Acme Inc の四半期業績レビュー（QBR）資料づくりという同じ題材で順に深めていく。Rieseberg は自分の助言はモデルに依存しないとしつつ、どの型もモデルにソフトをインストールできるコンピュータと関連データへのアクセス（MCP コネクタ等）を持たせることが前提だと書いている。
+
+## Altitude：タスクでなく成果を渡す
+
+モデルに渡すタスクは「欲しい成果に至る手段についての自分の最善の推測」にすぎないので、「その次に何が起きてほしいか」「ゴールの先のゴールは何か」を問えと Rieseberg は言う。本人の例は、個別クラッシュの修正を頼んでいた状態から「アプリをクラッシュゼロに保って」と頼む状態へ移ったこと。QBR では次の3段で抽象度を上げる（プロンプトは記事からの転記・訳）。
+
+1. テンプレの数字更新で済ませず、手に入る限りのデータを渡して「今期何が変わったか、なぜか、何をすべきか」を聞く
+2. 「学んだことを踏まえて最も急ぐ3つの意思決定を割り出し、賛否の論点つきで方向性の検討を始めて」と頼む
+3. 「このレビューは、経営陣が問題を早く捉えて資金と人を正しい場所に動かすためにある。四半期資料より良いやり方を設計し、自社の過去データでそれがより早く問題を捉えたはずだと示し、1四半期は現行と並走させて」と頼む
+
+Rieseberg によれば、この型は究極の成果を本当に追っているときに効き、創作には向きにくい。見分け方は「その作業について会議をする予定があるか」。「Claude、稼いできて」は2026年時点では多くの事業で単独では機能しないと限界も認めつつ、能力が上がるほどモデルはより高い抽象度で動けるようになっていると見ている。Altitude は人間をループから外す持続的なワークフローが見つかる場所でもあり、そのためには仕事の流れ自体を変える必要がある。クラッシュゼロを任せる前に、クラッシュレポートを取れること・アプリのバージョンと git コミットの対応がわかること・Windows/macOS/Linux の実機で再現と修正確認を自力でできることを整えた、と Rieseberg は書いている。
+
+## Depth：その分野の最高のプロが使う道具と素材まで降りる
+
+タスクを「本当にうまく」やらせたいときの型で、その分野の一流が使う道具・技法・媒体・知識をモデルに使わせ、一流でさえ何か学べる水準まで押し続けることだと Rieseberg は定義する。QBR に顧客離反（churn）問題があると仮定して挙げる技法は5つ。
+
+- **一流と同じ計器を使わせる**: プロとして振る舞えと言うとモデルは語彙だけ変えて手法を変えないことが多い。Markdown の表に手を伸ばしたら、データベースと統計モデルを使えと主張する。専門家が何を使うかは自分が知らなくても、たいてい Claude が知っている
+- **無茶な目標を「十分妥当だ」と伝える**: 10秒の表示を5秒にしたいなら200msを求める。モデルが不可能そうに扱ったら、解ける、続ければいいと繰り返す
+- **知っていることを疑わせる**: 生データを渡し、前提を敵対的に検証させる（「churn はオンボーディングの問題だと考えている。生データからそれを再現してみて」）
+- **新しい知識を作らせる**: データの奥に入ったついでに盲点を探させる（「ログから昨年を再現する顧客シミュレーションを作り、まだ知られていない最も早い churn の兆候を見つけ、見ていないデータで予測できることを示して」）
+- **外部の審判を使う**: モデルに自己採点させない。Rieseberg はいずれモデルの知能向上で解決すると見つつ、2026年10月時点では外部検証を強く求めると書く。理想はモデルが自分で実行してすぐフィードバックを得られるツール
+
+Rieseberg が「よく効く」として載せている汎用プロンプトは次のとおり（転記・訳）。
+
+&gt; 大きいのでなく深い版のタスクにしたい。書き直す前に (1) この分野のトップのプロが、私が頼んでいないのにここでやることを言い、(2) 私向けにすでに咀嚼された材料でなく、彼らが出発点にする最も生の素材を挙げ、(3) 彼らが使う具体的な手法と道具を挙げ、(4) あなたや私以外の何が結果の正しさを示すかを言って。そのうえで、まさにそれを頼むよう私のプロンプトを書き直して。
+
+## Range：タスクを動詞で言い換え、他分野のチームを組ませる
+
+仕事を表面上必要な1分野だけでなく、かつては経済的に見合わなかったほど多くの分野の視点から見る型。マルチエージェント（スレッド・オーケストレーター・サブエージェント）が手軽になったことで、Claude に追加の分野を持ち込ませると面白い結果が出ると Rieseberg は述べ、最も「魔法」が起きるのはここだとも言う。一方で創造性が要り、同僚の Alex Albert が Blender で室内デザインをレンダリングするのを見るまで、ゲームを作った経験がありながら自分のホームページに3D環境を使う発想がなかったと本人は振り返る。技法は2つ。
+
+- **名詞を動詞に置き換える**: Tom Kelley と Jonathan Littman の『The Art of Innovation』の手法。QBR は「資料」でなく「忙しい人に因果の物語を信じさせ、不確実性の下で30分で決めさせること」。動詞にすると、どの分野が固有の視点を持ち込めるかが人にもモデルにも見えやすくなる
+- **チームを集める**: 「この資料が最高でなければ宇宙人が地球を吹き飛ばす」とき人類が集めるチームを考える。制作品質ならアナリスト・ジャーナリスト・編集者、プレゼンするならモーション/音響デザイナー、敵対的なレッドチームとして空売り投資家と法廷会計士
+
+ただしロールプレイに陥ると記録が奇妙になるだけで成果は良くならない、と Rieseberg は注意する。この方法は分野と技法を見つけるために使い、「空売り投資家のように書いて」ではなく「空売り投資家が自分のポジションを調べるときにやることをやって」と頼む。
+
+## なぜ必要か：自己効力感の問題
+
+記事の後半で Rieseberg は、人間は昔から「可能だと信じる範囲」に縛られ、しかも狭い専門分野でしか自分を信じない、と論じる（彫刻家を自認したミケランジェロがシスティーナ礼拝堂の天井画を描きたがらなかった例）。心理学ではこれを自己効力感（self-efficacy）と呼び、高い人ほど実際に多くを成し遂げる。Rieseberg はこれを「ハックできる」根拠として、Locke と Latham による35年分の目標設定研究のまとめ（具体的で難しい目標を与えられた人は「ベストを尽くせ」と言われた人より成績が良い）と、Patrick Collison の「Fast」リストを挙げ、よく知られた3つのハックを紹介する。
+
+- **可能だと信じて解く**: 1939年、遅刻した George Dantzig が黒板の2問を宿題だと思って解いたら、統計学の未解決問題だった
+- **誰かがやるのを見てから解く**: 1マイル4分の壁は Roger Bannister が1954年5月に破った後、46日で他の人にも破られた。2時間切りのマラソンでも同じことが起きていると Rieseberg は書く
+- **失敗を自分に許して解く**: 『The Inner Game of Tennis』の、必死に頑張るほど最高のプレーから遠ざかるという主張と、「ただの趣味」として発表された Linux
+
+能力が数週間ごとに跳ねる世界では、可能だと思っていなかったことをやる技法がこれまで以上に要る、というのが記事の締めくくり。Altitude と Depth の「無茶な目標を妥当だと伝える」は、この自己効力感のハックを人間でなくモデルとの関係に当てはめたものと読める（wiki側の解釈）。
+
+## 他ページとのつながり
+
+- Altitude の「ゴールの先のゴールを問う」は、作業前にゴールを復唱させる [[concepts/goal-restatement-prompt]] と同じく目的の層を明示する技法だが、復唱が誤読を防ぐ向きなのに対し、Altitude は目的そのものを一段上に置き直す向きと考えられる
+- Depth の「外部の審判」と「自己採点させない」は、異種モデルで相互に反証させる [[tools/adversarial-panel]] や、人間のレビューの手前で指摘を減らす [[concepts/ai-review-bottleneck]] と同じ問題に触れている。Rieseberg は理想を「モデルが自分で実行できるツール」に置いており、モデル同士の相互審査よりも決定論的な検証器を優先する立場と読める（wiki側の解釈）
+- Phil Chen の「問題の最も野心的な形に取り組む」（[[concepts/career-advice-ai-age]]）が問題選びの野心を語るのに対し、本ページは選んだ問題に対する AI の使い方の野心を4つに分けている
+- Altitude の QBR の3段目（資料という出力を、早期発見と資源移動という成果から設計し直す）は、[[concepts/output-outcome-impact]] のアウトプットからアウトカムへの転換を AI への頼み方で実行した例と考えられる
+
+## 観察ログ（未検証・任意）
+
+- 2026-10-16: Rieseberg は、モデルの自己採点の問題は知能向上でいずれ解決すると予測している（2026年10月時点では外部検証を推奨）
+
+## 問い
+
+- 自分の定例作業のうち「会議をする予定があるもの」を1つ選び、Altitude の3段（変化と理由→急ぐ3つの意思決定→仕組みの再設計と並走）を順に試すと、どの段から結果が変わるか
+- Depth の汎用プロンプトの (4)「あなたや私以外の何が正しさを示すか」に、wiki の ingest や weekly 生成で答えられる検証器は何か
+- Range の「動詞で言い換える」は、ロールプレイ指示より実際に出力の手法を変えるか。同じタスクで両方を比べて確かめる
+
+## 関連
+
+- [[concepts/goal-restatement-prompt]] — 作業前にゴールを復唱させる1文プロンプト。Altitude と同じく目的の層を扱う
+- [[tools/adversarial-panel]] — 多モデル敵対的レビュー。Depth の「外部の審判」をモデル間で実装した形
+- [[concepts/ai-review-bottleneck]] — 自己採点を手前に置いて人間のレビューを短くする5策。審判をどこに置くかの別解
+- [[concepts/career-advice-ai-age]] — 「問題の最も野心的な形に取り組む」。問題選びの側の野心
+- [[concepts/output-outcome-impact]] — アウトプットよりアウトカム。Altitude の背景にある価値観
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

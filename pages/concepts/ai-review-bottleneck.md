@@ -49,3 +49,4 @@ flowchart LR
 - [[design/consulting-pptx-skill]] — スライド生成スキルで、機械チェックの後に「作り方を知らない別エージェント」に読ませて指摘を採否表にする工程を持つ。人間に届く前に指摘を減らす実装例
 - [[concepts/overnight-delegation-prompt]] — 就寝中の8時間をエージェントに委ねるプロンプト。朝にまとめて成果を読む工程がこのボトルネックに当たりうる
 - [[concepts/agent-scale-source-control]] — Anthropic のソース管理チームが、人間のレビューを全行の精読から変更の「意図」の確認へ移したと報告する事例。組織規模での同じ問題への答え
+- [[concepts/ai-ambition-four-types]] — 自己採点でなく外部検証を求めるFelix RiesebergのDepthの型。審判を人間の手前のどこに置くかの別解

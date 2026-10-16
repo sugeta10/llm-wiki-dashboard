@@ -59,3 +59,4 @@ flowchart LR
 - [[concepts/llm-council]] — 同じ「複数AIで盲点を炙る」Karpathyパターン。Councilは匿名ピアレビュー＋議長統合で権威バイアスを消すのに対し、こちらは異種モデルの非相関と反証の再現を独立性の源にする
 - [[concepts/ai-dev-two-commands]] — Claude Code×Codex批判的対話レビューの組織実装。異種モデル間クロスレビューの実運用例
 - [[concepts/multi-agent-patterns]] — Generator-Verifier等の上位パターン集。adversarial-panelはVerifierを複数・異族化し敵対プロトコルを固定した特殊形
+- [[concepts/ai-ambition-four-types]] — Felix RiesebergがDepthの技法として「モデルに自己採点させず外部の審判を使え」と勧める。理想はモデルが自ら実行できる検証ツール

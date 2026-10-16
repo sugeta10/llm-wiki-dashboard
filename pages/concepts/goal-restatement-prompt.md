@@ -31,3 +31,4 @@ AIに作業させる前に、こちらのゴールと解こうとしている問
 - [[concepts/finding-unknowns]] — 実装前に unknowns を洗う技法群。本プロンプトは Unknown Knowns を炙り出す最小の型
 - [[tools/grill-me]] — AIに一問ずつ質問させる実装前インタビュー。質問させる向きと答えさせる向きの対比
 - [[concepts/instruction-means-review]] — 目的に照らして手段を再検討させる常設プロンプト。目的の把握を前提にする
+- [[concepts/ai-ambition-four-types]] — 「ゴールの先のゴール」を問いタスクでなく成果を渡すAltitudeの型。目的を復唱させるのでなく一段上に置き直す向き
