@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>code-modernization-plugin</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="code-modernization-plugin.md">Markdownで表示</a></div>
-  <div class="meta">tools/code-modernization-plugin · tools · <span title="2026-10-14">2日前</span></div>
+  <div class="meta">tools/code-modernization-plugin · tools · <span title="2026-10-14">3日前</span></div>
   <article><h1>code-modernization｜レガシーコードを新実装へ置き換える Anthropic の Claude Code プラグイン</h1>
 <p>@dani_avila7 の投稿によると、Anthropic が Claude Code プラグイン（<a href="../tools/claude-code-plugins.html">claude-code-plugins</a> と同じ配布形式の拡張）<code>code-modernization</code> の v1.0.0 を公開した。用途はレガシーコードベースのモダナイゼーション（古い言語・フレームワークで書かれたコードを現行の技術で書き直すこと）である。@dani_avila7 が注目点として挙げるのは、コードを書き直すだけで終わらせず、新しい実装が旧実装と同じように振る舞うことを示そうとする点だ。投稿本文はその説明の途中（「behaves like」の直後）で途切れており、等価性をどう確かめるのか（テストの自動生成か、新旧を同じ入力で走らせた出力比較か）、インストール方法、対応言語は未収集。配布元のマーケットプレイスが <code>claude-plugins-official</code> かどうかも未確認である。</p>
 <p>書き直しの正しさを「新旧で振る舞いが一致すること」で定義する発想は、<a href="../tools/claude-code-plugin-eval.html">claude-code-plugin-eval</a> がプラグインあり/なしで同じテストを走らせ差分を見る構造と近いと考えられる（wiki 側の推論）。どちらも比較対象を手元に残し、差分を採点の根拠にする。また <a href="../models/claude-mythos.html">claude-mythos</a> のページが挙げる「人間が読まなかった古いコードもAIは読む」というレガシーコードのリスクに対しては、読むだけでなく置き換えまで AI に任せる道具として位置づけられる（wiki 側の推論）。</p>

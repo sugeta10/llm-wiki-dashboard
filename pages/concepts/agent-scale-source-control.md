@@ -67,3 +67,4 @@ flowchart LR
 - [[tools/adversarial-panel]] — 敵対的レビューを個人の Claude Code に持ち込むスキル。Scion チームが指摘する「仮定上の懸念への過剰防御」はこの手法の失敗モードとして参照できる
 - [[concepts/google-code-review]] — Google のコードレビュー指針。Scion チームが先行例に挙げた Piper の持ち主である Google の、人間のレビューを前提とした運用側の知識
 - [[companies/anthropic]]
+- [[concepts/agent-era-code-review]] — 同じマージ数の急増に、Claude Code チームがレビュー側（6層の検査・リスク別承認・収束対策）で応えた記事

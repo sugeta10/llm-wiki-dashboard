@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-compact-recovery</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-compact-recovery.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-code-compact-recovery · concepts · <span title="2026-07-06">3ヶ月前</span></div>
+  <div class="meta">concepts/claude-code-compact-recovery · concepts · <span title="2026-10-17">今日</span></div>
   <article><h1>Claude Code compact の判断構造喪失と復旧設計（compact-prep + 2段hook + 60%通知）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Claude Code の compact は「何をやったか」の物語要約で判断構造（却下理由・現在フェーズ・セッション状態）を落とすため、圧縮前に state file へ退避し、marker ファイル経由の 2 段 hook で圧縮直後に自動復元する運用パターン（@u1 の実践）。</p>
@@ -70,11 +70,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/semantic-generation-skill.html">semantic-generation-skill</a> — 同著者（@u1）の別記事。こちらは判断構造の喪失でなく、対象の定まらない独自語の生成という別のCodex運用課題への対策</li>
 <li><a href="../papers/2026-dairai-top-ai-papers-w35.html">2026-dairai-top-ai-papers-w35</a> — 圧縮の喪失を定量化した研究「What Compaction Destroys」（Claude Code compactは安全ルールを1回で53%・5回で10%しか保持しない）。本ページのstate file退避の必要性を研究側から裏付ける</li>
 <li><a href="../models/claude-haiku-5-5.html">claude-haiku-5-5</a> — <code>/autocompact 100k</code> で Haiku 5.5 の自動コンパクトを早め、安い価格帯（10万トークン未満）に留める設定（@lydiahallie）。圧縮回数が増えるぶん本ページの対策が効く場面</li>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a> — 長いアイドルセッションをキャッシュ切れ（約1時間）の直前に自動で圧縮する idle compaction（@lydiahallie）。ユーザーが compact を指示しなくても圧縮が起きる経路が増えた</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
 <li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
 <li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li>
-<li><a href="../concepts/semantic-generation-skill.html">semantic-generation-skill</a></li>
-<li><a href="../models/claude-haiku-5-5.html">claude-haiku-5-5</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2073289543948923153" rel="noopener" target="_blank">https://x.com/i/web/status/2073289543948923153</a></li></ul></section></article>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
+<li><a href="../concepts/semantic-generation-skill.html">semantic-generation-skill</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2073289543948923153" rel="noopener" target="_blank">https://x.com/i/web/status/2073289543948923153</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -146,6 +147,7 @@ Claude Code の PostCompact hook は additionalContext を返せない仕様の�
 - [[concepts/semantic-generation-skill]] — 同著者（@u1）の別記事。こちらは判断構造の喪失でなく、対象の定まらない独自語の生成という別のCodex運用課題への対策
 - [[papers/2026-dairai-top-ai-papers-w35]] — 圧縮の喪失を定量化した研究「What Compaction Destroys」（Claude Code compactは安全ルールを1回で53%・5回で10%しか保持しない）。本ページのstate file退避の必要性を研究側から裏付ける
 - [[models/claude-haiku-5-5]] — `/autocompact 100k` で Haiku 5.5 の自動コンパクトを早め、安い価格帯（10万トークン未満）に留める設定（@lydiahallie）。圧縮回数が増えるぶん本ページの対策が効く場面
+- [[concepts/prompt-caching]] — 長いアイドルセッションをキャッシュ切れ（約1時間）の直前に自動で圧縮する idle compaction（@lydiahallie）。ユーザーが compact を指示しなくても圧縮が起きる経路が増えた
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

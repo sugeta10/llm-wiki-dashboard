@@ -33,4 +33,4 @@ AIエージェントがコードを自律生成・レビューする [[concepts/
 
 ## 関連
 
-関連: [[concepts/spec-driven-development]], [[concepts/agentic-coding]], [[tools/claude-code]], [[concepts/claude-skills]], [[tools/addyosmani-agent-skills]]（本指針のプラクティスを24スキルへ焼き込んだと明言するスキルパック）, [[concepts/review-request-etiquette]]（コードでなく資料のレビューを依頼する側の基本動作。観点を先に示す・レビュアーの時間を尊重するという骨格が共通）
+関連: [[concepts/spec-driven-development]], [[concepts/agentic-coding]], [[tools/claude-code]], [[concepts/claude-skills]], [[tools/addyosmani-agent-skills]]（本指針のプラクティスを24スキルへ焼き込んだと明言するスキルパック）, [[concepts/review-request-etiquette]]（コードでなく資料のレビューを依頼する側の基本動作。観点を先に示す・レビュアーの時間を尊重するという骨格が共通）, [[concepts/agent-era-code-review]]（「誰が読んだか」でなく「どの検査が捕まえるか」へ問いを置き換えた、エージェント時代の Claude Code チームのレビュー運用）

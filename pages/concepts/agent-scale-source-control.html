@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agent-scale-source-control</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-scale-source-control.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agent-scale-source-control · concepts · <span title="2026-10-16">今日</span></div>
+  <div class="meta">concepts/agent-scale-source-control · concepts · <span title="2026-10-17">今日</span></div>
   <article><h1>エージェント規模のソース管理（Anthropic Scion）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: マージ数が1日2,500件から3万件超へ増えたAnthropicが、gitをやめて「クライアントは常にオンライン・計算はサーバー側」を前提に作り直した社内VCS <strong>Scion</strong> と、その設計原則・構築で得た教訓。</p>
@@ -87,11 +87,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/adversarial-panel.html">adversarial-panel</a> — 敵対的レビューを個人の Claude Code に持ち込むスキル。Scion チームが指摘する「仮定上の懸念への過剰防御」はこの手法の失敗モードとして参照できる</li>
 <li><a href="../concepts/google-code-review.html">google-code-review</a> — Google のコードレビュー指針。Scion チームが先行例に挙げた Piper の持ち主である Google の、人間のレビューを前提とした運用側の知識</li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
+<li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a> — 同じマージ数の急増に、Claude Code チームがレビュー側（6層の検査・リスク別承認・収束対策）で応えた記事</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a></li>
+<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
 <li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li>
 <li><a href="../models/claude-mythos.html">claude-mythos</a></li>
-<li><a href="../tools/claude-tag.html">claude-tag</a></li>
-<li><a href="../companies/anthropic.html">anthropic</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://www.anthropic.com/engineering/redesigning-source-control" rel="noopener" target="_blank">https://www.anthropic.com/engineering/redesigning-source-control</a></li>
+<li><a href="../tools/claude-tag.html">claude-tag</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://www.anthropic.com/engineering/redesigning-source-control" rel="noopener" target="_blank">https://www.anthropic.com/engineering/redesigning-source-control</a></li>
 <li><a href="https://x.com/i/web/status/2110047081414987957" rel="noopener" target="_blank">https://x.com/i/web/status/2110047081414987957</a></li></ul></section></article>
 </main>
 <script>
@@ -182,6 +183,7 @@ flowchart LR
 - [[tools/adversarial-panel]] — 敵対的レビューを個人の Claude Code に持ち込むスキル。Scion チームが指摘する「仮定上の懸念への過剰防御」はこの手法の失敗モードとして参照できる
 - [[concepts/google-code-review]] — Google のコードレビュー指針。Scion チームが先行例に挙げた Piper の持ち主である Google の、人間のレビューを前提とした運用側の知識
 - [[companies/anthropic]]
+- [[concepts/agent-era-code-review]] — 同じマージ数の急増に、Claude Code チームがレビュー側（6層の検査・リスク別承認・収束対策）で応えた記事
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

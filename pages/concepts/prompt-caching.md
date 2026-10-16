@@ -97,8 +97,15 @@ response = client.messages.create(
 
 上の価格表に照らすと、1時間 TTL は書き込みが1.25倍から2倍に上がる代わりに、5分以上間が空く再利用でもヒットが続く。したがって得になるのは、同じサブエージェントが5分を超える間隔で同じ文脈を読み直す使い方に限られ、短命で使い捨てのサブエージェントでは書き込みの割増だけが残ると考えられる（wiki 側の推論）。Uber が短命なサブエージェントを5分 TTL のままにした判断（[[concepts/software-factory-cost-equation]]）は、この裏側にあたる。サブエージェント機能そのものは [[tools/claude-code-subagents]]。
 
+## Claude Code の idle compaction（期限切れ前の自動圧縮）
+
+@lydiahallie（Claude Code チーム）は、Claude Code に **idle compaction** を入れたと告知した。長くアイドルになったセッションを、プロンプトキャッシュが切れる直前（約1時間）に自動でコンパクト（会話の要約への置き換え）しておく機能で、後で戻ったときに会話全体でなく要約だけを処理し直せば済むので利用量の節約になる、と @lydiahallie は説明する。これを引用した @stretchcloud は、返信欄で利用者が自分の使用量を初めて計算し始めたと書き、1時間キャッシュの書き込みがベース入力価格の2倍だという点から仕組みの解説を始めている（ポスト本文はここで途切れ、続きは短縮URLの先で未収集）。
+
+上の価格表に照らすと、キャッシュが切れた後の最初の送信では会話全体が書き込み扱い（1時間TTLなら2倍）になるので、長い会話ほど戻ったときの1回目が高くつく。idle compaction はその書き直し対象を会話全体から要約へ縮めるもので、節約幅は会話が長いほど大きいと考えられる（wiki 側の推論）。代わりに戻った時点の文脈は要約になるため、圧縮で判断構造が落ちる問題（[[concepts/claude-code-compact-recovery]]）を、ユーザーが操作しないうちに抱えることになる点は確かめたい。
+
 ## 問い
 
+- idle compaction の後に戻ったセッションで、圧縮前の判断・未完了タスクがどれだけ残るか。[[concepts/claude-code-compact-recovery]] の PostCompact hook はこの自動圧縮でも発火するか
 - ステータスラインのカウントダウンは何を起点に測るのが正しいか（最後の送信時刻か、最後の応答完了時刻か）。1時間TTLの環境では表示の意味が変わるか
 - `subagentPromptCacheTtl` を1時間にしたとき、自分のサブエージェント運用で書き込み割増を上回るヒットが本当に出るか。`cache_read_input_tokens` と `cache_creation_input_tokens` の比で測る
 
@@ -115,3 +122,4 @@ response = client.messages.create(
 - [[concepts/software-factory-cost-equation]] — TTL経済を艦隊規模の既定値に落とした実例（Uber）：アイドルの長い対話セッションは1時間TTL・短命なサブエージェントは5分TTLに使い分け
 - [[concepts/jev-claude-code-integration]] — ターンごとのモデルルーターがメインモデルを切り替えるとキャッシュを捨てて逆に高くつくため、メイン切替を既定オフにする設計例（jev-model-router・jcm-router）
 - [[tools/claude-code-mods]] — 5分キャッシュの残り時間を Claude Code の画面にバー表示し、温め直しを通知で促す Cache Control Mod（@dani_avila7 推薦）
+- [[concepts/claude-code-compact-recovery]] — idle compaction（キャッシュ切れ直前の自動圧縮）で節約できる代わりに起きる、圧縮による判断構造の喪失への対策

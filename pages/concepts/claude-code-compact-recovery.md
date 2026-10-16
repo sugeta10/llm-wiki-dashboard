@@ -49,3 +49,4 @@ Claude Code の PostCompact hook は additionalContext を返せない仕様の�
 - [[concepts/semantic-generation-skill]] — 同著者（@u1）の別記事。こちらは判断構造の喪失でなく、対象の定まらない独自語の生成という別のCodex運用課題への対策
 - [[papers/2026-dairai-top-ai-papers-w35]] — 圧縮の喪失を定量化した研究「What Compaction Destroys」（Claude Code compactは安全ルールを1回で53%・5回で10%しか保持しない）。本ページのstate file退避の必要性を研究側から裏付ける
 - [[models/claude-haiku-5-5]] — `/autocompact 100k` で Haiku 5.5 の自動コンパクトを早め、安い価格帯（10万トークン未満）に留める設定（@lydiahallie）。圧縮回数が増えるぶん本ページの対策が効く場面
+- [[concepts/prompt-caching]] — 長いアイドルセッションをキャッシュ切れ（約1時間）の直前に自動で圧縮する idle compaction（@lydiahallie）。ユーザーが compact を指示しなくても圧縮が起きる経路が増えた
