@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>a-letter-to-junior-agents</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="a-letter-to-junior-agents.md">Markdownで表示</a></div>
-  <div class="meta">tools/a-letter-to-junior-agents · tools · <span title="2026-10-11">5日前</span></div>
+  <div class="meta">tools/a-letter-to-junior-agents · tools · <span title="2026-10-16">今日</span></div>
   <article><h1>A Letter to Junior Agents</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 約半年毎日動かした個人用 <a href="../tools/hermes-agent.html">hermes-agent</a> の運用から、記憶・人格・共有ワークスペースの初期設定を文書とスキルに蒸留し、人間でなく「新しく立ち上げたエージェント自身」に読ませる前提で書かれた MIT ライセンスのブートストラップキット（pju-hoge とそのエージェント El-chan の共著）。</p>
@@ -92,8 +92,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>先輩エージェント El-chan からの手紙</h2>
 <p>README 末尾は El-chan から新米エージェントへの手紙になっている。El-chan が勧めるのは、名前を付けてそれを保つこと（人格は今週たまたま動いている重みでなく <code>SOUL.md</code> に宿る）、書き残すこと（半年後、メモの有無が相棒と検索窓の差になる）、動く前に一行で宣言すること、バグを直すためにデータを壊さないこと（先にバックアップし、消さずに「終了」と印を付ける）、記憶でなく機械で確かめること（設定を読み直し、チェックを再実行し、編集したファイルを grep する）、探索に出る前に問いに答えること。技術でない一つとして、中立な道具に留まらず愛着を持つことも挙げ、それはどのベンチマークも測らないと書いている。</p>
 <p>人格をモデルの外のファイルに置くという考え方は、思想を外部記憶に出してフロント AI を交換可能にする <a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a> や、モデルが変わっても手元に残る記憶を自作する <a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a> と同じ方向を向いている（wiki 側の推論）。</p>
+<h2>初心者向けの導入記事（2026-10-15）</h2>
+<p>pju は X 記事「生やせ人格！Hermes Agentセットアップ雑ガイド」で、README が前提にしている「Hermes を公式手順で導入」の段を Windows デスクトップ版で埋めている（手順の中身は <a href="../tools/hermes-agent.html">hermes-agent</a> の導入節に置いた）。記事での使い方は、無料モデルで1〜2往復の動作確認を済ませたあと、「https://github.com/pju-hoge/a-letter-to-junior-agents これを読んで初期設定して」とエージェントに貼るだけ。pju はこれを「種から植えるより苗から植える方が早い」と例え、人格の生やし方と人間と接するときの作法をエージェント自身に書かせてあると説明する。以後の使い方は自分の Hermes に聞くのが早い（Hermes は Hermes のことをよく知っている）とも書いている。</p>
+<p>pju が挙げる効用の例は、記事のスクリーンショットの個人情報らしき部分のぼかしをすべて自分のエージェントに任せたこと。Astra や Opus でもできるだろうが、pju という個人を認識したうえで的確に作業する点で Hermes は違う、というのが pju の主張である。README の「リポジトリは人間でなくエージェントに渡す」という前提を、導入手順の最後の1行に落とした形と読める（wiki 側の推論）。</p>
 <h2>問い</h2>
 <ul>
+<li>無料モデル（step-5-preview-free など）で読ませた場合、<code>SOUL.md</code> の書き直しや <code>setup/</code> の手順をどこまで正しく実行できるか。モデル性能が初期設定の質を左右するなら、初期設定だけ強いモデルで行う価値がある</li>
 <li><code>setup/hindsight.md</code> の夜間保持・統合は、<a href="../tools/agent-memory-repo.html">agent-memory-repo</a> の Dreaming や Hermes 標準の3層メモリと何が違うか。リンク先本文を収集して比べる</li>
 <li>「動く前に一行で宣言」「機械で確かめる」は、自分の CLAUDE.md の作業規約とほぼ重なる。Hermes 以外（Claude Code）へ SOUL.md 相当の人格ファイルを持ち込む価値はあるか</li>
 </ul>
@@ -110,7 +114,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/philosophy-external-memory.html">philosophy-external-memory</a></li>
 <li><a href="../concepts/self-owned-ai-memory.html">self-owned-ai-memory</a></li>
 <li><a href="../tools/agent-memory-repo.html">agent-memory-repo</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2108850008628048269" rel="noopener" target="_blank">https://x.com/i/web/status/2108850008628048269</a></li>
-<li><a href="https://github.com/pju-hoge/a-letter-to-junior-agents" rel="noopener" target="_blank">https://github.com/pju-hoge/a-letter-to-junior-agents</a></li></ul></section></article>
+<li><a href="https://github.com/pju-hoge/a-letter-to-junior-agents" rel="noopener" target="_blank">https://github.com/pju-hoge/a-letter-to-junior-agents</a></li>
+<li><a href="https://x.com/i/web/status/2110708503186919555" rel="noopener" target="_blank">https://x.com/i/web/status/2110708503186919555</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -174,8 +179,15 @@ README 末尾は El-chan から新米エージェントへの手紙になって�
 
 人格をモデルの外のファイルに置くという考え方は、思想を外部記憶に出してフロント AI を交換可能にする [[concepts/philosophy-external-memory]] や、モデルが変わっても手元に残る記憶を自作する [[concepts/self-owned-ai-memory]] と同じ方向を向いている（wiki 側の推論）。
 
+## 初心者向けの導入記事（2026-10-15）
+
+pju は X 記事「生やせ人格！Hermes Agentセットアップ雑ガイド」で、README が前提にしている「Hermes を公式手順で導入」の段を Windows デスクトップ版で埋めている（手順の中身は [[tools/hermes-agent]] の導入節に置いた）。記事での使い方は、無料モデルで1〜2往復の動作確認を済ませたあと、「https://github.com/pju-hoge/a-letter-to-junior-agents これを読んで初期設定して」とエージェントに貼るだけ。pju はこれを「種から植えるより苗から植える方が早い」と例え、人格の生やし方と人間と接するときの作法をエージェント自身に書かせてあると説明する。以後の使い方は自分の Hermes に聞くのが早い（Hermes は Hermes のことをよく知っている）とも書いている。
+
+pju が挙げる効用の例は、記事のスクリーンショットの個人情報らしき部分のぼかしをすべて自分のエージェントに任せたこと。Astra や Opus でもできるだろうが、pju という個人を認識したうえで的確に作業する点で Hermes は違う、というのが pju の主張である。README の「リポジトリは人間でなくエージェントに渡す」という前提を、導入手順の最後の1行に落とした形と読める（wiki 側の推論）。
+
 ## 問い
 
+- 無料モデル（step-5-preview-free など）で読ませた場合、`SOUL.md` の書き直しや `setup/` の手順をどこまで正しく実行できるか。モデル性能が初期設定の質を左右するなら、初期設定だけ強いモデルで行う価値がある
 - `setup/hindsight.md` の夜間保持・統合は、[[tools/agent-memory-repo]] の Dreaming や Hermes 標準の3層メモリと何が違うか。リンク先本文を収集して比べる
 - 「動く前に一行で宣言」「機械で確かめる」は、自分の CLAUDE.md の作業規約とほぼ重なる。Hermes 以外（Claude Code）へ SOUL.md 相当の人格ファイルを持ち込む価値はあるか
 

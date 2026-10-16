@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>hermes-agent</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="hermes-agent.md">Markdownで表示</a></div>
-  <div class="meta">tools/hermes-agent · tools · <span title="2026-06-21">3ヶ月前</span><span class="stale-badge">⚠ 60日以上前の情報</span></div>
+  <div class="meta">tools/hermes-agent · tools · <span title="2026-10-16">今日</span></div>
   <article><h1>Hermes Agent</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Nous ResearchのオープンソースAIエージェント基盤で、自己進化スキル・3層メモリ・GEPAオフライン最適化を1フレームワークに統合し「使うほど賢くなる」設計を実現する。</p>
@@ -87,6 +87,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <h2>設定モード・プロファイル</h2>
 <p><strong>マルチエージェントプロファイル</strong>で、プログラマー・デザイナー・リサーチャーなど役割ごとに設定・メモリ・スキル・SOUL.mdを完全分離できる。これは<a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a>の実装例にあたる。</p>
 <p>「スタッフエンジニア」モードでは<a href="../tools/claude-code.html">claude-code</a> CLIを下位エグゼキューターとして使い、Claude Maxサブスクをベースに動作させられる。</p>
+<h2>導入（Windows デスクトップ版）</h2>
+<p>pju（@pju）が 2026-10-15 の X 記事で書いた初心者向け手順では、公式サイト（hermes-agent.nousresearch.com）の「Download for Windows」から exe を落として実行し、Launch 後のモデル未設定画面で Nous Portal を選んで無料プランのアカウントを作ると、その時点で使える無料モデルが自動で選ばれる。最初の挨拶はエラーになるので、「Choose a model」から <code>free</code> の付いたモデルを選び直す（pju は執筆時点の推奨として step-5-preview-free を挙げ、選択肢は時期で変わると添える）。pju は、検索上位に出る hermes-agent.org 系のドメインは無関係の第三者サイトらしいので無視するよう注意している。続けて人格を入れる手順は <a href="../tools/a-letter-to-junior-agents.html">a-letter-to-junior-agents</a> を参照。</p>
 <h2>検証済み事実</h2>
 <ul>
 <li>2026-05-13: GEPA論文はICRL 2026 Oral、NousResearch/hermes-agent-self-evolution リポジトリで公開（MITライセンス）</li>
@@ -190,7 +192,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/a-letter-to-junior-agents.html">a-letter-to-junior-agents</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054564519280804028" rel="noopener" target="_blank">https://x.com/i/web/status/2054564519280804028</a></li>
 <li><a href="https://x.com/i/web/status/2057581065469055167" rel="noopener" target="_blank">https://x.com/i/web/status/2057581065469055167</a></li>
 <li><a href="https://x.com/i/web/status/2062101068842975409" rel="noopener" target="_blank">https://x.com/i/web/status/2062101068842975409</a></li>
-<li><a href="https://github.com/NousResearch/hermes-agent" rel="noopener" target="_blank">https://github.com/NousResearch/hermes-agent</a></li></ul></section></article>
+<li><a href="https://github.com/NousResearch/hermes-agent" rel="noopener" target="_blank">https://github.com/NousResearch/hermes-agent</a></li>
+<li><a href="https://x.com/i/web/status/2110708503186919555" rel="noopener" target="_blank">https://x.com/i/web/status/2110708503186919555</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -251,6 +254,10 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 **マルチエージェントプロファイル**で、プログラマー・デザイナー・リサーチャーなど役割ごとに設定・メモリ・スキル・SOUL.mdを完全分離できる。これは[[concepts/multi-agent-patterns]]の実装例にあたる。
 
 「スタッフエンジニア」モードでは[[tools/claude-code]] CLIを下位エグゼキューターとして使い、Claude Maxサブスクをベースに動作させられる。
+
+## 導入（Windows デスクトップ版）
+
+pju（@pju）が 2026-10-15 の X 記事で書いた初心者向け手順では、公式サイト（hermes-agent.nousresearch.com）の「Download for Windows」から exe を落として実行し、Launch 後のモデル未設定画面で Nous Portal を選んで無料プランのアカウントを作ると、その時点で使える無料モデルが自動で選ばれる。最初の挨拶はエラーになるので、「Choose a model」から `free` の付いたモデルを選び直す（pju は執筆時点の推奨として step-5-preview-free を挙げ、選択肢は時期で変わると添える）。pju は、検索上位に出る hermes-agent.org 系のドメインは無関係の第三者サイトらしいので無視するよう注意している。続けて人格を入れる手順は [[tools/a-letter-to-junior-agents]] を参照。
 
 ## 検証済み事実
 

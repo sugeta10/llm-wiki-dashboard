@@ -39,6 +39,10 @@
 
 「スタッフエンジニア」モードでは[[tools/claude-code]] CLIを下位エグゼキューターとして使い、Claude Maxサブスクをベースに動作させられる。
 
+## 導入（Windows デスクトップ版）
+
+pju（@pju）が 2026-10-15 の X 記事で書いた初心者向け手順では、公式サイト（hermes-agent.nousresearch.com）の「Download for Windows」から exe を落として実行し、Launch 後のモデル未設定画面で Nous Portal を選んで無料プランのアカウントを作ると、その時点で使える無料モデルが自動で選ばれる。最初の挨拶はエラーになるので、「Choose a model」から `free` の付いたモデルを選び直す（pju は執筆時点の推奨として step-5-preview-free を挙げ、選択肢は時期で変わると添える）。pju は、検索上位に出る hermes-agent.org 系のドメインは無関係の第三者サイトらしいので無視するよう注意している。続けて人格を入れる手順は [[tools/a-letter-to-junior-agents]] を参照。
+
 ## 検証済み事実
 
 - 2026-05-13: GEPA論文はICRL 2026 Oral、NousResearch/hermes-agent-self-evolution リポジトリで公開（MITライセンス）

@@ -40,6 +40,10 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>動画のモーショングラフィックス（2026-10-13）</strong>: スタガー、オーバーシュート、マスクトランジション</li>
 </ul>
 <p>用途で分けると、LP 側はスクロールに対するページの振る舞い、動画側は時間軸上の要素の出し方・止まり方・場面転換の名前である。動画をコードで描く場合（<a href="../tools/remotion.html">remotion</a> など）は、動画側の名前もそのまま実装用語として通じると考えられる。</p>
+<h2>ライブラリ化: motion-prompt（2026-10-15）</h2>
+<p>@showheyohtaki はこれまで X に出してきた演出名を、動く見本つきのライブラリ「motion-prompt」（https://showheyohtaki.github.io/motion-prompt/ 、GitHub リポジトリ showheyohtaki/motion-prompt）にまとめた。投稿によれば、カメラワーク・UI パーツ・モーショングラフィックスなど5分野・120個の見本を収める（5分野の残り2つは本ソースに出てこない）。</p>
+<p>使い方は、リポジトリを Claude Code や Codex に読ませて「motion-prompt のライブラリ出して」と頼む形。サイトの説明では、motion-prompt スキルを入れた AI がギャラリーをブラウザで開き、ユーザーは見本の「選ぶ」を押して複数選び、「冒頭のタイトルに」のような一言メモを添えられる。「AIに渡す」ボタン（AI がライブラリを開いたときだけ出る）で選んだ見本が AI に届き、そのあと「この動画の冒頭をこんな感じに編集して」と頼む。サイトはこれらを「見本」と位置づけ、同じような名前の見本を自分の分野・自分の言語で作るための手順とプロンプト（make-your-own）も公開している。</p>
+<p>名前の一覧を読ませるだけの段階から、人間が動きを目で見て選び、選択結果を AI に構造化して返す段階に進んだと読める。形容詞を名前に置き換えるだけでなく、人間側が名前を知らなくても見本を指せば済むので、語彙を覚える負担を外したことになる（wiki 側の推論）。</p>
 <h2>他のページとの関係</h2>
 <ul>
 <li>「形容詞でなく名前・変数で指示する」発想は <a href="../design/ochiai-ai-design-method.html">ochiai-ai-design-method</a> の原理1（形容詞でなくオブジェクトで指示する）と同じ向きで、対象を静止画の構図から動きへ移したものと読める</li>
@@ -50,6 +54,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <ul>
 <li>演出名を指定しても、モデルごと（Claude と Codex）・実装手段ごと（CSS・GSAP・Remotion）に解釈がずれる名前はどれか。名前に加えてパラメータ（イージング・時間・距離）まで渡すべき境界はどこか</li>
 <li>一覧の本体（画像・動画）を取得して、名前と短い定義の対応表を自分用に持つ価値はあるか。<a href="../design/design-md.html">design-md</a> のような参照ファイルに入れて毎回読ませる形にできるか</li>
+<li>motion-prompt スキルの「AIに渡す」は、選択結果をどんな形式（名前だけか、実装コード片まで含むか）で AI に返しているか。リポジトリ本体を読んで確かめる</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -63,7 +68,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../design/ochiai-ai-design-method.html">ochiai-ai-design-method</a></li>
 <li><a href="../design/ui-pattern-dictionary.html">ui-pattern-dictionary</a></li>
 <li><a href="../tools/remotion.html">remotion</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2108065874511077598" rel="noopener" target="_blank">https://x.com/i/web/status/2108065874511077598</a></li>
-<li><a href="https://x.com/i/web/status/2109840044554891464" rel="noopener" target="_blank">https://x.com/i/web/status/2109840044554891464</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2109840044554891464" rel="noopener" target="_blank">https://x.com/i/web/status/2109840044554891464</a></li>
+<li><a href="https://x.com/i/web/status/2110575893332869584" rel="noopener" target="_blank">https://x.com/i/web/status/2110575893332869584</a></li>
+<li><a href="https://showheyohtaki.github.io/motion-prompt/" rel="noopener" target="_blank">https://showheyohtaki.github.io/motion-prompt/</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -99,6 +106,14 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 
 用途で分けると、LP 側はスクロールに対するページの振る舞い、動画側は時間軸上の要素の出し方・止まり方・場面転換の名前である。動画をコードで描く場合（[[tools/remotion]] など）は、動画側の名前もそのまま実装用語として通じると考えられる。
 
+## ライブラリ化: motion-prompt（2026-10-15）
+
+@showheyohtaki はこれまで X に出してきた演出名を、動く見本つきのライブラリ「motion-prompt」（https://showheyohtaki.github.io/motion-prompt/ 、GitHub リポジトリ showheyohtaki/motion-prompt）にまとめた。投稿によれば、カメラワーク・UI パーツ・モーショングラフィックスなど5分野・120個の見本を収める（5分野の残り2つは本ソースに出てこない）。
+
+使い方は、リポジトリを Claude Code や Codex に読ませて「motion-prompt のライブラリ出して」と頼む形。サイトの説明では、motion-prompt スキルを入れた AI がギャラリーをブラウザで開き、ユーザーは見本の「選ぶ」を押して複数選び、「冒頭のタイトルに」のような一言メモを添えられる。「AIに渡す」ボタン（AI がライブラリを開いたときだけ出る）で選んだ見本が AI に届き、そのあと「この動画の冒頭をこんな感じに編集して」と頼む。サイトはこれらを「見本」と位置づけ、同じような名前の見本を自分の分野・自分の言語で作るための手順とプロンプト（make-your-own）も公開している。
+
+名前の一覧を読ませるだけの段階から、人間が動きを目で見て選び、選択結果を AI に構造化して返す段階に進んだと読める。形容詞を名前に置き換えるだけでなく、人間側が名前を知らなくても見本を指せば済むので、語彙を覚える負担を外したことになる（wiki 側の推論）。
+
 ## 他のページとの関係
 
 - 「形容詞でなく名前・変数で指示する」発想は [[design/ochiai-ai-design-method]] の原理1（形容詞でなくオブジェクトで指示する）と同じ向きで、対象を静止画の構図から動きへ移したものと読める
@@ -109,6 +124,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 
 - 演出名を指定しても、モデルごと（Claude と Codex）・実装手段ごと（CSS・GSAP・Remotion）に解釈がずれる名前はどれか。名前に加えてパラメータ（イージング・時間・距離）まで渡すべき境界はどこか
 - 一覧の本体（画像・動画）を取得して、名前と短い定義の対応表を自分用に持つ価値はあるか。[[design/design-md]] のような参照ファイルに入れて毎回読ませる形にできるか
+- motion-prompt スキルの「AIに渡す」は、選択結果をどんな形式（名前だけか、実装コード片まで含むか）で AI に返しているか。リポジトリ本体を読んで確かめる
 
 ## 関連
 
