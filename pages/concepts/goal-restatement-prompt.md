@@ -32,5 +32,3 @@ AIに作業させる前に、こちらのゴールと解こうとしている問
 - [[tools/grill-me]] — AIに一問ずつ質問させる実装前インタビュー。質問させる向きと答えさせる向きの対比
 - [[concepts/instruction-means-review]] — 目的に照らして手段を再検討させる常設プロンプト。目的の把握を前提にする
 - [[concepts/ai-ambition-four-types]] — 「ゴールの先のゴール」を問いタスクでなく成果を渡すAltitudeの型。目的を復唱させるのでなく一段上に置き直す向き
-- [[tools/pstack]] — 同著者のスキル群。「ゴールと問題を自分の言葉で言い直す」という本プロンプトと同じ内容が `/in-your-own-words` スキルとして同梱され、手で打ったときだけ動く位置づけになっている
-- [[concepts/agent-trust-inverse-pyramid]] — 同著者が示した、エージェントを信頼するための4層の努力配分。エージェントに渡す手順の最後で `/sharpen` と `/in-your-own-words` を使い、プロンプト自体を確認させる

@@ -100,4 +100,3 @@ mizchi は形式手法を「実装しようとしている仕様がそもそも�
 - [[concepts/cognitive-debt]] — AI が書いたコードを理解しなくなる問題。振る舞いと説明画像で理解する対処
 - [[tools/dspy]] — 実験的手法として挙げられた dspy
 - [[tools/laya-mlx]] — 同著者（mizchi）の小型判断モデル実測
-- [[concepts/agent-trust-inverse-pyramid]] — 「AGENTS.md は判断基準だけ」「TLA+ で仕様を検査」と同じ向きの努力配分を、コードベース→静的解析→散文→人間レビューの逆ピラミッドとして示した @poteto の指針

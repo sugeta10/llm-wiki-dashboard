@@ -34,4 +34,3 @@ Claudeが使う「ツール」へのアクセスは、外部サービスとの�
 - [[tools/slack-html]] — Slackに1枚のHTMLを添付してアプリ内で展開する使い方。Slack常駐のボットにレポートをHTMLで作らせる発想はClaude Tagにも当てはまると考えられる（未確認）
 - [[tools/claude-google-workspace]] — Google Docs・Sheets・Slides に Claude を入れる連携。業務ツールの中に Claude を常駐させる同じ方向の製品
 - [[concepts/agent-scale-source-control]] — Anthropic のソース管理チームが Claude Tag で、1コンポーネントの健全性だけを監視する Claude（「superfan」）を Slack チャンネルごとに置いた運用例
-- [[tools/openai-codex]] — OpenAI 側の対応物。Slack で @Codex をメンションするとリポジトリに紐づくクラウドタスクが起動する（2026-10 の本人試行は失敗で終了）

@@ -31,4 +31,3 @@ Cursor に似たAI IDE として **Windsurf** がある。どちらも詳細な�
 - [[tools/understand-anything]]（コードベースを対話型ナレッジグラフ化する補助ツール・Cursor対応）
 - [[concepts/cursor-instruction-methods]]（AGENTS.md/Rules/Commands/Skills/Subagentsの使い分けフレーム）
 - [[tools/grok-bot]]（Cursorクラウドエージェントを起動・監視・催促する管理層ボット。private workerで自前Mac miniも使う・@lingxiの200超同時管理の運用記）
-- [[tools/pstack]]（@poteto が Cursor で日常使用するスキル群のプラグイン。cursor/plugins リポジトリで公開・/poteto-mode が23プレイブックへ振り分け・Claude Code からも導入可）
