@@ -27,3 +27,4 @@ Stripe 社内のコーディングエージェント・パイプライン。人�
 - [[concepts/loop-engineering]] — ループ設計の親概念（用語・進化史・構成要素）
 - [[concepts/multi-agent-patterns]] — 決定論オーケストレーター＋LLMワーカーの構成は Orchestrator-Worker パターンの大規模変種
 - [[tools/grok-bot]] — 大量のマシン生成PRを流すもう一つの事例（@lingxi）。Minionsが人間レビューで止めるところを、高確信・低影響のPRは自動マージまで進める
+- [[concepts/small-change-auto-approval]] — Imprint の small-change と中央統制ハーネス fleet。Will Larson は fleet を Minions に似る（one-shot 方式は取らない）と書き、安全と評価された変更は人間レビュアー1人まで減らす

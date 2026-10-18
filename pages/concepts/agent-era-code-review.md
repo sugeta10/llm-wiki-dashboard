@@ -92,3 +92,4 @@ Anthropic は、人の仕事が「全 diff を読むこと」から機械が苦�
 - [[tools/claude-code]] — レビュー対象の製品そのもの
 - [[companies/anthropic]]
 - [[concepts/agent-trust-inverse-pyramid]] — 「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」とする @poteto の4層指針。本ページのリスク別人間承認と「同じ指摘は発生源で直す」を個人の運用規模で言ったものと読める
+- [[concepts/small-change-auto-approval]] — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照

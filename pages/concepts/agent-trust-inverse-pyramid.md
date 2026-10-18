@@ -55,3 +55,4 @@
 - [[people/uncle-bob-martin]] — エージェントのコードを読まず制約で囲む戦略
 - [[concepts/goal-restatement-prompt]] — 同著者の1文プロンプト。手順の最後で使う `/in-your-own-words` の原型
 - [[concepts/claude-code-instruction-methods]] — 決定論的な強制は hook・permission、CLAUDE.md は索引に徹するという公式フレーム
+- [[concepts/small-change-auto-approval]] — Imprint の small-change。「誤りの防止は CI/CD と pstack のようなハーネス検証の方が効く」「small-change の誤りはシステムの失敗」と、本ページの配分を組織の運用に置いた事例（Will Larson）

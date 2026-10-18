@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-recall - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-recall</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-recall.md">Markdownで表示</a></div>
+  <div class="meta">tools/claude-recall · tools · <span title="2026-10-19">今日</span></div>
+  <article><h1>claude-recall：Claude Code の全セッションを SQLite に残し、人と Claude の双方が引ける recall ツール</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Claude Code が書く JSONL のセッション記録を SQLite の書庫（<code>~/.claude/vault.db</code>）に取り込み続け、Claude Code が消した後も残したうえで、MCP サーバー（Claude が過去セッションを検索・読解）・TUI（自分で探して再開）・Web UI（ブラウザで読む）の3経路で引ける1バイナリ <code>recall</code>。記憶システムでなく「必要なときに引く（pull）」道具だと作者 babarot が明言し、作者と考えられる @b4b4r07 は日次ダッシュボードとハーネス自己改善ループの基盤に使っていると投稿した。</p>
+</blockquote>
+<p>Claude Code のセッション記録は <code>~/.claude/projects/**/*.jsonl</code> に書かれるが、Claude Code 自身が後で消す。claude-recall の README は目的を「その grep をもっと良い体験にし、Claude Code が消した後もファイルを残すこと」と書き、自分かエージェントが「前にも話した」と気づいたときに引く道具だと位置づける（設計判断 ADR-001「recall であって memory の拡張ではない」）。作者 babarot は、X の @b4b4r07（GitHub の b4b4r07 アカウントの表示名も BABAROT）と同一人物と考えられる。@b4b4r07 は、recall が最近「自分が作るものの基盤」になってきており、一日を振り返るダッシュボードに繋いで Claude Code の中でその日何をしていたかを表示させたり、agent harness の自律改善ループに繋いで<strong>人間の介入パターンからハーネスの修正案を自動で作る</strong>ようにしたりしていると投稿した。@shodaiiiiii は「Claude Code のセッションを SQLite に溜めておき、過去の会話を自分も Claude も思い出せるようにするツール」という紹介文（引用元の投稿者はキャッシュに残っていない）を引いて「そんなやり方があったか」と反応している。</p>
+<pre class="mermaid">flowchart LR
+  J[&quot;~/.claude/projects/**/*.jsonl&lt;br/&gt;（Claude Code が書き、後で消す）&quot;] --&gt;|recall import&lt;br/&gt;SessionEnd hook| DB[(&quot;~/.claude/vault.db&lt;br/&gt;SQLite + FTS5&quot;)]
+  DB --&gt; MCP[&quot;MCP サーバー&lt;br/&gt;recall_search / list / export / stats&quot;]
+  DB --&gt; TUI[&quot;TUI&lt;br/&gt;探す→claude -r で再開&quot;]
+  DB --&gt; WEB[&quot;Web UI&lt;br/&gt;ブラウザで読む・ライブ更新&quot;]
+  MCP --&gt; CC[&quot;作業中の Claude Code セッション&quot;]
+  DB -.-&gt;|@b4b4r07 の用途| DASH[&quot;日次ダッシュボード&quot;]
+  DB -.-&gt;|@b4b4r07 の用途| LOOP[&quot;ハーネス自己改善ループ&lt;br/&gt;介入パターン→修正案&quot;]</pre>
+<h2>3つの入口と Claude Code 内の表示（README からの転記）</h2>
+<table>
+<thead>
+<tr>
+<th>したいこと</th>
+<th>使うもの</th>
+<th>それだけが与えるもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>過去セッションで何があったかを Claude に思い出させる</td>
+<td>MCP サーバー</td>
+<td>答えが作業中のセッションに、すぐ使える文脈として届く</td>
+</tr>
+<tr>
+<td>自分でセッションを探して戻る</td>
+<td>TUI</td>
+<td>その場で再開（<code>claude -r</code>）、新しい claude で recall、ID をコピーして別エージェントに渡す</td>
+</tr>
+<tr>
+<td>自分で探して読む</td>
+<td>Web UI</td>
+<td>長い会話と画像のための読みやすいリーダー</td>
+</tr>
+<tr>
+<td>セッションを離れずに振り返る</td>
+<td>Claude Code 内</td>
+<td>起動時に当該リポジトリの直近セッション、モデルのターン無しの検索、1キーで任意セッションの recap</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>MCP サーバー</strong>: 各 Claude Code セッションが自分の <code>recall mcp</code> を起動する。プロンプトには何も注入されず、Claude は過去について聞かれたとき、または前に話したと気づいたときにツールを呼ぶ。ツールは <code>recall_search</code>（全文検索・<code>repo</code> で1リポジトリに絞れる）・<code>recall_list</code>・<code>recall_export</code>（<code>tail</code> で末尾だけ）・<code>recall_stats</code>。プロンプト <code>recap</code> は、あるセッションの終わり方を読み、やったこと・決めたこと・残したことをまとめ、どう続けるかを尋ねる</li>
+<li><strong>TUI</strong>: タイトル・フォルダ（worktree は属するリポジトリの下）・ブランチ・メッセージ数・サイズ・ID を一覧。<code>Enter</code> で再開、<code>c</code> で再開できないセッション（worktree が消えたもの等）を新しい claude から MCP 経由で recall、<code>/</code> でフィルタ（<code>text:</code>・<code>title:</code>・<code>folder:</code> で項目指定）、<code>a</code> で「何の話だったかは覚えているが何を打てばよいか分からない」ときに自分の <code>claude -p</code> で探させる（API キー不要）</li>
+<li><strong>Web UI</strong>: <code>recall ui</code> で <code>localhost:6276</code> にバックグラウンド起動。ツール呼び出しを畳んだリーダー・自分の発言のアウトライン・会話内検索。新規・変更セッションは約0.5秒で取り込まれライブで入る。待ち受けは 127.0.0.1 のみ</li>
+<li><strong>Claude Code 内</strong>: プラグインに同梱の Claude Code mod（hooks module）が、起動時に同じリポジトリ（worktree 含む）の直近セッションをプロンプト上の帯に出し、<code>recall_search</code> の結果をリポジトリ→セッション→一致メッセージの木で描き、<code>/recall &lt;query&gt;</code> でモデルのターン無しに検索して表で出す。<code>/recall &lt;n&gt;</code> やセッション ID の押下で <code>recap</code> が走る。hooks module を読む Claude Code が要る（2.1.291 で試験）</li>
+</ul>
+<h2>記憶システムではない（claude-mem との比較・README からの転記）</h2>
+<p>README は claude-mem を「関連する問題を解く優れたプロジェクト」と認めたうえで、意図的に別の問題を解くと書く。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>claude-mem</th>
+<th>claude-recall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目的</td>
+<td>エージェントの記憶を拡張する</td>
+<td>人とエージェントが思い出すのを助ける</td>
+</tr>
+<tr>
+<td>注入</td>
+<td>Push（<code>SessionStart</code> で自動注入）</td>
+<td>Pull（必要なときに引く）</td>
+</tr>
+<tr>
+<td>保存するもの</td>
+<td>LLM が要約した観察</td>
+<td>ノイズを除いた生の会話</td>
+</tr>
+<tr>
+<td>検索</td>
+<td>FTS5＋Chroma ベクトルのハイブリッド</td>
+<td>FTS5 のみ（決定論的）</td>
+</tr>
+<tr>
+<td>LLM 呼び出し</td>
+<td>索引作成時（ホスト型 observer・自分の OpenRouter/Gemini キー・Anthropic プラン）</td>
+<td>保存・検索では呼ばない。TUI の <code>a</code> で自分の <code>claude</code> を使うときだけ</td>
+</tr>
+<tr>
+<td>データの置き場</td>
+<td>ローカル＋任意でクラウド同期</td>
+<td>ローカルのみ</td>
+</tr>
+<tr>
+<td>対応エージェント</td>
+<td>Claude Code・Codex・Gemini・OpenCode ほか</td>
+<td>Claude Code</td>
+</tr>
+<tr>
+<td>ランタイム</td>
+<td>Node＋Bun＋Python（uv）＋Chroma・常駐ワーカー</td>
+<td>静的バイナリ1つ・デーモン無し</td>
+</tr>
+</tbody>
+</table>
+<p>claude-recall が選ぶトレードオフとして README は、生ログは drift しない（保存されるのは起きたことであって要約ではない）・エージェントは知らないときに知らないと言う（過去の文脈はツール呼び出しから来るので誤って思い出すことがない）・待機中は何もしない（ワーカー無し・背景の LLM 呼び出し無し）・1バイナリでオフライン動作、の4点を挙げる。</p>
+<h2>導入と書庫</h2>
+<ul>
+<li><strong>インストール</strong>: curl のインストーラ（<code>~/.local/bin</code> に <code>recall</code> を置き、セッションを取り込み、<code>claude</code> が PATH にあれば MCP サーバーを登録）、Nix（babarot/nur-packages）、ソースからのビルド（Go・Node.js・mise。<code>go install</code> でも可だが Web UI は含まれない）</li>
+<li><strong>Claude Code プラグイン</strong>（推奨の接続方法）: MCP サーバー（<code>recall mcp</code>）・<code>SessionEnd</code> hook（<code>recall import</code>）・hooks module（Claude Code 内の表示と <code>/recall</code>）を束ねる。hooks module を読まない古い Claude Code でも MCP サーバーと hook は使える。<code>~/.claude/skills/</code> 下のプラグインディレクトリは <code>claude-recall@skills-dir</code> として読み込まれる</li>
+<li><strong>手動設定</strong>: <code>recall import</code> で <code>~/.claude/projects</code> から書庫を作り、<code>claude mcp add claude-recall -s user -- recall mcp</code> で接続。MCP サーバーと Web UI は起動時に書庫を作って取り込むので、MCP を繋いだ最初のセッションでも取り込みが走る</li>
+<li><strong>書庫</strong>: <code>~/.claude/vault.db</code>。Claude Code が消した JSONL のセッションは書庫にしか残らないので、バックアップし、作り直すために消さないこと（<code>sqlite3 ~/.claude/vault.db ".backup '...'"</code>）。<code>CLAUDE_CONFIG_DIR</code> や設定の <code>extra_projects_dirs</code>（コンテナのツリーなど）からも取り込む。保存するのはユーザー・アシスタントのテキスト、thinking、ツール呼び出しと結果、スラッシュコマンド展開とタスク通知。除外はシステムイベント、ファイル履歴スナップショット、サイドチェーン、進行・キュー操作などの帳簿</li>
+<li><strong>設定</strong>: <code>~/.config/claude-recall/config.toml</code>（<code>[core] db</code>・<code>[ui] port</code>・<code>[tui] theme / detail_position</code>・<code>[keys]</code>）。誤りは行番号つきで報告され、無視されない</li>
+<li><strong>更新</strong>: <code>recall update</code>（curl 導入のみ。1.7.2 より後のリリースで入ったので、それ以前の導入はインストーラを一度再実行）</li>
+<li><strong>技術</strong>: Go・modernc.org/sqlite（CGo 無しの SQLite・FTS5）・Bubble Tea（TUI）・MCP Go SDK・Preact/Vite/Tailwind（Web UI）。Deno から Go へ移植した経緯は ADR-004</li>
+</ul>
+<h2>他ページとのつながり（wiki 側の推論）</h2>
+<ul>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a>（@mvanhorn）が言う「push と pull を分け、recall を残したいなら pull 側へ移す」を、claude-recall はツールの設計方針として明文化している。README の比較表の「注入: Push / Pull」の行がそのまま対応する</li>
+<li><a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a>（ペパボ）は同じ JSONL を Obsidian の Markdown に落とす。claude-recall は Markdown 化せず SQLite に生のまま溜めて検索と再開に使う点が異なり、@b4b4r07 の日次ダッシュボードは <a href="../concepts/computer-history-daily-note.html">computer-history-daily-note</a> の「機械が事実を集め、人が振り返る」型を Claude Code の作業に限って実装したものと読める</li>
+<li>「人間の介入パターンからハーネスの修正案を自動で作る」は、<a href="../concepts/correction-routing.html">correction-routing</a> の「訂正を共有知へ書き戻す」ループや <a href="../concepts/improver-skill-pattern.html">improver-skill-pattern</a> の observer skill を、セッション書庫を入力にして回す形と考えられる。投稿は用途を述べるのみで、介入の検出方法や修正案の精度は示されていない</li>
+<li>名前が同じ <a href="../tools/pstack.html">pstack</a> の <code>/recall</code> スキルは、チャット履歴と共有記録からトピックの現状ブリーフを再構築する別物である。@poteto の <a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> の手順2「<code>/recall</code> で過去のトランスクリプトから自分の操縦の仕方を学ぶ」と同じ用途を、claude-recall なら MCP の <code>recall_search</code> と <code>recall_export</code> で担えると考えられる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このリポの Claude Code セッションは worktree を多用する。worktree が消えたセッションを <code>c</code> で MCP 経由に回す経路は、EnterWorktree 後の再開でどこまで使えるか（実際に入れて試す）</li>
+<li>@b4b4r07 の「介入パターン→ハーネス修正案」は、どの粒度の介入（訂正・中断・やり直し）を信号にしているのか。pstack の <code>/correct</code> と同じ発想をセッション書庫の上で自動化できるか</li>
+<li>FTS5 のみの決定論的検索で、記憶の drift を避ける代わりに取りこぼす問いは何か（語彙が一致しない過去の決定を引けるか）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> — push/pull の切り分け。claude-recall は pull 側の実装</li>
+<li><a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a> — 同じ会話履歴を Obsidian の Markdown へ落とす別実装</li>
+<li><a href="../concepts/correction-routing.html">correction-routing</a> — 人間の訂正を共有知へ書き戻すループ。@b4b4r07 のハーネス自己改善の用途と対応</li>
+<li><a href="../concepts/computer-history-daily-note.html">computer-history-daily-note</a> — 客観ログを自動で集め、人が振り返りを足すデイリーノート</li>
+<li><a href="../concepts/session-history-mirror.html">session-history-mirror</a> — 溜めたセッション履歴を自己分析に使うプロンプト</li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — 共有メモリ層の設計。claude-recall が「記憶システムではない」と線を引く相手側</li>
+<li><a href="../tools/pstack.html">pstack</a> — 同名の <code>/recall</code> スキルを持つ別ツール</li>
+<li><a href="../tools/claude-code-mods.html">claude-code-mods</a> — プラグインの Claude Code 内表示が使う hooks module（Claude Mods）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/correction-routing.html">correction-routing</a></li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a></li>
+<li><a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a></li>
+<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111718376762667132" rel="noopener" target="_blank">https://x.com/i/web/status/2111718376762667132</a></li>
+<li><a href="https://github.com/babarot/claude-recall" rel="noopener" target="_blank">https://github.com/babarot/claude-recall</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># claude-recall：Claude Code の全セッションを SQLite に残し、人と Claude の双方が引ける recall ツール
+
+&gt; **TL;DR**: Claude Code が書く JSONL のセッション記録を SQLite の書庫（`~/.claude/vault.db`）に取り込み続け、Claude Code が消した後も残したうえで、MCP サーバー（Claude が過去セッションを検索・読解）・TUI（自分で探して再開）・Web UI（ブラウザで読む）の3経路で引ける1バイナリ `recall`。記憶システムでなく「必要なときに引く（pull）」道具だと作者 babarot が明言し、作者と考えられる @b4b4r07 は日次ダッシュボードとハーネス自己改善ループの基盤に使っていると投稿した。
+
+Claude Code のセッション記録は `~/.claude/projects/**/*.jsonl` に書かれるが、Claude Code 自身が後で消す。claude-recall の README は目的を「その grep をもっと良い体験にし、Claude Code が消した後もファイルを残すこと」と書き、自分かエージェントが「前にも話した」と気づいたときに引く道具だと位置づける（設計判断 ADR-001「recall であって memory の拡張ではない」）。作者 babarot は、X の @b4b4r07（GitHub の b4b4r07 アカウントの表示名も BABAROT）と同一人物と考えられる。@b4b4r07 は、recall が最近「自分が作るものの基盤」になってきており、一日を振り返るダッシュボードに繋いで Claude Code の中でその日何をしていたかを表示させたり、agent harness の自律改善ループに繋いで**人間の介入パターンからハーネスの修正案を自動で作る**ようにしたりしていると投稿した。@shodaiiiiii は「Claude Code のセッションを SQLite に溜めておき、過去の会話を自分も Claude も思い出せるようにするツール」という紹介文（引用元の投稿者はキャッシュに残っていない）を引いて「そんなやり方があったか」と反応している。
+
+```mermaid
+flowchart LR
+  J[&quot;~/.claude/projects/**/*.jsonl&lt;br/&gt;（Claude Code が書き、後で消す）&quot;] --&gt;|recall import&lt;br/&gt;SessionEnd hook| DB[(&quot;~/.claude/vault.db&lt;br/&gt;SQLite + FTS5&quot;)]
+  DB --&gt; MCP[&quot;MCP サーバー&lt;br/&gt;recall_search / list / export / stats&quot;]
+  DB --&gt; TUI[&quot;TUI&lt;br/&gt;探す→claude -r で再開&quot;]
+  DB --&gt; WEB[&quot;Web UI&lt;br/&gt;ブラウザで読む・ライブ更新&quot;]
+  MCP --&gt; CC[&quot;作業中の Claude Code セッション&quot;]
+  DB -.-&gt;|@b4b4r07 の用途| DASH[&quot;日次ダッシュボード&quot;]
+  DB -.-&gt;|@b4b4r07 の用途| LOOP[&quot;ハーネス自己改善ループ&lt;br/&gt;介入パターン→修正案&quot;]
+```
+
+## 3つの入口と Claude Code 内の表示（README からの転記）
+
+| したいこと | 使うもの | それだけが与えるもの |
+| --- | --- | --- |
+| 過去セッションで何があったかを Claude に思い出させる | MCP サーバー | 答えが作業中のセッションに、すぐ使える文脈として届く |
+| 自分でセッションを探して戻る | TUI | その場で再開（`claude -r`）、新しい claude で recall、ID をコピーして別エージェントに渡す |
+| 自分で探して読む | Web UI | 長い会話と画像のための読みやすいリーダー |
+| セッションを離れずに振り返る | Claude Code 内 | 起動時に当該リポジトリの直近セッション、モデルのターン無しの検索、1キーで任意セッションの recap |
+
+- **MCP サーバー**: 各 Claude Code セッションが自分の `recall mcp` を起動する。プロンプトには何も注入されず、Claude は過去について聞かれたとき、または前に話したと気づいたときにツールを呼ぶ。ツールは `recall_search`（全文検索・`repo` で1リポジトリに絞れる）・`recall_list`・`recall_export`（`tail` で末尾だけ）・`recall_stats`。プロンプト `recap` は、あるセッションの終わり方を読み、やったこと・決めたこと・残したことをまとめ、どう続けるかを尋ねる
+- **TUI**: タイトル・フォルダ（worktree は属するリポジトリの下）・ブランチ・メッセージ数・サイズ・ID を一覧。`Enter` で再開、`c` で再開できないセッション（worktree が消えたもの等）を新しい claude から MCP 経由で recall、`/` でフィルタ（`text:`・`title:`・`folder:` で項目指定）、`a` で「何の話だったかは覚えているが何を打てばよいか分からない」ときに自分の `claude -p` で探させる（API キー不要）
+- **Web UI**: `recall ui` で `localhost:6276` にバックグラウンド起動。ツール呼び出しを畳んだリーダー・自分の発言のアウトライン・会話内検索。新規・変更セッションは約0.5秒で取り込まれライブで入る。待ち受けは 127.0.0.1 のみ
+- **Claude Code 内**: プラグインに同梱の Claude Code mod（hooks module）が、起動時に同じリポジトリ（worktree 含む）の直近セッションをプロンプト上の帯に出し、`recall_search` の結果をリポジトリ→セッション→一致メッセージの木で描き、`/recall &lt;query&gt;` でモデルのターン無しに検索して表で出す。`/recall &lt;n&gt;` やセッション ID の押下で `recap` が走る。hooks module を読む Claude Code が要る（2.1.291 で試験）
+
+## 記憶システムではない（claude-mem との比較・README からの転記）
+
+README は claude-mem を「関連する問題を解く優れたプロジェクト」と認めたうえで、意図的に別の問題を解くと書く。
+
+| | claude-mem | claude-recall |
+| --- | --- | --- |
+| 目的 | エージェントの記憶を拡張する | 人とエージェントが思い出すのを助ける |
+| 注入 | Push（`SessionStart` で自動注入） | Pull（必要なときに引く） |
+| 保存するもの | LLM が要約した観察 | ノイズを除いた生の会話 |
+| 検索 | FTS5＋Chroma ベクトルのハイブリッド | FTS5 のみ（決定論的） |
+| LLM 呼び出し | 索引作成時（ホスト型 observer・自分の OpenRouter/Gemini キー・Anthropic プラン） | 保存・検索では呼ばない。TUI の `a` で自分の `claude` を使うときだけ |
+| データの置き場 | ローカル＋任意でクラウド同期 | ローカルのみ |
+| 対応エージェント | Claude Code・Codex・Gemini・OpenCode ほか | Claude Code |
+| ランタイム | Node＋Bun＋Python（uv）＋Chroma・常駐ワーカー | 静的バイナリ1つ・デーモン無し |
+
+claude-recall が選ぶトレードオフとして README は、生ログは drift しない（保存されるのは起きたことであって要約ではない）・エージェントは知らないときに知らないと言う（過去の文脈はツール呼び出しから来るので誤って思い出すことがない）・待機中は何もしない（ワーカー無し・背景の LLM 呼び出し無し）・1バイナリでオフライン動作、の4点を挙げる。
+
+## 導入と書庫
+
+- **インストール**: curl のインストーラ（`~/.local/bin` に `recall` を置き、セッションを取り込み、`claude` が PATH にあれば MCP サーバーを登録）、Nix（babarot/nur-packages）、ソースからのビルド（Go・Node.js・mise。`go install` でも可だが Web UI は含まれない）
+- **Claude Code プラグイン**（推奨の接続方法）: MCP サーバー（`recall mcp`）・`SessionEnd` hook（`recall import`）・hooks module（Claude Code 内の表示と `/recall`）を束ねる。hooks module を読まない古い Claude Code でも MCP サーバーと hook は使える。`~/.claude/skills/` 下のプラグインディレクトリは `claude-recall@skills-dir` として読み込まれる
+- **手動設定**: `recall import` で `~/.claude/projects` から書庫を作り、`claude mcp add claude-recall -s user -- recall mcp` で接続。MCP サーバーと Web UI は起動時に書庫を作って取り込むので、MCP を繋いだ最初のセッションでも取り込みが走る
+- **書庫**: `~/.claude/vault.db`。Claude Code が消した JSONL のセッションは書庫にしか残らないので、バックアップし、作り直すために消さないこと（`sqlite3 ~/.claude/vault.db &quot;.backup &#x27;...&#x27;&quot;`）。`CLAUDE_CONFIG_DIR` や設定の `extra_projects_dirs`（コンテナのツリーなど）からも取り込む。保存するのはユーザー・アシスタントのテキスト、thinking、ツール呼び出しと結果、スラッシュコマンド展開とタスク通知。除外はシステムイベント、ファイル履歴スナップショット、サイドチェーン、進行・キュー操作などの帳簿
+- **設定**: `~/.config/claude-recall/config.toml`（`[core] db`・`[ui] port`・`[tui] theme / detail_position`・`[keys]`）。誤りは行番号つきで報告され、無視されない
+- **更新**: `recall update`（curl 導入のみ。1.7.2 より後のリリースで入ったので、それ以前の導入はインストーラを一度再実行）
+- **技術**: Go・modernc.org/sqlite（CGo 無しの SQLite・FTS5）・Bubble Tea（TUI）・MCP Go SDK・Preact/Vite/Tailwind（Web UI）。Deno から Go へ移植した経緯は ADR-004
+
+## 他ページとのつながり（wiki 側の推論）
+
+- [[concepts/skills-over-memory]]（@mvanhorn）が言う「push と pull を分け、recall を残したいなら pull 側へ移す」を、claude-recall はツールの設計方針として明文化している。README の比較表の「注入: Push / Pull」の行がそのまま対応する
+- [[tools/claude-code-obsidian-sync]]（ペパボ）は同じ JSONL を Obsidian の Markdown に落とす。claude-recall は Markdown 化せず SQLite に生のまま溜めて検索と再開に使う点が異なり、@b4b4r07 の日次ダッシュボードは [[concepts/computer-history-daily-note]] の「機械が事実を集め、人が振り返る」型を Claude Code の作業に限って実装したものと読める
+- 「人間の介入パターンからハーネスの修正案を自動で作る」は、[[concepts/correction-routing]] の「訂正を共有知へ書き戻す」ループや [[concepts/improver-skill-pattern]] の observer skill を、セッション書庫を入力にして回す形と考えられる。投稿は用途を述べるのみで、介入の検出方法や修正案の精度は示されていない
+- 名前が同じ [[tools/pstack]] の `/recall` スキルは、チャット履歴と共有記録からトピックの現状ブリーフを再構築する別物である。@poteto の [[concepts/agent-trust-inverse-pyramid]] の手順2「`/recall` で過去のトランスクリプトから自分の操縦の仕方を学ぶ」と同じ用途を、claude-recall なら MCP の `recall_search` と `recall_export` で担えると考えられる
+
+## 問い
+
+- このリポの Claude Code セッションは worktree を多用する。worktree が消えたセッションを `c` で MCP 経由に回す経路は、EnterWorktree 後の再開でどこまで使えるか（実際に入れて試す）
+- @b4b4r07 の「介入パターン→ハーネス修正案」は、どの粒度の介入（訂正・中断・やり直し）を信号にしているのか。pstack の `/correct` と同じ発想をセッション書庫の上で自動化できるか
+- FTS5 のみの決定論的検索で、記憶の drift を避ける代わりに取りこぼす問いは何か（語彙が一致しない過去の決定を引けるか）
+
+## 関連
+
+- [[concepts/skills-over-memory]] — push/pull の切り分け。claude-recall は pull 側の実装
+- [[tools/claude-code-obsidian-sync]] — 同じ会話履歴を Obsidian の Markdown へ落とす別実装
+- [[concepts/correction-routing]] — 人間の訂正を共有知へ書き戻すループ。@b4b4r07 のハーネス自己改善の用途と対応
+- [[concepts/computer-history-daily-note]] — 客観ログを自動で集め、人が振り返りを足すデイリーノート
+- [[concepts/session-history-mirror]] — 溜めたセッション履歴を自己分析に使うプロンプト
+- [[concepts/agent-memory-layer]] — 共有メモリ層の設計。claude-recall が「記憶システムではない」と線を引く相手側
+- [[tools/pstack]] — 同名の `/recall` スキルを持つ別ツール
+- [[tools/claude-code-mods]] — プラグインの Claude Code 内表示が使う hooks module（Claude Mods）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

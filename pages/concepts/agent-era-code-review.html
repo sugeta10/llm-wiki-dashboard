@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agent-era-code-review</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-era-code-review.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agent-era-code-review · concepts · <span title="2026-10-17">1日前</span></div>
+  <div class="meta">concepts/agent-era-code-review · concepts · <span title="2026-10-17">2日前</span></div>
   <article><h1>エージェント時代のコードレビュー（Claude Code チームの多層レビュー）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: コードの約90%を Claude が書く Claude Code チームは、レビューを「人間が読んだか」から「この変更で何が壊れうるか・どの検査で捕まえるか」へ組み替え、読む作業の大半を機械に移して人間の承認はリスク別にした。その結果、2026年6〜9月にマージ PR 数は2倍超になり、revert（取り消し）された割合は40%超減ったと Anthropic が報告する。</p>
@@ -133,6 +133,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a> — レビュー対象の製品そのもの</li>
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」とする @poteto の4層指針。本ページのリスク別人間承認と「同じ指摘は発生源で直す」を個人の運用規模で言ったものと読める</li>
+<li><a href="../concepts/small-change-auto-approval.html">small-change-auto-approval</a> — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-scale-source-control.html">agent-scale-source-control</a></li>
 <li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
 <li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
@@ -253,6 +254,7 @@ Anthropic は、人の仕事が「全 diff を読むこと」から機械が苦�
 - [[tools/claude-code]] — レビュー対象の製品そのもの
 - [[companies/anthropic]]
 - [[concepts/agent-trust-inverse-pyramid]] — 「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」とする @poteto の4層指針。本ページのリスク別人間承認と「同じ指摘は発生源で直す」を個人の運用規模で言ったものと読める
+- [[concepts/small-change-auto-approval]] — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

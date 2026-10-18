@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>small-change-auto-approval - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>small-change-auto-approval</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="small-change-auto-approval.md">Markdownで表示</a></div>
+  <div class="meta">concepts/small-change-auto-approval · concepts · <span title="2026-10-19">今日</span></div>
+  <article><h1>small-change：条件を満たす小さな PR を機械が承認する（Imprint）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AI でマージされる PR が増えてレビュー待ちが伸びた Imprint が、「1,000行未満・AIレビューbotの重大指摘なし・作者がそのサービスに10本以上マージ済み・影響サービス数が上限未満・共有ライブラリ不可」を人が書き換えられない CI の check で判定し、該当 PR だけをコメント無しで承認するスキルに任せる運用。該当は約10%で、起きた誤りは人でなくシステムの失敗として直す。</p>
+</blockquote>
+<p>Imprint のエンジニア1人あたりのマージ PR 数は2年前の平均4倍になり、2チームは10倍、1人は2年前の平均エンジニアの週あたり25倍に達したと、Imprint の Will Larson（lethain.com）が書く。同じ期間にインシデントは半期比で42%減、重大インシデントは78%減で、品質と速度のトレードオフという構図はもともと有用でなかったが今は否定しようがない、と Larson は述べる。一方で PR レビューの中央値は2年前の約33分から約77分へ伸び、その傾きはマージ数と強く相関していたため、Larson はレビュー時間の削減をその週の優先事項に据えた。「解決した！冗談だ、全く解決していない」と前置きしつつ、現在の手法として <code>small-change</code> を紹介する。日本語では @iwashi86 が「AIでPRが増えすぎたレビュー負荷を、条件を満たす小さな変更の自動承認で減らす試み」として上の数値とともに紹介している。</p>
+<pre class="mermaid">flowchart TD
+  R[&quot;PR が ready になる&quot;] --&gt; C{&quot;CI が small-change 条件を判定&lt;br/&gt;（GitHub check・人は書き換え不可）&quot;}
+  C --&gt;|該当| S[&quot;Slack の reacji で可視化&quot;] --&gt; A[&quot;review-small-change スキル：&lt;br/&gt;承認する か 無視する の2択（コメントしない）&quot;]
+  A --&gt; M[&quot;マージ&quot;]
+  C --&gt;|非該当| H[&quot;通常のレビュー&quot;]
+  M -. 誤りが出たら .-&gt; F[&quot;システム側で直す&lt;br/&gt;（ai-code-review・検証・CI・ハーネス）&quot;]
+  F -.-&gt; C</pre>
+<h2>なぜ PR をレビューするのか（Larson の4理由）</h2>
+<p>Larson はレビューの目的を4つに分け、それぞれに現代の開発様式ではより良い解き方があるとしつつ、変更は慎重に進めると書く。</p>
+<ol>
+<li><strong>作者とレビュアーの知識共有</strong> —— ソフトウェア工学は徒弟制で学ばれ、レビューは経験者が良いソフトウェアの姿を教える主要な機構。今の量では、個々の PR でなく PR のクラスタ単位で行うことになる</li>
+<li><strong>誤りの防止</strong> —— レビューは昔から誤りを捕まえるには高価な工程で、効果的な CI/CD と、@poteto の pstack のようなハーネス側の検証手法の方が効く（<a href="../tools/pstack.html">pstack</a>）</li>
+<li><strong>悪意ある振る舞いの防止</strong> —— 注意深いレビューでも有能な悪意は見逃す（幸い多くの悪意は無能だという）。固定ルール（特定のオブジェクト・クラス・ファイルの変更はレビュー必須）、LLM ベースの会員サポートで磨いた不正対策、監査、監査ログの検査を組み合わせる方がよい</li>
+<li><strong>文書化された統制上のコンプライアンス義務</strong> —— 変えられるが、今日の時点では一部リポジトリで独立した人間のレビューを要する</li>
+</ol>
+<h2>small-change の仕組み（記事からの転記）</h2>
+<ol>
+<li>PR が ready になると CI/CD が small-change に該当するかを判定し、結果を GitHub の check（合格/不合格）として表す。可視化のためのラベルもあるが、該当を決めるのはビルドが管理し人が書き換えられない check の方である（ラベルは一次フィルタに使い、check を別途検証する）</li>
+<li>次の条件を<strong>すべて</strong>満たすものが small-change</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>規模</td>
+<td>1,000行未満</td>
+</tr>
+<tr>
+<td>AI レビュー</td>
+<td>自動レビュー bot <code>ai-code-review</code> の p1・p2 の指摘が無い</td>
+</tr>
+<tr>
+<td>作者の経験</td>
+<td>そのサービス／アプリのディレクトリに10本以上のマージ済み PR がある。複数サービスにまたがる変更では全部で経験が要る</td>
+</tr>
+<tr>
+<td>影響範囲</td>
+<td>影響するサービス／アプリが N 未満。フロントエンドのモノレポは N=1、gRPC サービスと共通 HTTP ゲートウェイを同時に触るのが典型のバックエンドのモノレポは N=3</td>
+</tr>
+<tr>
+<td>除外</td>
+<td>共有ライブラリ・ユーティリティのファイルは対象外</td>
+</tr>
+<tr>
+<td>パス別調整</td>
+<td>各リポジトリの <code>.small_change</code> ファイルでパスごとに挙動を調整できる（例: 資金移動を扱うサービスを除外）</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>Slack の自動化が PR への言及すべてに状態（テスト失敗・承認済みだがテスト実行中・マージ可能など）の reacji を付けており、そこに small-change の reacji を足した</li>
+<li>社内スキルリポジトリに2つのスキルを作り、各ハーネスへ配布した
+   - <code>review-small-change</code> —— リポジトリの一覧を受け取り、open かつ draft でない small-change をすべてレビューし、条件（small-change の check を含む全 check が合格・決済やセキュリティなど敏感な話題に触れない）を満たせば承認する。<strong>選択肢は「承認」か「無視」の2つだけで、PR にコメントは決して書かない</strong>。「meat proxy（肉の代理）レビュー」の増殖を避けるためで、これはいくつかのチームで「解決策のふりをしたボトルネック」になっている
+   - <code>review-pr-cluster</code> —— PR をまとめてレビューして共通テーマを見つけ、議論の機会と検証の追加を提案する</li>
+<li>small-change が起こした誤りはシステムの失敗であり、<code>ai-code-review</code>・検証機構・CI/CD・ハーネスの改善というシステムの水準で解く、という社会的な期待を置いた</li>
+</ol>
+<p>実装と展開には断続的な注意で2日ほどかかり、つまみの調整は長く、たぶん永遠に続くと Larson は書く。</p>
+<h2>meat proxy レビュー</h2>
+<p>Larson が small-change のコメント禁止の理由に挙げるのが、Simon Willison の記事に由来する meat proxy レビューである。パターンは次の4段で進む。①チームがレビューに溺れる。②手元のハーネスで PR をレビューし始める。③PR に大量のコメントが付き、筋の通ったものと通らないものが混ざる。調べなければ区別できず、どれがレビュアー自身の見解かも分からないので、レビュアーが同意すらしていないコメントを反証する大仕事になる。④そのコメントへの返答にもハーネスを使い、レビュー全体が学びを生まない幻になる。しかも他のメンバーの関与なしでもできてしまう。Larson は、meat proxy レビューをしているすべてのケースで、中央のレビュー機構・その指摘に対処するハーネスのループ・単に承認を押すこと、に投資した方が良い結果になると述べる。</p>
+<h2>fleet：中央で統制するハーネス</h2>
+<p>もう一つのレビュー量削減策として Larson は中央で統制するハーネス <code>fleet</code> を挙げる。Stripe の Minions（<a href="../tools/stripe-minions.html">stripe-minions</a>）に似るが、one-shot の方式は取らない。クラウド上の強く統制されたハーネスで実装と検証を行い、独立した評価機構が変更ごとに必要な独立レビュアーの数を決める。安全と評価された変更ではその数は1（fleet が書き、人が1人レビュー）まで下がる。</p>
+<h2>結果と見通し</h2>
+<p>有用な結果を出すには早すぎると断ったうえで、初期の結果では約10%の変更が small-change に該当し、セキュリティや金銭に近い話題に触れてフラグが立たない限りごく速く承認されていると Larson は書く。10%は小さいが中核の考えは機能しており、成否は今後数か月で検証機構を包括的にしながらこの割合を広げられるかにかかる。検証の改善は、Larson が Imprint の領域に当てはめる「規模の複雑さが低く領域の複雑さが高い」ソフトウェアでは、利用者ごとに設定と振る舞いが違うぶん段階的ロールアウトのような手法のカバー範囲が小さくなり、難しいとも述べる。社内の受け止めは一様に前向きではなく、良いエンジニアとして学んできたやり方からの大きな変更だという。長年の best practice が単なる教義になっていないかを毎週再評価できるのが現在のサイクルの最も活力のある部分であり、再評価を止めれば遅れを取るのが最も痛い部分だ、と Larson は結ぶ。</p>
+<h2>他ページとのつながり（wiki 側の推論）</h2>
+<ul>
+<li>Anthropic の <a href="../concepts/agent-era-code-review.html">agent-era-code-review</a> は人間承認をリスク別に0・1・2人へ分け、Low は自動レビューとセキュリティチェックが緑なら不要とした。Imprint の small-change は、その「0人」の段を独立した check と承認専用スキルで実装した一例と読める。差分は、承認する主体が CI でなくハーネス上のスキルであること、作者の経験（10本以上）を条件に含めること、コメントを禁じていることで、Larson は記事中で Anthropic の記事を「同じ道を進む皆」として参照している</li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a>（@poteto）の「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」を、Larson は「誤りの防止は CI/CD とハーネス検証の方が効く」「small-change の誤りはシステムの失敗」という形で組織の運用に置いている。記事が pstack を名指ししている点で、両者は同じ系譜にある</li>
+<li>承認か無視かの2択でコメントを禁じる設計は、<a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a>（@smark_x）が言う「読んで直す工程」へ流入する量を、コメントという形で増やさないための制約と考えられる</li>
+<li><a href="../tools/grok-bot.html">grok-bot</a>（SpaceXAI）の「高確信・低影響は自動マージ」と比べると、small-change は確信度でなく変更の属性（行数・指摘・経験・影響範囲）で線を引いており、判定を LLM の確信度に頼らない点が異なる</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-19: 平均4倍・2チーム10倍・1人25倍のマージ数、インシデント42%減・重大78%減（半期比）、レビュー中央値33分→77分、small-change 該当約10%は、いずれも Larson の自己申告の単一ソース。品質の改善を small-change の効果と読まないこと（記事は効果を測れる段階でないと明言し、small-change は品質改善の後に始めた施策）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このリポの PR 運用に small-change の条件を移すとしたら、「作者の経験10本以上」は一人運用では意味を持たない。代わりに何を条件にするか（触るパスの <code>.small_change</code> 相当だけで足りるか）</li>
+<li>「承認か無視か、コメントしない」を Codex クロスレビューに適用すると、指摘が出ない代わりに何が失われるか。review-pr-cluster のようにまとめて後から見る仕組みで補えるか</li>
+<li>検証の網羅性が上がらなければ該当率10%は広がらない。Imprint が「検証を広げる」と言うとき、具体的にどの種類の検証を足すのか（続報を追う）</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a> — 同じ問題への Anthropic の答え。リスク別の人間承認（0・1・2人）と往復上限。Larson が記事中で参照</li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 人間レビューを最小にし決定論的な層へ努力を移す @poteto の指針。記事が pstack を検証手法として名指し</li>
+<li><a href="../tools/stripe-minions.html">stripe-minions</a> — Larson が fleet の類例に挙げる Stripe のマシン生成 PR パイプライン（one-shot 方式の違いあり）</li>
+<li><a href="../tools/pstack.html">pstack</a> — 記事が「レビューより効く誤り防止」の例に挙げるハーネス検証スキル群</li>
+<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> — 人間の「読んで直す工程」を制約と見る個人規模の実践。コメント禁止の設計と対応</li>
+<li><a href="../tools/grok-bot.html">grok-bot</a> — 高確信・低影響の PR を自動マージする別事例</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a></li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
+<li><a href="../tools/stripe-minions.html">stripe-minions</a></li>
+<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
+<li><a href="../tools/grok-bot.html">grok-bot</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111653501197603061" rel="noopener" target="_blank">https://x.com/i/web/status/2111653501197603061</a></li>
+<li><a href="https://lethain.com/small-changes/" rel="noopener" target="_blank">https://lethain.com/small-changes/</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># small-change：条件を満たす小さな PR を機械が承認する（Imprint）
+
+&gt; **TL;DR**: AI でマージされる PR が増えてレビュー待ちが伸びた Imprint が、「1,000行未満・AIレビューbotの重大指摘なし・作者がそのサービスに10本以上マージ済み・影響サービス数が上限未満・共有ライブラリ不可」を人が書き換えられない CI の check で判定し、該当 PR だけをコメント無しで承認するスキルに任せる運用。該当は約10%で、起きた誤りは人でなくシステムの失敗として直す。
+
+Imprint のエンジニア1人あたりのマージ PR 数は2年前の平均4倍になり、2チームは10倍、1人は2年前の平均エンジニアの週あたり25倍に達したと、Imprint の Will Larson（lethain.com）が書く。同じ期間にインシデントは半期比で42%減、重大インシデントは78%減で、品質と速度のトレードオフという構図はもともと有用でなかったが今は否定しようがない、と Larson は述べる。一方で PR レビューの中央値は2年前の約33分から約77分へ伸び、その傾きはマージ数と強く相関していたため、Larson はレビュー時間の削減をその週の優先事項に据えた。「解決した！冗談だ、全く解決していない」と前置きしつつ、現在の手法として `small-change` を紹介する。日本語では @iwashi86 が「AIでPRが増えすぎたレビュー負荷を、条件を満たす小さな変更の自動承認で減らす試み」として上の数値とともに紹介している。
+
+```mermaid
+flowchart TD
+  R[&quot;PR が ready になる&quot;] --&gt; C{&quot;CI が small-change 条件を判定&lt;br/&gt;（GitHub check・人は書き換え不可）&quot;}
+  C --&gt;|該当| S[&quot;Slack の reacji で可視化&quot;] --&gt; A[&quot;review-small-change スキル：&lt;br/&gt;承認する か 無視する の2択（コメントしない）&quot;]
+  A --&gt; M[&quot;マージ&quot;]
+  C --&gt;|非該当| H[&quot;通常のレビュー&quot;]
+  M -. 誤りが出たら .-&gt; F[&quot;システム側で直す&lt;br/&gt;（ai-code-review・検証・CI・ハーネス）&quot;]
+  F -.-&gt; C
+```
+
+## なぜ PR をレビューするのか（Larson の4理由）
+
+Larson はレビューの目的を4つに分け、それぞれに現代の開発様式ではより良い解き方があるとしつつ、変更は慎重に進めると書く。
+
+1. **作者とレビュアーの知識共有** —— ソフトウェア工学は徒弟制で学ばれ、レビューは経験者が良いソフトウェアの姿を教える主要な機構。今の量では、個々の PR でなく PR のクラスタ単位で行うことになる
+2. **誤りの防止** —— レビューは昔から誤りを捕まえるには高価な工程で、効果的な CI/CD と、@poteto の pstack のようなハーネス側の検証手法の方が効く（[[tools/pstack]]）
+3. **悪意ある振る舞いの防止** —— 注意深いレビューでも有能な悪意は見逃す（幸い多くの悪意は無能だという）。固定ルール（特定のオブジェクト・クラス・ファイルの変更はレビュー必須）、LLM ベースの会員サポートで磨いた不正対策、監査、監査ログの検査を組み合わせる方がよい
+4. **文書化された統制上のコンプライアンス義務** —— 変えられるが、今日の時点では一部リポジトリで独立した人間のレビューを要する
+
+## small-change の仕組み（記事からの転記）
+
+1. PR が ready になると CI/CD が small-change に該当するかを判定し、結果を GitHub の check（合格/不合格）として表す。可視化のためのラベルもあるが、該当を決めるのはビルドが管理し人が書き換えられない check の方である（ラベルは一次フィルタに使い、check を別途検証する）
+2. 次の条件を**すべて**満たすものが small-change
+
+   | 条件 | 内容 |
+   | --- | --- |
+   | 規模 | 1,000行未満 |
+   | AI レビュー | 自動レビュー bot `ai-code-review` の p1・p2 の指摘が無い |
+   | 作者の経験 | そのサービス／アプリのディレクトリに10本以上のマージ済み PR がある。複数サービスにまたがる変更では全部で経験が要る |
+   | 影響範囲 | 影響するサービス／アプリが N 未満。フロントエンドのモノレポは N=1、gRPC サービスと共通 HTTP ゲートウェイを同時に触るのが典型のバックエンドのモノレポは N=3 |
+   | 除外 | 共有ライブラリ・ユーティリティのファイルは対象外 |
+   | パス別調整 | 各リポジトリの `.small_change` ファイルでパスごとに挙動を調整できる（例: 資金移動を扱うサービスを除外） |
+
+3. Slack の自動化が PR への言及すべてに状態（テスト失敗・承認済みだがテスト実行中・マージ可能など）の reacji を付けており、そこに small-change の reacji を足した
+4. 社内スキルリポジトリに2つのスキルを作り、各ハーネスへ配布した
+   - `review-small-change` —— リポジトリの一覧を受け取り、open かつ draft でない small-change をすべてレビューし、条件（small-change の check を含む全 check が合格・決済やセキュリティなど敏感な話題に触れない）を満たせば承認する。**選択肢は「承認」か「無視」の2つだけで、PR にコメントは決して書かない**。「meat proxy（肉の代理）レビュー」の増殖を避けるためで、これはいくつかのチームで「解決策のふりをしたボトルネック」になっている
+   - `review-pr-cluster` —— PR をまとめてレビューして共通テーマを見つけ、議論の機会と検証の追加を提案する
+5. small-change が起こした誤りはシステムの失敗であり、`ai-code-review`・検証機構・CI/CD・ハーネスの改善というシステムの水準で解く、という社会的な期待を置いた
+
+実装と展開には断続的な注意で2日ほどかかり、つまみの調整は長く、たぶん永遠に続くと Larson は書く。
+
+## meat proxy レビュー
+
+Larson が small-change のコメント禁止の理由に挙げるのが、Simon Willison の記事に由来する meat proxy レビューである。パターンは次の4段で進む。①チームがレビューに溺れる。②手元のハーネスで PR をレビューし始める。③PR に大量のコメントが付き、筋の通ったものと通らないものが混ざる。調べなければ区別できず、どれがレビュアー自身の見解かも分からないので、レビュアーが同意すらしていないコメントを反証する大仕事になる。④そのコメントへの返答にもハーネスを使い、レビュー全体が学びを生まない幻になる。しかも他のメンバーの関与なしでもできてしまう。Larson は、meat proxy レビューをしているすべてのケースで、中央のレビュー機構・その指摘に対処するハーネスのループ・単に承認を押すこと、に投資した方が良い結果になると述べる。
+
+## fleet：中央で統制するハーネス
+
+もう一つのレビュー量削減策として Larson は中央で統制するハーネス `fleet` を挙げる。Stripe の Minions（[[tools/stripe-minions]]）に似るが、one-shot の方式は取らない。クラウド上の強く統制されたハーネスで実装と検証を行い、独立した評価機構が変更ごとに必要な独立レビュアーの数を決める。安全と評価された変更ではその数は1（fleet が書き、人が1人レビュー）まで下がる。
+
+## 結果と見通し
+
+有用な結果を出すには早すぎると断ったうえで、初期の結果では約10%の変更が small-change に該当し、セキュリティや金銭に近い話題に触れてフラグが立たない限りごく速く承認されていると Larson は書く。10%は小さいが中核の考えは機能しており、成否は今後数か月で検証機構を包括的にしながらこの割合を広げられるかにかかる。検証の改善は、Larson が Imprint の領域に当てはめる「規模の複雑さが低く領域の複雑さが高い」ソフトウェアでは、利用者ごとに設定と振る舞いが違うぶん段階的ロールアウトのような手法のカバー範囲が小さくなり、難しいとも述べる。社内の受け止めは一様に前向きではなく、良いエンジニアとして学んできたやり方からの大きな変更だという。長年の best practice が単なる教義になっていないかを毎週再評価できるのが現在のサイクルの最も活力のある部分であり、再評価を止めれば遅れを取るのが最も痛い部分だ、と Larson は結ぶ。
+
+## 他ページとのつながり（wiki 側の推論）
+
+- Anthropic の [[concepts/agent-era-code-review]] は人間承認をリスク別に0・1・2人へ分け、Low は自動レビューとセキュリティチェックが緑なら不要とした。Imprint の small-change は、その「0人」の段を独立した check と承認専用スキルで実装した一例と読める。差分は、承認する主体が CI でなくハーネス上のスキルであること、作者の経験（10本以上）を条件に含めること、コメントを禁じていることで、Larson は記事中で Anthropic の記事を「同じ道を進む皆」として参照している
+- [[concepts/agent-trust-inverse-pyramid]]（@poteto）の「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」を、Larson は「誤りの防止は CI/CD とハーネス検証の方が効く」「small-change の誤りはシステムの失敗」という形で組織の運用に置いている。記事が pstack を名指ししている点で、両者は同じ系譜にある
+- 承認か無視かの2択でコメントを禁じる設計は、[[concepts/ai-review-bottleneck]]（@smark_x）が言う「読んで直す工程」へ流入する量を、コメントという形で増やさないための制約と考えられる
+- [[tools/grok-bot]]（SpaceXAI）の「高確信・低影響は自動マージ」と比べると、small-change は確信度でなく変更の属性（行数・指摘・経験・影響範囲）で線を引いており、判定を LLM の確信度に頼らない点が異なる
+
+## 観察ログ（未検証）
+
+- 2026-10-19: 平均4倍・2チーム10倍・1人25倍のマージ数、インシデント42%減・重大78%減（半期比）、レビュー中央値33分→77分、small-change 該当約10%は、いずれも Larson の自己申告の単一ソース。品質の改善を small-change の効果と読まないこと（記事は効果を測れる段階でないと明言し、small-change は品質改善の後に始めた施策）
+
+## 問い
+
+- このリポの PR 運用に small-change の条件を移すとしたら、「作者の経験10本以上」は一人運用では意味を持たない。代わりに何を条件にするか（触るパスの `.small_change` 相当だけで足りるか）
+- 「承認か無視か、コメントしない」を Codex クロスレビューに適用すると、指摘が出ない代わりに何が失われるか。review-pr-cluster のようにまとめて後から見る仕組みで補えるか
+- 検証の網羅性が上がらなければ該当率10%は広がらない。Imprint が「検証を広げる」と言うとき、具体的にどの種類の検証を足すのか（続報を追う）
+
+## 関連
+
+- [[concepts/agent-era-code-review]] — 同じ問題への Anthropic の答え。リスク別の人間承認（0・1・2人）と往復上限。Larson が記事中で参照
+- [[concepts/agent-trust-inverse-pyramid]] — 人間レビューを最小にし決定論的な層へ努力を移す @poteto の指針。記事が pstack を検証手法として名指し
+- [[tools/stripe-minions]] — Larson が fleet の類例に挙げる Stripe のマシン生成 PR パイプライン（one-shot 方式の違いあり）
+- [[tools/pstack]] — 記事が「レビューより効く誤り防止」の例に挙げるハーネス検証スキル群
+- [[concepts/ai-review-bottleneck]] — 人間の「読んで直す工程」を制約と見る個人規模の実践。コメント禁止の設計と対応
+- [[tools/grok-bot]] — 高確信・低影響の PR を自動マージする別事例
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

@@ -90,6 +90,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a> — 「二度と起きない例外で手順書が膨らむ」への同じ警戒を業務手順書の側から述べる。例外は2回目で手順化・消した手順は理由つきで「やめたこと」欄へ（@smark_x）</li>
 <li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a> — OpenAI Codex チーム（Eric Provencher）が GPT-6 Astra 向けに「スキルは入れすぎない・AGENTS.md は各行をまだ要るかで再審査」と述べる指針。本ページの「決定を変える行だけ残す」規律を Codex 側から裏付ける</li>
 <li><a href="../tools/agent-memory-repo.html">agent-memory-repo</a> — Cognition のメモリ標準。「MEMORY.md は全セッションに要るものだけ・他はリンク」を仕様として明文化している</li>
+<li><a href="../tools/claude-recall.html">claude-recall</a> — 「recall を残したいなら pull 側へ移す」をツールとして実装した babarot 製の Claude Code セッション書庫。README の claude-mem 比較表で注入を Push／Pull と対置する</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
 <li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
 <li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
@@ -181,6 +182,7 @@ flowchart TD
 - [[concepts/shikumika-vs-tejunsho]] — 「二度と起きない例外で手順書が膨らむ」への同じ警戒を業務手順書の側から述べる。例外は2回目で手順化・消した手順は理由つきで「やめたこと」欄へ（@smark_x）
 - [[concepts/gpt-6-astra-skills-prompting]] — OpenAI Codex チーム（Eric Provencher）が GPT-6 Astra 向けに「スキルは入れすぎない・AGENTS.md は各行をまだ要るかで再審査」と述べる指針。本ページの「決定を変える行だけ残す」規律を Codex 側から裏付ける
 - [[tools/agent-memory-repo]] — Cognition のメモリ標準。「MEMORY.md は全セッションに要るものだけ・他はリンク」を仕様として明文化している
+- [[tools/claude-recall]] — 「recall を残したいなら pull 側へ移す」をツールとして実装した babarot 製の Claude Code セッション書庫。README の claude-mem 比較表で注入を Push／Pull と対置する
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

@@ -72,3 +72,4 @@ Claude Code は会話履歴を `~/.claude/projects/{project-hash}/{session-id}.j
 - [[tools/claude-code]]（会話履歴の保存元）
 - [[concepts/llm-wiki]]（Obsidian ナレッジベースとの統合）
 - [[concepts/computer-history-daily-note]]（同じ「作業の記録をObsidianへ自動で落とす」型。記録源が会話履歴でなくPC全体の活動履歴で、事実と主観をノート上で分ける点が異なる）
+- [[tools/claude-recall]]（同じ Claude Code の JSONL を、Markdown 化せず SQLite に生のまま溜めて MCP・TUI・Web UI から検索・再開する別実装。Claude Code が消した後のセッションも残す）
