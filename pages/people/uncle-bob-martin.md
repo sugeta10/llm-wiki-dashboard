@@ -19,3 +19,4 @@ Clean Codeという「読みやすいコードの書き方」を体系化した�
 - [[concepts/coding-agent-workflow-styles]] — 委譲低速ループの極端な実例
 - [[concepts/developer-ai-collaboration]] — 開発者とAIエージェントの役割分担哲学（結果責任と過程委譲の対比）
 - [[concepts/cognitive-debt]] — 「理解を手放さない」という対極の立場（shin1x1氏）。理解を手放す方に賭けた本ページの事例と対比になる
+- [[concepts/agent-trust-inverse-pyramid]] — コードベース改善・静的解析・散文・人間レビューの順に努力を配分する @poteto の逆ピラミッド。「読まず制約で囲む」はその最下層をほぼゼロにした極端形と位置づけられる

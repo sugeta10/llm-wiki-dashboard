@@ -91,3 +91,4 @@ Anthropic は、人の仕事が「全 diff を読むこと」から機械が苦�
 - [[tools/adversarial-panel]] — 複数視点のレビューで盲点を炙り出すスキル
 - [[tools/claude-code]] — レビュー対象の製品そのもの
 - [[companies/anthropic]]
+- [[concepts/agent-trust-inverse-pyramid]] — 「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」とする @poteto の4層指針。本ページのリスク別人間承認と「同じ指摘は発生源で直す」を個人の運用規模で言ったものと読める

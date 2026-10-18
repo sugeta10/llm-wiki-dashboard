@@ -76,3 +76,4 @@ OpenAI Codex CLI, OpenCode, Cursor, Factory Droid, Slate, Kiro, Hermes, GBrain �
 - [[concepts/vibe-coding]]
 - [[tools/superpowers]] — @LinearUncleが並べて挙げたobra製の開発方法論スキルライブラリ
 - [[tools/agent-skills-by-role]] — @RoundtableSpaceの役割別スキル6選でSENIOR ENGINEER枠に名指し
+- [[tools/pstack]] — 同じく著名エンジニアが「エージェントをエンジニアリングチームに変える」として公開したスキル群（@poteto・cursor/plugins）。gstack が Think→Plan のレビュー工程を先頭に置くのに対し、pstack は計画スキルを持たず「最良の仕様はコード」と明言する対照

@@ -96,11 +96,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a> — 判断ログ→週次レビュー→パターン昇格という同型の「レビューを経た昇格」ループ。本ページはそれを個人からチーム横断へ広げた形</li>
 <li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a> — 「直した結果が戻る場所」を場面ごとに決めるマニュアル運用論。6分類の戻り先を、人間の手順書とAI指示書に共通する「起きたこと欄／やめたこと欄」に縮約した形（@smark_x）</li>
 <li><a href="../tools/teamai-cli.html">teamai-cli</a> — 同じループのツール実装。書き戻し先の分類を人に選ばせる代わりに、セッションのfriction採点で「書き戻す機会」を検出し、昇格（recall promote）と剪定（maintenance）をコマンドにしている</li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 同じ「訂正をどこへ戻すか」を、知識の種類でなく強制力の強さ（コードベース→静的解析→散文→人間レビュー）で4層にした @poteto の指針。6分類の「危険な操作→機械的ゲート」は上2層、「好み→ポリシー」は散文層に当たると考えられる</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a></li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
 <li><a href="../concepts/company-brain.html">company-brain</a></li>
 <li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a></li>
-<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a></li>
-<li><a href="../tools/teamai-cli.html">teamai-cli</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2092243372929151135" rel="noopener" target="_blank">https://x.com/i/web/status/2092243372929151135</a></li></ul></section></article>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2092243372929151135" rel="noopener" target="_blank">https://x.com/i/web/status/2092243372929151135</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -174,6 +175,7 @@ flowchart LR
 - [[concepts/agent-reflection-layer]] — 判断ログ→週次レビュー→パターン昇格という同型の「レビューを経た昇格」ループ。本ページはそれを個人からチーム横断へ広げた形
 - [[concepts/shikumika-vs-tejunsho]] — 「直した結果が戻る場所」を場面ごとに決めるマニュアル運用論。6分類の戻り先を、人間の手順書とAI指示書に共通する「起きたこと欄／やめたこと欄」に縮約した形（@smark_x）
 - [[tools/teamai-cli]] — 同じループのツール実装。書き戻し先の分類を人に選ばせる代わりに、セッションのfriction採点で「書き戻す機会」を検出し、昇格（recall promote）と剪定（maintenance）をコマンドにしている
+- [[concepts/agent-trust-inverse-pyramid]] — 同じ「訂正をどこへ戻すか」を、知識の種類でなく強制力の強さ（コードベース→静的解析→散文→人間レビュー）で4層にした @poteto の指針。6分類の「危険な操作→機械的ゲート」は上2層、「好み→ポリシー」は散文層に当たると考えられる
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
