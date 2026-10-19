@@ -29,56 +29,46 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>NORTH-STAR</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="NORTH-STAR.md">Markdownで表示</a></div>
-  <div class="meta">weekly/NORTH-STAR · meta · <span title="2026-07-11">3ヶ月前</span></div>
+  <div class="meta">weekly/NORTH-STAR · meta · <span title="2026-10-19">今日</span></div>
   <article><h1>North Star Metric</h1>
 <blockquote>
-<p><strong>「週に1回以上、過去のwiki知識が新しい問い・判断・行動に接続された回数」</strong></p>
+<p><strong>「週あたりの、Weekly を素材にしたユーザーのアウトプットの回数」</strong>
+（times でのシェア、記事化、Weekly を素材にしたスライド・動画の生成）</p>
 </blockquote>
-<p>pages数・links数はサロゲートメトリクスに過ぎない。</p>
-<h2>計測イベント（手動check-inから開始）</h2>
+<p>pages数・links数はサロゲートメトリクスに過ぎない。Weekly の読み手は外部のエンジニアに置き直したので（<code>docs/superpowers/specs/2026-10-18-weekly-reader-redesign-design.md</code>）、Weekly が外へ出ていった回数を数える。旧指標「過去のwiki知識が新しい問い・判断・行動に接続された回数」は本人の申告がないと数えられず、W28 以降空欄になった。</p>
+<h2>計測イベント</h2>
+<p>週次編集会議で AI が証拠（セッション内容・コミット・times や note の投稿）から下書きし、ユーザーが確認する。計測の仕組み・アクセス解析タグは作らない。</p>
 <table>
 <thead>
 <tr>
 <th>イベント</th>
-<th>記録方法</th>
+<th>下書きの証拠</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>weekly insight generated</td>
-<td>wiki/weekly/ にファイルが存在する</td>
+<td>times でシェアした</td>
+<td>ユーザーへの確認（会社 Slack は AI から見えない）</td>
 </tr>
 <tr>
-<td>weekly insight opened</td>
-<td>（主観）読んだら ✅</td>
+<td>記事にした（note など）</td>
+<td>公開された記事の URL</td>
 </tr>
 <tr>
-<td>related page clicked</td>
-<td>（主観）リンクを辿ったら ✅</td>
+<td>スライド・動画を作った</td>
+<td>生成した成果物・セッション</td>
 </tr>
 <tr>
-<td>action accepted</td>
-<td>小アクションを実行したら ✅</td>
-</tr>
-<tr>
-<td>source revived (14d+)</td>
-<td>古いページに戻れたら ✅</td>
-</tr>
-<tr>
-<td>unconnected seed connected</td>
-<td>Unconnected Seedsにリンクを貼ったら ✅</td>
-</tr>
-<tr>
-<td>query led to wiki update</td>
-<td>クエリ後にページを更新したら ✅</td>
+<td>Weekly を開いた（補助）</td>
+<td>ユーザーへの一言の確認</td>
 </tr>
 </tbody>
 </table>
-<h2>Weekly Check-in（毎週月曜・3分）</h2>
+<h2>Weekly Check-in（週次編集会議の中で）</h2>
 <ol>
-<li>先週のInsightsを読んだか？ (Y/N)</li>
-<li>wikiの知識が行動・判断に繋がった瞬間があったか？ (Y/N + メモ1行)</li>
-<li>今週のNorth Starスコア（上のイベント合計数）: ___</li>
+<li>AI が、先週の Weekly 2本と上の証拠から、アウトプットの回数を下書きする</li>
+<li>ユーザーが確認・訂正する（開いたかどうかも一言で）</li>
+<li>下の記録ログに1行足す。語り手との相性は <code>NARRATOR-LOG.md</code> に分けて記録する</li>
 </ol>
 <h2>目標</h2>
 <table>
@@ -91,19 +81,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 </thead>
 <tbody>
 <tr>
-<td>Month 1</td>
+<td>第1段階（数週）</td>
 <td>≥ 1</td>
-<td>週1回は知識が行動に接続される</td>
+<td>週1回は Weekly が外へ出ていく</td>
 </tr>
 <tr>
-<td>Month 3</td>
-<td>≥ 3</td>
-<td>習慣として定着。wikiが「使われている」</td>
-</tr>
-<tr>
-<td>Month 6</td>
-<td>≥ 5</td>
-<td>知識が複利化し始めている</td>
+<td>その後</td>
+<td>未定</td>
+<td>第1段階が数週回ってから決める</td>
 </tr>
 </tbody>
 </table>
@@ -120,12 +105,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <tr>
 <td>2026-W22</td>
 <td>—</td>
-<td>check-in開始週</td>
+<td>check-in開始週（旧指標）</td>
 </tr>
 <tr>
 <td>2026-W28</td>
 <td>1</td>
-<td>note記事を自身で改訂・公開。wiki知識と再定義分析が発信に接続</td>
+<td>旧指標。note記事を自身で改訂・公開。wiki知識と再定義分析が発信に接続</td>
 </tr>
 </tbody>
 </table></article>
@@ -151,42 +136,41 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 </script>
 <script id="page-markdown" type="text/plain"># North Star Metric
 
-&gt; **「週に1回以上、過去のwiki知識が新しい問い・判断・行動に接続された回数」**
+&gt; **「週あたりの、Weekly を素材にしたユーザーのアウトプットの回数」**
+&gt; （times でのシェア、記事化、Weekly を素材にしたスライド・動画の生成）
 
-pages数・links数はサロゲートメトリクスに過ぎない。
+pages数・links数はサロゲートメトリクスに過ぎない。Weekly の読み手は外部のエンジニアに置き直したので（`docs/superpowers/specs/2026-10-18-weekly-reader-redesign-design.md`）、Weekly が外へ出ていった回数を数える。旧指標「過去のwiki知識が新しい問い・判断・行動に接続された回数」は本人の申告がないと数えられず、W28 以降空欄になった。
 
-## 計測イベント（手動check-inから開始）
+## 計測イベント
 
-| イベント | 記録方法 |
+週次編集会議で AI が証拠（セッション内容・コミット・times や note の投稿）から下書きし、ユーザーが確認する。計測の仕組み・アクセス解析タグは作らない。
+
+| イベント | 下書きの証拠 |
 |---|---|
-| weekly insight generated | wiki/weekly/ にファイルが存在する |
-| weekly insight opened | （主観）読んだら ✅ |
-| related page clicked | （主観）リンクを辿ったら ✅ |
-| action accepted | 小アクションを実行したら ✅ |
-| source revived (14d+) | 古いページに戻れたら ✅ |
-| unconnected seed connected | Unconnected Seedsにリンクを貼ったら ✅ |
-| query led to wiki update | クエリ後にページを更新したら ✅ |
+| times でシェアした | ユーザーへの確認（会社 Slack は AI から見えない） |
+| 記事にした（note など） | 公開された記事の URL |
+| スライド・動画を作った | 生成した成果物・セッション |
+| Weekly を開いた（補助） | ユーザーへの一言の確認 |
 
-## Weekly Check-in（毎週月曜・3分）
+## Weekly Check-in（週次編集会議の中で）
 
-1. 先週のInsightsを読んだか？ (Y/N)
-2. wikiの知識が行動・判断に繋がった瞬間があったか？ (Y/N + メモ1行)
-3. 今週のNorth Starスコア（上のイベント合計数）: ___
+1. AI が、先週の Weekly 2本と上の証拠から、アウトプットの回数を下書きする
+2. ユーザーが確認・訂正する（開いたかどうかも一言で）
+3. 下の記録ログに1行足す。語り手との相性は `NARRATOR-LOG.md` に分けて記録する
 
 ## 目標
 
 | 時期 | 目標スコア | 意味 |
 |---|---|---|
-| Month 1 | ≥ 1 | 週1回は知識が行動に接続される |
-| Month 3 | ≥ 3 | 習慣として定着。wikiが「使われている」 |
-| Month 6 | ≥ 5 | 知識が複利化し始めている |
+| 第1段階（数週） | ≥ 1 | 週1回は Weekly が外へ出ていく |
+| その後 | 未定 | 第1段階が数週回ってから決める |
 
 ## 記録ログ
 
 | 週 | スコア | メモ |
 |---|---|---|
-| 2026-W22 | — | check-in開始週 |
-| 2026-W28 | 1 | note記事を自身で改訂・公開。wiki知識と再定義分析が発信に接続 |
+| 2026-W22 | — | check-in開始週（旧指標） |
+| 2026-W28 | 1 | 旧指標。note記事を自身で改訂・公開。wiki知識と再定義分析が発信に接続 |
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
