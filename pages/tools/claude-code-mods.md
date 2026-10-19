@@ -99,3 +99,4 @@ nogu はこれらを「標準機能と同じ土俵」とまとめる。nogu は�
 - [[tools/jev-model-router]] — Jev でサブエージェント・メインのモデルを振り分けるコミュニティ製 Mod
 - [[concepts/prompt-caching]] — Cache Control Mod が残り時間を表示する5分キャッシュの仕組み
 - [[tools/turn-inspector]] — 各ターンのコンテキストウィンドウの中身（システムプロンプト・ツール・メモリ等）を表示するコミュニティ製 Mod（@dani_avila7）
+- [[tools/claude-recall]] — プラグイン同梱の Mod が過去セッションの帯・検索結果の木・`/recall` を描く実例。Mod は描くだけで判断せず、必要なデータは Go 側の JSON に足してから使う（babarot）

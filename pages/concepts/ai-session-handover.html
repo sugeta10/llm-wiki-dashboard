@@ -65,6 +65,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-compact-recovery.html">claude-code-compact-recovery</a> — 引き継ぎを compact のライフサイクルに機械的に結線した発展形（state file 退避＋marker 経由 2 段 hook で圧縮直後に自動復元）</li>
 <li><a href="../concepts/claude-code-long-task-harness.html">claude-code-long-task-harness</a> — progress.md に「現在のファイル・完了チェック・未解決の問い・次の行動」を段階ごとに残し、新セッションで再開を試して不足を補う手順</li>
 <li><a href="../tools/claude-projects-threads.html">claude-projects-threads</a> — Claude Code Projects。毎回説明し直す背景を過去セッションから抽出し Project instructions に常設する方向（引き継ぎの恒久化）</li>
+<li><a href="../tools/claude-recall.html">claude-recall</a> — 引き継ぎノートを書かずに生の transcript を SQLite に溜め、<code>recap</code> prompt と TUI の <code>c</code> で「やったこと・決めたこと・残っていること」を後から引く pull 型（babarot製）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
 <li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li>
 <li><a href="../concepts/claude-code-compact-recovery.html">claude-code-compact-recovery</a></li>
@@ -132,6 +133,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[concepts/claude-code-compact-recovery]] — 引き継ぎを compact のライフサイクルに機械的に結線した発展形（state file 退避＋marker 経由 2 段 hook で圧縮直後に自動復元）
 - [[concepts/claude-code-long-task-harness]] — progress.md に「現在のファイル・完了チェック・未解決の問い・次の行動」を段階ごとに残し、新セッションで再開を試して不足を補う手順
 - [[tools/claude-projects-threads]] — Claude Code Projects。毎回説明し直す背景を過去セッションから抽出し Project instructions に常設する方向（引き継ぎの恒久化）
+- [[tools/claude-recall]] — 引き継ぎノートを書かずに生の transcript を SQLite に溜め、`recap` prompt と TUI の `c` で「やったこと・決めたこと・残っていること」を後から引く pull 型（babarot製）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

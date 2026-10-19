@@ -115,3 +115,4 @@ cojiがこだわったのは `element` をCSSセレクタ単独にしないこ�
 - [[design/claude-design-workflow]] — Claude Designの「コメント→Sendで修正指示」。同じ形をローカル・複数エージェントで実装したのがpreview
 - [[tools/claude-code]] / [[tools/openai-codex]] / [[tools/cursor]] — 起動経路を別々に作った3エージェント
 - [[concepts/claude-code-loop-types]] — Claude Code公式のループ4類型。「届いたら動く」はイベント駆動（Proactive）の最小実装にあたると考えられる
+- [[tools/claude-recall]] — 同じく常駐デーモンを持たない babarot 製の Claude Code セッション書庫。セッションごとに立つ MCP サーバー同士を flock のリーダー選出で1つの watcher にまとめる、複数プロセス調停の別解

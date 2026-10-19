@@ -145,8 +145,52 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>更新</strong>: <code>recall update</code>（curl 導入のみ。1.7.2 より後のリリースで入ったので、それ以前の導入はインストーラを一度再実行）</li>
 <li><strong>技術</strong>: Go・modernc.org/sqlite（CGo 無しの SQLite・FTS5）・Bubble Tea（TUI）・MCP Go SDK・Preact/Vite/Tailwind（Web UI）。Deno から Go へ移植した経緯は ADR-004</li>
 </ul>
+<h2>作者が解く問題：会話にしか残らないことを grep でなく DB で引く（Zenn 記事より）</h2>
+<p>作者 babarot は Zenn の解説記事で、思い出したくなる場面を3つ挙げる。設計相談で2案のうち片方に決めたが、コードには採った方しか残らないので採らなかった方をなぜやめたか知りたい。障害調査で Claude とログやクエリを見て原因を突き止め、似た症状が再発したときにどこを見て何を試し何が外れだったか知りたい。別セッションで今の作業に関わる方針を話していて、そのセッションに戻らず今の Claude にその話を踏まえてほしい。どれもコードや git log に残らず会話の中にしかない、と書く。</p>
+<p>transcript は <code>~/.claude/projects/</code> 下の JSONL なので、Claude に「前のセッションを grep して」と頼めば読める。だが作者は、当たりはしても目当てのセッションに辿り着くまで手数がかかる、材料が grep 向きではないからだと書く。1行が1つの JSON で、会話のほかに進捗やファイル履歴のスナップショットまで入っており、ヒット行を読むと JSON の塊でコンテキストが埋まる。ファイル名はセッション ID でタイトルが無く、どのファイルがどのセッションか中を開かないと分からず、worktree だとフォルダ名から元リポジトリを辿るのも難しい。そこで先に読みやすい形に直して DB に入れ、Claude にはそこを検索させる。DB に残すのはユーザーとアシスタントのテキスト、thinking、ツール呼び出しと結果で、進捗などの記録は捨てる。これで<strong>元の JSONL の7%ほど</strong>の大きさになると作者は書く。セッションにはタイトルとどのリポジトリ（worktree 含む）のものかを持たせ、Claude は「どのリポジトリの・どのセッションの・どのメッセージに当たったか」を受け取り、読みたいセッションだけを、必要なら末尾だけ書き出して読む。</p>
+<p>もう1つの理由は transcript がいずれ消えること。何も設定しなければ Claude Code は30日で JSONL を消す（<code>cleanupPeriodDays</code>）。設定で延ばしても JSONL が残るだけで探しにくさは変わらず、DB に取り込んでおけば消えた後のセッションも残り続ける（そのとき DB が唯一のコピーになる）。取り込みはセッション終了後でなく会話が進むそばから行われ、transcript が書き換わると数百ミリ秒で DB に入るので、別セッションで今まさに話していることもすぐ検索できる。</p>
+<h2>claude-mem を選ばなかった理由と、引き換えに受け入れた限界（作者の弁）</h2>
+<p>作者は最初に claude-mem を試し、便利そうではあるが自分には合わなかったと書く。Claude Code は毎回まっさらな状態で起動したい。新しいセッションには今の作業のことだけを渡し、前のことは思い出してほしいときにだけ思い出してほしい。勝手に入ってくる要約は今の作業に関係なくても Claude の前提になり、どこまでがこのセッションで見たことでどこからが注入された記憶かが自分から見えにくく、要約が原文からずれることもある。だから claude-recall は Claude の記憶を作ったり延ばしたりせず、やるのは「transcript を DB に取り込む」「頼まれたら DB を検索して見せる」の2つだけにした。LLM で要約せずプロンプトにも注入しない。Claude は「わからないので調べます」と言って調べ、読んだ原文を根拠に答える。記事の比較表は README の表（上の節）の5行版（目的・文脈の入り方・保存するもの・検索・常駐）で、中身は同じ。</p>
+<p>引き換えにできないこととして作者は2つ挙げる。ベクトル検索をしないので、過去セッションで使っていない言葉では引っかからない（「認証エラー」で探しても「401」としか書いていないセッションは出てこない）。Claude が「前に話したかもしれない」と気づかなければ recall は呼ばれない。後者は MCP のツール説明に「過去の議論や決定を探すときに使う」と書いてあるのである程度は Claude から呼び、確実に使わせたいなら CLAUDE.md に一言書く手もある。作者は「どちらの限界も、勝手に注入しないことと引き換えに受け入れている」と書く。</p>
+<h2>TUI と Web UI の補足（Zenn 記事より）</h2>
+<ul>
+<li><strong><code>a</code>（TUI から Claude に探させる）</strong>: 自分で絞り込もうとして言葉が出てこないとき（「確か Nix のパッケージの話をしていた気がする」程度の記憶）に質問を書くと、Claude が recall で探して見つけたセッションを TUI の一覧に返す。中では <code>claude -p</code> を recall の検索と一覧のツールだけ許して動かす</li>
+</ul>
+<p><code>claude -p &lt;question&gt; --model &lt;ask_model&gt; --no-session-persistence \
+    --strict-mcp-config --mcp-config &lt;recall mcp&gt; \
+    --tools "" --allowedTools mcp__recall__recall_search,mcp__recall__recall_list</code></p>
+<p>自分のログインで動く claude を呼ぶので API キーも claude-recall 側の設定も要らない。答えには見つかったセッションと選んだ理由が並び、1つに飛ぶことも、見つかったセッションだけに一覧を絞ることもできる。作者は、claude-recall が LLM を呼ぶのはこの <code>a</code> と <code>c</code> で人間が頼んだときだけと書く
+- <strong><code>c</code>（resume できないセッションの擬似再開）</strong>: <code>claude -r</code> で戻れないのは、worktree を消した後のセッション（フォルダが無い）と Claude Code が transcript を消したセッション。worktree を作っては消す使い方だとこれが多いと作者は書く。<code>c</code> で新しい claude を立ち上げ、recall の MCP でそのセッションを擬似的に再開する。最初の欄に「リトライの方針について」のように話題を入れればそこを、空なら「どこまでやったか」を思い出して指示を待つ。TUI はフォルダの有無だけでなく transcript が残っているかも確かめ、消えていればフッターの resume に取り消し線を引き、詳細ペインのサイズの横に deleted と出す。<code>Enter</code> を押すと transcript が消えていることと <code>c</code> で再開できることを伝える
+- <strong>その他のキー</strong>: <code>Space</code> で下のペインに会話を広げて読み、<code>/</code> で会話の中を検索。<code>y</code> でセッション ID をコピー（別のエージェントに「このセッションを recall で見て」と渡す用）。<code>?</code> でキーのヘルプ
+- <strong>Web UI との分担</strong>: TUI は戻れるのが強み、Web UI は長い会話や画像を読みやすいのが強み。動かしている間は新しいメッセージが半秒ほどで反映されるので、動いているセッションを横で眺められる。セッションの「やったこと」ビューに、使ったツール・走らせたコマンド・編集したファイルがまとまる</p>
+<h2>仕組み（Zenn 記事からの転記）</h2>
+<h3>watcher と importer</h3>
+<p>transcript の変化は watcher が見つけ、importer が DB に取り込む。watcher は fsnotify を使わずポーリングする。作者の理由は、macOS の fsnotify（kqueue）は transcript ごとにファイルディスクリプタを開く必要がありディレクトリを再帰的に監視できないこと、サイズと mtime を見るだけなら transcript が1000個あっても1回の走査は数ミリ秒で済むこと。変化を見つけても書き込みが 300ms 止まるまで待ってから取り込むので、Claude が続けて書いても import は1回にまとまる。</p>
+<ul>
+<li>前回取り込んだときと mtime が同じファイルは読まない</li>
+<li>残すもの: ユーザーとアシスタントのテキスト、thinking、ツールの呼び出しと結果、スラッシュコマンドの展開。捨てるもの: 進捗、ファイル履歴のスナップショットなどの記録</li>
+<li>1セッションを1トランザクションで、JSONL の今の中身に丸ごと置き換える。メッセージは <code>(session_id, uuid, block_index)</code> が一意キーなので、何度取り込んでも結果は変わらない</li>
+<li>同じ DB に書き込むプロセスは複数ある。書き込む接続は <code>BEGIN IMMEDIATE</code> で最初に書き込みロックを取り、<code>busy_timeout</code> で最大60秒待つので、同時に import しても失敗せず順番待ちになる。watcher と SessionEnd hook が同じセッションを同時に取り込むこともあるので、ロックを取った後にファイルが読んだときのままかを確かめ、変わっていれば読み直してから書く。先に読んだ方が後からコミットして古い中身で上書きすることはない</li>
+<li>SQLite は WAL ファイルを自分では縮めないので、<code>journal_size_limit</code> でリセットのたびに 64MB まで切り詰める</li>
+</ul>
+<h3>誰が watcher になるか（リーダー選出）</h3>
+<p>Claude Code はセッションごとに <code>recall mcp</code> を1つ立ち上げる。セッションを10個開いていれば <code>recall mcp</code> も10個動き、全部が watcher を回すと同じ変更を10回取り込み CPU もセッションの数だけ使う。そこで watcher は1つだけにし、DB の隣のロックファイル（<code>vault.db.watch-&lt;hash&gt;.lock</code>）で決める。作者は Kubernetes の Lease と同じく、持ち主が定期的に更新し一定時間更新されなければ失効したとみなす形だと書く。</p>
+<ul>
+<li><code>flock(LOCK_EX|LOCK_NB)</code> でロックを取れた1つが watcher になる。ロックはプロセスが終われば OS が外すので、落ちても残らない</li>
+<li>ほかは5秒ごとにロックを取りにいき、取れたら watcher を引き継ぐ。引き継いだときは、誰も見ていなかった間に変わったものを先にまとめて取り込む</li>
+<li>watcher は1秒ごとにロックファイルの mtime を更新する</li>
+<li>ロックが取られたまま mtime が1分止まっていたら、持ち主は止まっているとみなす（claude を Ctrl-Z で止めるとその <code>recall mcp</code> も止まる）。待っている1つが次の枠（<code>.lock.1</code>）のロックを取って watcher になる</li>
+<li>watcher は mtime を更新するたびに、自分より後ろの枠で動いている watcher がいないかを確かめ、いれば watcher をやめて待つ側に回る</li>
+</ul>
+<p>最後の決まりは Mac のスリープのためにある。スリープ中は全員が止まるので、起きたときにはどのロックファイルも1分以上更新されていないように見え、待っていた1つが次の枠で watcher になる。元の持ち主は止まっていたわけではないので、そのままだと watcher が2つになり、スリープのたびに増えていく。ロックファイル名の <code>&lt;hash&gt;</code> は読むツリーの組から作り、<code>CLAUDE_CONFIG_DIR</code> や <code>extra_projects_dirs</code> が違うプロセスはそれぞれ別の watcher を持つ。Web UI はこれとは別に、ライブ更新のため自分でも watcher を回す。</p>
+<h3>MCP サーバと検索</h3>
+<p>MCP サーバは公式の Go SDK で書かれ stdio で Claude Code とやりとりする。起動するとすぐ応答し、watcher になったときの追いつきの import はバックグラウンドで実行する。Claude Code は MCP サーバの起動を30秒しか待たないので、import が終わるまで応答しないと MCP サーバが失敗したことになる（アップグレード直後の最初の import は時間がかかる）。import が失敗してもサーバは落ちない。検索は SQLite の FTS5 で、tokenizer は空白で単語を区切るため日本語の文は1つのトークンになり文中の単語では引っかからない。空白のない語で検索されたときは部分一致で探す。</p>
+<h3>どの入り口も同じ答えを返す</h3>
+<p>セッションのタイトルや、どのリポジトリのどの worktree のセッションかは Go 側の1か所で決め、TUI・CLI・MCP サーバ・Web UI はどれもそれを通して読む。TUI に出るタイトルと Claude が <code>recall_list</code> で受け取るタイトルは食い違わない。plugin の mod も同じで、描くだけで判断はしない。mod に必要なものは Go 側で CLI と MCP の JSON に足してから使う。検索結果のリポジトリ・タイトル・サイズ、日本語の部分一致、そして <code>recallOnly</code>（recall の MCP ツールしか呼んでいない、振り返っただけのセッションの印。そういうセッションは同じ語で検索するたびにヒットして実際に作業したセッションを押しのけるので、mod では1行にまとめる。ID は押せる）。こうしておけば plugin を入れず MCP だけで使う人にも同じ情報が届く。常駐するプロセスは無く、MCP サーバは Claude Code が立ち上げ、Web UI は <code>recall ui</code> で起動したときだけ動く。</p>
 <h2>他ページとのつながり（wiki 側の推論）</h2>
 <ul>
+<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a> は、セッションの終わりに引き継ぎノートを書き出して次に渡す push 型の引き継ぎ。claude-recall の <code>recap</code> prompt と TUI の <code>c</code> は、書き出しを省いて生の transcript から「やったこと・決めたこと・残っていること」を後から組み立てる pull 型で、ノートを書き忘れたセッションや worktree を消したセッションにも効く点で補完関係と考えられる</li>
+<li><a href="../tools/artifact-share.html">artifact-share</a>（coji）の preview も常駐デーモンを持たない設計で、複数エージェントを起こす合図をエージェントごとに作り分けた。claude-recall はセッションごとに立つ <code>recall mcp</code> 同士を flock のリーダー選出で1つの watcher にまとめる。「常駐させない代わりに、複数プロセスの調停をどこで引き受けるか」が両者の設計の分かれ目と考えられる</li>
 <li><a href="../concepts/skills-over-memory.html">skills-over-memory</a>（@mvanhorn）が言う「push と pull を分け、recall を残したいなら pull 側へ移す」を、claude-recall はツールの設計方針として明文化している。README の比較表の「注入: Push / Pull」の行がそのまま対応する</li>
 <li><a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a>（ペパボ）は同じ JSONL を Obsidian の Markdown に落とす。claude-recall は Markdown 化せず SQLite に生のまま溜めて検索と再開に使う点が異なり、@b4b4r07 の日次ダッシュボードは <a href="../concepts/computer-history-daily-note.html">computer-history-daily-note</a> の「機械が事実を集め、人が振り返る」型を Claude Code の作業に限って実装したものと読める</li>
 <li>「人間の介入パターンからハーネスの修正案を自動で作る」は、<a href="../concepts/correction-routing.html">correction-routing</a> の「訂正を共有知へ書き戻す」ループや <a href="../concepts/improver-skill-pattern.html">improver-skill-pattern</a> の observer skill を、セッション書庫を入力にして回す形と考えられる。投稿は用途を述べるのみで、介入の検出方法や修正案の精度は示されていない</li>
@@ -157,6 +201,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>このリポの Claude Code セッションは worktree を多用する。worktree が消えたセッションを <code>c</code> で MCP 経由に回す経路は、EnterWorktree 後の再開でどこまで使えるか（実際に入れて試す）</li>
 <li>@b4b4r07 の「介入パターン→ハーネス修正案」は、どの粒度の介入（訂正・中断・やり直し）を信号にしているのか。pstack の <code>/correct</code> と同じ発想をセッション書庫の上で自動化できるか</li>
 <li>FTS5 のみの決定論的検索で、記憶の drift を避ける代わりに取りこぼす問いは何か（語彙が一致しない過去の決定を引けるか）</li>
+<li>「元の JSONL の7%ほど」は自分の <code>~/.claude/projects</code> でも再現するか（<code>recall import</code> 後に <code>vault.db</code> と JSONL 合計の大きさを比べる）</li>
+<li>空白のない日本語は部分一致に落ちるが、「認証 エラー」のように空白を含む日本語クエリは FTS5 側に回って取りこぼすのか</li>
+<li>この vault の CLAUDE.md に「過去の判断は recall で探す」の一言を足すか（作者が挙げる「確実に使わせる手」。ingest やレビューの判断経緯は log.jsonl でなく会話にしか残っていない）</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -168,12 +215,15 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a> — 共有メモリ層の設計。claude-recall が「記憶システムではない」と線を引く相手側</li>
 <li><a href="../tools/pstack.html">pstack</a> — 同名の <code>/recall</code> スキルを持つ別ツール</li>
 <li><a href="../tools/claude-code-mods.html">claude-code-mods</a> — プラグインの Claude Code 内表示が使う hooks module（Claude Mods）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/correction-routing.html">correction-routing</a></li>
+<li><a href="../concepts/ai-session-handover.html">ai-session-handover</a> — 引き継ぎノートを書き出す push 型の引き継ぎ。<code>recap</code> と <code>c</code> は生の transcript から後で組み立てる pull 型</li>
+<li><a href="../tools/artifact-share.html">artifact-share</a> — 同じく常駐デーモンを持たず、複数エージェント/プロセスの調停を別の方法で解く coji 製ツール</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
+<li><a href="../concepts/correction-routing.html">correction-routing</a></li>
 <li><a href="../concepts/skills-over-memory.html">skills-over-memory</a></li>
-<li><a href="../tools/claude-code-obsidian-sync.html">claude-code-obsidian-sync</a></li>
-<li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
-<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111718376762667132" rel="noopener" target="_blank">https://x.com/i/web/status/2111718376762667132</a></li>
-<li><a href="https://github.com/babarot/claude-recall" rel="noopener" target="_blank">https://github.com/babarot/claude-recall</a></li></ul></section></article>
+<li><a href="../tools/artifact-share.html">artifact-share</a></li>
+<li><a href="../tools/claude-code-mods.html">claude-code-mods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111718376762667132" rel="noopener" target="_blank">https://x.com/i/web/status/2111718376762667132</a></li>
+<li><a href="https://github.com/babarot/claude-recall" rel="noopener" target="_blank">https://github.com/babarot/claude-recall</a></li>
+<li><a href="https://zenn.dev/babarot/articles/claude-code-session-recall" rel="noopener" target="_blank">https://zenn.dev/babarot/articles/claude-code-session-recall</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -252,8 +302,71 @@ claude-recall が選ぶトレードオフとして README は、生ログは dri
 - **更新**: `recall update`（curl 導入のみ。1.7.2 より後のリリースで入ったので、それ以前の導入はインストーラを一度再実行）
 - **技術**: Go・modernc.org/sqlite（CGo 無しの SQLite・FTS5）・Bubble Tea（TUI）・MCP Go SDK・Preact/Vite/Tailwind（Web UI）。Deno から Go へ移植した経緯は ADR-004
 
+## 作者が解く問題：会話にしか残らないことを grep でなく DB で引く（Zenn 記事より）
+
+作者 babarot は Zenn の解説記事で、思い出したくなる場面を3つ挙げる。設計相談で2案のうち片方に決めたが、コードには採った方しか残らないので採らなかった方をなぜやめたか知りたい。障害調査で Claude とログやクエリを見て原因を突き止め、似た症状が再発したときにどこを見て何を試し何が外れだったか知りたい。別セッションで今の作業に関わる方針を話していて、そのセッションに戻らず今の Claude にその話を踏まえてほしい。どれもコードや git log に残らず会話の中にしかない、と書く。
+
+transcript は `~/.claude/projects/` 下の JSONL なので、Claude に「前のセッションを grep して」と頼めば読める。だが作者は、当たりはしても目当てのセッションに辿り着くまで手数がかかる、材料が grep 向きではないからだと書く。1行が1つの JSON で、会話のほかに進捗やファイル履歴のスナップショットまで入っており、ヒット行を読むと JSON の塊でコンテキストが埋まる。ファイル名はセッション ID でタイトルが無く、どのファイルがどのセッションか中を開かないと分からず、worktree だとフォルダ名から元リポジトリを辿るのも難しい。そこで先に読みやすい形に直して DB に入れ、Claude にはそこを検索させる。DB に残すのはユーザーとアシスタントのテキスト、thinking、ツール呼び出しと結果で、進捗などの記録は捨てる。これで**元の JSONL の7%ほど**の大きさになると作者は書く。セッションにはタイトルとどのリポジトリ（worktree 含む）のものかを持たせ、Claude は「どのリポジトリの・どのセッションの・どのメッセージに当たったか」を受け取り、読みたいセッションだけを、必要なら末尾だけ書き出して読む。
+
+もう1つの理由は transcript がいずれ消えること。何も設定しなければ Claude Code は30日で JSONL を消す（`cleanupPeriodDays`）。設定で延ばしても JSONL が残るだけで探しにくさは変わらず、DB に取り込んでおけば消えた後のセッションも残り続ける（そのとき DB が唯一のコピーになる）。取り込みはセッション終了後でなく会話が進むそばから行われ、transcript が書き換わると数百ミリ秒で DB に入るので、別セッションで今まさに話していることもすぐ検索できる。
+
+## claude-mem を選ばなかった理由と、引き換えに受け入れた限界（作者の弁）
+
+作者は最初に claude-mem を試し、便利そうではあるが自分には合わなかったと書く。Claude Code は毎回まっさらな状態で起動したい。新しいセッションには今の作業のことだけを渡し、前のことは思い出してほしいときにだけ思い出してほしい。勝手に入ってくる要約は今の作業に関係なくても Claude の前提になり、どこまでがこのセッションで見たことでどこからが注入された記憶かが自分から見えにくく、要約が原文からずれることもある。だから claude-recall は Claude の記憶を作ったり延ばしたりせず、やるのは「transcript を DB に取り込む」「頼まれたら DB を検索して見せる」の2つだけにした。LLM で要約せずプロンプトにも注入しない。Claude は「わからないので調べます」と言って調べ、読んだ原文を根拠に答える。記事の比較表は README の表（上の節）の5行版（目的・文脈の入り方・保存するもの・検索・常駐）で、中身は同じ。
+
+引き換えにできないこととして作者は2つ挙げる。ベクトル検索をしないので、過去セッションで使っていない言葉では引っかからない（「認証エラー」で探しても「401」としか書いていないセッションは出てこない）。Claude が「前に話したかもしれない」と気づかなければ recall は呼ばれない。後者は MCP のツール説明に「過去の議論や決定を探すときに使う」と書いてあるのである程度は Claude から呼び、確実に使わせたいなら CLAUDE.md に一言書く手もある。作者は「どちらの限界も、勝手に注入しないことと引き換えに受け入れている」と書く。
+
+## TUI と Web UI の補足（Zenn 記事より）
+
+- **`a`（TUI から Claude に探させる）**: 自分で絞り込もうとして言葉が出てこないとき（「確か Nix のパッケージの話をしていた気がする」程度の記憶）に質問を書くと、Claude が recall で探して見つけたセッションを TUI の一覧に返す。中では `claude -p` を recall の検索と一覧のツールだけ許して動かす
+
+  ```
+  claude -p &lt;question&gt; --model &lt;ask_model&gt; --no-session-persistence \
+    --strict-mcp-config --mcp-config &lt;recall mcp&gt; \
+    --tools &quot;&quot; --allowedTools mcp__recall__recall_search,mcp__recall__recall_list
+  ```
+
+  自分のログインで動く claude を呼ぶので API キーも claude-recall 側の設定も要らない。答えには見つかったセッションと選んだ理由が並び、1つに飛ぶことも、見つかったセッションだけに一覧を絞ることもできる。作者は、claude-recall が LLM を呼ぶのはこの `a` と `c` で人間が頼んだときだけと書く
+- **`c`（resume できないセッションの擬似再開）**: `claude -r` で戻れないのは、worktree を消した後のセッション（フォルダが無い）と Claude Code が transcript を消したセッション。worktree を作っては消す使い方だとこれが多いと作者は書く。`c` で新しい claude を立ち上げ、recall の MCP でそのセッションを擬似的に再開する。最初の欄に「リトライの方針について」のように話題を入れればそこを、空なら「どこまでやったか」を思い出して指示を待つ。TUI はフォルダの有無だけでなく transcript が残っているかも確かめ、消えていればフッターの resume に取り消し線を引き、詳細ペインのサイズの横に deleted と出す。`Enter` を押すと transcript が消えていることと `c` で再開できることを伝える
+- **その他のキー**: `Space` で下のペインに会話を広げて読み、`/` で会話の中を検索。`y` でセッション ID をコピー（別のエージェントに「このセッションを recall で見て」と渡す用）。`?` でキーのヘルプ
+- **Web UI との分担**: TUI は戻れるのが強み、Web UI は長い会話や画像を読みやすいのが強み。動かしている間は新しいメッセージが半秒ほどで反映されるので、動いているセッションを横で眺められる。セッションの「やったこと」ビューに、使ったツール・走らせたコマンド・編集したファイルがまとまる
+
+## 仕組み（Zenn 記事からの転記）
+
+### watcher と importer
+
+transcript の変化は watcher が見つけ、importer が DB に取り込む。watcher は fsnotify を使わずポーリングする。作者の理由は、macOS の fsnotify（kqueue）は transcript ごとにファイルディスクリプタを開く必要がありディレクトリを再帰的に監視できないこと、サイズと mtime を見るだけなら transcript が1000個あっても1回の走査は数ミリ秒で済むこと。変化を見つけても書き込みが 300ms 止まるまで待ってから取り込むので、Claude が続けて書いても import は1回にまとまる。
+
+- 前回取り込んだときと mtime が同じファイルは読まない
+- 残すもの: ユーザーとアシスタントのテキスト、thinking、ツールの呼び出しと結果、スラッシュコマンドの展開。捨てるもの: 進捗、ファイル履歴のスナップショットなどの記録
+- 1セッションを1トランザクションで、JSONL の今の中身に丸ごと置き換える。メッセージは `(session_id, uuid, block_index)` が一意キーなので、何度取り込んでも結果は変わらない
+- 同じ DB に書き込むプロセスは複数ある。書き込む接続は `BEGIN IMMEDIATE` で最初に書き込みロックを取り、`busy_timeout` で最大60秒待つので、同時に import しても失敗せず順番待ちになる。watcher と SessionEnd hook が同じセッションを同時に取り込むこともあるので、ロックを取った後にファイルが読んだときのままかを確かめ、変わっていれば読み直してから書く。先に読んだ方が後からコミットして古い中身で上書きすることはない
+- SQLite は WAL ファイルを自分では縮めないので、`journal_size_limit` でリセットのたびに 64MB まで切り詰める
+
+### 誰が watcher になるか（リーダー選出）
+
+Claude Code はセッションごとに `recall mcp` を1つ立ち上げる。セッションを10個開いていれば `recall mcp` も10個動き、全部が watcher を回すと同じ変更を10回取り込み CPU もセッションの数だけ使う。そこで watcher は1つだけにし、DB の隣のロックファイル（`vault.db.watch-&lt;hash&gt;.lock`）で決める。作者は Kubernetes の Lease と同じく、持ち主が定期的に更新し一定時間更新されなければ失効したとみなす形だと書く。
+
+- `flock(LOCK_EX|LOCK_NB)` でロックを取れた1つが watcher になる。ロックはプロセスが終われば OS が外すので、落ちても残らない
+- ほかは5秒ごとにロックを取りにいき、取れたら watcher を引き継ぐ。引き継いだときは、誰も見ていなかった間に変わったものを先にまとめて取り込む
+- watcher は1秒ごとにロックファイルの mtime を更新する
+- ロックが取られたまま mtime が1分止まっていたら、持ち主は止まっているとみなす（claude を Ctrl-Z で止めるとその `recall mcp` も止まる）。待っている1つが次の枠（`.lock.1`）のロックを取って watcher になる
+- watcher は mtime を更新するたびに、自分より後ろの枠で動いている watcher がいないかを確かめ、いれば watcher をやめて待つ側に回る
+
+最後の決まりは Mac のスリープのためにある。スリープ中は全員が止まるので、起きたときにはどのロックファイルも1分以上更新されていないように見え、待っていた1つが次の枠で watcher になる。元の持ち主は止まっていたわけではないので、そのままだと watcher が2つになり、スリープのたびに増えていく。ロックファイル名の `&lt;hash&gt;` は読むツリーの組から作り、`CLAUDE_CONFIG_DIR` や `extra_projects_dirs` が違うプロセスはそれぞれ別の watcher を持つ。Web UI はこれとは別に、ライブ更新のため自分でも watcher を回す。
+
+### MCP サーバと検索
+
+MCP サーバは公式の Go SDK で書かれ stdio で Claude Code とやりとりする。起動するとすぐ応答し、watcher になったときの追いつきの import はバックグラウンドで実行する。Claude Code は MCP サーバの起動を30秒しか待たないので、import が終わるまで応答しないと MCP サーバが失敗したことになる（アップグレード直後の最初の import は時間がかかる）。import が失敗してもサーバは落ちない。検索は SQLite の FTS5 で、tokenizer は空白で単語を区切るため日本語の文は1つのトークンになり文中の単語では引っかからない。空白のない語で検索されたときは部分一致で探す。
+
+### どの入り口も同じ答えを返す
+
+セッションのタイトルや、どのリポジトリのどの worktree のセッションかは Go 側の1か所で決め、TUI・CLI・MCP サーバ・Web UI はどれもそれを通して読む。TUI に出るタイトルと Claude が `recall_list` で受け取るタイトルは食い違わない。plugin の mod も同じで、描くだけで判断はしない。mod に必要なものは Go 側で CLI と MCP の JSON に足してから使う。検索結果のリポジトリ・タイトル・サイズ、日本語の部分一致、そして `recallOnly`（recall の MCP ツールしか呼んでいない、振り返っただけのセッションの印。そういうセッションは同じ語で検索するたびにヒットして実際に作業したセッションを押しのけるので、mod では1行にまとめる。ID は押せる）。こうしておけば plugin を入れず MCP だけで使う人にも同じ情報が届く。常駐するプロセスは無く、MCP サーバは Claude Code が立ち上げ、Web UI は `recall ui` で起動したときだけ動く。
+
 ## 他ページとのつながり（wiki 側の推論）
 
+- [[concepts/ai-session-handover]] は、セッションの終わりに引き継ぎノートを書き出して次に渡す push 型の引き継ぎ。claude-recall の `recap` prompt と TUI の `c` は、書き出しを省いて生の transcript から「やったこと・決めたこと・残っていること」を後から組み立てる pull 型で、ノートを書き忘れたセッションや worktree を消したセッションにも効く点で補完関係と考えられる
+- [[tools/artifact-share]]（coji）の preview も常駐デーモンを持たない設計で、複数エージェントを起こす合図をエージェントごとに作り分けた。claude-recall はセッションごとに立つ `recall mcp` 同士を flock のリーダー選出で1つの watcher にまとめる。「常駐させない代わりに、複数プロセスの調停をどこで引き受けるか」が両者の設計の分かれ目と考えられる
 - [[concepts/skills-over-memory]]（@mvanhorn）が言う「push と pull を分け、recall を残したいなら pull 側へ移す」を、claude-recall はツールの設計方針として明文化している。README の比較表の「注入: Push / Pull」の行がそのまま対応する
 - [[tools/claude-code-obsidian-sync]]（ペパボ）は同じ JSONL を Obsidian の Markdown に落とす。claude-recall は Markdown 化せず SQLite に生のまま溜めて検索と再開に使う点が異なり、@b4b4r07 の日次ダッシュボードは [[concepts/computer-history-daily-note]] の「機械が事実を集め、人が振り返る」型を Claude Code の作業に限って実装したものと読める
 - 「人間の介入パターンからハーネスの修正案を自動で作る」は、[[concepts/correction-routing]] の「訂正を共有知へ書き戻す」ループや [[concepts/improver-skill-pattern]] の observer skill を、セッション書庫を入力にして回す形と考えられる。投稿は用途を述べるのみで、介入の検出方法や修正案の精度は示されていない
@@ -264,6 +377,9 @@ claude-recall が選ぶトレードオフとして README は、生ログは dri
 - このリポの Claude Code セッションは worktree を多用する。worktree が消えたセッションを `c` で MCP 経由に回す経路は、EnterWorktree 後の再開でどこまで使えるか（実際に入れて試す）
 - @b4b4r07 の「介入パターン→ハーネス修正案」は、どの粒度の介入（訂正・中断・やり直し）を信号にしているのか。pstack の `/correct` と同じ発想をセッション書庫の上で自動化できるか
 - FTS5 のみの決定論的検索で、記憶の drift を避ける代わりに取りこぼす問いは何か（語彙が一致しない過去の決定を引けるか）
+- 「元の JSONL の7%ほど」は自分の `~/.claude/projects` でも再現するか（`recall import` 後に `vault.db` と JSONL 合計の大きさを比べる）
+- 空白のない日本語は部分一致に落ちるが、「認証 エラー」のように空白を含む日本語クエリは FTS5 側に回って取りこぼすのか
+- この vault の CLAUDE.md に「過去の判断は recall で探す」の一言を足すか（作者が挙げる「確実に使わせる手」。ingest やレビューの判断経緯は log.jsonl でなく会話にしか残っていない）
 
 ## 関連
 
@@ -275,6 +391,8 @@ claude-recall が選ぶトレードオフとして README は、生ログは dri
 - [[concepts/agent-memory-layer]] — 共有メモリ層の設計。claude-recall が「記憶システムではない」と線を引く相手側
 - [[tools/pstack]] — 同名の `/recall` スキルを持つ別ツール
 - [[tools/claude-code-mods]] — プラグインの Claude Code 内表示が使う hooks module（Claude Mods）
+- [[concepts/ai-session-handover]] — 引き継ぎノートを書き出す push 型の引き継ぎ。`recap` と `c` は生の transcript から後で組み立てる pull 型
+- [[tools/artifact-share]] — 同じく常駐デーモンを持たず、複数エージェント/プロセスの調停を別の方法で解く coji 製ツール
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
