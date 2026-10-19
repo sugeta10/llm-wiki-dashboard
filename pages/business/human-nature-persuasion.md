@@ -43,3 +43,4 @@ Koe は persuasion を道具として位置づけ、「倫理的かどうかは�
 - [[concepts/creativity-recovery-protocol]] — 同著者Dan Koeによる、創造性の回復を7日間プロトコルで扱う実践論
 - [[business/roi-qualification-sales]] — 投資対効果診断で不安を数字として可視化する営業手法は、レバー1「まず脅威を名指す」の実装例
 - [[concepts/zeigarnik-fatigue-loop]] — 同じツァイガルニク効果が、放置された未完了では注意を奪い続ける消耗源になるという逆側の議論
+- [[concepts/human-3-0]] — 同著者 Dan Koe の自己開発モデル。「進歩の緊張」が安全→帰属→意味へ進む段階論は、そこで 1.0 Conformist → 2.0 Individualist → 3.0 Synthesist と呼ぶ3レベルと同じ発達心理学の土台に立つ

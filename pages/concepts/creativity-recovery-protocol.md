@@ -50,3 +50,4 @@ Koe は最後に、意味のある「取り組む対象（プロジェクト）�
 - [[concepts/mental-conditioning]] — 同じく「休息」を意志力でなく構造で設計する発想。ただしこちらは不安の鎮静が目的、本ページは創造性の回復が目的
 - [[business/human-nature-persuasion]] — 同著者Dan Koe（@thedankoe）による人間本性理解のメタスキル論
 - [[concepts/dopamine-detox]] — 「ドーパミン受容体の再感作」と重なる観察を持つ、@antoshia2nの10種デトックス実践論
+- [[concepts/human-3-0]] — 同著者 Dan Koe の自己開発モデル。本ページの「AI 多用で脳が焼き切れた」体験は、そこで AI を「土台がないと副作用の出る Glitch（加速装置）」と位置づける主張の実例にあたる

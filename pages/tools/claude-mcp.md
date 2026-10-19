@@ -65,3 +65,4 @@ MCP Appsは[[concepts/generative-ui]]が扱うOpen-endedパターンの実装に
 - [[tools/line-harness]] — MCPサーバー同梱のOSS LINE配信ツール。「AIに運用させて人間は監視する」前提の設計例
 - [[tools/openai-mcp-extensions]] — MCP / MCP Apps に ChatGPT 固有の入口（サイドバー・ファイルハンドラ・メンション・フォーム）を足す OpenAI 公式拡張
 - [[tools/claude-projects-threads]] — claude.ai でつないだ MCP コネクタを全スレッドで使う Claude Projects。コーディネーター自体はコネクタを持たない
+- [[tools/oreilly-learning-platform]] — O'Reilly 公式 MCP サーバーを ACM 経由の契約でも OAuth（`/mcp` からユーザー名@acm.org の SSO）とトークンの両方で接続できた実践記

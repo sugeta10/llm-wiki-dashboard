@@ -34,3 +34,4 @@ AIエージェントに実装を任せると、人間が確認する待ち時間
 - [[concepts/ai-quality-amplification]] — AI開発は速さでなく品質のスケールが本質という論点と接続
 - [[concepts/feynman-technique-ai-era]] — 「わかった気」を説明して確かめる AI 時代の勉強法（@iwashi86）。説明できるかを理解の基準にする点で同じ発想
 - [[concepts/asd-ste100-llm-writing]] — LLM の出力を制御言語で書かせて理解コストを下げる Karpathy の tip
+- [[concepts/human-3-0]] — Dan Koe の自己開発モデル。「心を AI に外注する」ことを土台のない人への副作用（ステロイドの比喩）と位置づけ、本ページの認知的負債を個人の発達の側から扱う

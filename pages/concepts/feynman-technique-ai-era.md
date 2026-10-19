@@ -55,3 +55,4 @@ iwashiは、両手は塞がるが口と耳が空いている時間に、イン�
 - [[concepts/ai-teacher-prompt]] — AI に教師役を割り当てて理解を深める手法。本手法は逆に自分が教える側に回る
 - [[concepts/research-methodology]] — ML リサーチ力の整理。論文の骨子に沿って説明する型と接続
 - [[concepts/asd-ste100-llm-writing]] — LLM の出力を制御言語で書かせて理解しやすくする手法
+- [[tools/oreilly-learning-platform]] — iwashi が英語技術書を読む場として挙げる O'Reilly 学習プラットフォームの契約経路（直契約 $499 と ACM 経由 $174）・損益分岐・MCP 接続の実践記

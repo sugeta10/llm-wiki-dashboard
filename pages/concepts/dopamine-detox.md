@@ -36,3 +36,4 @@
 - [[concepts/thought-eliciting-questions]] — 同著者@antoshia2nによる質問フレーズ10選。こちらは刺激・報酬系、あちらは思考・対話が主題
 - [[concepts/mitochondria-aging]] — 反応し続ける対象を減らすことを、エネルギー配分（ストレス反応が成長・維持・修復の予算を奪う）の側から説明した視点
 - [[concepts/likable-questioning]] — 同著者@antoshia2nによる、教わる側が好かれる質問の10の型
+- [[concepts/human-3-0]] — Dan Koe の自己開発モデル。挑まないと退屈し快適さと気晴らしへ逃げるという「罠」の記述が、本ページの刺激への反射的逃避と重なる

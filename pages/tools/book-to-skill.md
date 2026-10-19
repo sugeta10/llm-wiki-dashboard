@@ -59,4 +59,4 @@
 
 ## 関連
 
-関連: [[tools/claude-code]] · [[concepts/claude-skills]] · [[concepts/self-refining-skills]]
+関連: [[tools/claude-code]] · [[concepts/claude-skills]] · [[concepts/self-refining-skills]] · [[tools/oreilly-learning-platform]]（手元にファイルを持たない読み放題サブスクを Claude から引く経路は MCP 検索になる、という対の手段）

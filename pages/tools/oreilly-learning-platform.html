@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>oreilly-learning-platform - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>oreilly-learning-platform</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="oreilly-learning-platform.md">Markdownで表示</a></div>
+  <div class="meta">tools/oreilly-learning-platform · tools · <span title="2026-10-19">今日</span></div>
+  <article><h1>O'Reilly 学習プラットフォーム（ACM 経由の契約と MCP）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: O'Reilly の技術書・動画の読み放題は直契約だと年 $499 だが、計算機科学の国際学会 ACM の Professional 会員に Skills Bundle を足す経路なら年 $174（初年度 $150）で、本・動画・O'Reilly 公式 MCP サーバーまで使える。年に1〜2冊しか本を買わない SonicMoov の Zenn 記事の筆者は、冊数では元が取れなくても「買うほどではない本をつまみ読みできる」価値で ACM 経由を選んだ。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  A[&quot;services.acm.org&lt;br/&gt;Professional 会員＋Skills Bundle を申し込み・支払い&quot;] --&gt; B[&quot;accounts.acm.org&lt;br/&gt;ログイン用アカウント作成・メールで有効化&quot;]
+  B --&gt; C[&quot;go.oreilly.com/acm&lt;br/&gt;ACM のユーザー名で O&#x27;Reilly にログイン&quot;]
+  C --&gt; D[&quot;スマホアプリ / Claude Code の /mcp&lt;br/&gt;ユーザー名@acm.org を入れて SSO&quot;]</pre>
+<p>O'Reilly の本は技術書として信頼できるが分厚くて重く、1冊数千円するので気になっても買うまでに至らない本が多い、と筆者は書く。10日間の無料トライアル（クレジットカード不要）から始め、契約方法によって年額が3倍近く違うと知って、料金と使えるものの違い・元が取れるか・日本語の本がどのくらい読めるか・いちばん安い ACM 経由でも MCP が使えるか、の4点を調べた。契約方法を選ぶ条件に「MCP が使えるか」を入れたのは、O'Reilly が公式の MCP サーバーを出していて Claude などから蔵書を検索できるからだ、と筆者は述べる。@matsuu はこの記事を、「O'Reilly が公式の MCP サーバーを出している」「気になる本を気軽に読めることの費用対効果は思っていたより大きい」の2点を引いて紹介した。</p>
+<h2>契約方法と料金（記事からの転記）</h2>
+<p>個人で使う場合の選択肢は「O'Reilly と直接契約する」か「ACM 経由で使う」かの2つだ、と筆者は整理する。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>料金</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>無料トライアル</td>
+<td>0円</td>
+<td>10日間。クレジットカード不要</td>
+</tr>
+<tr>
+<td>直契約（月額）</td>
+<td>$49/月</td>
+<td></td>
+</tr>
+<tr>
+<td>直契約（3か月）</td>
+<td>$129</td>
+<td></td>
+</tr>
+<tr>
+<td>直契約（年額）</td>
+<td>$499/年</td>
+<td></td>
+</tr>
+<tr>
+<td>直契約（セール）</td>
+<td>$299 前後/年？</td>
+<td>ブラックフライデー〜サイバーマンデー（11月末）ごろ。Web 上の情報による</td>
+</tr>
+<tr>
+<td>ACM 経由</td>
+<td>$150（初年度）／$174（2年目以降）</td>
+<td>ACM Professional 会員 + Skills Bundle（$75/年）</td>
+</tr>
+</tbody>
+</table>
+<p>筆者は 2026年10月中旬のレート（1ドル158円）で、直契約の年額を約78,800円、セールを約47,200円、ACM 経由の2年目以降を約27,500円、初年度を約23,700円と換算している（カード会社の為替手数料や税金は含まない）。3か月プランは以前の調査時にはなかったように思う、セール価格は公式の告知ではなく「例年このくらい」という Web 上の情報で今年も同じとは限らない、と筆者は注記する。</p>
+<h2>ACM 経由とは</h2>
+<p>ACM（Association for Computing Machinery）は計算機科学の国際学会で、Professional 会員になって有料オプションの Skills Bundle を追加すると、会員特典として O'Reilly のプラットフォームが使える。Skills Bundle には Skillsoft Percipio（Codecademy を含む）のコンテンツも入る。ACM の紹介ページには Pluralsight も書かれているが、2026年10月の申し込み画面の説明には無く、契約後に ACM Learning Center から開こうとしても Not Found になったので、Pluralsight 目当ての申し込みはやめた方がよい、と筆者は書く。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>初年度</th>
+<th>2年目以降</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Professional 会員費</td>
+<td>$75（25%オフ）</td>
+<td>$99</td>
+</tr>
+<tr>
+<td>Skills Bundle</td>
+<td>$75</td>
+<td>$75</td>
+</tr>
+<tr>
+<td>合計</td>
+<td>$150</td>
+<td>$174</td>
+</tr>
+</tbody>
+</table>
+<p>初年度の25%オフは通常の申し込みページからではなく、キャンペーン用の URL（ACM のトップページからはたどれない）から申し込む必要がある。情報処理学会（IPSJ）の会員なら ACM の会費が $79 になる割引もある（IEEE Computer Society の会員なら $89）。割引は1つしか使えないので初年度は25%オフの方が安いが、2年目以降は年 $154 で済む、と筆者は補足する。</p>
+<h2>元は取れるか</h2>
+<p>筆者は O'Reilly の技術書を1冊4,000円として「年に何冊読めば買うより安くなるか」を計算する。直契約（$499、約78,800円）は年20冊、セール（$299、約47,200円）は年12冊、ACM 経由（$174、約27,500円）は年7冊である。月に1〜2冊読むなら直契約の通常価格でも元が取れるが、年に数冊なら ACM 経由でないと割高になる。筆者自身はここ数年、平均すると年に1〜2冊しか買っておらず、冊数だけで見ればいちばん安い ACM 経由でも元は取れない。</p>
+<p>それでもサブスクに惹かれるのは、買うほどではない本もつまみ読みできるからだ、と筆者は言う。「気になるけど全部は読まないかも」という本には手が出ず、買う本を年1〜2冊に絞っていたのもそのせいで、サブスクなら必要な章だけ読む、目次を見て合わなければやめる、という読み方が気軽にできる。冊数で元を取るより、これまで手を出さなかった本に触れられる方に価値を感じている、と筆者は結論づける。</p>
+<h2>使えるものの違い（記事からの転記）</h2>
+<p>安いぶん ACM 経由では使えないものがある。筆者は ACM の FAQ に書かれた対象外のものと直契約の個人プランを並べている。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>直契約（個人）</th>
+<th>ACM 経由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>書籍・動画・コース</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>スマホアプリ・オフライン閲覧</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>ライブイベント</td>
+<td>○</td>
+<td>×</td>
+</tr>
+<tr>
+<td>資格対策（模擬試験など）</td>
+<td>○</td>
+<td>×</td>
+</tr>
+<tr>
+<td>Superstream の録画</td>
+<td>○</td>
+<td>×</td>
+</tr>
+<tr>
+<td>インタラクティブラボ・サンドボックス</td>
+<td>○</td>
+<td>×（FAQ 上は）※</td>
+</tr>
+<tr>
+<td>クラウドラボ</td>
+<td>×</td>
+<td>×</td>
+</tr>
+<tr>
+<td>Skillsoft Percipio（Codecademy 含む）</td>
+<td>×</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Search MCP</td>
+<td>○</td>
+<td>○（2026年4月から）</td>
+</tr>
+</tbody>
+</table>
+<p>※ ACM の FAQ では対象外だが、筆者が契約後に試すと AWS Sandbox が起動できた。</p>
+<p>ラボと呼ばれるものは3種類あり、どれもブラウザを開くだけで使えて環境構築はいらない、と筆者は書く。<strong>ラボ</strong>は Kubernetes・Docker・Python などをブラウザ上の開発環境で手順どおりに動かすもの、<strong>サンドボックス</strong>は Python・Ubuntu・Kubernetes・Java・SQL などの設定済み環境で自由にコードを試すもの、<strong>クラウドラボ</strong>はガイドに沿ってクラウド上で実践的なシナリオを進めるものである。クラウドラボは直契約でも個人プランには入らず Team プラン以上になる。</p>
+<p>ACM 経由のラボについては FAQ と実態が食い違っていた、と筆者は書く。ACM の FAQ ではラボとサンドボックスは対象外だが、申し込み画面の Skills Bundle の説明には「interactive sandboxes, practice labs」とあり、契約後に ACM 経由のアカウントで O'Reilly の AWS Sandbox を開くと起動できた。起動するとブラウザ内にターミナルが開き、数十秒で一時的な AWS の認証情報（ユーザー名・パスワード・アクセスキー・アカウント ID）が発行され、AWS CLI が設定済みのターミナルとマネジメントコンソールの両方が使える。使えるのは1時間で、認証情報は切れ、作ったリソースも自動で消える。権限のないサービスや操作は画面に表示される、と筆者は述べる。FAQ と食い違っているので今後使えなくなる可能性はある、とも筆者は注記する。</p>
+<p>ログイン方法も違う。ACM 経由では ACM の Web アカウントで SSO して O'Reilly に入る。どちらも個人プランなので、チームでアカウントを共有するのは規約違反だ、と筆者は書く。</p>
+<h2>ACM 経由でも MCP は使えるか</h2>
+<p>ACM は2026年4月に「Skills Bundle でも O'Reilly の MCP サーバーが使えるようになった」と発表しており、5月のフューチャー技術ブログの記事でも ACM 経由の契約で MCP に接続できていた、と筆者は書く。ただしその記事は MCP 用のトークンを発行して接続しており、O'Reilly の公式ガイドが今推奨するのはブラウザでログインするだけの OAuth 認証である。ACM 経由は ACM の SSO でログインするため、OAuth が同じように通るかは契約前には分からなかった。</p>
+<p>契約後に筆者がトークンと OAuth の両方を試した結果は次のとおり。</p>
+<ul>
+<li><strong>トークン</strong>: ACM 経由のアカウントでも O'Reilly の MCP Tokens ページでトークンを発行でき、Claude から検索できた</li>
+<li><strong>OAuth</strong>: Claude Code の <code>/mcp</code> から認証すると O'Reilly のサインイン画面が開く。メールアドレス欄に <code>&lt;ACM のユーザー名&gt;@acm.org</code> を入れると ACM の SSO 画面に切り替わり、ACM のアカウントでログインすると接続できた。検索も問題なく使えた</li>
+</ul>
+<p>ACM 経由でも、トークンを発行せずブラウザでログインするだけでつながる。スマホアプリと同じで <code>@acm.org</code> のアドレスを入れるのがポイントだ、と筆者は書く。</p>
+<h2>日本語の本はどのくらい読めるか</h2>
+<p>O'Reilly は洋書のイメージが強いが邦訳書もある程度入っている、と筆者は書く。トライアル中に書名で検索して見つかったのは『リーダブルコード』『ソフトウェアアーキテクチャの基礎』『Effective TypeScript 第2版』『AI エンジニアリング』『PHP クックブック』の5冊で、どれも新しい版だった。原題で検索して邦訳書が出てくるものもあり、邦題が原題と離れている本でも検索結果に出てきた。O'Reilly の検索は英語のコンテンツが優先されるので、<code>Settings → Language Preferences</code> で日本語を追加してから探すのがおすすめだ、と筆者は述べる。</p>
+<h2>申し込み手順と注意点</h2>
+<p>申し込みから O'Reilly にログインするまでに使うサイトは3つで、筆者は約10分で終わったと書く。</p>
+<table>
+<thead>
+<tr>
+<th>順番</th>
+<th>サイト</th>
+<th>やること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>services.acm.org</td>
+<td>会員と Skills Bundle を申し込んで支払う</td>
+</tr>
+<tr>
+<td>2</td>
+<td>accounts.acm.org</td>
+<td>ログイン用のアカウントを作り、メールで有効にする</td>
+</tr>
+<tr>
+<td>3</td>
+<td>go.oreilly.com/acm</td>
+<td>ACM のアカウントで O'Reilly にログインする</td>
+</tr>
+</tbody>
+</table>
+<p>筆者が挙げる注意点は次のとおり。</p>
+<ul>
+<li>申し込み時に「ACM Skills Bundle Add-On」のチェックを忘れると O'Reilly は使えない</li>
+<li>「Automatic Renewal Program」は任意で、筆者は1年使ってから決めたいので外した。あとから myACM の「My Wallet」で自動更新に申し込んだり外したりできる。解約は Member Services に連絡する形</li>
+<li>パスワードに使えるのは英字・数字・<code>-</code> <code>_</code> <code>.</code> だけで6〜26文字。貼り付けた場合、26文字を超えた分は切り捨てられるので、パスワード管理ツールで長いものを作ると気づかずログインできなくなる</li>
+<li>ユーザー名は自動で発行され、O'Reilly へのログインにはメールアドレスではなくこのユーザー名を使う</li>
+<li>スマホアプリ（iOS / Android）は、メールアドレス欄に <code>&lt;ACM のユーザー名&gt;@acm.org</code> を入れ、「I'm with: ACM」と出たら「Sign in with SSO」を押す。ふだんのメールアドレスでは ACM 経由のアカウントにつながらない</li>
+<li>トライアル中に作ったプレイリストやハイライトは、ACM 経由が別アカウントになるため引き継げないつもりでいた方が安心</li>
+<li>2年目からは初年度の割引が切れて $174 になる</li>
+</ul>
+<p>筆者は 2026年10月13日に申し込み、初年度は $150 だった。1年使って続けるかどうかは1年後にあらためて書くつもりだ、と筆者は書く。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-19: ブラックフライデー頃のセールで直契約が $299 前後になるという情報は Web 上の記述で、筆者も公式の告知ではないと注記している。11月末に実際の価格を確かめる</li>
+<li>2026-10-19: ACM 経由のアカウントで AWS Sandbox（1時間の一時 AWS 環境）が起動できたのは ACM の FAQ と食い違う。筆者は今後使えなくなる可能性を指摘しており、1年後の継続判断も書く予定</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の年間の技術書購入冊数と「気になって買わなかった本」の数を数えると、年7冊の損益分岐をどちら側に越えるか</li>
+<li>O'Reilly の MCP サーバーを Claude Code につなぐと、この wiki の ingest で技術書の該当章を根拠として引けるようになるか。検索 MCP が返すのは全文か抜粋かを確かめる</li>
+<li>ACM 経由で読める邦訳書の範囲は、オライリー・ジャパンの刊行物のどこまでか。書名検索でなく出版社や言語で絞り込めるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a> — MCP の仕様と Claude 側の展開。O'Reilly 公式 MCP サーバーへの OAuth 接続は Claude Code の <code>/mcp</code> から行う</li>
+<li><a href="../concepts/feynman-technique-ai-era.html">feynman-technique-ai-era</a> — @iwashi86 が O'Reilly 学習プラットフォームで英語技術書の先行リリースを読み AI で噛み砕く勉強法を挙げる。本ページはその契約経路と費用の側</li>
+<li><a href="../tools/book-to-skill.html">book-to-skill</a> — 手元の PDF/EPUB をスキル化するツール。読み放題のサブスクはファイルを手元に持たないため、同じ本を Claude から引く手段は MCP 検索になると考えられる</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/feynman-technique-ai-era.html">feynman-technique-ai-era</a></li>
+<li><a href="../tools/book-to-skill.html">book-to-skill</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111818352352182317" rel="noopener" target="_blank">https://x.com/i/web/status/2111818352352182317</a></li>
+<li><a href="https://zenn.dev/sonicmoov/articles/oreilly-subscription-acm" rel="noopener" target="_blank">https://zenn.dev/sonicmoov/articles/oreilly-subscription-acm</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># O&#x27;Reilly 学習プラットフォーム（ACM 経由の契約と MCP）
+
+&gt; **TL;DR**: O&#x27;Reilly の技術書・動画の読み放題は直契約だと年 $499 だが、計算機科学の国際学会 ACM の Professional 会員に Skills Bundle を足す経路なら年 $174（初年度 $150）で、本・動画・O&#x27;Reilly 公式 MCP サーバーまで使える。年に1〜2冊しか本を買わない SonicMoov の Zenn 記事の筆者は、冊数では元が取れなくても「買うほどではない本をつまみ読みできる」価値で ACM 経由を選んだ。
+
+```mermaid
+flowchart LR
+  A[&quot;services.acm.org&lt;br/&gt;Professional 会員＋Skills Bundle を申し込み・支払い&quot;] --&gt; B[&quot;accounts.acm.org&lt;br/&gt;ログイン用アカウント作成・メールで有効化&quot;]
+  B --&gt; C[&quot;go.oreilly.com/acm&lt;br/&gt;ACM のユーザー名で O&#x27;Reilly にログイン&quot;]
+  C --&gt; D[&quot;スマホアプリ / Claude Code の /mcp&lt;br/&gt;ユーザー名@acm.org を入れて SSO&quot;]
+```
+
+O&#x27;Reilly の本は技術書として信頼できるが分厚くて重く、1冊数千円するので気になっても買うまでに至らない本が多い、と筆者は書く。10日間の無料トライアル（クレジットカード不要）から始め、契約方法によって年額が3倍近く違うと知って、料金と使えるものの違い・元が取れるか・日本語の本がどのくらい読めるか・いちばん安い ACM 経由でも MCP が使えるか、の4点を調べた。契約方法を選ぶ条件に「MCP が使えるか」を入れたのは、O&#x27;Reilly が公式の MCP サーバーを出していて Claude などから蔵書を検索できるからだ、と筆者は述べる。@matsuu はこの記事を、「O&#x27;Reilly が公式の MCP サーバーを出している」「気になる本を気軽に読めることの費用対効果は思っていたより大きい」の2点を引いて紹介した。
+
+## 契約方法と料金（記事からの転記）
+
+個人で使う場合の選択肢は「O&#x27;Reilly と直接契約する」か「ACM 経由で使う」かの2つだ、と筆者は整理する。
+
+| 方法 | 料金 | 備考 |
+| --- | --- | --- |
+| 無料トライアル | 0円 | 10日間。クレジットカード不要 |
+| 直契約（月額） | $49/月 | |
+| 直契約（3か月） | $129 | |
+| 直契約（年額） | $499/年 | |
+| 直契約（セール） | $299 前後/年？ | ブラックフライデー〜サイバーマンデー（11月末）ごろ。Web 上の情報による |
+| ACM 経由 | $150（初年度）／$174（2年目以降） | ACM Professional 会員 + Skills Bundle（$75/年） |
+
+筆者は 2026年10月中旬のレート（1ドル158円）で、直契約の年額を約78,800円、セールを約47,200円、ACM 経由の2年目以降を約27,500円、初年度を約23,700円と換算している（カード会社の為替手数料や税金は含まない）。3か月プランは以前の調査時にはなかったように思う、セール価格は公式の告知ではなく「例年このくらい」という Web 上の情報で今年も同じとは限らない、と筆者は注記する。
+
+## ACM 経由とは
+
+ACM（Association for Computing Machinery）は計算機科学の国際学会で、Professional 会員になって有料オプションの Skills Bundle を追加すると、会員特典として O&#x27;Reilly のプラットフォームが使える。Skills Bundle には Skillsoft Percipio（Codecademy を含む）のコンテンツも入る。ACM の紹介ページには Pluralsight も書かれているが、2026年10月の申し込み画面の説明には無く、契約後に ACM Learning Center から開こうとしても Not Found になったので、Pluralsight 目当ての申し込みはやめた方がよい、と筆者は書く。
+
+| | 初年度 | 2年目以降 |
+| --- | --- | --- |
+| Professional 会員費 | $75（25%オフ） | $99 |
+| Skills Bundle | $75 | $75 |
+| 合計 | $150 | $174 |
+
+初年度の25%オフは通常の申し込みページからではなく、キャンペーン用の URL（ACM のトップページからはたどれない）から申し込む必要がある。情報処理学会（IPSJ）の会員なら ACM の会費が $79 になる割引もある（IEEE Computer Society の会員なら $89）。割引は1つしか使えないので初年度は25%オフの方が安いが、2年目以降は年 $154 で済む、と筆者は補足する。
+
+## 元は取れるか
+
+筆者は O&#x27;Reilly の技術書を1冊4,000円として「年に何冊読めば買うより安くなるか」を計算する。直契約（$499、約78,800円）は年20冊、セール（$299、約47,200円）は年12冊、ACM 経由（$174、約27,500円）は年7冊である。月に1〜2冊読むなら直契約の通常価格でも元が取れるが、年に数冊なら ACM 経由でないと割高になる。筆者自身はここ数年、平均すると年に1〜2冊しか買っておらず、冊数だけで見ればいちばん安い ACM 経由でも元は取れない。
+
+それでもサブスクに惹かれるのは、買うほどではない本もつまみ読みできるからだ、と筆者は言う。「気になるけど全部は読まないかも」という本には手が出ず、買う本を年1〜2冊に絞っていたのもそのせいで、サブスクなら必要な章だけ読む、目次を見て合わなければやめる、という読み方が気軽にできる。冊数で元を取るより、これまで手を出さなかった本に触れられる方に価値を感じている、と筆者は結論づける。
+
+## 使えるものの違い（記事からの転記）
+
+安いぶん ACM 経由では使えないものがある。筆者は ACM の FAQ に書かれた対象外のものと直契約の個人プランを並べている。
+
+| | 直契約（個人） | ACM 経由 |
+| --- | --- | --- |
+| 書籍・動画・コース | ○ | ○ |
+| スマホアプリ・オフライン閲覧 | ○ | ○ |
+| ライブイベント | ○ | × |
+| 資格対策（模擬試験など） | ○ | × |
+| Superstream の録画 | ○ | × |
+| インタラクティブラボ・サンドボックス | ○ | ×（FAQ 上は）※ |
+| クラウドラボ | × | × |
+| Skillsoft Percipio（Codecademy 含む） | × | ○ |
+| Search MCP | ○ | ○（2026年4月から） |
+
+※ ACM の FAQ では対象外だが、筆者が契約後に試すと AWS Sandbox が起動できた。
+
+ラボと呼ばれるものは3種類あり、どれもブラウザを開くだけで使えて環境構築はいらない、と筆者は書く。**ラボ**は Kubernetes・Docker・Python などをブラウザ上の開発環境で手順どおりに動かすもの、**サンドボックス**は Python・Ubuntu・Kubernetes・Java・SQL などの設定済み環境で自由にコードを試すもの、**クラウドラボ**はガイドに沿ってクラウド上で実践的なシナリオを進めるものである。クラウドラボは直契約でも個人プランには入らず Team プラン以上になる。
+
+ACM 経由のラボについては FAQ と実態が食い違っていた、と筆者は書く。ACM の FAQ ではラボとサンドボックスは対象外だが、申し込み画面の Skills Bundle の説明には「interactive sandboxes, practice labs」とあり、契約後に ACM 経由のアカウントで O&#x27;Reilly の AWS Sandbox を開くと起動できた。起動するとブラウザ内にターミナルが開き、数十秒で一時的な AWS の認証情報（ユーザー名・パスワード・アクセスキー・アカウント ID）が発行され、AWS CLI が設定済みのターミナルとマネジメントコンソールの両方が使える。使えるのは1時間で、認証情報は切れ、作ったリソースも自動で消える。権限のないサービスや操作は画面に表示される、と筆者は述べる。FAQ と食い違っているので今後使えなくなる可能性はある、とも筆者は注記する。
+
+ログイン方法も違う。ACM 経由では ACM の Web アカウントで SSO して O&#x27;Reilly に入る。どちらも個人プランなので、チームでアカウントを共有するのは規約違反だ、と筆者は書く。
+
+## ACM 経由でも MCP は使えるか
+
+ACM は2026年4月に「Skills Bundle でも O&#x27;Reilly の MCP サーバーが使えるようになった」と発表しており、5月のフューチャー技術ブログの記事でも ACM 経由の契約で MCP に接続できていた、と筆者は書く。ただしその記事は MCP 用のトークンを発行して接続しており、O&#x27;Reilly の公式ガイドが今推奨するのはブラウザでログインするだけの OAuth 認証である。ACM 経由は ACM の SSO でログインするため、OAuth が同じように通るかは契約前には分からなかった。
+
+契約後に筆者がトークンと OAuth の両方を試した結果は次のとおり。
+
+- **トークン**: ACM 経由のアカウントでも O&#x27;Reilly の MCP Tokens ページでトークンを発行でき、Claude から検索できた
+- **OAuth**: Claude Code の `/mcp` から認証すると O&#x27;Reilly のサインイン画面が開く。メールアドレス欄に `&lt;ACM のユーザー名&gt;@acm.org` を入れると ACM の SSO 画面に切り替わり、ACM のアカウントでログインすると接続できた。検索も問題なく使えた
+
+ACM 経由でも、トークンを発行せずブラウザでログインするだけでつながる。スマホアプリと同じで `@acm.org` のアドレスを入れるのがポイントだ、と筆者は書く。
+
+## 日本語の本はどのくらい読めるか
+
+O&#x27;Reilly は洋書のイメージが強いが邦訳書もある程度入っている、と筆者は書く。トライアル中に書名で検索して見つかったのは『リーダブルコード』『ソフトウェアアーキテクチャの基礎』『Effective TypeScript 第2版』『AI エンジニアリング』『PHP クックブック』の5冊で、どれも新しい版だった。原題で検索して邦訳書が出てくるものもあり、邦題が原題と離れている本でも検索結果に出てきた。O&#x27;Reilly の検索は英語のコンテンツが優先されるので、`Settings → Language Preferences` で日本語を追加してから探すのがおすすめだ、と筆者は述べる。
+
+## 申し込み手順と注意点
+
+申し込みから O&#x27;Reilly にログインするまでに使うサイトは3つで、筆者は約10分で終わったと書く。
+
+| 順番 | サイト | やること |
+| --- | --- | --- |
+| 1 | services.acm.org | 会員と Skills Bundle を申し込んで支払う |
+| 2 | accounts.acm.org | ログイン用のアカウントを作り、メールで有効にする |
+| 3 | go.oreilly.com/acm | ACM のアカウントで O&#x27;Reilly にログインする |
+
+筆者が挙げる注意点は次のとおり。
+
+- 申し込み時に「ACM Skills Bundle Add-On」のチェックを忘れると O&#x27;Reilly は使えない
+- 「Automatic Renewal Program」は任意で、筆者は1年使ってから決めたいので外した。あとから myACM の「My Wallet」で自動更新に申し込んだり外したりできる。解約は Member Services に連絡する形
+- パスワードに使えるのは英字・数字・`-` `_` `.` だけで6〜26文字。貼り付けた場合、26文字を超えた分は切り捨てられるので、パスワード管理ツールで長いものを作ると気づかずログインできなくなる
+- ユーザー名は自動で発行され、O&#x27;Reilly へのログインにはメールアドレスではなくこのユーザー名を使う
+- スマホアプリ（iOS / Android）は、メールアドレス欄に `&lt;ACM のユーザー名&gt;@acm.org` を入れ、「I&#x27;m with: ACM」と出たら「Sign in with SSO」を押す。ふだんのメールアドレスでは ACM 経由のアカウントにつながらない
+- トライアル中に作ったプレイリストやハイライトは、ACM 経由が別アカウントになるため引き継げないつもりでいた方が安心
+- 2年目からは初年度の割引が切れて $174 になる
+
+筆者は 2026年10月13日に申し込み、初年度は $150 だった。1年使って続けるかどうかは1年後にあらためて書くつもりだ、と筆者は書く。
+
+## 観察ログ（未検証）
+
+- 2026-10-19: ブラックフライデー頃のセールで直契約が $299 前後になるという情報は Web 上の記述で、筆者も公式の告知ではないと注記している。11月末に実際の価格を確かめる
+- 2026-10-19: ACM 経由のアカウントで AWS Sandbox（1時間の一時 AWS 環境）が起動できたのは ACM の FAQ と食い違う。筆者は今後使えなくなる可能性を指摘しており、1年後の継続判断も書く予定
+
+## 問い
+
+- 自分の年間の技術書購入冊数と「気になって買わなかった本」の数を数えると、年7冊の損益分岐をどちら側に越えるか
+- O&#x27;Reilly の MCP サーバーを Claude Code につなぐと、この wiki の ingest で技術書の該当章を根拠として引けるようになるか。検索 MCP が返すのは全文か抜粋かを確かめる
+- ACM 経由で読める邦訳書の範囲は、オライリー・ジャパンの刊行物のどこまでか。書名検索でなく出版社や言語で絞り込めるか
+
+## 関連
+
+- [[tools/claude-mcp]] — MCP の仕様と Claude 側の展開。O&#x27;Reilly 公式 MCP サーバーへの OAuth 接続は Claude Code の `/mcp` から行う
+- [[concepts/feynman-technique-ai-era]] — @iwashi86 が O&#x27;Reilly 学習プラットフォームで英語技術書の先行リリースを読み AI で噛み砕く勉強法を挙げる。本ページはその契約経路と費用の側
+- [[tools/book-to-skill]] — 手元の PDF/EPUB をスキル化するツール。読み放題のサブスクはファイルを手元に持たないため、同じ本を Claude から引く手段は MCP 検索になると考えられる
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

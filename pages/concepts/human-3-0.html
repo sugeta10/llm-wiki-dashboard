@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>human-3-0 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>human-3-0</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="human-3-0.md">Markdownで表示</a></div>
+  <div class="meta">concepts/human-3-0 · concepts · <span title="2026-10-19">今日</span></div>
+  <article><h1>Human 3.0（Dan Koe の自己開発モデル）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 人生を Mind・Body・Spirit・Vocation の4象限に分け、各象限の発達を Conformist（1.0）→ Individualist（2.0）→ Synthesist（3.0）の3レベルで測り、レベルの間を Dissonance → Uncertainty → Discovery の3フェーズで上がる、Dan Koe（@thedankoe）の自己開発の地図。AI は全象限に効く最新の「Glitch（加速装置）」だが、土台のない人にはステロイドと同じ副作用が出る、と Koe は位置づける。</p>
+<p>📌 X bookmark: 41,947（2026-10-19 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  subgraph Q[&quot;各象限（Mind / Body / Spirit / Vocation）で独立に進む&quot;]
+    L1[&quot;1.0 Conformist&quot;] --&gt;|&quot;Dissonance → Uncertainty → Discovery&quot;| L2[&quot;2.0 Individualist&quot;]
+    L2 --&gt;|&quot;Dissonance → Uncertainty → Discovery&quot;| L3[&quot;3.0 Synthesist&quot;]
+  end
+  CH[&quot;Channel（知識⇄技能への没頭）&quot;] -. 加速 .-&gt; L2
+  GL[&quot;Glitch（AI・サイケデリクス等）&quot;] -. 加速＋リスク .-&gt; L2</pre>
+<p>Koe が解こうとしているのは、既存の自己開発モデルが1つの領域に閉じている問題である。Spiral Dynamics（心理）、仏教とキリスト教（意味）、eコマースとコンサルティング（ビジネス）、Red Pill とフェミニズム（社会力学）など、どのモデルにも真実はあるが単一の領域や視点に孤立している、と Koe は言う。精神的指導者の体が弱い、ビジネスマンが人間関係を維持できない、「アルファ男性」が感情的に整っていない、という観察を挙げ、全人的に発達した人は稀だと述べる。古代ギリシア哲学のように複数領域をつなぐモデルも、インターネット・テクノロジー・AI 以前のもので、人々の頭を最も占める仕事と金に触れないものが多い、と Koe は指摘する。</p>
+<p>Koe は15年にわたり心理学・自己啓発・哲学・社会力学・テクノロジー・スタートアップ・金・宗教・意味を調べ、6年間オンラインで書いてきた中で見つけた重なるパターンを1枚の地図に統合する、と宣言する。科学的根拠に寄せつつ明快さと確信を優先し、ニュアンスと批判的思考は読者に預ける、「多くは間違っているだろうから疑え、一緒に作り上げてほしい」と非ドグマの立場を取る。モデルの詳細を書いた Knowledge Base と、自分の Metatype（後述）と次に解く中核問題を見つける AI プロンプトを別途公開していると Koe は書く（リンク先の本体は未収集）。</p>
+<h2>4つの象限（Quadrants）</h2>
+<p>Koe は人生の4つの領域を、Ken Wilber の AQAL モデルから採用した4象限で表す。</p>
+<table>
+<thead>
+<tr>
+<th>象限</th>
+<th>Koe の定義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mind</strong>（個人の内的世界）</td>
+<td>思考・感情・信念・内界。世界をどう解釈するか</td>
+</tr>
+<tr>
+<td><strong>Body</strong>（個人の物理的世界）</td>
+<td>行動と外見。世界が自分をどう解釈するか。栄養・トレーニング・趣味・習慣・身だしなみ・コミュニケーション・服装など</td>
+</tr>
+<tr>
+<td><strong>Spirit</strong>（集合的な内的世界）</td>
+<td>環境・コミュニティ・文化・家族・友人・同僚・現実との関係。意味とつながりをどう導くか</td>
+</tr>
+<tr>
+<td><strong>Vocation</strong>（集合的な物理的世界）</td>
+<td>教育・キャリア・経済といったシステム・構造・社会制度との関係。社会にどう収まり貢献するか</td>
+</tr>
+</tbody>
+</table>
+<p>この地図の効用は部分思考を防ぐことだ、と Koe は言う。内的な心の問題は転職という Vocation の手段では解けないことが多く、精神的な問題は栄養という Body の手段では解けないことが多い。資本家とキリスト教徒はそれぞれの領域では発達しているが、自分のモデルを他領域の問題に当てると不要な苦痛を経験する。金は意味を解決しないし逆も同じだが、両者は密接に関係している、と Koe は書く。</p>
+<p>Koe は人生そのものを「問題解決」と呼ぶ。生命や発達はより複雑な方向へ展開し、複雑さが生むカオスを収めるために秩序ある構造が創造される。種が花になるには環境から資源を取り込んで自己発達する必要があるのと同じで、個人の進化は「潜在能力に達したい欲求 → 未知への一歩で複雑さに出会う → 前進を妨げる問題を解く知識と技能を獲得する（または停滞してカオスに飲まれる） → アイデンティティが拡張し新しいレベルへ上がる → 詰まらない限り繰り返す」という循環で進む、と Koe は整理する。</p>
+<h2>3つのレベル（Levels）</h2>
+<p>各象限には低意識（1.0）・中意識（2.0）・高意識（3.0）の3つのマクロなレベルがある。Koe はこれを Spiral Dynamics や「自我発達の9段階」など発達心理学のモデルから採用したと述べ、価値観・信念・世界観は予測可能な段階を経て進化することがそれらの研究で示されている、と書く。</p>
+<ul>
+<li><strong>Human 1.0（The Conformist・順応者）</strong>: 既成の権威と伝統を重んじる。狭量さ・白黒思考・「正しい道は一つ」という信念が特徴で、幼少期の条件づけに由来することが多い</li>
+<li><strong>Human 2.0（The Individualist・個人主義者）</strong>: 規範を拒み、自分の目標を追う。地位を得て価値ある存在と見られたい欲求を持つ。狭量さは減るが、今度は「自分のやり方が唯一正しい」と信じる</li>
+<li><strong>Human 3.0（The Synthesist・統合者）</strong>: 複数の視点を採り、現実のパターンをつなぎ、新しい道を戦略化できる。全ての視点に統合可能な真実があると理解している。ノイズを遮断する意図的な選択として、1.0 的な狭さに見える振る舞いをすることもある</li>
+</ul>
+<p>レベルは象限ごとに独立して進む。Mind で Individualist になった人が、Spirit ではまだ Conformist で権威に従っている、ということが起きる。Koe は Vocation 象限の例として、3.0 の Synthesist は AI を活用して自分の天職を追えるが、1.0 の Conformist は知識・技能・経験の不足から AI を純粋な悪と見なす、と書く。Body 象限では、低意識の人は自分の体に入れる栄養を理解せず肥満と怠惰に至り、高意識の人は栄養素の相互作用を理解して目標に合わせて食事を調整する、という対比を挙げる。</p>
+<p>Koe はこれをビデオゲームにたとえる。Level 1 は脚本どおりに動く NPC（ノンプレイヤーキャラクター）、Level 2 は自分の物語を選ぶ主人公、Level 3 は他人も楽しむ新しいゲームを作れるプログラマーである。レベルの高低は善悪ではなく発達の度合いで、高意識の人は「より良い」のではなく「より発達している」だけだと Koe は注記する。また、人はレベルを離れるのではなく、前のレベルを「超えて含む（transcend and include）」。下の段階で得た知識・技能・道具を、より大きな視点から使えるようになる、と Koe は書く。</p>
+<h2>3つのフェーズ（Phases）</h2>
+<p>各レベルの中には、次のレベルに達するために通る3つのフェーズがある。フェーズは垂直方向の発達（レベルを上がる、または下がる）を表す。</p>
+<ol>
+<li><strong>Dissonance（不協和）</strong>: 今の段階を「味わい尽くした」人が、狭量さと快適さに麻痺していなければ、今いる場所に疲れるが次にどんな人生が来るかは分からない状態になる</li>
+<li><strong>Uncertainty（不確実）</strong>: その不満に十分気づいた人が、未知への不確実な一歩を踏み出し、新しい知識と技能に自分を開く</li>
+<li><strong>Discovery（発見）</strong>: 地図を進むように、次の発達レベルに達するための教育・道具・資源・洞察を発見する</li>
+</ol>
+<p>Koe は表記法として、象限名にレベルとフェーズを付ける。「Vocation 2.1」は Level 2・Phase 1、つまり Individualist の段階をほぼ使い切り、Level 3 へ不確実な一歩を踏み出す必要がある状態を指す。Vocation 象限なら、新しいキャリアを追ったが間違ったはしごを登っていたと気づき、天職の発見へ転じる必要がある、という局面に当たる。</p>
+<p>ここで起きやすいのが <strong>False Transformation（偽の変容）</strong> だと Koe は言う。各フェーズを通って新しいレベルに達したと感じても、必要な特性（Traits）の発達なしにそのレベルの見かけを模倣しているだけの自己欺瞞で、今のレベルに残る問題を解くまで人をその段階に閉じ込める。ある領域（たとえば Mind）で発達した人が、別の領域（Spirit や Vocation）でも進んだと思い込むときに起きる。また、一時的なストレスや今のレベル外の問題が来ると、人は下のレベルへ退行する。「あの頃の方が良かった」と振り返りたくなるのはこの退行の感覚だ、と Koe は説明する。</p>
+<p>Koe はフロー心理学と Nietzsche を引き、楽しい人生は抵抗を越えてこれらのフェーズを進むことの中にあると書く。ビジョン・目標・優先順位に意図的で、気晴らしと快適さで退行しなければ、多くの人を飲み込むカオスは耐えられるものになり、しばしば人生で最も充実した時期になる。Level 3 以上では、人はより複雑な挑戦を追い、「ゲームへの愛」のためにこのフェーズを自ら再演できる。会社を売って鬱になり、より悟った地点から次の会社を始める CEO がその例で、自分でゲームを作るので無限のゲームになる、と Koe は書く。</p>
+<h2>特性（Traits）とチャネル（Channels）</h2>
+<p>各フェーズには、次のレベルが見えるまでに獲得すべき知識・経験・技能の閾値がある。フェーズが垂直の発達なら、<strong>Traits（特性）</strong> は水平の発達、つまり次のフェーズに達するまで未知を進むことだ、と Koe は言う。知識はあるが実践と経験がない人は「太ったパーソナルトレーナー」の型になり、知識は立派でも真剣に受け取られない。</p>
+<p>垂直・水平どちらの発達にも共通する罠は退屈と不安である。技能と経験なしに新しいレベルへ飛ぼうとすれば不安になって失敗し、まったく上がろうとしなければ退屈して快適さと気晴らしに逃げる。どちらも心を無秩序にし、進化の流れから人を外す。人生は一見問題なくても全てが鈍く無意味に感じられる、と Koe は書く。</p>
+<p>これに対する手段が <strong>Channel（チャネル）</strong> である。どのレベルでも Dissonance フェーズに達すると Channel を使えるようになる、と Koe は言う。Channel はビデオゲームのワクワクするクエスト、知識や技能の「うさぎの穴」で、調べたり作ったりすることをやめられず時間が驚くほど速く過ぎる状態を指す。Human 3.0 のグラフ上では一端が知識の Trait に、他端が技能の Trait にあり、学ぶか作るかに「没頭」することで経験値が急速に増え、特定象限の次のレベルへ速く進む。Koe が挙げる例は次のとおり。</p>
+<ul>
+<li><strong>Mind</strong>: 深い瞑想状態への没入（技能）、または夜も眠れないほどの思考の連鎖から大量のアイデアが湧く（知識）</li>
+<li><strong>Body</strong>: 新しい食事法・サプリ・方法論を見つけて関連動画を一気見する（知識）、3か月間ランニングや筋トレに没頭して過去最大の成長を得る（技能）</li>
+<li><strong>Spirit</strong>: 神秘体験、ハネムーン期、親密な瞬間、今の人生のフェーズに「カチッとはまる」哲学との出会い</li>
+<li><strong>Vocation</strong>: 最大の明晰さに達して刺激的なキャリア転換・製品ローンチ・創作期へ入る（技能）、完璧な機会を見つけて事業に必要な技能を学ぶのが止まらない（知識）</li>
+</ul>
+<p>Channel に入る手順を Koe は次のように書く。今のレベルに十分慣れて Dissonance に達し、問題に麻痺せず不満を燃料にして未知へ進む。特定の象限（たとえば Body）で aim・ビジョン・目標を立て、知識と技能を獲得し始める。学び、行い、失敗して aim を修正し、吸い込まれる Channel を見つけるまで実験する。誰かが Channel にいるかは、そのことを語るときの興奮で分かる。Dissonance にいる人への助言として Koe は「恥を感じずに興奮と熱意を探して追え。その恥は Mind の低いレベルの信号で、その過程で自信という技能を育てられる」と書く。「迷子だと感じるならおそらく Dissonance フェーズにいて、持ちこたえれば次の Channel を見つけて人生にまた恋をできる」と Koe は締める。</p>
+<h2>グリッチ（Glitches）と AI</h2>
+<p>Koe は、Channel に強制的に入る・発達の停滞を破る手段を <strong>Glitch（グリッチ）</strong> と呼ぶ。Level 1 と 2 の境界がマトリックスで、Level 3 で自分のマトリックスを作るまでの「マトリックスのグリッチ」という意味合いである。サイケデリクスは神秘体験を強制でき、PED（運動能力向上薬）はフィットネスの進歩を加速し、払えない家賃のアパートに引っ越すことは副業を成功させるまで学び行動させる本物の締切になる、と Koe は例を挙げる。</p>
+<p><strong>AI は全領域にまたがる最新かつ最も広く入手できる Glitch</strong> だと Koe は位置づける。急速な自己発達にも自己破壊にも使え、味と見識が要る。AI が純粋な善や純粋な悪に見えるのは限られた視点からだけだ、と Koe は書く。</p>
+<p>Glitch は進歩を加速するが、意識のレベルが低いほどリスクが増す。経験なしにサイケデリクスを取れば変性状態を解釈できず正気を失いうる。AI psychosis や「心を AI に外注する」ことが増えているのは AI が悪いからではなく、ステロイドを摂るのと同じだ、と Koe は言う。（比喩として）栄養の全領域を広く学び、あらゆる相互作用を理解し、5年以上トレーニングしてきた土台がなければ、AI は厄介な副作用を起こす。土台があっても高報酬の仕組みには代償があり、特定の目標を持つ人が意識的にそのリスクを取る判断はありうるが、多くの人、特に Level 1 の人には「死刑宣告」になる。Koe の結論は「一発で倒されないよう『自然の』潜在能力を最大化して十分な経験を積め。知識と技能がリスクを下げる」である。</p>
+<h2>アーキタイプとメタタイプ</h2>
+<p>Koe はモデルに <strong>Archetype（アーキタイプ）</strong> と <strong>Metatype（メタタイプ）</strong> を含める。Archetype は特定の象限・レベルに現れる人のパターン、Metatype は1人の4象限それぞれの Archetype を統合したもので、自己開発のための性格テストのようなものだと Koe は説明する。グラフでは各象限に3つの Archetype しか示していないが実際はもっと多く、固定されたものではないと注記している。各象限での低意識から高意識への進行例として Koe が示すのは次のとおり（Koe の例示をそのまま転記する）。</p>
+<ul>
+<li><strong>Mind</strong>: NPC → Player → Creator。生まれつき割り当てられた脚本で生きるのをやめ、自分のゲームをプレイし始め、他人も遊ぶ新しいゲームを作る（「construct-level awareness」に類似、と Koe）</li>
+<li><strong>Body</strong>: Incel → Chad → Sigma、または Beta Male → Alpha Male → Sigma Male。行動と外見で観察できる現代的な Archetype として挙げる</li>
+<li><strong>Vocation</strong>: Job → Career → Calling。仕事に関する多くの進行の一つで、職がない人や早くから天職に入る人もいる</li>
+<li><strong>Spirit</strong>: Religion → Atheism → Mysticism。厳格な宗教家庭で育った人が反抗し、その後に神への新しい視点を再発見して Level 1 に含まれていた真実へ戻ってくる、よく見られる（唯一ではない）パターン</li>
+</ul>
+<p>Spirit 象限に関連して Koe は Ken Wilber の <strong>pre-trans fallacy（前／超の混同）</strong> を引く。前合理（Conformist）の状態と超合理（Synthesist）の状態は、慣習的な合理（Individualist）の視点からはどちらも「非合理」に見えるため混同される。Level 1 の原始的な状態を Level 3 に格上げすることも、本物の Level 3 の発達を原始的な思考に引き下げることも起きる。幼少期の条件づけ以上の知識と経験を持たない「聖書を振りかざす人」が神秘家を真剣に受け取れないが、神秘家はしばしば同じ真実をより包括的な視点から持っている、と Koe は書く。</p>
+<p>発達の採点方法を Koe は次のように書く。Level 1 の点は1点、Level 2 の点は2点、Level 3 の点は3点とし、合計をグラフ上の発達のスライス数である12で割る。記事の例の人物は 2.0 になる。その人物の象限別の記述は、Mind は「もう脚本では生きておらず construct level awareness に近い」、Body は「身だしなみが悪く習慣も悪いが、時に自信を見せる」、Spirit は「神の字義的な解釈を信じるが、無神論者の友人や同僚には寛容」、Vocation は「価値ある教育と技能を持つが、安全で充実したキャリアに集中している」である。これらを一つに統合した Metatype を Koe は「The Outlier」と名づけ、反抗なしに主流のパターンから離れ、カウンターカルチャーの視点で動く人物と要約する。外見を気にしないのは Body 象限の経験不足による False Transformation かもしれない、と Koe は付け加える。Metatype の判定は16の箱に入れる静的な性格テストにしたくないので AI を使う計画だ、と Koe は書く。</p>
+<h2>3.0 ライフスタイル</h2>
+<p>「1つの象限が多くの時間・集中・エネルギーを消費するとき、全象限の発達をどう両立させるか」という問いに、Koe は「問題解決を通じて全象限が賄われるライフスタイルを作ることが最終目標」と答える。Vocation が時間を食いすぎて Mind が乱れ、Body に使う力が残らず、Spirit に手が回らないなら、それは知識と技能の獲得で解くべき明白な問題で、Channel が生まれる機会になる。毎日1時間ビジネスの機会を学び練習の時間を取れば、他人より時間はかかっても、フェーズを進むうちに今の仕事を減らすか完全になくせる自信がつく、と Koe は書く。</p>
+<p>その転換は次の問題、たとえば低いエネルギーや、見込み客に尊敬されないことを浮かび上がらせる。ビジネスの次のレベルに達するために要るのはビジネスの発達ではなく、体・心・精神に関する問題の解決かもしれない。優れたビジネスと全ての金を手にしても、Vocation の追求に意味がなければ胸の真ん中に穴が空く。問題解決という単純な性質と、問題に気づくのを妨げる気晴らしへの警戒によって、仕事が遊びになり、健康が既定の状態になり、意味が豊かになり、心が自分の味方になる人生ができる、と Koe は結ぶ。</p>
+<h2>問い</h2>
+<ul>
+<li>自分の4象限をこのモデルで採点するとどうなるか。Koe が公開している Metatype 判定プロンプトと Knowledge Base（リンク先は未収集）を取り込み、採点の再現性を試す</li>
+<li>「AI は土台がないと副作用の出る Glitch」という位置づけは、<a href="../concepts/cognitive-debt.html">cognitive-debt</a> の「説明できないものは出さない」という基準と同じ結論を別の経路で出しているか。「土台がある」をどう測るか</li>
+<li>Koe は3レベルを Spiral Dynamics と自我発達段階から「採用した」と書くが、原典のどの段階がどのレベルに対応するか、原典側から確かめる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/creativity-recovery-protocol.html">creativity-recovery-protocol</a> — 同著者 Dan Koe。「AI の多用で脳が焼き切れた」体験から始まる創造性回復論は、本ページの「土台のない AI 利用は副作用を起こす」という主張の実例と読める</li>
+<li><a href="../business/human-nature-persuasion.html">human-nature-persuasion</a> — 同著者。「進歩の緊張」が安全→帰属→意味へ段階的に進むという前提は、本ページの3レベルと同じ発達心理学の土台に立つ</li>
+<li><a href="../concepts/career-agency-variables.html">career-agency-variables</a> — @ysk_motoyama の「何を・どう・なぜやるか」の3変数。Vocation 象限の Job → Career → Calling という進行を、交渉力の要らない「どうやるか・なぜやるか」から着手する実務論として補完する</li>
+<li><a href="../concepts/cognitive-debt.html">cognitive-debt</a> — AI の生成速度に理解が追いつかない負債。Koe の「心を AI に外注する」警告と同じ現象を開発者の側から扱う</li>
+<li><a href="../concepts/dopamine-detox.html">dopamine-detox</a> — 挑まないと退屈し快適さと気晴らしへ逃げるという Koe の「罠」の記述を、刺激・報酬系の側から10種のデトックスで扱う実践論</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/human-nature-persuasion.html">human-nature-persuasion</a></li>
+<li><a href="../concepts/career-agency-variables.html">career-agency-variables</a></li>
+<li><a href="../concepts/cognitive-debt.html">cognitive-debt</a></li>
+<li><a href="../concepts/creativity-recovery-protocol.html">creativity-recovery-protocol</a></li>
+<li><a href="../concepts/dopamine-detox.html">dopamine-detox</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2023779299367809063" rel="noopener" target="_blank">https://x.com/i/web/status/2023779299367809063</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Human 3.0（Dan Koe の自己開発モデル）
+
+&gt; **TL;DR**: 人生を Mind・Body・Spirit・Vocation の4象限に分け、各象限の発達を Conformist（1.0）→ Individualist（2.0）→ Synthesist（3.0）の3レベルで測り、レベルの間を Dissonance → Uncertainty → Discovery の3フェーズで上がる、Dan Koe（@thedankoe）の自己開発の地図。AI は全象限に効く最新の「Glitch（加速装置）」だが、土台のない人にはステロイドと同じ副作用が出る、と Koe は位置づける。
+
+&gt; 📌 X bookmark: 41,947（2026-10-19 時点）
+
+```mermaid
+flowchart LR
+  subgraph Q[&quot;各象限（Mind / Body / Spirit / Vocation）で独立に進む&quot;]
+    L1[&quot;1.0 Conformist&quot;] --&gt;|&quot;Dissonance → Uncertainty → Discovery&quot;| L2[&quot;2.0 Individualist&quot;]
+    L2 --&gt;|&quot;Dissonance → Uncertainty → Discovery&quot;| L3[&quot;3.0 Synthesist&quot;]
+  end
+  CH[&quot;Channel（知識⇄技能への没頭）&quot;] -. 加速 .-&gt; L2
+  GL[&quot;Glitch（AI・サイケデリクス等）&quot;] -. 加速＋リスク .-&gt; L2
+```
+
+Koe が解こうとしているのは、既存の自己開発モデルが1つの領域に閉じている問題である。Spiral Dynamics（心理）、仏教とキリスト教（意味）、eコマースとコンサルティング（ビジネス）、Red Pill とフェミニズム（社会力学）など、どのモデルにも真実はあるが単一の領域や視点に孤立している、と Koe は言う。精神的指導者の体が弱い、ビジネスマンが人間関係を維持できない、「アルファ男性」が感情的に整っていない、という観察を挙げ、全人的に発達した人は稀だと述べる。古代ギリシア哲学のように複数領域をつなぐモデルも、インターネット・テクノロジー・AI 以前のもので、人々の頭を最も占める仕事と金に触れないものが多い、と Koe は指摘する。
+
+Koe は15年にわたり心理学・自己啓発・哲学・社会力学・テクノロジー・スタートアップ・金・宗教・意味を調べ、6年間オンラインで書いてきた中で見つけた重なるパターンを1枚の地図に統合する、と宣言する。科学的根拠に寄せつつ明快さと確信を優先し、ニュアンスと批判的思考は読者に預ける、「多くは間違っているだろうから疑え、一緒に作り上げてほしい」と非ドグマの立場を取る。モデルの詳細を書いた Knowledge Base と、自分の Metatype（後述）と次に解く中核問題を見つける AI プロンプトを別途公開していると Koe は書く（リンク先の本体は未収集）。
+
+## 4つの象限（Quadrants）
+
+Koe は人生の4つの領域を、Ken Wilber の AQAL モデルから採用した4象限で表す。
+
+| 象限 | Koe の定義 |
+|---|---|
+| **Mind**（個人の内的世界） | 思考・感情・信念・内界。世界をどう解釈するか |
+| **Body**（個人の物理的世界） | 行動と外見。世界が自分をどう解釈するか。栄養・トレーニング・趣味・習慣・身だしなみ・コミュニケーション・服装など |
+| **Spirit**（集合的な内的世界） | 環境・コミュニティ・文化・家族・友人・同僚・現実との関係。意味とつながりをどう導くか |
+| **Vocation**（集合的な物理的世界） | 教育・キャリア・経済といったシステム・構造・社会制度との関係。社会にどう収まり貢献するか |
+
+この地図の効用は部分思考を防ぐことだ、と Koe は言う。内的な心の問題は転職という Vocation の手段では解けないことが多く、精神的な問題は栄養という Body の手段では解けないことが多い。資本家とキリスト教徒はそれぞれの領域では発達しているが、自分のモデルを他領域の問題に当てると不要な苦痛を経験する。金は意味を解決しないし逆も同じだが、両者は密接に関係している、と Koe は書く。
+
+Koe は人生そのものを「問題解決」と呼ぶ。生命や発達はより複雑な方向へ展開し、複雑さが生むカオスを収めるために秩序ある構造が創造される。種が花になるには環境から資源を取り込んで自己発達する必要があるのと同じで、個人の進化は「潜在能力に達したい欲求 → 未知への一歩で複雑さに出会う → 前進を妨げる問題を解く知識と技能を獲得する（または停滞してカオスに飲まれる） → アイデンティティが拡張し新しいレベルへ上がる → 詰まらない限り繰り返す」という循環で進む、と Koe は整理する。
+
+## 3つのレベル（Levels）
+
+各象限には低意識（1.0）・中意識（2.0）・高意識（3.0）の3つのマクロなレベルがある。Koe はこれを Spiral Dynamics や「自我発達の9段階」など発達心理学のモデルから採用したと述べ、価値観・信念・世界観は予測可能な段階を経て進化することがそれらの研究で示されている、と書く。
+
+- **Human 1.0（The Conformist・順応者）**: 既成の権威と伝統を重んじる。狭量さ・白黒思考・「正しい道は一つ」という信念が特徴で、幼少期の条件づけに由来することが多い
+- **Human 2.0（The Individualist・個人主義者）**: 規範を拒み、自分の目標を追う。地位を得て価値ある存在と見られたい欲求を持つ。狭量さは減るが、今度は「自分のやり方が唯一正しい」と信じる
+- **Human 3.0（The Synthesist・統合者）**: 複数の視点を採り、現実のパターンをつなぎ、新しい道を戦略化できる。全ての視点に統合可能な真実があると理解している。ノイズを遮断する意図的な選択として、1.0 的な狭さに見える振る舞いをすることもある
+
+レベルは象限ごとに独立して進む。Mind で Individualist になった人が、Spirit ではまだ Conformist で権威に従っている、ということが起きる。Koe は Vocation 象限の例として、3.0 の Synthesist は AI を活用して自分の天職を追えるが、1.0 の Conformist は知識・技能・経験の不足から AI を純粋な悪と見なす、と書く。Body 象限では、低意識の人は自分の体に入れる栄養を理解せず肥満と怠惰に至り、高意識の人は栄養素の相互作用を理解して目標に合わせて食事を調整する、という対比を挙げる。
+
+Koe はこれをビデオゲームにたとえる。Level 1 は脚本どおりに動く NPC（ノンプレイヤーキャラクター）、Level 2 は自分の物語を選ぶ主人公、Level 3 は他人も楽しむ新しいゲームを作れるプログラマーである。レベルの高低は善悪ではなく発達の度合いで、高意識の人は「より良い」のではなく「より発達している」だけだと Koe は注記する。また、人はレベルを離れるのではなく、前のレベルを「超えて含む（transcend and include）」。下の段階で得た知識・技能・道具を、より大きな視点から使えるようになる、と Koe は書く。
+
+## 3つのフェーズ（Phases）
+
+各レベルの中には、次のレベルに達するために通る3つのフェーズがある。フェーズは垂直方向の発達（レベルを上がる、または下がる）を表す。
+
+1. **Dissonance（不協和）**: 今の段階を「味わい尽くした」人が、狭量さと快適さに麻痺していなければ、今いる場所に疲れるが次にどんな人生が来るかは分からない状態になる
+2. **Uncertainty（不確実）**: その不満に十分気づいた人が、未知への不確実な一歩を踏み出し、新しい知識と技能に自分を開く
+3. **Discovery（発見）**: 地図を進むように、次の発達レベルに達するための教育・道具・資源・洞察を発見する
+
+Koe は表記法として、象限名にレベルとフェーズを付ける。「Vocation 2.1」は Level 2・Phase 1、つまり Individualist の段階をほぼ使い切り、Level 3 へ不確実な一歩を踏み出す必要がある状態を指す。Vocation 象限なら、新しいキャリアを追ったが間違ったはしごを登っていたと気づき、天職の発見へ転じる必要がある、という局面に当たる。
+
+ここで起きやすいのが **False Transformation（偽の変容）** だと Koe は言う。各フェーズを通って新しいレベルに達したと感じても、必要な特性（Traits）の発達なしにそのレベルの見かけを模倣しているだけの自己欺瞞で、今のレベルに残る問題を解くまで人をその段階に閉じ込める。ある領域（たとえば Mind）で発達した人が、別の領域（Spirit や Vocation）でも進んだと思い込むときに起きる。また、一時的なストレスや今のレベル外の問題が来ると、人は下のレベルへ退行する。「あの頃の方が良かった」と振り返りたくなるのはこの退行の感覚だ、と Koe は説明する。
+
+Koe はフロー心理学と Nietzsche を引き、楽しい人生は抵抗を越えてこれらのフェーズを進むことの中にあると書く。ビジョン・目標・優先順位に意図的で、気晴らしと快適さで退行しなければ、多くの人を飲み込むカオスは耐えられるものになり、しばしば人生で最も充実した時期になる。Level 3 以上では、人はより複雑な挑戦を追い、「ゲームへの愛」のためにこのフェーズを自ら再演できる。会社を売って鬱になり、より悟った地点から次の会社を始める CEO がその例で、自分でゲームを作るので無限のゲームになる、と Koe は書く。
+
+## 特性（Traits）とチャネル（Channels）
+
+各フェーズには、次のレベルが見えるまでに獲得すべき知識・経験・技能の閾値がある。フェーズが垂直の発達なら、**Traits（特性）** は水平の発達、つまり次のフェーズに達するまで未知を進むことだ、と Koe は言う。知識はあるが実践と経験がない人は「太ったパーソナルトレーナー」の型になり、知識は立派でも真剣に受け取られない。
+
+垂直・水平どちらの発達にも共通する罠は退屈と不安である。技能と経験なしに新しいレベルへ飛ぼうとすれば不安になって失敗し、まったく上がろうとしなければ退屈して快適さと気晴らしに逃げる。どちらも心を無秩序にし、進化の流れから人を外す。人生は一見問題なくても全てが鈍く無意味に感じられる、と Koe は書く。
+
+これに対する手段が **Channel（チャネル）** である。どのレベルでも Dissonance フェーズに達すると Channel を使えるようになる、と Koe は言う。Channel はビデオゲームのワクワクするクエスト、知識や技能の「うさぎの穴」で、調べたり作ったりすることをやめられず時間が驚くほど速く過ぎる状態を指す。Human 3.0 のグラフ上では一端が知識の Trait に、他端が技能の Trait にあり、学ぶか作るかに「没頭」することで経験値が急速に増え、特定象限の次のレベルへ速く進む。Koe が挙げる例は次のとおり。
+
+- **Mind**: 深い瞑想状態への没入（技能）、または夜も眠れないほどの思考の連鎖から大量のアイデアが湧く（知識）
+- **Body**: 新しい食事法・サプリ・方法論を見つけて関連動画を一気見する（知識）、3か月間ランニングや筋トレに没頭して過去最大の成長を得る（技能）
+- **Spirit**: 神秘体験、ハネムーン期、親密な瞬間、今の人生のフェーズに「カチッとはまる」哲学との出会い
+- **Vocation**: 最大の明晰さに達して刺激的なキャリア転換・製品ローンチ・創作期へ入る（技能）、完璧な機会を見つけて事業に必要な技能を学ぶのが止まらない（知識）
+
+Channel に入る手順を Koe は次のように書く。今のレベルに十分慣れて Dissonance に達し、問題に麻痺せず不満を燃料にして未知へ進む。特定の象限（たとえば Body）で aim・ビジョン・目標を立て、知識と技能を獲得し始める。学び、行い、失敗して aim を修正し、吸い込まれる Channel を見つけるまで実験する。誰かが Channel にいるかは、そのことを語るときの興奮で分かる。Dissonance にいる人への助言として Koe は「恥を感じずに興奮と熱意を探して追え。その恥は Mind の低いレベルの信号で、その過程で自信という技能を育てられる」と書く。「迷子だと感じるならおそらく Dissonance フェーズにいて、持ちこたえれば次の Channel を見つけて人生にまた恋をできる」と Koe は締める。
+
+## グリッチ（Glitches）と AI
+
+Koe は、Channel に強制的に入る・発達の停滞を破る手段を **Glitch（グリッチ）** と呼ぶ。Level 1 と 2 の境界がマトリックスで、Level 3 で自分のマトリックスを作るまでの「マトリックスのグリッチ」という意味合いである。サイケデリクスは神秘体験を強制でき、PED（運動能力向上薬）はフィットネスの進歩を加速し、払えない家賃のアパートに引っ越すことは副業を成功させるまで学び行動させる本物の締切になる、と Koe は例を挙げる。
+
+**AI は全領域にまたがる最新かつ最も広く入手できる Glitch** だと Koe は位置づける。急速な自己発達にも自己破壊にも使え、味と見識が要る。AI が純粋な善や純粋な悪に見えるのは限られた視点からだけだ、と Koe は書く。
+
+Glitch は進歩を加速するが、意識のレベルが低いほどリスクが増す。経験なしにサイケデリクスを取れば変性状態を解釈できず正気を失いうる。AI psychosis や「心を AI に外注する」ことが増えているのは AI が悪いからではなく、ステロイドを摂るのと同じだ、と Koe は言う。（比喩として）栄養の全領域を広く学び、あらゆる相互作用を理解し、5年以上トレーニングしてきた土台がなければ、AI は厄介な副作用を起こす。土台があっても高報酬の仕組みには代償があり、特定の目標を持つ人が意識的にそのリスクを取る判断はありうるが、多くの人、特に Level 1 の人には「死刑宣告」になる。Koe の結論は「一発で倒されないよう『自然の』潜在能力を最大化して十分な経験を積め。知識と技能がリスクを下げる」である。
+
+## アーキタイプとメタタイプ
+
+Koe はモデルに **Archetype（アーキタイプ）** と **Metatype（メタタイプ）** を含める。Archetype は特定の象限・レベルに現れる人のパターン、Metatype は1人の4象限それぞれの Archetype を統合したもので、自己開発のための性格テストのようなものだと Koe は説明する。グラフでは各象限に3つの Archetype しか示していないが実際はもっと多く、固定されたものではないと注記している。各象限での低意識から高意識への進行例として Koe が示すのは次のとおり（Koe の例示をそのまま転記する）。
+
+- **Mind**: NPC → Player → Creator。生まれつき割り当てられた脚本で生きるのをやめ、自分のゲームをプレイし始め、他人も遊ぶ新しいゲームを作る（「construct-level awareness」に類似、と Koe）
+- **Body**: Incel → Chad → Sigma、または Beta Male → Alpha Male → Sigma Male。行動と外見で観察できる現代的な Archetype として挙げる
+- **Vocation**: Job → Career → Calling。仕事に関する多くの進行の一つで、職がない人や早くから天職に入る人もいる
+- **Spirit**: Religion → Atheism → Mysticism。厳格な宗教家庭で育った人が反抗し、その後に神への新しい視点を再発見して Level 1 に含まれていた真実へ戻ってくる、よく見られる（唯一ではない）パターン
+
+Spirit 象限に関連して Koe は Ken Wilber の **pre-trans fallacy（前／超の混同）** を引く。前合理（Conformist）の状態と超合理（Synthesist）の状態は、慣習的な合理（Individualist）の視点からはどちらも「非合理」に見えるため混同される。Level 1 の原始的な状態を Level 3 に格上げすることも、本物の Level 3 の発達を原始的な思考に引き下げることも起きる。幼少期の条件づけ以上の知識と経験を持たない「聖書を振りかざす人」が神秘家を真剣に受け取れないが、神秘家はしばしば同じ真実をより包括的な視点から持っている、と Koe は書く。
+
+発達の採点方法を Koe は次のように書く。Level 1 の点は1点、Level 2 の点は2点、Level 3 の点は3点とし、合計をグラフ上の発達のスライス数である12で割る。記事の例の人物は 2.0 になる。その人物の象限別の記述は、Mind は「もう脚本では生きておらず construct level awareness に近い」、Body は「身だしなみが悪く習慣も悪いが、時に自信を見せる」、Spirit は「神の字義的な解釈を信じるが、無神論者の友人や同僚には寛容」、Vocation は「価値ある教育と技能を持つが、安全で充実したキャリアに集中している」である。これらを一つに統合した Metatype を Koe は「The Outlier」と名づけ、反抗なしに主流のパターンから離れ、カウンターカルチャーの視点で動く人物と要約する。外見を気にしないのは Body 象限の経験不足による False Transformation かもしれない、と Koe は付け加える。Metatype の判定は16の箱に入れる静的な性格テストにしたくないので AI を使う計画だ、と Koe は書く。
+
+## 3.0 ライフスタイル
+
+「1つの象限が多くの時間・集中・エネルギーを消費するとき、全象限の発達をどう両立させるか」という問いに、Koe は「問題解決を通じて全象限が賄われるライフスタイルを作ることが最終目標」と答える。Vocation が時間を食いすぎて Mind が乱れ、Body に使う力が残らず、Spirit に手が回らないなら、それは知識と技能の獲得で解くべき明白な問題で、Channel が生まれる機会になる。毎日1時間ビジネスの機会を学び練習の時間を取れば、他人より時間はかかっても、フェーズを進むうちに今の仕事を減らすか完全になくせる自信がつく、と Koe は書く。
+
+その転換は次の問題、たとえば低いエネルギーや、見込み客に尊敬されないことを浮かび上がらせる。ビジネスの次のレベルに達するために要るのはビジネスの発達ではなく、体・心・精神に関する問題の解決かもしれない。優れたビジネスと全ての金を手にしても、Vocation の追求に意味がなければ胸の真ん中に穴が空く。問題解決という単純な性質と、問題に気づくのを妨げる気晴らしへの警戒によって、仕事が遊びになり、健康が既定の状態になり、意味が豊かになり、心が自分の味方になる人生ができる、と Koe は結ぶ。
+
+## 問い
+
+- 自分の4象限をこのモデルで採点するとどうなるか。Koe が公開している Metatype 判定プロンプトと Knowledge Base（リンク先は未収集）を取り込み、採点の再現性を試す
+- 「AI は土台がないと副作用の出る Glitch」という位置づけは、[[concepts/cognitive-debt]] の「説明できないものは出さない」という基準と同じ結論を別の経路で出しているか。「土台がある」をどう測るか
+- Koe は3レベルを Spiral Dynamics と自我発達段階から「採用した」と書くが、原典のどの段階がどのレベルに対応するか、原典側から確かめる
+
+## 関連
+
+- [[concepts/creativity-recovery-protocol]] — 同著者 Dan Koe。「AI の多用で脳が焼き切れた」体験から始まる創造性回復論は、本ページの「土台のない AI 利用は副作用を起こす」という主張の実例と読める
+- [[business/human-nature-persuasion]] — 同著者。「進歩の緊張」が安全→帰属→意味へ段階的に進むという前提は、本ページの3レベルと同じ発達心理学の土台に立つ
+- [[concepts/career-agency-variables]] — @ysk_motoyama の「何を・どう・なぜやるか」の3変数。Vocation 象限の Job → Career → Calling という進行を、交渉力の要らない「どうやるか・なぜやるか」から着手する実務論として補完する
+- [[concepts/cognitive-debt]] — AI の生成速度に理解が追いつかない負債。Koe の「心を AI に外注する」警告と同じ現象を開発者の側から扱う
+- [[concepts/dopamine-detox]] — 挑まないと退屈し快適さと気晴らしへ逃げるという Koe の「罠」の記述を、刺激・報酬系の側から10種のデトックスで扱う実践論
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

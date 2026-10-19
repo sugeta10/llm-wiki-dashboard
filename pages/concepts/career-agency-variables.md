@@ -34,3 +34,4 @@
 - [[concepts/linguistic-hedging]] — 同著者（@ysk_motoyama）。「〜な感じ」というぼかし言葉の知的怠慢を論じた記事
 - [[concepts/introvert-networking-strategy]] — 同著者（@ysk_motoyama）。人脈づくりを「話しかけてもらう」側へ反転させる戦略。本ページの「どうやるか＝仕事の手順を自分でハンドリングする」を人付き合いに適用した形
 - [[concepts/action-space]] — 上野山勝也/James Rineyの「どの環境がアクション空間を広げるか」というキャリア論。本記事の「どうやるか」が個人の意思決定様式に焦点を当てるのに対し、こちらは環境選択に焦点を当てる対の視点
+- [[concepts/human-3-0]] — Dan Koe の自己開発モデル。Vocation 象限の Job → Career → Calling という進行に対し、本ページは交渉力の要らない「どうやるか・なぜやるか」から着手する実務論として対になる
