@@ -73,3 +73,4 @@ Rieseberg が「よく効く」として載せている汎用プロンプトは�
 - [[concepts/ai-review-bottleneck]] — 自己採点を手前に置いて人間のレビューを短くする5策。審判をどこに置くかの別解
 - [[concepts/career-advice-ai-age]] — 「問題の最も野心的な形に取り組む」。問題選びの側の野心
 - [[concepts/output-outcome-impact]] — アウトプットよりアウトカム。Altitude の背景にある価値観
+- [[business/ai-lifeplan-simulation]] — Depth の「生データを渡す」「外部の審判を使う」を家計に当てた例。審判は決定論的なシミュレータで、AI は設定生成とレポート化だけを担う（Kuniwak）

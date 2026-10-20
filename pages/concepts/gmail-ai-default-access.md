@@ -22,3 +22,4 @@
 - [[concepts/personal-data-leak-checklist]] — 情報漏洩ニュースのあとに確認する個人の設定（同じく高保存の個人防御ポスト）
 - [[concepts/ai-pre-judgment-automation]] — Gmail を含む業務ツールを AI に常時検知させる設計（読ませる範囲を自分で決める側の事例）
 - [[tools/claude-google-workspace]] — Claude の Workspace 連携は編集を反映前に1件ずつ承認させる設計。AI に書き込ませる範囲をユーザーが決める側の例
+- [[business/ai-lifeplan-simulation]] — 銀行明細・給与明細・年金データを利用者が自分で選んで AI に渡す側の手法（Kuniwak）。同じ機微なデータでも、既定で読ませる本ページの問題とは渡し方が逆

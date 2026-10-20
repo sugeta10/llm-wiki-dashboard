@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>spec-ssot-view-separation - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>spec-ssot-view-separation</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="spec-ssot-view-separation.md">Markdownで表示</a></div>
+  <div class="meta">concepts/spec-ssot-view-separation · concepts · <span title="2026-10-20">今日</span></div>
+  <article><h1>仕様を SSoT とビューに分けて管理する（Kuniwak）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 仕様の本体（シーケンス図・状態遷移図）は厳密で巨大なまま1か所（SSoT: Single Source of Truth、信頼できる唯一の情報源）に保ち、読み手ごとの図はツールで自動生成し、本体の記述は AI に任せ、人間レビューの前に静的解析と仕様アニメーションで機械検証する、というコインチェック Kuniwak の仕様記述技法。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Human[&quot;人間: 変更を依頼&quot;] --&gt; AI[&quot;AI: 本体を追記&quot;]
+  AI --&gt; SSoT[&quot;仕様本体（SSoT）&quot;]
+  SSoT --&gt; Verify[&quot;ツール検証&lt;br/&gt;pumlseqbreak / csdfrepl&quot;]
+  SSoT --&gt; Views[&quot;読み手別ビューを自動生成&lt;br/&gt;pumlseqfold / promotion&quot;]
+  Verify --&gt; Review[&quot;人間・ドメインエキスパートのレビュー&quot;]
+  Views --&gt; Review</pre>
+<p>要求をシーケンス図で、トップレベルの仕様を1つの状態遷移図で書く流儀（Kuniwak の『要求定義・仕様記述・設計・検証のガイドライン』、Speaker Deck）を前提にすると、記述が進むほど図は長大になり、多くの人にとって「理解を拒否せざるをえない異物」になる、とコインチェック株式会社の Kuniwak は書く。対策として読み手ごとの局所的な図を手作業で描くと、本体の仕様変更に追従できずに腐り、「この資料は古いから参考にしないほうがいいよ」と口伝される暗黙知頼みの開発体験が生まれる。Kuniwak が問題の中心に置くのは図の大きさそのものでなく、手作業のビューが本体と不整合を起こすことである。</p>
+<h2>なぜ状態遷移図は潰れるのか（ping-pong の例）</h2>
+<p>Kuniwak の例は、画面の「ping」ボタンを押すと「pong」に変わり、もう一度押すと「ping」に戻る Web サービスである。1人のユーザーに注目すれば ping 状態と pong 状態を往復するだけの明快な図になる。ところが複数ユーザーが使うシステム全体を素朴に1つの図にしようとすると、「ユーザー A は ping、ユーザー B は pong」という対応表を内部で管理する<strong>たった1つの状態</strong>に集約され、誰かがボタンを押すたびに自分自身へ戻る自己遷移を繰り返す図になってしまう。全ユーザーの状態の組み合わせを直積で表す方法もあるが、ユーザー数が増えれば状態数が爆発するので、いずれにせよ人間には読めない、と Kuniwak は脚注で添える。</p>
+<h2>解決策1: SSoT から用途別のビューを自動生成する</h2>
+<p>原則は「仕様本体（SSoT）を厳密に保ちつつ、人間が読むためのビューは自動生成する」。本体が更新されればビューも再生成されるので、ドキュメントが腐る心配がない、と Kuniwak は述べる。</p>
+<h3>シーケンス図: ライフラインの除去と折りたたみ</h3>
+<p>読み手となる関係者ごとにフィルタリングしたビューを作る。具体的には、読み手のライフライン（参加者）と直接やりとりしない内部的なライフラインを丸ごと除去し、「ツール1」「ツール2」「ツール3」のように細かく分かれたものは「ツール」という1つのライフラインに折りたたむ。読み手のライフラインの数だけビューを生成する。ツールは pumlseqfold（Kuniwak/puml-tools のコマンドの1つ）。</p>
+<h3>状態遷移図: promotion（昇格）で局所化する</h3>
+<p>形式手法の Z 言語における promotion の考え方を応用する。1人のユーザーに注目した局所の状態遷移図を、全ユーザーを考慮した大局の状態遷移図へ埋め込む。局所の振る舞いが正しければ大局も正しいと結論づけられる場合があり、そのとき人間は読みやすい局所の図を確認するだけで済む。ping-pong は局所の独立性が高い <strong>free promotion</strong> の例で、局所を読むだけで大局も正しいと結論できる。ユーザー間で状態の制約が絡む <strong>constrained promotion</strong> では局所だけでは不十分だが、多くの場面で図の大幅な簡略化に役立つ、と Kuniwak は書く。</p>
+<h2>解決策2: AI が本体を書き、ツールがレビュー前に検証する</h2>
+<p>ビューを用意できても、源泉となる SSoT 自体は巨大で緻密な記述が要る。Kuniwak は、巨大なシーケンス図や状態遷移図の生成・追記は AI（コーディングエージェント）が得意とする領域で、全体の一貫性を保ちながら局所的な変更を依頼できるとし、次のプロンプト例を挙げる。</p>
+<ul>
+<li>「イベント A が発生する直前に、画面 X の表示と権限チェックのシーケンスを追加して」</li>
+<li>「ユーザーの状態遷移に、一時停止状態とその復帰遷移を追加して」</li>
+</ul>
+<p>ただし AI に描かせた図は必ず人間がレビューする。そしてそのレビューの前に、専用ツールで機械的に検証しておく。初歩的な不整合が残っているとレビューの時間を浪費するからだ、と Kuniwak は理由を置く。</p>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>頻発する問題</th>
+<th>検証手段（Kuniwak の指定）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>シーケンス図</td>
+<td>因果の断絶（メッセージの矢印が途中で途切れる）。AI に「矢印が途切れていないか確認して」と指示しても見落とし（偽陰性）が多い</td>
+<td>静的解析ツール pumlseqbreak（Kuniwak/puml-tools）</td>
+</tr>
+<tr>
+<td>状態遷移図</td>
+<td>静止した図を眺めるだけでは遷移の誤りが分からない</td>
+<td>仕様アニメーション。AI に自動検証させるなら csdfrepld か csdfreplcmd（Kuniwak/puml-parallel）に「/goal 0-switch カバレッジを取るまで仕様アニメーションして」、人間が対話的に確かめるなら csdfrepl</td>
+</tr>
+</tbody>
+</table>
+<p>仕様アニメーションとは、実際にイベントを発生させて状態が正しく遷移するかを動的に検証することである。0-switch カバレッジは状態遷移テストの網羅基準で、すべての遷移を少なくとも1回ずつ通すことを指す（この一文は wiki 側の補足）。プロンプト中の /goal は Claude Code の <a href="../tools/claude-code-goal.html">claude-code-goal</a> と考えられるが、記事はツール名を明記していない。</p>
+<p>事前に形式的な誤りを排除しておくと、ドメインエキスパートや関係者とのレビューでは「この業務の流れで使い勝手（使用性）に問題はないか」という本質的な議論に集中できる、と Kuniwak はまとめる。</p>
+<h2>他ページとのつながり（wiki 側の推論）</h2>
+<ul>
+<li><a href="../concepts/behavioral-specification.html">behavioral-specification</a> は同著者の前段で、「何を仕様として書くか」（変換システムとリアクティブシステムの2分類・内部イベント τ）を扱う。本ページは、そうして書いた仕様が巨大化した後に「どう読ませ、どう検証するか」を扱う</li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a>（@poteto）の「散文の指示より静的解析に努力を置く」と同じ配分である。「矢印が途切れていないか確認して」というプロンプト（散文の層）は偽陰性が多く、pumlseqbreak（静的解析の層）に置き換えたら見落としがなくなった、という Kuniwak の観測は、検証を散文層から静的解析層へ移した具体例と読める</li>
+<li><a href="../concepts/ai-coding-loop-formal.html">ai-coding-loop-formal</a>（mizchi）は TLA+・Alloy などを「仕様が合っているか」の検査に使う。Kuniwak は Z 言語の promotion を検証でなく<strong>図を読みやすく構造化する側</strong>に借りており、形式手法の概念の使い方が異なる</li>
+<li><a href="../concepts/dsl-as-harness.html">dsl-as-harness</a> の「検証器が無料のフィードバックループになる」を PlantUML に当てはめると、pumlseqbreak と csdfrepl がその検証器にあたる</li>
+<li>同著者の <a href="../business/ai-lifeplan-simulation.html">ai-lifeplan-simulation</a> も「人間が依頼・AI が生成・ツールが機械的に処理・人間が判断」という同じ役割分担で組まれている</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-20: Kuniwak の観測範囲では、pumlseqbreak を導入したことで因果断絶の見落としがなくなった（単一著者の観測・件数は非公開）</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>この vault の仕様文書（docs/superpowers/specs）にも SSoT とビューの分離は要るか。読み手が自分と AI だけなら、ビューより先に検証器を置くべきではないか</li>
+<li>constrained promotion（ユーザー間で状態が絡む仕様）が本質の領域、たとえば決済や在庫では、局所図だけで済まない部分がどのくらい残るか</li>
+<li>csdfrepl の無い図ツール（Mermaid の stateDiagram など）でも、0-switch カバレッジまでの仕様アニメーションに相当する検証ができるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/behavioral-specification.html">behavioral-specification</a> — 同著者の前段。変換/リアクティブの2分類・状態遷移図・τ。本ページは巨大化した後の読ませ方と検証</li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 散文より静的解析へ努力を置く逆ピラミッド。pumlseqbreak への置き換えがその具体例</li>
+<li><a href="../concepts/ai-coding-loop-formal.html">ai-coding-loop-formal</a> — 形式手法を仕様の検査に使う mizchi の棚卸し。本ページは promotion を記述の構造化に使う</li>
+<li><a href="../concepts/dsl-as-harness.html">dsl-as-harness</a> — 検証器付き DSL の設計論。PlantUML＋pumlseqbreak はその一例と読める</li>
+<li><a href="../tools/claude-code-goal.html">claude-code-goal</a> — 「/goal 0-switch カバレッジを取るまで」で使われていると考えられる自律ループ</li>
+<li><a href="../business/ai-lifeplan-simulation.html">ai-lifeplan-simulation</a> — 同著者の家計シミュレーション手法。役割分担が同じ形</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-lifeplan-simulation.html">ai-lifeplan-simulation</a></li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
+<li><a href="../concepts/ai-coding-loop-formal.html">ai-coding-loop-formal</a></li>
+<li><a href="../concepts/behavioral-specification.html">behavioral-specification</a></li>
+<li><a href="../concepts/dsl-as-harness.html">dsl-as-harness</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://note.com/cc_kuniwak/n/nc7c7453b3baa" rel="noopener" target="_blank">https://note.com/cc_kuniwak/n/nc7c7453b3baa</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 仕様を SSoT とビューに分けて管理する（Kuniwak）
+
+&gt; **TL;DR**: 仕様の本体（シーケンス図・状態遷移図）は厳密で巨大なまま1か所（SSoT: Single Source of Truth、信頼できる唯一の情報源）に保ち、読み手ごとの図はツールで自動生成し、本体の記述は AI に任せ、人間レビューの前に静的解析と仕様アニメーションで機械検証する、というコインチェック Kuniwak の仕様記述技法。
+
+```mermaid
+flowchart LR
+  Human[&quot;人間: 変更を依頼&quot;] --&gt; AI[&quot;AI: 本体を追記&quot;]
+  AI --&gt; SSoT[&quot;仕様本体（SSoT）&quot;]
+  SSoT --&gt; Verify[&quot;ツール検証&lt;br/&gt;pumlseqbreak / csdfrepl&quot;]
+  SSoT --&gt; Views[&quot;読み手別ビューを自動生成&lt;br/&gt;pumlseqfold / promotion&quot;]
+  Verify --&gt; Review[&quot;人間・ドメインエキスパートのレビュー&quot;]
+  Views --&gt; Review
+```
+
+要求をシーケンス図で、トップレベルの仕様を1つの状態遷移図で書く流儀（Kuniwak の『要求定義・仕様記述・設計・検証のガイドライン』、Speaker Deck）を前提にすると、記述が進むほど図は長大になり、多くの人にとって「理解を拒否せざるをえない異物」になる、とコインチェック株式会社の Kuniwak は書く。対策として読み手ごとの局所的な図を手作業で描くと、本体の仕様変更に追従できずに腐り、「この資料は古いから参考にしないほうがいいよ」と口伝される暗黙知頼みの開発体験が生まれる。Kuniwak が問題の中心に置くのは図の大きさそのものでなく、手作業のビューが本体と不整合を起こすことである。
+
+## なぜ状態遷移図は潰れるのか（ping-pong の例）
+
+Kuniwak の例は、画面の「ping」ボタンを押すと「pong」に変わり、もう一度押すと「ping」に戻る Web サービスである。1人のユーザーに注目すれば ping 状態と pong 状態を往復するだけの明快な図になる。ところが複数ユーザーが使うシステム全体を素朴に1つの図にしようとすると、「ユーザー A は ping、ユーザー B は pong」という対応表を内部で管理する**たった1つの状態**に集約され、誰かがボタンを押すたびに自分自身へ戻る自己遷移を繰り返す図になってしまう。全ユーザーの状態の組み合わせを直積で表す方法もあるが、ユーザー数が増えれば状態数が爆発するので、いずれにせよ人間には読めない、と Kuniwak は脚注で添える。
+
+## 解決策1: SSoT から用途別のビューを自動生成する
+
+原則は「仕様本体（SSoT）を厳密に保ちつつ、人間が読むためのビューは自動生成する」。本体が更新されればビューも再生成されるので、ドキュメントが腐る心配がない、と Kuniwak は述べる。
+
+### シーケンス図: ライフラインの除去と折りたたみ
+
+読み手となる関係者ごとにフィルタリングしたビューを作る。具体的には、読み手のライフライン（参加者）と直接やりとりしない内部的なライフラインを丸ごと除去し、「ツール1」「ツール2」「ツール3」のように細かく分かれたものは「ツール」という1つのライフラインに折りたたむ。読み手のライフラインの数だけビューを生成する。ツールは pumlseqfold（Kuniwak/puml-tools のコマンドの1つ）。
+
+### 状態遷移図: promotion（昇格）で局所化する
+
+形式手法の Z 言語における promotion の考え方を応用する。1人のユーザーに注目した局所の状態遷移図を、全ユーザーを考慮した大局の状態遷移図へ埋め込む。局所の振る舞いが正しければ大局も正しいと結論づけられる場合があり、そのとき人間は読みやすい局所の図を確認するだけで済む。ping-pong は局所の独立性が高い **free promotion** の例で、局所を読むだけで大局も正しいと結論できる。ユーザー間で状態の制約が絡む **constrained promotion** では局所だけでは不十分だが、多くの場面で図の大幅な簡略化に役立つ、と Kuniwak は書く。
+
+## 解決策2: AI が本体を書き、ツールがレビュー前に検証する
+
+ビューを用意できても、源泉となる SSoT 自体は巨大で緻密な記述が要る。Kuniwak は、巨大なシーケンス図や状態遷移図の生成・追記は AI（コーディングエージェント）が得意とする領域で、全体の一貫性を保ちながら局所的な変更を依頼できるとし、次のプロンプト例を挙げる。
+
+- 「イベント A が発生する直前に、画面 X の表示と権限チェックのシーケンスを追加して」
+- 「ユーザーの状態遷移に、一時停止状態とその復帰遷移を追加して」
+
+ただし AI に描かせた図は必ず人間がレビューする。そしてそのレビューの前に、専用ツールで機械的に検証しておく。初歩的な不整合が残っているとレビューの時間を浪費するからだ、と Kuniwak は理由を置く。
+
+| 対象 | 頻発する問題 | 検証手段（Kuniwak の指定） |
+|---|---|---|
+| シーケンス図 | 因果の断絶（メッセージの矢印が途中で途切れる）。AI に「矢印が途切れていないか確認して」と指示しても見落とし（偽陰性）が多い | 静的解析ツール pumlseqbreak（Kuniwak/puml-tools） |
+| 状態遷移図 | 静止した図を眺めるだけでは遷移の誤りが分からない | 仕様アニメーション。AI に自動検証させるなら csdfrepld か csdfreplcmd（Kuniwak/puml-parallel）に「/goal 0-switch カバレッジを取るまで仕様アニメーションして」、人間が対話的に確かめるなら csdfrepl |
+
+仕様アニメーションとは、実際にイベントを発生させて状態が正しく遷移するかを動的に検証することである。0-switch カバレッジは状態遷移テストの網羅基準で、すべての遷移を少なくとも1回ずつ通すことを指す（この一文は wiki 側の補足）。プロンプト中の /goal は Claude Code の [[tools/claude-code-goal]] と考えられるが、記事はツール名を明記していない。
+
+事前に形式的な誤りを排除しておくと、ドメインエキスパートや関係者とのレビューでは「この業務の流れで使い勝手（使用性）に問題はないか」という本質的な議論に集中できる、と Kuniwak はまとめる。
+
+## 他ページとのつながり（wiki 側の推論）
+
+- [[concepts/behavioral-specification]] は同著者の前段で、「何を仕様として書くか」（変換システムとリアクティブシステムの2分類・内部イベント τ）を扱う。本ページは、そうして書いた仕様が巨大化した後に「どう読ませ、どう検証するか」を扱う
+- [[concepts/agent-trust-inverse-pyramid]]（@poteto）の「散文の指示より静的解析に努力を置く」と同じ配分である。「矢印が途切れていないか確認して」というプロンプト（散文の層）は偽陰性が多く、pumlseqbreak（静的解析の層）に置き換えたら見落としがなくなった、という Kuniwak の観測は、検証を散文層から静的解析層へ移した具体例と読める
+- [[concepts/ai-coding-loop-formal]]（mizchi）は TLA+・Alloy などを「仕様が合っているか」の検査に使う。Kuniwak は Z 言語の promotion を検証でなく**図を読みやすく構造化する側**に借りており、形式手法の概念の使い方が異なる
+- [[concepts/dsl-as-harness]] の「検証器が無料のフィードバックループになる」を PlantUML に当てはめると、pumlseqbreak と csdfrepl がその検証器にあたる
+- 同著者の [[business/ai-lifeplan-simulation]] も「人間が依頼・AI が生成・ツールが機械的に処理・人間が判断」という同じ役割分担で組まれている
+
+## 観察ログ（未検証）
+
+- 2026-10-20: Kuniwak の観測範囲では、pumlseqbreak を導入したことで因果断絶の見落としがなくなった（単一著者の観測・件数は非公開）
+
+## 問い
+
+- この vault の仕様文書（docs/superpowers/specs）にも SSoT とビューの分離は要るか。読み手が自分と AI だけなら、ビューより先に検証器を置くべきではないか
+- constrained promotion（ユーザー間で状態が絡む仕様）が本質の領域、たとえば決済や在庫では、局所図だけで済まない部分がどのくらい残るか
+- csdfrepl の無い図ツール（Mermaid の stateDiagram など）でも、0-switch カバレッジまでの仕様アニメーションに相当する検証ができるか
+
+## 関連
+
+- [[concepts/behavioral-specification]] — 同著者の前段。変換/リアクティブの2分類・状態遷移図・τ。本ページは巨大化した後の読ませ方と検証
+- [[concepts/agent-trust-inverse-pyramid]] — 散文より静的解析へ努力を置く逆ピラミッド。pumlseqbreak への置き換えがその具体例
+- [[concepts/ai-coding-loop-formal]] — 形式手法を仕様の検査に使う mizchi の棚卸し。本ページは promotion を記述の構造化に使う
+- [[concepts/dsl-as-harness]] — 検証器付き DSL の設計論。PlantUML＋pumlseqbreak はその一例と読める
+- [[tools/claude-code-goal]] — 「/goal 0-switch カバレッジを取るまで」で使われていると考えられる自律ループ
+- [[business/ai-lifeplan-simulation]] — 同著者の家計シミュレーション手法。役割分担が同じ形
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

@@ -101,3 +101,4 @@ mizchi は形式手法を「実装しようとしている仕様がそもそも�
 - [[tools/dspy]] — 実験的手法として挙げられた dspy
 - [[tools/laya-mlx]] — 同著者（mizchi）の小型判断モデル実測
 - [[concepts/agent-trust-inverse-pyramid]] — 「AGENTS.md は判断基準だけ」「TLA+ で仕様を検査」と同じ向きの努力配分を、コードベース→静的解析→散文→人間レビューの逆ピラミッドとして示した @poteto の指針
+- [[concepts/spec-ssot-view-separation]] — 形式手法（Z 言語の promotion）を検査でなく状態遷移図の読みやすさの側に使い、AI が書いた仕様図を静的解析と仕様アニメーションでレビュー前に検証する Kuniwak の技法

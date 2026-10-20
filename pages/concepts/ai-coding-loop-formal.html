@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-coding-loop-formal</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-coding-loop-formal.md">Markdownで表示</a></div>
-  <div class="meta">concepts/ai-coding-loop-formal · concepts · <span title="2026-10-06">1週間前</span></div>
+  <div class="meta">concepts/ai-coding-loop-formal · concepts · <span title="2026-10-06">2週間前</span></div>
   <article><h1>AIコーディングのループ設計と形式手法（mizchi の棚卸し）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 人間の仕事を「モデル評価・ループ構築・評価指標づくり・CIの優先度づけ」に移し、数値化できる指標と /goal でループを回し、仕様の正しさは TLA+/Z3 などの形式手法で検査する、という mizchi の 2026年10月時点の実務まとめ。</p>
@@ -135,6 +135,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/dspy.html">dspy</a> — 実験的手法として挙げられた dspy</li>
 <li><a href="../tools/laya-mlx.html">laya-mlx</a> — 同著者（mizchi）の小型判断モデル実測</li>
 <li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 「AGENTS.md は判断基準だけ」「TLA+ で仕様を検査」と同じ向きの努力配分を、コードベース→静的解析→散文→人間レビューの逆ピラミッドとして示した @poteto の指針</li>
+<li><a href="../concepts/spec-ssot-view-separation.html">spec-ssot-view-separation</a> — 形式手法（Z 言語の promotion）を検査でなく状態遷移図の読みやすさの側に使い、AI が書いた仕様図を静的解析と仕様アニメーションでレビュー前に検証する Kuniwak の技法</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
 <li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a></li>
@@ -264,6 +265,7 @@ mizchi は形式手法を「実装しようとしている仕様がそもそも�
 - [[tools/dspy]] — 実験的手法として挙げられた dspy
 - [[tools/laya-mlx]] — 同著者（mizchi）の小型判断モデル実測
 - [[concepts/agent-trust-inverse-pyramid]] — 「AGENTS.md は判断基準だけ」「TLA+ で仕様を検査」と同じ向きの努力配分を、コードベース→静的解析→散文→人間レビューの逆ピラミッドとして示した @poteto の指針
+- [[concepts/spec-ssot-view-separation]] — 形式手法（Z 言語の promotion）を検査でなく状態遷移図の読みやすさの側に使い、AI が書いた仕様図を静的解析と仕様アニメーションでレビュー前に検証する Kuniwak の技法
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
