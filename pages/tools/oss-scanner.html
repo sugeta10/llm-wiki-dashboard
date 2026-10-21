@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>oss-scanner - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>oss-scanner</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="oss-scanner.md">Markdownで表示</a></div>
+  <div class="meta">tools/oss-scanner · tools · <span title="2026-10-21">今日</span></div>
+  <article><h1>OSS Scanner</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: <a href="../companies/anthropic.html">anthropic</a> が、重要なオープンソースプロジェクトに最強モデルによる脆弱性スキャンの結果（概念実証コードと、可能なら修正パッチつき）を無料・定期で送るオプトイン型サービス。登録はリポジトリへ設定ファイルを PR するだけで、報告は人手レビューを経ないため誤検知を含みうる。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  PR[&quot;メンテナが project.yaml を PR&quot;] --&gt; Review[&quot;人手で登録審査&quot;]
+  Review --&gt; Build[&quot;Dockerfile をビルド&quot;]
+  Build --&gt; Scan[&quot;ネット遮断サンドボックスでスキャン&quot;]
+  Scan --&gt; Check[&quot;再確認・パッチ提案・根本原因分析&quot;]
+  Check --&gt; Mail[&quot;メールで報告バンドル&quot;]
+  Mail --&gt; Rescan[&quot;定期再スキャン&quot;]
+  Rescan --&gt; Scan</pre>
+<p>Anthropic は以前からオープンソースを定期的にスキャンし、人手レビューを通した報告を協調的脆弱性開示（CVD）の手順で送っていた。Anthropic によれば 2026 年 10 月までにそうした報告を 6,000 件以上レビューしており、誤検知でメンテナを圧倒せずに済む反面、人手の工程に時間がかかり共有が遅れることがある。OSS Scanner はこの人手レビューを省く「速い経路」として設計されており、<a href="../models/claude-mythos.html">claude-mythos</a> を一般公開する代わりに始めた Project Glasswing で Claude に脆弱性を探させた経験が土台だと Anthropic は説明する。Anthropic の Frontier Red Team と Safeguards Research チームの共同プロジェクトで、2026-10-19 に @ClaudeDevs が公開を告知した。</p>
+<h2>対象プロジェクト</h2>
+<p>Anthropic は受け入れ基準を OSS-Fuzz（Google のファジング基盤）と同様としており、OSS-Fuzz の基準文から「インフラとユーザーのセキュリティに重大な影響を持つ確立したプロジェクト」で、(1) 信頼できない入力を処理するライブラリなど遠隔攻撃への露出、(2) 依存するユーザー・プロジェクトの数を見る、という部分を引いている。総合判断の材料として Anthropic が挙げるのは、プロジェクトの年齢と更新頻度、OpenSSF の criticality score、広く認められたオープンソースライセンスの使用、スター／フォーク数、利用統計、どの分野でどれほどセキュリティ上重要か、申請項目の記入の完全さである。重要性が自明でなければ、なぜ重要かを一文添えることを勧めている。</p>
+<p>よくある除外として、できたばかりのプロジェクトと、元と明確に異なるわけではないフォークを挙げる。Anthropic は「対象なら登録の不利益はほぼ無い」としつつ、このサービスは検証済みの high／critical 報告をすでに捌けている体制のプロジェクト向けだと断っている。</p>
+<h2>登録方法と project.yaml</h2>
+<p>コアメンテナが GitHub の anthropics/oss-scanner リポジトリに PR を出し、<code>projects/&lt;project&gt;/project.yaml</code> を追加する。テンプレートが用意されている。項目は次のとおり（FAQ の列挙を転記）。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>必須</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>repo</code></td>
+<td>必須</td>
+<td>クローンする git リポジトリの URL（<code>#branch</code> 指定可。GitHub 以外でもよい）</td>
+</tr>
+<tr>
+<td><code>primary_contact</code></td>
+<td>必須</td>
+<td>主担当のメールアドレス（すべての連絡と報告の宛先）</td>
+</tr>
+<tr>
+<td><code>Dockerfile</code></td>
+<td>必須</td>
+<td>環境構築・依存の事前導入・ビルドを行う Dockerfile のリポジトリ内パス。<code>project.yaml</code> の隣に <code>Dockerfile</code> を置く場合はこの項目を省く</td>
+</tr>
+<tr>
+<td><code>auto_ccs</code></td>
+<td>任意</td>
+<td>全報告を CC する追加アドレス</td>
+</tr>
+<tr>
+<td><code>homepage</code></td>
+<td>任意</td>
+<td>プロジェクトのホームページ（重要度の理解に使う）</td>
+</tr>
+<tr>
+<td><code>threat_model</code></td>
+<td>任意</td>
+<td>脅威モデルファイルのリポジトリ内パス（既定 <code>.oss-scanner/threat_model.md</code>）。<code>project.yaml</code> の隣に置いてもよい</td>
+</tr>
+<tr>
+<td><code>pgp</code></td>
+<td>任意</td>
+<td>報告メールの暗号化に使う GPG 公開鍵</td>
+</tr>
+<tr>
+<td><code>disabled</code></td>
+<td>任意</td>
+<td><code>true</code> で報告を一時停止（後で再開可）</td>
+</tr>
+</tbody>
+</table>
+<p>Dockerfile のビルドだけはネットワークありで行い、それ以降はすべてネット遮断で動くため、依存をすべて先に入れておく必要がある。Anthropic はビルドしたコンテナ内でテストが通ることの確認を勧め、PR 前に <code>tools/validate.py</code> で設定を検証できる。受理後は Anthropic 側のインフラでビルドし、失敗すればメールで知らせる。GPG 鍵を指定すると CC は使えず、主担当アドレスだけに送られる。登録には Anthropic の利用規約への同意が要る。</p>
+<h2>脅威モデルファイル</h2>
+<p>形式も必須の節もない自由記述で、エージェントに知らせたいプロジェクト固有の事情を書く。Anthropic が例示する内容は、テスト対象のコードと敵対的とみなす入力と対象外の範囲、critical／high／medium／low の重大度基準、報告の書式と候補パッチの粒度（脆弱性を示す最小限か、マージ可能な完成度か）と有用な概念実証の種類、重複判定の粒度である。ファイルが無くてもスキャナは動くが、境界事例の扱いは推測になる。リポジトリ側に置けばスキャンの合間に書き換えて報告形式を変えられる。人間の監査人に渡す依頼書と同じ構成（範囲・判定基準・納品形式・重複の扱い）をエージェント向けに書く仕組みと読める（推論）。</p>
+<h2>受け取るもの・公開ポリシー</h2>
+<p>初回登録後にスキャンし、パイプライン内の別エージェントがバグの再確認・パッチ提案・根本原因分析を行ったうえで、報告の束をメールで送る。以後は定期的に再スキャンし、前回以降に入った新しい脆弱性と、以前見落とした脆弱性を探す。頻度はパイプライン上のプロジェクト数や利用の広さなどで変わると Anthropic は述べる。報告媒体は当面メールだが変える可能性がある。</p>
+<p>公開ポリシーは、未検証の所見には 90 日の協調開示期間を課さない。誤検知を含みうる報告を、Anthropic 自身が精読していない段階でメンテナに精読を強いるのは不公平だという理由である。後に既存の CVD で人手検証した場合は、検証済みと通知した日から 90 日を起点に CVD ポリシーで開示することがある。将来、スキャナの性能に確信が持てれば高重大度の一部に開示期限を設ける可能性があるが、その際は事前に知らせ、オプトアウトできるようにするとしている。</p>
+<p>停止は <code>disabled: true</code> の PR、離脱はプロジェクトのディレクトリを削除する PR で行い、離脱後は通常の CVD の報告だけに戻る。所見への意見はメールに返信すればよく、未登録者の質問窓口 oss-scanner-questions@anthropic.com は人間が見ている。修正したときはコミットメッセージなどに <code>ANT-2026-ABCD1234</code> の形式の報告 ID を一行添えてほしいと Anthropic は頼んでおり、どの発見が正しく修正まで至ったかを追う手がかりにする。</p>
+<h2>報告先と範囲の保証・データの扱い</h2>
+<p>登録申請は毎回人間が審査し、申請者が GitHub アカウントかメールでコアメンテナだと確認し、送付先が SECURITY.md などに載る正規のセキュリティ連絡先かを検証する。送付前にも再確認し、資格を失ったメンテナには送らない。Dockerfile が意図したリポジトリだけを対象にしているかを登録時に手動で確認し、Dockerfile が変わるたびに次回実行前に差分を審査する。送付前にはハーネスが、各報告が依存ライブラリではなく対象プロジェクト自体の脆弱性に対応することを自動検証する。</p>
+<p>報告は Anthropic のセキュリティ担当者だけが入れる隔離されたクラウド環境に保管し、スキャン用エージェントは強化したサンドボックス内でインターネットを完全に切ってから動かすと説明している。</p>
+<h2>Claude Security との違いと周辺プログラム</h2>
+<p>Anthropic は商用製品 Claude Security を「企業が自社コードの脆弱性を見つけて直すために Claude Mythos を開発ライフサイクルに組み込むもの」と位置づけ、OSS Scanner はそれと別に、すべてのソフトウェアの土台であるオープンソースのメンテナに防御側の優位を広げる目的だとする。違いとして、複数のハーネスと手法に加えトークンを多く使う実験的なハーネスまで投入して深いバグを探すこと、費用を全額 Anthropic が持つことを挙げる。</p>
+<p>あわせて案内されるメンテナ支援が二つある。Claude for OSS は修正作業のために Claude Max 20x を無料で提供するプログラムで、Cyber Verification Program は審査を通ったセキュリティ専門家に高度なサイバー能力と緩めた遮断分類器を開放する（<a href="../models/claude-opus-4-7.html">claude-opus-4-7</a> の発表時に設置）。Glasswing 初期に発見が万単位に達し、ボトルネックが発見から修正へ移ったという <a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> の記述と並べると、パッチ提案と修正用サブスクリプションをセットにした今回の設計は「修正側」を埋める意図と考えられる（推論）。</p>
+<p>告知が指す Anthropic の launch post（anthropic.com/research 配下）は本 vault では未収集で、本ページは red.anthropic.com の FAQ ページと @ClaudeDevs の告知のみに基づく。FAQ の変更履歴には、公開後に対象基準の説明と「報告がメンテナ本人にだけ届く仕組み」の説明を追加したとある（日付は取得時に欠落）。</p>
+<h2>問い</h2>
+<ul>
+<li>自分が依存・貢献する OSS のうち、外部入力を処理し OpenSSF criticality score が高いものはどれか。登録を勧める前に、そのプロジェクトが検証済み high／critical を捌けている体制かを見る</li>
+<li>人手レビューなし報告の誤検知率を Anthropic が公表するか。報告 ID <code>ANT-</code> の付いたコミットの数が外から追える指標になる</li>
+<li>threat_model.md の構成（範囲・重大度基準・出力形式・重複判定）を、自分のエージェント運用の依頼書テンプレートに流用できるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../companies/anthropic.html">anthropic</a> — 提供元。Frontier Red Team と Safeguards Research の共同</li>
+<li><a href="../models/claude-mythos.html">claude-mythos</a> — 一般公開見送りの代わりに始めた Project Glasswing が本サービスの土台</li>
+<li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a> — Cyber Verification Program の設置を発表したモデル。OSS Scanner と並ぶメンテナ支援として案内される</li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> — Glasswing で発見が万単位に達しボトルネックが修正側へ移ったとする記述</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/anthropic.html">anthropic</a></li>
+<li><a href="../models/claude-mythos.html">claude-mythos</a></li>
+<li><a href="../models/claude-opus-4-7.html">claude-opus-4-7</a></li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2112299602510749992" rel="noopener" target="_blank">https://x.com/i/web/status/2112299602510749992</a></li>
+<li><a href="https://red.anthropic.com/oss-scanner" rel="noopener" target="_blank">https://red.anthropic.com/oss-scanner</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># OSS Scanner
+
+&gt; **TL;DR**: [[companies/anthropic]] が、重要なオープンソースプロジェクトに最強モデルによる脆弱性スキャンの結果（概念実証コードと、可能なら修正パッチつき）を無料・定期で送るオプトイン型サービス。登録はリポジトリへ設定ファイルを PR するだけで、報告は人手レビューを経ないため誤検知を含みうる。
+
+```mermaid
+flowchart LR
+  PR[&quot;メンテナが project.yaml を PR&quot;] --&gt; Review[&quot;人手で登録審査&quot;]
+  Review --&gt; Build[&quot;Dockerfile をビルド&quot;]
+  Build --&gt; Scan[&quot;ネット遮断サンドボックスでスキャン&quot;]
+  Scan --&gt; Check[&quot;再確認・パッチ提案・根本原因分析&quot;]
+  Check --&gt; Mail[&quot;メールで報告バンドル&quot;]
+  Mail --&gt; Rescan[&quot;定期再スキャン&quot;]
+  Rescan --&gt; Scan
+```
+
+Anthropic は以前からオープンソースを定期的にスキャンし、人手レビューを通した報告を協調的脆弱性開示（CVD）の手順で送っていた。Anthropic によれば 2026 年 10 月までにそうした報告を 6,000 件以上レビューしており、誤検知でメンテナを圧倒せずに済む反面、人手の工程に時間がかかり共有が遅れることがある。OSS Scanner はこの人手レビューを省く「速い経路」として設計されており、[[models/claude-mythos]] を一般公開する代わりに始めた Project Glasswing で Claude に脆弱性を探させた経験が土台だと Anthropic は説明する。Anthropic の Frontier Red Team と Safeguards Research チームの共同プロジェクトで、2026-10-19 に @ClaudeDevs が公開を告知した。
+
+## 対象プロジェクト
+
+Anthropic は受け入れ基準を OSS-Fuzz（Google のファジング基盤）と同様としており、OSS-Fuzz の基準文から「インフラとユーザーのセキュリティに重大な影響を持つ確立したプロジェクト」で、(1) 信頼できない入力を処理するライブラリなど遠隔攻撃への露出、(2) 依存するユーザー・プロジェクトの数を見る、という部分を引いている。総合判断の材料として Anthropic が挙げるのは、プロジェクトの年齢と更新頻度、OpenSSF の criticality score、広く認められたオープンソースライセンスの使用、スター／フォーク数、利用統計、どの分野でどれほどセキュリティ上重要か、申請項目の記入の完全さである。重要性が自明でなければ、なぜ重要かを一文添えることを勧めている。
+
+よくある除外として、できたばかりのプロジェクトと、元と明確に異なるわけではないフォークを挙げる。Anthropic は「対象なら登録の不利益はほぼ無い」としつつ、このサービスは検証済みの high／critical 報告をすでに捌けている体制のプロジェクト向けだと断っている。
+
+## 登録方法と project.yaml
+
+コアメンテナが GitHub の anthropics/oss-scanner リポジトリに PR を出し、`projects/&lt;project&gt;/project.yaml` を追加する。テンプレートが用意されている。項目は次のとおり（FAQ の列挙を転記）。
+
+| 項目 | 必須 | 内容 |
+|---|---|---|
+| `repo` | 必須 | クローンする git リポジトリの URL（`#branch` 指定可。GitHub 以外でもよい） |
+| `primary_contact` | 必須 | 主担当のメールアドレス（すべての連絡と報告の宛先） |
+| `Dockerfile` | 必須 | 環境構築・依存の事前導入・ビルドを行う Dockerfile のリポジトリ内パス。`project.yaml` の隣に `Dockerfile` を置く場合はこの項目を省く |
+| `auto_ccs` | 任意 | 全報告を CC する追加アドレス |
+| `homepage` | 任意 | プロジェクトのホームページ（重要度の理解に使う） |
+| `threat_model` | 任意 | 脅威モデルファイルのリポジトリ内パス（既定 `.oss-scanner/threat_model.md`）。`project.yaml` の隣に置いてもよい |
+| `pgp` | 任意 | 報告メールの暗号化に使う GPG 公開鍵 |
+| `disabled` | 任意 | `true` で報告を一時停止（後で再開可） |
+
+Dockerfile のビルドだけはネットワークありで行い、それ以降はすべてネット遮断で動くため、依存をすべて先に入れておく必要がある。Anthropic はビルドしたコンテナ内でテストが通ることの確認を勧め、PR 前に `tools/validate.py` で設定を検証できる。受理後は Anthropic 側のインフラでビルドし、失敗すればメールで知らせる。GPG 鍵を指定すると CC は使えず、主担当アドレスだけに送られる。登録には Anthropic の利用規約への同意が要る。
+
+## 脅威モデルファイル
+
+形式も必須の節もない自由記述で、エージェントに知らせたいプロジェクト固有の事情を書く。Anthropic が例示する内容は、テスト対象のコードと敵対的とみなす入力と対象外の範囲、critical／high／medium／low の重大度基準、報告の書式と候補パッチの粒度（脆弱性を示す最小限か、マージ可能な完成度か）と有用な概念実証の種類、重複判定の粒度である。ファイルが無くてもスキャナは動くが、境界事例の扱いは推測になる。リポジトリ側に置けばスキャンの合間に書き換えて報告形式を変えられる。人間の監査人に渡す依頼書と同じ構成（範囲・判定基準・納品形式・重複の扱い）をエージェント向けに書く仕組みと読める（推論）。
+
+## 受け取るもの・公開ポリシー
+
+初回登録後にスキャンし、パイプライン内の別エージェントがバグの再確認・パッチ提案・根本原因分析を行ったうえで、報告の束をメールで送る。以後は定期的に再スキャンし、前回以降に入った新しい脆弱性と、以前見落とした脆弱性を探す。頻度はパイプライン上のプロジェクト数や利用の広さなどで変わると Anthropic は述べる。報告媒体は当面メールだが変える可能性がある。
+
+公開ポリシーは、未検証の所見には 90 日の協調開示期間を課さない。誤検知を含みうる報告を、Anthropic 自身が精読していない段階でメンテナに精読を強いるのは不公平だという理由である。後に既存の CVD で人手検証した場合は、検証済みと通知した日から 90 日を起点に CVD ポリシーで開示することがある。将来、スキャナの性能に確信が持てれば高重大度の一部に開示期限を設ける可能性があるが、その際は事前に知らせ、オプトアウトできるようにするとしている。
+
+停止は `disabled: true` の PR、離脱はプロジェクトのディレクトリを削除する PR で行い、離脱後は通常の CVD の報告だけに戻る。所見への意見はメールに返信すればよく、未登録者の質問窓口 oss-scanner-questions@anthropic.com は人間が見ている。修正したときはコミットメッセージなどに `ANT-2026-ABCD1234` の形式の報告 ID を一行添えてほしいと Anthropic は頼んでおり、どの発見が正しく修正まで至ったかを追う手がかりにする。
+
+## 報告先と範囲の保証・データの扱い
+
+登録申請は毎回人間が審査し、申請者が GitHub アカウントかメールでコアメンテナだと確認し、送付先が SECURITY.md などに載る正規のセキュリティ連絡先かを検証する。送付前にも再確認し、資格を失ったメンテナには送らない。Dockerfile が意図したリポジトリだけを対象にしているかを登録時に手動で確認し、Dockerfile が変わるたびに次回実行前に差分を審査する。送付前にはハーネスが、各報告が依存ライブラリではなく対象プロジェクト自体の脆弱性に対応することを自動検証する。
+
+報告は Anthropic のセキュリティ担当者だけが入れる隔離されたクラウド環境に保管し、スキャン用エージェントは強化したサンドボックス内でインターネットを完全に切ってから動かすと説明している。
+
+## Claude Security との違いと周辺プログラム
+
+Anthropic は商用製品 Claude Security を「企業が自社コードの脆弱性を見つけて直すために Claude Mythos を開発ライフサイクルに組み込むもの」と位置づけ、OSS Scanner はそれと別に、すべてのソフトウェアの土台であるオープンソースのメンテナに防御側の優位を広げる目的だとする。違いとして、複数のハーネスと手法に加えトークンを多く使う実験的なハーネスまで投入して深いバグを探すこと、費用を全額 Anthropic が持つことを挙げる。
+
+あわせて案内されるメンテナ支援が二つある。Claude for OSS は修正作業のために Claude Max 20x を無料で提供するプログラムで、Cyber Verification Program は審査を通ったセキュリティ専門家に高度なサイバー能力と緩めた遮断分類器を開放する（[[models/claude-opus-4-7]] の発表時に設置）。Glasswing 初期に発見が万単位に達し、ボトルネックが発見から修正へ移ったという [[concepts/recursive-self-improvement]] の記述と並べると、パッチ提案と修正用サブスクリプションをセットにした今回の設計は「修正側」を埋める意図と考えられる（推論）。
+
+告知が指す Anthropic の launch post（anthropic.com/research 配下）は本 vault では未収集で、本ページは red.anthropic.com の FAQ ページと @ClaudeDevs の告知のみに基づく。FAQ の変更履歴には、公開後に対象基準の説明と「報告がメンテナ本人にだけ届く仕組み」の説明を追加したとある（日付は取得時に欠落）。
+
+## 問い
+
+- 自分が依存・貢献する OSS のうち、外部入力を処理し OpenSSF criticality score が高いものはどれか。登録を勧める前に、そのプロジェクトが検証済み high／critical を捌けている体制かを見る
+- 人手レビューなし報告の誤検知率を Anthropic が公表するか。報告 ID `ANT-` の付いたコミットの数が外から追える指標になる
+- threat_model.md の構成（範囲・重大度基準・出力形式・重複判定）を、自分のエージェント運用の依頼書テンプレートに流用できるか
+
+## 関連
+
+- [[companies/anthropic]] — 提供元。Frontier Red Team と Safeguards Research の共同
+- [[models/claude-mythos]] — 一般公開見送りの代わりに始めた Project Glasswing が本サービスの土台
+- [[models/claude-opus-4-7]] — Cyber Verification Program の設置を発表したモデル。OSS Scanner と並ぶメンテナ支援として案内される
+- [[concepts/recursive-self-improvement]] — Glasswing で発見が万単位に達しボトルネックが修正側へ移ったとする記述
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

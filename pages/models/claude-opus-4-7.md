@@ -96,3 +96,4 @@ Opus 4.7は「指示されたことを忠実にやる」方向に調整されて
 - [[models/claude-opus-4-8]]
 - [[concepts/prompt-engineering]]
 - [[tools/hyperframes]]（HTML→動画OSS。実用化の土台となったコード生成モデル世代）
+- [[tools/oss-scanner]]（OSS メンテナ向けの無料・定期スキャン サービス。Cyber Verification Program と並ぶメンテナ支援として Anthropic が案内）

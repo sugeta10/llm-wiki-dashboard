@@ -89,3 +89,4 @@ Anthropicが公開したマルチエージェント構成では：
 - [[models/claude-haiku-5-5]]（小型モデル・2026-10-07発表。Haiku 4.5 比で平均約75%安く動くと公式が説明）
 - [[business/claude-plan-api-credits]]（Max/Team プランの月次 API クレジット・2026-10-07発表）
 - [[tools/claude-google-workspace]]（Google Docs・Sheets・Slides のサイドバーで動く Claude・2026-10-06発表。編集は反映前に1件ずつ承認できる）
+- [[tools/oss-scanner]]（重要 OSS 向けの無料・定期の脆弱性スキャン サービス・2026-10-19公開。Frontier Red Team と Safeguards Research の共同）
