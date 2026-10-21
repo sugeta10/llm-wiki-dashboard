@@ -39,6 +39,7 @@ flowchart LR
 
 ## 関連
 
+- [[concepts/ai-judgment-delegation]] — 人間が承認を手放した 3 段階の歴史（西尾泰和）。本ページのレベル 1→4 への移行を「何の判断を手放したか」の観点で時系列化したもの
 - [[concepts/ai-agent-building-blocks]] — Plain AI / AI Agent / Agentic AI の3段階＋5ブロック（@sairahul1）。本ページの梯子は「どう起動されるか」という運用面まで刻んだ4段版
 - [[concepts/loop-engineering]] — レベル3→4を支える機構。4条件テスト・採用率の経済性・失敗パターンの詳細
 - [[concepts/graph-engineering]] — 並列ノード・偽エッジの判定・新鮮なコンテキストを持つ検査役の詳細

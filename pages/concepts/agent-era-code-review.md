@@ -84,6 +84,7 @@ Anthropic は、人の仕事が「全 diff を読むこと」から機械が苦�
 
 ## 関連
 
+- [[concepts/ai-judgment-delegation]] — 承認判断を段階的に AI へ移した歴史（西尾泰和）。本ページのリスク別人間承認は「何を人間が判断すべきか」への組織規模の答え
 - [[concepts/agent-scale-source-control]] — 同じ Anthropic の、マージ数3万件超に耐えるソース管理基盤 Scion。人間のレビューを「意図」の確認へ移した点で本ページと対になる
 - [[concepts/ai-review-bottleneck]] — 人間のレビュー工程がボトルネックになる構造を制約理論で説明した個人規模の実践
 - [[concepts/claude-code-instruction-methods]] — CLAUDE.md を短く索引に徹させる公式フレーム。全レビューが CLAUDE.md を読むので短く保つ、という本ページの理由と同じ

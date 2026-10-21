@@ -76,6 +76,7 @@ Larson が small-change のコメント禁止の理由に挙げるのが、Simon
 
 ## 関連
 
+- [[concepts/ai-judgment-delegation]] — 「何を人間が承認すべきか」の判断自体を AI に委ねる流れ（西尾泰和）。承認を機械チェックへ移す本ページはその具体例
 - [[concepts/agent-era-code-review]] — 同じ問題への Anthropic の答え。リスク別の人間承認（0・1・2人）と往復上限。Larson が記事中で参照
 - [[concepts/agent-trust-inverse-pyramid]] — 人間レビューを最小にし決定論的な層へ努力を移す @poteto の指針。記事が pstack を検証手法として名指し
 - [[tools/stripe-minions]] — Larson が fleet の類例に挙げる Stripe のマシン生成 PR パイプライン（one-shot 方式の違いあり）

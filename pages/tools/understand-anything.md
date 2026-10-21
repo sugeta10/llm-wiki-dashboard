@@ -17,6 +17,7 @@
 
 ## 関連
 
+- [[tools/rea-prompts]] — 対象ソフトの挙動を調べさせる近縁ツール。こちらはバイナリ・ファームウェアまで含む動的/静的解析が対象で、Understand-Anything はソースコードのグラフ化が中心
 - [[concepts/claude-code-large-codebase]]
 - [[tools/claude-code]]
 - [[tools/cursor]]

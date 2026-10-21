@@ -58,6 +58,7 @@ flowchart TD
 
 ## 関連
 
+- [[tools/rea-prompts]] — 事実・推論・未知を分け、主張ごとに証拠を引かせる同型の調査規律をリバースエンジニアリングのプロンプトに落とした例
 - [[concepts/implementation-notes-prompt]] — 同じ@trq212の技法。本フレームでは「実装中」フェーズに位置づく
 - [[concepts/ai-teacher-prompt]] — 同じ@trq212の技法。実装後の理解補完（教師役・クイズ）と同目的
 - [[tools/grill-me]] — 実装前「インタビュー」技法の独立実装（Matt Pocock作）。一問ずつの深掘りが同型

@@ -72,6 +72,7 @@ flowchart LR
 
 ## 関連
 
+- [[concepts/ai-judgment-delegation]] — 人々が承認判断を次々手放した歴史（西尾泰和）。本ページの「影響範囲で開けてはいけないレーン」は、便利さで手放してよい判断の線引きへの設計側からの答え
 - [[concepts/graph-engineering]] — ノード/エッジ/契約の語彙と偽エッジテストの本体（@0xCodez 他）。本ページはそこに無い戻り道・ゲート・人間の配置を扱う
 - [[concepts/loop-anatomy]] — ループの1ターンを5ムーブに分解した枠組み。「ループの床は評価器」という同じ結論
 - [[concepts/dynamic-agent-org]] — loop がエージェント単体を、graph が組織構造をプログラム可能にするという同じ2層の整理（@Saboo_Shubham_）

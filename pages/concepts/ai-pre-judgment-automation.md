@@ -66,6 +66,7 @@ AIエージェントを始めるなら、いきなり全自動にせず、**自�
 
 ## 関連
 
+- [[concepts/ai-judgment-delegation]] — 「最終判断は人間」を解像度が低いと退ける西尾泰和の論考。本ページの「判断の手前まで」という立場と、どこで線を引くかで対になる
 - [[concepts/ai-secretary-gateway]] — AI秘書を仕事の窓口に限定し人間が決めることだけ戻す設計。本ページはその常駐版を実運用した例
 - [[concepts/claude-code-loop-types]] — Proactive ループ（イベント/スケジュール起動・小型モデルと最上位モデルの使い分け）の公式整理
 - [[tools/line-harness]] — 送信だけ人間承認に残すClaude Code運用。外部送信の手前で止める同じ境界

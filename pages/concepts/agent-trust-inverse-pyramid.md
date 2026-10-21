@@ -47,6 +47,7 @@
 
 ## 関連
 
+- [[tools/rea-prompts]] — 散文の指示でエージェントの判断に枠をはめる（証拠を引け・事実と仮説を分けろ）のを、調査プロンプトとして具体化した例
 - [[tools/pstack]] — 本投稿が導入を指示する @poteto のスキル群。`/correct`・`/architect`・`/recall`・`/sharpen`・`/in-your-own-words` の説明と24原則
 - [[concepts/correction-routing]] — 訂正の書き戻し先を6分類で選ぶ company brain のループ。本ページは強制力の軸
 - [[concepts/claude-md-multilayer-design]] — 精神論を検査可能な契約へ書き換え、守らせる境界を Permission・Hooks へ移す7層設計

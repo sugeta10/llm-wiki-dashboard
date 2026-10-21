@@ -40,6 +40,7 @@ flowchart LR
 
 ## 関連
 
+- [[concepts/ai-judgment-delegation]] — 人間の承認待ちがボトルネックになったことを起点に、承認判断を AI へ手放した歴史を跡づける西尾泰和の論考
 - [[concepts/recursive-self-improvement]] — 人間のレビューが新ボトルネックになるというAmdahl構造を、AI開発全体の規模で論じたAnthropic Instituteの論考
 - [[concepts/development-as-agriculture]] — 生成は増やせても確認速度は増やせないという同じ制約を、開発全体に広げた深津貴之の比喩
 - [[concepts/shikumika-vs-tejunsho]] — 同著者の「直した結果が戻る場所を決める」仕組み化論。⑤の指示書の育て方の元になる考え方

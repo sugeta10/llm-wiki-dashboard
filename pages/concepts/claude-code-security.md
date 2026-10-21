@@ -153,6 +153,7 @@ AI導入支援のコンサルタント@AIEducationlaboが2026-08-11に公開し�
 
 ## 関連
 
+- [[concepts/php-critical-vuln-2026-10]] — PHP 重大脆弱性の緊急リリースを個人の備えの観点で見たページ。こちらは組織でのセキュリティ設定・展開の側
 - [[tools/claude-code]]
 - [[concepts/ai-agent-governance]]
 - [[concepts/workload-identity-federation]]

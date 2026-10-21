@@ -91,6 +91,7 @@ agent.md の判断規則（記事からの抜粋）は、項目を載せる条�
 
 ## 関連
 
+- [[concepts/ai-judgment-delegation]] — 定時起動・自動承認へ至る流れを歴史として跡づける西尾泰和の論考。本設計の 6 ルールは承認を最小化する側の具体
 - [[tools/claude-managed-agents]] — 本設計の実行基盤（Vault・メモリストア・Scheduled Deployments・budget）
 - [[concepts/graph-reliability-design]] — 冪等な書き込みとノード単位の失敗方針。投稿確認後にだけ状態を確定する順序の一般形
 - [[concepts/ai-pre-judgment-automation]] — 同じく Slack/GitHub を定時検知する自動化だが、実行前に人間の承認を挟む対照例
