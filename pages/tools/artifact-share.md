@@ -116,3 +116,4 @@ cojiがこだわったのは `element` をCSSセレクタ単独にしないこ�
 - [[tools/claude-code]] / [[tools/openai-codex]] / [[tools/cursor]] — 起動経路を別々に作った3エージェント
 - [[concepts/claude-code-loop-types]] — Claude Code公式のループ4類型。「届いたら動く」はイベント駆動（Proactive）の最小実装にあたると考えられる
 - [[tools/claude-recall]] — 同じく常駐デーモンを持たない babarot 製の Claude Code セッション書庫。セッションごとに立つ MCP サーバー同士を flock のリーダー選出で1つの watcher にまとめる、複数プロセス調停の別解
+- [[tools/reason-network]] — 「会話を邪魔せずにエージェントを起こす合図」を複数エージェントぶん1つの常駐デーモンで引き受け、別 PC のセッション同士にメッセージを届ける Reason Machines の網。着信がセッション中に届くか次のステップで届くかがエージェントごとに違う点は本ページの結論と重なる

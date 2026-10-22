@@ -81,3 +81,4 @@ flowchart LR
 - [[concepts/decision-layer-model]] — @0xCodila が GrokBot 風 Chief of Staff を例に、ワーカー選択・完了判定などの小さな判断を判断モデルへ切り出す設計を示す
 - [[concepts/github-runner-agent-factory]] — 死活管理を専用ボットに持たせる本ページに対し、GitHub の Self-hosted runner 上でエージェントを常時動かし情報も GitHub に集約する個人構成（@k1ito）
 - [[tools/openai-dots]] — @umiyuki_ai が「OpenAI 版の GrokBot」と要約した、OpenAI DevDay 発表のクラウド常駐バックグラウンドボット
+- [[tools/claude-duet]] — Anthropic の常駐プロアクティブ・エージェント。Grok Bot と同じくクラウド上に自分の計算機を持ち、こちらは個人の受信箱・予定・請求業務を対象にする

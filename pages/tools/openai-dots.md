@@ -37,3 +37,4 @@ OpenAI が DevDay（2026-09-29 頃）で発表した、クラウド上でバッ�
 - [[concepts/overnight-delegation-prompt]] — Dots に夜通し作業させる就寝前の委任プロンプト
 - [[tools/openclaw]] — @usedhonda が Dots 以前から使ってきたエージェント基盤
 - [[concepts/ai-secretary-gateway]] — AI 秘書を仕事の窓口に限定する考え方。@tetumemo の「AI 秘書が常に横にいる」使い方と重なる
+- [[tools/claude-duet]] — Anthropic 版の常駐プロアクティブ・エージェント（2026-10-21 リサーチプレビュー）。クラウド上の自分の計算機で動き、利用枠は Claude 本体と共有。Dots の複数ボットに対し1本のスレッドで受ける形

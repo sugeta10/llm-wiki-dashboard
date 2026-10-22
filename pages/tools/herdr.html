@@ -53,6 +53,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a> — 高価モデルを司令塔・安価モデルをワーカーに置く Orchestrator パターン。Herdr のマルチペイン運用はその製品上の実例</li>
 <li><a href="../concepts/fable-sprint-strategy.html">fable-sprint-strategy</a> — 制限下で Fable を Planner/Evaluator に限定する配分。クォータ動機の司令塔化という同じ理由づけ</li>
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — 「自分が指揮官になり専門化した Claude を並べる」フレーム。Herdr ではその指揮官役をメインエージェントに渡す</li>
+<li><a href="../tools/reason-network.html">reason-network</a> — マシン横断でエージェント同士を直接メッセージでつなぐ網。Herdr が各マシンのエージェントを人間の操作卓に束ねるのに対し、こちらはエージェント自身が <code>list_team</code> で互いを見て問い合わせる</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li>
 <li><a href="../concepts/fable-sprint-strategy.html">fable-sprint-strategy</a></li>
@@ -109,6 +110,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[concepts/advisor-executor-pattern]] — 高価モデルを司令塔・安価モデルをワーカーに置く Orchestrator パターン。Herdr のマルチペイン運用はその製品上の実例
 - [[concepts/fable-sprint-strategy]] — 制限下で Fable を Planner/Evaluator に限定する配分。クォータ動機の司令塔化という同じ理由づけ
 - [[concepts/claude-code-orchestration]] — 「自分が指揮官になり専門化した Claude を並べる」フレーム。Herdr ではその指揮官役をメインエージェントに渡す
+- [[tools/reason-network]] — マシン横断でエージェント同士を直接メッセージでつなぐ網。Herdr が各マシンのエージェントを人間の操作卓に束ねるのに対し、こちらはエージェント自身が `list_team` で互いを見て問い合わせる
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

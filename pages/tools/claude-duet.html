@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-duet - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-duet</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-duet.md">Markdownで表示</a></div>
+  <div class="meta">tools/claude-duet · tools · <span title="2026-10-22">今日</span></div>
+  <article><h1>Claude Duet — 向こうから声をかけてくるプロアクティブな Claude の単独アプリ</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Anthropic が 2026-10-21 にリサーチプレビューとして公開した、Claude が能動的なエージェントとして働く新アプリ。朝のブリーフで要対応事項を知らせ、メッセージで渡した仕事をクラウド上の専用計算機で進め、利用者が席を離れても動き続け、送信や支払いなど本人に代わって行う操作の前には確認を取る。</p>
+<p>📌 X bookmark: 15,081（2026-10-22 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  M[&quot;朝のブリーフ&lt;br/&gt;受信箱・予定から要対応を提示&quot;] --&gt; U[&quot;利用者&quot;]
+  U --&gt;|テキストか音声で依頼| D[&quot;Claude Duet&lt;br/&gt;クラウド上の自分の計算機で作業&quot;]
+  D --&gt;|記憶・スキル・接続アプリを使う| D
+  D --&gt;|送信・支払いなどの前| A{&quot;利用者に確認&quot;}
+  A --&gt;|承認| D
+  D --&gt;|完了または判断待ちで連絡| U
+  D --&gt;|Doc・Sheet・Deck で納品| U</pre>
+<p>従来の Claude アプリは利用者がチャットを開くのを待ち、開いたあとは隣で一緒に作業する道具だった。Anthropic は製品ページでこれと対比して「Claude Duet は向こうから来る」と書き、毎朝注意が要るものを伝え、メッセージで渡された仕事を引き受け、終わったときや承認が要るときに連絡してくる、と説明している。公式アカウント @claudeai の告知は、注意が要るものを持ってくる・頼んだ仕事を完了する・席を離れても働き続ける・本人に代わって動く前に確認する、の4点でこのアプリを要約した。利用者側の操作は、信頼する同僚にメッセージを送るのと同じで、プロンプトも設定も要らず、テキストでも音声でもよく、履歴は1本のスレッドに残る。</p>
+<h2>何をするか（Anthropic の説明）</h2>
+<p>製品ページで Anthropic が挙げる動きは3層に分けて読める。まず毎朝のブリーフで、受信箱と予定の中から本人の対応が要るものを示し、返信の下書きを承認用に用意する。次にメッセージで渡された仕事を、接続したアプリを使ってクラウド上の自分の計算機で進める。会議の設定やダッシュボードの構築を頼めば、終わったときに共有してくる。最後に、事業運営の作業として、未払いの請求書を見つけて催促の下書きを作る、給与計算を確認用に準備する、契約書を送付できる状態に整える、ブリーフ・デッキ・ダッシュボードをまとめる、といった例を挙げている。仕上がった成果物は Doc・Sheet・Deck のような形で利用者のレビューに戻ってくる。</p>
+<p>Claude Duet は利用者の Claude アカウントをそのまま使い、記憶・スキル・コネクタが最初のメッセージから効く。製品ページの見出しは 6,000 を超えるコネクタとプラグインに対応するとうたう。常時動いているが、連絡するかどうかの判断は「何が待てるかを知っている」と Anthropic は表現し、何も要らなければ静かにしているとしている。</p>
+<h2>安全設計（Anthropic の説明）</h2>
+<p>Anthropic は、メッセージの送信や支払いのような機微な操作の前に利用者へ確認を取ると明記している。承認・ログイン・安全性チェックは利用者専用のクラウド計算機の中で実行され、機微な情報はそこから出ない、という説明である。利用者は Duet が何をしたか・いま何をしているかを見て、進め方を変えられる。</p>
+<p>リサーチプレビューとしての限界も Anthropic 自身が書いている。スレッドを読み違える、緊急度の見積もりを外す、確認と確認の間に届いたものを取り落とす、の3つである。</p>
+<h2>提供範囲と利用枠（Anthropic の説明）</h2>
+<ul>
+<li>米国の Claude Pro・Max 加入者向けの待機リスト制。Team・Enterprise プランはまだ対象外</li>
+<li>iOS・Android の単独アプリ。PC では claude.ai 上のウェブで開く</li>
+<li>リサーチプレビュー期間中はプランの利用枠を Claude 本体と共有し、通常の会話とは違う使い方で消費する。バックグラウンドの確認も枠に数えられ、財務モデルやデッキの構築のような大きな仕事はモデルのターン数とバックグラウンド作業が増える</li>
+</ul>
+<h2>位置づけ（wiki 側の推論）</h2>
+<p>Claude Code チームが <a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> で整理した4類型のうち、イベントやスケジュールで起動し利用者が止めるまで続く Proactive 類型を、開発者向けの部品でなく一般利用者向けの製品にしたものと考えられる。入江慎吾の <a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a> は Slack・Gmail・カレンダーなど仕事の入口を監視して提案し、人間が承認してから実行する運用を個人で組んだ実践記で、Duet はその形をベンダーが製品化したものに見える。ただし承認を求める線の引き方が違い、入江の運用は実行のすべてに人間の確認を置くのに対し、Duet は「送信・支払いなど本人に代わる操作の前」に置く。@dansyu_callenge が <a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a> で「今日の秘書ブリーフ」として自作していた朝の窓口は、Duet の朝ブリーフに相当し、コピペ秘書から常駐秘書へ段を上げる作業をベンダー製品で飛ばす選択肢が出たと読める。</p>
+<p>競合として並ぶのは、OpenAI が ChatGPT 内の常時稼働エージェントとして出した <a href="../tools/openai-dots.html">openai-dots</a> と、自分の計算機を持つエンジニアボット <a href="../tools/grok-bot.html">grok-bot</a> である。クラウド上に自分の計算機を持ち利用者が離れていても動く、という形は3者で共通する。@umiyuki_ai の要約では Dots はボットを複数作れるのに対し、Duet の製品ページは履歴を1本のスレッドに置くと書いており、仕事の分け方の思想が違うと考えられる。Anthropic 自身の先行製品では、<a href="../tools/claude-google-workspace.html">claude-google-workspace</a> が編集を反映前に1件ずつ承認させる設計を取っていた。Duet はそれより粗い粒度で、外に影響が出る操作だけを止める。公式の参照実装 <a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a> の daily-brief は、開発者が Managed Agents で組む朝ブリーフで、Duet は同じ体験を組まずに受け取る側の製品と考えられる。Duet の実装基盤が何かは製品ページに書かれておらず、未確認である。</p>
+<h2>問い</h2>
+<ul>
+<li>自分の運用のうち「入口の監視→提案」の部分を Duet に寄せられるか。日本からは待機リストの対象外なので、まず提供地域の拡大時期と Team プラン対応を追う</li>
+<li>「送信・支払いの前に確認」の線引きで、カレンダー招待の作成やファイル共有はどちら側に置かれるか。実物で1回試す</li>
+<li>複数の仕事を並行させるとき、Dots の複数ボットと Duet の1スレッドのどちらが扱いやすいか。<a href="../concepts/overnight-delegation-prompt.html">overnight-delegation-prompt</a> の就寝前委任を Duet に移すと何が変わるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — Claude Code チームによるループ4類型。Duet は Proactive 類型の一般利用者向け製品と考えられる</li>
+<li><a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a> — 入口の監視→提案→承認→実行を個人で組んだ運用（入江慎吾）。Duet はその製品版で、承認の線を外部操作の手前に置く</li>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a> — 「今日の秘書ブリーフ」を自作する窓口設計。Duet の朝ブリーフに相当</li>
+<li><a href="../tools/openai-dots.html">openai-dots</a> — OpenAI の常時稼働エージェント。複数ボットか1スレッドかで形が違う</li>
+<li><a href="../tools/grok-bot.html">grok-bot</a> — 自分の計算機を持つエンジニアボット。クラウドの専用計算機という共通点</li>
+<li><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a> — Anthropic 公式の daily-brief 参照実装。開発者が組む側の朝ブリーフ</li>
+<li><a href="../tools/claude-google-workspace.html">claude-google-workspace</a> — 編集を1件ずつ承認させる Anthropic の先行製品。承認粒度の比較対象</li>
+<li><a href="../concepts/overnight-delegation-prompt.html">overnight-delegation-prompt</a> — 常駐ボットに夜通し作業させる委任プロンプト</li>
+<li><a href="../companies/anthropic.html">anthropic</a> — 開発元</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a></li>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a></li>
+<li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
+<li><a href="../tools/grok-bot.html">grok-bot</a></li>
+<li><a href="../tools/openai-dots.html">openai-dots</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2112984664256241837" rel="noopener" target="_blank">https://x.com/i/web/status/2112984664256241837</a></li>
+<li><a href="https://claude.com/product/claude-duet" rel="noopener" target="_blank">https://claude.com/product/claude-duet</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Duet — 向こうから声をかけてくるプロアクティブな Claude の単独アプリ
+
+&gt; **TL;DR**: Anthropic が 2026-10-21 にリサーチプレビューとして公開した、Claude が能動的なエージェントとして働く新アプリ。朝のブリーフで要対応事項を知らせ、メッセージで渡した仕事をクラウド上の専用計算機で進め、利用者が席を離れても動き続け、送信や支払いなど本人に代わって行う操作の前には確認を取る。
+
+&gt; 📌 X bookmark: 15,081（2026-10-22 時点）
+
+```mermaid
+flowchart LR
+  M[&quot;朝のブリーフ&lt;br/&gt;受信箱・予定から要対応を提示&quot;] --&gt; U[&quot;利用者&quot;]
+  U --&gt;|テキストか音声で依頼| D[&quot;Claude Duet&lt;br/&gt;クラウド上の自分の計算機で作業&quot;]
+  D --&gt;|記憶・スキル・接続アプリを使う| D
+  D --&gt;|送信・支払いなどの前| A{&quot;利用者に確認&quot;}
+  A --&gt;|承認| D
+  D --&gt;|完了または判断待ちで連絡| U
+  D --&gt;|Doc・Sheet・Deck で納品| U
+```
+
+従来の Claude アプリは利用者がチャットを開くのを待ち、開いたあとは隣で一緒に作業する道具だった。Anthropic は製品ページでこれと対比して「Claude Duet は向こうから来る」と書き、毎朝注意が要るものを伝え、メッセージで渡された仕事を引き受け、終わったときや承認が要るときに連絡してくる、と説明している。公式アカウント @claudeai の告知は、注意が要るものを持ってくる・頼んだ仕事を完了する・席を離れても働き続ける・本人に代わって動く前に確認する、の4点でこのアプリを要約した。利用者側の操作は、信頼する同僚にメッセージを送るのと同じで、プロンプトも設定も要らず、テキストでも音声でもよく、履歴は1本のスレッドに残る。
+
+## 何をするか（Anthropic の説明）
+
+製品ページで Anthropic が挙げる動きは3層に分けて読める。まず毎朝のブリーフで、受信箱と予定の中から本人の対応が要るものを示し、返信の下書きを承認用に用意する。次にメッセージで渡された仕事を、接続したアプリを使ってクラウド上の自分の計算機で進める。会議の設定やダッシュボードの構築を頼めば、終わったときに共有してくる。最後に、事業運営の作業として、未払いの請求書を見つけて催促の下書きを作る、給与計算を確認用に準備する、契約書を送付できる状態に整える、ブリーフ・デッキ・ダッシュボードをまとめる、といった例を挙げている。仕上がった成果物は Doc・Sheet・Deck のような形で利用者のレビューに戻ってくる。
+
+Claude Duet は利用者の Claude アカウントをそのまま使い、記憶・スキル・コネクタが最初のメッセージから効く。製品ページの見出しは 6,000 を超えるコネクタとプラグインに対応するとうたう。常時動いているが、連絡するかどうかの判断は「何が待てるかを知っている」と Anthropic は表現し、何も要らなければ静かにしているとしている。
+
+## 安全設計（Anthropic の説明）
+
+Anthropic は、メッセージの送信や支払いのような機微な操作の前に利用者へ確認を取ると明記している。承認・ログイン・安全性チェックは利用者専用のクラウド計算機の中で実行され、機微な情報はそこから出ない、という説明である。利用者は Duet が何をしたか・いま何をしているかを見て、進め方を変えられる。
+
+リサーチプレビューとしての限界も Anthropic 自身が書いている。スレッドを読み違える、緊急度の見積もりを外す、確認と確認の間に届いたものを取り落とす、の3つである。
+
+## 提供範囲と利用枠（Anthropic の説明）
+
+- 米国の Claude Pro・Max 加入者向けの待機リスト制。Team・Enterprise プランはまだ対象外
+- iOS・Android の単独アプリ。PC では claude.ai 上のウェブで開く
+- リサーチプレビュー期間中はプランの利用枠を Claude 本体と共有し、通常の会話とは違う使い方で消費する。バックグラウンドの確認も枠に数えられ、財務モデルやデッキの構築のような大きな仕事はモデルのターン数とバックグラウンド作業が増える
+
+## 位置づけ（wiki 側の推論）
+
+Claude Code チームが [[concepts/claude-code-loop-types]] で整理した4類型のうち、イベントやスケジュールで起動し利用者が止めるまで続く Proactive 類型を、開発者向けの部品でなく一般利用者向けの製品にしたものと考えられる。入江慎吾の [[concepts/ai-pre-judgment-automation]] は Slack・Gmail・カレンダーなど仕事の入口を監視して提案し、人間が承認してから実行する運用を個人で組んだ実践記で、Duet はその形をベンダーが製品化したものに見える。ただし承認を求める線の引き方が違い、入江の運用は実行のすべてに人間の確認を置くのに対し、Duet は「送信・支払いなど本人に代わる操作の前」に置く。@dansyu_callenge が [[concepts/ai-secretary-gateway]] で「今日の秘書ブリーフ」として自作していた朝の窓口は、Duet の朝ブリーフに相当し、コピペ秘書から常駐秘書へ段を上げる作業をベンダー製品で飛ばす選択肢が出たと読める。
+
+競合として並ぶのは、OpenAI が ChatGPT 内の常時稼働エージェントとして出した [[tools/openai-dots]] と、自分の計算機を持つエンジニアボット [[tools/grok-bot]] である。クラウド上に自分の計算機を持ち利用者が離れていても動く、という形は3者で共通する。@umiyuki_ai の要約では Dots はボットを複数作れるのに対し、Duet の製品ページは履歴を1本のスレッドに置くと書いており、仕事の分け方の思想が違うと考えられる。Anthropic 自身の先行製品では、[[tools/claude-google-workspace]] が編集を反映前に1件ずつ承認させる設計を取っていた。Duet はそれより粗い粒度で、外に影響が出る操作だけを止める。公式の参照実装 [[concepts/scheduled-agent-automation]] の daily-brief は、開発者が Managed Agents で組む朝ブリーフで、Duet は同じ体験を組まずに受け取る側の製品と考えられる。Duet の実装基盤が何かは製品ページに書かれておらず、未確認である。
+
+## 問い
+
+- 自分の運用のうち「入口の監視→提案」の部分を Duet に寄せられるか。日本からは待機リストの対象外なので、まず提供地域の拡大時期と Team プラン対応を追う
+- 「送信・支払いの前に確認」の線引きで、カレンダー招待の作成やファイル共有はどちら側に置かれるか。実物で1回試す
+- 複数の仕事を並行させるとき、Dots の複数ボットと Duet の1スレッドのどちらが扱いやすいか。[[concepts/overnight-delegation-prompt]] の就寝前委任を Duet に移すと何が変わるか
+
+## 関連
+
+- [[concepts/claude-code-loop-types]] — Claude Code チームによるループ4類型。Duet は Proactive 類型の一般利用者向け製品と考えられる
+- [[concepts/ai-pre-judgment-automation]] — 入口の監視→提案→承認→実行を個人で組んだ運用（入江慎吾）。Duet はその製品版で、承認の線を外部操作の手前に置く
+- [[concepts/ai-secretary-gateway]] — 「今日の秘書ブリーフ」を自作する窓口設計。Duet の朝ブリーフに相当
+- [[tools/openai-dots]] — OpenAI の常時稼働エージェント。複数ボットか1スレッドかで形が違う
+- [[tools/grok-bot]] — 自分の計算機を持つエンジニアボット。クラウドの専用計算機という共通点
+- [[concepts/scheduled-agent-automation]] — Anthropic 公式の daily-brief 参照実装。開発者が組む側の朝ブリーフ
+- [[tools/claude-google-workspace]] — 編集を1件ずつ承認させる Anthropic の先行製品。承認粒度の比較対象
+- [[concepts/overnight-delegation-prompt]] — 常駐ボットに夜通し作業させる委任プロンプト
+- [[companies/anthropic]] — 開発元
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

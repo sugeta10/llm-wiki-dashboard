@@ -136,11 +136,12 @@ npx @artifactshare/cli preview done --stdin     # 直した結果を報告する
 <li><a href="../tools/claude-code.html">claude-code</a> / openai-codex / <a href="../tools/cursor.html">cursor</a> — 起動経路を別々に作った3エージェント</li>
 <li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — Claude Code公式のループ4類型。「届いたら動く」はイベント駆動（Proactive）の最小実装にあたると考えられる</li>
 <li><a href="../tools/claude-recall.html">claude-recall</a> — 同じく常駐デーモンを持たない babarot 製の Claude Code セッション書庫。セッションごとに立つ MCP サーバー同士を flock のリーダー選出で1つの watcher にまとめる、複数プロセス調停の別解</li>
+<li><a href="../tools/reason-network.html">reason-network</a> — 「会話を邪魔せずにエージェントを起こす合図」を複数エージェントぶん1つの常駐デーモンで引き受け、別 PC のセッション同士にメッセージを届ける Reason Machines の網。着信がセッション中に届くか次のステップで届くかがエージェントごとに違う点は本ページの結論と重なる</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-hooks-async.html">claude-code-hooks-async</a></li>
 <li><a href="../design/claude-design-workflow.html">claude-design-workflow</a></li>
 <li><a href="../tools/claude-recall.html">claude-recall</a></li>
 <li><a href="../tools/html-share.html">html-share</a></li>
-<li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/coji/articles/artifactshare-preview-claude-codex-cursor" rel="noopener" target="_blank">https://zenn.dev/coji/articles/artifactshare-preview-claude-codex-cursor</a></li>
+<li><a href="../tools/reason-network.html">reason-network</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/coji/articles/artifactshare-preview-claude-codex-cursor" rel="noopener" target="_blank">https://zenn.dev/coji/articles/artifactshare-preview-claude-codex-cursor</a></li>
 <li><a href="https://x.com/i/web/status/2094622027055550575" rel="noopener" target="_blank">https://x.com/i/web/status/2094622027055550575</a></li></ul></section></article>
 </main>
 <script>
@@ -280,6 +281,7 @@ cojiがこだわったのは `element` をCSSセレクタ単独にしないこ�
 - [[tools/claude-code]] / [[tools/openai-codex]] / [[tools/cursor]] — 起動経路を別々に作った3エージェント
 - [[concepts/claude-code-loop-types]] — Claude Code公式のループ4類型。「届いたら動く」はイベント駆動（Proactive）の最小実装にあたると考えられる
 - [[tools/claude-recall]] — 同じく常駐デーモンを持たない babarot 製の Claude Code セッション書庫。セッションごとに立つ MCP サーバー同士を flock のリーダー選出で1つの watcher にまとめる、複数プロセス調停の別解
+- [[tools/reason-network]] — 「会話を邪魔せずにエージェントを起こす合図」を複数エージェントぶん1つの常駐デーモンで引き受け、別 PC のセッション同士にメッセージを届ける Reason Machines の網。着信がセッション中に届くか次のステップで届くかがエージェントごとに違う点は本ページの結論と重なる
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

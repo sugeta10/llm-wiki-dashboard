@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-recall</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-recall.md">Markdownで表示</a></div>
-  <div class="meta">tools/claude-recall · tools · <span title="2026-10-19">2日前</span></div>
+  <div class="meta">tools/claude-recall · tools · <span title="2026-10-19">3日前</span></div>
   <article><h1>claude-recall：Claude Code の全セッションを SQLite に残し、人と Claude の双方が引ける recall ツール</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Claude Code が書く JSONL のセッション記録を SQLite の書庫（<code>~/.claude/vault.db</code>）に取り込み続け、Claude Code が消した後も残したうえで、MCP サーバー（Claude が過去セッションを検索・読解）・TUI（自分で探して再開）・Web UI（ブラウザで読む）の3経路で引ける1バイナリ <code>recall</code>。記憶システムでなく「必要なときに引く（pull）」道具だと作者 babarot が明言し、作者と考えられる @b4b4r07 は日次ダッシュボードとハーネス自己改善ループの基盤に使っていると投稿した。</p>

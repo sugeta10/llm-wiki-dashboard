@@ -28,3 +28,4 @@
 - [[concepts/advisor-executor-pattern]] — 高価モデルを司令塔・安価モデルをワーカーに置く Orchestrator パターン。Herdr のマルチペイン運用はその製品上の実例
 - [[concepts/fable-sprint-strategy]] — 制限下で Fable を Planner/Evaluator に限定する配分。クォータ動機の司令塔化という同じ理由づけ
 - [[concepts/claude-code-orchestration]] — 「自分が指揮官になり専門化した Claude を並べる」フレーム。Herdr ではその指揮官役をメインエージェントに渡す
+- [[tools/reason-network]] — マシン横断でエージェント同士を直接メッセージでつなぐ網。Herdr が各マシンのエージェントを人間の操作卓に束ねるのに対し、こちらはエージェント自身が `list_team` で互いを見て問い合わせる
