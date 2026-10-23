@@ -76,3 +76,4 @@ Anthropic は商用製品 Claude Security を「企業が自社コードの脆�
 - [[models/claude-mythos]] — 一般公開見送りの代わりに始めた Project Glasswing が本サービスの土台
 - [[models/claude-opus-4-7]] — Cyber Verification Program の設置を発表したモデル。OSS Scanner と並ぶメンテナ支援として案内される
 - [[concepts/recursive-self-improvement]] — Glasswing で発見が万単位に達しボトルネックが修正側へ移ったとする記述
+- [[concepts/cto-ciso-vuln-surge-playbook]] — 受け手側の見立て。米内貴志（GMO Flatt Security 取締役 Co-CTO）は AI で脆弱性発掘が加速するこれからは組織の対応容量が律速になるとして、新機能開発を落としセキュリティに時間・金・トークンを配分せよと CTO/CISO に勧める

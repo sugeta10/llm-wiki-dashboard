@@ -57,3 +57,4 @@ MCPは1,000超のサーバーを単一ゲートウェイに集約した上で、
 - [[tools/stripe-minions]] — managed agentsパイプラインの他社実装（Stripe）
 - [[business/ai-native-management]] — 本事例を深津貴之が経営論として引いた側。「見るべきKPIはモデル名でなく、同じ巨大コンテキストを1セッションに何回再読ませているか」という翻訳になっている
 - [[concepts/github-runner-agent-factory]] — 「ソフトウェア工場」を個人が GitHub の Self-hosted runner 上で24/365稼働させる構成（@k1ito）。本ページは全社規模側
+- [[tools/haro]] — LayerX バクラクの内製 Background Agent。izumin5210 は Software Factory が整っても「何を流すか」は自動的に決まらず、仕様を決める工程へ戻るループが多いと論じる。本ページがコストを扱うのに対し、上流の不確実性を扱う側

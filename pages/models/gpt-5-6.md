@@ -63,3 +63,4 @@ ChatGPT・ChatGPT Work・Codex・APIで即日ロールアウト（24時間かけ
 - [[concepts/multi-agent-patterns]] — ultraの並列4エージェントが実装するマルチエージェント協調
 - [[concepts/prompt-caching]] — キャッシュ課金・寿命設計の対比先
 - [[models/gpt-6-astra]] — 次の世代番号。Codex チームは Sol／Luna 向けの指針が Astra を過剰に縛りうると述べる（発表内容は未収集）
+- [[concepts/cto-ciso-vuln-surge-playbook]] — 米内貴志（GMO Flatt Security 取締役 Co-CTO）が「体感では GPT-5.6 Sol 以後」を、複雑なメモリバグや認可バグの発掘が加速した起点として挙げる

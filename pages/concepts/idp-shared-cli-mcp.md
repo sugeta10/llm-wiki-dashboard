@@ -44,3 +44,5 @@ flowchart LR
 - [[tools/claude-mcp]] — Model Context Protocol（CLIと並ぶAIの入口）
 - [[companies/cloudflare]] — Cloudflare Accessの提供元。2026-08-05発表のCloudflare OSは同じ「社内システムへの安全なアクセス」を製品として束ねる動き
 - [[tools/cloudflare-os]] — Cloudflare Accessを入口に据え、その内側をcapabilityとGatekeeperで絞る製品版。本ページの二段JWT検証と同じ「人もAIも同一身元」の系譜
+- [[tools/haro]] — LayerX バクラクの内製 Background Agent。Slack・Notion・Linear・Datadog・Snowflake の MCP を、利用者が鍵管理をせず普段の自分のアカウントで使えるよう接続している（実装方式は記事に記載なし）
+- [[tools/1password-for-agents]] — 個人エージェントのサインインを、利用者の端末での承認と 1Password によるフォーム直接入力で代行し、資格情報をエージェントに渡さない製品。本ページの「AI 専用の資格情報を発行しない」を個人側に適用した形

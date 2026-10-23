@@ -82,3 +82,5 @@ flowchart LR
 - [[concepts/github-runner-agent-factory]] — 死活管理を専用ボットに持たせる本ページに対し、GitHub の Self-hosted runner 上でエージェントを常時動かし情報も GitHub に集約する個人構成（@k1ito）
 - [[tools/openai-dots]] — @umiyuki_ai が「OpenAI 版の GrokBot」と要約した、OpenAI DevDay 発表のクラウド常駐バックグラウンドボット
 - [[tools/claude-duet]] — Anthropic の常駐プロアクティブ・エージェント。Grok Bot と同じくクラウド上に自分の計算機を持ち、こちらは個人の受信箱・予定・請求業務を対象にする
+- [[tools/haro]] — LayerX バクラクが内製したクラウド型 Background Agent。カスタム Agent・Slack/Scheduler/API の起動経路・社内 MCP 接続で、コーディング以外の業務まで扱う社内基盤の別実装
+- [[tools/1password-for-agents]] — 1Password が 2026-10-22 に発表した個人エージェント向けサインイン承認レイヤー。SpaceXSI の Grok Bot は展開開始の連携先として挙がる

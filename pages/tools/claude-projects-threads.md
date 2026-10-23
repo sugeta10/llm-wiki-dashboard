@@ -64,3 +64,5 @@ flowchart LR
 - [[concepts/effort-level-selection]] — コーディネーター／スレッドの effort 選びの判断軸
 - [[tools/claude-mcp]] — Connectors の中身
 - [[concepts/ai-session-handover]] — 都度の引き継ぎ。過去セッションで繰り返し説明した背景を Project instructions へ恒久化する使い方（@Voxyz_ai）の対になる手法
+- [[tools/haro]] — LayerX バクラクが内製したクラウド型 Background Agent。Temporal Workflow と EKS で環境を払い出し、社内 MCP を鍵管理なしで接続する自前実装の側
+- [[tools/1password-for-agents]] — 個人エージェントのサインインで、承認後に 1Password がフォームへ直接入力しパスワードをエージェントに渡さない仕組み。API credentials のプロキシ注入と同じ「秘密は AI に渡さず別の層が代行する」形

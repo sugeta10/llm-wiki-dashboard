@@ -58,3 +58,4 @@ Claude Code チームが [[concepts/claude-code-loop-types]] で整理した4類
 - [[tools/claude-google-workspace]] — 編集を1件ずつ承認させる Anthropic の先行製品。承認粒度の比較対象
 - [[concepts/overnight-delegation-prompt]] — 常駐ボットに夜通し作業させる委任プロンプト
 - [[companies/anthropic]] — 開発元
+- [[tools/1password-for-agents]] — 1Password が 2026-10-22 に発表したサインイン承認レイヤー。Claude Duet は「近日対応」とされ、Anthropic CPO の Ami Vora は Duet がサインイン前に必ず尋ねる設計に 1Password が入力を完了させる形になると述べる

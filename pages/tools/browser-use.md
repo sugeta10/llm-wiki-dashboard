@@ -21,3 +21,4 @@ WebブラウザをAIエージェントが操作するためのライブラリ。
 - [[tools/claude-computer-use]]（AnthropicによるデスクトップUI操作エージェント機能）
 - [[tools/video-use]] — 同じ「◯◯-use」命名系譜の Claude Code 動画編集 OSS
 - [[tools/jev-ultrafast]] — 同じ browser-use による高速化版の別リポジトリ。番号付き要素テーブルと、操作・対象を1往復で決める構成
+- [[tools/1password-for-agents]] — 1Password が 2026-10-22 に発表したサインイン承認レイヤー。Browser Use は追加連携予定の企業として挙がる。ブラウザ操作エージェントがログイン画面で止まる問題への外部からの解

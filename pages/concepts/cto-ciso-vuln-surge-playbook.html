@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cto-ciso-vuln-surge-playbook - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>cto-ciso-vuln-surge-playbook</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cto-ciso-vuln-surge-playbook.md">Markdownで表示</a></div>
+  <div class="meta">concepts/cto-ciso-vuln-surge-playbook · concepts · <span title="2026-10-23">今日</span></div>
+  <article><h1>PHP 脆弱性対応の「後」に向けた CTO/CISO の 4 つの構え（米内貴志）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: GMO Flatt Security 取締役 Co-CTO の米内貴志（@lmt_swallow）が、2026-10-21 夜からの PHP 緊急対応の翌朝に CTO/CISO 向けに書き残した 4 点。AI による脆弱性発掘が加速するこれからは高負荷が続くので、新機能開発を落としてセキュリティに時間・金・トークンを配分し、予防的サービス停止の覚悟と顧客との期待値調整を済ませ、平時にはレガシーを Rebuild and Retire し、CTO と CISO のサイロを壊して総力戦に入れ、という主張。</p>
+</blockquote>
+<p>投稿は <a href="../concepts/php-critical-vuln-2026-10.html">php-critical-vuln-2026-10</a> で扱った PHP の重大脆弱性 2 件への一晩の対応直後、2026-10-22 の朝（UTC 00:57）に書かれた。米内は「一晩中連絡が鳴り止まず個別メッセージに返せていない」と断り、個別対応の代わりに世の中の CTO/CISO に届けたいことを 4 点にまとめ、「まとまりない部分もあるが投稿しないよりマシ」と添えている。投稿者プロフィールの表示名は「YONEUCHI, Takashi | GMO Flatt Security」で、自己紹介に取締役 Co-CTO とある。保存数は 2026-10-23 時点で 3,968 件。</p>
+<p>書き手の立場に注意が要る。米内は脆弱性リサーチ事業と「Takumi Guard」を含む自社製品を持つセキュリティ企業の経営者で、投稿内でも自社の対応方針（顧客への事前スタンス表明をリリースノートで出す予定）に触れている。以下の 4 点は、脆弱性リサーチに数年取り組んできた当事者の見立てであって、業界統計や公式見解ではない。</p>
+<h2>1. 高負荷が続く前提で、セキュリティに時間を割きチームが休める体制を</h2>
+<p>米内は「ここ 1 年、体感では GPT-5.6 Sol 以後が、最も『本当に？』という脆弱性が掘り出される 1 年になる」と述べる（<a href="../models/gpt-5-6.html">gpt-5-6</a>）。中心になるのは memory safe でない言語で書かれたものを中心とする複雑なメモリバグと、認可バグの類だという。少なくとも年末まではこのクラスの脆弱性がまだ出てくると考えるべきで、直近の PHP 脆弱性についても世界中の研究者が Variant Analysis（既知の脆弱性と同型のバグを周辺コードから探す手法）をしており、まだ出てくるだろうと見る。</p>
+<p>ここから導く経営判断は「新規機能開発に割く時間を明確に落とす」こと。米内は、これは経営者である CTO には取りにくい判断だと自分を含めて認めたうえで、それでもリーダーが意図してセキュリティに時間・お金・トークンを配分するのは経営者にしか取れない択だと書く。</p>
+<p>「対応は AI で」という発想については、技術的には正しいが組織的には正しくない、と切り分ける。理由はセキュリティ対応のタイミングを自分で御せないこと。深夜対応・急な計画変更・デグレへの不安・自社に影響があるか分からない脆弱性情報の過多が重なってストレス強度が上がり続け、昨夜のような対応が毎週あればチームは比較的簡単に壊れる、という見立てである。</p>
+<h2>2. 「必要なら予防的にサービス停止」の覚悟を決め、止められないなら仮想パッチと監視に資源を</h2>
+<p>今回のような脆弱性では「顧客保護のためにサービスを止めざるを得ない場面」が訪れ、今回も多くのビジネスが直面したと米内は書く。今回の経験を元に、本当に止めてはならないのか、止められるのか、止めうる期待値調整が顧客とできているかを徹底的に見直すことを勧める。顧客への事前連絡によるスタンス表明も有効だとし、GMO Flatt Security 自身もこれから実施してリリースノートに掲示すると明かす。理由として、自社サービス、特に Takumi Guard の侵害はソフトウェアサプライチェーンの最悪の侵害につながるからだと述べる。</p>
+<p>止められないビジネスがあることは認めつつ、天秤の置き方が変わったという指摘が要点である。金融・医療の規制や顧客との SLA は存在するが、現代ではそれに反するリスクとセキュリティ侵害に遭うリスクを天秤にかける必要が出てきた。少し前までは「停止のデメリットは想像できるが侵害は考えにくい」時代だったが今はそうではない、と米内は書き、「何がなんでも止めてはならない」ビジネスは人命に関わるものを中心に相当限定的だと見る。どうしても止められない場合は WAF（Web Application Firewall）層などで緩和策を施して監視する流れになるとし、必要なコンポーネントと運用資源がなければ整えるよう促す。</p>
+<h2>3. 平時があればレガシーを Rebuild and Retire する</h2>
+<p>自社の緊急対応が落ち着いているなら、数年塩漬けのシステムや誰がメンテできるか分からない「オーパーツ的存在」から順に、作り直し（Rebuild）と旧システムの廃止（Retire）を試みるべきだと米内は言う。新規開発の代わりにここへ資源を充てるのは他の誰も決められない CTO/CISO の仕事であり、追々自分たちを助け、ついでに AI-native 開発へ移行できて改善しやすくなる、という見立てである。</p>
+<p>どこから手を付けるかの基準として挙げるのは 2 つ。第一に memory unsafe な言語や型安全性があまり確保されていない言語の実装で、米内は PHP 好きと断りつつ「C/C++ で書かれた php-src はメモリバグ類に対する見通しに限界がある」と書く。第二に開発当時に DevOps プラクティスが整っていなかった時代のソフトウェアで、経験上「セキュリティ診断をすると取り返しのつかない量の脆弱性が出て、作り直した方が早い」となる傾向にあり、診断やペネトレーションテストを行う自社でもこうなるとどうしようもないと述べる。</p>
+<p>ただし Rebuild には強いソフトウェア開発力と AI-native なスタイルへの移行が必須で、ここに CTO の力が要る。どこからレガシーを追い出しどうレジリエンスを確保するかには CISO 的な感性、既製品（特に SaaS）を買って済ませる判断には CIO 的センスが要るとして、「総力戦だと思ってください」と締める。レガシーの置き換えをコードレベルで担う道具としては <a href="../tools/code-modernization-plugin.html">code-modernization-plugin</a> が同じ時期に出ており、新旧の振る舞い一致を示そうとするその設計は、ここで言う Rebuild の検証工程に当たると考えられる（wiki 側の推論）。</p>
+<h2>4. CTO/CISO の総力戦</h2>
+<p>直近の局面には CTO/CISO の総力戦が必要で、ボードがセキュリティに向かって一致団結する必要があると米内は書く。両ロールの間にサイロがあるケースは結構あるが「そんなことを言っている場合ではない」として、投稿は「団結を！」で終わる。</p>
+<h2>位置づけ（wiki 側の読み）</h2>
+<p><a href="../concepts/php-critical-vuln-2026-10.html">php-critical-vuln-2026-10</a> が個人の備え（使い回しパスワードの変更・2 要素認証・偽メール警戒）を扱ったのに対し、本投稿は同じ出来事を組織の経営判断の側から見ている。米内の第 1 点が前提にする「AI が脆弱性発掘を加速する」という構図は、供給側として <a href="../tools/oss-scanner.html">oss-scanner</a>（Anthropic が最強モデルで重要 OSS をスキャンし結果を送る無料サービス）が同じ月に始まっていることと整合する。発掘が加速するなら、組織側の対応容量の方が律速になるという米内の見立ては、スキャン結果を受け取る側の負荷問題として読み替えられる（推論）。組織内でのセキュリティ設定・展開の実務は <a href="../concepts/claude-code-security.html">claude-code-security</a> が扱う。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-22: 米内の予測「少なくとも年末まで、このクラス（複雑なメモリバグ・認可バグ）の重大脆弱性がまだまだ出てくる。PHP についても Variant Analysis で追加発見がある」。2026 年末に答え合わせする</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分が関わる組織で「予防的にサービスを止める」判断は誰が持ち、顧客との期待値調整は文書になっているか。止められない理由は規制か SLA か、単に検討していないだけか</li>
+<li>「対応は AI で」が組織的に正しくないという米内の見立ては、<a href="../tools/oss-scanner.html">oss-scanner</a> のように発見側が AI 化したとき、受け手側の対応容量をどう設計すれば崩れるのか</li>
+<li>Rebuild and Retire の優先順位（memory unsafe・型安全性の弱さ・pre-DevOps）を自分の手元のシステムに当てると、どれが最初に該当するか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/php-critical-vuln-2026-10.html">php-critical-vuln-2026-10</a> — 本投稿の直接の背景となった PHP 重大脆弱性 2 件。個人の備えの側から見たページ</li>
+<li><a href="../tools/oss-scanner.html">oss-scanner</a> — AI による脆弱性発掘の供給側。Anthropic が最強モデルで OSS をスキャンし結果を送る</li>
+<li><a href="../tools/code-modernization-plugin.html">code-modernization-plugin</a> — Rebuild をコードレベルで担う Anthropic のプラグイン。新旧の振る舞い一致を示そうとする</li>
+<li><a href="../concepts/claude-code-security.html">claude-code-security</a> — 組織でのセキュリティ設定・展開の実務側</li>
+<li><a href="../models/gpt-5-6.html">gpt-5-6</a> — 米内が脆弱性発掘加速の体感上の起点として挙げたモデル世代</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
+<li><a href="../concepts/php-critical-vuln-2026-10.html">php-critical-vuln-2026-10</a></li>
+<li><a href="../models/gpt-5-6.html">gpt-5-6</a></li>
+<li><a href="../tools/code-modernization-plugin.html">code-modernization-plugin</a></li>
+<li><a href="../tools/oss-scanner.html">oss-scanner</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2113072184335991292" rel="noopener" target="_blank">https://x.com/i/web/status/2113072184335991292</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># PHP 脆弱性対応の「後」に向けた CTO/CISO の 4 つの構え（米内貴志）
+
+&gt; **TL;DR**: GMO Flatt Security 取締役 Co-CTO の米内貴志（@lmt_swallow）が、2026-10-21 夜からの PHP 緊急対応の翌朝に CTO/CISO 向けに書き残した 4 点。AI による脆弱性発掘が加速するこれからは高負荷が続くので、新機能開発を落としてセキュリティに時間・金・トークンを配分し、予防的サービス停止の覚悟と顧客との期待値調整を済ませ、平時にはレガシーを Rebuild and Retire し、CTO と CISO のサイロを壊して総力戦に入れ、という主張。
+
+投稿は [[concepts/php-critical-vuln-2026-10]] で扱った PHP の重大脆弱性 2 件への一晩の対応直後、2026-10-22 の朝（UTC 00:57）に書かれた。米内は「一晩中連絡が鳴り止まず個別メッセージに返せていない」と断り、個別対応の代わりに世の中の CTO/CISO に届けたいことを 4 点にまとめ、「まとまりない部分もあるが投稿しないよりマシ」と添えている。投稿者プロフィールの表示名は「YONEUCHI, Takashi | GMO Flatt Security」で、自己紹介に取締役 Co-CTO とある。保存数は 2026-10-23 時点で 3,968 件。
+
+書き手の立場に注意が要る。米内は脆弱性リサーチ事業と「Takumi Guard」を含む自社製品を持つセキュリティ企業の経営者で、投稿内でも自社の対応方針（顧客への事前スタンス表明をリリースノートで出す予定）に触れている。以下の 4 点は、脆弱性リサーチに数年取り組んできた当事者の見立てであって、業界統計や公式見解ではない。
+
+## 1. 高負荷が続く前提で、セキュリティに時間を割きチームが休める体制を
+
+米内は「ここ 1 年、体感では GPT-5.6 Sol 以後が、最も『本当に？』という脆弱性が掘り出される 1 年になる」と述べる（[[models/gpt-5-6]]）。中心になるのは memory safe でない言語で書かれたものを中心とする複雑なメモリバグと、認可バグの類だという。少なくとも年末まではこのクラスの脆弱性がまだ出てくると考えるべきで、直近の PHP 脆弱性についても世界中の研究者が Variant Analysis（既知の脆弱性と同型のバグを周辺コードから探す手法）をしており、まだ出てくるだろうと見る。
+
+ここから導く経営判断は「新規機能開発に割く時間を明確に落とす」こと。米内は、これは経営者である CTO には取りにくい判断だと自分を含めて認めたうえで、それでもリーダーが意図してセキュリティに時間・お金・トークンを配分するのは経営者にしか取れない択だと書く。
+
+「対応は AI で」という発想については、技術的には正しいが組織的には正しくない、と切り分ける。理由はセキュリティ対応のタイミングを自分で御せないこと。深夜対応・急な計画変更・デグレへの不安・自社に影響があるか分からない脆弱性情報の過多が重なってストレス強度が上がり続け、昨夜のような対応が毎週あればチームは比較的簡単に壊れる、という見立てである。
+
+## 2. 「必要なら予防的にサービス停止」の覚悟を決め、止められないなら仮想パッチと監視に資源を
+
+今回のような脆弱性では「顧客保護のためにサービスを止めざるを得ない場面」が訪れ、今回も多くのビジネスが直面したと米内は書く。今回の経験を元に、本当に止めてはならないのか、止められるのか、止めうる期待値調整が顧客とできているかを徹底的に見直すことを勧める。顧客への事前連絡によるスタンス表明も有効だとし、GMO Flatt Security 自身もこれから実施してリリースノートに掲示すると明かす。理由として、自社サービス、特に Takumi Guard の侵害はソフトウェアサプライチェーンの最悪の侵害につながるからだと述べる。
+
+止められないビジネスがあることは認めつつ、天秤の置き方が変わったという指摘が要点である。金融・医療の規制や顧客との SLA は存在するが、現代ではそれに反するリスクとセキュリティ侵害に遭うリスクを天秤にかける必要が出てきた。少し前までは「停止のデメリットは想像できるが侵害は考えにくい」時代だったが今はそうではない、と米内は書き、「何がなんでも止めてはならない」ビジネスは人命に関わるものを中心に相当限定的だと見る。どうしても止められない場合は WAF（Web Application Firewall）層などで緩和策を施して監視する流れになるとし、必要なコンポーネントと運用資源がなければ整えるよう促す。
+
+## 3. 平時があればレガシーを Rebuild and Retire する
+
+自社の緊急対応が落ち着いているなら、数年塩漬けのシステムや誰がメンテできるか分からない「オーパーツ的存在」から順に、作り直し（Rebuild）と旧システムの廃止（Retire）を試みるべきだと米内は言う。新規開発の代わりにここへ資源を充てるのは他の誰も決められない CTO/CISO の仕事であり、追々自分たちを助け、ついでに AI-native 開発へ移行できて改善しやすくなる、という見立てである。
+
+どこから手を付けるかの基準として挙げるのは 2 つ。第一に memory unsafe な言語や型安全性があまり確保されていない言語の実装で、米内は PHP 好きと断りつつ「C/C++ で書かれた php-src はメモリバグ類に対する見通しに限界がある」と書く。第二に開発当時に DevOps プラクティスが整っていなかった時代のソフトウェアで、経験上「セキュリティ診断をすると取り返しのつかない量の脆弱性が出て、作り直した方が早い」となる傾向にあり、診断やペネトレーションテストを行う自社でもこうなるとどうしようもないと述べる。
+
+ただし Rebuild には強いソフトウェア開発力と AI-native なスタイルへの移行が必須で、ここに CTO の力が要る。どこからレガシーを追い出しどうレジリエンスを確保するかには CISO 的な感性、既製品（特に SaaS）を買って済ませる判断には CIO 的センスが要るとして、「総力戦だと思ってください」と締める。レガシーの置き換えをコードレベルで担う道具としては [[tools/code-modernization-plugin]] が同じ時期に出ており、新旧の振る舞い一致を示そうとするその設計は、ここで言う Rebuild の検証工程に当たると考えられる（wiki 側の推論）。
+
+## 4. CTO/CISO の総力戦
+
+直近の局面には CTO/CISO の総力戦が必要で、ボードがセキュリティに向かって一致団結する必要があると米内は書く。両ロールの間にサイロがあるケースは結構あるが「そんなことを言っている場合ではない」として、投稿は「団結を！」で終わる。
+
+## 位置づけ（wiki 側の読み）
+
+[[concepts/php-critical-vuln-2026-10]] が個人の備え（使い回しパスワードの変更・2 要素認証・偽メール警戒）を扱ったのに対し、本投稿は同じ出来事を組織の経営判断の側から見ている。米内の第 1 点が前提にする「AI が脆弱性発掘を加速する」という構図は、供給側として [[tools/oss-scanner]]（Anthropic が最強モデルで重要 OSS をスキャンし結果を送る無料サービス）が同じ月に始まっていることと整合する。発掘が加速するなら、組織側の対応容量の方が律速になるという米内の見立ては、スキャン結果を受け取る側の負荷問題として読み替えられる（推論）。組織内でのセキュリティ設定・展開の実務は [[concepts/claude-code-security]] が扱う。
+
+## 観察ログ（未検証）
+
+- 2026-10-22: 米内の予測「少なくとも年末まで、このクラス（複雑なメモリバグ・認可バグ）の重大脆弱性がまだまだ出てくる。PHP についても Variant Analysis で追加発見がある」。2026 年末に答え合わせする
+
+## 問い
+
+- 自分が関わる組織で「予防的にサービスを止める」判断は誰が持ち、顧客との期待値調整は文書になっているか。止められない理由は規制か SLA か、単に検討していないだけか
+- 「対応は AI で」が組織的に正しくないという米内の見立ては、[[tools/oss-scanner]] のように発見側が AI 化したとき、受け手側の対応容量をどう設計すれば崩れるのか
+- Rebuild and Retire の優先順位（memory unsafe・型安全性の弱さ・pre-DevOps）を自分の手元のシステムに当てると、どれが最初に該当するか
+
+## 関連
+
+- [[concepts/php-critical-vuln-2026-10]] — 本投稿の直接の背景となった PHP 重大脆弱性 2 件。個人の備えの側から見たページ
+- [[tools/oss-scanner]] — AI による脆弱性発掘の供給側。Anthropic が最強モデルで OSS をスキャンし結果を送る
+- [[tools/code-modernization-plugin]] — Rebuild をコードレベルで担う Anthropic のプラグイン。新旧の振る舞い一致を示そうとする
+- [[concepts/claude-code-security]] — 組織でのセキュリティ設定・展開の実務側
+- [[models/gpt-5-6]] — 米内が脆弱性発掘加速の体感上の起点として挙げたモデル世代
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

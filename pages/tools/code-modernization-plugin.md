@@ -16,3 +16,4 @@
 - [[tools/claude-code-plugin-eval]] — あり/なしで同じテストを走らせ差分を見る公式コマンド。新旧比較で正しさを示す発想が近い
 - [[models/claude-mythos]] — AI がレガシーコードを読むことで生じるリスクを指摘したページ
 - [[tools/turn-inspector]] — 同じ @dani_avila7 が公開した Claude Code Mod
+- [[concepts/cto-ciso-vuln-surge-playbook]] — 米内貴志（GMO Flatt Security 取締役 Co-CTO）が CTO/CISO に勧める「Rebuild and Retire」の経営判断側。本プラグインはその Rebuild をコードレベルで担う道具に当たる

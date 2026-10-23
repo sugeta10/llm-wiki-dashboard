@@ -159,3 +159,4 @@ AI導入支援のコンサルタント@AIEducationlaboが2026-08-11に公開し�
 - [[concepts/workload-identity-federation]]
 - [[concepts/token-management]]
 - [[companies/anthropic]]
+- [[concepts/cto-ciso-vuln-surge-playbook]] — PHP 緊急対応の翌朝に米内貴志（GMO Flatt Security 取締役 Co-CTO）が書いた CTO/CISO の 4 つの構え。設定の実務でなく、新機能開発を落としてセキュリティに時間・金・トークンを配分する経営判断の側

@@ -63,3 +63,4 @@ Rexは「外部ポリシーで実行を縛る」設計思想の参照例であ�
 - [[concepts/agent-adoption-walls]]（企業エージェント導入の「⑤ガバナンス」を含む7つの壁）
 - [[tools/cloudflare-os]]（Gatekeeperと観測ログで「エージェントが何を読んだか」を記録し、データの行き先まで認可を広げた製品実装）
 - [[concepts/models-as-insider-risks]] — 「制御をモデルの外に置く」を観測可能性の7原則と非常ブレーキまで広げた Satya Nadella の設計論
+- [[tools/1password-for-agents]] — 個人エージェントのサインインを資格情報の単位で人が承認し 1Password が入力を代行する製品。本ページの区別では「入口の認可」側で、ログイン後の操作の可否は扱わない

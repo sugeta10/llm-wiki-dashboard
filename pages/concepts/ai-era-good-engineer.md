@@ -32,3 +32,4 @@ LayerXが挙げる「よいエンジニア」の条件:
 - [[concepts/product-role-archetypes]] — Boris Cherny の5アーキタイプ。職能でなく価値創出の局面で人を見る分類で、本ページの「コード量で測らない」と同方向
 - [[concepts/career-advice-ai-age]] — Phil Chenの「問題を見つける力・最も野心的な形の問題を選ぶ」が本ページの「論点発見」と重なる
 - [[concepts/action-space]] — 「賢さのコモディティ化→現実を動かす力へ」という同じ構図をキャリア環境選択（アクション空間）まで広げた論考
+- [[tools/haro]] — 同じ LayerX バクラクが内製したクラウド型 Background Agent。1 日の PR の 55〜60% が haro 経由（2026 年 10 月・自社公表）になった環境で、エンジニアに残る「何を作るべきか」の仕事の実例
