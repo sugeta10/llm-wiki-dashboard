@@ -52,3 +52,4 @@ flowchart LR
 - [[concepts/agent-scale-source-control]] — Anthropic のソース管理チームが、人間のレビューを全行の精読から変更の「意図」の確認へ移したと報告する事例。組織規模での同じ問題への答え
 - [[concepts/ai-ambition-four-types]] — 自己採点でなく外部検証を求めるFelix RiesebergのDepthの型。審判を人間の手前のどこに置くかの別解
 - [[concepts/agent-era-code-review]] — Claude Code チームの組織規模の答え：PR前検証・AIレビュー・リスク別承認の多層化と往復3回上限・差分だけ再レビュー（Anthropic）
+- [[concepts/joho-asshi]] — AI で供給が無限になり受け手の注意は有限という同じ非対称を、成果物のレビューでなく日々の情報摂取に当てはめた梶谷健人の「情報圧死」論。要約一覧で原文へ流す量を絞る3段階は②④と同じ方向

@@ -51,3 +51,4 @@ Koe は最後に、意味のある「取り組む対象（プロジェクト）�
 - [[business/human-nature-persuasion]] — 同著者Dan Koe（@thedankoe）による人間本性理解のメタスキル論
 - [[concepts/dopamine-detox]] — 「ドーパミン受容体の再感作」と重なる観察を持つ、@antoshia2nの10種デトックス実践論
 - [[concepts/human-3-0]] — 同著者 Dan Koe の自己開発モデル。本ページの「AI 多用で脳が焼き切れた」体験は、そこで AI を「土台がないと副作用の出る Glitch（加速装置）」と位置づける主張の実例にあたる
+- [[concepts/joho-asshi]] — 同じ情報過多を、入力遮断でなく「AI 下読みの要約で深く読むものを選び、見送る不安を減らす」方向で扱う梶谷健人の処方。本ページの「無限の入力とゼロの処理時間」への別解
