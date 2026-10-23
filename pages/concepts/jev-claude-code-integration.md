@@ -83,3 +83,4 @@ Stop フックで完了の主張に証拠を求める limpet・jev-belay は、H
 - [[tools/claude-code-goal]] — Stop hook と Haiku 評価器で完了を判定する /goal。limpet・jev-belay と同じ位置の仕組み
 - [[tools/jev-ultrafast]] — @Pluvio9yte のリストで fast-jev-compaction と並んで最初に挙げられた、Jev で操作と対象を1往復で決めるブラウザエージェント
 - [[concepts/jev-codex-integration]] — ルート1と同じ公式スキルを Codex に入れる手順と、スキル選択補助の公開実験（@MakeAI_CEO）
+- [[concepts/loop-decision-cost]] — limpet・jev-belay が担う Stop フックの位置を、自前の試行カウンタ＋Jev の完了判定で組む手順と、PreToolUse でのコマンド分類・Issue トリアージの評価手順（@beamnxw）

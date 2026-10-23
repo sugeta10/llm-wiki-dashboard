@@ -53,3 +53,4 @@
 - [[tools/code-modernization-plugin]] — Rebuild をコードレベルで担う Anthropic のプラグイン。新旧の振る舞い一致を示そうとする
 - [[concepts/claude-code-security]] — 組織でのセキュリティ設定・展開の実務側
 - [[models/gpt-5-6]] — 米内が脆弱性発掘加速の体感上の起点として挙げたモデル世代
+- [[business/intrusion-assumed-economy]] — 田中悠斗（@tanaka_yuto）の「侵入される前提で成立する仕組み」論。米内の予防的サービス停止・Rebuild and Retire を、経済全体の設計思想の転換として半年前に言い切っていた文明論の側

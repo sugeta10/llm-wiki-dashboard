@@ -66,3 +66,4 @@ Nadella が「観測可能性（observability）の原則」として挙げる7�
 - [[concepts/claude-md-multilayer-design]] — 独立 Reviewer と Permission・Hooks の強制境界
 - [[concepts/ai-engineer-interview-questions]] — 責任分離・暴走停止を面接で問う運用ガバナンス
 - [[business/frontier-ecosystem]] — 同じ Nadella によるモデル非依存の戦略論
+- [[business/intrusion-assumed-economy]] — 田中悠斗（@tanaka_yuto）の「防御可能性でなく侵入可能性を織り込む」経済論。モデルの外に権限・観測・停止を置く本ページの封じ込め設計を、社会・金融の単位に広げた主張と読める

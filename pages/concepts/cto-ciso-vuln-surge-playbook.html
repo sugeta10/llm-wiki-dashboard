@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>cto-ciso-vuln-surge-playbook</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="cto-ciso-vuln-surge-playbook.md">Markdownで表示</a></div>
-  <div class="meta">concepts/cto-ciso-vuln-surge-playbook · concepts · <span title="2026-10-23">今日</span></div>
+  <div class="meta">concepts/cto-ciso-vuln-surge-playbook · concepts · <span title="2026-10-23">1日前</span></div>
   <article><h1>PHP 脆弱性対応の「後」に向けた CTO/CISO の 4 つの構え（米内貴志）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: GMO Flatt Security 取締役 Co-CTO の米内貴志（@lmt_swallow）が、2026-10-21 夜からの PHP 緊急対応の翌朝に CTO/CISO 向けに書き残した 4 点。AI による脆弱性発掘が加速するこれからは高負荷が続くので、新機能開発を落としてセキュリティに時間・金・トークンを配分し、予防的サービス停止の覚悟と顧客との期待値調整を済ませ、平時にはレガシーを Rebuild and Retire し、CTO と CISO のサイロを壊して総力戦に入れ、という主張。</p>
@@ -68,11 +68,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/code-modernization-plugin.html">code-modernization-plugin</a> — Rebuild をコードレベルで担う Anthropic のプラグイン。新旧の振る舞い一致を示そうとする</li>
 <li><a href="../concepts/claude-code-security.html">claude-code-security</a> — 組織でのセキュリティ設定・展開の実務側</li>
 <li><a href="../models/gpt-5-6.html">gpt-5-6</a> — 米内が脆弱性発掘加速の体感上の起点として挙げたモデル世代</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
+<li><a href="../business/intrusion-assumed-economy.html">intrusion-assumed-economy</a> — 田中悠斗（@tanaka_yuto）の「侵入される前提で成立する仕組み」論。米内の予防的サービス停止・Rebuild and Retire を、経済全体の設計思想の転換として半年前に言い切っていた文明論の側</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/intrusion-assumed-economy.html">intrusion-assumed-economy</a></li>
+<li><a href="../concepts/claude-code-security.html">claude-code-security</a></li>
 <li><a href="../concepts/php-critical-vuln-2026-10.html">php-critical-vuln-2026-10</a></li>
 <li><a href="../models/gpt-5-6.html">gpt-5-6</a></li>
-<li><a href="../tools/code-modernization-plugin.html">code-modernization-plugin</a></li>
-<li><a href="../tools/oss-scanner.html">oss-scanner</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2113072184335991292" rel="noopener" target="_blank">https://x.com/i/web/status/2113072184335991292</a></li></ul></section></article>
+<li><a href="../tools/code-modernization-plugin.html">code-modernization-plugin</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2113072184335991292" rel="noopener" target="_blank">https://x.com/i/web/status/2113072184335991292</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -148,6 +149,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[tools/code-modernization-plugin]] — Rebuild をコードレベルで担う Anthropic のプラグイン。新旧の振る舞い一致を示そうとする
 - [[concepts/claude-code-security]] — 組織でのセキュリティ設定・展開の実務側
 - [[models/gpt-5-6]] — 米内が脆弱性発掘加速の体感上の起点として挙げたモデル世代
+- [[business/intrusion-assumed-economy]] — 田中悠斗（@tanaka_yuto）の「侵入される前提で成立する仕組み」論。米内の予防的サービス停止・Rebuild and Retire を、経済全体の設計思想の転換として半年前に言い切っていた文明論の側
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

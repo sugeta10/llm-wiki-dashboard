@@ -114,3 +114,4 @@ Spirit 象限に関連して Koe は Ken Wilber の **pre-trans fallacy（前／
 - [[concepts/career-agency-variables]] — @ysk_motoyama の「何を・どう・なぜやるか」の3変数。Vocation 象限の Job → Career → Calling という進行を、交渉力の要らない「どうやるか・なぜやるか」から着手する実務論として補完する
 - [[concepts/cognitive-debt]] — AI の生成速度に理解が追いつかない負債。Koe の「心を AI に外注する」警告と同じ現象を開発者の側から扱う
 - [[concepts/dopamine-detox]] — 挑まないと退屈し快適さと気晴らしへ逃げるという Koe の「罠」の記述を、刺激・報酬系の側から10種のデトックスで扱う実践論
+- [[concepts/one-day-life-reset]] — 同著者 Dan Koe の「人生を1日で立て直す方法」7 メッセージ（もとやま @ysk_motoyama の備忘録経由）。本ページが 3 レベルの出典に挙げた「自我発達の 9 段階」が、そのまま現在地の地図として出てくる

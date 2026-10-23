@@ -47,3 +47,4 @@ Mythosを一般公開する代わりに立ち上げた防御的サイバーセ�
 - [[tools/code-modernization-plugin]] — レガシーコードを AI に読ませるだけでなく新実装へ置き換えさせる Anthropic の Claude Code プラグイン
 - [[concepts/agent-scale-source-control]] — Anthropic のソース管理チームが、社内初期版の Claude Mythos Preview に手書きの取り込みパイプラインを書き直させた事例を報告している社内VCS Scion の記事
 - [[tools/oss-scanner]] — Project Glasswing の経験を土台に、重要 OSS へ人手レビュー前のスキャン結果（PoC・パッチつき）を無料・定期で送るオプトイン サービス（2026-10-19公開）
+- [[business/intrusion-assumed-economy]] — 発表 5 日後に田中悠斗（@tanaka_yuto）が書いた「AI による 100% 成功するハッキング」が終わらせるものの論考。Cybench 100% のようなサイバー能力を、セキュリティでなく資本主義の信用基盤の問題として読む側

@@ -99,3 +99,4 @@ flowchart LR
 - [[concepts/harness-engineering]] — エージェント = モデル + ハーネスの全体論。@0xMovez はモデルルーターと Auto Mode ゲートの2層を、ハーネス側に判断モデルを入れる形として描く
 - [[concepts/jev-codex-integration]] — 判断レイヤーを Codex に入れる実務層。自動処理率と正解率をセットで測る評価設計と、日本語での検証の仕方（@MakeAI_CEO）
 - [[models/diffusiongemma-jev]] — Google Gemma 公式が紹介した Jev API 互換モデル。Cloud Run に自前で立てられる、判断レイヤーの呼び先の差し替え候補
+- [[concepts/loop-decision-cost]] — 「LLM が作り、Jev が決め、コードが実行する」を自動化ループの起動・継続・停止の 3 点に当てた実装手順。シャドーモード評価・1 判断 1 レコード・決定予算の試算まで（@beamnxw）

@@ -36,3 +36,4 @@ BleepingComputer の報道（2026-10-20 時点と読める）によれば、PHP 
 - [[concepts/personal-data-leak-checklist]] — 同じ @expokun の、情報漏洩ニュース後に確認する個人設定のまとめ。本ページと同じ「ニュース→個人の手順」への翻訳スタイル
 - [[concepts/claude-code-security]] — 組織でのセキュリティ設定・展開。脆弱性対応を個人でなく組織の観点で見る側
 - [[concepts/cto-ciso-vuln-surge-playbook]] — 同じ出来事の翌朝に米内貴志（GMO Flatt Security 取締役 Co-CTO）が CTO/CISO 向けに書いた 4 つの構え。個人の備えに対する経営判断の側
+- [[business/intrusion-assumed-economy]] — 個別の脆弱性イベントの先に田中悠斗（@tanaka_yuto）が置く「真正な情報を前提にした資本主義が終わる」という論考。本ページの事件を、その前提が揺れる例として読む側
