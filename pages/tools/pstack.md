@@ -170,3 +170,4 @@ README は「Cursor にはすでに優れたプランモードがあり pstack �
 - [[tools/grok-bot]] — `/make-bot-ui` が起こす対象であり、作者の現在の仕事
 - [[tools/claude-code-plugins]] — Anthropic 公式マーケットプレイスの一覧。pstack はサードパーティの cursor/plugins マーケットプレイスから入る
 - [[tools/no-ai-slop]] — `/unslop` と同じ「AI の癖を除く」目的の別スキル
+- [[tools/grok-bot-essential-bots]] — 同じ @cu30rry_ が選んだ Grok Bot 10 体。@poteto 作の dr eggbot（Bot を設計する Bot）と Engineering Lead が入る

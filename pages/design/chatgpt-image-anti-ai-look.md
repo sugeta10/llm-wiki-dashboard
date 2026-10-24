@@ -19,3 +19,4 @@ ChatGPT で作った画像には一目でAI製と分かる質感（いわゆる�
 - [[tools/taste-skill]] — AI製出力の「slop」を防ぐスキル集。参照画像を出す画像生成スキルも含み、同じ「AIっぽさを消す」問題を扱う
 - [[design/image2-brand-slides]] — GPT Image 2 でブランド統一スライドを作るスキル。文言の追加でなく入力（ロゴ・構成）の固定で品質を揃える対照例
 - [[design/ai-presentation-workflow]] — 画像生成AIを「視覚イメージの確認」工程に置く分業ワークフロー
+- [[design/layout-as-explanation]] — 同じ「一言足す」型を UI に向けたもの。Agata の「不要なセカンダリラベルや説明を避ける。レイアウトに説明させる」の 1 行

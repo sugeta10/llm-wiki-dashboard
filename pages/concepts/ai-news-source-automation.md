@@ -50,3 +50,4 @@ flowchart LR
 - [[models/gpt-6-astra]] — 著者がリサーチ担当に使っているモデル
 - [[business/kaigai-mifukyuu-business]] — 海外の一次情報を日本語で最初に説明することを「いちばん空いている場所」とする @client2728770 の記事。業界特化の有料ニュースレターを B2B 商品として挙げる
 - [[tools/ai-newtab]] — 情報源を人が選ばず閲覧履歴から選ばせ、毎日の新しいタブを書き直す Chrome 拡張（@trq212）
+- [[tools/grok-bot-essential-bots]] — kaito 選の Grok Bot 10 体のうち AI Radar（公式アカウント・研究者・ブログ・GitHub・論文を見張り 1 行と元リンクで届ける）と Sentinel（脆弱性・漏えいの監視）は、本ページの情報源巡回を Grok Bot 上で行う形

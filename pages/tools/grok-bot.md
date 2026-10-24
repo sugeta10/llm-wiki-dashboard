@@ -84,3 +84,4 @@ flowchart LR
 - [[tools/claude-duet]] — Anthropic の常駐プロアクティブ・エージェント。Grok Bot と同じくクラウド上に自分の計算機を持ち、こちらは個人の受信箱・予定・請求業務を対象にする
 - [[tools/haro]] — LayerX バクラクが内製したクラウド型 Background Agent。カスタム Agent・Slack/Scheduler/API の起動経路・社内 MCP 接続で、コーディング以外の業務まで扱う社内基盤の別実装
 - [[tools/1password-for-agents]] — 1Password が 2026-10-22 に発表した個人エージェント向けサインイン承認レイヤー。SpaceXSI の Grok Bot は展開開始の連携先として挙がる
+- [[tools/grok-bot-essential-bots]] — 利用者 kaito（@cu30rry_）が選んだ「絶対入れたほうが良い」Bot 10 体。@poteto の Engineering Lead は本ページの「クラウドエージェントを起動・催促して PR まで運ぶ」運用を 1 体の Bot にしたものと読める

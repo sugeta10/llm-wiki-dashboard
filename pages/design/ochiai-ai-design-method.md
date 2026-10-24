@@ -45,3 +45,4 @@ AIにデザインを頼むと「高級感があって、未来的で、かっこ
 - [[concepts/prompt-engineering]] — 形容詞でなく構造化変数で指示するという発想の一般化
 - [[concepts/multi-agent-patterns]] — 原理7「別AIに制作と採点を分ける」の一般パターン
 - [[design/ai-motion-vocabulary]] — 原理1の発想を動きへ移した、LP・動画の演出名リスト（@showheyohtaki）
+- [[design/layout-as-explanation]] — 「いい感じに」でなく、やめること（セカンダリラベル・説明）と代わりの手段（レイアウト）を指定する 1 行プロンプト（Agata）。形容詞でなく設計変数で指示する本ページと同じ向き
