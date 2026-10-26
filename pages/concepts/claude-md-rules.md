@@ -121,3 +121,4 @@ READMEは各ルールに判定テストを添える。Rule 2 は「シニアエ�
 - [[concepts/parallel-e2e-testing]] — 「Iron Law」としてflaky対策を明文化しスキルで機械的に強制する実践。CLAUDE.mdルール強制の別ドメイン版
 - [[concepts/context-engineering]] — Anthropic Claude Codeチーム（@trq212）が「新モデルはルールより判断力に委ねる方が効く」とシステムプロンプトを80%削減した経験。本ページの明示ルール偏重への反証として読める
 - [[concepts/lean-prompt-rules-adaptation]] — Opus 5移行で本ページの旧世代前提rulesが噛み合わなくなった実測記録。名指し上書き・望ましい動きの明記・行動直前への注入という3つの書き直し対策（@u1）
+- [[papers/2026-xu-stale-instruction-files]] — Rule 11（慣習優先）を明示しないと、CLAUDE.md の古い記述がツール出力として届くコードに勝つことを 320 走行で実測した研究（Xu & Wu）。ユーザーレベルの指示ファイルに 1 文足すとコードに従う選択が 4.2%→91.4%

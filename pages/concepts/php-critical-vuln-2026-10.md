@@ -37,3 +37,4 @@ BleepingComputer の報道（2026-10-20 時点と読める）によれば、PHP 
 - [[concepts/claude-code-security]] — 組織でのセキュリティ設定・展開。脆弱性対応を個人でなく組織の観点で見る側
 - [[concepts/cto-ciso-vuln-surge-playbook]] — 同じ出来事の翌朝に米内貴志（GMO Flatt Security 取締役 Co-CTO）が CTO/CISO 向けに書いた 4 つの構え。個人の備えに対する経営判断の側
 - [[business/intrusion-assumed-economy]] — 個別の脆弱性イベントの先に田中悠斗（@tanaka_yuto）が置く「真正な情報を前提にした資本主義が終わる」という論考。本ページの事件を、その前提が揺れる例として読む側
+- [[concepts/1password-cli-password-audit]] — 本件の数日後に「今流行り」と言われた、1Password CLI と Claude Code で使い回し・漏えい・2 段階認証未設定を点数化し危ない順に変更する実践（チャエン・GOROman）。本ページで勧められた自衛を一括で回す側

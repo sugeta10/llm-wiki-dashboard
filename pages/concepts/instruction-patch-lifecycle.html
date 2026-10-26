@@ -179,6 +179,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/fable-5-1-prompting.html">fable-5-1-prompting</a> — Fable 5.1向け公式ガイドの業務向け7本。「7本を全部貼ると精度が落ちる・困っている1〜2本だけ選ぶ」は本ページの「投機的に追加しない」の利用者側の実践形（@Charlie_no_site）</li>
 <li><a href="../concepts/shikumika-vs-tejunsho.html">shikumika-vs-tejunsho</a> — 「見なくなった手順は消し、やめたこと欄に理由つきで移す」「例外は2回目で初めて手順化する」という、人間のマニュアル運用側の同じサイクル（MUJIGRAM・@smark_x）</li>
 <li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a> — Codex 側の同じサイクル。GPT-6 Astra のリリースを機にスキル・AGENTS.md の各指示を「まだ要るか」で再審査せよと Eric Provencher（OpenAI）が述べ、スキル過多で説明文が切り詰められる Codex 固有の挙動も報告</li>
+<li><a href="../papers/2026-xu-stale-instruction-files.html">2026-xu-stale-instruction-files</a> — 古くなったパッチの害を実測した研究（Xu &amp; Wu）。AI 設定ファイルの 73.8% は一度書かれたきりで、古い行はコードと食い違っても「指示」として勝ち続ける。棚卸しで古い行を探さなくても効く「コード優先の 1 文」という対策</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
 <li><a href="../concepts/claude-code-large-codebase.html">claude-code-large-codebase</a></li>
 <li><a href="../concepts/context-engineering.html">context-engineering</a></li>
@@ -313,6 +314,7 @@ Boris Chernyは同じYC対談で、希少なスキルはもうプロンプトエ
 - [[concepts/fable-5-1-prompting]] — Fable 5.1向け公式ガイドの業務向け7本。「7本を全部貼ると精度が落ちる・困っている1〜2本だけ選ぶ」は本ページの「投機的に追加しない」の利用者側の実践形（@Charlie_no_site）
 - [[concepts/shikumika-vs-tejunsho]] — 「見なくなった手順は消し、やめたこと欄に理由つきで移す」「例外は2回目で初めて手順化する」という、人間のマニュアル運用側の同じサイクル（MUJIGRAM・@smark_x）
 - [[concepts/gpt-6-astra-skills-prompting]] — Codex 側の同じサイクル。GPT-6 Astra のリリースを機にスキル・AGENTS.md の各指示を「まだ要るか」で再審査せよと Eric Provencher（OpenAI）が述べ、スキル過多で説明文が切り詰められる Codex 固有の挙動も報告
+- [[papers/2026-xu-stale-instruction-files]] — 古くなったパッチの害を実測した研究（Xu &amp; Wu）。AI 設定ファイルの 73.8% は一度書かれたきりで、古い行はコードと食い違っても「指示」として勝ち続ける。棚卸しで古い行を探さなくても効く「コード優先の 1 文」という対策
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

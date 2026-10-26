@@ -19,3 +19,4 @@
 
 - [[concepts/php-critical-vuln-2026-10]] — 同じ @expokun の、PHP 脆弱性ニュースを個人の自衛手順に翻訳した高エンゲージメント投稿
 - [[concepts/gmail-ai-default-access]] — Gmail の AI が既定で受信トレイを読む問題と集団訴訟（メールの設定を見直す具体的な対象の1つ）
+- [[concepts/1password-cli-password-audit]] — 漏えい済み・使い回し・弱い・2 段階認証未設定の確認を、1Password CLI と Claude Code のダッシュボードで 1,116 件まとめて回した実践（チャエン）。本ページの手順を手作業でなく点数化して実行する側

@@ -59,3 +59,4 @@ flowchart TD
 - [[concepts/gpt-6-astra-skills-prompting]] — Codex チーム（Eric Provencher）が GPT-6 Astra 向けに AGENTS.md の各行を「まだ要るか」で再審査せよと述べる指針。正本に集めた後の減らし方の側
 - [[concepts/no-backward-compat-agents-md]] — AGENTS.md に書く中身の一例：開発中・社内向けという前提を宣言して後方互換とデータ移行を止める1文（@sesere115・Codex）
 - [[concepts/ai-coding-loop-formal]] — AGENTS.md のグローバルプロンプトは基本書かず、選択肢が複数あるときの判断基準と一般的でない制約だけ書くという中身側の方針（mizchi）
+- [[papers/2026-xu-stale-instruction-files]] — CLAUDE.md / AGENTS.md が古くなるとコードより優先されることを Claude Code と Codex CLI の両方で実測した研究（Xu & Wu）。対策の 1 文は `~/.claude/CLAUDE.md` と `~/.codex/AGENTS.md` の両ユーザーレベルファイルに同文を置く

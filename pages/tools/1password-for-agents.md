@@ -69,3 +69,4 @@ sequenceDiagram
 - [[tools/claude-projects-threads]] — API credentials をプロキシが付与し Claude にキーを届かせない開発側の同型設計
 - [[concepts/ai-agent-governance]] — 入口の認可と操作の可否を別レイヤーで扱う整理。本製品は入口側
 - [[concepts/workload-identity-federation]] — 非人間アイデンティティに短命トークンを発行する Anthropic API 側の仕組み
+- [[concepts/1password-cli-password-audit]] — 同じ 1Password を CLI 経由で Claude Code から読み、手持ちのパスワード 1,116 件を点数化して危ない順に変更する実践（チャエン・GOROman）。資格情報をエージェントに見せない本製品と向きが逆

@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-md-rules</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-md-rules.md">Markdownで表示</a></div>
-  <div class="meta">concepts/claude-md-rules · concepts · <span title="2026-08-28">1ヶ月前</span></div>
+  <div class="meta">concepts/claude-md-rules · concepts · <span title="2026-08-28">2ヶ月前</span></div>
   <article><h1>CLAUDE.md 行動ルール設計</h1>
 <p><strong>CLAUDE.md</strong> は <a href="../tools/claude-code.html">claude-code</a> の動作を規定する行動契約ファイル。ウィッシュリストではなく、「この命令でどの失敗モードを閉じるか」を根拠に記述する。</p>
 <h2>Karpathy 発端</h2>
@@ -221,6 +221,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/parallel-e2e-testing.html">parallel-e2e-testing</a> — 「Iron Law」としてflaky対策を明文化しスキルで機械的に強制する実践。CLAUDE.mdルール強制の別ドメイン版</li>
 <li><a href="../concepts/context-engineering.html">context-engineering</a> — Anthropic Claude Codeチーム（@trq212）が「新モデルはルールより判断力に委ねる方が効く」とシステムプロンプトを80%削減した経験。本ページの明示ルール偏重への反証として読める</li>
 <li><a href="../concepts/lean-prompt-rules-adaptation.html">lean-prompt-rules-adaptation</a> — Opus 5移行で本ページの旧世代前提rulesが噛み合わなくなった実測記録。名指し上書き・望ましい動きの明記・行動直前への注入という3つの書き直し対策（@u1）</li>
+<li><a href="../papers/2026-xu-stale-instruction-files.html">2026-xu-stale-instruction-files</a> — Rule 11（慣習優先）を明示しないと、CLAUDE.md の古い記述がツール出力として届くコードに勝つことを 320 走行で実測した研究（Xu &amp; Wu）。ユーザーレベルの指示ファイルに 1 文足すとコードに従う選択が 4.2%→91.4%</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-reflection-layer.html">agent-reflection-layer</a></li>
 <li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
 <li><a href="../concepts/claude-code-context-hierarchy.html">claude-code-context-hierarchy</a></li>
@@ -373,6 +374,7 @@ READMEは各ルールに判定テストを添える。Rule 2 は「シニアエ�
 - [[concepts/parallel-e2e-testing]] — 「Iron Law」としてflaky対策を明文化しスキルで機械的に強制する実践。CLAUDE.mdルール強制の別ドメイン版
 - [[concepts/context-engineering]] — Anthropic Claude Codeチーム（@trq212）が「新モデルはルールより判断力に委ねる方が効く」とシステムプロンプトを80%削減した経験。本ページの明示ルール偏重への反証として読める
 - [[concepts/lean-prompt-rules-adaptation]] — Opus 5移行で本ページの旧世代前提rulesが噛み合わなくなった実測記録。名指し上書き・望ましい動きの明記・行動直前への注入という3つの書き直し対策（@u1）
+- [[papers/2026-xu-stale-instruction-files]] — Rule 11（慣習優先）を明示しないと、CLAUDE.md の古い記述がツール出力として届くコードに勝つことを 320 走行で実測した研究（Xu &amp; Wu）。ユーザーレベルの指示ファイルに 1 文足すとコードに従う選択が 4.2%→91.4%
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
