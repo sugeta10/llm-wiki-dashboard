@@ -66,3 +66,4 @@ MCP Appsは[[concepts/generative-ui]]が扱うOpen-endedパターンの実装に
 - [[tools/openai-mcp-extensions]] — MCP / MCP Apps に ChatGPT 固有の入口（サイドバー・ファイルハンドラ・メンション・フォーム）を足す OpenAI 公式拡張
 - [[tools/claude-projects-threads]] — claude.ai でつないだ MCP コネクタを全スレッドで使う Claude Projects。コーディネーター自体はコネクタを持たない
 - [[tools/oreilly-learning-platform]] — O'Reilly 公式 MCP サーバーを ACM 経由の契約でも OAuth（`/mcp` からユーザー名@acm.org の SSO）とトークンの両方で接続できた実践記
+- [[tools/claude-code-mcp-stack]] — Context7・Playwright・Figma・Linear・Sentry・Cloudflare・Stripe・GitHub の公式8本を工程に沿って並べ、初心者は3段で入れ、読み取り/書き込み分離など4つの落とし穴を避ける構成論（@kimuai08・Boris Cherny の「検証手段を渡せ」の実装側）

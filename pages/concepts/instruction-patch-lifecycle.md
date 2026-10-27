@@ -107,4 +107,5 @@ Boris Chernyは同じYC対談で、希少なスキルはもうプロンプトエ
 - [[concepts/fable-5-1-prompting]] — Fable 5.1向け公式ガイドの業務向け7本。「7本を全部貼ると精度が落ちる・困っている1〜2本だけ選ぶ」は本ページの「投機的に追加しない」の利用者側の実践形（@Charlie_no_site）
 - [[concepts/shikumika-vs-tejunsho]] — 「見なくなった手順は消し、やめたこと欄に理由つきで移す」「例外は2回目で初めて手順化する」という、人間のマニュアル運用側の同じサイクル（MUJIGRAM・@smark_x）
 - [[concepts/gpt-6-astra-skills-prompting]] — Codex 側の同じサイクル。GPT-6 Astra のリリースを機にスキル・AGENTS.md の各指示を「まだ要るか」で再審査せよと Eric Provencher（OpenAI）が述べ、スキル過多で説明文が切り詰められる Codex 固有の挙動も報告
+- [[tools/claude-code-mcp-stack]] — 同じ@kimuai08が Boris の「検証手段を渡せ」を公式 MCP サーバー8本で実装する側を整理した記事。本ページが指示を減らす側なら、向こうは検証手段を足す側
 - [[papers/2026-xu-stale-instruction-files]] — 古くなったパッチの害を実測した研究（Xu & Wu）。AI 設定ファイルの 73.8% は一度書かれたきりで、古い行はコードと食い違っても「指示」として勝ち続ける。棚卸しで古い行を探さなくても効く「コード優先の 1 文」という対策

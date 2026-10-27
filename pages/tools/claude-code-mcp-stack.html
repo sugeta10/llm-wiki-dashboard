@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-mcp-stack - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-mcp-stack</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-mcp-stack.md">Markdownで表示</a></div>
+  <div class="meta">tools/claude-code-mcp-stack · tools · <span title="2026-10-28">今日</span></div>
+  <article><h1>Claude Code 公式 MCP サーバー8選と工程別スタック</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Boris Cherny（Claude Code 開発者）の「Claude に自分の出力を検証する手段を渡せ」を、工程ごとに公式 MCP サーバーで実装する構成論。@kimuai08 が Context7・Playwright・Figma・Linear・Sentry・Cloudflare・Stripe・GitHub の8本を選び、初心者は Context7→ブラウザ→Linear/GitHub の3段で十分と述べる。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Figma[&quot;Figma MCP\n設計データ&quot;] --&gt; C7[&quot;Context7\n現行の正しい書き方&quot;] --&gt; CC[&quot;Claude Code\n実装&quot;] --&gt; PW[&quot;Playwright MCP\nブラウザ検証&quot;] --&gt; GH[&quot;GitHub MCP\nPR・レビュー対応&quot;] --&gt; CF[&quot;Cloudflare MCP\nデプロイとログ&quot;]</pre>
+<p>MCP を1本ずつ「便利ツール」として入れても効果が薄い、と@kimuai08は述べる。価値が出るのは、情報を取る→計画する→作る→自分で検証する→外部に反映する→結果を見る、というループを Claude Code から一歩も出ずに閉じたときで、Boris の「検証する手段を渡せ」はブラウザ1個の話ではなく「工程ごとに、その工程の正解を確認できる手段を渡せ」という意味だと解釈している。本ページは、その解釈に沿って8本の公式サーバーと使い方の型を整理したもの。MCP の仕様改定（ステートレス化・長時間処理・UI 返却・組織認証）は <a href="../tools/claude-mcp.html">claude-mcp</a> を正本とし、ここでは扱わない。</p>
+<h2>Boris Cherny の3原則（@kimuai08 の整理）</h2>
+<p>@kimuai08 は Boris の発信を並べると主張はずっと同じだと述べ、3原則にまとめる。</p>
+<ol>
+<li><strong>Claude に、自分の出力を検証する手段を渡す</strong>。Boris はこれを「最も重要な Tip」と呼ぶ。ブラウザ禁止で Web サイトを作らせてもまともなものは上がってこないが、ブラウザを渡せば作って・見て・直してを納得いくまで繰り返す、という説明を@kimuai08が紹介している</li>
+<li><strong>1日1回以上やる作業は、仕組みにする</strong>。毎回チャットで同じ手順を説明せず Skill やコマンドにする。呼ぶまでコストがほぼゼロなので作っておいて損がない</li>
+<li><strong>外部ツールを、Claude Code の作業面に持ち込む</strong>。Slack・課題管理・DB・社内 API を直接触れるようにし、ツール間の移動そのものを消す。ここで MCP が登場する</li>
+</ol>
+<p>@kimuai08 は Boris の働き方として、自分では手でコードを書かず、ターミナルで5つ前後・Web で5〜10 の Claude セッションを同時に走らせてタブに番号を振り通知で入力待ちを管理していること、CLAUDE.md は100行程度しかないこと、「プロンプトを書くな。ループを書け」が最もよく引用される言葉であることを挙げる（Boris の一次発信の整理は <a href="../tools/claude-code.html">claude-code</a> と <a href="../concepts/loop-engineering.html">loop-engineering</a> を参照）。</p>
+<h2>8本の公式サーバー</h2>
+<p>選定基準は、提供元が自分で管理している公式であること・初心者でも効果を体感しやすいこと・3原則のどれかを直接実装できること、の3つ（@kimuai08）。</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>サーバー</th>
+<th>消える往復</th>
+<th>実践プロンプトの要点（@kimuai08 が「必ず入れろ」とする行）</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Context7</strong></td>
+<td>古い書き方のコードを自分で直す</td>
+<td>現バージョンの推奨・廃止済み・差分・修正ファイルを整理してから実装。推測で実装しない。1回の問い合わせに複数の概念を混ぜない</td>
+<td>https://github.com/upstash/context7</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Playwright MCP</strong></td>
+<td>作った画面を自分でブラウザで開く</td>
+<td>新規登録・ログイン・入力エラー・スマホ幅・ログアウトを実操作で検証。失敗時はコードからの推測でなくブラウザで再現してから修正し、再実行で成功を確認してから完了報告</td>
+<td>https://github.com/microsoft/playwright-mcp</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Figma MCP</strong></td>
+<td>スクリーンショットから余白・色を目視で当てる</td>
+<td>まず構造・再利用コンポーネント・色とタイポ・余白・レスポンシブ変化だけを抽出し実装に入らない。既存コンポーネント優先、新規は「なぜ既存で足りないか」を先に説明</td>
+<td>https://developers.figma.com/docs/figma-mcp-server/</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Linear MCP</strong></td>
+<td>Issue をコピペし進捗を手で書く</td>
+<td>不足情報の洗い出し→コード調査→計画提示→承認後に実装とテスト→Issue にコメント。<strong>ステータス変更は人間が確認してから</strong></td>
+<td>https://linear.app/docs/mcp</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Sentry MCP</strong></td>
+<td>スタックトレースをコピペする</td>
+<td>直近24時間で影響ユーザー最多の未解決エラーを取得し、発生条件→関連コード→再現テスト→最小修正→全テスト→根本原因まとめ。<strong>再現できないなら推測で直さず、必要な追加情報を列挙して止まる</strong></td>
+<td>https://docs.sentry.io/product/sentry-mcp/</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Cloudflare MCP</strong></td>
+<td>デプロイ先の状態を別画面で見る</td>
+<td>エラー・レスポンス時間・キャッシュヒット率・セキュリティイベント・Workers 例外を調べ、コード変更が要るもの／設定だけで直るものに分類。<strong>承認まで設定変更しない</strong>。導入初期は読み取りのみ</td>
+<td>https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Stripe MCP</strong></td>
+<td>Stripe 側の商品・Webhook 設定を別タブで確認</td>
+<td>Product/Price・Checkout Session・Webhook イベント・解約・支払い失敗・二重登録防止・テスト方法を確認して月額課金の計画を作る。<strong>テストモードだけを使い本番データに触れない</strong></td>
+<td>https://docs.stripe.com/mcp</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>GitHub MCP</strong></td>
+<td>レビューコメントを読んで戻る</td>
+<td>未解決コメントを「必ず修正」「設計判断が必要で人間が決める」「修正不要（理由つき）」に分類し、必ず修正だけ実装してテストを通す</td>
+<td>https://github.com/github/github-mcp-server</td>
+</tr>
+</tbody>
+</table>
+<p>補足として@kimuai08は次を述べる。Playwright MCP が画面を読む手段はスクリーンショットではなくアクセシビリティツリーなので、見た目が似た要素を取り違えにくい。Boris 本人が Web 作業で毎回使うと言っているのは Playwright MCP ではなく Claude Code のブラウザ拡張の方で、ログイン状態を共有できるため安定する、という言い方を Boris はしている。使い分けは、自分のログイン済みブラウザで実画面を見ながら確認したいなら拡張、テストとして何度も同じ手順を回したいなら Playwright MCP。GitHub MCP の価値は git コマンドを打てることではなく、Issue 詳細・PR のレビューコメント・CI 結果・別リポジトリ・組織内コード検索といったリモート側にしかない情報を横断できることにある。Stripe は MCP に加えてエージェント向け Skill も用意しており、MCP で操作し Skill で作法を守らせる組み合わせが強い。</p>
+<h2>工程に沿って並べる2つのスタック</h2>
+<p>@kimuai08 が提示する並べ方は2つ。</p>
+<ul>
+<li><strong>Web 制作スタック</strong>: Figma で設計を取る → Context7 で今の正しい書き方を確認 → Claude Code で実装 → Playwright でブラウザ検証 → GitHub で PR とレビュー対応 → Cloudflare でデプロイとログ確認</li>
+<li><strong>SaaS 開発スタック</strong>: Linear で要件を取る → Context7 で技術仕様を確認 → Claude Code で実装 → Stripe で決済を設定して検証 → Playwright でユーザー操作をテスト → Sentry で本番エラーを監視</li>
+</ul>
+<h2>初心者が入れるのは3つだけ</h2>
+<p>8個全部入れると後述の落とし穴に落ちるので、次の3段で十分だと@kimuai08は述べる。</p>
+<ol>
+<li><strong>Context7</strong>。目的は間違ったコードを減らすこと。読み取り中心でリスクが低く、効果を最も早く体感できる</li>
+<li><strong>Playwright またはブラウザ拡張</strong>。目的は Claude 自身に成果物を検証させること。作る→開く→崩れを見つける→直す→また開く、に人間が挟まらなくなる</li>
+<li><strong>Linear または GitHub</strong>。目的は仕事の入口と出口を繋ぐこと。ここまで来ると Claude Code は「指示待ちのコーダー」から「仕事を自分で進めるメンバー」に変わる</li>
+</ol>
+<p>今日やることは1つだけで、Claude Code と別の画面を行ったり来たりしている場所を1つ探し、それを消す MCP だけを入れて効果を体感してから次を足す、というのが記事の結論。</p>
+<h2>4つの落とし穴</h2>
+<ol>
+<li><strong>MCP を増やすほど賢くなるわけではない</strong>。候補ツールが増えると迷う・文脈を食う・似たツールを取り違える・頼んでない操作をする・権限管理が複雑になる。100個より今の作業に必要な3〜5個をプロジェクトごとに切り替える。@kimuai08 自身も10個以上繋いで「急にバカになった」と感じ、減らしたら直ったと述べる</li>
+<li><strong>読み取りと書き込みを最初から一緒にしない</strong>。読み取りは許可・作成と更新は確認を挟む・削除と本番操作は拒否。本番デプロイ・DNS 変更・顧客データ変更・決済の本番操作・Issue 削除・PR マージ・DB 削除は最初から全面許可しない。MCP は便利さと危険さが完全に比例する。この線引きを外部ポリシー層で持つ設計は <a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> が扱う</li>
+<li><strong>公式とコミュニティ製を混同しない</strong>。検索サイトには同名サーバーが複数並び、公式一覧に載っていても提供元の公式実装とは限らない。提供元組織が管理しているか・最終更新・セキュリティポリシー・認証方式・要求権限・削除や本番変更ができる設計か、を見る</li>
+<li><strong>外部から来た文章をそのまま実行させない</strong>。Issue や PR コメントには他人が書いた文章が入り、手順の中に余計な指示が混ざっていれば Claude が読んでしまう。外部入力を扱う MCP では、何をやろうとしているかを一度提示させる</li>
+</ol>
+<h2>まだ固まっていない領域</h2>
+<p>@kimuai08 は「盛らずに書く」として次を挙げる。長時間ジョブを MCP 経由で投げる仕組みは仕様としては正式に入ったが各サーバーが対応しているかは別で、使う前に対応状況を確認する。会話の中に UI を返す仕組みもこれから広がる段階。料金・提供条件・認証方式・権限範囲は動くので公式リンクを使う前に見に行く。「MCP を入れると性能が何倍」という数字は証明されていないので出さず、代わりに測るべきは1日のうちコピペ・画面移動・目視確認に何分使っているか、だと述べる。</p>
+<h2>問い</h2>
+<ul>
+<li>このvaultの運用で「Claude Code と別画面を往復している場所」はどこか。X API（xurl）と NotebookLM は既に CLI 化しているが、公開サイトの表示確認は Playwright MCP で閉じられるか</li>
+<li>「読み取りは許可・書き込みは確認・削除は拒否」を Claude Code の permissions と hooks でどこまで決定論的に強制できるか（<a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> の「ガードレールは hook＋permissions」と対応）</li>
+<li>Boris が Playwright MCP でなくブラウザ拡張を選ぶ理由（ログイン状態の共有）は、自動テストと探索的確認の使い分け基準として自分の作業にも当てはまるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a> — MCP プロトコルそのものと 2026-07-28 スペック（ステートレス化・MCP Apps/Tasks・エンタープライズ認可）の正本。本ページは「どのサーバーをどの工程に置くか」の側</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — Boris Cherny の公式ワークショップ Tips・30 Tips の一次整理。本ページの3原則はその発信を@kimuai08が再構成したもの</li>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> — 同じ@kimuai08が Boris の「6か月リセット」を整理した記事。向こうは指示を減らす側、本ページは検証手段を足す側</li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a> — 「プロンプトを書くな。ループを書け」の本体。MCP は Boris の言うループが回るための「工程ごとの検証手段」にあたる</li>
+<li><a href="../tools/claude-code-plugins.html">claude-code-plugins</a> — 公式マーケットプレイスの MCP/Skill/Agent/Hook 一覧。本ページの8本をプラグインとして入れる入口</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/claude-mcp.html">claude-mcp</a></li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2082428727401869753" rel="noopener" target="_blank">https://x.com/i/web/status/2082428727401869753</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Code 公式 MCP サーバー8選と工程別スタック
+
+&gt; **TL;DR**: Boris Cherny（Claude Code 開発者）の「Claude に自分の出力を検証する手段を渡せ」を、工程ごとに公式 MCP サーバーで実装する構成論。@kimuai08 が Context7・Playwright・Figma・Linear・Sentry・Cloudflare・Stripe・GitHub の8本を選び、初心者は Context7→ブラウザ→Linear/GitHub の3段で十分と述べる。
+
+```mermaid
+flowchart LR
+  Figma[&quot;Figma MCP\n設計データ&quot;] --&gt; C7[&quot;Context7\n現行の正しい書き方&quot;] --&gt; CC[&quot;Claude Code\n実装&quot;] --&gt; PW[&quot;Playwright MCP\nブラウザ検証&quot;] --&gt; GH[&quot;GitHub MCP\nPR・レビュー対応&quot;] --&gt; CF[&quot;Cloudflare MCP\nデプロイとログ&quot;]
+```
+
+MCP を1本ずつ「便利ツール」として入れても効果が薄い、と@kimuai08は述べる。価値が出るのは、情報を取る→計画する→作る→自分で検証する→外部に反映する→結果を見る、というループを Claude Code から一歩も出ずに閉じたときで、Boris の「検証する手段を渡せ」はブラウザ1個の話ではなく「工程ごとに、その工程の正解を確認できる手段を渡せ」という意味だと解釈している。本ページは、その解釈に沿って8本の公式サーバーと使い方の型を整理したもの。MCP の仕様改定（ステートレス化・長時間処理・UI 返却・組織認証）は [[tools/claude-mcp]] を正本とし、ここでは扱わない。
+
+## Boris Cherny の3原則（@kimuai08 の整理）
+
+@kimuai08 は Boris の発信を並べると主張はずっと同じだと述べ、3原則にまとめる。
+
+1. **Claude に、自分の出力を検証する手段を渡す**。Boris はこれを「最も重要な Tip」と呼ぶ。ブラウザ禁止で Web サイトを作らせてもまともなものは上がってこないが、ブラウザを渡せば作って・見て・直してを納得いくまで繰り返す、という説明を@kimuai08が紹介している
+2. **1日1回以上やる作業は、仕組みにする**。毎回チャットで同じ手順を説明せず Skill やコマンドにする。呼ぶまでコストがほぼゼロなので作っておいて損がない
+3. **外部ツールを、Claude Code の作業面に持ち込む**。Slack・課題管理・DB・社内 API を直接触れるようにし、ツール間の移動そのものを消す。ここで MCP が登場する
+
+@kimuai08 は Boris の働き方として、自分では手でコードを書かず、ターミナルで5つ前後・Web で5〜10 の Claude セッションを同時に走らせてタブに番号を振り通知で入力待ちを管理していること、CLAUDE.md は100行程度しかないこと、「プロンプトを書くな。ループを書け」が最もよく引用される言葉であることを挙げる（Boris の一次発信の整理は [[tools/claude-code]] と [[concepts/loop-engineering]] を参照）。
+
+## 8本の公式サーバー
+
+選定基準は、提供元が自分で管理している公式であること・初心者でも効果を体感しやすいこと・3原則のどれかを直接実装できること、の3つ（@kimuai08）。
+
+| # | サーバー | 消える往復 | 実践プロンプトの要点（@kimuai08 が「必ず入れろ」とする行） | 公式 |
+|---|---|---|---|---|
+| 1 | **Context7** | 古い書き方のコードを自分で直す | 現バージョンの推奨・廃止済み・差分・修正ファイルを整理してから実装。推測で実装しない。1回の問い合わせに複数の概念を混ぜない | https://github.com/upstash/context7 |
+| 2 | **Playwright MCP** | 作った画面を自分でブラウザで開く | 新規登録・ログイン・入力エラー・スマホ幅・ログアウトを実操作で検証。失敗時はコードからの推測でなくブラウザで再現してから修正し、再実行で成功を確認してから完了報告 | https://github.com/microsoft/playwright-mcp |
+| 3 | **Figma MCP** | スクリーンショットから余白・色を目視で当てる | まず構造・再利用コンポーネント・色とタイポ・余白・レスポンシブ変化だけを抽出し実装に入らない。既存コンポーネント優先、新規は「なぜ既存で足りないか」を先に説明 | https://developers.figma.com/docs/figma-mcp-server/ |
+| 4 | **Linear MCP** | Issue をコピペし進捗を手で書く | 不足情報の洗い出し→コード調査→計画提示→承認後に実装とテスト→Issue にコメント。**ステータス変更は人間が確認してから** | https://linear.app/docs/mcp |
+| 5 | **Sentry MCP** | スタックトレースをコピペする | 直近24時間で影響ユーザー最多の未解決エラーを取得し、発生条件→関連コード→再現テスト→最小修正→全テスト→根本原因まとめ。**再現できないなら推測で直さず、必要な追加情報を列挙して止まる** | https://docs.sentry.io/product/sentry-mcp/ |
+| 6 | **Cloudflare MCP** | デプロイ先の状態を別画面で見る | エラー・レスポンス時間・キャッシュヒット率・セキュリティイベント・Workers 例外を調べ、コード変更が要るもの／設定だけで直るものに分類。**承認まで設定変更しない**。導入初期は読み取りのみ | https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/ |
+| 7 | **Stripe MCP** | Stripe 側の商品・Webhook 設定を別タブで確認 | Product/Price・Checkout Session・Webhook イベント・解約・支払い失敗・二重登録防止・テスト方法を確認して月額課金の計画を作る。**テストモードだけを使い本番データに触れない** | https://docs.stripe.com/mcp |
+| 8 | **GitHub MCP** | レビューコメントを読んで戻る | 未解決コメントを「必ず修正」「設計判断が必要で人間が決める」「修正不要（理由つき）」に分類し、必ず修正だけ実装してテストを通す | https://github.com/github/github-mcp-server |
+
+補足として@kimuai08は次を述べる。Playwright MCP が画面を読む手段はスクリーンショットではなくアクセシビリティツリーなので、見た目が似た要素を取り違えにくい。Boris 本人が Web 作業で毎回使うと言っているのは Playwright MCP ではなく Claude Code のブラウザ拡張の方で、ログイン状態を共有できるため安定する、という言い方を Boris はしている。使い分けは、自分のログイン済みブラウザで実画面を見ながら確認したいなら拡張、テストとして何度も同じ手順を回したいなら Playwright MCP。GitHub MCP の価値は git コマンドを打てることではなく、Issue 詳細・PR のレビューコメント・CI 結果・別リポジトリ・組織内コード検索といったリモート側にしかない情報を横断できることにある。Stripe は MCP に加えてエージェント向け Skill も用意しており、MCP で操作し Skill で作法を守らせる組み合わせが強い。
+
+## 工程に沿って並べる2つのスタック
+
+@kimuai08 が提示する並べ方は2つ。
+
+- **Web 制作スタック**: Figma で設計を取る → Context7 で今の正しい書き方を確認 → Claude Code で実装 → Playwright でブラウザ検証 → GitHub で PR とレビュー対応 → Cloudflare でデプロイとログ確認
+- **SaaS 開発スタック**: Linear で要件を取る → Context7 で技術仕様を確認 → Claude Code で実装 → Stripe で決済を設定して検証 → Playwright でユーザー操作をテスト → Sentry で本番エラーを監視
+
+## 初心者が入れるのは3つだけ
+
+8個全部入れると後述の落とし穴に落ちるので、次の3段で十分だと@kimuai08は述べる。
+
+1. **Context7**。目的は間違ったコードを減らすこと。読み取り中心でリスクが低く、効果を最も早く体感できる
+2. **Playwright またはブラウザ拡張**。目的は Claude 自身に成果物を検証させること。作る→開く→崩れを見つける→直す→また開く、に人間が挟まらなくなる
+3. **Linear または GitHub**。目的は仕事の入口と出口を繋ぐこと。ここまで来ると Claude Code は「指示待ちのコーダー」から「仕事を自分で進めるメンバー」に変わる
+
+今日やることは1つだけで、Claude Code と別の画面を行ったり来たりしている場所を1つ探し、それを消す MCP だけを入れて効果を体感してから次を足す、というのが記事の結論。
+
+## 4つの落とし穴
+
+1. **MCP を増やすほど賢くなるわけではない**。候補ツールが増えると迷う・文脈を食う・似たツールを取り違える・頼んでない操作をする・権限管理が複雑になる。100個より今の作業に必要な3〜5個をプロジェクトごとに切り替える。@kimuai08 自身も10個以上繋いで「急にバカになった」と感じ、減らしたら直ったと述べる
+2. **読み取りと書き込みを最初から一緒にしない**。読み取りは許可・作成と更新は確認を挟む・削除と本番操作は拒否。本番デプロイ・DNS 変更・顧客データ変更・決済の本番操作・Issue 削除・PR マージ・DB 削除は最初から全面許可しない。MCP は便利さと危険さが完全に比例する。この線引きを外部ポリシー層で持つ設計は [[concepts/ai-agent-governance]] が扱う
+3. **公式とコミュニティ製を混同しない**。検索サイトには同名サーバーが複数並び、公式一覧に載っていても提供元の公式実装とは限らない。提供元組織が管理しているか・最終更新・セキュリティポリシー・認証方式・要求権限・削除や本番変更ができる設計か、を見る
+4. **外部から来た文章をそのまま実行させない**。Issue や PR コメントには他人が書いた文章が入り、手順の中に余計な指示が混ざっていれば Claude が読んでしまう。外部入力を扱う MCP では、何をやろうとしているかを一度提示させる
+
+## まだ固まっていない領域
+
+@kimuai08 は「盛らずに書く」として次を挙げる。長時間ジョブを MCP 経由で投げる仕組みは仕様としては正式に入ったが各サーバーが対応しているかは別で、使う前に対応状況を確認する。会話の中に UI を返す仕組みもこれから広がる段階。料金・提供条件・認証方式・権限範囲は動くので公式リンクを使う前に見に行く。「MCP を入れると性能が何倍」という数字は証明されていないので出さず、代わりに測るべきは1日のうちコピペ・画面移動・目視確認に何分使っているか、だと述べる。
+
+## 問い
+
+- このvaultの運用で「Claude Code と別画面を往復している場所」はどこか。X API（xurl）と NotebookLM は既に CLI 化しているが、公開サイトの表示確認は Playwright MCP で閉じられるか
+- 「読み取りは許可・書き込みは確認・削除は拒否」を Claude Code の permissions と hooks でどこまで決定論的に強制できるか（[[concepts/claude-code-instruction-methods]] の「ガードレールは hook＋permissions」と対応）
+- Boris が Playwright MCP でなくブラウザ拡張を選ぶ理由（ログイン状態の共有）は、自動テストと探索的確認の使い分け基準として自分の作業にも当てはまるか
+
+## 関連
+
+- [[tools/claude-mcp]] — MCP プロトコルそのものと 2026-07-28 スペック（ステートレス化・MCP Apps/Tasks・エンタープライズ認可）の正本。本ページは「どのサーバーをどの工程に置くか」の側
+- [[tools/claude-code]] — Boris Cherny の公式ワークショップ Tips・30 Tips の一次整理。本ページの3原則はその発信を@kimuai08が再構成したもの
+- [[concepts/instruction-patch-lifecycle]] — 同じ@kimuai08が Boris の「6か月リセット」を整理した記事。向こうは指示を減らす側、本ページは検証手段を足す側
+- [[concepts/loop-engineering]] — 「プロンプトを書くな。ループを書け」の本体。MCP は Boris の言うループが回るための「工程ごとの検証手段」にあたる
+- [[tools/claude-code-plugins]] — 公式マーケットプレイスの MCP/Skill/Agent/Hook 一覧。本ページの8本をプラグインとして入れる入口
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

@@ -99,3 +99,4 @@ fan-outについては、並列化はいちばん理解しやすい利点であ�
 - [[concepts/ai-engineer-interview-questions]] — 本ページの設計語彙（冪等・承認・予算・フォールバック）を「答えられるか」で測る面接10問。Q5〜Q7がここに対応する
 - [[concepts/decision-layer-model]] — ルーターの確率的な分類を、生成しない専用の判断モデル（Jev）に任せる設計。分類器の実体の一例
 - [[concepts/scheduled-agent-automation]] — 冪等な書き込みを1エージェントの定時実行に当てはめた公式参照実装（投稿済みを確認してから投稿・ok を確認してから台帳とブックマークを更新・不明なら「maybe posted」）
+- [[concepts/harness-seven-jobs]] — 同じ@0xwhrrariが1体のエージェント周囲のハーネスを7つの仕事に分けた記事。本ページの耐久状態・ノード単位の失敗方針・決定論的なルート権限は、その仕事4・7・6をグラフへ持ち上げたもの

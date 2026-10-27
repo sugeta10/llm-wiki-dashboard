@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dessa - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb950"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>dessa</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="dessa.md">Markdownで表示</a></div>
+  <div class="meta">models/dessa · models · <span title="2026-10-28">今日</span></div>
+  <article><h1>Dessa（Block のフルデュプレックス音声モデル）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Block の小規模研究ラボが、テキストも事前学習済みモデルも使わず人間の会話音声だけでゼロから訓練した speech-to-speech モデル。聞きながら話すフルデュプレックスで笑い・相槌・割り込みを自ら選び、MacBook Pro M4 Max 以上でローカル動作する。訓練は NVIDIA GB200 NVL72 1台。</p>
+<p>📌 X bookmark: 77,011（2026-10-27 時点）</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  subgraph conv[&quot;従来の音声AI（Dessa チームの批判）&quot;]
+    V1[&quot;音声&quot;] --&gt; T[&quot;テキスト化\n感情・間・抑揚が落ちる&quot;] --&gt; V2[&quot;音声&quot;]
+  end
+  subgraph dessa[&quot;Dessa&quot;]
+    A1[&quot;音声入力&quot;] --&gt; D[&quot;Dessa\n聞きながら話す&quot;] --&gt; A2[&quot;音声出力&quot;]
+    D -.-&gt;|&quot;相槌・笑い・割り込み&quot;| A1
+  end</pre>
+<p>Jack Dorsey（Block 共同創業者・会長）は2026-10-23に、音声こそ知能と対話する最も自然な方法だと信じて Dessa を作ったと投稿し、「これまで作られた中で最も本物らしいフルデュプレックス音声モデル」「感情・ニュアンス・間・自然なリズムに満ち、人と話している感覚」と述べた。投稿は Block 公式サイトの発表ページにリンクしており、本ページはその公式ページ（Dessa lead の Ragavan Thurairatnam 署名）の内容を主に整理する。</p>
+<h2>何が新しいか</h2>
+<p>現在の音声 AI の多くは音声をテキストに変換してから処理するため、テキストが運べない大量の情報を捨てている、と Dessa チームは述べる。世界で最も強力な AI でも人がどう感じているかを聞けないのは馬鹿げており、体験を悪くし、潜在的に危険だという主張が出発点。</p>
+<p>これに対し Dessa は、テキストなし・事前学習済みモデルなしで、人間の会話音声だけを使ってゼロから訓練された。聞くことだけでリアルタイム会話を保てるようになったモデルであり、チームの知る限り「人間の音声だけから訓練された、現実的なライブ会話ができる世界初の AI」だとする。チームはこれを深層学習の新しいカテゴリと位置づけ、テキストと比べて言語や事実をどれだけ効率よく学ぶか・新言語をどれだけ効率よく学べるか・どんな in-context learning ができるか、を研究者が発見すべき未知の振る舞いとして挙げる。</p>
+<h2>仕様（公式ページの記述）</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>入出力</td>
+<td>音声入力・音声出力の真の speech-to-speech。知っていることはすべて人間の音声由来</td>
+</tr>
+<tr>
+<td>対話方式</td>
+<td>フルデュプレックス。人と同じように聞くと話すを同時に行う</td>
+</tr>
+<tr>
+<td>会話の振る舞い</td>
+<td>実際の会話から学んだため、いつ割り込むか・いつ相槌（"yeah!" "got it!" "ooh"）を打つかを知っている</td>
+</tr>
+<tr>
+<td>推論速度</td>
+<td>実時間より速く、待ち時間がない</td>
+</tr>
+<tr>
+<td>動作環境</td>
+<td>MacBook Pro M4 Max 以上でローカル動作</td>
+</tr>
+<tr>
+<td>感情表現</td>
+<td>感情・皮肉・笑い・苛立ちのため息・悲しみで震える声を、ネイティブに聞き取り・話す</td>
+</tr>
+<tr>
+<td>訓練計算</td>
+<td>NVIDIA GB200 NVL72 1台のみ</td>
+</tr>
+<tr>
+<td>訓練データ量</td>
+<td>LLM と比べて数百分の1の語数で言語を学んだ（公式ページは「LLM は C++ や Angular も学ばねばならないので公平を期すと」と注記）</td>
+</tr>
+</tbody>
+</table>
+<p>公開されたデモクリップは人が Dessa と話す生録音で、誰も操作せず、何を・いつ・どう言うか、声や性格まで Dessa 自身が選ぶ（字幕は後付け）。公式ページが挙げるクリップの内容は、何かが面白い瞬間に文の途中で笑う（他のモデルは相手が話し終わってから合図どおりに笑う）、声を大きくするよう頼むと大きくなる（誰も教えていない）、相手が映画のタイトルを思い出せないときに文を引き取る、驚いて小声で "oh my god" と息を漏らし涙ぐんだ感謝のような声で答える、抑揚と速度の幅が広い、共感的に聞こえる、ChatGPT Live と会話する、の7本。追加の録音は Ragavan Thurairatnam の X アカウントで共有予定とある。</p>
+<h2>なぜ音声だけからの学習が難しいか</h2>
+<p>Dessa チームは、音声から学ぶ機械は言語以上のものを学ばねばならないと述べる。アクセント・間・呼吸・皮肉・ユーモア・抑揚・感情・いつ割り込むか、のそれぞれが意味を変える。例として「I didn't say she stole my CUDA code」をどの語を強調するかで意味が変わる文として挙げる。音声は同じ文を同じように二度言ってもデータが異なり、テキストは誰が打っても同一で、話し言葉1語はテキストの同じ語の数千倍のバイトを取る。人は容易に話せるようになるので忘れがちだが、テキストに頼れない機械にとっては過酷だ、という説明。</p>
+<h2>作った3つの理由</h2>
+<p>公式ページは理由を3つ挙げる。好奇心（楽しさ）、人間と AI のより良い相互理解、安全性。赤ん坊は文字を一度も見ずに話せるようになるので、モデルにもできるか試したかった（できたが非常に難しかった）。音声はあらゆる知能にとって最も自然なインターフェースなのに今日の音声 AI はそれを無駄にしている。そして AI は力と独立性を増しているのに声の感情にはほぼ聾のままで、ひどい痛みの中にいるのに音声 AI が気づかず続ける状況を想像してほしい、それが安全性の問題で Dessa はその解決への一歩だ、とする。</p>
+<h2>チームと公開方針</h2>
+<p>Dessa チームは Block 内の「（とても）小さな」AI 研究ラボで、トロントの深層学習スタートアップ Dessa の元メンバーが設立した。2012年から深層学習モデルを、8年以上生成音声モデルを作ってきたとし、他が無視するフロンティア問題を追い、Jack Dorsey に直接報告する。研究者は Louay Hazami・Hashiam Kadhim・Qi (Alex) Liu・Rayhane Mama・Aydin Polat・Marc Tyndel、インターンは Cara Ji・Jibran Iqbal Shah・Dvir Zagury-Grynbaum（アルファベット順）。音だけから話すことを学んだモデルは新領域であり外部の目が必要だとして、少数の AI 安全研究者に早期アクセスを提供し、予期していないリスクを探してもらう方針を掲げる。一般向けの提供時期・価格・重みの公開可否は公式ページに記載がない。</p>
+<p>Block が組織そのものを「階層でなくインテリジェンス」として再設計する動き（<a href="../business/org-design-intelligence.html">org-design-intelligence</a>）の中で、Dorsey 直属のラボがフロンティア研究を出した事例でもある。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-23: 「数百分の1の語数で言語を学んだ」「GB200 NVL72 1台で訓練」はいずれも公式ページの自己申告で、データ時間数・パラメータ数・ベンチマークは未公表。論文または技術報告が出たら照合する</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>音声だけから学んだモデルの「知識」はどの程度か。公式ページは「生の音から来たにしては驚くほど知っている」と述べるだけで、テキスト LLM との事実知識の比較は未提示</li>
+<li>フルデュプレックスの割り込み・相槌の判断は、テキスト経由のエージェント（<a href="../concepts/loop-anatomy.html">loop-anatomy</a> の観測ムーブ）に相当する何を学んでいるのか。ハーネス側で制御できる振る舞いか、重みに溶けているのか</li>
+<li>安全研究者への早期アクセスで何が見つかるか。感情を聞き分けるモデルは <a href="../concepts/ai-emotional-reliance.html">ai-emotional-reliance</a> が扱う感情的依存を強める側にも働きうる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/org-design-intelligence.html">org-design-intelligence</a> — Block（Jack Dorsey）の組織設計論。Dessa はその Block 内で Dorsey 直属の小規模ラボが出した研究成果</li>
+<li><a href="../business/self-improving-company.html">self-improving-company</a> — Jack Dorsey のツイートを下敷きにした YC トーク</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/org-design-intelligence.html">org-design-intelligence</a></li>
+<li><a href="../business/self-improving-company.html">self-improving-company</a></li>
+<li><a href="../concepts/ai-emotional-reliance.html">ai-emotional-reliance</a></li>
+<li><a href="../concepts/loop-anatomy.html">loop-anatomy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2113697902916751661" rel="noopener" target="_blank">https://x.com/i/web/status/2113697902916751661</a></li>
+<li><a href="https://block.xyz/dessa" rel="noopener" target="_blank">https://block.xyz/dessa</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Dessa（Block のフルデュプレックス音声モデル）
+
+&gt; **TL;DR**: Block の小規模研究ラボが、テキストも事前学習済みモデルも使わず人間の会話音声だけでゼロから訓練した speech-to-speech モデル。聞きながら話すフルデュプレックスで笑い・相槌・割り込みを自ら選び、MacBook Pro M4 Max 以上でローカル動作する。訓練は NVIDIA GB200 NVL72 1台。
+
+&gt; 📌 X bookmark: 77,011（2026-10-27 時点）
+
+```mermaid
+flowchart LR
+  subgraph conv[&quot;従来の音声AI（Dessa チームの批判）&quot;]
+    V1[&quot;音声&quot;] --&gt; T[&quot;テキスト化\n感情・間・抑揚が落ちる&quot;] --&gt; V2[&quot;音声&quot;]
+  end
+  subgraph dessa[&quot;Dessa&quot;]
+    A1[&quot;音声入力&quot;] --&gt; D[&quot;Dessa\n聞きながら話す&quot;] --&gt; A2[&quot;音声出力&quot;]
+    D -.-&gt;|&quot;相槌・笑い・割り込み&quot;| A1
+  end
+```
+
+Jack Dorsey（Block 共同創業者・会長）は2026-10-23に、音声こそ知能と対話する最も自然な方法だと信じて Dessa を作ったと投稿し、「これまで作られた中で最も本物らしいフルデュプレックス音声モデル」「感情・ニュアンス・間・自然なリズムに満ち、人と話している感覚」と述べた。投稿は Block 公式サイトの発表ページにリンクしており、本ページはその公式ページ（Dessa lead の Ragavan Thurairatnam 署名）の内容を主に整理する。
+
+## 何が新しいか
+
+現在の音声 AI の多くは音声をテキストに変換してから処理するため、テキストが運べない大量の情報を捨てている、と Dessa チームは述べる。世界で最も強力な AI でも人がどう感じているかを聞けないのは馬鹿げており、体験を悪くし、潜在的に危険だという主張が出発点。
+
+これに対し Dessa は、テキストなし・事前学習済みモデルなしで、人間の会話音声だけを使ってゼロから訓練された。聞くことだけでリアルタイム会話を保てるようになったモデルであり、チームの知る限り「人間の音声だけから訓練された、現実的なライブ会話ができる世界初の AI」だとする。チームはこれを深層学習の新しいカテゴリと位置づけ、テキストと比べて言語や事実をどれだけ効率よく学ぶか・新言語をどれだけ効率よく学べるか・どんな in-context learning ができるか、を研究者が発見すべき未知の振る舞いとして挙げる。
+
+## 仕様（公式ページの記述）
+
+| 項目 | 内容 |
+|---|---|
+| 入出力 | 音声入力・音声出力の真の speech-to-speech。知っていることはすべて人間の音声由来 |
+| 対話方式 | フルデュプレックス。人と同じように聞くと話すを同時に行う |
+| 会話の振る舞い | 実際の会話から学んだため、いつ割り込むか・いつ相槌（&quot;yeah!&quot; &quot;got it!&quot; &quot;ooh&quot;）を打つかを知っている |
+| 推論速度 | 実時間より速く、待ち時間がない |
+| 動作環境 | MacBook Pro M4 Max 以上でローカル動作 |
+| 感情表現 | 感情・皮肉・笑い・苛立ちのため息・悲しみで震える声を、ネイティブに聞き取り・話す |
+| 訓練計算 | NVIDIA GB200 NVL72 1台のみ |
+| 訓練データ量 | LLM と比べて数百分の1の語数で言語を学んだ（公式ページは「LLM は C++ や Angular も学ばねばならないので公平を期すと」と注記） |
+
+公開されたデモクリップは人が Dessa と話す生録音で、誰も操作せず、何を・いつ・どう言うか、声や性格まで Dessa 自身が選ぶ（字幕は後付け）。公式ページが挙げるクリップの内容は、何かが面白い瞬間に文の途中で笑う（他のモデルは相手が話し終わってから合図どおりに笑う）、声を大きくするよう頼むと大きくなる（誰も教えていない）、相手が映画のタイトルを思い出せないときに文を引き取る、驚いて小声で &quot;oh my god&quot; と息を漏らし涙ぐんだ感謝のような声で答える、抑揚と速度の幅が広い、共感的に聞こえる、ChatGPT Live と会話する、の7本。追加の録音は Ragavan Thurairatnam の X アカウントで共有予定とある。
+
+## なぜ音声だけからの学習が難しいか
+
+Dessa チームは、音声から学ぶ機械は言語以上のものを学ばねばならないと述べる。アクセント・間・呼吸・皮肉・ユーモア・抑揚・感情・いつ割り込むか、のそれぞれが意味を変える。例として「I didn&#x27;t say she stole my CUDA code」をどの語を強調するかで意味が変わる文として挙げる。音声は同じ文を同じように二度言ってもデータが異なり、テキストは誰が打っても同一で、話し言葉1語はテキストの同じ語の数千倍のバイトを取る。人は容易に話せるようになるので忘れがちだが、テキストに頼れない機械にとっては過酷だ、という説明。
+
+## 作った3つの理由
+
+公式ページは理由を3つ挙げる。好奇心（楽しさ）、人間と AI のより良い相互理解、安全性。赤ん坊は文字を一度も見ずに話せるようになるので、モデルにもできるか試したかった（できたが非常に難しかった）。音声はあらゆる知能にとって最も自然なインターフェースなのに今日の音声 AI はそれを無駄にしている。そして AI は力と独立性を増しているのに声の感情にはほぼ聾のままで、ひどい痛みの中にいるのに音声 AI が気づかず続ける状況を想像してほしい、それが安全性の問題で Dessa はその解決への一歩だ、とする。
+
+## チームと公開方針
+
+Dessa チームは Block 内の「（とても）小さな」AI 研究ラボで、トロントの深層学習スタートアップ Dessa の元メンバーが設立した。2012年から深層学習モデルを、8年以上生成音声モデルを作ってきたとし、他が無視するフロンティア問題を追い、Jack Dorsey に直接報告する。研究者は Louay Hazami・Hashiam Kadhim・Qi (Alex) Liu・Rayhane Mama・Aydin Polat・Marc Tyndel、インターンは Cara Ji・Jibran Iqbal Shah・Dvir Zagury-Grynbaum（アルファベット順）。音だけから話すことを学んだモデルは新領域であり外部の目が必要だとして、少数の AI 安全研究者に早期アクセスを提供し、予期していないリスクを探してもらう方針を掲げる。一般向けの提供時期・価格・重みの公開可否は公式ページに記載がない。
+
+Block が組織そのものを「階層でなくインテリジェンス」として再設計する動き（[[business/org-design-intelligence]]）の中で、Dorsey 直属のラボがフロンティア研究を出した事例でもある。
+
+## 観察ログ（未検証）
+
+- 2026-10-23: 「数百分の1の語数で言語を学んだ」「GB200 NVL72 1台で訓練」はいずれも公式ページの自己申告で、データ時間数・パラメータ数・ベンチマークは未公表。論文または技術報告が出たら照合する
+
+## 問い
+
+- 音声だけから学んだモデルの「知識」はどの程度か。公式ページは「生の音から来たにしては驚くほど知っている」と述べるだけで、テキスト LLM との事実知識の比較は未提示
+- フルデュプレックスの割り込み・相槌の判断は、テキスト経由のエージェント（[[concepts/loop-anatomy]] の観測ムーブ）に相当する何を学んでいるのか。ハーネス側で制御できる振る舞いか、重みに溶けているのか
+- 安全研究者への早期アクセスで何が見つかるか。感情を聞き分けるモデルは [[concepts/ai-emotional-reliance]] が扱う感情的依存を強める側にも働きうる
+
+## 関連
+
+- [[business/org-design-intelligence]] — Block（Jack Dorsey）の組織設計論。Dessa はその Block 内で Dorsey 直属の小規模ラボが出した研究成果
+- [[business/self-improving-company]] — Jack Dorsey のツイートを下敷きにした YC トーク
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

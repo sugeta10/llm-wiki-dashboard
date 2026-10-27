@@ -77,3 +77,4 @@ flowchart TD
 - [[concepts/multi-agent-patterns]] — レビュアsubagent・fan-out等のオーケストレーションパターン
 - [[concepts/graph-engineering]] — 同じ@0xCodezによる、グラフ層（ノード/エッジ/トポロジー）を掘り下げた対の記事。ハーネス→ループ→グラフの3部作の最終層
 - [[concepts/claude-code-long-task-harness]] — 1体目のハーネス層を Claude Code の既存機能で組む具体例（証拠を返すレビュアー・progress.md・受け入れ成果物単位の計測）
+- [[concepts/harness-seven-jobs]] — 本番ハーネスが担う7つの仕事（契約化〜トレース）と「失敗の型を直す」「変更レシート」の運用原則（@0xwhrrari）。本ページの積む順序に対し、積み終えたハーネスを採点する観点
