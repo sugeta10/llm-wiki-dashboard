@@ -50,3 +50,4 @@ flowchart LR
 - [[concepts/session-history-mirror]] — 同じ履歴の自己分析をエージェントセッションログ×6フェーズ・証拠ゲートで行う型（@EXM7777）。仮説非開示インタビューと証拠基準（3回以上）が差分
 - [[concepts/ai-secretary-gateway]] — AI社員シリーズ②「AI秘書」（@dansyu_callenge）。同シリーズ①「AI参謀」（相談を判断へ変える人）と本ページの専属参謀は役割が近い
 - [[concepts/exclusion-first-prompting]] — 「出さなくていいもの」を指示の先頭に書く除外先行プロンプト（@smark_x）。既知を先に外す同じ型を日常の依頼全般に広げたもの
+- [[papers/2023-sharma-sycophancy]] — 「私が言いそうなことは失敗」の縛りが対抗する迎合（sycophancy）の実証研究。Anthropic の Sharma・Tong らは、ユーザーが好みや弱い意見を述べるだけで5モデルの講評・回答が曲がることを示した

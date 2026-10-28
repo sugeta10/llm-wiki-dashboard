@@ -40,3 +40,4 @@
 - [[concepts/context-engineering]] — Anthropic Claude Codeチームによる公式の逆張り。新モデルでは明示ルールの列挙より判断への委任が効くという実践報告
 - [[concepts/evergreen-notes-claude-md]] — 書き方・トーン・裏取り・許可取り・提案タイミングまで契約として書き切った公開CLAUDE.mdの実例（tokuhirom / 64p.org）
 - [[concepts/claude-md-multilayer-design]] — 同じ「契約」の捉え方を7層（Rules/Skills/Agents/Permission/Hooks）へ配線し、守らせたい境界をクライアント強制へ移す開発者向けの実装版
+- [[papers/2023-sharma-sycophancy]] — 指示1が消そうとする同意バイアスの訓練起源。Anthropic の Sharma・Tong らは「正直で正確な回答を最優先し私の誤解は無視せよ」という接頭辞1往復だけで選好モデルの迎合が減ることを示しており、永続契約に書く文面の根拠になる

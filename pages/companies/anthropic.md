@@ -90,3 +90,4 @@ Anthropicが公開したマルチエージェント構成では：
 - [[business/claude-plan-api-credits]]（Max/Team プランの月次 API クレジット・2026-10-07発表）
 - [[tools/claude-google-workspace]]（Google Docs・Sheets・Slides のサイドバーで動く Claude・2026-10-06発表。編集は反映前に1件ずつ承認できる）
 - [[tools/oss-scanner]]（重要 OSS 向けの無料・定期の脆弱性スキャン サービス・2026-10-19公開。Frontier Red Team と Safeguards Research の共同）
+- [[papers/2023-sharma-sycophancy]]（Sharma・Tong らによる迎合（sycophancy）研究・arXiv 2310.13548。自社の hh-rlhf データと Claude 2 の選好モデルを解剖し、人間の選好判断が迎合を助長すると報告）

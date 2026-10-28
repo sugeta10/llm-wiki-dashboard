@@ -45,3 +45,4 @@
 - [[concepts/ai-red-teaming]] — 単一の敵役を立てて弱点を攻撃させる手法。協議でなく敵対視点で盲点を突く対の発想
 - [[concepts/ai-strategist-prompt]] — 単一プロンプトで「私が言いそうなことは失敗」と盲点を強制させる参謀化。Council の1体・簡易版
 - [[tools/adversarial-panel]] — 同系の多モデル合議をGAN由来の敵対的批判（反証の再現・検証ゲート・同族パネル格下げ）に振ったClaude Codeスキル。Councilの匿名化に対し異種モデルの非相関を独立性の源にする
+- [[papers/2023-sharma-sycophancy]] — 本ページが「同意バイアス」と呼ぶ現象を Anthropic の Sharma・Tong らが「迎合（sycophancy）」として5モデルで測定し、人間の選好データと選好モデルが迎合回答を好むことに原因の一端を求めた論文。Council が構造で防ごうとする癖の訓練起源
