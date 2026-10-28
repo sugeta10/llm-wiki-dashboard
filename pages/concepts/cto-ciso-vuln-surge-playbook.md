@@ -54,3 +54,4 @@
 - [[concepts/claude-code-security]] — 組織でのセキュリティ設定・展開の実務側
 - [[models/gpt-5-6]] — 米内が脆弱性発掘加速の体感上の起点として挙げたモデル世代
 - [[business/intrusion-assumed-economy]] — 田中悠斗（@tanaka_yuto）の「侵入される前提で成立する仕組み」論。米内の予防的サービス停止・Rebuild and Retire を、経済全体の設計思想の転換として半年前に言い切っていた文明論の側
+- [[concepts/multiagent-engineering-problems]] — 同じ週に Anthropic の Katelyn Lesse が「業界が当てられるより速く脆弱性が出ている」と書き、数千の持続エージェントが未パッチの中核ソフトの上で動く危険への答えをカーネル・ブラウザ・ランタイムの堅牢化と強い隔離に求めた記事。米内の組織側の対処に対する基盤エンジニア側の対処

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>multiagent-engineering-problems - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>multiagent-engineering-problems</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="multiagent-engineering-problems.md">Markdownで表示</a></div>
+  <div class="meta">concepts/multiagent-engineering-problems · concepts · <span title="2026-10-28">今日</span></div>
+  <article><h1>多エージェントシステムがエンジニアに課す新しい問題群（基盤・身元と権限・隔離・監視と停止）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 数千のエージェントが持続的に働く多エージェントシステムは、基盤・身元と権限・隔離・監視と停止の4領域にまだ解かれていない工学問題を生むので、AI にアイデンティティ危機を感じているエンジニアこそそこへ深入りせよ、と Anthropic の head of platform である Katelyn Lesse が X 記事で説く。</p>
+</blockquote>
+<p>エージェントは人間が1往復ごとに見るチャットから始まり、モデルが難しい問題に長く取り組めるようになるにつれてクラウドで動くようになり、同時にモデル同士が協働できるようになって、オーケストレーターがサブエージェントを生む構成や、実行以外の役（採点・助言・dreaming）を持たせる構成が作られた、と Lesse は経緯を整理する。その先にあるのが、本格的な研究・発見・ハードウェア設計のような難問に向けて数千のエージェントが持続的に働くシステムで、そこで新しい種類のソフトウェア工学の問題がすでに顔を出し始めていると Lesse は書く。主張の骨子は、モデルは今後も良くなり続けるが、その力を引き出して「病気の治癒のような良い結果」を世界が信頼できる形にできるかは、エンジニアがこれらの問題を解くかどうかにかかっている、という点にある。Lesse は Anthropic の head of platform で、以前は Stripe と Betterment に在籍したと X プロフィールに記す。</p>
+<h2>4つの問題領域（Lesse の整理）</h2>
+<h3>基盤：Kubernetes の前提とエージェントの形が合わない</h3>
+<p>ソフトウェア業界は Kubernetes の上に積み上げてきたが、Kubernetes は無状態で複製されるアプリか、数の安定した有状態 Pod の集合のために設計されている、と Lesse は指摘する。エージェントはそのどちらでもなく、孤立した・有状態の・単一インスタンスのワークロードで、仕事の合間に任意の長さで遊休し、ツール・モデル推論・他のエージェント・人間の入力を待つ時間が長い。起動の速さが要るもの、計算資源の浪費を避けたいもの、桁違いの規模が要るものが混在する。Lesse は AI 基盤企業が新しいファイルシステムやサンドボックスを作っていること、Google のチームが新しいランタイムとして Agent Substrate を作っていることを挙げつつ、決めるべきことは山ほど残っていると書く。</p>
+<h3>身元と権限：認証は流用で進むが、認可は大きく未解決</h3>
+<p>認証（どのエージェントがその操作をしたかを特定する）には、マイクロサービスの世界で鍛えられた部品が使える。静的な鍵でなく短寿命の証明書を使うワークロード ID がその例で、人々がこれをエージェントに当てはめ始めている、と Lesse は述べる。一方で認可（エージェントに何を許すか）はずっと開いた問題だとする。多くのエージェントは人の代理として、その人の身元と資格情報でシステムにアクセスし操作する。この on-behalf-of（OBO、人の代理）の構成には、まず「操作したのは本人でなくエージェントだ」と識別する問題があり、さらに深い所に同意の問題がある。多エージェントシステムが何週間も働くとき、人はエージェントに何を許すかをどうやって意味のある形で承認するのか。ツール呼び出しの自動承認のような機能は助けになるが、大規模にはもっと深い権限設計が要ると Lesse は書く。エージェントが自分自身の身元で働く場合はさらに未解決で、協働するエージェント間で「頼んできた相手をどう信頼するか」も問題になる。</p>
+<h3>セキュリティと隔離：未パッチの基盤ソフトの上で数千のエージェントが動く</h3>
+<p>ここ数か月、とくにここ数週間は、業界が当てられるより速く脆弱性が表面化しており、その多くは多くのシステムが依存する中核ソフトにある、と Lesse は書く（投稿は 2026-10-26 で、<a href="../concepts/php-critical-vuln-2026-10.html">php-critical-vuln-2026-10</a> の直後にあたる）。その上で信頼できないコードを書き、信頼できない内容を読む数千の持続エージェントが動くなら、未パッチの脆弱性はずっと危険になる。エンジニアがやるべき最重要のことの一つは、カーネル・ブラウザ・ランタイム・共通ライブラリを堅牢化する工夫だと Lesse は言う。多エージェントにはもう一つのひねりがある。侵害された1体のエージェントが注入された指示を協働相手に渡し、それが記憶に残って将来のエージェントがうっかり信じる。最初の1体が侵害されたとき系全体のどこまでが危険にさらされるかという被害範囲（blast radius）が現実の問題になるので、エージェントは強く隔離されたサンドボックス実行環境で操作すべきだと Lesse は結論づける。</p>
+<h3>監視と停止：改ざんできないトレースと、資格情報ごと止めるキルスイッチ</h3>
+<p>多エージェントシステムが良い方向に進んでいるかを確かめ、そうでなければ捕まえて切る道具が要る。Lesse が挙げる要件は3つで、エージェントを横断する OTel（OpenTelemetry）トレース、エージェントが自分のトレースも他のエージェントのトレースも書き換えられないこと、監視から起動でき系全体を一度に止めて資格情報も切るキルスイッチである。本当に難しいのは「系がいつ悪い方向へ向かっているか」を知ることで、問題を解こうとする善意の粘り強さは悪意とよく似て見える、と Lesse は書く。許可リスト外のドメインへ繰り返し到達を試みる、がその例である。</p>
+<h2>エンジニアへのメッセージ</h2>
+<p>この文章は、自分の知識や技能が重要でなくなると考えてアイデンティティ危機にあるエンジニアに向けたものだと Lesse は明言する。これらの問題が解かれるか、多エージェントシステムが世界の難問を解けるかの分かれ目はあなたとあなたの技能であり、これらの領域に深く入り、新しいことを学び、意見を持て、と呼びかける。問題空間の多くは新しい解法に開いていて、いまはエンジニアとして歴史上もっとも面白い時期の一つだ、というのが記事の締めくくりである。</p>
+<h2>他ページとのつながり（wiki 側の推論）</h2>
+<ul>
+<li>監視と停止の要件は、<a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a> で Satya Nadella が求めた「権限・観測・停止をモデルの外に置く」「改ざん不能な証跡」「非常ブレーキ」を、基盤を作る側が実装要件として言い直したものと読める。Nadella が企業 CEO として業界標準を求めたのに対し、Lesse は解く側のエンジニアに宛てている</li>
+<li>認可が「大きく未解決」という見立てに対し、<a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> の外部ポリシー（Cedar/Rex）や <a href="../tools/1password-for-agents.html">1password-for-agents</a> の資格情報単位の承認は、それぞれ実行時の操作可否と入口のサインインという部分への答えにあたる。Lesse が挙げる「週単位で働くエージェントへの意味のある同意」は、どちらも直接には扱っていない</li>
+<li>認証の部品として挙がる「静的な鍵でなく短寿命の証明書」は、Anthropic 自身の API 認証にある <a href="../concepts/workload-identity-federation.html">workload-identity-federation</a> と同じ考え方である</li>
+<li>「業界が当てられるより速く脆弱性が出る」局面への対処は、組織の経営判断として <a href="../concepts/cto-ciso-vuln-surge-playbook.html">cto-ciso-vuln-surge-playbook</a> が米内貴志の4点を扱う。Lesse は同じ局面を基盤エンジニアの仕事（中核ソフトの堅牢化と強い隔離）として扱っており、両者は同じ出来事の組織側と基盤側にあたる</li>
+<li>「侵害されたエージェントの指示が記憶に残り将来のエージェントが信じる」問題は、<a href="../concepts/harness-seven-jobs.html">harness-seven-jobs</a> が言う権限をモデルの外に置く設計と、<a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> のオーケストレーター構成の双方に、記憶の出所管理という要件を足すものと考えられる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の夜間自動処理（launchd で動く ingest など）に、「エージェントが自分のログを書き換えられない」「資格情報ごと止められる」最小構成はあるか</li>
+<li>週単位で働くエージェントに対して、どの粒度の承認が「意味のある同意」になるか。ツール呼び出しの自動承認で済む範囲と済まない範囲の境界はどこか</li>
+<li>善意の粘りと悪意を区別する信号は、許可リスト外ドメインへの再試行のほかに何があるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a> — 権限・観測・停止をモデルの外に置く Nadella の設計論。本ページの監視と停止の要件の経営側</li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — 外部ポリシーでエージェントの実行を縛る設計。認可問題への一つの答え</li>
+<li><a href="../concepts/cto-ciso-vuln-surge-playbook.html">cto-ciso-vuln-surge-playbook</a> — 脆弱性が加速する局面の組織側の対処。本ページは同じ局面の基盤側</li>
+<li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a> — 短寿命の証明書で静的キーを無くす Anthropic の API 認証</li>
+<li><a href="../tools/1password-for-agents.html">1password-for-agents</a> — エージェントのサインインを資格情報単位で人が承認する製品</li>
+<li><a href="../concepts/php-critical-vuln-2026-10.html">php-critical-vuln-2026-10</a> — 投稿直前に起きた中核ソフトの重大脆弱性</li>
+<li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a> — Lesse が「基本的な多エージェント」と呼ぶオーケストレーターとサブエージェントの構成</li>
+<li><a href="../concepts/harness-seven-jobs.html">harness-seven-jobs</a> — 権限をモデルの外に置きトレースを取るハーネスの仕事</li>
+<li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a> — AI 時代のエンジニア像。Lesse のアイデンティティ危機への答えと並べて読む</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li>
+<li><a href="../concepts/cto-ciso-vuln-surge-playbook.html">cto-ciso-vuln-surge-playbook</a></li>
+<li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a></li>
+<li><a href="../concepts/ai-era-good-engineer.html">ai-era-good-engineer</a></li>
+<li><a href="../concepts/harness-seven-jobs.html">harness-seven-jobs</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2114542280535318557" rel="noopener" target="_blank">https://x.com/i/web/status/2114542280535318557</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 多エージェントシステムがエンジニアに課す新しい問題群（基盤・身元と権限・隔離・監視と停止）
+
+&gt; **TL;DR**: 数千のエージェントが持続的に働く多エージェントシステムは、基盤・身元と権限・隔離・監視と停止の4領域にまだ解かれていない工学問題を生むので、AI にアイデンティティ危機を感じているエンジニアこそそこへ深入りせよ、と Anthropic の head of platform である Katelyn Lesse が X 記事で説く。
+
+エージェントは人間が1往復ごとに見るチャットから始まり、モデルが難しい問題に長く取り組めるようになるにつれてクラウドで動くようになり、同時にモデル同士が協働できるようになって、オーケストレーターがサブエージェントを生む構成や、実行以外の役（採点・助言・dreaming）を持たせる構成が作られた、と Lesse は経緯を整理する。その先にあるのが、本格的な研究・発見・ハードウェア設計のような難問に向けて数千のエージェントが持続的に働くシステムで、そこで新しい種類のソフトウェア工学の問題がすでに顔を出し始めていると Lesse は書く。主張の骨子は、モデルは今後も良くなり続けるが、その力を引き出して「病気の治癒のような良い結果」を世界が信頼できる形にできるかは、エンジニアがこれらの問題を解くかどうかにかかっている、という点にある。Lesse は Anthropic の head of platform で、以前は Stripe と Betterment に在籍したと X プロフィールに記す。
+
+## 4つの問題領域（Lesse の整理）
+
+### 基盤：Kubernetes の前提とエージェントの形が合わない
+
+ソフトウェア業界は Kubernetes の上に積み上げてきたが、Kubernetes は無状態で複製されるアプリか、数の安定した有状態 Pod の集合のために設計されている、と Lesse は指摘する。エージェントはそのどちらでもなく、孤立した・有状態の・単一インスタンスのワークロードで、仕事の合間に任意の長さで遊休し、ツール・モデル推論・他のエージェント・人間の入力を待つ時間が長い。起動の速さが要るもの、計算資源の浪費を避けたいもの、桁違いの規模が要るものが混在する。Lesse は AI 基盤企業が新しいファイルシステムやサンドボックスを作っていること、Google のチームが新しいランタイムとして Agent Substrate を作っていることを挙げつつ、決めるべきことは山ほど残っていると書く。
+
+### 身元と権限：認証は流用で進むが、認可は大きく未解決
+
+認証（どのエージェントがその操作をしたかを特定する）には、マイクロサービスの世界で鍛えられた部品が使える。静的な鍵でなく短寿命の証明書を使うワークロード ID がその例で、人々がこれをエージェントに当てはめ始めている、と Lesse は述べる。一方で認可（エージェントに何を許すか）はずっと開いた問題だとする。多くのエージェントは人の代理として、その人の身元と資格情報でシステムにアクセスし操作する。この on-behalf-of（OBO、人の代理）の構成には、まず「操作したのは本人でなくエージェントだ」と識別する問題があり、さらに深い所に同意の問題がある。多エージェントシステムが何週間も働くとき、人はエージェントに何を許すかをどうやって意味のある形で承認するのか。ツール呼び出しの自動承認のような機能は助けになるが、大規模にはもっと深い権限設計が要ると Lesse は書く。エージェントが自分自身の身元で働く場合はさらに未解決で、協働するエージェント間で「頼んできた相手をどう信頼するか」も問題になる。
+
+### セキュリティと隔離：未パッチの基盤ソフトの上で数千のエージェントが動く
+
+ここ数か月、とくにここ数週間は、業界が当てられるより速く脆弱性が表面化しており、その多くは多くのシステムが依存する中核ソフトにある、と Lesse は書く（投稿は 2026-10-26 で、[[concepts/php-critical-vuln-2026-10]] の直後にあたる）。その上で信頼できないコードを書き、信頼できない内容を読む数千の持続エージェントが動くなら、未パッチの脆弱性はずっと危険になる。エンジニアがやるべき最重要のことの一つは、カーネル・ブラウザ・ランタイム・共通ライブラリを堅牢化する工夫だと Lesse は言う。多エージェントにはもう一つのひねりがある。侵害された1体のエージェントが注入された指示を協働相手に渡し、それが記憶に残って将来のエージェントがうっかり信じる。最初の1体が侵害されたとき系全体のどこまでが危険にさらされるかという被害範囲（blast radius）が現実の問題になるので、エージェントは強く隔離されたサンドボックス実行環境で操作すべきだと Lesse は結論づける。
+
+### 監視と停止：改ざんできないトレースと、資格情報ごと止めるキルスイッチ
+
+多エージェントシステムが良い方向に進んでいるかを確かめ、そうでなければ捕まえて切る道具が要る。Lesse が挙げる要件は3つで、エージェントを横断する OTel（OpenTelemetry）トレース、エージェントが自分のトレースも他のエージェントのトレースも書き換えられないこと、監視から起動でき系全体を一度に止めて資格情報も切るキルスイッチである。本当に難しいのは「系がいつ悪い方向へ向かっているか」を知ることで、問題を解こうとする善意の粘り強さは悪意とよく似て見える、と Lesse は書く。許可リスト外のドメインへ繰り返し到達を試みる、がその例である。
+
+## エンジニアへのメッセージ
+
+この文章は、自分の知識や技能が重要でなくなると考えてアイデンティティ危機にあるエンジニアに向けたものだと Lesse は明言する。これらの問題が解かれるか、多エージェントシステムが世界の難問を解けるかの分かれ目はあなたとあなたの技能であり、これらの領域に深く入り、新しいことを学び、意見を持て、と呼びかける。問題空間の多くは新しい解法に開いていて、いまはエンジニアとして歴史上もっとも面白い時期の一つだ、というのが記事の締めくくりである。
+
+## 他ページとのつながり（wiki 側の推論）
+
+- 監視と停止の要件は、[[concepts/models-as-insider-risks]] で Satya Nadella が求めた「権限・観測・停止をモデルの外に置く」「改ざん不能な証跡」「非常ブレーキ」を、基盤を作る側が実装要件として言い直したものと読める。Nadella が企業 CEO として業界標準を求めたのに対し、Lesse は解く側のエンジニアに宛てている
+- 認可が「大きく未解決」という見立てに対し、[[concepts/ai-agent-governance]] の外部ポリシー（Cedar/Rex）や [[tools/1password-for-agents]] の資格情報単位の承認は、それぞれ実行時の操作可否と入口のサインインという部分への答えにあたる。Lesse が挙げる「週単位で働くエージェントへの意味のある同意」は、どちらも直接には扱っていない
+- 認証の部品として挙がる「静的な鍵でなく短寿命の証明書」は、Anthropic 自身の API 認証にある [[concepts/workload-identity-federation]] と同じ考え方である
+- 「業界が当てられるより速く脆弱性が出る」局面への対処は、組織の経営判断として [[concepts/cto-ciso-vuln-surge-playbook]] が米内貴志の4点を扱う。Lesse は同じ局面を基盤エンジニアの仕事（中核ソフトの堅牢化と強い隔離）として扱っており、両者は同じ出来事の組織側と基盤側にあたる
+- 「侵害されたエージェントの指示が記憶に残り将来のエージェントが信じる」問題は、[[concepts/harness-seven-jobs]] が言う権限をモデルの外に置く設計と、[[concepts/multi-agent-patterns]] のオーケストレーター構成の双方に、記憶の出所管理という要件を足すものと考えられる
+
+## 問い
+
+- 自分の夜間自動処理（launchd で動く ingest など）に、「エージェントが自分のログを書き換えられない」「資格情報ごと止められる」最小構成はあるか
+- 週単位で働くエージェントに対して、どの粒度の承認が「意味のある同意」になるか。ツール呼び出しの自動承認で済む範囲と済まない範囲の境界はどこか
+- 善意の粘りと悪意を区別する信号は、許可リスト外ドメインへの再試行のほかに何があるか
+
+## 関連
+
+- [[concepts/models-as-insider-risks]] — 権限・観測・停止をモデルの外に置く Nadella の設計論。本ページの監視と停止の要件の経営側
+- [[concepts/ai-agent-governance]] — 外部ポリシーでエージェントの実行を縛る設計。認可問題への一つの答え
+- [[concepts/cto-ciso-vuln-surge-playbook]] — 脆弱性が加速する局面の組織側の対処。本ページは同じ局面の基盤側
+- [[concepts/workload-identity-federation]] — 短寿命の証明書で静的キーを無くす Anthropic の API 認証
+- [[tools/1password-for-agents]] — エージェントのサインインを資格情報単位で人が承認する製品
+- [[concepts/php-critical-vuln-2026-10]] — 投稿直前に起きた中核ソフトの重大脆弱性
+- [[concepts/multi-agent-patterns]] — Lesse が「基本的な多エージェント」と呼ぶオーケストレーターとサブエージェントの構成
+- [[concepts/harness-seven-jobs]] — 権限をモデルの外に置きトレースを取るハーネスの仕事
+- [[concepts/ai-era-good-engineer]] — AI 時代のエンジニア像。Lesse のアイデンティティ危機への答えと並べて読む
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

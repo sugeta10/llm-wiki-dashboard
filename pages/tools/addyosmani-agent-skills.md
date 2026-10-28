@@ -26,3 +26,4 @@ READMEは本パックを「シニアエンジニアがソフトウェアを作�
 - [[tools/matt-pocock-skills]] — 同じく比較対象のエンジニアリングスキルコレクション
 - [[concepts/google-code-review]] — 本パックがスキルへ焼き込んだと明言するGoogleレビュー指針
 - [[tools/agent-skills-by-role]] — SENIOR ENGINEER枠で本リポを含む役割別6選
+- [[concepts/agent-era-code-review]] — Osmani が Claude Code チームのレビュー工程を書き直した X 記事版（2026-10-26）を収めたページ。Osmani の X プロフィールは 2026-10-28 時点で「Claude Code @anthropicai」で、本ページが書かれた時点の Google Chrome 所属から Anthropic へ移っている

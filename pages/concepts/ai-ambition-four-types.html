@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>ai-ambition-four-types</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-ambition-four-types.md">Markdownで表示</a></div>
-  <div class="meta">concepts/ai-ambition-four-types · concepts · <span title="2026-10-16">1週間前</span></div>
+  <div class="meta">concepts/ai-ambition-four-types · concepts · <span title="2026-10-28">今日</span></div>
   <article><h1>AIの使い方を「もっと野心的に」する4つの型（Speed / Altitude / Depth / Range）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 「AIはもっと野心的に使え」という掛け声を、Anthropic の Felix Rieseberg が Speed（速さ）・Altitude（抽象度）・Depth（深さ）・Range（分野の幅）の4型に分け、型ごとに使えるプロンプトと手順へ落としたチュートリアル。</p>
@@ -72,6 +72,16 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>失敗を自分に許して解く</strong>: 『The Inner Game of Tennis』の、必死に頑張るほど最高のプレーから遠ざかるという主張と、「ただの趣味」として発表された Linux</li>
 </ul>
 <p>能力が数週間ごとに跳ねる世界では、可能だと思っていなかったことをやる技法がこれまで以上に要る、というのが記事の締めくくり。Altitude と Depth の「無茶な目標を妥当だと伝える」は、この自己効力感のハックを人間でなくモデルとの関係に当てはめたものと読める（wiki側の解釈）。</p>
+<h2>Mollick の反復ヒューリスティックと、Depth プロンプトのスキル化</h2>
+<p>Ethan Mollick（ウォートン校教授・@emollick）は 2026-10-26 の投稿で、AI を何の目的に使うときも「いまやっていることをもっと野心的にするには？」と自問せよ、と一般的な助言を書いた。これを繰り返すと、壁に当たってフロンティアの形が分かる（有用）か、AI が自分の想定より多くできると分かる（よくある）かのどちらかに至る、と Mollick は述べる。Rieseberg の4型が「どの方向へ野心を伸ばすか」を分ける地図なのに対し、Mollick の助言は方向を決めずに同じ問いを繰り返す停止条件つきのループで、壁に当たること自体を能力の地図として成果に数える点が違うと考えられる（wiki 側の解釈）。</p>
+<p>Dan McAteer（@daniel_mac8・AnswerRocket で Agentic Ops を担当し Latent Space で執筆していると X プロフィールに記す）は Mollick の投稿を引用し、「そのためのスキルがある」として <code>/be-ambitious</code> のスクリーンショットを投稿した。画面の記載によれば McAteer 自身のブログ Attention Heads（attentionheads.blog）発の小さなスキルで、タスクを渡すと「大きい版でなく深い版」を求め、プロンプトを書き直す前にその分野について次の4つの問いに答える（転記・訳）。</p>
+<ol>
+<li>トップのプロがここで、頼まれていなくてもやることは何か</li>
+<li>咀嚼済みの材料でなく、彼らが出発点にする最も生の素材は何か</li>
+<li>彼らが使う具体的な手法と道具は何か</li>
+<li>あなたやモデル以外の何が、結果の正しさを示すか</li>
+</ol>
+<p>スキル自身が「Felix Rieseberg（Anthropic）が共有したプロンプトを元にした」と明記しており、本ページ Depth 節の汎用プロンプトをそのままスラッシュコマンドに固めたものにあたる。スキルの本文（SKILL.md）はスクリーンショットに無く未収集。</p>
 <h2>他ページとのつながり</h2>
 <ul>
 <li>Altitude の「ゴールの先のゴールを問う」は、作業前にゴールを復唱させる <a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a> と同じく目的の層を明示する技法だが、復唱が誤読を防ぐ向きなのに対し、Altitude は目的そのものを一段上に置き直す向きと考えられる</li>
@@ -88,6 +98,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>自分の定例作業のうち「会議をする予定があるもの」を1つ選び、Altitude の3段（変化と理由→急ぐ3つの意思決定→仕組みの再設計と並走）を順に試すと、どの段から結果が変わるか</li>
 <li>Depth の汎用プロンプトの (4)「あなたや私以外の何が正しさを示すか」に、wiki の ingest や weekly 生成で答えられる検証器は何か</li>
 <li>Range の「動詞で言い換える」は、ロールプレイ指示より実際に出力の手法を変えるか。同じタスクで両方を比べて確かめる</li>
+<li>Mollick のループを <code>/be-ambitious</code> と組み合わせたとき、「壁に当たった」の判定をモデルの自己申告に任せてよいか。Depth の (4) 外部の審判は、壁の判定にも要るのではないか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -102,7 +113,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/career-advice-ai-age.html">career-advice-ai-age</a></li>
 <li><a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a></li>
 <li><a href="../concepts/output-outcome-impact.html">output-outcome-impact</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2110023283169247623" rel="noopener" target="_blank">https://x.com/i/web/status/2110023283169247623</a></li>
-<li><a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/" rel="noopener" target="_blank">https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/</a></li></ul></section></article>
+<li><a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/" rel="noopener" target="_blank">https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/</a></li>
+<li><a href="https://x.com/i/web/status/2114548845564874762" rel="noopener" target="_blank">https://x.com/i/web/status/2114548845564874762</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -174,6 +186,19 @@ Rieseberg が「よく効く」として載せている汎用プロンプトは�
 
 能力が数週間ごとに跳ねる世界では、可能だと思っていなかったことをやる技法がこれまで以上に要る、というのが記事の締めくくり。Altitude と Depth の「無茶な目標を妥当だと伝える」は、この自己効力感のハックを人間でなくモデルとの関係に当てはめたものと読める（wiki側の解釈）。
 
+## Mollick の反復ヒューリスティックと、Depth プロンプトのスキル化
+
+Ethan Mollick（ウォートン校教授・@emollick）は 2026-10-26 の投稿で、AI を何の目的に使うときも「いまやっていることをもっと野心的にするには？」と自問せよ、と一般的な助言を書いた。これを繰り返すと、壁に当たってフロンティアの形が分かる（有用）か、AI が自分の想定より多くできると分かる（よくある）かのどちらかに至る、と Mollick は述べる。Rieseberg の4型が「どの方向へ野心を伸ばすか」を分ける地図なのに対し、Mollick の助言は方向を決めずに同じ問いを繰り返す停止条件つきのループで、壁に当たること自体を能力の地図として成果に数える点が違うと考えられる（wiki 側の解釈）。
+
+Dan McAteer（@daniel_mac8・AnswerRocket で Agentic Ops を担当し Latent Space で執筆していると X プロフィールに記す）は Mollick の投稿を引用し、「そのためのスキルがある」として `/be-ambitious` のスクリーンショットを投稿した。画面の記載によれば McAteer 自身のブログ Attention Heads（attentionheads.blog）発の小さなスキルで、タスクを渡すと「大きい版でなく深い版」を求め、プロンプトを書き直す前にその分野について次の4つの問いに答える（転記・訳）。
+
+1. トップのプロがここで、頼まれていなくてもやることは何か
+2. 咀嚼済みの材料でなく、彼らが出発点にする最も生の素材は何か
+3. 彼らが使う具体的な手法と道具は何か
+4. あなたやモデル以外の何が、結果の正しさを示すか
+
+スキル自身が「Felix Rieseberg（Anthropic）が共有したプロンプトを元にした」と明記しており、本ページ Depth 節の汎用プロンプトをそのままスラッシュコマンドに固めたものにあたる。スキルの本文（SKILL.md）はスクリーンショットに無く未収集。
+
 ## 他ページとのつながり
 
 - Altitude の「ゴールの先のゴールを問う」は、作業前にゴールを復唱させる [[concepts/goal-restatement-prompt]] と同じく目的の層を明示する技法だが、復唱が誤読を防ぐ向きなのに対し、Altitude は目的そのものを一段上に置き直す向きと考えられる
@@ -190,6 +215,7 @@ Rieseberg が「よく効く」として載せている汎用プロンプトは�
 - 自分の定例作業のうち「会議をする予定があるもの」を1つ選び、Altitude の3段（変化と理由→急ぐ3つの意思決定→仕組みの再設計と並走）を順に試すと、どの段から結果が変わるか
 - Depth の汎用プロンプトの (4)「あなたや私以外の何が正しさを示すか」に、wiki の ingest や weekly 生成で答えられる検証器は何か
 - Range の「動詞で言い換える」は、ロールプレイ指示より実際に出力の手法を変えるか。同じタスクで両方を比べて確かめる
+- Mollick のループを `/be-ambitious` と組み合わせたとき、「壁に当たった」の判定をモデルの自己申告に任せてよいか。Depth の (4) 外部の審判は、壁の判定にも要るのではないか
 
 ## 関連
 

@@ -29,10 +29,11 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agent-era-code-review</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-era-code-review.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agent-era-code-review · concepts · <span title="2026-10-17">1週間前</span></div>
+  <div class="meta">concepts/agent-era-code-review · concepts · <span title="2026-10-28">今日</span></div>
   <article><h1>エージェント時代のコードレビュー（Claude Code チームの多層レビュー）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: コードの約90%を Claude が書く Claude Code チームは、レビューを「人間が読んだか」から「この変更で何が壊れうるか・どの検査で捕まえるか」へ組み替え、読む作業の大半を機械に移して人間の承認はリスク別にした。その結果、2026年6〜9月にマージ PR 数は2倍超になり、revert（取り消し）された割合は40%超減ったと Anthropic が報告する。</p>
+<p>📌 X bookmark: 30,361（2026-10-27 時点・Addy Osmani による X 記事版）</p>
 </blockquote>
 <p>エージェントが書くと変更の数が一気に増え、1行ずつ人が読むレビューは回らなくなる。Anthropic のモノレポでは1日に入る変更が5月の約2,500件から9月には3万件超になった（ソース管理側の対応は <a href="../concepts/agent-scale-source-control.html">agent-scale-source-control</a>）。Claude Code チーム（@ClaudeDevs と claude.dev ブログ）は、レビューを「最後の関門」から「書いている間に走り続けるスペルチェック」に変え、人間が見る前にほとんどの変更が Claude に少なくとも1回レビュー・修正されている状態を作ったと書く。最適化の目標は「revert とインシデントを増やさない範囲で、人間のレビュー時間を最小にする」ことで、人間の時間は PR あたりの承認数（中央値と95パーセンタイル）・コメント数・人待ち時間で測り、revert 率とインシデント率をガードレールに置く。レビュー時間を削っても修正時間に移っただけなら節約になっていない、という理屈である。</p>
 <pre class="mermaid">flowchart TD
@@ -110,6 +111,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>マージ以降</strong>: マージキュー・フラグ・社内先行・段階リリース・1手ロールバック。インシデントと revert を eval セットにし、レビュアーのプロンプト・ツール・モデルを変えるたびに採点し直す。人間の時間を測り、revert 率とインシデント率をガードレールにする</li>
 </ul>
 <p>製品版の Code Review は「指摘を投稿するが承認はしない」位置づけで、PR の承認は人間の判断だと告知していた。一方 Claude Code チーム自身のリポは、低リスクの変更を自動チェックだけでマージさせるかをオーナーに決めさせており、その線は動き続けているという。</p>
+<h2>X 記事版（Addy Osmani による書き直し）</h2>
+<p>Claude Code チームの Addy Osmani（X プロフィールは「Claude Code @anthropicai」）が 2026-10-26 に、同じ内容を X 記事「How the Claude Code team does code review」として投稿した。記事末尾に「元記事の書き直しで、Pangram で確認した」と記す（Pangram は AI 生成文の検出サービス）。層の構成・数字・推奨手順は元記事と同じで、本ページの記述を変える内容は無い。書き直しで言い方が明示された点は次の2つ。</p>
+<ul>
+<li><strong>目標の定義</strong>: Claude Code の各リポ（CLI・デスクトップとウェブアプリ・モバイルアプリ）で、PR の大半が「ループに入る人間は最大1人（作者でもよい）」でマージされ、かつ revert とインシデントが増えないこと</li>
+<li><strong>開放性が品質を支える</strong>: チームは開いた Slack チャンネルで作業し、誰でも他人が作っているものを見て会話に加わり、コードオーナー以外からもフィードバックが来る。この開放性が、全行にゲートを置かずに品質を保てる大きな理由だと Osmani 版は書く</li>
+</ul>
+<p>収束対策（Convergence）の後に内部 PR あたりの平均レビュー往復数が減ったことはグラフで示され、数値は本文に無い。</p>
 <h2>他ページとのつながり（wiki 側の推論）</h2>
 <ul>
 <li>個人規模で「人間の読んで直す工程がボトルネック」と見た <a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> の、組織規模の答えと読める。@smark_x の「自己採点を手前に置く」は1層目の PR 前検証に、「差分だけ返させる」は差分だけの再レビューに対応すると考えられる</li>
@@ -122,6 +130,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>このリポの PR 運用（worktree＋PR＋Codex クロスレビュー）に、往復上限3回と「差分だけ再レビュー」を明文化したら、Codex との往復は実際に減るか</li>
 <li><code>REVIEW.md</code> の書き方（失敗の姿・nit 上限・スキップするパス・ファイルと行の証拠・件数から始めるサマリー）を、このリポの code-review 指示に移したとき何が変わるか</li>
 <li>インシデント eval とノイズ測定は数十人規模のチームの話で、個人開発では過去の revert が少なすぎて eval セットが作れないのではないか。代わりに何を採点対象にするか</li>
+<li>「ループに入る人間は最大1人」をこのリポに置くと、Codex クロスレビューは人間の枠に数えないので、作者である自分のほかに何が2人目の代わりになるか</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -135,12 +144,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../companies/anthropic.html">anthropic</a></li>
 <li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」とする @poteto の4層指針。本ページのリスク別人間承認と「同じ指摘は発生源で直す」を個人の運用規模で言ったものと読める</li>
 <li><a href="../concepts/small-change-auto-approval.html">small-change-auto-approval</a> — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照</li>
+<li><a href="../tools/addyosmani-agent-skills.html">addyosmani-agent-skills</a> — X 記事版の書き手 Addy Osmani が Google 在籍時に公開したスキルパック。レビュー観点を人からスキルへ焼き込む点で本ページの「同じ指摘は発生源で直す」と同じ発想</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-scale-source-control.html">agent-scale-source-control</a></li>
 <li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
 <li><a href="../concepts/ai-judgment-delegation.html">ai-judgment-delegation</a></li>
 <li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
 <li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111168901723906176" rel="noopener" target="_blank">https://x.com/i/web/status/2111168901723906176</a></li>
-<li><a href="https://claude.dev/blog/solving-code-review-at-anthropic/" rel="noopener" target="_blank">https://claude.dev/blog/solving-code-review-at-anthropic/</a></li></ul></section></article>
+<li><a href="https://claude.dev/blog/solving-code-review-at-anthropic/" rel="noopener" target="_blank">https://claude.dev/blog/solving-code-review-at-anthropic/</a></li>
+<li><a href="https://x.com/i/web/status/2114604912520921136" rel="noopener" target="_blank">https://x.com/i/web/status/2114604912520921136</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -164,6 +175,8 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 <script id="page-markdown" type="text/plain"># エージェント時代のコードレビュー（Claude Code チームの多層レビュー）
 
 &gt; **TL;DR**: コードの約90%を Claude が書く Claude Code チームは、レビューを「人間が読んだか」から「この変更で何が壊れうるか・どの検査で捕まえるか」へ組み替え、読む作業の大半を機械に移して人間の承認はリスク別にした。その結果、2026年6〜9月にマージ PR 数は2倍超になり、revert（取り消し）された割合は40%超減ったと Anthropic が報告する。
+
+&gt; 📌 X bookmark: 30,361（2026-10-27 時点・Addy Osmani による X 記事版）
 
 エージェントが書くと変更の数が一気に増え、1行ずつ人が読むレビューは回らなくなる。Anthropic のモノレポでは1日に入る変更が5月の約2,500件から9月には3万件超になった（ソース管理側の対応は [[concepts/agent-scale-source-control]]）。Claude Code チーム（@ClaudeDevs と claude.dev ブログ）は、レビューを「最後の関門」から「書いている間に走り続けるスペルチェック」に変え、人間が見る前にほとんどの変更が Claude に少なくとも1回レビュー・修正されている状態を作ったと書く。最適化の目標は「revert とインシデントを増やさない範囲で、人間のレビュー時間を最小にする」ことで、人間の時間は PR あたりの承認数（中央値と95パーセンタイル）・コメント数・人待ち時間で測り、revert 率とインシデント率をガードレールに置く。レビュー時間を削っても修正時間に移っただけなら節約になっていない、という理屈である。
 
@@ -232,6 +245,15 @@ Anthropic は、人の仕事が「全 diff を読むこと」から機械が苦�
 
 製品版の Code Review は「指摘を投稿するが承認はしない」位置づけで、PR の承認は人間の判断だと告知していた。一方 Claude Code チーム自身のリポは、低リスクの変更を自動チェックだけでマージさせるかをオーナーに決めさせており、その線は動き続けているという。
 
+## X 記事版（Addy Osmani による書き直し）
+
+Claude Code チームの Addy Osmani（X プロフィールは「Claude Code @anthropicai」）が 2026-10-26 に、同じ内容を X 記事「How the Claude Code team does code review」として投稿した。記事末尾に「元記事の書き直しで、Pangram で確認した」と記す（Pangram は AI 生成文の検出サービス）。層の構成・数字・推奨手順は元記事と同じで、本ページの記述を変える内容は無い。書き直しで言い方が明示された点は次の2つ。
+
+- **目標の定義**: Claude Code の各リポ（CLI・デスクトップとウェブアプリ・モバイルアプリ）で、PR の大半が「ループに入る人間は最大1人（作者でもよい）」でマージされ、かつ revert とインシデントが増えないこと
+- **開放性が品質を支える**: チームは開いた Slack チャンネルで作業し、誰でも他人が作っているものを見て会話に加わり、コードオーナー以外からもフィードバックが来る。この開放性が、全行にゲートを置かずに品質を保てる大きな理由だと Osmani 版は書く
+
+収束対策（Convergence）の後に内部 PR あたりの平均レビュー往復数が減ったことはグラフで示され、数値は本文に無い。
+
 ## 他ページとのつながり（wiki 側の推論）
 
 - 個人規模で「人間の読んで直す工程がボトルネック」と見た [[concepts/ai-review-bottleneck]] の、組織規模の答えと読める。@smark_x の「自己採点を手前に置く」は1層目の PR 前検証に、「差分だけ返させる」は差分だけの再レビューに対応すると考えられる
@@ -244,6 +266,7 @@ Anthropic は、人の仕事が「全 diff を読むこと」から機械が苦�
 - このリポの PR 運用（worktree＋PR＋Codex クロスレビュー）に、往復上限3回と「差分だけ再レビュー」を明文化したら、Codex との往復は実際に減るか
 - `REVIEW.md` の書き方（失敗の姿・nit 上限・スキップするパス・ファイルと行の証拠・件数から始めるサマリー）を、このリポの code-review 指示に移したとき何が変わるか
 - インシデント eval とノイズ測定は数十人規模のチームの話で、個人開発では過去の revert が少なすぎて eval セットが作れないのではないか。代わりに何を採点対象にするか
+- 「ループに入る人間は最大1人」をこのリポに置くと、Codex クロスレビューは人間の枠に数えないので、作者である自分のほかに何が2人目の代わりになるか
 
 ## 関連
 
@@ -257,6 +280,7 @@ Anthropic は、人の仕事が「全 diff を読むこと」から機械が苦�
 - [[companies/anthropic]]
 - [[concepts/agent-trust-inverse-pyramid]] — 「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」とする @poteto の4層指針。本ページのリスク別人間承認と「同じ指摘は発生源で直す」を個人の運用規模で言ったものと読める
 - [[concepts/small-change-auto-approval]] — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照
+- [[tools/addyosmani-agent-skills]] — X 記事版の書き手 Addy Osmani が Google 在籍時に公開したスキルパック。レビュー観点を人からスキルへ焼き込む点で本ページの「同じ指摘は発生源で直す」と同じ発想
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
