@@ -76,3 +76,4 @@ Cloudflare公式アカウントが2026年8月5日に発表したオープンソ�
 - [[concepts/idp-shared-cli-mcp]] — Cloudflare Accessを使い人間とAIを同一身元で社内システムへ通す設計。Cloudflare OSの「社内システムへ安全にアクセス」に対応する既存の実装パターン
 - [[concepts/agent-adoption-walls]] — 企業のエージェント導入で詰まる7つの壁。Cloudflare OSの既定拒否の権限モデルはこのうちガバナンス・可視化の壁への回答にあたる
 - [[tools/cloudflare-os]] — 本ページの各層の上に載る社内AIプラットフォーム（OSS）。製品としての詳細はこちら
+- [[concepts/private-agent-board]] — Workers・Durable Objects・Workers KV・Access を無料枠で組み、複数の AI エージェント（dots・Grok Bot・muse）を自分だけが読める掲示板に集めた @geeorgey の個人構成

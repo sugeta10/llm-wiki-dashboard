@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>reason-network</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="reason-network.md">Markdownで表示</a></div>
-  <div class="meta">tools/reason-network · tools · <span title="2026-10-22">6日前</span></div>
+  <div class="meta">tools/reason-network · tools · <span title="2026-10-22">1週間前</span></div>
   <article><h1>Reason Network — 別端末・別ツールのコーディングエージェント同士をつなぐメッセージ網</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Reason Machines が公開した、手元の Claude Code・Codex・Cursor などと、Grok Bot・Muse・Dots などのホスト型アシスタントを1つのネットワークに載せ、<code>list_team</code>・<code>send_message</code>・<code>check_inbox</code>・<code>ask_user</code> の4ツールで互いにメッセージを送らせる無料の仕組み。計算機どうしは端末対端末の暗号化通信で、メッセージを運ぶエンジン部分は MIT / Apache 2.0 で公開されている。</p>
@@ -104,11 +104,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/grok-bot.html">grok-bot</a> / <a href="../tools/openai-dots.html">openai-dots</a> — MCP 経由で網に入れるホスト型アシスタント</li>
 <li><a href="../tools/claude-code.html">claude-code</a> / openai-codex / <a href="../tools/cursor.html">cursor</a> — PC 上で対応するコーディングエージェント</li>
 <li><a href="../tools/claude-mcp.html">claude-mcp</a> — ホスト型アシスタントが網に入るときの接続方式</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/artifact-share.html">artifact-share</a></li>
+<li><a href="../concepts/private-agent-board.html">private-agent-board</a> — 同じ問題を運営者を介さず自分の Cloudflare アカウント内の非公開掲示板で解いた @geeorgey の自作構成。dots は Event API・Grok Bot は webhook・muse はポーリングで接続</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/private-agent-board.html">private-agent-board</a></li>
+<li><a href="../tools/artifact-share.html">artifact-share</a></li>
 <li><a href="../tools/herdr.html">herdr</a></li>
 <li><a href="../tools/notch-multi-agent-monitor.html">notch-multi-agent-monitor</a></li>
-<li><a href="../concepts/ai-dev-two-commands.html">ai-dev-two-commands</a></li>
-<li><a href="../concepts/ai-pre-judgment-automation.html">ai-pre-judgment-automation</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2112777536484827288" rel="noopener" target="_blank">https://x.com/i/web/status/2112777536484827288</a></li>
+<li><a href="../concepts/ai-dev-two-commands.html">ai-dev-two-commands</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2112777536484827288" rel="noopener" target="_blank">https://x.com/i/web/status/2112777536484827288</a></li>
 <li><a href="https://reasonmachines.com/network" rel="noopener" target="_blank">https://reasonmachines.com/network</a></li>
 <li><a href="https://github.com/reason-machines/reason-network" rel="noopener" target="_blank">https://github.com/reason-machines/reason-network</a></li></ul></section></article>
 </main>
@@ -206,6 +207,7 @@ coji が [[tools/artifact-share]] の preview を作ったときの結論は、�
 - [[tools/grok-bot]] / [[tools/openai-dots]] — MCP 経由で網に入れるホスト型アシスタント
 - [[tools/claude-code]] / [[tools/openai-codex]] / [[tools/cursor]] — PC 上で対応するコーディングエージェント
 - [[tools/claude-mcp]] — ホスト型アシスタントが網に入るときの接続方式
+- [[concepts/private-agent-board]] — 同じ問題を運営者を介さず自分の Cloudflare アカウント内の非公開掲示板で解いた @geeorgey の自作構成。dots は Event API・Grok Bot は webhook・muse はポーリングで接続
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

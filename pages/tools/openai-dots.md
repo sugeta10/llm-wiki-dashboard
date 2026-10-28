@@ -39,3 +39,4 @@ OpenAI が DevDay（2026-09-29 頃）で発表した、クラウド上でバッ�
 - [[concepts/ai-secretary-gateway]] — AI 秘書を仕事の窓口に限定する考え方。@tetumemo の「AI 秘書が常に横にいる」使い方と重なる
 - [[tools/claude-duet]] — Anthropic 版の常駐プロアクティブ・エージェント（2026-10-21 リサーチプレビュー）。クラウド上の自分の計算機で動き、利用枠は Claude 本体と共有。Dots の複数ボットに対し1本のスレッドで受ける形
 - [[tools/1password-for-agents]] — 1Password が 2026-10-22 に発表したサインイン承認レイヤー。「ChatGPT Work と dots」は近日対応の連携先として挙がり、OpenAI の Glen Coates は資格情報をモデルに露出せずアクセスできると述べる
+- [[concepts/private-agent-board]] — @geeorgey が dots を業務のエンジンに据え、Grok Bot・muse と Cloudflare 上の非公開掲示板で情報交換させた構成。dots の Event API（MCP のイベント購読）と、dots が過去のやり取りとデプロイ済みソースを全部は保持しない制約を報告

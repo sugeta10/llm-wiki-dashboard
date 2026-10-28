@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sleep-video-ai-fukugyo - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>sleep-video-ai-fukugyo</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="sleep-video-ai-fukugyo.md">Markdownで表示</a></div>
+  <div class="meta">business/sleep-video-ai-fukugyo · business · <span title="2026-10-29">今日</span></div>
+  <article><h1>AI 睡眠動画（sleep history）副業：毎朝20分で回す5手順</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 「古代ローマの退屈な一日」のような歴史の話を淡々と2〜8時間語る YouTube の「睡眠動画」を、Claude の台本 → ElevenLabs の音声 → Canva の1枚絵 → CapCut の結合 → 予約投稿の5手順で毎朝20分の手作業に収め、日本語市場でまだ空いている「AI 音声で日次投稿」の枠を取る、という @wani_kurokokun（くろこ）の副業手順。収益の数字は公開情報と自己申告で、本人も同じ数字が出る保証はないと断る。</p>
+</blockquote>
+<p>視聴者は動画を「見る」のではなく寝るために「流しておく」ので、再生時間がそのまま視聴時間になり YouTube のアルゴリズムに加点される、とくろこは構造を説明する。だから短尺は意味を持たず、絵は数分おきにフェードで切り替わる1枚絵でよく、音声は感情を揺らさない低音のナレーションに暖炉や雨音の BGM を薄く重ねる。この3条件（2時間以上の長尺・静止画ベース・淡々とした音声）のどれか1つが欠けると睡眠動画として成立しない、というのがくろこの見立てで、動画編集に凝る必要がないからこそ AI と無料ツールで回る。</p>
+<p>くろこが指摘する日本語市場の差分は、日本語トップのチャンネル「ぐっすり眠れる歴史」を含め伸びているチャンネルが本人の朗読録音で、投稿頻度も数日〜1週間に1本という点にある。ナレーションを AI 音声合成に置き換えて日次投稿する枠は日本語市場にまだ空いている、というのが記事の前提になっている。</p>
+<h2>伸びているチャンネルの数字（くろこが公開情報から整理）</h2>
+<table>
+<thead>
+<tr>
+<th>チャンネル</th>
+<th>くろこの記載</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sleepless Historian（英語）</td>
+<td>登録者71.6万人・2時間台の動画を1〜2日に1本・代表動画432万回再生</td>
+</tr>
+<tr>
+<td>Dreamoria（英語）</td>
+<td>ギリシャ神話8時間動画・636万回再生</td>
+</tr>
+<tr>
+<td>History &amp; Sleep（英語）</td>
+<td>8時間動画・77万回再生</td>
+</tr>
+<tr>
+<td>ぐっすり眠れる歴史（日本語トップ）</td>
+<td>登録5.51万人・徳川家康87万回・奈良時代72万回など3時間動画が20〜80万回再生</td>
+</tr>
+</tbody>
+</table>
+<p>くろこは「このチャンネルの数字は公開情報を元に整理したものです。副業で同じ数字が出ることを保証するものではありません」と注記している。</p>
+<h2>毎朝20分の5手順（くろこ）</h2>
+<table>
+<thead>
+<tr>
+<th>手順</th>
+<th>使うもの</th>
+<th>人の手</th>
+<th>裏で動く時間</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 2時間分の台本を書かせる</td>
+<td>Claude（題材は「中世の医者が診察に使っていた道具10選」など歴史の静かな題材）</td>
+<td>3分</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2. 音声を生成させる</td>
+<td>ElevenLabs（落ち着いた男性の低音ナレーション設定）</td>
+<td>3分</td>
+<td>30〜60分</td>
+</tr>
+<tr>
+<td>3. スライド1枚を作る</td>
+<td>Canva（1920×1080・テンプレ検索「medieval」「history book」「ancient」）</td>
+<td>5分</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4. 音声＋スライドを結合する</td>
+<td>CapCut（画像を音声の長さに引き伸ばし暖炉の火の BGM を薄く重ねる）</td>
+<td>5分</td>
+<td>—</td>
+</tr>
+<tr>
+<td>5. 投稿予約する</td>
+<td>YouTube（タイトル・説明文は Claude に SEO 用に書かせる）</td>
+<td>4分</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>合計 3+3+5+5+4=20分で、残りは AI と各プラットフォームが裏で処理する。慣れるまでは1〜2時間かかることもあるが、CapCut のテンプレを1つ作れば以降は読み込ませて書き出すだけになる、とくろこは書く。台本生成プロンプトは「コピペして{テーマ}だけ入れ替える」テンプレとして記事に載っているが、本 vault のキャッシュには本文が収録されていない（画像で貼られていると考えられる）。</p>
+<h2>「本当に大事な1つのこと」（くろこ）</h2>
+<p>睡眠動画で稼ごう、ではない、とくろこは記事を締める。睡眠動画は、売り物を持たない会社員が「売り物を持たないまま広告収入が入り続ける仕組み」を手に入れられる数少ない手段の1つにすぎず、刺さるのは「売り物なしで独立したい」「副業で5万でなくストック収入が欲しい」が根底にある人で、「物販で億を売る側に立ちたい」「組織を作りたい」人には刺さらない。手段を選ぶ前に自分の根底を1行で言語化しないと、睡眠動画も作業用 BGM も流行っても続かない、というのがくろこの主張である。</p>
+<p>記事の末尾は、くろこのオープンチャット（LINE）への無料参加の誘導で、本人は「最高月商3000万・累計1300名の20代会社員の独立を支援」と自己紹介している。X のプロフィールでは「物販歴2年・元放射線技師」と書く。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-29: くろこは「米ビジネス誌 Fortune が2025年末に報じたレポート」として、個人クリエイター Adavia Davis が同ジャンルで年収70万ドル（くろこの換算で月約875万円）・1本の制作コスト60ドル・1日の作業2時間と申告した事例を引く。wiki 側の Web 検索では該当する Fortune 記事と70万ドルの数字を確認できていない</li>
+<li>2026-10-29: 「AI 音声で日次投稿する枠は日本語市場に空いている」はくろこの市場観で、先行者が増えれば消える前提。1年後に日本語の AI 音声睡眠動画チャンネルがどれだけ増えたかで答え合わせできる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>AI 音声の歴史動画は内容の事実誤りや量産による質の低下を批判されやすい。<a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a> の BAN リスクと同様に、YouTube の AI 生成コンテンツ方針や収益化条件が「AI 音声で日次投稿」の前提を崩す可能性はどれくらいあるか</li>
+<li>「売り物を持たないまま広告収入が入る」は、<a href="../business/stock-gata-fukugyo.html">stock-gata-fukugyo</a> のストック型と同じ到達点を記事でなく動画で狙う形と考えられる。検索流入と自動再生のどちらが長く続く流入か</li>
+<li>台本を Claude に書かせるとき、歴史の事実誤りをどう防ぐか。寝るために流す動画でも誤情報の拡散には当たる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a> — 同じ YouTube の自動化運用をショート動画で回す版。こちらはフックの試行回数、本ページは長尺の視聴時間で稼ぐ</li>
+<li><a href="../business/stock-gata-fukugyo.html">stock-gata-fukugyo</a> — 「投稿を止めても収益が残る」ストック型副業を記事で作る設計。LINE 誘導つき自己申告という記事の形も共通</li>
+<li><a href="../business/ai-income-retirement-strategy.html">ai-income-retirement-strategy</a> — AI で自分が動かなくても積み上がる収益を作る戦略。本ページはその1手段</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-income-retirement-strategy.html">ai-income-retirement-strategy</a></li>
+<li><a href="../business/stock-gata-fukugyo.html">stock-gata-fukugyo</a></li>
+<li><a href="../business/youtube-shorts-jidouka-marketing.html">youtube-shorts-jidouka-marketing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2114707042275611056" rel="noopener" target="_blank">https://x.com/i/web/status/2114707042275611056</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AI 睡眠動画（sleep history）副業：毎朝20分で回す5手順
+
+&gt; **TL;DR**: 「古代ローマの退屈な一日」のような歴史の話を淡々と2〜8時間語る YouTube の「睡眠動画」を、Claude の台本 → ElevenLabs の音声 → Canva の1枚絵 → CapCut の結合 → 予約投稿の5手順で毎朝20分の手作業に収め、日本語市場でまだ空いている「AI 音声で日次投稿」の枠を取る、という @wani_kurokokun（くろこ）の副業手順。収益の数字は公開情報と自己申告で、本人も同じ数字が出る保証はないと断る。
+
+視聴者は動画を「見る」のではなく寝るために「流しておく」ので、再生時間がそのまま視聴時間になり YouTube のアルゴリズムに加点される、とくろこは構造を説明する。だから短尺は意味を持たず、絵は数分おきにフェードで切り替わる1枚絵でよく、音声は感情を揺らさない低音のナレーションに暖炉や雨音の BGM を薄く重ねる。この3条件（2時間以上の長尺・静止画ベース・淡々とした音声）のどれか1つが欠けると睡眠動画として成立しない、というのがくろこの見立てで、動画編集に凝る必要がないからこそ AI と無料ツールで回る。
+
+くろこが指摘する日本語市場の差分は、日本語トップのチャンネル「ぐっすり眠れる歴史」を含め伸びているチャンネルが本人の朗読録音で、投稿頻度も数日〜1週間に1本という点にある。ナレーションを AI 音声合成に置き換えて日次投稿する枠は日本語市場にまだ空いている、というのが記事の前提になっている。
+
+## 伸びているチャンネルの数字（くろこが公開情報から整理）
+
+| チャンネル | くろこの記載 |
+|---|---|
+| Sleepless Historian（英語） | 登録者71.6万人・2時間台の動画を1〜2日に1本・代表動画432万回再生 |
+| Dreamoria（英語） | ギリシャ神話8時間動画・636万回再生 |
+| History &amp; Sleep（英語） | 8時間動画・77万回再生 |
+| ぐっすり眠れる歴史（日本語トップ） | 登録5.51万人・徳川家康87万回・奈良時代72万回など3時間動画が20〜80万回再生 |
+
+くろこは「このチャンネルの数字は公開情報を元に整理したものです。副業で同じ数字が出ることを保証するものではありません」と注記している。
+
+## 毎朝20分の5手順（くろこ）
+
+| 手順 | 使うもの | 人の手 | 裏で動く時間 |
+|---|---|---|---|
+| 1. 2時間分の台本を書かせる | Claude（題材は「中世の医者が診察に使っていた道具10選」など歴史の静かな題材） | 3分 | — |
+| 2. 音声を生成させる | ElevenLabs（落ち着いた男性の低音ナレーション設定） | 3分 | 30〜60分 |
+| 3. スライド1枚を作る | Canva（1920×1080・テンプレ検索「medieval」「history book」「ancient」） | 5分 | — |
+| 4. 音声＋スライドを結合する | CapCut（画像を音声の長さに引き伸ばし暖炉の火の BGM を薄く重ねる） | 5分 | — |
+| 5. 投稿予約する | YouTube（タイトル・説明文は Claude に SEO 用に書かせる） | 4分 | — |
+
+合計 3+3+5+5+4=20分で、残りは AI と各プラットフォームが裏で処理する。慣れるまでは1〜2時間かかることもあるが、CapCut のテンプレを1つ作れば以降は読み込ませて書き出すだけになる、とくろこは書く。台本生成プロンプトは「コピペして{テーマ}だけ入れ替える」テンプレとして記事に載っているが、本 vault のキャッシュには本文が収録されていない（画像で貼られていると考えられる）。
+
+## 「本当に大事な1つのこと」（くろこ）
+
+睡眠動画で稼ごう、ではない、とくろこは記事を締める。睡眠動画は、売り物を持たない会社員が「売り物を持たないまま広告収入が入り続ける仕組み」を手に入れられる数少ない手段の1つにすぎず、刺さるのは「売り物なしで独立したい」「副業で5万でなくストック収入が欲しい」が根底にある人で、「物販で億を売る側に立ちたい」「組織を作りたい」人には刺さらない。手段を選ぶ前に自分の根底を1行で言語化しないと、睡眠動画も作業用 BGM も流行っても続かない、というのがくろこの主張である。
+
+記事の末尾は、くろこのオープンチャット（LINE）への無料参加の誘導で、本人は「最高月商3000万・累計1300名の20代会社員の独立を支援」と自己紹介している。X のプロフィールでは「物販歴2年・元放射線技師」と書く。
+
+## 観察ログ（未検証）
+
+- 2026-10-29: くろこは「米ビジネス誌 Fortune が2025年末に報じたレポート」として、個人クリエイター Adavia Davis が同ジャンルで年収70万ドル（くろこの換算で月約875万円）・1本の制作コスト60ドル・1日の作業2時間と申告した事例を引く。wiki 側の Web 検索では該当する Fortune 記事と70万ドルの数字を確認できていない
+- 2026-10-29: 「AI 音声で日次投稿する枠は日本語市場に空いている」はくろこの市場観で、先行者が増えれば消える前提。1年後に日本語の AI 音声睡眠動画チャンネルがどれだけ増えたかで答え合わせできる
+
+## 問い
+
+- AI 音声の歴史動画は内容の事実誤りや量産による質の低下を批判されやすい。[[business/youtube-shorts-jidouka-marketing]] の BAN リスクと同様に、YouTube の AI 生成コンテンツ方針や収益化条件が「AI 音声で日次投稿」の前提を崩す可能性はどれくらいあるか
+- 「売り物を持たないまま広告収入が入る」は、[[business/stock-gata-fukugyo]] のストック型と同じ到達点を記事でなく動画で狙う形と考えられる。検索流入と自動再生のどちらが長く続く流入か
+- 台本を Claude に書かせるとき、歴史の事実誤りをどう防ぐか。寝るために流す動画でも誤情報の拡散には当たる
+
+## 関連
+
+- [[business/youtube-shorts-jidouka-marketing]] — 同じ YouTube の自動化運用をショート動画で回す版。こちらはフックの試行回数、本ページは長尺の視聴時間で稼ぐ
+- [[business/stock-gata-fukugyo]] — 「投稿を止めても収益が残る」ストック型副業を記事で作る設計。LINE 誘導つき自己申告という記事の形も共通
+- [[business/ai-income-retirement-strategy]] — AI で自分が動かなくても積み上がる収益を作る戦略。本ページはその1手段
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

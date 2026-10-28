@@ -67,3 +67,4 @@ MCP Appsは[[concepts/generative-ui]]が扱うOpen-endedパターンの実装に
 - [[tools/claude-projects-threads]] — claude.ai でつないだ MCP コネクタを全スレッドで使う Claude Projects。コーディネーター自体はコネクタを持たない
 - [[tools/oreilly-learning-platform]] — O'Reilly 公式 MCP サーバーを ACM 経由の契約でも OAuth（`/mcp` からユーザー名@acm.org の SSO）とトークンの両方で接続できた実践記
 - [[tools/claude-code-mcp-stack]] — Context7・Playwright・Figma・Linear・Sentry・Cloudflare・Stripe・GitHub の公式8本を工程に沿って並べ、初心者は3段で入れ、読み取り/書き込み分離など4つの落とし穴を避ける構成論（@kimuai08・Boris Cherny の「検証手段を渡せ」の実装側）
+- [[concepts/claude-code-learning-path]] — MCP の公式ドキュメントを Claude Code 学習の4フェーズのうち「自動化と現実への接続」の段に置き、プロンプトと CLAUDE.md の後に学ぶ順序で並べた無料教材地図（@soniacuts 整理）

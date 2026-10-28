@@ -38,3 +38,4 @@
 - [[business/ai-income-retirement-strategy]] — AIによる自動収益化の戦略。「自分が動かなくても積み上がる状態（手離れ）」という本ページの到達点と同じ方向
 - [[concepts/philosophy-external-memory]] — 文体でなく思想を外部記憶に構造化してAIに書かせる方法論。本ページの文体・構成・文字量ファイルは、その「服」側を固定する実践にあたる
 - [[business/kaigai-mifukyuu-business]] — 同じ著者の「海外で儲かっていて日本に未普及のビジネス5選」。空白を最初に日本語で説明する側に回る、という同じ戦略を市場選びに広げたもの
+- [[business/sleep-video-ai-fukugyo]] — 「売り物を持たないまま広告収入が入り続ける仕組み」を記事でなく AI 音声の長尺 YouTube 動画で狙う副業手順。LINE 誘導つき自己申告という形も共通

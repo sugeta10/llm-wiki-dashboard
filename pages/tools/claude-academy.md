@@ -47,4 +47,5 @@ Anthropic の公式アカウント @claudeai は公開告知で「AIとは何か
 - [[tools/claude-tag]] — 製品別トラックの1つ（Slackチャンネル常駐でチームに仕事を渡す）
 - [[tools/claude-mcp]] — Claude Platform トラックが扱う接続層（API・Console・MCP）
 - [[business/founders-playbook]] — 同じくAnthropic公式の学習コンテンツ。製品マトリクス（Chat/Cowork/Code）が本サイトの製品別トラックと対応する
+- [[concepts/claude-code-learning-path]] — @soniacuts が本サイトの講座（Claude Code 101・Claude Code in Action・Academy 全体）と公式ドキュメント・コミュニティガイドを「基礎→指示と文脈→自動化→コミュニティ」の4フェーズ12本に並べた無料教材地図。「公式コース13本が修了証つきで無料」は SONIA の記述
 - [[business/gitlab-ai-fluent-teams]] — 導入企業側のAIフルエンシー育成プレイブック（GitLab）。「何を任せ・どう組み・どう見極めるか」という定義が本サイトの4Dとほぼ同じ分解で、自己診断のAI Literacy Ladderと連合型ガバナンスで組織に展開する

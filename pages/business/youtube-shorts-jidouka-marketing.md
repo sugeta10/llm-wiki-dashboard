@@ -35,3 +35,4 @@
 - [[business/ai-income-retirement-strategy]]
 - [[concepts/x-algorithm-phoenix]]
 - [[business/stock-gata-fukugyo]] — 当たった記事を5方向に横展開するストック型副業。当たりの増幅を記事で回す版
+- [[business/sleep-video-ai-fukugyo]] — 同じ YouTube の AI 自動化を2〜8時間の長尺「睡眠動画」で回す版。ショートのフック試行回数でなく視聴時間で稼ぐ

@@ -150,3 +150,4 @@ OpenAI公式は「4項目すべてを毎回埋める必要はなく、結果を�
 - [[concepts/fable-5-1-prompting]] — [[models/claude-fable-5-1]] 向け公式ガイドの業務向け7本（途中経過・早期停止・気取った言い回し・箇条書き・原文転写・範囲・鮮度）を@Charlie_no_siteが日本語で整理したもの
 - [[tools/openai-codex]] — Codex向け実践プロンプティングパターン集（OpenAI公式ガイド・コードベース理解/バグ修正/PRレビュー等）
 - [[concepts/exclusion-first-prompting]] — 「◯◯は出さなくていい。その上で△△」の2文型で、良いものの条件より先に除外条件を書く手法（@smark_x）
+- [[concepts/claude-code-learning-path]] — 公式プロンプトガイドと対話型講座（GitHub）を、Claude Code 学習の4フェーズのうち「指示と文脈」の段に置く無料教材地図（@soniacuts 整理）

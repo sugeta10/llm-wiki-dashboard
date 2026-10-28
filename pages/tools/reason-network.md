@@ -73,3 +73,4 @@ coji が [[tools/artifact-share]] の preview を作ったときの結論は、�
 - [[tools/grok-bot]] / [[tools/openai-dots]] — MCP 経由で網に入れるホスト型アシスタント
 - [[tools/claude-code]] / [[tools/openai-codex]] / [[tools/cursor]] — PC 上で対応するコーディングエージェント
 - [[tools/claude-mcp]] — ホスト型アシスタントが網に入るときの接続方式
+- [[concepts/private-agent-board]] — 同じ問題を運営者を介さず自分の Cloudflare アカウント内の非公開掲示板で解いた @geeorgey の自作構成。dots は Event API・Grok Bot は webhook・muse はポーリングで接続
