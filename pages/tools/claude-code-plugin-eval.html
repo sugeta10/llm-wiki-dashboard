@@ -54,11 +54,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/claude-code.html">claude-code</a> — 本コマンドが載るCLI本体</li>
 <li><a href="../tools/claude-api-build-eval-hillclimb.html">claude-api-build-eval-hillclimb</a> — 同じClaude Codeの公式eval用2コマンド。試験づくり（build-eval）と、train/testに分けて隠した側でも伸びた変更だけ残す改善ループ（hillclimb）</li>
 <li><a href="../tools/code-modernization-plugin.html">code-modernization-plugin</a> — 新旧の実装で振る舞いが一致することを示そうとするレガシー刷新プラグイン。比較対象を残して差分を根拠にする点が近い（wiki 側の推論）</li>
+<li><a href="../concepts/how-i-work-with-agents.html">how-i-work-with-agents</a> — Thorsten Ball の「エージェント向けの知識（AGENTS.md・スキル・スクリプト）を eval せよ。5体のブラインドエージェントを対照群/処置群で走らせろ」。本コマンドと同じ対試験を自前の実験設計として述べる</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/how-i-work-with-agents.html">how-i-work-with-agents</a></li>
 <li><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a></li>
 <li><a href="../tools/claude-api-build-eval-hillclimb.html">claude-api-build-eval-hillclimb</a></li>
-<li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../tools/code-modernization-plugin.html">code-modernization-plugin</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2098500999656923145" rel="noopener" target="_blank">https://x.com/i/web/status/2098500999656923145</a></li></ul></section></article>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2098500999656923145" rel="noopener" target="_blank">https://x.com/i/web/status/2098500999656923145</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -107,6 +108,7 @@ Anthropic 公式（@ClaudeDevs）が2026-09-11に、[[tools/claude-code]] の新
 - [[tools/claude-code]] — 本コマンドが載るCLI本体
 - [[tools/claude-api-build-eval-hillclimb]] — 同じClaude Codeの公式eval用2コマンド。試験づくり（build-eval）と、train/testに分けて隠した側でも伸びた変更だけ残す改善ループ（hillclimb）
 - [[tools/code-modernization-plugin]] — 新旧の実装で振る舞いが一致することを示そうとするレガシー刷新プラグイン。比較対象を残して差分を根拠にする点が近い（wiki 側の推論）
+- [[concepts/how-i-work-with-agents]] — Thorsten Ball の「エージェント向けの知識（AGENTS.md・スキル・スクリプト）を eval せよ。5体のブラインドエージェントを対照群/処置群で走らせろ」。本コマンドと同じ対試験を自前の実験設計として述べる
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

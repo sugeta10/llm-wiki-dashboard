@@ -56,3 +56,4 @@ iwashiは、両手は塞がるが口と耳が空いている時間に、イン�
 - [[concepts/research-methodology]] — ML リサーチ力の整理。論文の骨子に沿って説明する型と接続
 - [[concepts/asd-ste100-llm-writing]] — LLM の出力を制御言語で書かせて理解しやすくする手法
 - [[tools/oreilly-learning-platform]] — iwashi が英語技術書を読む場として挙げる O'Reilly 学習プラットフォームの契約経路（直契約 $499 と ACM 経由 $174）・損益分岐・MCP 接続の実践記
+- [[concepts/shikou-tairyoku]] — もとやま（@ysk_motoyama）の思考体力論。「目的・選択肢・推しと理由を何も見ずに鏡の前で話せるか」で考え抜いたかを検査する③は、本手法の「何も見ずに話せるか」と同型

@@ -47,3 +47,4 @@ vibe coding がモデルの性能向上で「おもちゃ」から「唯一の�
 - [[concepts/coding-agent-workflow-styles]] — 「手をやめてシグナルになる」は委譲低速ループ側。両極を俯瞰する2類型の見取り図
 - [[concepts/skills-over-memory]] — 同著者 @mvanhorn の続編。「2回やったらスキル化」を「教訓はメモリでなくスキルへPR」として深掘りし、メモリ削減と対にした
 - [[tools/google-agents-cli]] — Karpathyの「agentic engineering」定義（spec/eval/security）を、エディタ〜デプロイの工程分散をCLIで一本化して実装したGoogle製ツール
+- [[concepts/how-i-work-with-agents]] — Thorsten Ball の15か条。「待つな・非同期・バッチ・スケジュール」「SDLC 全体を可読に」など、本ページの「人間は手でなくシグナル」と同じ立場を別の実践者が DM の助言として書いたもの

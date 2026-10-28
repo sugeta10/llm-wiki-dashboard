@@ -52,3 +52,4 @@ flowchart TD
 - [[concepts/ai-session-handover]] — progress.md による引き継ぎと同じ課題を扱う手法集
 - [[tools/claude-code-subagents]] — 証拠を返すレビュアーを置く仕組み
 - [[models/claude-opus-5-5]] — 対象モデル
+- [[concepts/how-i-work-with-agents]] — Thorsten Ball の15か条。「反証不能な証拠を求めろ・AGENTS.md に『これは証拠ではない』を書け」を最大のゲームチェンジャーと呼ぶ。本ページの「証拠を返すレビュアー」を人間側の受け取り規律として書いたもの

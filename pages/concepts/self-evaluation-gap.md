@@ -44,3 +44,4 @@
 - [[concepts/introvert-networking-strategy]] — 同著者(@ysk_motoyama)。社交の量で戦わず準備工程に投資する人脈戦略。自己評価でなく他者からどう見つけてもらうかを扱う別テーマの記事
 - [[concepts/review-request-etiquette]] — 同著者(@ysk_motoyama)。資料レビュー依頼の基本動作。「一発でOKがもらえると思うのは自己評価が高すぎる」という本ページと裏表の前提に立つ
 - [[concepts/senior-engineer-death-spiral]] — 実力以上のエンジニアを演じて空回りする現象（@iwashi86 紹介）。自己評価のずれが背伸びとして表れる例として読める
+- [[concepts/shikou-tairyoku]] — 同著者(@ysk_motoyama)。「指摘された箇所だけ直して終わりにする」「面倒くさいで結論を見直さない」を思考体力の不足として描き、「なぜ？・だからなに？」のセルフツッコミと鬼こわかった上司3人の想定問答で鍛える

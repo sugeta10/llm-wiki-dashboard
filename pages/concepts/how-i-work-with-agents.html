@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>how-i-work-with-agents - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>how-i-work-with-agents</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="how-i-work-with-agents.md">Markdownで表示</a></div>
+  <div class="meta">concepts/how-i-work-with-agents · concepts · <span title="2026-10-28">今日</span></div>
+  <article><h1>How I work with Agents（Thorsten Ball の15か条）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: エージェントとの仕事は、最新モデルだけを使い、How でなく What を渡し、SDLC 全体を見せ、反証不能な証拠を要求し、待たずに非同期で大きく任せ、影響範囲の大きいコードだけ人間が見る、という形に収斂するという実践者 Thorsten Ball の15か条。</p>
+<p>📌 X bookmark: 13,787（2026-10-27 時点）</p>
+</blockquote>
+<p>Thorsten Ball（@thorstenball。記事中で自チームのツールとして Amp に言及）が、友人に DM で繰り返し送っていた助言を X の記事「How I work with Agents」に1本化したもの。各条は根拠を並べる論証ではなく断言の形で書かれ、「半年前なら真だったかもしれない」「確信はない」と留保する箇所も本人がそのまま残している。Ball が「最大のゲームチェンジャー」と呼ぶのは「反証不能な証拠を求めろ」の1条である。以下は記事の順序どおりの転記で、4つの小見出しへの束ね方だけが wiki 側の整理にあたる。</p>
+<h2>モデルとプロンプト（第1〜3条）</h2>
+<ul>
+<li><strong>最新・最良のモデルを使え。</strong> それ以外は時間の無駄になりうる、と Ball は述べる。モデルが10%の確率で間違うとき、どの10%かはわからないので結局何度も試すことになる。「50%安いが、ランダムに20%鈍いジェネラリストを本当に雇いたいか？」「まだ Opus 4.5 を使っている人がいるか？ いないだろう」</li>
+<li><strong>スロップの蓄積を心配するのをやめろ。</strong> 「コードベースが保守不能な混乱になる」は半年前なら真だったかもしれないが、今はスロップが増えるとも、増えたとして保守不能になるとも確信がない、と Ball は留保つきで述べる</li>
+<li><strong>How でなく What をプロンプトせよ。</strong> 何が欲しいかを書き、どうやるかは書かない方がしばしば結果が良い。例として「バイトコードコンパイラと VM を可能な限り速くしろ。2倍速くなるまで止めるな」「最終的にはこう動くべきだ」を挙げる</li>
+</ul>
+<h2>エージェントに現実を見せる（第4〜7条）</h2>
+<ul>
+<li><strong>SDLC 全体をエージェントに可読にせよ。</strong> 幻覚を止めたのはツール呼び出し、つまりエージェントが現実に触れられるようになったことだ、と Ball は述べる。見えないものはでっち上げる。だから、作ったものを end to end で動かし、本番ログを読み、デプロイし、ロールアウトを見守り、リリースを切り、フラグを倒し、バグ報告をトリアージし、顧客にメールするところまでやらせる。「あなたに見えるものは何であれ、エージェントにも見えるべきだ」</li>
+<li><strong>SDLC のためのツールを渡せ。</strong> Ball のチームにはバグ報告・ユーザーへのメール・「システムは健全か？」・フィーチャーフラグ付与のカスタムプラグインがある</li>
+<li><strong>エージェント向けの知識を eval せよ。</strong> AGENTS.md・スキル・スクリプト・ドキュメントはコードベースに積み上がるが、エージェントは本当にそれを使っているのか。5体のブラインドエージェントを対照群と処置群で走らせて確かめる。「エージェントは実験を回すのが本当に、本当に得意だ」</li>
+<li><strong>ローカル開発は今や気持ちが悪い（yucky）。</strong> 各エージェントが仕事に必要なものを何でも入れて動かせるべきで、リモートマシンでは簡単だがローカルでは end to end テストをさせるとリソース競合を避けにくい</li>
+</ul>
+<h2>反復・証拠・待ち方（第8〜11条）</h2>
+<ul>
+<li><strong>エージェントと反復するな。反復するためのツールを作らせろ。</strong> 「これを試して……いや、あれを試して」ではなく「20通りの変種と、それを組み合わせて試せる小さなページを作って」。解の空間だけでなく問題の空間にも使う。「遅い理由の仮説を4つ出して、4つ全部確かめて」</li>
+<li><strong>反証不能な証拠を求めろ。</strong> Ball が「最大のゲームチェンジャー」と呼ぶ条。エージェントは end-to-end のウォークスルー・デモ動画・前後の数字といった証拠を作るのが本当に得意で、何が証拠かの信頼と勘は使いながら育てるしかない。AGENTS.md に「これは証拠ではない」を書いておけ、と勧める</li>
+<li><strong>エージェントを待つな。エージェントに待たせろ。</strong> TTFT（最初のトークンまでの時間）を気にしているなら何かが間違っている。非同期に寄せ、より大きな仕事を、より野心的に渡し、往復でなくバッチで扱う</li>
+<li><strong>自動化・スケジュール・wake-up・heartbeat はキラー機能。</strong> 使えなくなって初めて痛烈に恋しくなった、と Ball は述べる。「2時間後にログを見て」「これが本番に出たら教えて」「毎日9時に確認して」</li>
+</ul>
+<h2>記憶・文章・レビュー（第12〜15条）</h2>
+<ul>
+<li><strong>コンテキストを手で管理するのをやめろ。</strong> 「いま300kか380kか」と考える時間はすべて無駄で、コンパクションは驚くほどよく機能する。1スレッド＝1タスク。46メッセージのスレッドもあれば3,714メッセージのスレッドもある</li>
+<li><strong>スレッドは会社の記憶だ（Amp の場合）。</strong> 「なぜこうしたのか？」に答えられる。チームが使うほど知識が増え、スレッドは git コミットと結びつく。重複作業を避けられる</li>
+<li><strong>人間向けの文章をエージェントに書かせるな。</strong> 例外はデバッグ手順・インシデント報告・一部のドキュメント。相手側の人間がそれほど重要でない機械的なものに限る</li>
+<li><strong>影響範囲（blast radius）の大きいコードだけレビューせよ。</strong> 中心的なファイルは5つ未満で、それだけ見る。データベースのマイグレーションは見る。クロージャか class か・よりきれいな型・変数名・重複でさえ、もう気にしない。動くか？ 図の矢印のレベルで理解しているか？ エージェントは end to end でテストしたか？ 1か月後に自分が変えられるか？ そこまで Yes なら、レビューするかもしれない</li>
+</ul>
+<h2>他ページとのつながり（wiki 側の推論）</h2>
+<ul>
+<li>「影響範囲の大きいコードだけレビュー」は、<a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a>（@poteto）が人間レビューを最下層の最小に置く配分と同じ向きで、<a href="../concepts/agent-era-code-review.html">agent-era-code-review</a> がリスク別に人間承認を 0/1/2 人へ絞る運用の個人版にあたる</li>
+<li>「反証不能な証拠を求めろ」「これは証拠ではない」は、<a href="../concepts/claude-code-long-task-harness.html">claude-code-long-task-harness</a> の「証拠を返すレビュアー」や <a href="../concepts/fable-5-prompting.html">fable-5-prompting</a> の「進捗を証拠で監査」と同じ要求を、プロンプト側でなく人間の受け取り方の規律として書いたもの</li>
+<li>「エージェント向けの知識を eval せよ」の5体ブラインド対照実験は、<a href="../tools/claude-code-plugin-eval.html">claude-code-plugin-eval</a> と <a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a> のスキルあり/なし対試験と同じ構造を、公式コマンドでなく自前の実験設計として述べている</li>
+<li>「待つな・非同期・バッチ・スケジュール」は、<a href="../concepts/coding-agent-workflow-styles.html">coding-agent-workflow-styles</a> の委譲低速ループ側に全面的に賭ける立場で、<a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a>（@mvanhorn）の「人間は手でなくシグナル」と重なる。スケジュール/heartbeat の具体は <a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> と <a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> が扱う</li>
+<li>「SDLC 全体を可読に・見えないものは作り話になる」は、<a href="../concepts/harness-seven-jobs.html">harness-seven-jobs</a> の「自律より先にセンサー」と同じ診断</li>
+<li>「スロップを心配するな」「変数名や重複はもう気にしない」は、<a href="../concepts/cognitive-debt.html">cognitive-debt</a> の「説明できないものは出さない」と正面から対立する。Ball は「図の矢印のレベルで理解しているか」を残すので、理解の粒度を矢印レベルまで粗くした上で負債を受け入れる立場と読める</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-25: Ball は「スロップは蓄積しない／蓄積しても保守不能にはならない」を確信なしと留保つきで述べる。半年〜1年後に同じ著者が撤回・維持のどちらを書くか追う</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「これは証拠ではない」を AGENTS.md に書くなら、何が証拠で何が証拠でないか（自己申告の「動きました」・テスト名の列挙・スクリーンショットなし）をどう列挙するか。自分の CLAUDE.md の「検証可能な手段で検証してから報告する」と同じ型か</li>
+<li>5体のブラインド対照実験を wiki-ingest スキルに当てる: LESSONS.md のあり/なしでカテゴリ判定や粒度判定が変わるか（<a href="../tools/claude-code-plugin-eval.html">claude-code-plugin-eval</a> の問いと同じ）</li>
+<li>「人間向けの文章をエージェントに書かせるな」は、AI が書くこの wiki と正面から衝突する。wiki ページは「相手側の人間がそれほど重要でない機械的なもの」に入るのか、入らないなら何を人間が書くべきか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 人間レビューを最小化し決定論的な上層に努力を置く4層。本ページの「blast radius の大きい5ファイル未満だけ見る」はその個人運用</li>
+<li><a href="../concepts/claude-code-long-task-harness.html">claude-code-long-task-harness</a> — 証拠を返すレビュアー・成果物単位の計測。本ページの「反証不能な証拠」を Claude Code の設定に落とした形</li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a> — 「人間は手でなくシグナル」の総合スタック（@mvanhorn）。非同期・大量並列の立場が共通</li>
+<li><a href="../tools/claude-code-plugin-eval.html">claude-code-plugin-eval</a> — スキルあり/なしの対試験コマンド。本ページの「エージェント向け知識を eval せよ」の公式実装</li>
+<li><a href="../concepts/cognitive-debt.html">cognitive-debt</a> — 理解が追いつかない負債を「説明できないものは出さない」で防ぐ立場。本ページの「スロップを心配するな」と対立</li>
+<li><a href="../concepts/fable-5-prompting.html">fable-5-prompting</a> — 長ターン/非同期前提・進捗を証拠で監査する公式指針</li>
+<li><a href="../concepts/coding-agent-workflow-styles.html">coding-agent-workflow-styles</a> — 高速制御ループ／委譲低速ループの2類型。本ページは後者</li>
+<li><a href="../concepts/goal-loop-routine.html">goal-loop-routine</a> — スケジュール/heartbeat を Claude Code で使うときの動詞の使い分け</li>
+<li><a href="../concepts/harness-seven-jobs.html">harness-seven-jobs</a> — 「自律より先にセンサー」。SDLC を可読にする条と同じ診断</li>
+<li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a> — リスク別に人間承認を絞る Anthropic の多層レビュー</li>
+<li><a href="../papers/2026-li-skillsbench.html">2026-li-skillsbench</a> — スキルあり/なしの対試験ベンチマーク</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
+<li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
+<li><a href="../concepts/claude-code-long-task-harness.html">claude-code-long-task-harness</a></li>
+<li><a href="../concepts/cognitive-debt.html">cognitive-debt</a></li>
+<li><a href="../tools/claude-code-plugin-eval.html">claude-code-plugin-eval</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2114386050638336082" rel="noopener" target="_blank">https://x.com/i/web/status/2114386050638336082</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># How I work with Agents（Thorsten Ball の15か条）
+
+&gt; **TL;DR**: エージェントとの仕事は、最新モデルだけを使い、How でなく What を渡し、SDLC 全体を見せ、反証不能な証拠を要求し、待たずに非同期で大きく任せ、影響範囲の大きいコードだけ人間が見る、という形に収斂するという実践者 Thorsten Ball の15か条。
+
+&gt; 📌 X bookmark: 13,787（2026-10-27 時点）
+
+Thorsten Ball（@thorstenball。記事中で自チームのツールとして Amp に言及）が、友人に DM で繰り返し送っていた助言を X の記事「How I work with Agents」に1本化したもの。各条は根拠を並べる論証ではなく断言の形で書かれ、「半年前なら真だったかもしれない」「確信はない」と留保する箇所も本人がそのまま残している。Ball が「最大のゲームチェンジャー」と呼ぶのは「反証不能な証拠を求めろ」の1条である。以下は記事の順序どおりの転記で、4つの小見出しへの束ね方だけが wiki 側の整理にあたる。
+
+## モデルとプロンプト（第1〜3条）
+
+- **最新・最良のモデルを使え。** それ以外は時間の無駄になりうる、と Ball は述べる。モデルが10%の確率で間違うとき、どの10%かはわからないので結局何度も試すことになる。「50%安いが、ランダムに20%鈍いジェネラリストを本当に雇いたいか？」「まだ Opus 4.5 を使っている人がいるか？ いないだろう」
+- **スロップの蓄積を心配するのをやめろ。** 「コードベースが保守不能な混乱になる」は半年前なら真だったかもしれないが、今はスロップが増えるとも、増えたとして保守不能になるとも確信がない、と Ball は留保つきで述べる
+- **How でなく What をプロンプトせよ。** 何が欲しいかを書き、どうやるかは書かない方がしばしば結果が良い。例として「バイトコードコンパイラと VM を可能な限り速くしろ。2倍速くなるまで止めるな」「最終的にはこう動くべきだ」を挙げる
+
+## エージェントに現実を見せる（第4〜7条）
+
+- **SDLC 全体をエージェントに可読にせよ。** 幻覚を止めたのはツール呼び出し、つまりエージェントが現実に触れられるようになったことだ、と Ball は述べる。見えないものはでっち上げる。だから、作ったものを end to end で動かし、本番ログを読み、デプロイし、ロールアウトを見守り、リリースを切り、フラグを倒し、バグ報告をトリアージし、顧客にメールするところまでやらせる。「あなたに見えるものは何であれ、エージェントにも見えるべきだ」
+- **SDLC のためのツールを渡せ。** Ball のチームにはバグ報告・ユーザーへのメール・「システムは健全か？」・フィーチャーフラグ付与のカスタムプラグインがある
+- **エージェント向けの知識を eval せよ。** AGENTS.md・スキル・スクリプト・ドキュメントはコードベースに積み上がるが、エージェントは本当にそれを使っているのか。5体のブラインドエージェントを対照群と処置群で走らせて確かめる。「エージェントは実験を回すのが本当に、本当に得意だ」
+- **ローカル開発は今や気持ちが悪い（yucky）。** 各エージェントが仕事に必要なものを何でも入れて動かせるべきで、リモートマシンでは簡単だがローカルでは end to end テストをさせるとリソース競合を避けにくい
+
+## 反復・証拠・待ち方（第8〜11条）
+
+- **エージェントと反復するな。反復するためのツールを作らせろ。** 「これを試して……いや、あれを試して」ではなく「20通りの変種と、それを組み合わせて試せる小さなページを作って」。解の空間だけでなく問題の空間にも使う。「遅い理由の仮説を4つ出して、4つ全部確かめて」
+- **反証不能な証拠を求めろ。** Ball が「最大のゲームチェンジャー」と呼ぶ条。エージェントは end-to-end のウォークスルー・デモ動画・前後の数字といった証拠を作るのが本当に得意で、何が証拠かの信頼と勘は使いながら育てるしかない。AGENTS.md に「これは証拠ではない」を書いておけ、と勧める
+- **エージェントを待つな。エージェントに待たせろ。** TTFT（最初のトークンまでの時間）を気にしているなら何かが間違っている。非同期に寄せ、より大きな仕事を、より野心的に渡し、往復でなくバッチで扱う
+- **自動化・スケジュール・wake-up・heartbeat はキラー機能。** 使えなくなって初めて痛烈に恋しくなった、と Ball は述べる。「2時間後にログを見て」「これが本番に出たら教えて」「毎日9時に確認して」
+
+## 記憶・文章・レビュー（第12〜15条）
+
+- **コンテキストを手で管理するのをやめろ。** 「いま300kか380kか」と考える時間はすべて無駄で、コンパクションは驚くほどよく機能する。1スレッド＝1タスク。46メッセージのスレッドもあれば3,714メッセージのスレッドもある
+- **スレッドは会社の記憶だ（Amp の場合）。** 「なぜこうしたのか？」に答えられる。チームが使うほど知識が増え、スレッドは git コミットと結びつく。重複作業を避けられる
+- **人間向けの文章をエージェントに書かせるな。** 例外はデバッグ手順・インシデント報告・一部のドキュメント。相手側の人間がそれほど重要でない機械的なものに限る
+- **影響範囲（blast radius）の大きいコードだけレビューせよ。** 中心的なファイルは5つ未満で、それだけ見る。データベースのマイグレーションは見る。クロージャか class か・よりきれいな型・変数名・重複でさえ、もう気にしない。動くか？ 図の矢印のレベルで理解しているか？ エージェントは end to end でテストしたか？ 1か月後に自分が変えられるか？ そこまで Yes なら、レビューするかもしれない
+
+## 他ページとのつながり（wiki 側の推論）
+
+- 「影響範囲の大きいコードだけレビュー」は、[[concepts/agent-trust-inverse-pyramid]]（@poteto）が人間レビューを最下層の最小に置く配分と同じ向きで、[[concepts/agent-era-code-review]] がリスク別に人間承認を 0/1/2 人へ絞る運用の個人版にあたる
+- 「反証不能な証拠を求めろ」「これは証拠ではない」は、[[concepts/claude-code-long-task-harness]] の「証拠を返すレビュアー」や [[concepts/fable-5-prompting]] の「進捗を証拠で監査」と同じ要求を、プロンプト側でなく人間の受け取り方の規律として書いたもの
+- 「エージェント向けの知識を eval せよ」の5体ブラインド対照実験は、[[tools/claude-code-plugin-eval]] と [[papers/2026-li-skillsbench]] のスキルあり/なし対試験と同じ構造を、公式コマンドでなく自前の実験設計として述べている
+- 「待つな・非同期・バッチ・スケジュール」は、[[concepts/coding-agent-workflow-styles]] の委譲低速ループ側に全面的に賭ける立場で、[[concepts/agentic-engineering-workflow]]（@mvanhorn）の「人間は手でなくシグナル」と重なる。スケジュール/heartbeat の具体は [[concepts/goal-loop-routine]] と [[concepts/claude-code-loop-types]] が扱う
+- 「SDLC 全体を可読に・見えないものは作り話になる」は、[[concepts/harness-seven-jobs]] の「自律より先にセンサー」と同じ診断
+- 「スロップを心配するな」「変数名や重複はもう気にしない」は、[[concepts/cognitive-debt]] の「説明できないものは出さない」と正面から対立する。Ball は「図の矢印のレベルで理解しているか」を残すので、理解の粒度を矢印レベルまで粗くした上で負債を受け入れる立場と読める
+
+## 観察ログ（未検証）
+
+- 2026-10-25: Ball は「スロップは蓄積しない／蓄積しても保守不能にはならない」を確信なしと留保つきで述べる。半年〜1年後に同じ著者が撤回・維持のどちらを書くか追う
+
+## 問い
+
+- 「これは証拠ではない」を AGENTS.md に書くなら、何が証拠で何が証拠でないか（自己申告の「動きました」・テスト名の列挙・スクリーンショットなし）をどう列挙するか。自分の CLAUDE.md の「検証可能な手段で検証してから報告する」と同じ型か
+- 5体のブラインド対照実験を wiki-ingest スキルに当てる: LESSONS.md のあり/なしでカテゴリ判定や粒度判定が変わるか（[[tools/claude-code-plugin-eval]] の問いと同じ）
+- 「人間向けの文章をエージェントに書かせるな」は、AI が書くこの wiki と正面から衝突する。wiki ページは「相手側の人間がそれほど重要でない機械的なもの」に入るのか、入らないなら何を人間が書くべきか
+
+## 関連
+
+- [[concepts/agent-trust-inverse-pyramid]] — 人間レビューを最小化し決定論的な上層に努力を置く4層。本ページの「blast radius の大きい5ファイル未満だけ見る」はその個人運用
+- [[concepts/claude-code-long-task-harness]] — 証拠を返すレビュアー・成果物単位の計測。本ページの「反証不能な証拠」を Claude Code の設定に落とした形
+- [[concepts/agentic-engineering-workflow]] — 「人間は手でなくシグナル」の総合スタック（@mvanhorn）。非同期・大量並列の立場が共通
+- [[tools/claude-code-plugin-eval]] — スキルあり/なしの対試験コマンド。本ページの「エージェント向け知識を eval せよ」の公式実装
+- [[concepts/cognitive-debt]] — 理解が追いつかない負債を「説明できないものは出さない」で防ぐ立場。本ページの「スロップを心配するな」と対立
+- [[concepts/fable-5-prompting]] — 長ターン/非同期前提・進捗を証拠で監査する公式指針
+- [[concepts/coding-agent-workflow-styles]] — 高速制御ループ／委譲低速ループの2類型。本ページは後者
+- [[concepts/goal-loop-routine]] — スケジュール/heartbeat を Claude Code で使うときの動詞の使い分け
+- [[concepts/harness-seven-jobs]] — 「自律より先にセンサー」。SDLC を可読にする条と同じ診断
+- [[concepts/agent-era-code-review]] — リスク別に人間承認を絞る Anthropic の多層レビュー
+- [[papers/2026-li-skillsbench]] — スキルあり/なしの対試験ベンチマーク
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

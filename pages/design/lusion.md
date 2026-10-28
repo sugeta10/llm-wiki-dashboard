@@ -20,3 +20,4 @@
 - [[design/claude-premium-website-build]] — 「高額に見えるサイト」の8要素（Motion・Imagery・Point of view等）で採点する制作ワークフロー。Lusionはその参照側に置かれる実例
 - [[design/design-md]] — 有名ブランドのデザイン仕様を.md化してエージェントに読ませるアプローチ。動きが主役のスタジオワークをどう記述するかという課題を突きつける
 - [[design/fastview-design]] — ファーストビューで何秒以内に何を伝えるかの設計原則。没入型サイトは「まず世界に入れる」ことを優先する点で前提が異なる
+- [[tools/threejs-assets]] — three.js / React Three Fiber 向けの無料・商用可の低ポリ GLB モデル群（959 点・毎週更新）。本ページの3D演出を個人やエージェントが真似るときの素材側の供給源

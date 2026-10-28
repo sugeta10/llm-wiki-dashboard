@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>threejs-assets - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>threejs-assets</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="threejs-assets.md">Markdownで表示</a></div>
+  <div class="meta">tools/threejs-assets · tools · <span title="2026-10-28">今日</span></div>
+  <article><h1>threejsassets.com の無料 3D アセット</h1>
+<p><strong>threejsassets.com</strong>（@threejsassets）が three.js・React Three Fiber・その他の WebGL レンダラ向けに配る、無料で商用利用もできる低ポリの GLB モデル群。X の告知（2026-10-24）では「937 点の無料 3D アセット、次のゲームにそのまま入れられる」とあり、配布ページのキャッシュ（2026-10-28 取得）では 959 点・毎週更新と表示されている。</p>
+<p>配布ページ（サイト運営者の記載）の条件:</p>
+<ul>
+<li>無料アカウントでダウンロード。クレジットカード不要、帰属表示（attribution）不要、プロジェクト単位で追跡すべきライセンスもない</li>
+<li>同社のアセットライブラリから引いたもので、低い品質基準で別に作ったものではない、と主張</li>
+<li>各カードに現在の三角形数と圧縮後ファイルサイズが載るので、シーンの予算（budget）を決める前に確認せよ、と案内</li>
+</ul>
+<p>告知の添付は動画のサムネイルのみで、素材の見た目や内訳（カテゴリ・スタイル）は未収集。</p>
+<p>wiki 側の見方（推論）: <a href="../tools/hyperframes.html">hyperframes</a> のように LLM が HTML/JS で動画や演出を書く流れや、<a href="../tools/loop-library.html">loop-library</a> にある「three.js で9アングルを採点して反復改善する」ループでは、モデルを自作せず GLB を置くだけで読み込める素材の有無が制作の速さを決める。<a href="../design/lusion.html">lusion</a> が示す「動きと3D演出に価値が置かれる Web 体験」を個人やエージェントが真似るときの、素材側の供給源にあたると考えられる。</p>
+<h2>問い</h2>
+<ul>
+<li>カードの三角形数・ファイルサイズをプログラムから取れる API や一覧があるか。あれば、エージェントに予算内のモデルを選ばせる入口になる</li>
+<li>Claude Code に three.js のシーンを書かせるとき、GLB の URL を渡すだけでローダー込みで動くコードが出るか。アカウント必須の配布条件が自動取得の妨げにならないか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/hyperframes.html">hyperframes</a> — HTML/CSS/JS（Three.js 等の Web 資産がそのまま使える）に動画の状態を載せる HeyGen 製 OSS。本ページの素材の使い先</li>
+<li><a href="../tools/loop-library.html">loop-library</a> — three.js で9アングルを採点し反復改善する Boeing 747 benchmark を収録するループカタログ</li>
+<li><a href="../design/lusion.html">lusion</a> — 3D ビジュアルストーリーテリングの制作スタジオ。本ページの素材が目指す先の参照事例</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/lusion.html">lusion</a></li>
+<li><a href="../tools/hyperframes.html">hyperframes</a></li>
+<li><a href="../tools/loop-library.html">loop-library</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2113982009185857771" rel="noopener" target="_blank">https://x.com/i/web/status/2113982009185857771</a></li>
+<li><a href="https://threejsassets.com/assets/free" rel="noopener" target="_blank">https://threejsassets.com/assets/free</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># threejsassets.com の無料 3D アセット
+
+**threejsassets.com**（@threejsassets）が three.js・React Three Fiber・その他の WebGL レンダラ向けに配る、無料で商用利用もできる低ポリの GLB モデル群。X の告知（2026-10-24）では「937 点の無料 3D アセット、次のゲームにそのまま入れられる」とあり、配布ページのキャッシュ（2026-10-28 取得）では 959 点・毎週更新と表示されている。
+
+配布ページ（サイト運営者の記載）の条件:
+
+- 無料アカウントでダウンロード。クレジットカード不要、帰属表示（attribution）不要、プロジェクト単位で追跡すべきライセンスもない
+- 同社のアセットライブラリから引いたもので、低い品質基準で別に作ったものではない、と主張
+- 各カードに現在の三角形数と圧縮後ファイルサイズが載るので、シーンの予算（budget）を決める前に確認せよ、と案内
+
+告知の添付は動画のサムネイルのみで、素材の見た目や内訳（カテゴリ・スタイル）は未収集。
+
+wiki 側の見方（推論）: [[tools/hyperframes]] のように LLM が HTML/JS で動画や演出を書く流れや、[[tools/loop-library]] にある「three.js で9アングルを採点して反復改善する」ループでは、モデルを自作せず GLB を置くだけで読み込める素材の有無が制作の速さを決める。[[design/lusion]] が示す「動きと3D演出に価値が置かれる Web 体験」を個人やエージェントが真似るときの、素材側の供給源にあたると考えられる。
+
+## 問い
+
+- カードの三角形数・ファイルサイズをプログラムから取れる API や一覧があるか。あれば、エージェントに予算内のモデルを選ばせる入口になる
+- Claude Code に three.js のシーンを書かせるとき、GLB の URL を渡すだけでローダー込みで動くコードが出るか。アカウント必須の配布条件が自動取得の妨げにならないか
+
+## 関連
+
+- [[tools/hyperframes]] — HTML/CSS/JS（Three.js 等の Web 資産がそのまま使える）に動画の状態を載せる HeyGen 製 OSS。本ページの素材の使い先
+- [[tools/loop-library]] — three.js で9アングルを採点し反復改善する Boeing 747 benchmark を収録するループカタログ
+- [[design/lusion]] — 3D ビジュアルストーリーテリングの制作スタジオ。本ページの素材が目指す先の参照事例
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

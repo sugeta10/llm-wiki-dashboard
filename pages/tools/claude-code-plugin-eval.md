@@ -26,3 +26,4 @@ Anthropic 公式（@ClaudeDevs）が2026-09-11に、[[tools/claude-code]] の新
 - [[tools/claude-code]] — 本コマンドが載るCLI本体
 - [[tools/claude-api-build-eval-hillclimb]] — 同じClaude Codeの公式eval用2コマンド。試験づくり（build-eval）と、train/testに分けて隠した側でも伸びた変更だけ残す改善ループ（hillclimb）
 - [[tools/code-modernization-plugin]] — 新旧の実装で振る舞いが一致することを示そうとするレガシー刷新プラグイン。比較対象を残して差分を根拠にする点が近い（wiki 側の推論）
+- [[concepts/how-i-work-with-agents]] — Thorsten Ball の「エージェント向けの知識（AGENTS.md・スキル・スクリプト）を eval せよ。5体のブラインドエージェントを対照群/処置群で走らせろ」。本コマンドと同じ対試験を自前の実験設計として述べる

@@ -58,3 +58,4 @@
 - [[concepts/claude-code-instruction-methods]] — 決定論的な強制は hook・permission、CLAUDE.md は索引に徹するという公式フレーム
 - [[concepts/small-change-auto-approval]] — Imprint の small-change。「誤りの防止は CI/CD と pstack のようなハーネス検証の方が効く」「small-change の誤りはシステムの失敗」と、本ページの配分を組織の運用に置いた事例（Will Larson）
 - [[concepts/spec-ssot-view-separation]] — 仕様図の検証を「矢印が途切れていないか確認して」という散文の指示（偽陰性が多い）から静的解析ツール pumlseqbreak へ移した Kuniwak の例。散文層から静的解析層への移設の具体例
+- [[concepts/how-i-work-with-agents]] — Thorsten Ball の15か条。「影響範囲の大きい5ファイル未満だけレビューし、変数名や重複はもう気にしない」は本ページの人間レビュー最小化を個人運用で言い切った例
