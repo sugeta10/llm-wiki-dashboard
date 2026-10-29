@@ -107,3 +107,4 @@ Claude Code チームの Addy Osmani（X プロフィールは「Claude Code @an
 - [[concepts/agent-trust-inverse-pyramid]] — 「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」とする @poteto の4層指針。本ページのリスク別人間承認と「同じ指摘は発生源で直す」を個人の運用規模で言ったものと読める
 - [[concepts/small-change-auto-approval]] — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照
 - [[tools/addyosmani-agent-skills]] — X 記事版の書き手 Addy Osmani が Google 在籍時に公開したスキルパック。レビュー観点を人からスキルへ焼き込む点で本ページの「同じ指摘は発生源で直す」と同じ発想
+- [[concepts/frequency-impact-fix-threshold]] — 「レビューは収束しなければならない」への個人規模の答え。Codex のレビュー指示に発生頻度×影響度の 1〜10 採点を置き、積が閾値未満なら Issue 起票だけで修正しない（@hawkymisc）

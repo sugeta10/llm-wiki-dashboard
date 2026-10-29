@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>eval-harness</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="eval-harness.md">Markdownで表示</a></div>
-  <div class="meta">concepts/eval-harness · concepts · <span title="2026-10-29">今日</span></div>
+  <div class="meta">concepts/eval-harness · concepts · <span title="2026-10-29">1日前</span></div>
   <article><h1>Eval Harness（変更ごとに全テスト質問を再実行し、何が直り何が壊れたかを質問単位で示す回帰装置）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: AI アプリへの変更（モデル・ツール・プロンプト）のたびに固定のテスト質問を本番と同じ API 経由で各3回流し、前回の実行と比べて「直った／壊れた／不安定になった」を質問単位で出し、常に通っていた質問が常に落ちるようになったときだけ CI を赤にする仕組み。Tony（@tonycueva・GitHub の tony-confidentai プロフィールでは Confident AI の Founding GTM Engineer）がシューズ店サポートボットで 33/60→41/60→54/60 の実測つきで6手順に分解した。</p>

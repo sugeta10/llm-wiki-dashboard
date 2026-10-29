@@ -31,3 +31,4 @@ Provencher の記事から分かるのは次の点に限られる。
 - [[models/claude-fable-5-1]] — 同時期に発表された Anthropic 側の最新版
 - [[models/gpt-6-1-sol]] — DevDay で発表された後続モデル。@umiyuki_ai は「Astra 並みの性能を 1/5 の価格」と紹介
 - [[concepts/ai-news-source-automation]] — 本モデルに7つの情報源を深夜巡回させ発信ネタを集める運用例（@beku_AI）
+- [[concepts/ai-history-turning-points]] — @studio_yebisu の私的 AI 史年表。本モデルの発表日を 9 月 3 日とし、OpenAI が「世界最高のコンピュータ操作モデル」と呼んで ComputerUse が一般認知された転換点に置く（引用の一次確認は未済）。Opus 5.5 登場までを「Astra の天下」と評する

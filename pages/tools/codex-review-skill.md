@@ -42,3 +42,4 @@ AIコーディングで実装速度が上がるほど、人間が全実装を目
 - [[models/gpt-5-5]] — アウトカム重視プロンプト推奨。本スキルが手順テンプレートを削ぎルールを強くした根拠
 - [[tools/openai-codex]] — 本スキルが動作する実行基盤
 - [[concepts/agents-md-canonical]] — AGENTS.mdを正本に発火条件を埋め込む運用の土台
+- [[concepts/frequency-impact-fix-threshold]] — P0/P1 フォーカスと同じ「軽微な指摘で反復させない」狙いを、発生頻度×影響度の 1〜10 採点と閾値で数値化した Codex レビュー指示（@hawkymisc）

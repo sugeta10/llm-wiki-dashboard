@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>frequency-impact-fix-threshold - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>frequency-impact-fix-threshold</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="frequency-impact-fix-threshold.md">Markdownで表示</a></div>
+  <div class="meta">concepts/frequency-impact-fix-threshold · concepts · <span title="2026-10-30">今日</span></div>
+  <article><h1>発生頻度×影響度の積で「修正」と「Issue 起票」を分ける Codex レビュー指示</h1>
+<p>ほーきー（@hawkymisc・プロフィールでは Vibe 基板開発・データアナリスト）は、Codex にレビューを依頼するプロンプトやスキルに次の趣旨の一文を入れると改善するはずだ、と提案する。</p>
+<blockquote>
+<p>バグの発生頻度と影響度を 1〜10 で評価し、その積が 5 を下回る場合は Issue として起票するだけにとどめ、コードの修正はしないでください。</p>
+</blockquote>
+<p>閾値の 5 は適宜調整するものだ、と @hawkymisc は添えている。</p>
+<p>きっかけは Torishima（@izutorishima）の投稿で、「論理的には全て成立する『正しい』バグだが、そのバグが発生する条件は非常に稀で、稀なバグをレビューを回すために無限に見つけて無限に修正して一生終わらない」というイライラへの返答として書かれた。</p>
+<h2>この指示が変えること（wiki 側の整理）</h2>
+<ul>
+<li><strong>判断の軸を「指摘が正しいか」から「直す価値があるか」へ移す</strong>。正しさは AI レビュアーが保証しやすい一方、直す価値は頻度と影響の二軸で見ないと決まらない。Torishima の愚痴は、正しさだけで修正が決まると稀なバグが無限に流れ込む、という構造の指摘と読める</li>
+<li><strong>閾値未満を「無視」でなく「Issue 起票」にする</strong>ので、見つけた事実は残り、コードを触る往復だけが止まる。後で頻度や影響の見積もりが変われば Issue から拾い直せる</li>
+<li><strong>既定の閾値 5 は控えめな設定</strong>。1〜10 の積が 5 未満になる組み合わせは、片方が 1 なら他方は 4 以下、片方が 2 なら他方も 2 に限られる（wiki 側の計算）。つまり頻度も影響も低いバグだけが修正から外れ、Issue に回す範囲を広げたければ閾値を上げる。@hawkymisc が「適宜修整」と書くのはこの調整のことと考えられる</li>
+<li><strong>採点の揺れ</strong>（wiki 側の推論）: LLM の 1〜10 採点は較正されていないので、同じバグでも実行ごとに点が変わりうる。閾値付近の判断を安定させるには、採点の根拠（どの条件で起きるか・何が壊れるか）を Issue 本文に書かせ、人間が閾値を後から見直せるようにしておく必要があると考えられる</li>
+</ul>
+<h2>位置づけ</h2>
+<p>Anthropic の Claude Code チームは <a href="../concepts/agent-era-code-review.html">agent-era-code-review</a> で「レビューは収束しなければならない」とし、作者がエージェントだと nit（些細な指摘）まで直してしまい往復が増えること、ある PR が一晩で 50 往復を超えたことを挙げて、3 往復で上限・差分だけ再レビューといった対策を入れた。@hawkymisc の指示はその個人規模の対になるもので、往復の回数でなく指摘 1 件ごとに「直すか残すか」を点数で決めることで、ループを指摘の単位で収束させる、と位置づけられる。</p>
+<p><a href="../tools/codex-review-skill.html">codex-review-skill</a>（@makaneko_AI）は同じ問題に「P0/P1 相当の問題だけを拾い、軽微な書き方の指摘は扱わない」という重要度だけのフィルタで答えている。@hawkymisc はこれに発生頻度の軸を足し、閾値を数で書く。<a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> の「自己採点を人間の手前に置く。ただし採点できるのは数えられる条件だけ」という原則に照らすと、1〜10 の積は数えられる条件なので、AI 側で判定を完結させやすい指示といえる。</p>
+<h2>問い</h2>
+<ul>
+<li>このリポの Codex クロスレビュー指示に頻度×影響度の採点を足すと、指摘件数と修正の往復はどう変わるか。閾値は 5 のままでよいか</li>
+<li>「稀だが影響が大きい」（頻度 1×影響度 10）と「頻繁だが軽微」（頻度 10×影響度 1）は同じ積 10 で修正対象になる。この 2 つを同じ扱いにしてよいか</li>
+<li>Issue に溜まった低スコアのバグを誰がいつ見直すか。溜まるだけなら「無限に見つける」問題を Issue トラッカーへ移しただけになる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a> — 「レビューは収束しなければならない」と 3 往復上限・差分だけ再レビューを定めた Claude Code チームの組織規模の答え。本ページはその指摘単位・個人規模の対</li>
+<li><a href="../tools/codex-review-skill.html">codex-review-skill</a> — P0/P1 フォーカスという重要度だけのフィルタで同じ反復を止める Codex 内のレビューゲート</li>
+<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> — 「数えられる条件で自己採点を手前に置く」原則。頻度×影響度の積はその条件の一例</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 閾値未満を出荷前に止めて合格分だけ通す品質ゲートの一般形</li>
+<li>openai-codex — この指示を入れるレビュー実行基盤</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a></li>
+<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
+<li><a href="../tools/codex-review-skill.html">codex-review-skill</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2115138007179415686" rel="noopener" target="_blank">https://x.com/i/web/status/2115138007179415686</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 発生頻度×影響度の積で「修正」と「Issue 起票」を分ける Codex レビュー指示
+
+ほーきー（@hawkymisc・プロフィールでは Vibe 基板開発・データアナリスト）は、Codex にレビューを依頼するプロンプトやスキルに次の趣旨の一文を入れると改善するはずだ、と提案する。
+
+&gt; バグの発生頻度と影響度を 1〜10 で評価し、その積が 5 を下回る場合は Issue として起票するだけにとどめ、コードの修正はしないでください。
+
+閾値の 5 は適宜調整するものだ、と @hawkymisc は添えている。
+
+きっかけは Torishima（@izutorishima）の投稿で、「論理的には全て成立する『正しい』バグだが、そのバグが発生する条件は非常に稀で、稀なバグをレビューを回すために無限に見つけて無限に修正して一生終わらない」というイライラへの返答として書かれた。
+
+## この指示が変えること（wiki 側の整理）
+
+- **判断の軸を「指摘が正しいか」から「直す価値があるか」へ移す**。正しさは AI レビュアーが保証しやすい一方、直す価値は頻度と影響の二軸で見ないと決まらない。Torishima の愚痴は、正しさだけで修正が決まると稀なバグが無限に流れ込む、という構造の指摘と読める
+- **閾値未満を「無視」でなく「Issue 起票」にする**ので、見つけた事実は残り、コードを触る往復だけが止まる。後で頻度や影響の見積もりが変われば Issue から拾い直せる
+- **既定の閾値 5 は控えめな設定**。1〜10 の積が 5 未満になる組み合わせは、片方が 1 なら他方は 4 以下、片方が 2 なら他方も 2 に限られる（wiki 側の計算）。つまり頻度も影響も低いバグだけが修正から外れ、Issue に回す範囲を広げたければ閾値を上げる。@hawkymisc が「適宜修整」と書くのはこの調整のことと考えられる
+- **採点の揺れ**（wiki 側の推論）: LLM の 1〜10 採点は較正されていないので、同じバグでも実行ごとに点が変わりうる。閾値付近の判断を安定させるには、採点の根拠（どの条件で起きるか・何が壊れるか）を Issue 本文に書かせ、人間が閾値を後から見直せるようにしておく必要があると考えられる
+
+## 位置づけ
+
+Anthropic の Claude Code チームは [[concepts/agent-era-code-review]] で「レビューは収束しなければならない」とし、作者がエージェントだと nit（些細な指摘）まで直してしまい往復が増えること、ある PR が一晩で 50 往復を超えたことを挙げて、3 往復で上限・差分だけ再レビューといった対策を入れた。@hawkymisc の指示はその個人規模の対になるもので、往復の回数でなく指摘 1 件ごとに「直すか残すか」を点数で決めることで、ループを指摘の単位で収束させる、と位置づけられる。
+
+[[tools/codex-review-skill]]（@makaneko_AI）は同じ問題に「P0/P1 相当の問題だけを拾い、軽微な書き方の指摘は扱わない」という重要度だけのフィルタで答えている。@hawkymisc はこれに発生頻度の軸を足し、閾値を数で書く。[[concepts/ai-review-bottleneck]] の「自己採点を人間の手前に置く。ただし採点できるのは数えられる条件だけ」という原則に照らすと、1〜10 の積は数えられる条件なので、AI 側で判定を完結させやすい指示といえる。
+
+## 問い
+
+- このリポの Codex クロスレビュー指示に頻度×影響度の採点を足すと、指摘件数と修正の往復はどう変わるか。閾値は 5 のままでよいか
+- 「稀だが影響が大きい」（頻度 1×影響度 10）と「頻繁だが軽微」（頻度 10×影響度 1）は同じ積 10 で修正対象になる。この 2 つを同じ扱いにしてよいか
+- Issue に溜まった低スコアのバグを誰がいつ見直すか。溜まるだけなら「無限に見つける」問題を Issue トラッカーへ移しただけになる
+
+## 関連
+
+- [[concepts/agent-era-code-review]] — 「レビューは収束しなければならない」と 3 往復上限・差分だけ再レビューを定めた Claude Code チームの組織規模の答え。本ページはその指摘単位・個人規模の対
+- [[tools/codex-review-skill]] — P0/P1 フォーカスという重要度だけのフィルタで同じ反復を止める Codex 内のレビューゲート
+- [[concepts/ai-review-bottleneck]] — 「数えられる条件で自己採点を手前に置く」原則。頻度×影響度の積はその条件の一例
+- [[concepts/eval-loop]] — 閾値未満を出荷前に止めて合格分だけ通す品質ゲートの一般形
+- [[tools/openai-codex]] — この指示を入れるレビュー実行基盤
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

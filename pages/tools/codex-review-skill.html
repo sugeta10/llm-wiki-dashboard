@@ -69,11 +69,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../models/gpt-5-5.html">gpt-5-5</a> — アウトカム重視プロンプト推奨。本スキルが手順テンプレートを削ぎルールを強くした根拠</li>
 <li>openai-codex — 本スキルが動作する実行基盤</li>
 <li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a> — AGENTS.mdを正本に発火条件を埋め込む運用の土台</li>
+<li><a href="../concepts/frequency-impact-fix-threshold.html">frequency-impact-fix-threshold</a> — P0/P1 フォーカスと同じ「軽微な指摘で反復させない」狙いを、発生頻度×影響度の 1〜10 採点と閾値で数値化した Codex レビュー指示（@hawkymisc）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/eval-loop.html">eval-loop</a></li>
+<li><a href="../concepts/frequency-impact-fix-threshold.html">frequency-impact-fix-threshold</a></li>
 <li><a href="../models/gpt-5-5.html">gpt-5-5</a></li>
 <li><a href="../tools/autoreview-skill.html">autoreview-skill</a></li>
-<li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li>
-<li><a href="../concepts/llm-council.html">llm-council</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2067569337771376729" rel="noopener" target="_blank">https://x.com/i/web/status/2067569337771376729</a></li></ul></section></article>
+<li><a href="../concepts/agents-md-canonical.html">agents-md-canonical</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2067569337771376729" rel="noopener" target="_blank">https://x.com/i/web/status/2067569337771376729</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -138,6 +139,7 @@ AIコーディングで実装速度が上がるほど、人間が全実装を目
 - [[models/gpt-5-5]] — アウトカム重視プロンプト推奨。本スキルが手順テンプレートを削ぎルールを強くした根拠
 - [[tools/openai-codex]] — 本スキルが動作する実行基盤
 - [[concepts/agents-md-canonical]] — AGENTS.mdを正本に発火条件を埋め込む運用の土台
+- [[concepts/frequency-impact-fix-threshold]] — P0/P1 フォーカスと同じ「軽微な指摘で反復させない」狙いを、発生頻度×影響度の 1〜10 採点と閾値で数値化した Codex レビュー指示（@hawkymisc）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

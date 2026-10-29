@@ -66,6 +66,30 @@ Mod は隔離環境で動き、`$` を使わない限り外の世界に何もで
 
 `$` には tool / command / prompt / ui / fs / store / http / process / mcp / agent / turn / session / model / settings / config / env / clock / audio / plugin の名詞が並び、`$.tool.register`（モデルに新しいツールを与える）、`$.ui.open`（描画ペインを開く）、`$.session.usage`（コンテキスト使用率・レート制限・コスト）、`$.model.classify`（用意したラベルから1つ選ばせる）などがある。イベントも `tool.call` `check`（permission 判定）`prompt.submit` `step`（モデルへの1リクエスト）`compact` `agent.spawn` `ui.render` `config.set` `skill.prompt` などに及ぶ。完全な一覧は nogu の記事の Appendix にある。
 
+## 公式入門ガイド「Getting started with Claude Code Mods」（Addy Osmani）
+
+Claude Code チームの Addy Osmani は、Mods 公開から数週間後に X 記事として入門ガイドを書いている。Osmani が最も気に入っている点は API を学ばずに作れることで、`claude` を起動して欲しい Mod を説明し、書かれるファイルを承認し、ホットリロードを有効にするか聞かれたら yes と答えると、ターンの終わりに Mod が表示される。Claude Code には Mod の書き方のガイドが同梱されているので、プロンプトはイベント・状態・API に触れず「何を見たいか・どの条件で」だけ書けばよい、と Osmani は述べる。
+
+Osmani は技術的な位置づけを「Mod はプラグインに同梱された hook」とし、各 hook はツール呼び出し・プロンプト送信・ターンやセッションの開始と終了・スラッシュコマンド実行・UI のあらゆる描画など、セッション内のすべてのイベントを見られると説明する。hook はミドルウェアのように連なり、イベントは自分の hook → 他のプラグイン → Claude Code 本体の既定動作の順に流れる。hook がイベントに対してできることを Osmani は 3 つに分ける。
+
+| 動き | 内容 | Osmani の例 |
+| --- | --- | --- |
+| Observe（観察） | イベントを通し、結果を見る | ファイル変更のたびにログを取る・毎ターン後にスナップショットを撮る |
+| Rewrite（書き換え） | 後続の hook に渡すイベントを変える | プロンプトに文を足す・ツール呼び出しの入力を変える |
+| Answer（応答） | 自分で処理し、既定動作を走らせない | ツール呼び出しを拒否する・コマンドに自分で答える |
+
+この語彙は Claude に Mod を頼むときにも使え、「この種のコマンドを拒否して」は Answer、「毎ターン後にスナップショットを撮って」は Observe にあたる、と Osmani は書く。nogu が `next` の呼び方で分けた「早期リターン・後処理・結果の書き換え」と同じ区分を、依頼する側の言葉にしたものと考えられる。
+
+settings の hook との違いについて Osmani は、settings hook がイベントのたびに走るシェルコマンドであるのに対し、Mod はセッションに一度ロードされて自分の状態と UI を持ち、イベントに応じて更新できること、さらにペインを開く・プロセスを起動する・モデルから呼べるスラッシュコマンドやツールを登録するといった Claude Code 側への呼び返しができることを挙げる。AGENTS.md 対応や `/diff` ペインなど Claude Code 自身の機能も Mod で実装しており、コードとテストは公開リポジトリ anthropics/claude-code の `mods/` ディレクトリにある、と Osmani は明言している（nogu の記述と一致する）。
+
+### 作り方・保存・配布・安全性（Osmani の説明）
+
+- **反復**: 一度作れば「Storm を 70% から始めて」「末尾にドル表示を足して」のように頼むだけで、再起動なしに帯が目の前で更新される。表示が消えたら `claude --debug` を実行し、hook が検証を通らない木を返したという行を探す
+- **型**: API はリリース間で変わりうる。Mod を読み込むと、そのビルドの型宣言が Mod の `.claude-plugin/types/` に書き出されるので、自分のバージョンではそれを正とする
+- **保存**: この方法で作った Mod はそのセッションだけ読み込まれ、フォルダは後で掃除される。残すには `~/.claude/dev-mods/<session-id>/` からフォルダを複製し、他のプラグインと同じ手順でインストールする
+- **公開とインストール**: Mod は Claude Code プラグインそのものなので、GitHub リポジトリに marketplace ファイルを置けば公開でき、更新も通常の push で届く。インストールは `/plugin marketplace add <org/repo>` → `/plugin install <mod 名>@<marketplace 名>`（スコープを選ぶ）→ 起動しなければ `/reload-plugins` の 3 コマンド。claude.ai/directory/manage から Claude directory に登録すればリポジトリへのリンクなしで見つけてもらえる
+- **安全性**: Mod はローカルマシン上で利用者の権限で動き、サンドボックスされない。ファイルや秘密情報を読め、プロセスを起動し、ネットワークに出て、ツール呼び出しを承認できる。書いたのは Anthropic でなく各 Mod の作者なので、他のパッケージと同様にソースを読み、信頼できる人の Mod だけ入れる。何を hook し何を呼ぶかは、インストール前にそのフォルダへ `claude plugin validate` を実行すると分かる
+
 ## 実例
 
 - **diff**（公式）: `/diff` の実体。セッション中の未コミット変更をトランスクリプト横のパネルにファイル・hunk ごとに表示し、比較基準（HEAD・セッション開始時のスナップショット・デフォルトブランチとの merge-base）を切り替えられる。画面の一部を Mod が描いている点が従来 hooks との差だと nogu は強調する
@@ -79,6 +103,20 @@ Mod は隔離環境で動き、`$` を使わない限り外の世界に何もで
 
 nogu はこれらを「標準機能と同じ土俵」とまとめる。nogu は記事の告知ポストでも、Claude Mods を「画面表示の変更や独自ツールの追加など、Claude Code ハーネスを深く拡張できる仕組み」と紹介している。公式の標準機能もコミュニティ製 Mod も、同じ `register` とイベントへのフックで作られている。
 
+### 公式サンプル 3 本と Osmani が推すコミュニティ製 Mod
+
+Osmani の入門ガイドは、次の 3 本を題材にしている。完成コードはいずれも anthropics/claude-code-playground にあり、Blast Radius と Replay Theater には作り方を説明した README が付く。
+
+- **Token Weather**（公式サンプル）: プロンプト欄の上の帯に、天気アイコンとコンテキストウィンドウの使用率、使ったトークン数、直近数ターンの推移の小さなグラフ、前ターンからの増分を 1 行で出す。ファイルを読み進めるにつれ帯が ☀ Clear → ☂ Showers → ☇ Storm と変わる。観察と描画だけで作れる最初の題材として Osmani が選んだ
+- **Blast Radius**（公式サンプル）: `rm -rf`・`git reset --hard`・`git clean`・force push・DB マイグレーションなど危険になりうる Bash 呼び出しを捕まえ、各ツールのドライラン（`git status --porcelain`・`git clean -n` など）の出力からレポートを組み立てて Proceed / Cancel のボタン付きペインを開く。2 を押すと Claude に理由つきの拒否が返り、1 なら通常どおり実行される（Osmani の言う Answer の動き）。帯を使える Mod は同時に 1 つだけなので、他の Mod が帯を持っているとボタンが出ず、10 分後にコマンドは拒否される。Osmani はこれを firewall でなく安全網と呼び、コマンド文字列しか見ないため `$(…)`・エイリアス・rm を呼ぶスクリプトは素通りする、確実に止めたければ permission rules を使うよう注意している
+- **Replay Theater**（公式サンプル）: ターン中の Edit / Write 呼び出しを見てどのファイルが何に変わったかを記録し、ターン終了時に帯で知らせる。`/replay`（または ctrl+x → Tab で帯にフォーカスして r）で各編集の差分をステップ番号と Prev / Next / Close ボタン付きのペインに出す。編集を止めたり変えたりはせず見るだけで、サブエージェントの編集もメインターンの replay に含まれる。ペインはフルスクリーンでは右にドック、80 桁ではプロンプト上にインライン表示される
+- **Stack viewer**（コミュニティ製・Daniel Avila）: `/stack` でセッションに入っているスキル・サブエージェント・コマンド・hooks・MCP サーバー・プラグインを一覧する。本ページの Jev Model Router・turn-inspector を作った @dani_avila7 と同一人物と考えられるが未確認
+- **cc-stretch**（コミュニティ製・pro-vi）: 返答を短く出し、リンクされた語句をクリックすると全文に展開する stretchtext。Osmani は古いハイパーテキスト概念の美しい現代的表現と評する
+- **Mindful Claude**（コミュニティ製・halluton）: Claude が作業を始めると深呼吸を促すアニメーションをプロンプト上に出す。XDA の記事でも取り上げられた、と Osmani は書く
+- **RemCTL**（コミュニティ製・Federico Viticci）: Apple リマインダーの CLI 兼 Claude Code プラグイン。Today Mod が今日のリマインダーをプロンプト上に表示する
+
+Osmani は公式サンプル 3 本がそれぞれ「コンテキストはどれだけ残っているか」「どのコマンドが実行されようとしているか」「Claude は今何を変えたか」という 1 つの問いから始まったと書き、読者にも自分の問いから Token Weather と同じ手順（見たいもの・条件を伝え、実装は Claude に任せる）で作るよう勧めている。
+
 指示の置き場所を整理した [[concepts/claude-code-instruction-methods]] では、決定論的に強制できるのは hook と permission だった。Function Hooks はその hook の層を、可否判定だけでなく結果の書き換え・UI・ツール追加まで広げたものと考えられる。また [[concepts/agents-md-canonical]] が扱う「AGENTS.md を正本にする」運用は、Claude Code 側では `agents-md` Mod の `instructionFiles` で読み方を選べるようになった。
 
 ## 問い
@@ -88,6 +126,8 @@ nogu はこれらを「標準機能と同じ土俵」とまとめる。nogu は�
 - このvaultで「毎回手で止めている1つの操作」は何か。`tool.call` ＋ `$.state` ＋ `ui.render` の最小構成で、ingest 中の処理件数をプロンプト欄の上に出すような Mod が `--plugin-dir` で作れるか
 - qa-guide のように「質問の文脈を別ペインで補う」Mod は、ingest やレビューで Claude から選択肢を出されたときの判断時間を実際に縮めるか。解説生成の分だけ応答が遅れないか
 - 「位置がそのまま権威」の5層は、[[concepts/claude-code-context-hierarchy]] の Enterprise → Global → Project の4層とどう対応するか
+- Blast Radius の型で、このリポの「ファイルは rm でなく stash/ へ mv する」規約を `tool.call` で差し止める Mod が作れるか。Osmani 自身がコマンド文字列しか見ないので `$(…)` やエイリアスは抜けると注意しており、確実に止める層は permission rules に残すべきか
+- Token Weather のような「コンテキスト残量を帯に出す」Mod は、長い ingest セッションで compact のタイミングを自分で選ぶ助けになるか
 
 ## 関連
 
@@ -100,3 +140,4 @@ nogu はこれらを「標準機能と同じ土俵」とまとめる。nogu は�
 - [[concepts/prompt-caching]] — Cache Control Mod が残り時間を表示する5分キャッシュの仕組み
 - [[tools/turn-inspector]] — 各ターンのコンテキストウィンドウの中身（システムプロンプト・ツール・メモリ等）を表示するコミュニティ製 Mod（@dani_avila7）
 - [[tools/claude-recall]] — プラグイン同梱の Mod が過去セッションの帯・検索結果の木・`/recall` を描く実例。Mod は描くだけで判断せず、必要なデータは Go 側の JSON に足してから使う（babarot）
+- [[tools/addyosmani-agent-skills]] — 公式入門ガイドの書き手 Addy Osmani が Google 在籍時に公開したスキルパック

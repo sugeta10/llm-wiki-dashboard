@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agent-era-code-review</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-era-code-review.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agent-era-code-review · concepts · <span title="2026-10-28">1日前</span></div>
+  <div class="meta">concepts/agent-era-code-review · concepts · <span title="2026-10-28">2日前</span></div>
   <article><h1>エージェント時代のコードレビュー（Claude Code チームの多層レビュー）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: コードの約90%を Claude が書く Claude Code チームは、レビューを「人間が読んだか」から「この変更で何が壊れうるか・どの検査で捕まえるか」へ組み替え、読む作業の大半を機械に移して人間の承認はリスク別にした。その結果、2026年6〜9月にマージ PR 数は2倍超になり、revert（取り消し）された割合は40%超減ったと Anthropic が報告する。</p>
@@ -145,6 +145,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」とする @poteto の4層指針。本ページのリスク別人間承認と「同じ指摘は発生源で直す」を個人の運用規模で言ったものと読める</li>
 <li><a href="../concepts/small-change-auto-approval.html">small-change-auto-approval</a> — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照</li>
 <li><a href="../tools/addyosmani-agent-skills.html">addyosmani-agent-skills</a> — X 記事版の書き手 Addy Osmani が Google 在籍時に公開したスキルパック。レビュー観点を人からスキルへ焼き込む点で本ページの「同じ指摘は発生源で直す」と同じ発想</li>
+<li><a href="../concepts/frequency-impact-fix-threshold.html">frequency-impact-fix-threshold</a> — 「レビューは収束しなければならない」への個人規模の答え。Codex のレビュー指示に発生頻度×影響度の 1〜10 採点を置き、積が閾値未満なら Issue 起票だけで修正しない（@hawkymisc）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-scale-source-control.html">agent-scale-source-control</a></li>
 <li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
 <li><a href="../concepts/ai-judgment-delegation.html">ai-judgment-delegation</a></li>
@@ -281,6 +282,7 @@ Claude Code チームの Addy Osmani（X プロフィールは「Claude Code @an
 - [[concepts/agent-trust-inverse-pyramid]] — 「人間レビューは最もスケールしないので、エージェントが既定で正しいことをする環境の設計に労力を使う」とする @poteto の4層指針。本ページのリスク別人間承認と「同じ指摘は発生源で直す」を個人の運用規模で言ったものと読める
 - [[concepts/small-change-auto-approval]] — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照
 - [[tools/addyosmani-agent-skills]] — X 記事版の書き手 Addy Osmani が Google 在籍時に公開したスキルパック。レビュー観点を人からスキルへ焼き込む点で本ページの「同じ指摘は発生源で直す」と同じ発想
+- [[concepts/frequency-impact-fix-threshold]] — 「レビューは収束しなければならない」への個人規模の答え。Codex のレビュー指示に発生頻度×影響度の 1〜10 採点を置き、積が閾値未満なら Issue 起票だけで修正しない（@hawkymisc）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

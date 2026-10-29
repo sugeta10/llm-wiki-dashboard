@@ -27,3 +27,4 @@ READMEは本パックを「シニアエンジニアがソフトウェアを作�
 - [[concepts/google-code-review]] — 本パックがスキルへ焼き込んだと明言するGoogleレビュー指針
 - [[tools/agent-skills-by-role]] — SENIOR ENGINEER枠で本リポを含む役割別6選
 - [[concepts/agent-era-code-review]] — Osmani が Claude Code チームのレビュー工程を書き直した X 記事版（2026-10-26）を収めたページ。Osmani の X プロフィールは 2026-10-28 時点で「Claude Code @anthropicai」で、本ページが書かれた時点の Google Chrome 所属から Anthropic へ移っている
+- [[tools/claude-code-mods]] — Osmani が Claude Code チームとして書いた Mods 入門ガイドの X 記事（2026-10-28）を節として収めたページ。hook の 3 つの動き（Observe / Rewrite / Answer）・公式サンプル 3 本・保存と配布・安全性の説明

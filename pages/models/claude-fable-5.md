@@ -122,3 +122,4 @@ Anthropic公式サポート記事によれば、週次の利用上限の50%ま�
 - [[business/ai-strategy-officer]] — 「考えるAI」への転換を根拠に市場選定・戦略立案を丸ごと委任するAI副業論（@AInokuhaku）
 - [[concepts/fable-sprint-strategy]] — 期間限定開放中の全力運用記。週50%制限下のPlanner/Generator/Evaluator配分は、プロモ終了後もMax・premium seatではそのまま前提として生きる
 - [[concepts/delegation-management-style]] — Devin Fusion実験：Fable 5主導はOpus 4.8主導よりトークン単価が高くても総コストが安くなるという逆転（Cognition社・3,000セッション）
+- [[concepts/ai-history-turning-points]] — @studio_yebisu の私的 AI 史年表。発表→停止→再開を「Fable 事変（6月9日〜7月1日）」と呼び 2026 年の✓付き転換点に数える。観察ログの輸出規制報道と同じ経緯を「空白の18日間」と表現

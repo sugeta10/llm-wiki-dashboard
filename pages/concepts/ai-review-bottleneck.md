@@ -53,3 +53,4 @@ flowchart LR
 - [[concepts/ai-ambition-four-types]] — 自己採点でなく外部検証を求めるFelix RiesebergのDepthの型。審判を人間の手前のどこに置くかの別解
 - [[concepts/agent-era-code-review]] — Claude Code チームの組織規模の答え：PR前検証・AIレビュー・リスク別承認の多層化と往復3回上限・差分だけ再レビュー（Anthropic）
 - [[concepts/joho-asshi]] — AI で供給が無限になり受け手の注意は有限という同じ非対称を、成果物のレビューでなく日々の情報摂取に当てはめた梶谷健人の「情報圧死」論。要約一覧で原文へ流す量を絞る3段階は②④と同じ方向
+- [[concepts/frequency-impact-fix-threshold]] — ①の「数えられる自己採点条件」をコードレビューに置いた例。発生頻度×影響度の積が閾値未満のバグは Issue に残して修正の往復を止める（@hawkymisc）
