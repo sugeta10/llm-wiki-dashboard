@@ -53,3 +53,4 @@ flowchart TD
 - [[tools/claude-code-subagents]] — 証拠を返すレビュアーを置く仕組み
 - [[models/claude-opus-5-5]] — 対象モデル
 - [[concepts/how-i-work-with-agents]] — Thorsten Ball の15か条。「反証不能な証拠を求めろ・AGENTS.md に『これは証拠ではない』を書け」を最大のゲームチェンジャーと呼ぶ。本ページの「証拠を返すレビュアー」を人間側の受け取り規律として書いたもの
+- [[concepts/grok-bot-one-person-harness]] — 同著者が Grok Bot で一人会社の業務に組んだ 7 手順のハーネス。受け入れ基準を先に書く・進捗を外部（作業ボード）に残す・直した結果をスキルへ戻す、の 3 点が本ページのコーディング向け 7 層と共通

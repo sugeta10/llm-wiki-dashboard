@@ -88,3 +88,4 @@ OpenAI・Anthropic・ThoughtWorksが調整なく同じ壁にぶつかり、異�
 - [[concepts/claude-code-long-task-harness]] — ハーネスの定義を Claude Code の設定ファイル4つ＋/goal の7層に落とし、成果物・証拠・進捗記録を残させる実装手順（@beamnxw）
 - [[concepts/models-as-insider-risks]] — モデル・ハーネス・操作空間を性能でなく統制のために分離せよという Satya Nadella の論
 - [[concepts/harness-seven-jobs]] — 本番ハーネスの仕事を契約化・地図・ツール・記憶の外部化・センサー・モデル外の権限・トレースの7つに分け、重要ルールは指針と機械的検査の二重で書けと述べる運用側の分解（@0xwhrrari）
+- [[concepts/eval-harness]] — Agent = Model + Harness を測る側の装置。モデルのベンチマークでなく自分のプロンプトとデータで動くアプリを固定のテスト質問で各 3 回流し、変更ごとに何が直り何が壊れたかを質問単位で出す回帰装置（Tony・Confident AI）

@@ -24,3 +24,5 @@
 - [[people/pieter-levels]] — 人を増やさず複数プロダクトを一人で並列運営し、その過程を全部公開している実例
 - [[business/ai-agency-180-day-plan]] — 業界を1つに固定し納品物を部品化して2件目を80%完成から始める AI エージェンシーの計画。変数を絞る設計の実践例
 - [[business/chiho-business-trend]] — 「CPA の数％改善より市場選定」と、追うべき変数そのものを市場側に置き換える主張（@minatoku_genkai）
+- [[business/aircon-urakata]] — エアコンクリーニング 1 職種に特化した現役業者が、独立の歩み（孫請け→くらしのマーケット→直接受注）と集客・事務・保険まで固めて同業者向けに公開したサイト。現場仕事での一人ビジネスの実例
+- [[concepts/grok-bot-one-person-harness]] — 一人会社の繰り返しの準備作業を Grok Bot の Operator 1 体に任せ、承認境界と受け入れ基準で囲む @beamnxw の設定手順。本ページの設計論を実行側で支える常駐エージェントの置き方

@@ -87,3 +87,4 @@ eval loopは3か所で走り、それぞれ捕捉する失敗が違う：
 - [[concepts/small-llm-fine-tuning]] — 小型LLMのファインチューニングを訓練損失でなく固定ベースラインと隔離テストで判定する手順。品質ゲートを学習パイプラインへ持ち込んだ例
 - [[concepts/ai-coding-loop-formal]] — 主観判断が要る指標ではユーザーが都度呼ばれるとして決定的な数値指標を選び、形式仕様をテストオラクルにする実務例（mizchi）
 - [[tools/claude-api-build-eval-hillclimb]] — 試験づくりを人の確認つきで対話的に進める build-eval と、train/test 分割で過剰適合を防ぎながら1変更ずつ改善する hillclimb（Claude Code公式）
+- [[concepts/eval-harness]] — 本ページの「出荷前（回帰テスト）」をゲート設計まで実装した例（Tony・Confident AI）。閾値でスコアを切る代わりに各質問を3回流し「常に合格→常に不合格」だけ CI を赤にし、不安定なケースはボットの揺れか judge の揺れかを人が仕分ける。33/60→54/60 の実測つき

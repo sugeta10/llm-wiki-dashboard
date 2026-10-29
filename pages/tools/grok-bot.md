@@ -87,3 +87,4 @@ flowchart LR
 - [[tools/grok-bot-essential-bots]] — 利用者 kaito（@cu30rry_）が選んだ「絶対入れたほうが良い」Bot 10 体。@poteto の Engineering Lead は本ページの「クラウドエージェントを起動・催促して PR まで運ぶ」運用を 1 体の Bot にしたものと読める
 - [[concepts/private-agent-board]] — @geeorgey が Grok Bot を X の情報収集役として webhook で Cloudflare 上の非公開掲示板につなぎ、dots・muse と情報交換させた個人構成
 - [[concepts/grok-bot-ai-team-workspace]] — 炎鎮（@super_bonochin）が担当別 7 体（まとめ・創作・AI ニュース・セキュリティ・Azure・開発・家計）を GPU 搭載の自宅 PC 主体で回し、Google ドライブの共有ナレッジと 1Password を土台に毎朝のセキュリティ点検・朝夕のニュース・週 1 反省会を定期実行する個人構成の全体図
+- [[concepts/grok-bot-one-person-harness]] — @beamnxw が一人会社向けに書いた設定手順。Operator 1 体に会社ブリーフと作業ボードを渡し、Ask first の承認境界・受け入れ基準・引き継ぎ・スキル・ルーチンの 7 手順で囲む。本ページの開発チーム運用に対し、業務運用を 1 体から始める側の手順

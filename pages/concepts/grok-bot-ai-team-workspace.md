@@ -92,3 +92,4 @@ Google ドライブの共有ナレッジベースは「全員の共有の土台�
 - [[concepts/private-agent-board]] — @geeorgey が複数社のエージェントを Cloudflare の掲示板でつないだ構成。本ページは 1 社の Grok Bot 内で担当を分け、共有基盤は Google ドライブ
 - [[tools/1password-for-agents]] — 図で認証情報の共有の土台に置かれた 1Password。Grok Bot は同製品の展開開始の連携先
 - [[concepts/ai-news-source-automation]] — 情報源を巡回して要点だけ届ける運用。ツムギの朝夕レポートは「話題」と「公式」を分け、全項目に出典と日時を付ける Grok Bot 版
+- [[concepts/grok-bot-one-person-harness]] — @beamnxw の一人会社向け設定手順。本ページが最初から 7 体を担当別に置くのに対し、Operator 1 体に会社ブリーフと作業ボードを渡して始め、繰り返し作業が見えてから Researcher・Delivery Bot を分ける順序を取る

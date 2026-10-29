@@ -82,3 +82,4 @@ flowchart LR
 - [[concepts/eval-loop]] — 出力を採点して閾値未満を止める品質ゲートの一般論。build-eval はその試験づくりを対話で自動化したもの
 - [[tools/skillopt]] — スキル文書を採点付き rollout と held-out 検証ゲートで最適化する Microsoft の OSS。train/test を分けて隠した側で採否を決める点が hillclimb と同型
 - [[tools/ant-cli]] — 同じ claude-api スキルと連携する公式 CLI
+- [[concepts/eval-harness]] — 同じ「1 変更ずつ」を本番 API 経由の回帰装置として組んだ例（Tony・Confident AI）。過剰適合対策が hillclimb の train/test 分割に対し、こちらは各質問を 3 回流してボットの揺れと judge の揺れを分け、常に合格→常に不合格だけ CI を赤にする
