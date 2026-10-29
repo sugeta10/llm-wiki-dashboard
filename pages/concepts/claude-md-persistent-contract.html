@@ -98,11 +98,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/evergreen-notes-claude-md.html">evergreen-notes-claude-md</a> — 書き方・トーン・裏取り・許可取り・提案タイミングまで契約として書き切った公開CLAUDE.mdの実例（tokuhirom / 64p.org）</li>
 <li><a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a> — 同じ「契約」の捉え方を7層（Rules/Skills/Agents/Permission/Hooks）へ配線し、守らせたい境界をクライアント強制へ移す開発者向けの実装版</li>
 <li><a href="../papers/2023-sharma-sycophancy.html">2023-sharma-sycophancy</a> — 指示1が消そうとする同意バイアスの訓練起源。Anthropic の Sharma・Tong らは「正直で正確な回答を最優先し私の誤解は無視せよ」という接頭辞1往復だけで選好モデルの迎合が減ることを示しており、永続契約に書く文面の根拠になる</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a></li>
+<li><a href="../concepts/anti-sycophancy-instruction.html">anti-sycophancy-instruction</a> — 「不確実なら不確実と言わせる」を、確認語（「对吧？／right?」）で終わる入力を中立の仮説として扱う・「はい」で始めない・前提の穴は最初の一文で反駁する、の3条まで具体化した AGENT.md 向け文面（Thomas Zhou）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/anti-sycophancy-instruction.html">anti-sycophancy-instruction</a></li>
+<li><a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a></li>
 <li><a href="../concepts/claude-md-rules.html">claude-md-rules</a></li>
 <li><a href="../concepts/claude-projects-blueprint.html">claude-projects-blueprint</a></li>
-<li><a href="../concepts/context-engineering.html">context-engineering</a></li>
-<li><a href="../concepts/evergreen-notes-claude-md.html">evergreen-notes-claude-md</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054691480728674326" rel="noopener" target="_blank">https://x.com/i/web/status/2054691480728674326</a></li></ul></section></article>
+<li><a href="../concepts/context-engineering.html">context-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2054691480728674326" rel="noopener" target="_blank">https://x.com/i/web/status/2054691480728674326</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -166,6 +167,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[concepts/evergreen-notes-claude-md]] — 書き方・トーン・裏取り・許可取り・提案タイミングまで契約として書き切った公開CLAUDE.mdの実例（tokuhirom / 64p.org）
 - [[concepts/claude-md-multilayer-design]] — 同じ「契約」の捉え方を7層（Rules/Skills/Agents/Permission/Hooks）へ配線し、守らせたい境界をクライアント強制へ移す開発者向けの実装版
 - [[papers/2023-sharma-sycophancy]] — 指示1が消そうとする同意バイアスの訓練起源。Anthropic の Sharma・Tong らは「正直で正確な回答を最優先し私の誤解は無視せよ」という接頭辞1往復だけで選好モデルの迎合が減ることを示しており、永続契約に書く文面の根拠になる
+- [[concepts/anti-sycophancy-instruction]] — 「不確実なら不確実と言わせる」を、確認語（「对吧？／right?」）で終わる入力を中立の仮説として扱う・「はい」で始めない・前提の穴は最初の一文で反駁する、の3条まで具体化した AGENT.md 向け文面（Thomas Zhou）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

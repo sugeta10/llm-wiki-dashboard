@@ -51,3 +51,4 @@ flowchart LR
 - [[concepts/ai-secretary-gateway]] — AI社員シリーズ②「AI秘書」（@dansyu_callenge）。同シリーズ①「AI参謀」（相談を判断へ変える人）と本ページの専属参謀は役割が近い
 - [[concepts/exclusion-first-prompting]] — 「出さなくていいもの」を指示の先頭に書く除外先行プロンプト（@smark_x）。既知を先に外す同じ型を日常の依頼全般に広げたもの
 - [[papers/2023-sharma-sycophancy]] — 「私が言いそうなことは失敗」の縛りが対抗する迎合（sycophancy）の実証研究。Anthropic の Sharma・Tong らは、ユーザーが好みや弱い意見を述べるだけで5モデルの講評・回答が曲がることを示した
+- [[concepts/anti-sycophancy-instruction]] — Thomas Zhou（@thomaszhou_）が AGENT.md に貼る反迎合3条。「私が言いそうなことは失敗」と同じ方向を、確認語（「对吧？／right?」）で終わる入力を中立の仮説として扱い「はい」で書き始めない、という単一エージェントへの常設指示として実装した例

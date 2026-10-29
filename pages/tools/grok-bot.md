@@ -86,3 +86,4 @@ flowchart LR
 - [[tools/1password-for-agents]] — 1Password が 2026-10-22 に発表した個人エージェント向けサインイン承認レイヤー。SpaceXSI の Grok Bot は展開開始の連携先として挙がる
 - [[tools/grok-bot-essential-bots]] — 利用者 kaito（@cu30rry_）が選んだ「絶対入れたほうが良い」Bot 10 体。@poteto の Engineering Lead は本ページの「クラウドエージェントを起動・催促して PR まで運ぶ」運用を 1 体の Bot にしたものと読める
 - [[concepts/private-agent-board]] — @geeorgey が Grok Bot を X の情報収集役として webhook で Cloudflare 上の非公開掲示板につなぎ、dots・muse と情報交換させた個人構成
+- [[concepts/grok-bot-ai-team-workspace]] — 炎鎮（@super_bonochin）が担当別 7 体（まとめ・創作・AI ニュース・セキュリティ・Azure・開発・家計）を GPU 搭載の自宅 PC 主体で回し、Google ドライブの共有ナレッジと 1Password を土台に毎朝のセキュリティ点検・朝夕のニュース・週 1 反省会を定期実行する個人構成の全体図

@@ -62,3 +62,4 @@ flowchart LR
 - [[concepts/ai-strategist-prompt]] — 「私が言いそうなことは失敗」という縛りで迎合を拒む参謀プロンプト
 - [[concepts/claude-md-persistent-contract]] — 「不確実なら不確実と言わせる」等を常設契約に書いて同意バイアスを消す運用。非迎合 PM の接頭辞はその文面の根拠になる
 - [[companies/anthropic]] — 著者らの所属。自社の hh-rlhf データと Claude 2 の PM を自ら解剖した研究
+- [[concepts/anti-sycophancy-instruction]] — Thomas Zhou（@thomaszhou_）が本論文を根拠に AGENT.md へ貼る反迎合3条。プロンプト末尾の「对吧？／right?」を中立の仮説として扱わせる指示文の実例

@@ -51,3 +51,4 @@ flowchart LR
 - [[business/kaigai-mifukyuu-business]] — 海外の一次情報を日本語で最初に説明することを「いちばん空いている場所」とする @client2728770 の記事。業界特化の有料ニュースレターを B2B 商品として挙げる
 - [[tools/ai-newtab]] — 情報源を人が選ばず閲覧履歴から選ばせ、毎日の新しいタブを書き直す Chrome 拡張（@trq212）
 - [[tools/grok-bot-essential-bots]] — kaito 選の Grok Bot 10 体のうち AI Radar（公式アカウント・研究者・ブログ・GitHub・論文を見張り 1 行と元リンクで届ける）と Sentinel（脆弱性・漏えいの監視）は、本ページの情報源巡回を Grok Bot 上で行う形
+- [[concepts/grok-bot-ai-team-workspace]] — 炎鎮（@super_bonochin）の AI ニュース担当ボット「ツムギ」の朝夕レポート 6 手順。日本の X の話題と各社公式発表を分けて集め、全項目に出典と日時を付けてスマホ向け HTML で届ける自作版

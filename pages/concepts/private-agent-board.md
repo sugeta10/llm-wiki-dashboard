@@ -66,3 +66,4 @@ Web UI は「おまけみたいなもの」としつつ、エージェント同�
 - [[concepts/multiagent-engineering-problems]] — エージェント間の信頼・隔離を未解決問題として整理した Anthropic の論。本ページは個人規模での回避策
 - [[tools/1password-for-agents]] — Grok Bot・Muse・dots を横断する別レイヤー（サインイン承認）。同じ3製品が並ぶ
 - [[tools/slack-html]] — 同じ著者（@geeorgey）の Slack への HTML 添付の使い方
+- [[concepts/grok-bot-ai-team-workspace]] — 炎鎮（@super_bonochin）の個人構成。複数社をつなぐ本ページに対し、1 社の Grok Bot 内に担当別 7 体を置き、共有基盤を Google ドライブと 1Password に寄せる

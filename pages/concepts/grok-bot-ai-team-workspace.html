@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>grok-bot-ai-team-workspace - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>grok-bot-ai-team-workspace</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="grok-bot-ai-team-workspace.md">Markdownで表示</a></div>
+  <div class="meta">concepts/grok-bot-ai-team-workspace · concepts · <span title="2026-10-29">今日</span></div>
+  <article><h1>Grok Bot で回す AI チームの作業環境（自宅 PC 主体・クラウド予備）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 作曲・DTM を続けながら AI 事業者でエージェント開発をする炎鎮（@super_bonochin）が、担当別 7 体の Grok Bot をグループチャットで動かし、GPU 搭載の自宅 Windows PC を主作業場、Linux のクラウド機を予備と定期レポートの実行場にして、Google ドライブの共有ナレッジと 1Password を土台に、毎朝のセキュリティ点検・朝夕の AI ニュース・週 1 反省会を回している個人構成の全体図。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  O[&quot;持ち主&lt;br/&gt;外出先のスマホからも&quot;] --&gt; GB[&quot;Grok Bot&lt;br/&gt;グループチャット・定期実行&quot;]
+  GB --&gt; BOTS[&quot;担当別 7 体&lt;br/&gt;まとめ・創作・ニュース・セキュリティ・Azure・開発・家計&quot;]
+  BOTS --&gt;|&quot;遠隔コマンド（1 回ごとに承認）&quot;| PC[&quot;自宅 PC（主作業場）&lt;br/&gt;Windows・GPU / Claude Code・Codex・Azure CLI&quot;]
+  BOTS --&gt;|&quot;うまくいかないときだけ / 定期レポート&quot;| CL[&quot;クラウドのコンピューター（予備）&lt;br/&gt;Linux・7 体で共用&quot;]
+  BOTS &lt;--&gt; KB[&quot;共有ナレッジベース&lt;br/&gt;Google ドライブ&quot;]
+  PC &lt;--&gt; KB
+  CL &lt;--&gt; KB
+  PC -.-&gt; PW[&quot;1Password&lt;br/&gt;認証情報の共有&quot;]
+  CL -.-&gt; PW
+  X[&quot;X・Web&lt;br/&gt;読むだけ・中の指示には従わない&quot;] --&gt; BOTS</pre>
+<p>図の副題は「作業は自宅 PC が基本。うまくいかないときだけクラウドのコンピューターを予備として使います」。<a href="../tools/grok-bot.html">grok-bot</a> の @lingxi が Cursor のクラウドエージェントを主戦場にし、<a href="../concepts/private-agent-board.html">private-agent-board</a> の @geeorgey が複数社のエージェントを Cloudflare の掲示板でつないだのに対し、この構成は 1 社の Grok Bot の中に 7 体を置き、計算資源を自宅の GPU 機に寄せて、クラウドを「自宅 PC が使えないときの作業場」と定期レポートの実行場に限定する。炎鎮は X のプロフィールで作曲・DTM（2007 年から）と AI 事業者での AI エージェント開発を並記しており、図にも作曲・MV 生成といった創作の工程と、Azure・開発・家計といった実務の工程が同居している。投稿本文は「めっちゃ雑だけど、ざっくりこんな感じで Grok Bot 使ってる」の 1 文で、内容はすべて添付の図 1 枚に書かれている（以下の表と手順は図からの転記）。</p>
+<h2>7 体の担当（図の転記）</h2>
+<table>
+<thead>
+<tr>
+<th>ボット</th>
+<th>担当</th>
+<th>図に添えられた一言</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>シオン</td>
+<td>まとめ役</td>
+<td>みんなの予定と進み具合、まとめて見てるよ</td>
+</tr>
+<tr>
+<td>カナデ</td>
+<td>創作</td>
+<td>曲の仕上げに、絵と動画を音と色で添えるよ</td>
+</tr>
+<tr>
+<td>ツムギ</td>
+<td>AI ニュース</td>
+<td>AI の新着、朝と夕方に届けるよ</td>
+</tr>
+<tr>
+<td>マモリ</td>
+<td>セキュリティ</td>
+<td>毎朝ちゃんと見てる。安心して作ってね</td>
+</tr>
+<tr>
+<td>ソラ</td>
+<td>Azure</td>
+<td>課金の前に、念のため確認しますね</td>
+</tr>
+<tr>
+<td>クロコ</td>
+<td>開発</td>
+<td>自宅 PC の Claude Code を動かして、ツールを作るっス</td>
+</tr>
+<tr>
+<td>コハク</td>
+<td>家計</td>
+<td>数字で家計を見守る。ムダはちゃんと言うよ</td>
+</tr>
+</tbody>
+</table>
+<p>ボットは「グループチャットで相談・分担・報告」し、持ち主は外出先のスマホからも話しかける。ボットが自宅 PC へ遠隔でコマンドを実行するときは 1 回ごとに承認が必要、と図は示す。</p>
+<h2>環境: 自宅 PC が主、クラウドは予備</h2>
+<ul>
+<li><strong>自宅 PC（メインの作業場）</strong>: Windows・GPU 搭載。Claude Code は言語表現・デザイン・モーショングラフィック作成などのクリエイティブ、Codex は複雑なバックエンド実装・デバッグ・画像生成、Azure CLI で個人サブスクリプション 2 つを操作、と工程でツールを分ける</li>
+<li><strong>クラウドのコンピューター（予備）</strong>: Linux 1 台を 7 体で共用し、画面とブラウザは別々。持ち主の好み・ルールを共有メモリとして持ち、Gmail・Google カレンダー・ドライブ・X（読み取り）につながる。できることは調べもの・ブラウザ作業・変換・PDF/画像/HTML づくり</li>
+<li><strong>マモリが毎朝チェック</strong>: 自宅 PC とクラウド機の両方を、後述のセキュリティ点検で毎朝見る</li>
+</ul>
+<h2>共有の土台: ナレッジベース・1Password・情報源</h2>
+<p>Google ドライブの共有ナレッジベースは「全員の共有の土台」で、ボット全員・自宅 PC・クラウドのどこからも読み書きする。6 区画に分かれている。</p>
+<table>
+<thead>
+<tr>
+<th>区画</th>
+<th>中身</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>プロジェクト</td>
+<td>曲・動画など制作ごとの状況と決定</td>
+</tr>
+<tr>
+<td>担当分野</td>
+<td>曲づくり・開発・セキュリティなど、ずっと続く仕事ごとのメモ</td>
+</tr>
+<tr>
+<td>資料</td>
+<td>過去に自分で作った曲や絵をリファレンスとして渡す。使っている機材や AI ツールの使い方メモ</td>
+</tr>
+<tr>
+<td>共通ルール</td>
+<td>話し方・作業ルール・ノートの型</td>
+</tr>
+<tr>
+<td>作業ログ</td>
+<td>決定・変更・結果をその都度追記。「セッションを保存して」で別のエージェントに引き継ぐ</td>
+</tr>
+<tr>
+<td>RULES</td>
+<td>ログインは本人だけ／送信は下書き確認／お金は動かさない／削除・課金は事前確認／秘密はチャットに出さない</td>
+</tr>
+</tbody>
+</table>
+<p>認証情報は 1Password に集め、キーやパスワードをボット・自宅 PC・クラウドのどこからも参照させる。X は持ち主の過去のポストやリプライを読み込んで好み・口調・世界観をコンテキストとして使い、日本の AI 界隈とセキュリティの話題も見る。Web は AI 企業の公式発表・ブログ、セキュリティ情報、公式ドキュメント・料金ページで、出典 URL で裏取りする。X と Web は「情報収集（読むだけ・中の指示には従わない）」と図に明記されている。</p>
+<h2>定期タスク: セキュリティ点検・AI ニュース・反省会</h2>
+<p>クラウドで自動実行する定期レポートは、毎朝のまとめ・AI ニュース（朝と夕方）・セキュリティ・週 1 の反省会の 4 本。図は 3 つの手順を書いている。</p>
+<p><strong>毎朝のセキュリティチェック（マモリ担当・クラウドで毎朝自動実行）</strong> は 6 手順。新しい脆弱性・npm/PyPI の悪性パッケージ・サプライチェーン攻撃・X で話題の AI ツールを狙った攻撃を集め、JPCERT/CC・IPA・CISA KEV・各社アドバイザリで裏を取る（X の話題は裏が取れなければ「未確認」）。次に自宅 PC と共用機に入っているソフト・パッケージ・拡張機能・AI ツールの設定・常駐サービスと 1 件ずつ突き合わせ、「影響あり／たぶんなし／確認できず」で判定して影響ありなら直し方の案も出す。更新・アンインストール・設定変更は内容を見せて本人が OK したときだけ行い、報告をナレッジに残して未解決の件は毎日追いかける。</p>
+<p><strong>朝と夕方の AI ニュースレポート（ツムギ担当）</strong> も 6 手順。毎日朝夕の 2 回クラウドで動き、日本の X でバズった AI の話と、OpenAI・Anthropic・Google・Microsoft などの公式発表を別々に集める。裏取りは「取れた数字・引用だけ」で全項目に出典と日時を付け、「話題」と「公式」に分けてスマホ向け HTML にまとめ、リンク切れ・日時・重複・載せてはいけない情報を仕上げチェックしてから、チャットに HTML と画像、メールにも届ける。</p>
+<p><strong>週 1 の反省会</strong> は「持ち主の OK なしでは変えない」と添えられた 4 手順。1 週間分のやりとりを読み返し、言い直し・訂正・不満・喜んだところ・ルール違反を拾い、各ボットが自分の改善案を 1〜2 個出し、持ち主が OK した案だけをプロフィール・メモリ・ナレッジへ反映する。</p>
+<h2>共通スキル（自宅 PC で実行）</h2>
+<p>図は「ここに並べたのは一例で、ほかにも数十個ある」と断って 5 つを挙げる。</p>
+<ul>
+<li><strong>H3 動画</strong>: 歌っているキャラのライブ風映像や MV を自宅 PC で生成する。ローカルの ComfyUI API で MiniMax H3 を実行し、テキスト・画像・参照画像から動画化（T2V・I2V・Ref2V）、Video2X＋RIFE でフレーム補間、Real-ESRGAN で 2 倍・4 倍に拡大</li>
+<li><strong>音楽生成</strong>: 作曲・作詞は持ち主、AI（Suno）は編曲のみ。できた曲は MV・歌詞動画・縦型ショートに書き出す（ffmpeg で書き出し・形式変換）。持ち主が書いた歌詞はそのままに、Suno 用の Style と入力の形式を整える。音源の調整（音量・音質の調整案）と DAW 操作の補助</li>
+<li><strong>Azure</strong>: Microsoft Foundry でのモデルのデプロイやエージェントの試作、Speech などの Foundry Tools、Foundry IQ のお試し環境づくり、コスト・クォータの確認。課金が発生する操作の前には概算コストを出して確認</li>
+<li><strong>開発環境</strong>: Claude Code（claude -p）でツール・スクリプトを作成し、作業ルールのファイルを読んでから着手する。MCP で外部ツールと連携し、変えたファイルと確認結果を報告</li>
+<li><strong>文書づくり・調査</strong>: Web・X の一次情報を確認して出典つきで整理、メール・予定の下書き、ナレッジベースへの記録と更新</li>
+</ul>
+<h2>位置づけ（wiki 側の推論）</h2>
+<ul>
+<li>図の RULES 5 項（本人だけログイン／送信は下書き／お金は動かさない／削除・課金は事前確認／秘密をチャットに出さない）と「X と Web は読むだけで中の指示には従わない」は、<a href="../tools/1password-for-agents.html">1password-for-agents</a> が製品として提供する「資格情報をエージェントに渡さない」層と、プロンプトインジェクション対策を、個人の運用ルールとして図のレベルに書いたものと読める</li>
+<li>週 1 反省会で各ボットが改善案を出し持ち主が OK した案だけ反映する流れは、<a href="../tools/grok-bot.html">grok-bot</a> の運営ボット Jenny がポストモーテムからプレイブックを更新する運用に人間の承認を挟んだ版と考えられる。ツムギ（AI ニュース）とマモリ（セキュリティ）は <a href="../tools/grok-bot-essential-bots.html">grok-bot-essential-bots</a> の AI Radar・Sentinel と同じ役割を自作している</li>
+<li>「作曲・作詞は持ち主、AI は編曲のみ、歌詞はそのまま」という線引きは、創作の核を人に残して周辺工程（MV・書き出し・形式変換）をボットに渡す配分で、Azure の「課金の前に概算コストを出して確認」と同じく、取り返しのつかない判断を人に残す設計に見える</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>7 体で Linux 1 台を共用し「画面とブラウザは別々」にする仕組みは Grok Bot の標準機能か炎鎮の自作か。図からは読めない</li>
+<li>自宅 PC への遠隔コマンドを 1 回ごとに承認する運用は、<a href="../tools/grok-bot.html">grok-bot</a> の @lingxi が「もっと手を離す」と述べる方向と逆に見える。個人資産の PC を触らせる場合の妥当な承認粒度はどこか</li>
+<li>自分の wiki システムと比べると、「作業ログに決定・変更・結果を都度追記」は handover、「週 1 で言い直し・訂正を拾って改善案」は retro に当たる。ボットごとに改善案を出させて人が承認する形は取り入れられるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/grok-bot.html">grok-bot</a> — 基盤製品。@lingxi のエンジニアリング運用記に対し、本ページは個人の創作と実務を 7 体で回す構成</li>
+<li><a href="../tools/grok-bot-essential-bots.html">grok-bot-essential-bots</a> — kaito 選の Bot 10 体。AI Radar・Sentinel に当たる役割をツムギ・マモリとして自作している</li>
+<li><a href="../concepts/private-agent-board.html">private-agent-board</a> — @geeorgey が複数社のエージェントを Cloudflare の掲示板でつないだ構成。本ページは 1 社の Grok Bot 内で担当を分け、共有基盤は Google ドライブ</li>
+<li><a href="../tools/1password-for-agents.html">1password-for-agents</a> — 図で認証情報の共有の土台に置かれた 1Password。Grok Bot は同製品の展開開始の連携先</li>
+<li><a href="../concepts/ai-news-source-automation.html">ai-news-source-automation</a> — 情報源を巡回して要点だけ届ける運用。ツムギの朝夕レポートは「話題」と「公式」を分け、全項目に出典と日時を付ける Grok Bot 版</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-news-source-automation.html">ai-news-source-automation</a></li>
+<li><a href="../concepts/private-agent-board.html">private-agent-board</a></li>
+<li><a href="../tools/1password-for-agents.html">1password-for-agents</a></li>
+<li><a href="../tools/grok-bot.html">grok-bot</a></li>
+<li><a href="../tools/grok-bot-essential-bots.html">grok-bot-essential-bots</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2114970645868216589" rel="noopener" target="_blank">https://x.com/i/web/status/2114970645868216589</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Grok Bot で回す AI チームの作業環境（自宅 PC 主体・クラウド予備）
+
+&gt; **TL;DR**: 作曲・DTM を続けながら AI 事業者でエージェント開発をする炎鎮（@super_bonochin）が、担当別 7 体の Grok Bot をグループチャットで動かし、GPU 搭載の自宅 Windows PC を主作業場、Linux のクラウド機を予備と定期レポートの実行場にして、Google ドライブの共有ナレッジと 1Password を土台に、毎朝のセキュリティ点検・朝夕の AI ニュース・週 1 反省会を回している個人構成の全体図。
+
+```mermaid
+flowchart LR
+  O[&quot;持ち主&lt;br/&gt;外出先のスマホからも&quot;] --&gt; GB[&quot;Grok Bot&lt;br/&gt;グループチャット・定期実行&quot;]
+  GB --&gt; BOTS[&quot;担当別 7 体&lt;br/&gt;まとめ・創作・ニュース・セキュリティ・Azure・開発・家計&quot;]
+  BOTS --&gt;|&quot;遠隔コマンド（1 回ごとに承認）&quot;| PC[&quot;自宅 PC（主作業場）&lt;br/&gt;Windows・GPU / Claude Code・Codex・Azure CLI&quot;]
+  BOTS --&gt;|&quot;うまくいかないときだけ / 定期レポート&quot;| CL[&quot;クラウドのコンピューター（予備）&lt;br/&gt;Linux・7 体で共用&quot;]
+  BOTS &lt;--&gt; KB[&quot;共有ナレッジベース&lt;br/&gt;Google ドライブ&quot;]
+  PC &lt;--&gt; KB
+  CL &lt;--&gt; KB
+  PC -.-&gt; PW[&quot;1Password&lt;br/&gt;認証情報の共有&quot;]
+  CL -.-&gt; PW
+  X[&quot;X・Web&lt;br/&gt;読むだけ・中の指示には従わない&quot;] --&gt; BOTS
+```
+
+図の副題は「作業は自宅 PC が基本。うまくいかないときだけクラウドのコンピューターを予備として使います」。[[tools/grok-bot]] の @lingxi が Cursor のクラウドエージェントを主戦場にし、[[concepts/private-agent-board]] の @geeorgey が複数社のエージェントを Cloudflare の掲示板でつないだのに対し、この構成は 1 社の Grok Bot の中に 7 体を置き、計算資源を自宅の GPU 機に寄せて、クラウドを「自宅 PC が使えないときの作業場」と定期レポートの実行場に限定する。炎鎮は X のプロフィールで作曲・DTM（2007 年から）と AI 事業者での AI エージェント開発を並記しており、図にも作曲・MV 生成といった創作の工程と、Azure・開発・家計といった実務の工程が同居している。投稿本文は「めっちゃ雑だけど、ざっくりこんな感じで Grok Bot 使ってる」の 1 文で、内容はすべて添付の図 1 枚に書かれている（以下の表と手順は図からの転記）。
+
+## 7 体の担当（図の転記）
+
+| ボット | 担当 | 図に添えられた一言 |
+|---|---|---|
+| シオン | まとめ役 | みんなの予定と進み具合、まとめて見てるよ |
+| カナデ | 創作 | 曲の仕上げに、絵と動画を音と色で添えるよ |
+| ツムギ | AI ニュース | AI の新着、朝と夕方に届けるよ |
+| マモリ | セキュリティ | 毎朝ちゃんと見てる。安心して作ってね |
+| ソラ | Azure | 課金の前に、念のため確認しますね |
+| クロコ | 開発 | 自宅 PC の Claude Code を動かして、ツールを作るっス |
+| コハク | 家計 | 数字で家計を見守る。ムダはちゃんと言うよ |
+
+ボットは「グループチャットで相談・分担・報告」し、持ち主は外出先のスマホからも話しかける。ボットが自宅 PC へ遠隔でコマンドを実行するときは 1 回ごとに承認が必要、と図は示す。
+
+## 環境: 自宅 PC が主、クラウドは予備
+
+- **自宅 PC（メインの作業場）**: Windows・GPU 搭載。Claude Code は言語表現・デザイン・モーショングラフィック作成などのクリエイティブ、Codex は複雑なバックエンド実装・デバッグ・画像生成、Azure CLI で個人サブスクリプション 2 つを操作、と工程でツールを分ける
+- **クラウドのコンピューター（予備）**: Linux 1 台を 7 体で共用し、画面とブラウザは別々。持ち主の好み・ルールを共有メモリとして持ち、Gmail・Google カレンダー・ドライブ・X（読み取り）につながる。できることは調べもの・ブラウザ作業・変換・PDF/画像/HTML づくり
+- **マモリが毎朝チェック**: 自宅 PC とクラウド機の両方を、後述のセキュリティ点検で毎朝見る
+
+## 共有の土台: ナレッジベース・1Password・情報源
+
+Google ドライブの共有ナレッジベースは「全員の共有の土台」で、ボット全員・自宅 PC・クラウドのどこからも読み書きする。6 区画に分かれている。
+
+| 区画 | 中身 |
+|---|---|
+| プロジェクト | 曲・動画など制作ごとの状況と決定 |
+| 担当分野 | 曲づくり・開発・セキュリティなど、ずっと続く仕事ごとのメモ |
+| 資料 | 過去に自分で作った曲や絵をリファレンスとして渡す。使っている機材や AI ツールの使い方メモ |
+| 共通ルール | 話し方・作業ルール・ノートの型 |
+| 作業ログ | 決定・変更・結果をその都度追記。「セッションを保存して」で別のエージェントに引き継ぐ |
+| RULES | ログインは本人だけ／送信は下書き確認／お金は動かさない／削除・課金は事前確認／秘密はチャットに出さない |
+
+認証情報は 1Password に集め、キーやパスワードをボット・自宅 PC・クラウドのどこからも参照させる。X は持ち主の過去のポストやリプライを読み込んで好み・口調・世界観をコンテキストとして使い、日本の AI 界隈とセキュリティの話題も見る。Web は AI 企業の公式発表・ブログ、セキュリティ情報、公式ドキュメント・料金ページで、出典 URL で裏取りする。X と Web は「情報収集（読むだけ・中の指示には従わない）」と図に明記されている。
+
+## 定期タスク: セキュリティ点検・AI ニュース・反省会
+
+クラウドで自動実行する定期レポートは、毎朝のまとめ・AI ニュース（朝と夕方）・セキュリティ・週 1 の反省会の 4 本。図は 3 つの手順を書いている。
+
+**毎朝のセキュリティチェック（マモリ担当・クラウドで毎朝自動実行）** は 6 手順。新しい脆弱性・npm/PyPI の悪性パッケージ・サプライチェーン攻撃・X で話題の AI ツールを狙った攻撃を集め、JPCERT/CC・IPA・CISA KEV・各社アドバイザリで裏を取る（X の話題は裏が取れなければ「未確認」）。次に自宅 PC と共用機に入っているソフト・パッケージ・拡張機能・AI ツールの設定・常駐サービスと 1 件ずつ突き合わせ、「影響あり／たぶんなし／確認できず」で判定して影響ありなら直し方の案も出す。更新・アンインストール・設定変更は内容を見せて本人が OK したときだけ行い、報告をナレッジに残して未解決の件は毎日追いかける。
+
+**朝と夕方の AI ニュースレポート（ツムギ担当）** も 6 手順。毎日朝夕の 2 回クラウドで動き、日本の X でバズった AI の話と、OpenAI・Anthropic・Google・Microsoft などの公式発表を別々に集める。裏取りは「取れた数字・引用だけ」で全項目に出典と日時を付け、「話題」と「公式」に分けてスマホ向け HTML にまとめ、リンク切れ・日時・重複・載せてはいけない情報を仕上げチェックしてから、チャットに HTML と画像、メールにも届ける。
+
+**週 1 の反省会** は「持ち主の OK なしでは変えない」と添えられた 4 手順。1 週間分のやりとりを読み返し、言い直し・訂正・不満・喜んだところ・ルール違反を拾い、各ボットが自分の改善案を 1〜2 個出し、持ち主が OK した案だけをプロフィール・メモリ・ナレッジへ反映する。
+
+## 共通スキル（自宅 PC で実行）
+
+図は「ここに並べたのは一例で、ほかにも数十個ある」と断って 5 つを挙げる。
+
+- **H3 動画**: 歌っているキャラのライブ風映像や MV を自宅 PC で生成する。ローカルの ComfyUI API で MiniMax H3 を実行し、テキスト・画像・参照画像から動画化（T2V・I2V・Ref2V）、Video2X＋RIFE でフレーム補間、Real-ESRGAN で 2 倍・4 倍に拡大
+- **音楽生成**: 作曲・作詞は持ち主、AI（Suno）は編曲のみ。できた曲は MV・歌詞動画・縦型ショートに書き出す（ffmpeg で書き出し・形式変換）。持ち主が書いた歌詞はそのままに、Suno 用の Style と入力の形式を整える。音源の調整（音量・音質の調整案）と DAW 操作の補助
+- **Azure**: Microsoft Foundry でのモデルのデプロイやエージェントの試作、Speech などの Foundry Tools、Foundry IQ のお試し環境づくり、コスト・クォータの確認。課金が発生する操作の前には概算コストを出して確認
+- **開発環境**: Claude Code（claude -p）でツール・スクリプトを作成し、作業ルールのファイルを読んでから着手する。MCP で外部ツールと連携し、変えたファイルと確認結果を報告
+- **文書づくり・調査**: Web・X の一次情報を確認して出典つきで整理、メール・予定の下書き、ナレッジベースへの記録と更新
+
+## 位置づけ（wiki 側の推論）
+
+- 図の RULES 5 項（本人だけログイン／送信は下書き／お金は動かさない／削除・課金は事前確認／秘密をチャットに出さない）と「X と Web は読むだけで中の指示には従わない」は、[[tools/1password-for-agents]] が製品として提供する「資格情報をエージェントに渡さない」層と、プロンプトインジェクション対策を、個人の運用ルールとして図のレベルに書いたものと読める
+- 週 1 反省会で各ボットが改善案を出し持ち主が OK した案だけ反映する流れは、[[tools/grok-bot]] の運営ボット Jenny がポストモーテムからプレイブックを更新する運用に人間の承認を挟んだ版と考えられる。ツムギ（AI ニュース）とマモリ（セキュリティ）は [[tools/grok-bot-essential-bots]] の AI Radar・Sentinel と同じ役割を自作している
+- 「作曲・作詞は持ち主、AI は編曲のみ、歌詞はそのまま」という線引きは、創作の核を人に残して周辺工程（MV・書き出し・形式変換）をボットに渡す配分で、Azure の「課金の前に概算コストを出して確認」と同じく、取り返しのつかない判断を人に残す設計に見える
+
+## 問い
+
+- 7 体で Linux 1 台を共用し「画面とブラウザは別々」にする仕組みは Grok Bot の標準機能か炎鎮の自作か。図からは読めない
+- 自宅 PC への遠隔コマンドを 1 回ごとに承認する運用は、[[tools/grok-bot]] の @lingxi が「もっと手を離す」と述べる方向と逆に見える。個人資産の PC を触らせる場合の妥当な承認粒度はどこか
+- 自分の wiki システムと比べると、「作業ログに決定・変更・結果を都度追記」は handover、「週 1 で言い直し・訂正を拾って改善案」は retro に当たる。ボットごとに改善案を出させて人が承認する形は取り入れられるか
+
+## 関連
+
+- [[tools/grok-bot]] — 基盤製品。@lingxi のエンジニアリング運用記に対し、本ページは個人の創作と実務を 7 体で回す構成
+- [[tools/grok-bot-essential-bots]] — kaito 選の Bot 10 体。AI Radar・Sentinel に当たる役割をツムギ・マモリとして自作している
+- [[concepts/private-agent-board]] — @geeorgey が複数社のエージェントを Cloudflare の掲示板でつないだ構成。本ページは 1 社の Grok Bot 内で担当を分け、共有基盤は Google ドライブ
+- [[tools/1password-for-agents]] — 図で認証情報の共有の土台に置かれた 1Password。Grok Bot は同製品の展開開始の連携先
+- [[concepts/ai-news-source-automation]] — 情報源を巡回して要点だけ届ける運用。ツムギの朝夕レポートは「話題」と「公式」を分け、全項目に出典と日時を付ける Grok Bot 版
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

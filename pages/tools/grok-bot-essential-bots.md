@@ -49,3 +49,4 @@ kaito は分類を示していないが、役割で分けると 5 つに読め�
 - [[concepts/instruction-patch-lifecycle]] — 指示を期限付きパッチとして外す手順。trimmy が自動化する対象
 - [[concepts/ai-secretary-gateway]] — 依頼の窓口に限定した AI 秘書。Commitments が近い役割
 - [[tools/html-plan]] — 作る前に案を 1 ページで見せ指摘を貼り戻す Claude Code プラグイン。akapen bot と同型
+- [[concepts/grok-bot-ai-team-workspace]] — 炎鎮（@super_bonochin）の 7 体構成。AI Radar・Sentinel に当たる役割をツムギ（朝夕の AI ニュース）・マモリ（毎朝のセキュリティ点検）として自作し、自宅 PC と共有ナレッジで回す全体図

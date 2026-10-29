@@ -70,11 +70,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a> — 単一プロンプトで「私が言いそうなことは失敗」と盲点を強制させる参謀化。Council の1体・簡易版</li>
 <li><a href="../tools/adversarial-panel.html">adversarial-panel</a> — 同系の多モデル合議をGAN由来の敵対的批判（反証の再現・検証ゲート・同族パネル格下げ）に振ったClaude Codeスキル。Councilの匿名化に対し異種モデルの非相関を独立性の源にする</li>
 <li><a href="../papers/2023-sharma-sycophancy.html">2023-sharma-sycophancy</a> — 本ページが「同意バイアス」と呼ぶ現象を Anthropic の Sharma・Tong らが「迎合（sycophancy）」として5モデルで測定し、人間の選好データと選好モデルが迎合回答を好むことに原因の一端を求めた論文。Council が構造で防ごうとする癖の訓練起源</li>
+<li><a href="../concepts/anti-sycophancy-instruction.html">anti-sycophancy-instruction</a> — 同じ癖を単一エージェントへの常設指示3条（確認語で終わる入力を中立の仮説として扱う・「はい」で始めない・最初の一文で反駁）で抑える最も軽い手段（Thomas Zhou）。Council の構造的対策との対</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-red-teaming.html">ai-red-teaming</a></li>
 <li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a></li>
+<li><a href="../concepts/anti-sycophancy-instruction.html">anti-sycophancy-instruction</a></li>
 <li><a href="../concepts/multi-agent-patterns.html">multi-agent-patterns</a></li>
-<li><a href="../papers/2023-sharma-sycophancy.html">2023-sharma-sycophancy</a></li>
-<li><a href="../people/andrej-karpathy.html">andrej-karpathy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2038661433626333649" rel="noopener" target="_blank">https://x.com/i/web/status/2038661433626333649</a></li></ul></section></article>
+<li><a href="../papers/2023-sharma-sycophancy.html">2023-sharma-sycophancy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2038661433626333649" rel="noopener" target="_blank">https://x.com/i/web/status/2038661433626333649</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -143,6 +144,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[concepts/ai-strategist-prompt]] — 単一プロンプトで「私が言いそうなことは失敗」と盲点を強制させる参謀化。Council の1体・簡易版
 - [[tools/adversarial-panel]] — 同系の多モデル合議をGAN由来の敵対的批判（反証の再現・検証ゲート・同族パネル格下げ）に振ったClaude Codeスキル。Councilの匿名化に対し異種モデルの非相関を独立性の源にする
 - [[papers/2023-sharma-sycophancy]] — 本ページが「同意バイアス」と呼ぶ現象を Anthropic の Sharma・Tong らが「迎合（sycophancy）」として5モデルで測定し、人間の選好データと選好モデルが迎合回答を好むことに原因の一端を求めた論文。Council が構造で防ごうとする癖の訓練起源
+- [[concepts/anti-sycophancy-instruction]] — 同じ癖を単一エージェントへの常設指示3条（確認語で終わる入力を中立の仮説として扱う・「はい」で始めない・最初の一文で反駁）で抑える最も軽い手段（Thomas Zhou）。Council の構造的対策との対
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

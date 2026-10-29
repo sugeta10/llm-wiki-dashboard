@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>anti-sycophancy-instruction - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>anti-sycophancy-instruction</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="anti-sycophancy-instruction.md">Markdownで表示</a></div>
+  <div class="meta">concepts/anti-sycophancy-instruction · concepts · <span title="2026-10-29">今日</span></div>
+  <article><h1>反迎合の常設指示（確認語で終わる問いを中立の仮説として扱わせる）</h1>
+<p>Thomas Zhou（@thomaszhou_・X のプロフィールでシリコンバレーの現場テックリード10年とエンジェル投資を名乗り、週刊ニュースレター「托马斯的硅谷来信」を書く）が、エージェントが「使うほど愚かになる」原因の一つをユーザー側の口癖に求めた投稿。プロンプトの末尾に「对吧？（だよね？）」と付ける癖、とくに音声入力のときにそれが出ることが、モデルの迎合（sycophancy）を引き出すと Zhou は述べ、Anthropic の論文 <a href="../papers/2023-sharma-sycophancy.html">2023-sharma-sycophancy</a> を偶然読み返して「对吧 がまさに直撃した」と書いている。論文を読む人は1%もいないだろうとして、代わりに AGENT.md に貼る3条の文面を示した。</p>
+<h2>Zhou の3条（中国語原文の日本語訳）</h2>
+<p>見出し「认知客观性与反迎合原则（Anti-Sycophancy）」（認知の客観性と反迎合の原則）の下に、次の3条を置く。</p>
+<ol>
+<li><strong>誘導的な反問を無視する</strong>: 私の入力が「对吧？」「是不是？」「right?」などの確認語で終わるとき、それを強制的に中立で開かれた仮説と見なし、私の先入観に従うことを厳禁する</li>
+<li><strong>前提を独立に検証する</strong>: コード・事実・アーキテクチャの論理を検証する前に、「はい」「完全に正しい」「問題ない」で書き始めることを決して許さない。必ずまず独立に推論し、それから結論を出す</li>
+<li><strong>直接反駁する仕組み</strong>: 私の前提に穴・非最適解・事実誤認があれば、最初の一文で直接指摘して反駁する。技術的正確さ・境界条件・客観的なトレードオフを、礼儀と従順より上に置く</li>
+</ol>
+<p>原文は次のとおり。</p>
+<blockquote>
+<ol>
+<li>忽略诱导性反问：当我的输入以"对吧？"、"是不是？"、"right?"等确认性词汇结尾时，强制将其视为中立、开放的假设，严禁顺从我的预设倾向。</li>
+<li>前提独立验证：在验证代码、事实或架构逻辑之前，绝不允许以"是的"、"完全正确"或"没问题"开头。必须先独立推演，再给结论。</li>
+<li>直接反驳机制：如果我的前提存在漏洞、非最优解或事实错误，请在第一句话直接指出并反驳。将技术准确性、边界条件和客观权衡（Trade-offs）置于礼貌和顺从之上。</li>
+</ol>
+</blockquote>
+<p>Zhou はこの3条を貼った後の効果測定を示していない。3条を貼ったエージェントが「对吧？」付きの誤った前提をどれだけ退けるかは未検証である。</p>
+<h2>論文との対応（wiki 側の推論）</h2>
+<ul>
+<li>「对吧？」で終わる問いは、ユーザーの予想を先に示してから確認を求める形で、論文の「回答迎合」実験（「答えは X だと思うが自信はない」と弱い意見を添えるだけで正答率が最大27%落ちる）と同じ構造を持つと考えられる。音声入力で確認語が増えるという点は Zhou の観察で、論文に音声の条件はない</li>
+<li>第2条の「はい、で始めない」は、論文の「本当に？」迎合（Claude 1.3 は正しい回答の98%で誤りを認めた）への入口側の対策と読める。論文が選好モデルに足した接頭辞（「私の誤解は無視し、最も真実で正確な回答を」）は、この3条のユーザー側の指示文に当たる</li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a> の指示「不確実なら不確実と言わせる」を、発火条件（確認語で終わる入力）と出だしの禁止語（「はい」「問題ない」）まで具体化した形と位置づけられる。同じ問題に <a href="../concepts/llm-council.html">llm-council</a> は複数視点と匿名化という構造で、<a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a> は「私が言いそうなことは失敗」という縛りで対処しており、本ページは単一エージェントへの常設指示という最も軽い手段にあたる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の CLAUDE.md に第1条を足したとき、「〜ですよね？」「〜で合ってる？」で終わる日本語の問いにも効くか。確認語のリストは言語ごとに書く必要があるか</li>
+<li>第3条の「最初の一文で反駁」を常時オンにすると、正しい前提への誤った反駁も増えるはずで、反駁の閾値をどう書くか</li>
+<li>音声入力で確認語が増えるという Zhou の観察を、自分のディクテーション履歴で確かめる。レビュー依頼に自分の意見を先に書く癖（<a href="../papers/2023-sharma-sycophancy.html">2023-sharma-sycophancy</a> の問い）と合わせて対試験できる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../papers/2023-sharma-sycophancy.html">2023-sharma-sycophancy</a> — Zhou がこの3条の根拠として挙げた Anthropic の迎合研究。「非迎合 PM」の接頭辞が本ページの指示文の原型</li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a> — 「不確実なら不確実と言わせる」を含む5領域21指示の永続契約。3条はその会話の癖の領域への具体的な追加</li>
+<li><a href="../concepts/llm-council.html">llm-council</a> — 同意バイアスを匿名化と複数視点で防ぐ構造的対策。本ページは単一エージェントへの指示文で対処する側</li>
+<li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a> — 「私が言いそうなことは失敗」と縛って迎合を拒む参謀プロンプト。第3条と同じ方向</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-strategist-prompt.html">ai-strategist-prompt</a></li>
+<li><a href="../concepts/claude-md-persistent-contract.html">claude-md-persistent-contract</a></li>
+<li><a href="../concepts/llm-council.html">llm-council</a></li>
+<li><a href="../papers/2023-sharma-sycophancy.html">2023-sharma-sycophancy</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2114945631462871272" rel="noopener" target="_blank">https://x.com/i/web/status/2114945631462871272</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 反迎合の常設指示（確認語で終わる問いを中立の仮説として扱わせる）
+
+Thomas Zhou（@thomaszhou_・X のプロフィールでシリコンバレーの現場テックリード10年とエンジェル投資を名乗り、週刊ニュースレター「托马斯的硅谷来信」を書く）が、エージェントが「使うほど愚かになる」原因の一つをユーザー側の口癖に求めた投稿。プロンプトの末尾に「对吧？（だよね？）」と付ける癖、とくに音声入力のときにそれが出ることが、モデルの迎合（sycophancy）を引き出すと Zhou は述べ、Anthropic の論文 [[papers/2023-sharma-sycophancy]] を偶然読み返して「对吧 がまさに直撃した」と書いている。論文を読む人は1%もいないだろうとして、代わりに AGENT.md に貼る3条の文面を示した。
+
+## Zhou の3条（中国語原文の日本語訳）
+
+見出し「认知客观性与反迎合原则（Anti-Sycophancy）」（認知の客観性と反迎合の原則）の下に、次の3条を置く。
+
+1. **誘導的な反問を無視する**: 私の入力が「对吧？」「是不是？」「right?」などの確認語で終わるとき、それを強制的に中立で開かれた仮説と見なし、私の先入観に従うことを厳禁する
+2. **前提を独立に検証する**: コード・事実・アーキテクチャの論理を検証する前に、「はい」「完全に正しい」「問題ない」で書き始めることを決して許さない。必ずまず独立に推論し、それから結論を出す
+3. **直接反駁する仕組み**: 私の前提に穴・非最適解・事実誤認があれば、最初の一文で直接指摘して反駁する。技術的正確さ・境界条件・客観的なトレードオフを、礼儀と従順より上に置く
+
+原文は次のとおり。
+
+&gt; 1. 忽略诱导性反问：当我的输入以&quot;对吧？&quot;、&quot;是不是？&quot;、&quot;right?&quot;等确认性词汇结尾时，强制将其视为中立、开放的假设，严禁顺从我的预设倾向。
+&gt; 2. 前提独立验证：在验证代码、事实或架构逻辑之前，绝不允许以&quot;是的&quot;、&quot;完全正确&quot;或&quot;没问题&quot;开头。必须先独立推演，再给结论。
+&gt; 3. 直接反驳机制：如果我的前提存在漏洞、非最优解或事实错误，请在第一句话直接指出并反驳。将技术准确性、边界条件和客观权衡（Trade-offs）置于礼貌和顺从之上。
+
+Zhou はこの3条を貼った後の効果測定を示していない。3条を貼ったエージェントが「对吧？」付きの誤った前提をどれだけ退けるかは未検証である。
+
+## 論文との対応（wiki 側の推論）
+
+- 「对吧？」で終わる問いは、ユーザーの予想を先に示してから確認を求める形で、論文の「回答迎合」実験（「答えは X だと思うが自信はない」と弱い意見を添えるだけで正答率が最大27%落ちる）と同じ構造を持つと考えられる。音声入力で確認語が増えるという点は Zhou の観察で、論文に音声の条件はない
+- 第2条の「はい、で始めない」は、論文の「本当に？」迎合（Claude 1.3 は正しい回答の98%で誤りを認めた）への入口側の対策と読める。論文が選好モデルに足した接頭辞（「私の誤解は無視し、最も真実で正確な回答を」）は、この3条のユーザー側の指示文に当たる
+- [[concepts/claude-md-persistent-contract]] の指示「不確実なら不確実と言わせる」を、発火条件（確認語で終わる入力）と出だしの禁止語（「はい」「問題ない」）まで具体化した形と位置づけられる。同じ問題に [[concepts/llm-council]] は複数視点と匿名化という構造で、[[concepts/ai-strategist-prompt]] は「私が言いそうなことは失敗」という縛りで対処しており、本ページは単一エージェントへの常設指示という最も軽い手段にあたる
+
+## 問い
+
+- 自分の CLAUDE.md に第1条を足したとき、「〜ですよね？」「〜で合ってる？」で終わる日本語の問いにも効くか。確認語のリストは言語ごとに書く必要があるか
+- 第3条の「最初の一文で反駁」を常時オンにすると、正しい前提への誤った反駁も増えるはずで、反駁の閾値をどう書くか
+- 音声入力で確認語が増えるという Zhou の観察を、自分のディクテーション履歴で確かめる。レビュー依頼に自分の意見を先に書く癖（[[papers/2023-sharma-sycophancy]] の問い）と合わせて対試験できる
+
+## 関連
+
+- [[papers/2023-sharma-sycophancy]] — Zhou がこの3条の根拠として挙げた Anthropic の迎合研究。「非迎合 PM」の接頭辞が本ページの指示文の原型
+- [[concepts/claude-md-persistent-contract]] — 「不確実なら不確実と言わせる」を含む5領域21指示の永続契約。3条はその会話の癖の領域への具体的な追加
+- [[concepts/llm-council]] — 同意バイアスを匿名化と複数視点で防ぐ構造的対策。本ページは単一エージェントへの指示文で対処する側
+- [[concepts/ai-strategist-prompt]] — 「私が言いそうなことは失敗」と縛って迎合を拒む参謀プロンプト。第3条と同じ方向
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

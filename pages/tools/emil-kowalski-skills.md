@@ -21,9 +21,14 @@ Kowalski氏の問題意識は「Agents don't have great taste」。enterアニ�
 
 インストールは `npx skills@latest add emilkowalski/skills`（skills.sh 経由）。
 
+## 普及の節目と収録数の拡大（2026-10-26 時点）
+
+Kowalski氏は 2026-10-26 に、リポジトリが **50,000 stars・270万ダウンロード**に達したと投稿し、「More skills coming soon, you'll like them」と次のスキルを予告した（ダウンロード数の集計元は投稿に記載がない）。wiki 側で 2026-10-29 に GitHub API を確認したところ、stars は 51,258、最終 push は 2026-10-28 で、`skills/` 配下のディレクトリは上の表の4本から16本に増えていた（animate・animate-expo・animation-performance・animation-vocabulary・apple-design・ask-sonner・break-ui・emil-design-eng・find-animation-opportunities・improve-animations・mobile-native・pick-ui-library・prototype・remove-animations・review-animations・write-swift）。ディレクトリ名から読む限り、Expo・Swift などモバイル向け、UI ライブラリの選定（pick-ui-library・ask-sonner）、アニメーションの発見・改善・削除・性能、プロトタイプ作成へ範囲が広がっていると考えられる。各スキルの SKILL.md 本体は未取得。
+
 ## 問い
 
 - apple-designの17原則の中身は何か（SKILL.md本体は未取得）。[[tools/ui-skills]] 掲載の `emil-design-eng` と本リポは同一ソースか
+- 16本に増えた現在、stars とダウンロードを牽引しているのはどのスキルか。skills.sh 側でスキル別のインストール数は取れるか。remove-animations（アニメーションを消す）を apple-design と並べて置く意図は何か
 - review-animations（レビュー）とapple-design（原則）を制作フローのどこで使い分けるか。frontend-design系スキルと併用して衝突しないか
 
 ## 関連
