@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>chatgpt-plan-api-credits - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>chatgpt-plan-api-credits</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="chatgpt-plan-api-credits.md">Markdownで表示</a></div>
+  <div class="meta">business/chatgpt-plan-api-credits · business · <span title="2026-10-30">今日</span></div>
+  <article><h1>ChatGPT Pro/Business の月次 API クレジット</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: ChatGPT の Pro・Business 契約に、OpenAI API で使える月次クレジットが付くようになった（Pro $100／$200／$500、Business は席ごとに $20／$100 を上限 $500 でプール）。対象は自作アプリ・エージェントの API 利用で、Codex は API キー経由でも対象外。Anthropic が3週間前に始めた Max/Team 向け施策と額・条件がほぼ一致する。</p>
+</blockquote>
+<p>@OpenAIDevs が 2026-10-28（UTC）に「今日から、対象の ChatGPT Pro・Business 契約者は毎月最大 $500 の API クレジットを受け取ってアプリやエージェントを作れる」と発表した。Anthropic が 2026-10-07 に始めた <a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a> と同じ構造で、サブスクリプション（ChatGPT・Codex の利用枠）と API 従量課金という別々の財布のうち、API 側に毎月サブスク代とほぼ同額を無料で積む。この発表を引用した @gunta85（Günther | グンタ。GProductionsJP の CEO・Design Engineer）は両社の付与額を円建てで並べ、「どっちもサブスク代と同額が毎月付く。最初に一回紐付けないともらえない」「Claude Code 勢は 10/7 からもらえてたけど、気づいてない人多そう」と書いている。条件の正本は OpenAI のヘルプセンター記事と開発者ドキュメントで、以下はそこからの転記である。</p>
+<h2>付与額</h2>
+<table>
+<thead>
+<tr>
+<th>プラン</th>
+<th>月次クレジット</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pro（$100 ティア）</td>
+<td>$100</td>
+</tr>
+<tr>
+<td>Pro（$200 ティア）</td>
+<td>$200</td>
+</tr>
+<tr>
+<td>Pro（$500 ティア）</td>
+<td>$500</td>
+</tr>
+<tr>
+<td>Business Standard 席</td>
+<td>1席 $20（ワークスペースでプール）</td>
+</tr>
+<tr>
+<td>Business Premium 席</td>
+<td>1席 $100（ワークスペースでプール）</td>
+</tr>
+<tr>
+<td>Business ワークスペース上限</td>
+<td>月 $500（年払いは年 $6,000）</td>
+</tr>
+</tbody>
+</table>
+<p>Business は $20 × Standard 席数 ＋ $100 × Premium 席数 と $500 の小さい方になる。ヘルプ記事の例では Standard 5席＋Premium 3席で $400、Standard 10席＋Premium 4席は上限前の $600 が $500 に切られる。初回の付与は課金期間の残り日数で日割りされ、年払いの Business は1年分をまとめて受け取る。Plus・無料トライアル・Enterprise・Edu・旧 Codex 席は対象外。</p>
+<p>@gunta85 は日本の価格で次のように読み替えている（円換算は本人のもの）。</p>
+<table>
+<thead>
+<tr>
+<th>プラン（@gunta85 の表記）</th>
+<th>月額</th>
+<th>毎月の付与</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pro</td>
+<td>1.8万円</td>
+<td>1.6万円分</td>
+</tr>
+<tr>
+<td>Pro</td>
+<td>3.5万円</td>
+<td>3.2万円分</td>
+</tr>
+<tr>
+<td>Pro</td>
+<td>8.8万円（年96万）</td>
+<td>8万円分</td>
+</tr>
+<tr>
+<td>Business</td>
+<td>Standard 席 / Premium 席</td>
+<td>3,200円 / 1.6万円分（全体で上限8万）</td>
+</tr>
+<tr>
+<td>Plus</td>
+<td>3,500円</td>
+<td>0円</td>
+</tr>
+</tbody>
+</table>
+<h2>受け取り方と条件</h2>
+<ul>
+<li>対象プランで有料契約が7日以上続いていること。契約が対象でも付与は自動では始まらず、紐づけ（activation）を一度行う</li>
+<li>ChatGPT のアカウントと API 側のアカウントで同じメールアドレスを使う</li>
+<li>Pro は契約者本人が受け取り先 API 組織の Owner でもあること。Business はワークスペースの Owner かつ API 組織の Owner で、メンバーや Admin だけでは紐づけできない。API 組織側では billing を管理できる権限が要る</li>
+<li>紐づけは ChatGPT の Settings → Billing（Pro）またはワークスペースの billing 設定・Admin Console（Business）から「API credits benefit」を開き、受け取り先の API 組織を確認して確定する。API Platform の Billing 画面から始める経路もある</li>
+<li>API を使ったことがなければ、同じメールアドレスの Personal API Organization に紐づけられる。API 側のオンボーディング完了は不要</li>
+<li>1つの契約・ワークスペースは1つの API 組織にだけ紐づけられ、API 組織側も1本のリンクしか持てない。変更はサポート経由</li>
+<li>一度紐づければ、以後は契約更新のたびに自動で付与される。毎月の再申請は不要</li>
+</ul>
+<p>@gunta85 は「罠」として、加入7日後から・繰越なし・紐付け先は1つで変更はサポート経由、という点が Claude 側と共通で、ChatGPT 側だけに「ChatGPT と API で同じメアド必須」が加わると整理している。</p>
+<h2>使える範囲・使えない範囲</h2>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>対象外</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Responses API・Chat Completions</td>
+<td>Codex（API キー経由も対象外）</td>
+</tr>
+<tr>
+<td>Agents API（OpenAI ホストのサンドボックス料金を含む）</td>
+<td>ChatGPT・サインイン済み Codex の利用上限（増えない）</td>
+</tr>
+<tr>
+<td>Decisions API</td>
+<td>個人の usage-credit 残高・Business ワークスペースのクレジット残高（加算されない）</td>
+</tr>
+<tr>
+<td>GPT-Live・Realtime API</td>
+<td>ChatGPT Business のプラグイン・クレジット・プロモーション（別の施策）</td>
+</tr>
+<tr>
+<td>Images API</td>
+<td>—</td>
+</tr>
+<tr>
+<td>組み込みツール（Web 検索・ファイル検索・Code Interpreter）とその利用・ストレージ料金</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Playground</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Business のメンバーは ChatGPT の席を持っていても API 組織・プロジェクトへのアクセスは別途付与が要り、API の利用量や上限が ChatGPT Business 側に移ることもない。</p>
+<h2>残高の挙動</h2>
+<ul>
+<li>課金サイクル末で失効し、繰り越しなし。年払い Business は年サイクル末に失効</li>
+<li>無料クレジットが購入クレジットより先に消費される。使い切ったとき、購入分があればそちらで継続し、無ければ API リクエストは HTTP 429・エラーコード <code>credit_balance_exhausted</code> で失敗する。続けるには購入か Auto Recharge</li>
+<li>API 側に支払い方法を登録しなくても無料クレジットで使える。usage tier は条件を満たせば自動で上がる。クレジット残高があってもレート制限・モデル制限・プロジェクト上限は外れない</li>
+<li>解約すると以後の付与は止まり、付与済み分はサイクル末まで使える。Plus・Go・Free へのダウングレードはサイクル末にリンクが外れる。Pro のアップグレードや Business の席追加・席種アップグレードは上限内で日割りの追加付与、席の付け替えは追加付与なし</li>
+<li>Pro から Business に移るとリンクは切れ、Business の有料契約が7日続いた後に Owner が新しく紐づける。Business から Enterprise に移るとサイクル末にリンクが外れる</li>
+<li>紐づけを行った Owner が Business ワークスペースを離れるとリンクが外れ、そのサイクル中は再リンクできない</li>
+<li>全額返金が認められると、その請求に紐づく未使用クレジットは消える</li>
+<li>ヘルプ記事は提供が「有効化されたコホートと国」に依存し、施策自体が変更・終了しうると書いている</li>
+</ul>
+<h2>Claude 側との対照</h2>
+<p>@gunta85 が「Pro/Max は差額が消費税だけ」「Team/Business は席の値段も付与額も上限も完全一致」と並べた対応関係を、両社の公式記事の値で書き直すと次のようになる。Claude 側の値は <a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a> に転記した Anthropic サポート記事による。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>ChatGPT（OpenAI・2026-10-28 開始）</th>
+<th>Claude（Anthropic・2026-10-07 開始）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>個人上位プラン</td>
+<td>Pro $100 / $200 / $500</td>
+<td>Max 5x $100 / Max 20x $200</td>
+</tr>
+<tr>
+<td>チームプラン</td>
+<td>Business Standard 席 $20・Premium 席 $100・上限 $500</td>
+<td>Team Standard 席 $20・Premium 席 $100・上限 $500</td>
+</tr>
+<tr>
+<td>入門プラン</td>
+<td>Plus は対象外</td>
+<td>Pro は対象外</td>
+</tr>
+<tr>
+<td>自社コーディングエージェント</td>
+<td>Codex は API キー経由でも対象外</td>
+<td>対話型の <a href="../tools/claude-code.html">claude-code</a> は対象外。紐づけた Console の API キーで自分で動かす <code>claude -p</code>・Agent SDK は対象</td>
+</tr>
+<tr>
+<td>待機期間・繰越・紐づけ先</td>
+<td>7日・なし・1組織（変更はサポート経由）</td>
+<td>7日・なし・1組織（変更はサポート経由）</td>
+</tr>
+<tr>
+<td>支払い方法の登録</td>
+<td>API 側に不要</td>
+<td>Console 側に不要</td>
+</tr>
+<tr>
+<td>追加条件</td>
+<td>ChatGPT と API で同じメールアドレス</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>2社の条件がここまで揃うのは、先に出した Anthropic の施策に OpenAI が3週間で追随したためと考えられる（wiki 側の推論。両社の公式記事は互いに言及しない）。はっきり違うのは自社コーディングエージェントの扱いで、Anthropic は API キーで動かすヘッドレスの Claude Code と Agent SDK をクレジットの対象に入れ、OpenAI は Codex を経路を問わず外している。@gunta85 は使い道として「自作エージェント、CI ボット、夜間バッチ、自分のアプリ」を挙げている。</p>
+<h2>問い</h2>
+<ul>
+<li>ChatGPT Pro の $100 ティアを契約している場合、Codex が対象外なので使い道は Agents API・Responses API での自作バッチに限られる。openai-codex の「2本目のエンジン」戦略に月 $100 の API 枠を足すなら、Codex 本体でなく API 側のどの工程（レビューの下請け・夜間バッチ）に回すと見合うか</li>
+<li>2社が3週間差で同額・同条件を出した。Google・xAI など他社が追随するか、あるいは Codex・Claude Code 本体がクレジットの対象に入る方向に条件が緩むか</li>
+<li>ヘルプ記事は提供が「コホートと国」で異なると書く。日本の Pro 契約で実際に Billing 画面に表示されるか。@gunta85 は「今日から」と書くが、本人が受け取ったという記述はソースに無い</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a> — 3週間先行した Anthropic 側の同型施策。付与額・上限・7日・繰越なしまで一致する</li>
+<li>openai-codex — クレジットは Codex に使えない（API キー経由も対象外）。サインイン済み Codex の利用上限も増えない</li>
+<li><a href="../companies/openai.html">openai</a> — 提供元</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/claude-plan-api-credits.html">claude-plan-api-credits</a></li>
+<li><a href="../companies/openai.html">openai</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2115640643225846084" rel="noopener" target="_blank">https://x.com/i/web/status/2115640643225846084</a></li>
+<li><a href="https://help.openai.com/en/articles/20001626-api-credits-benefit-for-eligible-chatgpt-subscriptions" rel="noopener" target="_blank">https://help.openai.com/en/articles/20001626-api-credits-benefit-for-eligible-chatgpt-subscriptions</a></li>
+<li><a href="https://developers.openai.com/api/docs/guides/chatgpt-api-credits" rel="noopener" target="_blank">https://developers.openai.com/api/docs/guides/chatgpt-api-credits</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># ChatGPT Pro/Business の月次 API クレジット
+
+&gt; **TL;DR**: ChatGPT の Pro・Business 契約に、OpenAI API で使える月次クレジットが付くようになった（Pro $100／$200／$500、Business は席ごとに $20／$100 を上限 $500 でプール）。対象は自作アプリ・エージェントの API 利用で、Codex は API キー経由でも対象外。Anthropic が3週間前に始めた Max/Team 向け施策と額・条件がほぼ一致する。
+
+@OpenAIDevs が 2026-10-28（UTC）に「今日から、対象の ChatGPT Pro・Business 契約者は毎月最大 $500 の API クレジットを受け取ってアプリやエージェントを作れる」と発表した。Anthropic が 2026-10-07 に始めた [[business/claude-plan-api-credits]] と同じ構造で、サブスクリプション（ChatGPT・Codex の利用枠）と API 従量課金という別々の財布のうち、API 側に毎月サブスク代とほぼ同額を無料で積む。この発表を引用した @gunta85（Günther | グンタ。GProductionsJP の CEO・Design Engineer）は両社の付与額を円建てで並べ、「どっちもサブスク代と同額が毎月付く。最初に一回紐付けないともらえない」「Claude Code 勢は 10/7 からもらえてたけど、気づいてない人多そう」と書いている。条件の正本は OpenAI のヘルプセンター記事と開発者ドキュメントで、以下はそこからの転記である。
+
+## 付与額
+
+| プラン | 月次クレジット |
+| --- | --- |
+| Pro（$100 ティア） | $100 |
+| Pro（$200 ティア） | $200 |
+| Pro（$500 ティア） | $500 |
+| Business Standard 席 | 1席 $20（ワークスペースでプール） |
+| Business Premium 席 | 1席 $100（ワークスペースでプール） |
+| Business ワークスペース上限 | 月 $500（年払いは年 $6,000） |
+
+Business は $20 × Standard 席数 ＋ $100 × Premium 席数 と $500 の小さい方になる。ヘルプ記事の例では Standard 5席＋Premium 3席で $400、Standard 10席＋Premium 4席は上限前の $600 が $500 に切られる。初回の付与は課金期間の残り日数で日割りされ、年払いの Business は1年分をまとめて受け取る。Plus・無料トライアル・Enterprise・Edu・旧 Codex 席は対象外。
+
+@gunta85 は日本の価格で次のように読み替えている（円換算は本人のもの）。
+
+| プラン（@gunta85 の表記） | 月額 | 毎月の付与 |
+| --- | --- | --- |
+| Pro | 1.8万円 | 1.6万円分 |
+| Pro | 3.5万円 | 3.2万円分 |
+| Pro | 8.8万円（年96万） | 8万円分 |
+| Business | Standard 席 / Premium 席 | 3,200円 / 1.6万円分（全体で上限8万） |
+| Plus | 3,500円 | 0円 |
+
+## 受け取り方と条件
+
+- 対象プランで有料契約が7日以上続いていること。契約が対象でも付与は自動では始まらず、紐づけ（activation）を一度行う
+- ChatGPT のアカウントと API 側のアカウントで同じメールアドレスを使う
+- Pro は契約者本人が受け取り先 API 組織の Owner でもあること。Business はワークスペースの Owner かつ API 組織の Owner で、メンバーや Admin だけでは紐づけできない。API 組織側では billing を管理できる権限が要る
+- 紐づけは ChatGPT の Settings → Billing（Pro）またはワークスペースの billing 設定・Admin Console（Business）から「API credits benefit」を開き、受け取り先の API 組織を確認して確定する。API Platform の Billing 画面から始める経路もある
+- API を使ったことがなければ、同じメールアドレスの Personal API Organization に紐づけられる。API 側のオンボーディング完了は不要
+- 1つの契約・ワークスペースは1つの API 組織にだけ紐づけられ、API 組織側も1本のリンクしか持てない。変更はサポート経由
+- 一度紐づければ、以後は契約更新のたびに自動で付与される。毎月の再申請は不要
+
+@gunta85 は「罠」として、加入7日後から・繰越なし・紐付け先は1つで変更はサポート経由、という点が Claude 側と共通で、ChatGPT 側だけに「ChatGPT と API で同じメアド必須」が加わると整理している。
+
+## 使える範囲・使えない範囲
+
+| 対象 | 対象外 |
+| --- | --- |
+| Responses API・Chat Completions | Codex（API キー経由も対象外） |
+| Agents API（OpenAI ホストのサンドボックス料金を含む） | ChatGPT・サインイン済み Codex の利用上限（増えない） |
+| Decisions API | 個人の usage-credit 残高・Business ワークスペースのクレジット残高（加算されない） |
+| GPT-Live・Realtime API | ChatGPT Business のプラグイン・クレジット・プロモーション（別の施策） |
+| Images API | — |
+| 組み込みツール（Web 検索・ファイル検索・Code Interpreter）とその利用・ストレージ料金 | — |
+| Playground | — |
+
+Business のメンバーは ChatGPT の席を持っていても API 組織・プロジェクトへのアクセスは別途付与が要り、API の利用量や上限が ChatGPT Business 側に移ることもない。
+
+## 残高の挙動
+
+- 課金サイクル末で失効し、繰り越しなし。年払い Business は年サイクル末に失効
+- 無料クレジットが購入クレジットより先に消費される。使い切ったとき、購入分があればそちらで継続し、無ければ API リクエストは HTTP 429・エラーコード `credit_balance_exhausted` で失敗する。続けるには購入か Auto Recharge
+- API 側に支払い方法を登録しなくても無料クレジットで使える。usage tier は条件を満たせば自動で上がる。クレジット残高があってもレート制限・モデル制限・プロジェクト上限は外れない
+- 解約すると以後の付与は止まり、付与済み分はサイクル末まで使える。Plus・Go・Free へのダウングレードはサイクル末にリンクが外れる。Pro のアップグレードや Business の席追加・席種アップグレードは上限内で日割りの追加付与、席の付け替えは追加付与なし
+- Pro から Business に移るとリンクは切れ、Business の有料契約が7日続いた後に Owner が新しく紐づける。Business から Enterprise に移るとサイクル末にリンクが外れる
+- 紐づけを行った Owner が Business ワークスペースを離れるとリンクが外れ、そのサイクル中は再リンクできない
+- 全額返金が認められると、その請求に紐づく未使用クレジットは消える
+- ヘルプ記事は提供が「有効化されたコホートと国」に依存し、施策自体が変更・終了しうると書いている
+
+## Claude 側との対照
+
+@gunta85 が「Pro/Max は差額が消費税だけ」「Team/Business は席の値段も付与額も上限も完全一致」と並べた対応関係を、両社の公式記事の値で書き直すと次のようになる。Claude 側の値は [[business/claude-plan-api-credits]] に転記した Anthropic サポート記事による。
+
+| | ChatGPT（OpenAI・2026-10-28 開始） | Claude（Anthropic・2026-10-07 開始） |
+| --- | --- | --- |
+| 個人上位プラン | Pro $100 / $200 / $500 | Max 5x $100 / Max 20x $200 |
+| チームプラン | Business Standard 席 $20・Premium 席 $100・上限 $500 | Team Standard 席 $20・Premium 席 $100・上限 $500 |
+| 入門プラン | Plus は対象外 | Pro は対象外 |
+| 自社コーディングエージェント | Codex は API キー経由でも対象外 | 対話型の [[tools/claude-code]] は対象外。紐づけた Console の API キーで自分で動かす `claude -p`・Agent SDK は対象 |
+| 待機期間・繰越・紐づけ先 | 7日・なし・1組織（変更はサポート経由） | 7日・なし・1組織（変更はサポート経由） |
+| 支払い方法の登録 | API 側に不要 | Console 側に不要 |
+| 追加条件 | ChatGPT と API で同じメールアドレス | — |
+
+2社の条件がここまで揃うのは、先に出した Anthropic の施策に OpenAI が3週間で追随したためと考えられる（wiki 側の推論。両社の公式記事は互いに言及しない）。はっきり違うのは自社コーディングエージェントの扱いで、Anthropic は API キーで動かすヘッドレスの Claude Code と Agent SDK をクレジットの対象に入れ、OpenAI は Codex を経路を問わず外している。@gunta85 は使い道として「自作エージェント、CI ボット、夜間バッチ、自分のアプリ」を挙げている。
+
+## 問い
+
+- ChatGPT Pro の $100 ティアを契約している場合、Codex が対象外なので使い道は Agents API・Responses API での自作バッチに限られる。[[tools/openai-codex]] の「2本目のエンジン」戦略に月 $100 の API 枠を足すなら、Codex 本体でなく API 側のどの工程（レビューの下請け・夜間バッチ）に回すと見合うか
+- 2社が3週間差で同額・同条件を出した。Google・xAI など他社が追随するか、あるいは Codex・Claude Code 本体がクレジットの対象に入る方向に条件が緩むか
+- ヘルプ記事は提供が「コホートと国」で異なると書く。日本の Pro 契約で実際に Billing 画面に表示されるか。@gunta85 は「今日から」と書くが、本人が受け取ったという記述はソースに無い
+
+## 関連
+
+- [[business/claude-plan-api-credits]] — 3週間先行した Anthropic 側の同型施策。付与額・上限・7日・繰越なしまで一致する
+- [[tools/openai-codex]] — クレジットは Codex に使えない（API キー経由も対象外）。サインイン済み Codex の利用上限も増えない
+- [[companies/openai]] — 提供元
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -58,3 +58,4 @@ Team は全席分を1つの月次残高にプールし、上限は $500。サポ
 - [[companies/anthropic]] — 提供元
 - [[tools/claude-managed-agents]] — クレジットの対象。`/claude-api managed-agents-onboard` で始めるよう勧められた先
 - [[tools/ai-newtab]] — @trq212 がクレジットの使い道の例として公開した、閲覧履歴から毎日書き直す新しいタブ（Managed Agents を自分の API キーで駆動）
+- [[business/chatgpt-plan-api-credits]] — OpenAI が3週間後（2026-10-28）に出した同型施策。Pro $100/$200/$500・Business 席 $20/$100・上限 $500 で額も条件もほぼ一致。違いは Codex が API キー経由でも対象外な点
