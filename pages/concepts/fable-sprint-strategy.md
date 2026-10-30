@@ -43,3 +43,4 @@ flowchart LR
 - [[models/claude-fable-5]] — 本ページの前提だった「週次上限の50%まで無償」プロモは2026-07-19に終了し、Max・premium seatではプラン標準、Pro・standard seatでは従量課金という恒常構造に移行した（プラン別の提供条件の節）
 - [[concepts/loop-engineering]] — 「雑にトークンを燃やせない環境ではループ設計が腕の見せ所」という本ページの前提の一般論側
 - [[tools/herdr]] — クォータが速く尽きるFable 5.1を司令塔に限定し実装を他ペインへ回す運用（@Voxyz_ai）。本ページの「制限下でFableをPlanner/Evaluatorに置く」配分の別実践者版
+- [[concepts/joho-asshi]] — 「HTMLしか読まない」と同じ詰まり（AI の出力を人間が読み切れない）を、梶谷健人が個人の AI リサーチの積読として扱い、毎回指定する出力形式で解くと述べる続編記事の節（形式本体は有料部分で未収録）

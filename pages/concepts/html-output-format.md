@@ -42,3 +42,4 @@ Anthropicが公開した実例ギャラリーリポジトリ「html-effectivenes
 - [[concepts/overnight-delegation-prompt]] — 夜間に任せる側の一文プロンプト。朝に成果を読む工程をプロジェクトマップで軽くする組み合わせ先
 - [[tools/html-slide-presenter]] — HTMLスライドの横に presenter.html を置き、元HTMLを変えずに発表者ツールを外付けする応用例（梶谷健人製）
 - [[tools/html-plan]] — HTML 出力を実装プランの質疑に絞った実装例（@trq212 作）。主張の木を1階層ずつ開き、回答を1回の貼り戻しで返す
+- [[concepts/joho-asshi]] — 梶谷健人の情報圧死論と、その続編の有料 note 記事。「Markdown でなく 1 枚のウェブページ」出力をよく紹介される手と位置づけ、AI リサーチが積読にならないようさらに踏み込んだ形式を毎回指定すると述べる（形式本体は有料部分で未収録）
