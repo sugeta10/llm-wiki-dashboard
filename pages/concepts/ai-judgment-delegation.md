@@ -43,3 +43,4 @@ flowchart LR
 - [[concepts/agent-era-code-review]] — Claude Code チームがリスク別に人間承認を 0／1／2 人へ段階化した組織規模の答え
 - [[concepts/ai-review-bottleneck]] — 人間の承認・レビューがボトルネックになるという同じ出発点を、個人運用の側から扱うページ
 - [[concepts/scheduled-agent-automation]] — 定時起動エージェントの公式参照実装。人間の承認を最小化する運用の 6 ルール
+- [[papers/2026-kewenig-metacognitive-scaffolds]] — ボーナスがあっても参加者の 40% がタスク説明文をそのままプロンプトに貼り、仕様の決定まで AI に委ねたランダム化実験。本ページの「手放す方が便利」が実行の承認を越えて仕様にも及ぶ実測
