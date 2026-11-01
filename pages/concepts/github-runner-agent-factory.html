@@ -53,11 +53,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/loop-engineering.html">loop-engineering</a> — 人間がループの外に出てエージェントを回し続ける設計論。本ページはその実行基盤を GitHub に置いた個人実践</li>
 <li><a href="../tools/crabbox.html">crabbox</a> — エージェントの計算をリモートマシンへ逃がす基盤。対応プロバイダーに Blacksmith を含む</li>
 <li><a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a> — 「ソフトウェア工場」を全社規模のコスト方程式で扱う Uber の事例</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
+<li><a href="../concepts/agent-era-ci-speedup.html">agent-era-ci-speedup</a> — 本ページの「CI/CD がボトルネック→Blacksmith で高速化」を Boardy が 9 手順に展開した記録（40 分→2 分・月 230→4,300 ドル・owen）。ランナー移行の後に残る lint・型検査・シャード・セットアップ・affected 限定・pre-push hook まで</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-era-ci-speedup.html">agent-era-ci-speedup</a></li>
+<li><a href="../concepts/loop-engineering.html">loop-engineering</a></li>
 <li><a href="../concepts/software-factory-cost-equation.html">software-factory-cost-equation</a></li>
 <li><a href="../tools/crabbox.html">crabbox</a></li>
-<li><a href="../tools/grok-bot.html">grok-bot</a></li>
-<li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2101574031623569734" rel="noopener" target="_blank">https://x.com/i/web/status/2101574031623569734</a></li></ul></section></article>
+<li><a href="../tools/grok-bot.html">grok-bot</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2101574031623569734" rel="noopener" target="_blank">https://x.com/i/web/status/2101574031623569734</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -104,6 +105,7 @@ AIエージェントに止まらず開発させ続ける「ソフトウェア工
 - [[concepts/loop-engineering]] — 人間がループの外に出てエージェントを回し続ける設計論。本ページはその実行基盤を GitHub に置いた個人実践
 - [[tools/crabbox]] — エージェントの計算をリモートマシンへ逃がす基盤。対応プロバイダーに Blacksmith を含む
 - [[concepts/software-factory-cost-equation]] — 「ソフトウェア工場」を全社規模のコスト方程式で扱う Uber の事例
+- [[concepts/agent-era-ci-speedup]] — 本ページの「CI/CD がボトルネック→Blacksmith で高速化」を Boardy が 9 手順に展開した記録（40 分→2 分・月 230→4,300 ドル・owen）。ランナー移行の後に残る lint・型検査・シャード・セットアップ・affected 限定・pre-push hook まで
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

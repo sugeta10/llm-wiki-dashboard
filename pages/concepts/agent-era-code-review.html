@@ -146,11 +146,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/small-change-auto-approval.html">small-change-auto-approval</a> — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照</li>
 <li><a href="../tools/addyosmani-agent-skills.html">addyosmani-agent-skills</a> — X 記事版の書き手 Addy Osmani が Google 在籍時に公開したスキルパック。レビュー観点を人からスキルへ焼き込む点で本ページの「同じ指摘は発生源で直す」と同じ発想</li>
 <li><a href="../concepts/frequency-impact-fix-threshold.html">frequency-impact-fix-threshold</a> — 「レビューは収束しなければならない」への個人規模の答え。Codex のレビュー指示に発生頻度×影響度の 1〜10 採点を置き、積が閾値未満なら Issue 起票だけで修正しない（@hawkymisc）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-scale-source-control.html">agent-scale-source-control</a></li>
+<li><a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a> — FurtherAI の出荷工程の月ごとの自動化（AI が先に見る 60%→99%・暗黙知を Python チェック 21 本に・低リスクは人なしで最大 1/3）。本ページの多層レビューと同じ打ち手をスタートアップ規模で、組織設計まで追った記録（Sashank Gondala）</li>
+<li><a href="../concepts/agent-era-ci-speedup.html">agent-era-ci-speedup</a> — 本ページが「ブロックする自動チェック」の 1 層に置く CI を、Boardy が 40 分→2 分にした 9 手順。「次のボトルネックは自分がマージを押すこと」と締める地点が本ページの無人マージにつながる（owen）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-era-ci-speedup.html">agent-era-ci-speedup</a></li>
+<li><a href="../concepts/agent-scale-source-control.html">agent-scale-source-control</a></li>
 <li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
 <li><a href="../concepts/ai-judgment-delegation.html">ai-judgment-delegation</a></li>
-<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
-<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111168901723906176" rel="noopener" target="_blank">https://x.com/i/web/status/2111168901723906176</a></li>
+<li><a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111168901723906176" rel="noopener" target="_blank">https://x.com/i/web/status/2111168901723906176</a></li>
 <li><a href="https://claude.dev/blog/solving-code-review-at-anthropic/" rel="noopener" target="_blank">https://claude.dev/blog/solving-code-review-at-anthropic/</a></li>
 <li><a href="https://x.com/i/web/status/2114604912520921136" rel="noopener" target="_blank">https://x.com/i/web/status/2114604912520921136</a></li></ul></section></article>
 </main>
@@ -283,6 +285,8 @@ Claude Code チームの Addy Osmani（X プロフィールは「Claude Code @an
 - [[concepts/small-change-auto-approval]] — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照
 - [[tools/addyosmani-agent-skills]] — X 記事版の書き手 Addy Osmani が Google 在籍時に公開したスキルパック。レビュー観点を人からスキルへ焼き込む点で本ページの「同じ指摘は発生源で直す」と同じ発想
 - [[concepts/frequency-impact-fix-threshold]] — 「レビューは収束しなければならない」への個人規模の答え。Codex のレビュー指示に発生頻度×影響度の 1〜10 採点を置き、積が閾値未満なら Issue 起票だけで修正しない（@hawkymisc）
+- [[concepts/ai-native-engineering-org]] — FurtherAI の出荷工程の月ごとの自動化（AI が先に見る 60%→99%・暗黙知を Python チェック 21 本に・低リスクは人なしで最大 1/3）。本ページの多層レビューと同じ打ち手をスタートアップ規模で、組織設計まで追った記録（Sashank Gondala）
+- [[concepts/agent-era-ci-speedup]] — 本ページが「ブロックする自動チェック」の 1 層に置く CI を、Boardy が 40 分→2 分にした 9 手順。「次のボトルネックは自分がマージを押すこと」と締める地点が本ページの無人マージにつながる（owen）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

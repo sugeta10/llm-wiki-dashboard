@@ -39,3 +39,4 @@
 - [[concepts/php-critical-vuln-2026-10]] — 使い回しパスワードの変更と 2 段階認証が勧められた直前の出来事
 - [[concepts/claude-code-task-delegation]] — Claude Code に業務フローを渡す活用法 50 選。同じチャエンの自宅 Wi-Fi 診断と並ぶ、ソフトウェア開発以外への委任例
 - [[tools/claude-code]] — 本ページでダッシュボードを作り CLI を叩く側
+- [[tools/1password]] — 製品本体のページ。hayatosc（@sh_at_tus）は CLI の価値を「op:// 参照だけをローカルに置き、コーディングエージェントが API キーを読まずに実行できる」点に置く。本ページの CLI 経由で Claude Code に読ませる構成とは、エージェントに何を見せるかの向きが違う

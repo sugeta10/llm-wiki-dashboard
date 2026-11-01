@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>agent-era-ci-speedup - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>agent-era-ci-speedup</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-era-ci-speedup.md">Markdownで表示</a></div>
+  <div class="meta">concepts/agent-era-ci-speedup · concepts · <span title="2026-11-01">今日</span></div>
+  <article><h1>エージェント時代の CI 高速化（Boardy の 40 分→2 分）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: コードを書く速さが 10 倍になっても CI が同じなら待つのは CI になる、として Boardy の head of engineering の owen（@owengretzinger）が CI を製品として扱い、ランナー移行・Oxlint・型検査器の乗り換え・シャード・isolate: false・セットアップ監査・全並列・affected 限定・pre-push hook の 9 手で PR の CI 待ちを最長 40 分から 2 分にした手順書。「この記事をエージェントに渡して同じことをさせろ」と書く。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Agent[&quot;エージェントが push&quot;] --&gt; Hook[&quot;pre-push hook&lt;br/&gt;format・lint・typecheck を 9 秒未満&quot;]
+  Hook --&gt; Runner[&quot;自前ランナー（Blacksmith）&lt;br/&gt;起動まで 8 秒&quot;]
+  Runner --&gt; Lint[&quot;Oxlint（5 秒）&quot;]
+  Runner --&gt; Type[&quot;bun check（5 秒未満）&quot;]
+  Runner --&gt; Build[&quot;ビルド&quot;]
+  Runner --&gt; Shards[&quot;テスト 6 シャード × 8 vCPU&lt;br/&gt;isolate: false・nx affected&quot;]
+  Lint --&gt; PR[&quot;PR の待ち時間 = 最も遅いジョブ（約 2 分）&quot;]
+  Type --&gt; PR
+  Build --&gt; PR
+  Shards --&gt; PR</pre>
+<p>1 年前の Boardy では PR が CI を最長 40 分待っていた。owen がこれを問題にしたのは、出荷する PR がすべてコーディングエージェントで書かれるようになったからで、エージェントは push に疲れない。push して CI を待ち、赤いチェックを直して再 push する。書く速さが 10 倍になっても CI が同じなら待っているのは CI だ、と owen は書く。そこでこの 1 か月、CI を製品のように扱い、作業の大半は Slack の社内エージェントに携帯から指示して進めたという。記事中のコード片（ランナー指定の 1 行・設定値）と、Linear の同趣旨の投稿への参照は、キャッシュには本文が収録されていない。</p>
+<h2>9 の手順（owen の記事からの転記）</h2>
+<ol>
+<li><strong>GitHub の既定ランナーをやめる</strong>。ジョブはマシンが割り当たるまで最長 11 分待っていたが、今は 8 秒で始まる。ジョブごとに 1 行の変更で、Boardy は Blacksmith を使う。Vercel CI や boat.dev など他にも選択肢が出ており、どれでも既定より良い。小さなジョブも含め全部を移すこと。Boardy は数秒で終わる 2 つの最小ジョブを GitHub に残したところ、それがパイプラインで最も遅い部分になった。マシンを 10 分待つ 5 秒のジョブは 10 分のジョブである。ランナーだけで 40 分が約 10 分になり、以下はその残りを削る手順である</li>
+<li><strong>ESLint を Oxlint に置き換える</strong>。lint は 2 分から 5 秒になった。エージェントは厳しいルールに腹を立てないので、有効にできるルールは全部有効にする（owen はこれを「成功のブラックホール」を強制すると呼ぶ）</li>
+<li><strong>速い型検査器が出るたびに乗り換える</strong>。1 か月に 3 回替えた。サーバーのコールド型検査は tsc で 70 秒、TypeScript 7 で 13 秒、bun check で 5 秒未満になり CI はこれを使う。ローカルでは tsrs が 0.6 秒。owen は Jarred（Bun の作者）が bun check の最大 7 倍高速化を投稿したのを夕食中に見て、その投稿を社内 Slack エージェントに貼ったところ 6 分後に自社リポでのベンチマークが返り、その 20 分後に PR がマージされたという</li>
+<li><strong>テストを大きいマシンにシャードする</strong>。8 分のテストターゲットを 1 つ、それぞれ専用 DB を持つ 8 vCPU マシン 6 台に分けた。シャード数よりマシンの大きさが効いた。各シャードは CPU の大半をモジュールの読み込みに使いテスト実行にはほとんど使っていなかったので、シャードでなくコアを買った</li>
+<li><strong>テストファイルごとにアプリを読み直すのをやめる</strong>。Vitest はファイルごとに新しいワーカーを与えるので、全ファイルが NestJS アプリ全体を一から import していた。isolate: false にすると各シャードは 100 秒から 35 秒になった。Linear も同じことを見つけている。テスト同士が漏れ始めるので、ファイルごとに状態を戻すフックを足し、テストが何を片付けるべきかをエージェントに伝える</li>
+<li><strong>セットアップを直す</strong>。サーバーのテストジョブは先週 168 秒だったのが今は 74 秒で、中のテストはほとんど変わっていない。ほぼ全部がセットアップで、誰も見ない部分である（エージェントも最初は見逃した）。最大の削減は監査から出た。エージェントに直近 150 回の実行を取らせ、全ジョブを待ち・セットアップ・実行に分けさせると、テストジョブの半分が依存キャッシュを使えていなかった。GitHub は PR のキャッシュをそのブランチに閉じるのに、main からキャッシュを種として用意するものが無く、大半の PR がコールドで始まっていた。このバグは 1 年間あったが、誰も CI を見ていなかったので気づかず、見ていたエージェントは直さずに再試行していた。さらに 3 点。node_modules をキャッシュする（復元 13 秒が 33 秒のインストールを置き換える）。shallow clone でなく filter: blob:none の blobless clone を使う（shallow は git 履歴を読むものを壊す。checkout は 36 秒から 12 秒）。並列度をコア数に合わせる（4 vCPU のジョブが 8 タスクを同時に走らせていた。並列度を半分にしても同じ速さで、flaky なテストが 1 つ消えた）。テストの削除も試し、エージェントにサーバーの 20,000 件のテストケースを監査させたが、削る価値のあるものはほとんど無く、時間はそもそもテストにかかっていなかった</li>
+<li><strong>全部を並列に走らせる</strong>。lint・型検査・ビルド・テストが同時に走り、PR の時間は最も遅いものと同じになる。次に最も遅いジョブが他に何をしているかを見る。最初のテストシャードはマイグレーション検査と他アプリのテストも走らせていたので常に最後に終わっていた。それらを別ジョブに移して 2 分削った</li>
+<li><strong>PR が触ったものだけ走らせる</strong>。nx affected で PR が変えたプロジェクトだけテストし、main では毎晩全スイートを回す。そしてスキップのロジック自体をテストする。意図的にサーバーの変更を Nx から隠したところ、6 シャード全部がテストをスキップして緑を報告した。今はそれが起きると実行が失敗する</li>
+<li><strong>push の前に検査を走らせる</strong>。pre-push hook が変更ファイルに format・lint・型検査を 9 秒未満で走らせる。型エラーに当たったエージェントは CI を待たず数秒でローカルで直す。AGENTS.md の 1 行でなく hook に置くこと。エージェントは手順を飛ばすからである</li>
+</ol>
+<h2>費用と次のボトルネック</h2>
+<p>CI の請求は月 230 ドルから 4,300 ドルになったが、エージェントを速くするために使う金としては最も安い、と owen は書く。エージェントがコードを書き CI が 2 分で終わる今、ループで最も遅いのは自分がマージを押すことで、数十のエージェントセッションが同時に走ると仕事を完了線まで運ぶのに時間がかかることがある。次に取り組む最大のボトルネックは自分だ、と記事は締める。</p>
+<h2>位置づけ（wiki 側の読み）</h2>
+<p>「CI/CD がボトルネックになるので Blacksmith で速くする」は @k1ito が <a href="../concepts/github-runner-agent-factory.html">github-runner-agent-factory</a> で 1 行で書いた結論で、本ページはその 1 行を 9 手に展開した手順書と読める。Anthropic が <a href="../concepts/agent-scale-source-control.html">agent-scale-source-control</a> で「コードを書く速さが律速でなくなると人間の規模で作られた開発基盤が詰まる」と述べたのと同じ観察を、ソース管理でなく CI の側で、スタートアップ規模で実行した記録でもある。FurtherAI の <a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a> は同じ CI 段階で「同じ 17 分で 20 倍のテスト」とテスト量を目的変数にしており、Boardy が待ち時間を目的変数にしたのと対になる。</p>
+<p>手順 5 の isolate: false はテスト間の状態漏れを受け入れて速度を取る選択で、<a href="../concepts/parallel-e2e-testing.html">parallel-e2e-testing</a> が per-test のデータ独立を第一原則に置いたのとは逆向きのトレードオフである。owen が「状態を戻すフック」と「何を片付けるかをエージェントに伝える」で補っているのは、独立性を設計でなく後片付けで担保する形と考えられる。手順 9 の「AGENTS.md の 1 行でなく hook に置け」は、<a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> が「決定論的な強制は hook」と整理した振り分けの、CI 前段での実例である。手順 6 の「エージェントは直さずに再試行していた」は、エージェントが CI の遅さを症状として受け入れ原因を直さない、という観察で、agent-trust-inverse-pyramid の「訂正はどの層で直すか」を人間が決めない限りエージェントは再試行で済ませる、と読める（推論）。</p>
+<p>記事の最後の「次のボトルネックは自分がマージを押すこと」は、Imprint の <a href="../concepts/small-change-auto-approval.html">small-change-auto-approval</a> や Claude Code チームの <a href="../concepts/agent-era-code-review.html">agent-era-code-review</a> が低リスク変更の無人マージで答えた問題にちょうど到達した地点にあたる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-10-30: PR の CI 待ちが最長 40 分→2 分、CI 費用が月 230 ドル→4,300 ドル（owen の自社数値）</li>
+<li>2026-10-30: テストジョブの半分が依存キャッシュを 1 年間使えていなかった（GitHub の PR キャッシュがブランチ単位で main から種が無い）。他リポでも起きうる構造なので自分の CI でも確かめる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>この wiki の GitHub Actions（テスト・公開）は待ち・セットアップ・実行のどこに時間を使っているか。手順 6 の「直近の実行を取って 3 分割する監査」をそのまま回せる</li>
+<li>手順 8 の「スキップのロジック自体をテストする」は、変更を隠して全シャードが緑になることを検出する仕掛けである。affected 系の最適化を入れるなら最初から対で入れるべきか</li>
+<li>isolate: false で速度を取る選択と parallel-e2e-testing の per-test 独立は、ユニット層と E2E 層で使い分けるべきものか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/github-runner-agent-factory.html">github-runner-agent-factory</a> — 「CI/CD がボトルネックなので Blacksmith で高速化」と 1 行で結論した @k1ito の構成。本ページはその展開版</li>
+<li><a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a> — FurtherAI の出荷工程の月ごとの自動化。6 月の CI 段階で同じ 17 分にテスト量を 20 倍にした、待ち時間でなく量を取った対照例</li>
+<li><a href="../concepts/agent-scale-source-control.html">agent-scale-source-control</a> — 人間の規模で作られた開発基盤が詰まる、という同じ観察を Anthropic がソース管理で報告した事例</li>
+<li><a href="../concepts/parallel-e2e-testing.html">parallel-e2e-testing</a> — per-test データ独立を第一原則に置く E2E の並列化設計。本ページの isolate: false とは逆向きのトレードオフ</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 決定論的な強制は hook に置くという公式フレーム。手順 9 の「AGENTS.md でなく pre-push hook」はその実例</li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 訂正をどの層で直すかを決める @poteto の指針。エージェントが CI の遅さを再試行で済ませていた観察と対応</li>
+<li><a href="../concepts/small-change-auto-approval.html">small-change-auto-approval</a> — 「次のボトルネックは自分がマージを押すこと」への Imprint の答え</li>
+<li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a> — 同じ問題への Claude Code チームの答え。必須 CI を多層レビューの 1 層として位置づける</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a></li>
+<li><a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a></li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
+<li><a href="../concepts/github-runner-agent-factory.html">github-runner-agent-factory</a></li>
+<li><a href="../concepts/parallel-e2e-testing.html">parallel-e2e-testing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2116291924219060319" rel="noopener" target="_blank">https://x.com/i/web/status/2116291924219060319</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># エージェント時代の CI 高速化（Boardy の 40 分→2 分）
+
+&gt; **TL;DR**: コードを書く速さが 10 倍になっても CI が同じなら待つのは CI になる、として Boardy の head of engineering の owen（@owengretzinger）が CI を製品として扱い、ランナー移行・Oxlint・型検査器の乗り換え・シャード・isolate: false・セットアップ監査・全並列・affected 限定・pre-push hook の 9 手で PR の CI 待ちを最長 40 分から 2 分にした手順書。「この記事をエージェントに渡して同じことをさせろ」と書く。
+
+```mermaid
+flowchart LR
+  Agent[&quot;エージェントが push&quot;] --&gt; Hook[&quot;pre-push hook&lt;br/&gt;format・lint・typecheck を 9 秒未満&quot;]
+  Hook --&gt; Runner[&quot;自前ランナー（Blacksmith）&lt;br/&gt;起動まで 8 秒&quot;]
+  Runner --&gt; Lint[&quot;Oxlint（5 秒）&quot;]
+  Runner --&gt; Type[&quot;bun check（5 秒未満）&quot;]
+  Runner --&gt; Build[&quot;ビルド&quot;]
+  Runner --&gt; Shards[&quot;テスト 6 シャード × 8 vCPU&lt;br/&gt;isolate: false・nx affected&quot;]
+  Lint --&gt; PR[&quot;PR の待ち時間 = 最も遅いジョブ（約 2 分）&quot;]
+  Type --&gt; PR
+  Build --&gt; PR
+  Shards --&gt; PR
+```
+
+1 年前の Boardy では PR が CI を最長 40 分待っていた。owen がこれを問題にしたのは、出荷する PR がすべてコーディングエージェントで書かれるようになったからで、エージェントは push に疲れない。push して CI を待ち、赤いチェックを直して再 push する。書く速さが 10 倍になっても CI が同じなら待っているのは CI だ、と owen は書く。そこでこの 1 か月、CI を製品のように扱い、作業の大半は Slack の社内エージェントに携帯から指示して進めたという。記事中のコード片（ランナー指定の 1 行・設定値）と、Linear の同趣旨の投稿への参照は、キャッシュには本文が収録されていない。
+
+## 9 の手順（owen の記事からの転記）
+
+1. **GitHub の既定ランナーをやめる**。ジョブはマシンが割り当たるまで最長 11 分待っていたが、今は 8 秒で始まる。ジョブごとに 1 行の変更で、Boardy は Blacksmith を使う。Vercel CI や boat.dev など他にも選択肢が出ており、どれでも既定より良い。小さなジョブも含め全部を移すこと。Boardy は数秒で終わる 2 つの最小ジョブを GitHub に残したところ、それがパイプラインで最も遅い部分になった。マシンを 10 分待つ 5 秒のジョブは 10 分のジョブである。ランナーだけで 40 分が約 10 分になり、以下はその残りを削る手順である
+2. **ESLint を Oxlint に置き換える**。lint は 2 分から 5 秒になった。エージェントは厳しいルールに腹を立てないので、有効にできるルールは全部有効にする（owen はこれを「成功のブラックホール」を強制すると呼ぶ）
+3. **速い型検査器が出るたびに乗り換える**。1 か月に 3 回替えた。サーバーのコールド型検査は tsc で 70 秒、TypeScript 7 で 13 秒、bun check で 5 秒未満になり CI はこれを使う。ローカルでは tsrs が 0.6 秒。owen は Jarred（Bun の作者）が bun check の最大 7 倍高速化を投稿したのを夕食中に見て、その投稿を社内 Slack エージェントに貼ったところ 6 分後に自社リポでのベンチマークが返り、その 20 分後に PR がマージされたという
+4. **テストを大きいマシンにシャードする**。8 分のテストターゲットを 1 つ、それぞれ専用 DB を持つ 8 vCPU マシン 6 台に分けた。シャード数よりマシンの大きさが効いた。各シャードは CPU の大半をモジュールの読み込みに使いテスト実行にはほとんど使っていなかったので、シャードでなくコアを買った
+5. **テストファイルごとにアプリを読み直すのをやめる**。Vitest はファイルごとに新しいワーカーを与えるので、全ファイルが NestJS アプリ全体を一から import していた。isolate: false にすると各シャードは 100 秒から 35 秒になった。Linear も同じことを見つけている。テスト同士が漏れ始めるので、ファイルごとに状態を戻すフックを足し、テストが何を片付けるべきかをエージェントに伝える
+6. **セットアップを直す**。サーバーのテストジョブは先週 168 秒だったのが今は 74 秒で、中のテストはほとんど変わっていない。ほぼ全部がセットアップで、誰も見ない部分である（エージェントも最初は見逃した）。最大の削減は監査から出た。エージェントに直近 150 回の実行を取らせ、全ジョブを待ち・セットアップ・実行に分けさせると、テストジョブの半分が依存キャッシュを使えていなかった。GitHub は PR のキャッシュをそのブランチに閉じるのに、main からキャッシュを種として用意するものが無く、大半の PR がコールドで始まっていた。このバグは 1 年間あったが、誰も CI を見ていなかったので気づかず、見ていたエージェントは直さずに再試行していた。さらに 3 点。node_modules をキャッシュする（復元 13 秒が 33 秒のインストールを置き換える）。shallow clone でなく filter: blob:none の blobless clone を使う（shallow は git 履歴を読むものを壊す。checkout は 36 秒から 12 秒）。並列度をコア数に合わせる（4 vCPU のジョブが 8 タスクを同時に走らせていた。並列度を半分にしても同じ速さで、flaky なテストが 1 つ消えた）。テストの削除も試し、エージェントにサーバーの 20,000 件のテストケースを監査させたが、削る価値のあるものはほとんど無く、時間はそもそもテストにかかっていなかった
+7. **全部を並列に走らせる**。lint・型検査・ビルド・テストが同時に走り、PR の時間は最も遅いものと同じになる。次に最も遅いジョブが他に何をしているかを見る。最初のテストシャードはマイグレーション検査と他アプリのテストも走らせていたので常に最後に終わっていた。それらを別ジョブに移して 2 分削った
+8. **PR が触ったものだけ走らせる**。nx affected で PR が変えたプロジェクトだけテストし、main では毎晩全スイートを回す。そしてスキップのロジック自体をテストする。意図的にサーバーの変更を Nx から隠したところ、6 シャード全部がテストをスキップして緑を報告した。今はそれが起きると実行が失敗する
+9. **push の前に検査を走らせる**。pre-push hook が変更ファイルに format・lint・型検査を 9 秒未満で走らせる。型エラーに当たったエージェントは CI を待たず数秒でローカルで直す。AGENTS.md の 1 行でなく hook に置くこと。エージェントは手順を飛ばすからである
+
+## 費用と次のボトルネック
+
+CI の請求は月 230 ドルから 4,300 ドルになったが、エージェントを速くするために使う金としては最も安い、と owen は書く。エージェントがコードを書き CI が 2 分で終わる今、ループで最も遅いのは自分がマージを押すことで、数十のエージェントセッションが同時に走ると仕事を完了線まで運ぶのに時間がかかることがある。次に取り組む最大のボトルネックは自分だ、と記事は締める。
+
+## 位置づけ（wiki 側の読み）
+
+「CI/CD がボトルネックになるので Blacksmith で速くする」は @k1ito が [[concepts/github-runner-agent-factory]] で 1 行で書いた結論で、本ページはその 1 行を 9 手に展開した手順書と読める。Anthropic が [[concepts/agent-scale-source-control]] で「コードを書く速さが律速でなくなると人間の規模で作られた開発基盤が詰まる」と述べたのと同じ観察を、ソース管理でなく CI の側で、スタートアップ規模で実行した記録でもある。FurtherAI の [[concepts/ai-native-engineering-org]] は同じ CI 段階で「同じ 17 分で 20 倍のテスト」とテスト量を目的変数にしており、Boardy が待ち時間を目的変数にしたのと対になる。
+
+手順 5 の isolate: false はテスト間の状態漏れを受け入れて速度を取る選択で、[[concepts/parallel-e2e-testing]] が per-test のデータ独立を第一原則に置いたのとは逆向きのトレードオフである。owen が「状態を戻すフック」と「何を片付けるかをエージェントに伝える」で補っているのは、独立性を設計でなく後片付けで担保する形と考えられる。手順 9 の「AGENTS.md の 1 行でなく hook に置け」は、[[concepts/claude-code-instruction-methods]] が「決定論的な強制は hook」と整理した振り分けの、CI 前段での実例である。手順 6 の「エージェントは直さずに再試行していた」は、エージェントが CI の遅さを症状として受け入れ原因を直さない、という観察で、agent-trust-inverse-pyramid の「訂正はどの層で直すか」を人間が決めない限りエージェントは再試行で済ませる、と読める（推論）。
+
+記事の最後の「次のボトルネックは自分がマージを押すこと」は、Imprint の [[concepts/small-change-auto-approval]] や Claude Code チームの [[concepts/agent-era-code-review]] が低リスク変更の無人マージで答えた問題にちょうど到達した地点にあたる。
+
+## 観察ログ（未検証）
+
+- 2026-10-30: PR の CI 待ちが最長 40 分→2 分、CI 費用が月 230 ドル→4,300 ドル（owen の自社数値）
+- 2026-10-30: テストジョブの半分が依存キャッシュを 1 年間使えていなかった（GitHub の PR キャッシュがブランチ単位で main から種が無い）。他リポでも起きうる構造なので自分の CI でも確かめる
+
+## 問い
+
+- この wiki の GitHub Actions（テスト・公開）は待ち・セットアップ・実行のどこに時間を使っているか。手順 6 の「直近の実行を取って 3 分割する監査」をそのまま回せる
+- 手順 8 の「スキップのロジック自体をテストする」は、変更を隠して全シャードが緑になることを検出する仕掛けである。affected 系の最適化を入れるなら最初から対で入れるべきか
+- isolate: false で速度を取る選択と parallel-e2e-testing の per-test 独立は、ユニット層と E2E 層で使い分けるべきものか
+
+## 関連
+
+- [[concepts/github-runner-agent-factory]] — 「CI/CD がボトルネックなので Blacksmith で高速化」と 1 行で結論した @k1ito の構成。本ページはその展開版
+- [[concepts/ai-native-engineering-org]] — FurtherAI の出荷工程の月ごとの自動化。6 月の CI 段階で同じ 17 分にテスト量を 20 倍にした、待ち時間でなく量を取った対照例
+- [[concepts/agent-scale-source-control]] — 人間の規模で作られた開発基盤が詰まる、という同じ観察を Anthropic がソース管理で報告した事例
+- [[concepts/parallel-e2e-testing]] — per-test データ独立を第一原則に置く E2E の並列化設計。本ページの isolate: false とは逆向きのトレードオフ
+- [[concepts/claude-code-instruction-methods]] — 決定論的な強制は hook に置くという公式フレーム。手順 9 の「AGENTS.md でなく pre-push hook」はその実例
+- [[concepts/agent-trust-inverse-pyramid]] — 訂正をどの層で直すかを決める @poteto の指針。エージェントが CI の遅さを再試行で済ませていた観察と対応
+- [[concepts/small-change-auto-approval]] — 「次のボトルネックは自分がマージを押すこと」への Imprint の答え
+- [[concepts/agent-era-code-review]] — 同じ問題への Claude Code チームの答え。必須 CI を多層レビューの 1 層として位置づける
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

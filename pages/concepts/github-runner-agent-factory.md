@@ -24,3 +24,4 @@ AIエージェントに止まらず開発させ続ける「ソフトウェア工
 - [[concepts/loop-engineering]] — 人間がループの外に出てエージェントを回し続ける設計論。本ページはその実行基盤を GitHub に置いた個人実践
 - [[tools/crabbox]] — エージェントの計算をリモートマシンへ逃がす基盤。対応プロバイダーに Blacksmith を含む
 - [[concepts/software-factory-cost-equation]] — 「ソフトウェア工場」を全社規模のコスト方程式で扱う Uber の事例
+- [[concepts/agent-era-ci-speedup]] — 本ページの「CI/CD がボトルネック→Blacksmith で高速化」を Boardy が 9 手順に展開した記録（40 分→2 分・月 230→4,300 ドル・owen）。ランナー移行の後に残る lint・型検査・シャード・セットアップ・affected 限定・pre-push hook まで

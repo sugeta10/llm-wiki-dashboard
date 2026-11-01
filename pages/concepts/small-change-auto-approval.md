@@ -83,3 +83,4 @@ Larson が small-change のコメント禁止の理由に挙げるのが、Simon
 - [[tools/pstack]] — 記事が「レビューより効く誤り防止」の例に挙げるハーネス検証スキル群
 - [[concepts/ai-review-bottleneck]] — 人間の「読んで直す工程」を制約と見る個人規模の実践。コメント禁止の設計と対応
 - [[tools/grok-bot]] — 高確信・低影響の PR を自動マージする別事例
+- [[concepts/ai-native-engineering-org]] — Larson の「EM の AI スキルをどう評価するか」の問いに答えた FurtherAI の Sashank Gondala の組織論。低リスク変更の無人マージ（最大 3 分の 1）を含む出荷工程の月ごとの自動化と、次のボトルネックは「決めること」という観察

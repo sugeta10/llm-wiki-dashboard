@@ -108,3 +108,5 @@ Claude Code チームの Addy Osmani（X プロフィールは「Claude Code @an
 - [[concepts/small-change-auto-approval]] — Imprint の small-change。本ページの Low リスク「人間承認不要」の段を、人が書き換えられない CI check と承認か無視かしかしないスキルで実装した一例。Will Larson が記事中で本ページの元記事を参照
 - [[tools/addyosmani-agent-skills]] — X 記事版の書き手 Addy Osmani が Google 在籍時に公開したスキルパック。レビュー観点を人からスキルへ焼き込む点で本ページの「同じ指摘は発生源で直す」と同じ発想
 - [[concepts/frequency-impact-fix-threshold]] — 「レビューは収束しなければならない」への個人規模の答え。Codex のレビュー指示に発生頻度×影響度の 1〜10 採点を置き、積が閾値未満なら Issue 起票だけで修正しない（@hawkymisc）
+- [[concepts/ai-native-engineering-org]] — FurtherAI の出荷工程の月ごとの自動化（AI が先に見る 60%→99%・暗黙知を Python チェック 21 本に・低リスクは人なしで最大 1/3）。本ページの多層レビューと同じ打ち手をスタートアップ規模で、組織設計まで追った記録（Sashank Gondala）
+- [[concepts/agent-era-ci-speedup]] — 本ページが「ブロックする自動チェック」の 1 層に置く CI を、Boardy が 40 分→2 分にした 9 手順。「次のボトルネックは自分がマージを押すこと」と締める地点が本ページの無人マージにつながる（owen）

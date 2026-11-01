@@ -71,3 +71,4 @@ mindmap
 - [[concepts/fable-5-1-prompting]] — 「同じ文でも設定欄・依頼文の末尾・会話の1回目で効き方が変わる」という@Charlie_no_siteの観察。本ページのロード時点×圧縮生存の軸で説明できる実例
 - [[tools/claude-code-mods]] — 本ページで「決定論的強制」に置いた hook の層を、TypeScript 関数を直接ロードする Function Hooks で結果の書き換え・画面描画・ツール登録まで広げたもの（nogu解説）
 - [[concepts/agent-era-code-review]] — 自動レビュアーが同じ指摘を繰り返したら、スキル・lint・CLAUDE.md・REVIEW.md という発生源で直す Claude Code チームの運用。全レビューが読むので CLAUDE.md を短く保つ（Anthropic）
+- [[concepts/agent-era-ci-speedup]] — 「エージェントは手順を飛ばすので、push 前の format・lint・型検査は AGENTS.md の 1 行でなく pre-push hook に置け」という Boardy の owen の実例。本ページの「決定論的強制は hook」の CI 前段への適用
