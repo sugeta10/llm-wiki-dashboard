@@ -46,3 +46,4 @@
 - [[tools/grill-me]] — 類似の「実装前深掘り対話」スキル
 - [[concepts/multi-agent-patterns]] — `/ce-code-review`等がマルチエージェントを活用
 - [[concepts/agentic-engineering-workflow]] — このプラグインを中核に据える実践者の総合ワークフロー
+- [[tools/elephant-goldfish-model]] — Google 製の同じ brainstorm→draft→review 構成のプラグイン。レビュアーを会話履歴ゼロの新規セッション（金魚）に固定する点が本プラグインとの差

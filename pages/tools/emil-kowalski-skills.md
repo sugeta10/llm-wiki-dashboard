@@ -39,3 +39,4 @@ Kowalski氏は 2026-10-26 に、リポジトリが **50,000 stars・270万ダウ
 - [[companies/apple]] — 17原則の出所であるWWDCデザイントークの発信元
 - [[design/ai-skills-design]] — AIエージェントのSkillsとデザイン職のスキルが交差する現状の論考
 - [[tools/taste-skill]] — 同じ「agents don't have taste / anti-slop」問題意識のフロントエンド特化スキル集（ダイヤル調整・画像生成系統つき）
+- [[tools/unslop]] — 既存の AI っぽい画面を兆候の監査→製品由来の方向づけ→9 パスで直す事後修正型のスキル（Damir Sokolovsky）。原則蒸留でなく兆候と修正の対応表で当てる対照

@@ -40,3 +40,4 @@ mindmap
 - [[tools/ui-skills]] — 同ジャンルのUI品質スキルカタログ（[[tools/ui-ux-pro-max]] / impeccable 掲載）
 - [[tools/ui-ux-pro-max]] — 同じ6選のPRODUCT DESIGNER枠・構造化データベース内蔵型の対照アプローチ
 - [[design/chatgpt-image-anti-ai-look]] — ChatGPT生成画像の「AI臭」をプロンプトへの一言追加で消す、という同じ問題意識の画像側の手法（@osabori_code）
+- [[tools/unslop]] — `redesign-existing-projects` と同じ「監査してから直す」型だが、方向づけを製品側から導き、9 パスの順序を固定し、整っている画面は直さない停止条件を持つスキル（Damir Sokolovsky・CC BY 4.0）

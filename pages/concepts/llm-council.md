@@ -47,3 +47,4 @@
 - [[tools/adversarial-panel]] — 同系の多モデル合議をGAN由来の敵対的批判（反証の再現・検証ゲート・同族パネル格下げ）に振ったClaude Codeスキル。Councilの匿名化に対し異種モデルの非相関を独立性の源にする
 - [[papers/2023-sharma-sycophancy]] — 本ページが「同意バイアス」と呼ぶ現象を Anthropic の Sharma・Tong らが「迎合（sycophancy）」として5モデルで測定し、人間の選好データと選好モデルが迎合回答を好むことに原因の一端を求めた論文。Council が構造で防ごうとする癖の訓練起源
 - [[concepts/anti-sycophancy-instruction]] — 同じ癖を単一エージェントへの常設指示3条（確認語で終わる入力を中立の仮説として扱う・「はい」で始めない・最初の一文で反駁）で抑える最も軽い手段（Thomas Zhou）。Council の構造的対策との対
+- [[tools/elephant-goldfish-model]] — Google の設計審査プラグイン。Council が匿名化で権威バイアスを消すのに対し、レビュアーに会話履歴を一切渡さない「金魚」で同意バイアスの発生源を断つ

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>unslop - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>unslop</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="unslop.md">Markdownで表示</a></div>
+  <div class="meta">tools/unslop · tools · <span title="2026-11-02">今日</span></div>
+  <article><h1>unslop（AI っぽい UI を「設計された画面」に直す Claude Code／Codex スキル）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: デザイナーの Damir Sokolovsky（@heydamir）が、X で続けていた「バイブコーディングした画面の AI っぽさを一つずつ直す」連載を Claude Code／Codex 用スキルに落としたもの。兆候の監査→製品由来の方向づけ→余白・色・アイコン・文言・文字組み・レイアウト・細部・ビジュアル・モーションの 9 パスを順番に当て、整っている画面は「直さない」と言う（CC BY 4.0・2026-10-30 公開）。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  S[&quot;画面を見る&lt;br/&gt;（コード・ライブ URL・スクショ）&quot;] --&gt; A[&quot;監査&lt;br/&gt;signs.md の兆候を列挙&quot;]
+  A --&gt; J{どれだけ直すか}
+  J --&gt;|重いスロップ| DIR[&quot;方向づけ 5 行&lt;br/&gt;Product / Character / World / Moments / Signature&quot;]
+  J --&gt;|軽いスロップ| P[&quot;見つかった兆候だけ直す（既存ブランド維持）&quot;]
+  J --&gt;|スロップなし| N[&quot;小さな改善 2〜3 件を提案して止まる&quot;]
+  DIR --&gt; W[&quot;ユーザーの返事を待つ&quot;]
+  W --&gt; P9[&quot;9 パスを順に&lt;br/&gt;余白→色→アイコン→文言→文字組み→レイアウト→細部→ビジュアル→モーション&quot;]
+  P9 --&gt; C[&quot;チェックリスト照合と再レンダリング&quot;]
+  C --&gt; R[&quot;報告（＋任意でストーリー動画）&quot;]</pre>
+<p>Sokolovsky はスキル本文で、バイブコーディングした UI は「同じ予測可能な壊れ方をする」と述べる。あらゆる面が光り、あらゆるラベルに絵文字が付き、余白はモデルがその日に打った値のままで、文言は叫ぶ。unslop はこれを「クラフトを直し、プロダクトは保つ」作業と定義し、機能・内容・セクションの順序は変えず、すべてのサイズ・色・語・画像を意図されたものに置き換える。Sokolovsky によれば、スロップを取るのは仕事の半分で、きれいだがどの製品でもありうる画面は「次のテンプレート」にすぎない。毎回の実行は「この製品にしかありえない画面」で終わらなければならない、というのが設計思想である。</p>
+<p>Sokolovsky はスロップとクラフトの差を「豊かさをどこに置くか」で説明する。スロップは色と効果をクローム（ナビ・背景・ボタン・枠線・ラベル）にまき散らし、クラフトはクロームを静かに保って豊かさを「人が覚えている 1〜2 の瞬間」に集中させる。レンダリングされたオブジェクト、美しいチャート、製品の世界から来た画像がその瞬間にあたる。</p>
+<h2>方向づけの 5 行</h2>
+<p>編集前に、流行ではなく「そのページが何をどんな人のためにしているか」から 5 行を書き、ユーザーに見せて返事を待つ。方向を後から変えると全部やり直しになるためである。</p>
+<ul>
+<li><strong>Product</strong> 何をするか、誰のためか。平易な一文</li>
+<li><strong>Character</strong> 具体語 2〜3 個。「clean・modern・sleek・minimal・premium」は全テンプレートに当てはまるので禁止</li>
+<li><strong>World</strong> 製品が自然に属する場所や素材。ノートアプリは紙とインク、監視ツールは計器と夜勤、旅行アプリは地図と窓の光。これがニュートラルの色味・アクセント・ビジュアルを決める</li>
+<li><strong>Moments</strong> 画面が濃い色・素材・ディテールを得る 1〜2 箇所。プレビュー内のカードやデバイス、系列ごとに色の意味があるチャートなど</li>
+<li><strong>Signature</strong> この製品だけが持つ小さなディテール 1 つ。監視ツールのライブ状態ドット、開発者ツールのキーキャップ、配送アプリのルート線</li>
+</ul>
+<p>ロゴ・色・書体といった本物のブランドがあれば維持して方向をその上に組むが、紫から青へのグラデーション・きらめき・発光はロゴに入っていてもスロップであり、ユーザーが言わない限りブランドに数えない、と Sokolovsky は書く。</p>
+<h2>9 パスの順序と理由</h2>
+<p>余白が最初なのは、リズムが正しくなると他の全部の読まれ方が変わるからで、文言が文字組みとレイアウトより前なのは、見出しの長さがサイズと置き場所を決めるからである。ビジュアルとモーションは、それらが無くても機能する画面に後から合わせるため最後に来る。パスごとの具体値は <code>references/tokens.md</code> に置かれ、たとえば余白パスは 4px グリッド、同じものは同じサイズ、グループ内の間隔はグループ間より小さく、ナビの行高 32〜36 で間隔 2〜4、<code>mt-[13px]</code> のような一回限りの値は除去、と定めている。色パスは「世界」に寄せた 1 本のニュートラルランプから背景・面・枠線・文字を取り、アプリとダッシュボードでは面を灰色に保ち、クロームのアクセントは主要操作・選択・重要な数字の 1 つにだけ使う。面のグラデーション・グラデーション文字・色付きの発光と影・ネオン枠線は除去し、枠線は文字色の 6〜10% 不透明度のヘアラインにする。</p>
+<h2>兆候リスト（signs.md）</h2>
+<p>監査は <code>references/signs.md</code> の全群を回り、兆候と修正を対にした行を列挙する。群は面と色・文字・アイコン・余白・文言・コンポーネント・ランディングページとヒーローの 7 つで、たとえば次が並ぶ。</p>
+<table>
+<thead>
+<tr>
+<th>群</th>
+<th>兆候の例（→ 修正）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>面と色</td>
+<td>紫から青へのグラデーション → ニュートラル 1 面。グラデーション文字 → 単色の主文字色。<code>shadow-[0_0_20px_rgba(139,92,246,0.5)]</code> のような発光 → 除去</td>
+</tr>
+<tr>
+<td>文字</td>
+<td>見出しのウェイト 800〜900 → 400〜500。<code>NAVIGATION</code> のような広い字間の大文字ラベル → 文頭だけ大文字</td>
+</tr>
+<tr>
+<td>アイコン</td>
+<td>ナビの絵文字 🏠 📥 🚀 → 線画アイコン 1 セットか無し。AI を表す ✨ → 除去</td>
+</tr>
+<tr>
+<td>文言</td>
+<td><code>Welcome back, Damir! 👋</code> → ページ名か期間をタイトルに。<code>+12%!!</code> → <code>+12% vs last month</code>。supercharge・seamless・unlock・magic → 実際にすること</td>
+</tr>
+<tr>
+<td>コンポーネント</td>
+<td><code>PRO</code>・<code>New ✨</code>・<code>Beta 🚀</code> バッジの乱用 → 除去か静かなテキストバッジ 1 つ。虹色や発光するチャートの棒 → 1〜2 系列と抑えたグリッド</td>
+</tr>
+<tr>
+<td>ヒーロー</td>
+<td><code>✨ Introducing X 2.0</code> のピルバッジ → 除去。<code>Supercharge your workflow with AI</code> のような汎用見出し → 誰に何をするか。<code>Trusted by 10,000+ teams</code> → 本当か確認し、静かで具体的にするか除去</td>
+</tr>
+</tbody>
+</table>
+<p>（signs.md の記載から抜粋して転記）</p>
+<h2>導入と実行</h2>
+<p>Claude Code ではリポジトリの <code>skills/unslop</code> を <code>~/.claude/skills/</code> か、プロジェクトの <code>.claude/skills/</code> にコピーして <code>/unslop this dashboard</code> のように呼ぶ。Codex では <code>$skill-installer install</code> でリポジトリから入れるか <code>~/.agents/skills/</code> にコピーし、<code>$unslop</code> で呼ぶ。ライブ URL しか無いときは同梱の <code>scripts/snapshot.mjs</code> でページとスクリーンショットを保存して複製に対して作業し、スクリーンショットしか無いときはまず静的 HTML として再構築する。Playwright と Chromium が必要で、画面が自分でアンスロップされていく 10 秒以内の正方形動画（ストーリー動画）を作るには ffmpeg も要る。ヒーローに場面や物体が要るときは fal・Replicate・OpenAI images・Higgsfield などの画像サービスを MCP サーバーとして使い、有料生成の前には必ずプロンプトを見せて確認する。レンダリングして確認するのは 1 回の実行で最大 3 回、と Sokolovsky は速さも規定している。</p>
+<p>ライセンスは CC BY 4.0 で、商用を含め改変・再配布できるが、Sokolovsky への帰属とリポジトリへのリンクを残す条件が付く。README 末尾には「デザイナーにやってほしければ、Damir が主要画面 1 枚を 3 日でアンスロップする」という自身のサービス（heydamir.design/unslop）への導線があり、スキル公開が受託の入口を兼ねている。</p>
+<h2>そら（@sora_biz）による紹介</h2>
+<p>@sora_biz（そら。プロフィールでは Windows で AI エージェントを動かす構築・運用を発信、PdM・一級建築士、winsmux 開発、Hermes Agent コントリビューター）は 2026-10-31 の投稿で、数日前に紹介した Sokolovsky の「UI の AI っぽさを一つずつ直していく動画」がスキルになり無料公開されたと伝えた。そらの要約は「まず画面のどこに違和感があるかを洗い出して修正の方向を確認し、余白・色・アイコン・文言・文字組み・レイアウトと順番に整える。すでに整っている画面なら無理に別物へ変えないようになっている。対象はランディングページ・ダッシュボード・アプリの画面」で、SKILL.md の手順と一致する。返信でリポジトリの URL と「Claude Code で使う場合はリポ内の skills/unslop フォルダをプロジェクトの .claude/skills/ にコピーし、導入後は /unslop」と導入手順を補足している。</p>
+<p>Sokolovsky 本人は公開ポスト（2026-10-30）で「自分のアンスロップ工程を無料の Claude スキルにした。ランディングページ・ダッシュボード・モバイルアプリで動く」と書き、続く返信で「Claude が良いデザインとは何かをもっと掴めるよう、まだ一部を磨いている」と述べている。</p>
+<h2>他ページとの位置づけ（wiki 側の推論）</h2>
+<p><a href="../tools/taste-skill.html">taste-skill</a> の <code>redesign-existing-projects</code> も「監査してから直す」だが、taste-skill が 3 つのダイヤルとスタイル変種で出力を振るのに対し、unslop は方向づけを製品側から導き、パスの順序を固定し、「整っていれば直さない」停止条件を持つ点で異なる。<a href="../tools/emil-kowalski-skills.html">emil-kowalski-skills</a> が原則の蒸留を渡すのに対し、unslop は兆候と修正の対応表で機械的に当てる。<a href="../design/claude-premium-website-build.html">claude-premium-website-build</a> の 8 項目採点（Inter フォントは「AI 製」を即座に露呈する、など）は、unslop の signs.md と同じ対象を人間の採点側から見たものと読める。文章側の同型スキルが <a href="../tools/no-ai-slop.html">no-ai-slop</a> で、unslop はその UI 版にあたる。<a href="../design/layout-as-explanation.html">layout-as-explanation</a> の「レイアウトに説明させる」1 行は、unslop の文言パスと細部パスが扱う説明過多を 1 文で抑える簡易版と考えられる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-11-02: GitHub スター 4,801（リポ作成 2026-10-29・最終 push 2026-11-01）。そらの紹介ポストは 799 ブックマーク（2026-11-01 時点）</li>
+<li>2026-11-02: Sokolovsky は「まだ磨いている」と述べており、兆候リストとトークン値は今後変わりうる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>日本語 UI に当てたとき、signs.md の文言群（挨拶見出し・感嘆符・hype 語）はどこまで効くか。日本語特有の兆候（「〜しましょう！」調・全角記号の乱用）は自分で足す必要があるか</li>
+<li>このvaultの <code>wiki/outputs/</code> の standalone HTML に <code>/unslop</code> を当てると、<a href="../concepts/eval-loop.html">eval-loop</a> の採点と比べてどちらが安定して「AI っぽさ」を減らすか</li>
+<li><a href="../tools/taste-skill.html">taste-skill</a> の生成側スキルで作った画面を unslop の監査に通すと、兆候はいくつ残るか。生成時の規律と事後の監査はどちらが安いか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/taste-skill.html">taste-skill</a> — 同じ anti-slop 系。ダイヤル調整と変種分割で当たる対照</li>
+<li><a href="../tools/emil-kowalski-skills.html">emil-kowalski-skills</a> — 「Agents don't have taste」問題意識の原則蒸留型</li>
+<li><a href="../design/claude-premium-website-build.html">claude-premium-website-build</a> — 「高額に見える」8 項目の人間側採点。Inter フォント等の兆候が重なる</li>
+<li><a href="../tools/no-ai-slop.html">no-ai-slop</a> — 文章側の同型スキル（AI スロップ 20 種超の検出と除去）</li>
+<li><a href="../design/layout-as-explanation.html">layout-as-explanation</a> — UI の説明過多を 1 行で抑える簡易版</li>
+<li><a href="../design/design-md.html">design-md</a> — 参照仕様を常駐させて凡庸さを避ける別解</li>
+<li><a href="../tools/ui-ux-pro-max.html">ui-ux-pro-max</a> — 構造化データベースから設計システムを生成する対照アプローチ</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../design/claude-premium-website-build.html">claude-premium-website-build</a></li>
+<li><a href="../tools/emil-kowalski-skills.html">emil-kowalski-skills</a></li>
+<li><a href="../tools/no-ai-slop.html">no-ai-slop</a></li>
+<li><a href="../tools/taste-skill.html">taste-skill</a></li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2116460609063850282" rel="noopener" target="_blank">https://x.com/i/web/status/2116460609063850282</a></li>
+<li><a href="https://github.com/heydamir/unslop" rel="noopener" target="_blank">https://github.com/heydamir/unslop</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># unslop（AI っぽい UI を「設計された画面」に直す Claude Code／Codex スキル）
+
+&gt; **TL;DR**: デザイナーの Damir Sokolovsky（@heydamir）が、X で続けていた「バイブコーディングした画面の AI っぽさを一つずつ直す」連載を Claude Code／Codex 用スキルに落としたもの。兆候の監査→製品由来の方向づけ→余白・色・アイコン・文言・文字組み・レイアウト・細部・ビジュアル・モーションの 9 パスを順番に当て、整っている画面は「直さない」と言う（CC BY 4.0・2026-10-30 公開）。
+
+```mermaid
+flowchart TD
+  S[&quot;画面を見る&lt;br/&gt;（コード・ライブ URL・スクショ）&quot;] --&gt; A[&quot;監査&lt;br/&gt;signs.md の兆候を列挙&quot;]
+  A --&gt; J{どれだけ直すか}
+  J --&gt;|重いスロップ| DIR[&quot;方向づけ 5 行&lt;br/&gt;Product / Character / World / Moments / Signature&quot;]
+  J --&gt;|軽いスロップ| P[&quot;見つかった兆候だけ直す（既存ブランド維持）&quot;]
+  J --&gt;|スロップなし| N[&quot;小さな改善 2〜3 件を提案して止まる&quot;]
+  DIR --&gt; W[&quot;ユーザーの返事を待つ&quot;]
+  W --&gt; P9[&quot;9 パスを順に&lt;br/&gt;余白→色→アイコン→文言→文字組み→レイアウト→細部→ビジュアル→モーション&quot;]
+  P9 --&gt; C[&quot;チェックリスト照合と再レンダリング&quot;]
+  C --&gt; R[&quot;報告（＋任意でストーリー動画）&quot;]
+```
+
+Sokolovsky はスキル本文で、バイブコーディングした UI は「同じ予測可能な壊れ方をする」と述べる。あらゆる面が光り、あらゆるラベルに絵文字が付き、余白はモデルがその日に打った値のままで、文言は叫ぶ。unslop はこれを「クラフトを直し、プロダクトは保つ」作業と定義し、機能・内容・セクションの順序は変えず、すべてのサイズ・色・語・画像を意図されたものに置き換える。Sokolovsky によれば、スロップを取るのは仕事の半分で、きれいだがどの製品でもありうる画面は「次のテンプレート」にすぎない。毎回の実行は「この製品にしかありえない画面」で終わらなければならない、というのが設計思想である。
+
+Sokolovsky はスロップとクラフトの差を「豊かさをどこに置くか」で説明する。スロップは色と効果をクローム（ナビ・背景・ボタン・枠線・ラベル）にまき散らし、クラフトはクロームを静かに保って豊かさを「人が覚えている 1〜2 の瞬間」に集中させる。レンダリングされたオブジェクト、美しいチャート、製品の世界から来た画像がその瞬間にあたる。
+
+## 方向づけの 5 行
+
+編集前に、流行ではなく「そのページが何をどんな人のためにしているか」から 5 行を書き、ユーザーに見せて返事を待つ。方向を後から変えると全部やり直しになるためである。
+
+- **Product** 何をするか、誰のためか。平易な一文
+- **Character** 具体語 2〜3 個。「clean・modern・sleek・minimal・premium」は全テンプレートに当てはまるので禁止
+- **World** 製品が自然に属する場所や素材。ノートアプリは紙とインク、監視ツールは計器と夜勤、旅行アプリは地図と窓の光。これがニュートラルの色味・アクセント・ビジュアルを決める
+- **Moments** 画面が濃い色・素材・ディテールを得る 1〜2 箇所。プレビュー内のカードやデバイス、系列ごとに色の意味があるチャートなど
+- **Signature** この製品だけが持つ小さなディテール 1 つ。監視ツールのライブ状態ドット、開発者ツールのキーキャップ、配送アプリのルート線
+
+ロゴ・色・書体といった本物のブランドがあれば維持して方向をその上に組むが、紫から青へのグラデーション・きらめき・発光はロゴに入っていてもスロップであり、ユーザーが言わない限りブランドに数えない、と Sokolovsky は書く。
+
+## 9 パスの順序と理由
+
+余白が最初なのは、リズムが正しくなると他の全部の読まれ方が変わるからで、文言が文字組みとレイアウトより前なのは、見出しの長さがサイズと置き場所を決めるからである。ビジュアルとモーションは、それらが無くても機能する画面に後から合わせるため最後に来る。パスごとの具体値は `references/tokens.md` に置かれ、たとえば余白パスは 4px グリッド、同じものは同じサイズ、グループ内の間隔はグループ間より小さく、ナビの行高 32〜36 で間隔 2〜4、`mt-[13px]` のような一回限りの値は除去、と定めている。色パスは「世界」に寄せた 1 本のニュートラルランプから背景・面・枠線・文字を取り、アプリとダッシュボードでは面を灰色に保ち、クロームのアクセントは主要操作・選択・重要な数字の 1 つにだけ使う。面のグラデーション・グラデーション文字・色付きの発光と影・ネオン枠線は除去し、枠線は文字色の 6〜10% 不透明度のヘアラインにする。
+
+## 兆候リスト（signs.md）
+
+監査は `references/signs.md` の全群を回り、兆候と修正を対にした行を列挙する。群は面と色・文字・アイコン・余白・文言・コンポーネント・ランディングページとヒーローの 7 つで、たとえば次が並ぶ。
+
+| 群 | 兆候の例（→ 修正） |
+|---|---|
+| 面と色 | 紫から青へのグラデーション → ニュートラル 1 面。グラデーション文字 → 単色の主文字色。`shadow-[0_0_20px_rgba(139,92,246,0.5)]` のような発光 → 除去 |
+| 文字 | 見出しのウェイト 800〜900 → 400〜500。`NAVIGATION` のような広い字間の大文字ラベル → 文頭だけ大文字 |
+| アイコン | ナビの絵文字 🏠 📥 🚀 → 線画アイコン 1 セットか無し。AI を表す ✨ → 除去 |
+| 文言 | `Welcome back, Damir! 👋` → ページ名か期間をタイトルに。`+12%!!` → `+12% vs last month`。supercharge・seamless・unlock・magic → 実際にすること |
+| コンポーネント | `PRO`・`New ✨`・`Beta 🚀` バッジの乱用 → 除去か静かなテキストバッジ 1 つ。虹色や発光するチャートの棒 → 1〜2 系列と抑えたグリッド |
+| ヒーロー | `✨ Introducing X 2.0` のピルバッジ → 除去。`Supercharge your workflow with AI` のような汎用見出し → 誰に何をするか。`Trusted by 10,000+ teams` → 本当か確認し、静かで具体的にするか除去 |
+
+（signs.md の記載から抜粋して転記）
+
+## 導入と実行
+
+Claude Code ではリポジトリの `skills/unslop` を `~/.claude/skills/` か、プロジェクトの `.claude/skills/` にコピーして `/unslop this dashboard` のように呼ぶ。Codex では `$skill-installer install` でリポジトリから入れるか `~/.agents/skills/` にコピーし、`$unslop` で呼ぶ。ライブ URL しか無いときは同梱の `scripts/snapshot.mjs` でページとスクリーンショットを保存して複製に対して作業し、スクリーンショットしか無いときはまず静的 HTML として再構築する。Playwright と Chromium が必要で、画面が自分でアンスロップされていく 10 秒以内の正方形動画（ストーリー動画）を作るには ffmpeg も要る。ヒーローに場面や物体が要るときは fal・Replicate・OpenAI images・Higgsfield などの画像サービスを MCP サーバーとして使い、有料生成の前には必ずプロンプトを見せて確認する。レンダリングして確認するのは 1 回の実行で最大 3 回、と Sokolovsky は速さも規定している。
+
+ライセンスは CC BY 4.0 で、商用を含め改変・再配布できるが、Sokolovsky への帰属とリポジトリへのリンクを残す条件が付く。README 末尾には「デザイナーにやってほしければ、Damir が主要画面 1 枚を 3 日でアンスロップする」という自身のサービス（heydamir.design/unslop）への導線があり、スキル公開が受託の入口を兼ねている。
+
+## そら（@sora_biz）による紹介
+
+@sora_biz（そら。プロフィールでは Windows で AI エージェントを動かす構築・運用を発信、PdM・一級建築士、winsmux 開発、Hermes Agent コントリビューター）は 2026-10-31 の投稿で、数日前に紹介した Sokolovsky の「UI の AI っぽさを一つずつ直していく動画」がスキルになり無料公開されたと伝えた。そらの要約は「まず画面のどこに違和感があるかを洗い出して修正の方向を確認し、余白・色・アイコン・文言・文字組み・レイアウトと順番に整える。すでに整っている画面なら無理に別物へ変えないようになっている。対象はランディングページ・ダッシュボード・アプリの画面」で、SKILL.md の手順と一致する。返信でリポジトリの URL と「Claude Code で使う場合はリポ内の skills/unslop フォルダをプロジェクトの .claude/skills/ にコピーし、導入後は /unslop」と導入手順を補足している。
+
+Sokolovsky 本人は公開ポスト（2026-10-30）で「自分のアンスロップ工程を無料の Claude スキルにした。ランディングページ・ダッシュボード・モバイルアプリで動く」と書き、続く返信で「Claude が良いデザインとは何かをもっと掴めるよう、まだ一部を磨いている」と述べている。
+
+## 他ページとの位置づけ（wiki 側の推論）
+
+[[tools/taste-skill]] の `redesign-existing-projects` も「監査してから直す」だが、taste-skill が 3 つのダイヤルとスタイル変種で出力を振るのに対し、unslop は方向づけを製品側から導き、パスの順序を固定し、「整っていれば直さない」停止条件を持つ点で異なる。[[tools/emil-kowalski-skills]] が原則の蒸留を渡すのに対し、unslop は兆候と修正の対応表で機械的に当てる。[[design/claude-premium-website-build]] の 8 項目採点（Inter フォントは「AI 製」を即座に露呈する、など）は、unslop の signs.md と同じ対象を人間の採点側から見たものと読める。文章側の同型スキルが [[tools/no-ai-slop]] で、unslop はその UI 版にあたる。[[design/layout-as-explanation]] の「レイアウトに説明させる」1 行は、unslop の文言パスと細部パスが扱う説明過多を 1 文で抑える簡易版と考えられる。
+
+## 観察ログ（未検証）
+
+- 2026-11-02: GitHub スター 4,801（リポ作成 2026-10-29・最終 push 2026-11-01）。そらの紹介ポストは 799 ブックマーク（2026-11-01 時点）
+- 2026-11-02: Sokolovsky は「まだ磨いている」と述べており、兆候リストとトークン値は今後変わりうる
+
+## 問い
+
+- 日本語 UI に当てたとき、signs.md の文言群（挨拶見出し・感嘆符・hype 語）はどこまで効くか。日本語特有の兆候（「〜しましょう！」調・全角記号の乱用）は自分で足す必要があるか
+- このvaultの `wiki/outputs/` の standalone HTML に `/unslop` を当てると、[[concepts/eval-loop]] の採点と比べてどちらが安定して「AI っぽさ」を減らすか
+- [[tools/taste-skill]] の生成側スキルで作った画面を unslop の監査に通すと、兆候はいくつ残るか。生成時の規律と事後の監査はどちらが安いか
+
+## 関連
+
+- [[tools/taste-skill]] — 同じ anti-slop 系。ダイヤル調整と変種分割で当たる対照
+- [[tools/emil-kowalski-skills]] — 「Agents don&#x27;t have taste」問題意識の原則蒸留型
+- [[design/claude-premium-website-build]] — 「高額に見える」8 項目の人間側採点。Inter フォント等の兆候が重なる
+- [[tools/no-ai-slop]] — 文章側の同型スキル（AI スロップ 20 種超の検出と除去）
+- [[design/layout-as-explanation]] — UI の説明過多を 1 行で抑える簡易版
+- [[design/design-md]] — 参照仕様を常駐させて凡庸さを避ける別解
+- [[tools/ui-ux-pro-max]] — 構造化データベースから設計システムを生成する対照アプローチ
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

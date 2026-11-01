@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>chatgpt-sites - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>chatgpt-sites</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="chatgpt-sites.md">Markdownで表示</a></div>
+  <div class="meta">tools/chatgpt-sites · tools · <span title="2026-11-02">今日</span></div>
+  <article><h1>ChatGPT Sites（ChatGPT／Codex に説明するだけで Web サイト・アプリを作って公開する OpenAI のホスティング機能）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: ChatGPT か Codex に「こういうサイトを」と説明すると Codex が作ってそのまま公開 URL を出す OpenAI のホスティング機能。Plus・Pro・Business・Enterprise で使え、HTTP/HTTPS/WebSocket と D1 データベース（10 GB）・R2 ファイル保存を持ち、2026 年末までホスティング無料。WEB エンジニアのスナガクは、画面だけでなく JSON API サーバーとしても公開できることを実測し、参加者・管理者・API の 3 Sites 構成でイベント用の質問・投票ボードを組んだ。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  U[&quot;参加者（ブラウザ）&quot;] --&gt; P[&quot;参加者向け Site&lt;br/&gt;閲覧・投稿・投票&lt;br/&gt;画面＋BFF&quot;]
+  M[&quot;管理者（オーナーのみ）&quot;] --&gt; A[&quot;管理者向け Site&lt;br/&gt;回答済み・強調&lt;br/&gt;画面＋BFF&quot;]
+  P --&gt;|署名付きリクエスト| API[&quot;API Site&lt;br/&gt;TypeScript＋標準 Request/Response&lt;br/&gt;署名検証・管理者認可&quot;]
+  A --&gt;|署名付きリクエスト| API
+  API &lt;--&gt; D1[(Cloudflare D1)]</pre>
+<p>OpenAI の開発者ドキュメントは Sites を「ChatGPT か Codex で説明することでサイトを作り、ホストし、共有する」機能と定義し、コードを書かずに始められること、既に作った Web アプリやゲームを別のデプロイ設定なしでホストできることを挙げる。ヘルプセンターによれば、プロンプトに「website」と書くか <code>@Sites</code> を付けて頼み、プライベートなプレビューを直してからデプロイすると URL が発行され、新規 Site は既定で非公開になる。接続済みアプリ（connected apps）を使う Site も作れ、訪問者はそれぞれ自分の接続アカウントと権限で使う。Enterprise ワークスペースでは公開が既定でオフで、管理者が有効化する。</p>
+<p>このvaultでは、2026-06-02 の Codex Sites 発表（Business／Enterprise 先行）を openai-codex が、2026-09-30 の「Sites が plugin extensions 付き MCP サーバーをホストできる」告知を <a href="../tools/openai-mcp-extensions.html">openai-mcp-extensions</a> が記録している。2026-11-01 時点のヘルプセンターは Plus と Pro の個人アカウントでも使えると書いており、提供範囲が個人プランまで広がっている。</p>
+<h2>仕様と料金（公式ドキュメント・2026-11-01 時点）</h2>
+<ul>
+<li>ランタイムは HTTP・HTTPS・WebSocket に対応し、生の TCP 接続（受信・送信とも）は非対応。一部のフレームワーク・プライベートネットワーク・データベース・バックグラウンドサービスは非対応</li>
+<li>ストレージは Site ごとに D1 データベース 10 GB、R2 オブジェクトストレージは固定上限なし</li>
+<li>Site の作成・編集は Codex の利用枠を消費し、ホスティング（トラフィック・保存）の利用枠は別建て</li>
+<li>ホスティングは 2026-12-31 まで無料。2027-01-01 から計測が始まり、プランに含まれる月間枠を超えた分だけ課金。2026-12-01 から Site ごとのトラフィックと保存量を見られるようになる。Enterprise の運用課金は現在免除</li>
+<li>第三者の決済事業者を通した物品・サービスの販売は可能だが、カード情報は決済事業者だけが扱う。保護対象医療情報の処理、13 歳未満向け、マルウェア配布などは禁止</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>利用するもの</th>
+<th>課金単位</th>
+<th>概算クレジット</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ストレージなしの Site</td>
+<td>1 Site・月</td>
+<td>0</td>
+</tr>
+<tr>
+<td>ストレージありの Site（空のデータベースを含む）</td>
+<td>1 Site・月</td>
+<td>25</td>
+</tr>
+<tr>
+<td>トラフィック</td>
+<td>10 万リクエスト</td>
+<td>16</td>
+</tr>
+<tr>
+<td>データベース保存</td>
+<td>1 GiB・月</td>
+<td>150</td>
+</tr>
+<tr>
+<td>ファイル保存</td>
+<td>1 GiB・月</td>
+<td>3.75</td>
+</tr>
+<tr>
+<td>カスタムドメイン（登録費は別）</td>
+<td>1 ドメイン・月</td>
+<td>25</td>
+</tr>
+<tr>
+<td>プライベート接続（Enterprise のみ）</td>
+<td>1 トンネル・月</td>
+<td>125</td>
+</tr>
+</tbody>
+</table>
+<p>（2027-01-01 発効予定として公式ドキュメントが示す提案レートを転記。クレジット額は概算と明記されている）</p>
+<p>ドキュメントは 1 ページの訪問が「典型的には 30〜50 リクエスト」を生むと書く。空のデータベースを持つ Site はトラフィック抜きで月約 25 クレジットになる。</p>
+<h2>スナガクの「API サーバーとしても使える」実測（2026-10-31）</h2>
+<p>スナガク（@suna_gaku。WEB エンジニアで著書『Codexではじめるエージェンティックコーディング』、#AIMIXMeetup 主催）は、アプリのバックエンドの API サーバーとして Sites を公開でき、「とりあえず試したい」段階で API 部分をすぐ作れるのが利点だと投稿した。誰でも叩けるので認証の設定は必要で、管理者用と一般ユーザー用でアプリを分け、全員に公開するかログインした自分だけにするかを決めれば他人からは見えなくできる、BFF 構成で安全にデータを扱うこともできる、と続け、「来週火曜のイベント（2026-11-03）までにもう少し遊ぶ」と結んでいる。添付 4 枚の内容は次のとおり。</p>
+<p><strong>最小 API の構成</strong>。ブラウザや HTTP クライアントが <code>GET /api/hello</code> を送ると、private Site（owner-only）の Site 単位の認証を経て JSON API が <code>200 OK</code>・<code>Content-Type: application/json</code>・<code>{"message":"Hello World"}</code> を返す。状態表は「実装・配信: 完了」「認証付き HTTP 実測: 完了」「本人による使い勝手確認: 記録上は進行中」「CORS: 未検証」で、脚注に「匿名プローブは 403。通常のサインイン動作や匿名利用可否は未確定」とある。</p>
+<p><strong>イベント質問・投票ボードの現在の構成</strong>。参加者向け Site（閲覧・投稿・投票。画面＋BFF。投稿・投票には ChatGPT でのログインが必要）と管理者向け Site（回答済み・強調。オーナーのみ）が、それぞれ署名付きリクエストで API Site（TypeScript＋標準 Request／Response。リクエストの署名を検証し、管理者操作はオーナーのみ許可）を呼び、API Site が Cloudflare D1 を読み書きする。1 つのモノレポに participant／admin／api と共通 packages を置き、Web フレームワークは使わず、Hono は移行案として未使用。</p>
+<p><strong>メリットと考慮点</strong>。役割を分離（参加者・管理者・API を別々に運用）、管理操作を守る（署名検証と API 側の認可、鍵を分離）、共通コード（1 つのモノレポで画面・契約・処理を共有）、環境を切り替え（Sites は D1、自己ホストは OIDC＋SQLite）。考慮点は「3 サービスの設定・配信・鍵の管理が必要」「Site 間通信と認証の検証が必要」。</p>
+<p><strong>デメリット・注意点</strong>。運用が複雑（3 サービスの設定・配信・バージョン管理）、鍵の管理（参加者用と Admin 用の署名鍵を安全に更新・保管）、認可の維持（API 追加時も管理者チェックが必要）、障害の切り分け（画面→BFF→API→DB のどこかを調べる）、データ保護（D1 のバックアップと復元訓練が必要）、参加者への負担（投稿・投票に ChatGPT ログインが必要。質問は公開）。「Hono への移行はコード整理に役立つが、これらの運用課題は残る」とまとめている。</p>
+<p>スナガク自身が「誰がオーバーエンジニアリングや…（？）」と書くとおり、イベント 1 回の投票ボードに 3 Sites＋署名検証を敷くのは試作としては重い。ただ、自己ホスト側を OIDC＋SQLite に差し替えられる構成にしてある点は、Sites を「とりあえず置く場所」から本番の自前ホスティングへ移すときの出口を先に作る設計と読める（推論）。</p>
+<h2>他ページとの位置づけ（wiki 側の推論）</h2>
+<p>公式ドキュメントが上限表に書く「D1 データベース」「R2 オブジェクトストレージ」は <a href="../companies/cloudflare.html">cloudflare</a> の製品名で、スナガクの構成図も Cloudflare D1 を直接名指ししている。Sites のランタイムが Cloudflare の基盤上にあることを示唆するが、OpenAI 側が基盤を明記した記述は今回のソースには無い。<a href="../tools/google-ai-studio.html">google-ai-studio</a> の無料アプリ構築・無料デプロイと同じ「作ったものをそのまま公開する場所」の競争で、Sites は ChatGPT のログインを認証基盤として持ち込める点が違う。<a href="../tools/openai-mcp-extensions.html">openai-mcp-extensions</a> の MCP サーバーホスティングと今回の JSON API 公開は、どちらも「Sites は画面だけでなくバックエンドを置く場所でもある」という同じ事実の別の切り口と考えられる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-11-02: スナガクの投稿は 105 ブックマーク（2026-11-01 時点）。CORS と匿名利用可否は本人も未検証と明記</li>
+<li>2026-11-02: Web 検索で見つかった第三者記事は「2026-09-11 に OpenAI が 3 か月で 500 万 Sites と公表」と書くが、OpenAI 一次ソースは未確認</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>Sites の API を ChatGPT の外（自分のアプリや Claude のクライアント）から認証付きで叩けるか。スナガクの「匿名プローブは 403」は Site 単位の認証が ChatGPT セッションに縛られることを意味するのか</li>
+<li>2027-01-01 以降の課金で、スナガクの 3 Sites 構成はデータベース付き Site が 1 つなので月約 25 クレジット＋トラフィックになる。個人のイベント用途で「無料で置いておける場所」であり続けるか</li>
+<li><a href="../concepts/ai-chat-deeplink.html">ai-chat-deeplink</a> の <code>?prompt=</code> 導線と組み合わせ、Sites でホストした画面から ChatGPT へ戻す動線は作れるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li>openai-codex — 2026-06-02 の Codex Sites 発表の記録。Sites を作る側のエージェント</li>
+<li><a href="../tools/openai-mcp-extensions.html">openai-mcp-extensions</a> — Sites が MCP サーバーをホストできるようになった 2026-09-30 の告知</li>
+<li><a href="../companies/openai.html">openai</a> — 提供元</li>
+<li><a href="../companies/cloudflare.html">cloudflare</a> — 上限表と構成図に出る D1・R2 の提供元</li>
+<li><a href="../tools/google-ai-studio.html">google-ai-studio</a> — 競合する無料アプリ構築・デプロイ基盤</li>
+<li><a href="../design/claude-premium-website-build.html">claude-premium-website-build</a> — スナガクが frontend-design スキルの更新を紹介した記録がある制作ワークフローのページ</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/openai.html">openai</a></li>
+<li><a href="../design/claude-premium-website-build.html">claude-premium-website-build</a></li>
+<li><a href="../tools/openai-mcp-extensions.html">openai-mcp-extensions</a></li>
+<li><a href="../companies/cloudflare.html">cloudflare</a></li>
+<li><a href="../concepts/ai-chat-deeplink.html">ai-chat-deeplink</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2116446925599986043" rel="noopener" target="_blank">https://x.com/i/web/status/2116446925599986043</a></li>
+<li><a href="https://developers.openai.com/codex/sites" rel="noopener" target="_blank">https://developers.openai.com/codex/sites</a></li>
+<li><a href="https://help.openai.com/en/articles/20001339-creating-and-managing-sites" rel="noopener" target="_blank">https://help.openai.com/en/articles/20001339-creating-and-managing-sites</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># ChatGPT Sites（ChatGPT／Codex に説明するだけで Web サイト・アプリを作って公開する OpenAI のホスティング機能）
+
+&gt; **TL;DR**: ChatGPT か Codex に「こういうサイトを」と説明すると Codex が作ってそのまま公開 URL を出す OpenAI のホスティング機能。Plus・Pro・Business・Enterprise で使え、HTTP/HTTPS/WebSocket と D1 データベース（10 GB）・R2 ファイル保存を持ち、2026 年末までホスティング無料。WEB エンジニアのスナガクは、画面だけでなく JSON API サーバーとしても公開できることを実測し、参加者・管理者・API の 3 Sites 構成でイベント用の質問・投票ボードを組んだ。
+
+```mermaid
+flowchart LR
+  U[&quot;参加者（ブラウザ）&quot;] --&gt; P[&quot;参加者向け Site&lt;br/&gt;閲覧・投稿・投票&lt;br/&gt;画面＋BFF&quot;]
+  M[&quot;管理者（オーナーのみ）&quot;] --&gt; A[&quot;管理者向け Site&lt;br/&gt;回答済み・強調&lt;br/&gt;画面＋BFF&quot;]
+  P --&gt;|署名付きリクエスト| API[&quot;API Site&lt;br/&gt;TypeScript＋標準 Request/Response&lt;br/&gt;署名検証・管理者認可&quot;]
+  A --&gt;|署名付きリクエスト| API
+  API &lt;--&gt; D1[(Cloudflare D1)]
+```
+
+OpenAI の開発者ドキュメントは Sites を「ChatGPT か Codex で説明することでサイトを作り、ホストし、共有する」機能と定義し、コードを書かずに始められること、既に作った Web アプリやゲームを別のデプロイ設定なしでホストできることを挙げる。ヘルプセンターによれば、プロンプトに「website」と書くか `@Sites` を付けて頼み、プライベートなプレビューを直してからデプロイすると URL が発行され、新規 Site は既定で非公開になる。接続済みアプリ（connected apps）を使う Site も作れ、訪問者はそれぞれ自分の接続アカウントと権限で使う。Enterprise ワークスペースでは公開が既定でオフで、管理者が有効化する。
+
+このvaultでは、2026-06-02 の Codex Sites 発表（Business／Enterprise 先行）を [[tools/openai-codex]] が、2026-09-30 の「Sites が plugin extensions 付き MCP サーバーをホストできる」告知を [[tools/openai-mcp-extensions]] が記録している。2026-11-01 時点のヘルプセンターは Plus と Pro の個人アカウントでも使えると書いており、提供範囲が個人プランまで広がっている。
+
+## 仕様と料金（公式ドキュメント・2026-11-01 時点）
+
+- ランタイムは HTTP・HTTPS・WebSocket に対応し、生の TCP 接続（受信・送信とも）は非対応。一部のフレームワーク・プライベートネットワーク・データベース・バックグラウンドサービスは非対応
+- ストレージは Site ごとに D1 データベース 10 GB、R2 オブジェクトストレージは固定上限なし
+- Site の作成・編集は Codex の利用枠を消費し、ホスティング（トラフィック・保存）の利用枠は別建て
+- ホスティングは 2026-12-31 まで無料。2027-01-01 から計測が始まり、プランに含まれる月間枠を超えた分だけ課金。2026-12-01 から Site ごとのトラフィックと保存量を見られるようになる。Enterprise の運用課金は現在免除
+- 第三者の決済事業者を通した物品・サービスの販売は可能だが、カード情報は決済事業者だけが扱う。保護対象医療情報の処理、13 歳未満向け、マルウェア配布などは禁止
+
+| 利用するもの | 課金単位 | 概算クレジット |
+|---|---|---|
+| ストレージなしの Site | 1 Site・月 | 0 |
+| ストレージありの Site（空のデータベースを含む） | 1 Site・月 | 25 |
+| トラフィック | 10 万リクエスト | 16 |
+| データベース保存 | 1 GiB・月 | 150 |
+| ファイル保存 | 1 GiB・月 | 3.75 |
+| カスタムドメイン（登録費は別） | 1 ドメイン・月 | 25 |
+| プライベート接続（Enterprise のみ） | 1 トンネル・月 | 125 |
+
+（2027-01-01 発効予定として公式ドキュメントが示す提案レートを転記。クレジット額は概算と明記されている）
+
+ドキュメントは 1 ページの訪問が「典型的には 30〜50 リクエスト」を生むと書く。空のデータベースを持つ Site はトラフィック抜きで月約 25 クレジットになる。
+
+## スナガクの「API サーバーとしても使える」実測（2026-10-31）
+
+スナガク（@suna_gaku。WEB エンジニアで著書『Codexではじめるエージェンティックコーディング』、#AIMIXMeetup 主催）は、アプリのバックエンドの API サーバーとして Sites を公開でき、「とりあえず試したい」段階で API 部分をすぐ作れるのが利点だと投稿した。誰でも叩けるので認証の設定は必要で、管理者用と一般ユーザー用でアプリを分け、全員に公開するかログインした自分だけにするかを決めれば他人からは見えなくできる、BFF 構成で安全にデータを扱うこともできる、と続け、「来週火曜のイベント（2026-11-03）までにもう少し遊ぶ」と結んでいる。添付 4 枚の内容は次のとおり。
+
+**最小 API の構成**。ブラウザや HTTP クライアントが `GET /api/hello` を送ると、private Site（owner-only）の Site 単位の認証を経て JSON API が `200 OK`・`Content-Type: application/json`・`{&quot;message&quot;:&quot;Hello World&quot;}` を返す。状態表は「実装・配信: 完了」「認証付き HTTP 実測: 完了」「本人による使い勝手確認: 記録上は進行中」「CORS: 未検証」で、脚注に「匿名プローブは 403。通常のサインイン動作や匿名利用可否は未確定」とある。
+
+**イベント質問・投票ボードの現在の構成**。参加者向け Site（閲覧・投稿・投票。画面＋BFF。投稿・投票には ChatGPT でのログインが必要）と管理者向け Site（回答済み・強調。オーナーのみ）が、それぞれ署名付きリクエストで API Site（TypeScript＋標準 Request／Response。リクエストの署名を検証し、管理者操作はオーナーのみ許可）を呼び、API Site が Cloudflare D1 を読み書きする。1 つのモノレポに participant／admin／api と共通 packages を置き、Web フレームワークは使わず、Hono は移行案として未使用。
+
+**メリットと考慮点**。役割を分離（参加者・管理者・API を別々に運用）、管理操作を守る（署名検証と API 側の認可、鍵を分離）、共通コード（1 つのモノレポで画面・契約・処理を共有）、環境を切り替え（Sites は D1、自己ホストは OIDC＋SQLite）。考慮点は「3 サービスの設定・配信・鍵の管理が必要」「Site 間通信と認証の検証が必要」。
+
+**デメリット・注意点**。運用が複雑（3 サービスの設定・配信・バージョン管理）、鍵の管理（参加者用と Admin 用の署名鍵を安全に更新・保管）、認可の維持（API 追加時も管理者チェックが必要）、障害の切り分け（画面→BFF→API→DB のどこかを調べる）、データ保護（D1 のバックアップと復元訓練が必要）、参加者への負担（投稿・投票に ChatGPT ログインが必要。質問は公開）。「Hono への移行はコード整理に役立つが、これらの運用課題は残る」とまとめている。
+
+スナガク自身が「誰がオーバーエンジニアリングや…（？）」と書くとおり、イベント 1 回の投票ボードに 3 Sites＋署名検証を敷くのは試作としては重い。ただ、自己ホスト側を OIDC＋SQLite に差し替えられる構成にしてある点は、Sites を「とりあえず置く場所」から本番の自前ホスティングへ移すときの出口を先に作る設計と読める（推論）。
+
+## 他ページとの位置づけ（wiki 側の推論）
+
+公式ドキュメントが上限表に書く「D1 データベース」「R2 オブジェクトストレージ」は [[companies/cloudflare]] の製品名で、スナガクの構成図も Cloudflare D1 を直接名指ししている。Sites のランタイムが Cloudflare の基盤上にあることを示唆するが、OpenAI 側が基盤を明記した記述は今回のソースには無い。[[tools/google-ai-studio]] の無料アプリ構築・無料デプロイと同じ「作ったものをそのまま公開する場所」の競争で、Sites は ChatGPT のログインを認証基盤として持ち込める点が違う。[[tools/openai-mcp-extensions]] の MCP サーバーホスティングと今回の JSON API 公開は、どちらも「Sites は画面だけでなくバックエンドを置く場所でもある」という同じ事実の別の切り口と考えられる。
+
+## 観察ログ（未検証）
+
+- 2026-11-02: スナガクの投稿は 105 ブックマーク（2026-11-01 時点）。CORS と匿名利用可否は本人も未検証と明記
+- 2026-11-02: Web 検索で見つかった第三者記事は「2026-09-11 に OpenAI が 3 か月で 500 万 Sites と公表」と書くが、OpenAI 一次ソースは未確認
+
+## 問い
+
+- Sites の API を ChatGPT の外（自分のアプリや Claude のクライアント）から認証付きで叩けるか。スナガクの「匿名プローブは 403」は Site 単位の認証が ChatGPT セッションに縛られることを意味するのか
+- 2027-01-01 以降の課金で、スナガクの 3 Sites 構成はデータベース付き Site が 1 つなので月約 25 クレジット＋トラフィックになる。個人のイベント用途で「無料で置いておける場所」であり続けるか
+- [[concepts/ai-chat-deeplink]] の `?prompt=` 導線と組み合わせ、Sites でホストした画面から ChatGPT へ戻す動線は作れるか
+
+## 関連
+
+- [[tools/openai-codex]] — 2026-06-02 の Codex Sites 発表の記録。Sites を作る側のエージェント
+- [[tools/openai-mcp-extensions]] — Sites が MCP サーバーをホストできるようになった 2026-09-30 の告知
+- [[companies/openai]] — 提供元
+- [[companies/cloudflare]] — 上限表と構成図に出る D1・R2 の提供元
+- [[tools/google-ai-studio]] — 競合する無料アプリ構築・デプロイ基盤
+- [[design/claude-premium-website-build]] — スナガクが frontend-design スキルの更新を紹介した記録がある制作ワークフローのページ
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

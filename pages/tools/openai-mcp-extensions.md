@@ -32,3 +32,4 @@ MCP Apps は [[concepts/generative-ui]] の Open-ended パターンにあたり�
 - [[concepts/generative-ui]] — MCP Apps を Open-ended パターンとして位置づける整理
 - [[tools/openai-mcp-tunnel]] — 同じく OpenAI 製品に MCP サーバーをつなぐ Secure MCP Tunnel
 - [[tools/openai-codex]] — プラグイン作成ドキュメントの置き場
+- [[tools/chatgpt-sites]] — MCP サーバーをホストする Sites の製品ページ。対応プラン・D1／R2 の上限・2027 年からの料金と、スナガクによる JSON API サーバー利用の実測

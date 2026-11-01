@@ -42,3 +42,4 @@
 - [[concepts/kakeru-hito]] — 「AIで書いた記事をレビューできる書ける人がいない会社」の事例（@Books_Apps）。本スキルが解く問題の人間側の記述
 - [[concepts/writing-norms-adoption]] — 日本語規範を入れるかどうかの判定と導入手順（@tetumemo）。本スキルが検出するAIスロップに対応する6つの型を日本語で名指ししている
 - [[tools/first-reader]] — 同じ「AIっぽい文章」問題に、テキストの属性でなく読者の読書体験（離脱位置・翌日の記憶）を測る側から当たるスキル。READMEはスロップ検出系を名指しで対比している
+- [[tools/unslop]] — UI 側の同型スキル。紫グラデーション・絵文字ラベル・叫ぶ文言などの兆候を監査して 9 パスで直す（Damir Sokolovsky）

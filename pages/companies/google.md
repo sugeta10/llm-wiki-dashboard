@@ -38,3 +38,4 @@ Googleの消費者向けAI戦略は、個別プロダクト課金ではなく**�
 - [[models/diffusiongemma-jev]] — Gemma 公式が紹介した Jev API 互換モデル（djev）。Cloud Run に1コマンドでデプロイ
 - [[concepts/gmail-ai-default-access]] — Gmail の AI が既定で受信トレイ（添付・明細・医療文書を含む）を読む導入が集団訴訟の対象になったとする警告ポスト（@Nyx_Tech_AI・詳細は未収集）
 - [[tools/claude-google-workspace]] — Anthropic の Claude が Docs・Sheets・Slides のサイドバーに入る連携（2026-10-06発表）。Gemini と同じ Workspace 画面で競う形になる
+- [[tools/elephant-goldfish-model]] — Google が 2026-10-21 にオープンソース化した設計審査プラグイン EGM（Dave Rensin 提唱・Antigravity／Claude Code／Codex 対応・「公式サポート製品ではない」と明記）

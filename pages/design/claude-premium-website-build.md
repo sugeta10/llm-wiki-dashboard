@@ -69,3 +69,5 @@
 - [[design/ai-motion-vocabulary]] — ステップ7のモーション追加を名前で指示するための演出名リスト（パララックス・スティッキー等）
 - [[design/lusion]] — 「Motion」「Point of view」で振り切った3Dインタラクティブ制作スタジオ。参照集め（ステップ4）でストックする側の実例
 - [[business/aircon-urakata]] — 現役エアコンクリーニング業者が同業者向けに書いた「ChatGPT/Claude で相談し Codex・Claude Code で形にする」ホームページ作成手順を持つサイト。本ページの制作ワークフローを非エンジニアの一人業者が使う側の入口
+- [[tools/unslop]] — 作った後の画面から「AI っぽさ」の兆候を監査して直すスキル（Damir Sokolovsky）。本ページの 8 項目採点が人間側から見る対象を、兆候と修正の対応表で機械的に当てる
+- [[tools/chatgpt-sites]] — 本ページで frontend-design スキルの更新を紹介したスナガクが、ChatGPT Sites を JSON API サーバーとして使った実測を投稿した製品ページ

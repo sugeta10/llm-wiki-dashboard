@@ -65,3 +65,4 @@ GPT シリーズ・ChatGPT・Codex を開発する AI 企業。AGI の安全な�
 - [[models/jev]]（ChatGPTの共同発明者を名乗る@CompleteSkepticが、チャットモデルの延長とは別系統として発表した新型フロンティアモデル。OpenAIとの現在の関係は未確認）
 - [[tools/openai-mcp-extensions]]（ChatGPT の自社機能と同じプラットフォームを外部プラグインに開放する MCP 拡張）
 - [[business/chatgpt-plan-api-credits]]（ChatGPT Pro/Business 契約者に OpenAI API の月次クレジットを付ける施策。Anthropic の Max/Team 向け施策の3週間後に同額・同条件で開始）
+- [[tools/chatgpt-sites]]（ChatGPT／Codex に説明するだけでサイト・アプリを作って公開するホスティング機能。Plus・Pro・Business・Enterprise で利用可、2026 年末までホスティング無料、2027-01-01 から計測課金）
