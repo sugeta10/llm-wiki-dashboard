@@ -14,6 +14,10 @@
 
 「1メッセージで全体を渡し完了条件を言う」は、[[concepts/fable-5-prompting]] など自律性の高いモデル向けの指針に共通する方向と考えられる（推論）。
 
+## Grok Bot のバックエンドに採用（2026-10-07）
+
+@0xMorlex の X 記事によれば、Musk が 2026-10-06（米国時間）に SpaceX はタスクごとに最良のバックエンドモデルを使うと投稿して Opus 5.5 を筆頭に挙げ、翌日に Grok Bot チームが全 Bot を Opus 5.5 で動かすと具体化した。@0xMorlex は採用理由として Artificial Analysis の測定で Terminal-Bench の差がほぼ 3 倍（相手は Grok 4.6）だったことを挙げ、API では 100 万トークンの文脈と最大 12 万 8 千トークンの出力に対応すると書くが、本 vault ではいずれも公式情報で未確認である。wiki 側の Web 検索では Musk の投稿は複数媒体で確認でき、「全 Bot が既定」は単一報道に依る。Grok Bot 側の組み方は [[concepts/grok-bot-opus-5-5-harness]] に置いた。
+
 ## 問い
 
 - Claude チームのガイド本体を取り込み、@hqmank が挙げた tip の全体と、Opus 5 からの書き方の変更点を確認する
@@ -30,3 +34,4 @@
 - [[concepts/opus-motion-design-studio]] — 公開直後に流行したコード描画動画の作り方を12ステップにまとめた講座（@0xMovez）。xhigh/max と画像読解による自己批評ループが要
 - [[models/claude-haiku-5-5]] — @ClaudeDevs が「Opus 5.5 と組むサブエージェント」として勧めた小型モデル
 - [[concepts/claude-code-long-task-harness]] — Opus 5.5 の長いタスクを完走させる Claude Code 7層ハーネス。発表時の 60% トークン削減は自分の計測で確かめよと注意（@beamnxw）
+- [[concepts/grok-bot-opus-5-5-harness]] — SpaceX の Grok Bot が本モデルをバックエンドの筆頭に据えた後、他社製ハーネスの上で Opus 5.5 を動かす 10 手順（@0xMorlex）。本モデルの 1M 文脈・128K 出力・Terminal-Bench 約 3 倍の記述はこの記事由来

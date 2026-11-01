@@ -90,3 +90,4 @@ flowchart LR
 - [[tools/grok-bot-essential-bots]] — kaito 選の Bot 10体。Commitments（タスク追跡）や Engineering Lead は本ページの Operator・作業ボードに近い役割
 - [[concepts/harness-seven-jobs]] — 本番ハーネスの7つの仕事。ブリーフ/ボードの分離と Ask first の承認境界が記憶の外部化・モデル外の権限に対応
 - [[business/hensu-kyokushouka]] — 一人ビジネスをマネジメント不要に設計する論。本ページはその実行側に常駐エージェントを置く手順
+- [[concepts/grok-bot-opus-5-5-harness]] — バックエンドが Claude Opus 5.5 に変わった後の Grok Bot の 10 手順（@0xMorlex）。本ページの憲章と Ask first に当たる手順に、第三者モデルへ流れるデータ線と「可逆なら完了・不可逆なら止める」承認線の基準を足している

@@ -123,3 +123,4 @@ response = client.messages.create(
 - [[concepts/jev-claude-code-integration]] — ターンごとのモデルルーターがメインモデルを切り替えるとキャッシュを捨てて逆に高くつくため、メイン切替を既定オフにする設計例（jev-model-router・jcm-router）
 - [[tools/claude-code-mods]] — 5分キャッシュの残り時間を Claude Code の画面にバー表示し、温め直しを通知で促す Cache Control Mod（@dani_avila7 推薦）
 - [[concepts/claude-code-compact-recovery]] — idle compaction（キャッシュ切れ直前の自動圧縮）で節約できる代わりに起きる、圧縮による判断構造の喪失への対策
+- [[concepts/claude-feature-map]] — 一般向けの Claude 20 機能地図のうち開発者向けの 1 項目として、cache_control の付け方・最大 90% 減・5 分 TTL を紹介（@angeldot_）

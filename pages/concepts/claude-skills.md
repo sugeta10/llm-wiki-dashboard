@@ -108,3 +108,4 @@ Claude.ai と Claude Code は同じ仕組みでスキルを動作させる。
 - [[tools/emil-kowalski-skills]] — デザインエンジニアの専門性（taste）をスキル化した実例（/apple-design・「AIは専門性を置き換えず増幅する」）
 - [[concepts/context-engineering]] — Anthropic Claude Codeチーム公式のコンテキスト設計原則。スキルを「必要な時だけロードされる軽量ガイド」と位置づける
 - [[tools/x-research-skills]] — 外部API（xAI の Grok）呼び出しスクリプトを SKILL.md で束ね、X検索を専用レイヤーとして常設した実例（@HayattiQ）
+- [[concepts/claude-feature-map]] — Skills を「スマホのアプリ」に例え、同梱・組織・自作の 3 入手経路で紹介する一般向けの Claude 20 機能地図（@angeldot_）

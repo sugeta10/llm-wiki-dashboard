@@ -89,3 +89,4 @@ OpenAI・Anthropic・ThoughtWorksが調整なく同じ壁にぶつかり、異�
 - [[concepts/models-as-insider-risks]] — モデル・ハーネス・操作空間を性能でなく統制のために分離せよという Satya Nadella の論
 - [[concepts/harness-seven-jobs]] — 本番ハーネスの仕事を契約化・地図・ツール・記憶の外部化・センサー・モデル外の権限・トレースの7つに分け、重要ルールは指針と機械的検査の二重で書けと述べる運用側の分解（@0xwhrrari）
 - [[concepts/eval-harness]] — Agent = Model + Harness を測る側の装置。モデルのベンチマークでなく自分のプロンプトとデータで動くアプリを固定のテスト質問で各 3 回流し、変更ごとに何が直り何が壊れたかを質問単位で出す回帰装置（Tony・Confident AI）
+- [[concepts/grok-bot-opus-5-5-harness]] — モデルとハーネスの分離が会社の境界をまたいで商業的に起きた例：SpaceX の Grok Bot がハーネス（計算機・ログイン・記憶・ルーチン）を保ち、脳を Anthropic の Opus 5.5 に替えた。「賢い脳にはステップを増やし権限は増やさない」（@0xMorlex）

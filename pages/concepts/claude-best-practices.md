@@ -50,3 +50,4 @@ Claudeを日常的に使っていても多くのユーザーはその能力の�
 - [[concepts/claude-projects-blueprint]] — Claude Projectsを6パートで「AI社員化」する設計図（Projects活用の深掘り）
 - [[tools/claude-code]] — Anthropic製AIコーディングCLI（同じClaudeエコシステム）
 - [[concepts/claude-projects-setup]] — Projects に絞ったセットアップ実践（精密知識ベース・retrieval テスト・3層パーソナライゼーション）
+- [[concepts/claude-feature-map]] — 同じ「10% しか使っていない」出発点から、プロンプト術でなく機能の所在（チャット内／役割／Chrome・デスクトップ・予定実行・Claude Code／API／応用の 20 機能）を並べたスペイン語ガイド（@angeldot_）

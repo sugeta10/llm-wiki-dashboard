@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>grok-bot</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="grok-bot.md">Markdownで表示</a></div>
-  <div class="meta">tools/grok-bot · tools · <span title="2026-09-30">1ヶ月前</span></div>
+  <div class="meta">tools/grok-bot · tools · <span title="2026-11-01">今日</span></div>
   <article><h1>Grok Bot（コーディングエージェントを管理するエンジニアボット）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Grok Botは自前の計算機を持ち、Cursorのクラウドエージェントを起動・監視・催促してPRまで運ぶ「有能なエンジニアのインターン」型エージェント。開発チームの@lingxiは領域別の5体と運営担当1体で200超のクラウドエージェントを同時管理し、夜間監査から自動マージまで回していると述べる。</p>
@@ -100,6 +100,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><strong>もっと手を離す</strong>: 自動運転と同じで信頼構築の過程。安全なところでは出荷の自由を与え、リスクの高い領域では慎重に。失敗したからといって挑戦を止めない</li>
 <li><strong>ボット同士で調整させる</strong>: 運営ボットが他のボットと話し思考の痕跡を分析する「ボットのミスをレビューするパイプライン」を組むと、同じ失敗が繰り返されない</li>
 </ul>
+<h2>バックエンドモデルの切り替え（2026-10-07）</h2>
+<p>@0xMorlex の X 記事によれば、米国時間 10 月 6 日深夜に Musk が「SpaceX はどのタスクにも最良のバックエンドモデルを使う」と投稿して Claude Opus 5.5・Midjourney・Suno を名指しし、翌 7 日に Grok Bot チームの Lauren（@poteto）が「全 Bot が Opus 5.5 で動き、Cursor のモデルで動くクラウドエージェントを生成できる」と具体化した。Musk の投稿は複数媒体の報道で確認できたが、「全 Bot が既定で Opus 5.5」は Grok Bot スタッフの発言を引く報道 1 件に依り、SpaceXAI 公式の告知は見つかっていない。上の @lingxi の運用記は切り替え前の既定モデルで書かれたもので、Opus 5.5 を前提に憲章・データ線・承認線を組み直す 10 手順は <a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a> にまとめた。</p>
 <h2>観察ログ（未検証）</h2>
 <ul>
 <li>2026-09-03: 生産性の数値はすべて@lingxiの自己申告で第三者検証なし。@potetoが直近1ヶ月で2,000本超のPR、@baltaaazrと@shaoruuがGrok Botの基盤を4週間で、@lingxiがiOS v0を3週間で構築、手動管理15並列から200超の同時管理へ</li>
@@ -127,11 +129,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/private-agent-board.html">private-agent-board</a> — @geeorgey が Grok Bot を X の情報収集役として webhook で Cloudflare 上の非公開掲示板につなぎ、dots・muse と情報交換させた個人構成</li>
 <li><a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a> — 炎鎮（@super_bonochin）が担当別 7 体（まとめ・創作・AI ニュース・セキュリティ・Azure・開発・家計）を GPU 搭載の自宅 PC 主体で回し、Google ドライブの共有ナレッジと 1Password を土台に毎朝のセキュリティ点検・朝夕のニュース・週 1 反省会を定期実行する個人構成の全体図</li>
 <li><a href="../concepts/grok-bot-one-person-harness.html">grok-bot-one-person-harness</a> — @beamnxw が一人会社向けに書いた設定手順。Operator 1 体に会社ブリーフと作業ボードを渡し、Ask first の承認境界・受け入れ基準・引き継ぎ・スキル・ルーチンの 7 手順で囲む。本ページの開発チーム運用に対し、業務運用を 1 体から始める側の手順</li>
+<li><a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a> — @0xMorlex が、バックエンドが Claude Opus 5.5 に変わった後の Grok Bot を「ハーネスと脳の分離」と読み、Chief 1 体から憲章・第三者モデルへのデータ線・ログイン引き渡し・Cursor エージェントを生む専門 Bot・可逆性で引く承認線・コスト監視までを 10 手順で組んだ記事</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/decision-layer-model.html">decision-layer-model</a></li>
 <li><a href="../concepts/github-runner-agent-factory.html">github-runner-agent-factory</a></li>
 <li><a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a></li>
 <li><a href="../concepts/grok-bot-one-person-harness.html">grok-bot-one-person-harness</a></li>
-<li><a href="../concepts/improver-skill-pattern.html">improver-skill-pattern</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094493172516966781" rel="noopener" target="_blank">https://x.com/i/web/status/2094493172516966781</a></li></ul></section></article>
+<li><a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2094493172516966781" rel="noopener" target="_blank">https://x.com/i/web/status/2094493172516966781</a></li>
+<li><a href="https://x.com/i/web/status/2108171726412464173" rel="noopener" target="_blank">https://x.com/i/web/status/2108171726412464173</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -215,6 +219,10 @@ flowchart LR
 - **もっと手を離す**: 自動運転と同じで信頼構築の過程。安全なところでは出荷の自由を与え、リスクの高い領域では慎重に。失敗したからといって挑戦を止めない
 - **ボット同士で調整させる**: 運営ボットが他のボットと話し思考の痕跡を分析する「ボットのミスをレビューするパイプライン」を組むと、同じ失敗が繰り返されない
 
+## バックエンドモデルの切り替え（2026-10-07）
+
+@0xMorlex の X 記事によれば、米国時間 10 月 6 日深夜に Musk が「SpaceX はどのタスクにも最良のバックエンドモデルを使う」と投稿して Claude Opus 5.5・Midjourney・Suno を名指しし、翌 7 日に Grok Bot チームの Lauren（@poteto）が「全 Bot が Opus 5.5 で動き、Cursor のモデルで動くクラウドエージェントを生成できる」と具体化した。Musk の投稿は複数媒体の報道で確認できたが、「全 Bot が既定で Opus 5.5」は Grok Bot スタッフの発言を引く報道 1 件に依り、SpaceXAI 公式の告知は見つかっていない。上の @lingxi の運用記は切り替え前の既定モデルで書かれたもので、Opus 5.5 を前提に憲章・データ線・承認線を組み直す 10 手順は [[concepts/grok-bot-opus-5-5-harness]] にまとめた。
+
 ## 観察ログ（未検証）
 
 - 2026-09-03: 生産性の数値はすべて@lingxiの自己申告で第三者検証なし。@potetoが直近1ヶ月で2,000本超のPR、@baltaaazrと@shaoruuがGrok Botの基盤を4週間で、@lingxiがiOS v0を3週間で構築、手動管理15並列から200超の同時管理へ
@@ -242,6 +250,7 @@ flowchart LR
 - [[concepts/private-agent-board]] — @geeorgey が Grok Bot を X の情報収集役として webhook で Cloudflare 上の非公開掲示板につなぎ、dots・muse と情報交換させた個人構成
 - [[concepts/grok-bot-ai-team-workspace]] — 炎鎮（@super_bonochin）が担当別 7 体（まとめ・創作・AI ニュース・セキュリティ・Azure・開発・家計）を GPU 搭載の自宅 PC 主体で回し、Google ドライブの共有ナレッジと 1Password を土台に毎朝のセキュリティ点検・朝夕のニュース・週 1 反省会を定期実行する個人構成の全体図
 - [[concepts/grok-bot-one-person-harness]] — @beamnxw が一人会社向けに書いた設定手順。Operator 1 体に会社ブリーフと作業ボードを渡し、Ask first の承認境界・受け入れ基準・引き継ぎ・スキル・ルーチンの 7 手順で囲む。本ページの開発チーム運用に対し、業務運用を 1 体から始める側の手順
+- [[concepts/grok-bot-opus-5-5-harness]] — @0xMorlex が、バックエンドが Claude Opus 5.5 に変わった後の Grok Bot を「ハーネスと脳の分離」と読み、Chief 1 体から憲章・第三者モデルへのデータ線・ログイン引き渡し・Cursor エージェントを生む専門 Bot・可逆性で引く承認線・コスト監視までを 10 手順で組んだ記事
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

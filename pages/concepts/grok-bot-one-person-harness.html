@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>grok-bot-one-person-harness</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="grok-bot-one-person-harness.md">Markdownで表示</a></div>
-  <div class="meta">concepts/grok-bot-one-person-harness · concepts · <span title="2026-10-29">2日前</span></div>
+  <div class="meta">concepts/grok-bot-one-person-harness · concepts · <span title="2026-10-29">3日前</span></div>
   <article><h1>Grok Bot で組む一人会社のハーネス（Operator・会社ブリーフ・承認境界・ルーチン）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 一人会社の経営者が納品・営業・意思決定で手を離せない間も仕事が進むよう、Grok Bot に「Operator」1体を置き、会社ブリーフと作業ボードを正の情報源として渡し、承認境界・受け入れ基準・引き継ぎ・スキル・ルーチンの7手順で囲む設定手順（@beamnxw の X 記事「Grok Bot Engineering: Set Up a Harness for Your One-Person Company」）。</p>
@@ -116,11 +116,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/grok-bot-essential-bots.html">grok-bot-essential-bots</a> — kaito 選の Bot 10体。Commitments（タスク追跡）や Engineering Lead は本ページの Operator・作業ボードに近い役割</li>
 <li><a href="../concepts/harness-seven-jobs.html">harness-seven-jobs</a> — 本番ハーネスの7つの仕事。ブリーフ/ボードの分離と Ask first の承認境界が記憶の外部化・モデル外の権限に対応</li>
 <li><a href="../business/hensu-kyokushouka.html">hensu-kyokushouka</a> — 一人ビジネスをマネジメント不要に設計する論。本ページはその実行側に常駐エージェントを置く手順</li>
+<li><a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a> — バックエンドが Claude Opus 5.5 に変わった後の Grok Bot の 10 手順（@0xMorlex）。本ページの憲章と Ask first に当たる手順に、第三者モデルへ流れるデータ線と「可逆なら完了・不可逆なら止める」承認線の基準を足している</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/hensu-kyokushouka.html">hensu-kyokushouka</a></li>
 <li><a href="../concepts/claude-code-long-task-harness.html">claude-code-long-task-harness</a></li>
 <li><a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a></li>
-<li><a href="../tools/grok-bot.html">grok-bot</a></li>
-<li><a href="../concepts/harness-seven-jobs.html">harness-seven-jobs</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107143806546002398" rel="noopener" target="_blank">https://x.com/i/web/status/2107143806546002398</a></li></ul></section></article>
+<li><a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a></li>
+<li><a href="../tools/grok-bot.html">grok-bot</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107143806546002398" rel="noopener" target="_blank">https://x.com/i/web/status/2107143806546002398</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -233,6 +234,7 @@ flowchart LR
 - [[tools/grok-bot-essential-bots]] — kaito 選の Bot 10体。Commitments（タスク追跡）や Engineering Lead は本ページの Operator・作業ボードに近い役割
 - [[concepts/harness-seven-jobs]] — 本番ハーネスの7つの仕事。ブリーフ/ボードの分離と Ask first の承認境界が記憶の外部化・モデル外の権限に対応
 - [[business/hensu-kyokushouka]] — 一人ビジネスをマネジメント不要に設計する論。本ページはその実行側に常駐エージェントを置く手順
+- [[concepts/grok-bot-opus-5-5-harness]] — バックエンドが Claude Opus 5.5 に変わった後の Grok Bot の 10 手順（@0xMorlex）。本ページの憲章と Ask first に当たる手順に、第三者モデルへ流れるデータ線と「可逆なら完了・不可逆なら止める」承認線の基準を足している
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){
