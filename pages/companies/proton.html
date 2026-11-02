@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>proton - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#ff7b72"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>proton</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="proton.md">Markdownで表示</a></div>
+  <div class="meta">companies/proton · companies · <span title="2026-11-02">今日</span></div>
+  <article><h1>Proton — 暗号化メール企業の「AI の清算」：CTO の宣言文と CEO の AI 強行</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 暗号化メール Proton Mail を運営するスイスの Proton で、CTO の Bart Butler が全エンジニアに「"プログラミング"は死んだ。あなたの仕事は LLM により良いコードをより速く書かせることだ」と宣言し、CEO の Andy Yen が新規コードのペンテスト期間を求める社員を「負け犬の思考」と退けて AI の使い方で全社員を再面接すると通告したことを、404 Media の Joseph Cox が社員 9 人の証言と内部文書から「恐怖の文化」として報じた事例。</p>
+</blockquote>
+<p>宣言文の全文、報道の取得できた範囲、AI/ML 導入支援の Matt Stockton（@mstockton）による「方向は正しく、組織の変革は人間の整合の問題」という読みを収録する。宣言文が社内に出た経緯は、404 Media の Joseph Cox（同媒体の共同創業者・ハッキングとプライバシー担当の記者）が 2026-10-29 に「複数のコピーを入手した」として画像 3 枚で公開し、同日の記事「Manifestos, Fear, and 'Loser Thinking': Inside Proton's AI Reckoning」で社内の状況を報じたことで外に出た。Matt Stockton は 10 月 31 日にこれを引用し、エンジニアリング組織を率いる人は全文を読めと勧めた。宣言文の署名は「Bart」で、404 Media が「CTO が書いた AI 宣言文」と記しており、Proton の CTO は Bart Butler（元 CERN の物理学者、Proton 公式ブログの著者ページによる）である。宣言文自体の日付は画像に無い。記事は有料会員向けで、本 wiki が取得できたのは冒頭からポスト量子暗号の段落まで。</p>
+<h2>宣言文の主張（Bart Butler）</h2>
+<p>Butler は冒頭で、シニアエンジニアの「{事業部名}ではもう誰もコードを書いていない」という発言を引き、手でよいコードを書くことは 20 世紀の電話番号の暗記や 19 世紀の乗馬のように時代の過ぎた中核スキルだと書く。ボイラープレート・ドキュメント・テストという嫌われてきた作業を人間が二度と心配しなくてよくなるのは歓迎すべきことで、モデルはアーキテクチャの提案でも議論と教育に貢献すると評価する。一方で外の AI 投資は競合を含めて事業環境を決めるもので、Proton は「取り残されており、ミッションの成功そのものへの存亡の脅威」だと位置づける。</p>
+<p>そのうえで「なぜ Proton では革命が来た感じがしないのか。全員が LLM を使っているのに生産性が劇的に上がらないのはなぜか」を 3 つの理由で説明する。</p>
+<ol>
+<li><strong>エンジニアの文化とメンタリティ</strong>。「あなたの仕事は根本的に変わった。コードを書くことではなく、LLM がより良いコードをより速く書くのを助けることだ」。エンジニアは全員がチームリーダーであり、部下はモデルとエージェントである。ただし常に一緒にペアプロする 2 人はチームとは言えず、リーダーが会議中は誰も働かないチームも同様で、AI は人間の子守りを減らしながら自律的・継続的に働けなければならない。エンジニアの仕事は LLM が自力で解けない問題を見つけ、今回解くだけでなく次回は自力で解けるようにすることで、具体策としてリポジトリ単位のコンテキストファイル・共有スキルとプロンプト・繰り返す失敗が調査と修正を引き起こす習慣を挙げる。Butler は「これは専門性の死ではない」と続け、LLM は速いが人間は経験と判断を持ち、幻覚や悪意ある入力に（願わくば）はるかに強く、モデルには決してできない形で説明責任を負うと書く。「良いエンジニアリング実践の死でもない」として設計とテストとドキュメントは重要なままだが、テストの書き心地が安くなれば「E2E テストは多すぎると割に合わない」という旧来の線は動くと述べる。</li>
+<li><strong>フェーズ 1 に留まっていること</strong>。既存ワークフローの中で LLM に作業を速くさせる段階で止まっており、ボトルネックを 1 つ消すと別のボトルネック（CI の速度と容量・設計・承認・仕様・コードレビュー）が取って代わる。Butler は「人間のコードレビューの大半が終わる地点に至る必要があるし至る」と明言する。工程全体を見渡してボトルネックを容赦なく消し、既存ワークフローの最適化でなく作り直しまで踏み込むのがフェーズ 2 で、「今そこへ行く必要がある」と書く。</li>
+<li><strong>集合行為問題</strong>。個人が LLM でコードを書くのは自分で完結するが、チーム・事業部・全社の CI を作り直すのは重い投資で、Proton はそのための組織と資源をまだ投じていない。多くの場合「ボトルネックがどこにあるかすら分かっていない。見つけるための道具に投資していないから」と認める。過去の慎重さには理由があったとしつつ、「組織として変革にコミットする時はとうに来ている」と結ぶ。</li>
+</ol>
+<p>エンジニアへの含意として、Butler は「裁量と責任の両方が広がった」と書く。仕事を終わらせるだけでなく、どう終わらせるかを所有し、継続的な最適化と最大限の自動化とその共有に責任を持ち、自分で実行できない改善はエスカレーションする責任がある。Proton 側は「フェーズ 2 を通り抜けるための重要な投資を組織し資源を割く」と約束する。結びは「"プログラミング"は死んだ。エンジニアリングと専門性は死んでいない。古い仕事は消えた。ビルダーとしての新しい仕事は、機会をつかめばこれまでよりはるかに大きなインパクトを出させる」「実験の時代は続くが、行動の時は今だ」。</p>
+<h2>404 Media の報道（Joseph Cox・取得できた範囲）</h2>
+<p>Cox の記事は、CEO の Andy Yen が 8 月末に社内セキュリティ Slack チャンネルで、新しく書いたコードを本番に出す前に数日ペンテストしようと訴えた社員に向けて「それはでたらめで、負け犬の思考だ。速くて安全であることは当然可能だ」「遅くなる方法ばかり考えるのをやめて、速くなる方法に集中しろ」と書き、続けて「負け犬だけがそう考える」「コードを愛情込めて手作りするのをやめてもっと AI を使え」と命じた場面から始まる。Cox によれば、Yen はここ数か月で、AI 導入を阻むものに出会ったら連絡する社用メールアドレスを設け（経営陣が「AI の速度を阻むものをすべて容赦なく叩き潰す」ため）、社員の PC に AI 生成コードの量を追跡するソフトを入れ、「今年がエンジニアを雇う最後の年で、今後は AI でものを作る人だけを雇う」と述べた。10 月末には AI の使い方について全社員を再面接すると通告し、Cox はこれを面接結果が雇用継続を左右しうるという含みで報じている。</p>
+<p>Cox は現職 8 人・元社員 1 人に取材し、Slack の記録・会議の録音・宣言文を確認したうえで、社員が Yen の見解への穏やかな批判やエンジニアリング上の問題の議論すらためらう「恐怖の文化」があると書く。社員は「セキュリティ製品を AI で開発させられること」に懸念を持ちながら、全員の前で叱責されたり雇用を脅かされたりするのを恐れて声を上げられないと証言し、ある情報源は「CEO は完全な AI 精神病状態で、しばらく前からそうだ」と語った。Cox が入手した内部文書は「速度不足により」年間経常収益の目標を年末までに達成する軌道にないと記し、前年比成長は「市場が今日よいと見なす水準から遠い」「重要な指標すべてで、我々は業績不振の企業だ」と書いている。Proton の広報は詳細な質問に対して報道内容を争わず、「我々の方向性に不満を持つか誤解している人がおり、多くの人が不安を感じているのは明らか」「速く動く決意のなかで、説明が率直すぎたり遅すぎたりした。改善する」と答えた。Cox は Yen を元 CERN の素粒子物理学者で、公では落ち着いた姿勢を示す一方、社内では社員の言葉で「駄々っ子」のように振る舞うと描き、5 月のポスト量子暗号の発表で古いメールには効かないという制約を公表したことに Yen が不満だった、と続けたところで本 wiki の取得範囲は終わる。</p>
+<h2>Stockton の読み（@mstockton）</h2>
+<p>Matt Stockton は AI/ML 導入を支援する立場（自己紹介とリンク先 pragmanexus.com）から、宣言文を「短く、非常によく書けていて、方向として大いに正しい」と評し、こうしたツールを最大限に活かすには「仕事と組織を丸ごと変える必要がある」と書く。その道のりは今や「主に人間の整合（alignment）の問題」で、リーダーの仕事は人々を新しい船に乗せて一緒に漕がせることだという。「古い船はもう存在しないが、多くの人はそれがあると願い、あると信じ続けるインセンティブを持っている」。ソフトウェアエンジニアリングは完全に別物になったので、組織がそれを理解し働き方を揃えるのが早いほど長期的な痛みは少なく、やらない組織はやった組織に破壊されて存在しなくなる、と Stockton は述べる。</p>
+<h2>位置づけ（wiki 側の読み）</h2>
+<p>宣言文の中身は、この wiki に既にある他社の記録と大きく重なる。「ボトルネックを 1 つ消すと次が現れる」「人間のコードレビューの大半は終わる」は、<a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a> で FurtherAI の Gondala が月ごとに工程を自動化して実測した軌跡（AI が先に見るレビュー→CI の 20 倍化→低リスクは人なしでマージ）と同じ構造で、<a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> が Amdahl の法則として論じたものでもある。「リポジトリ単位のコンテキストファイル・共有スキル・繰り返す失敗を調査と修正へ」は <a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> や <a href="../concepts/harness-engineering.html">harness-engineering</a> が言うハーネスへの投資そのものと考えられる。「エンジニアは全員チームリーダーで部下はエージェント」は <a href="../concepts/team-leader-transition.html">team-leader-transition</a> の論点をエンジニア全員に課す形になる。</p>
+<p>違いは進め方にあると読める。FurtherAI の記録は計測と工程単位の自動化を積み上げた結果として組織論に至るのに対し、404 Media が描く Proton は宣言文・AI 生成量の追跡ソフト・再面接という上からの手段で先に行動を変えさせようとしている。Butler 自身が「ボトルネックがどこにあるかすら分からない。見つける道具に投資していないから」と書いているので、<a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a> の「可視化」と「オーナーシップ不在」の壁を認めたうえで、壁の解消より先にメンタリティの転換を求めた文書と位置づけられる。Stockton が同じ文書を「人間の整合の問題」と呼ぶのは、この「中身は正しいが、動かす方法が問われている」状態の言い換えと考えられる。</p>
+<p>ペンテストをめぐる Yen の発言は、<a href="../concepts/cognitive-debt.html">cognitive-debt</a> がいう「生成速度に理解が追いつかない負債」のセキュリティ版にあたると考えられる。宣言文は人間の価値を「幻覚に強く、説明責任を負う」点に置くが、検証の時間を「負け犬の思考」とする経営判断の下では、その説明責任を果たす工程が置き場を失う。暗号化とプライバシーを売る企業で起きている点が、この事例を他社の AI 推進記録と分ける。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-11-02: Yen が「今年がエンジニアを雇う最後の年で、今後は AI でものを作る人だけを雇う」と述べたのは 404 Media の報道による。2027 年の Proton の採用職種で答え合わせできる</li>
+<li>2026-11-02: 「ARR 目標未達」「業績不振の企業」は 404 Media が入手した内部文書の文言で、数値は記事に無い</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>同じ内容の宣言を、FurtherAI のように工程ごとの計測と自動化で進めた場合と、追跡ソフトと再面接で進めた場合で、半年後の離職・セキュリティ事故・出荷速度はどう違うか。Proton は前者の計測基盤が無いと自認している</li>
+<li>セキュリティ製品の会社が「数日のペンテスト」を退けるとき、宣言文が言う「人間が説明責任を負う」はどの工程で担保されるのか。自分の組織なら AI 生成コードの検証にどこまでの時間を既定で確保するか</li>
+<li>自分の開発工程で「ボトルネックがどこにあるか分かる道具」を持っているか。持っていないなら、Butler の 3 番目の理由がそのまま当てはまる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a> — FurtherAI の CTO が 9 か月かけて工程を自動化し「次のボトルネックは決めること」に至った記録。宣言文と同じ診断を、上からの宣言でなく計測の積み上げで進めた対照例</li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a> — 人間レビューが新ボトルネックになる Amdahl 構造を AI 開発全体で論じた論考。宣言文の「ボトルネックを消すと次が現れる」の理論側</li>
+<li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a> — Claude Code チームの多層レビューとリスク別承認。宣言文が「至る必要がある」と書く「人間レビューの大半が終わる」状態の実装例</li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 努力を決定論的な層に置き人間レビューを最小にする @poteto の指針。宣言文の「コンテキストファイル・共有スキル・失敗を修正へ」の配分論</li>
+<li><a href="../concepts/harness-engineering.html">harness-engineering</a> — エージェント＝モデル＋ハーネスの全体論。宣言文がエンジニアの新しい仕事とする「LLM が自力で解けない問題を次回解けるようにする」はハーネスへの投資</li>
+<li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a> — 企業導入で詰まる 7 つの壁。Butler が自認する「ボトルネックを見つける道具が無い」「全社の作り直しに資源を投じていない」は可視化とオーナーシップの壁</li>
+<li><a href="../concepts/cognitive-debt.html">cognitive-debt</a> — 生成速度に理解が追いつかない負債。ペンテスト期間を「負け犬の思考」とした経営判断はそのセキュリティ版</li>
+<li><a href="../concepts/team-leader-transition.html">team-leader-transition</a> — 新任リーダーが評価軸をチームの総量へ移す論。宣言文は「エンジニア全員がチームリーダーで部下はエージェント」とこれを全員に課す</li>
+<li><a href="../business/ai-native-management.html">ai-native-management</a> — 深津貴之の「消す仕事を先に決める」経営論。宣言文の「古い仕事は消えた」を経営側から言った形</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-adoption-walls.html">agent-adoption-walls</a></li>
+<li><a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a></li>
+<li><a href="../concepts/cognitive-debt.html">cognitive-debt</a></li>
+<li><a href="../concepts/recursive-self-improvement.html">recursive-self-improvement</a></li>
+<li><a href="../business/ai-native-management.html">ai-native-management</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2116548727473148203" rel="noopener" target="_blank">https://x.com/i/web/status/2116548727473148203</a></li>
+<li><a href="https://www.404media.co/manifestos-fear-and-loser-thinking-inside-protons-ai-reckoning/" rel="noopener" target="_blank">https://www.404media.co/manifestos-fear-and-loser-thinking-inside-protons-ai-reckoning/</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Proton — 暗号化メール企業の「AI の清算」：CTO の宣言文と CEO の AI 強行
+
+&gt; **TL;DR**: 暗号化メール Proton Mail を運営するスイスの Proton で、CTO の Bart Butler が全エンジニアに「&quot;プログラミング&quot;は死んだ。あなたの仕事は LLM により良いコードをより速く書かせることだ」と宣言し、CEO の Andy Yen が新規コードのペンテスト期間を求める社員を「負け犬の思考」と退けて AI の使い方で全社員を再面接すると通告したことを、404 Media の Joseph Cox が社員 9 人の証言と内部文書から「恐怖の文化」として報じた事例。
+
+宣言文の全文、報道の取得できた範囲、AI/ML 導入支援の Matt Stockton（@mstockton）による「方向は正しく、組織の変革は人間の整合の問題」という読みを収録する。宣言文が社内に出た経緯は、404 Media の Joseph Cox（同媒体の共同創業者・ハッキングとプライバシー担当の記者）が 2026-10-29 に「複数のコピーを入手した」として画像 3 枚で公開し、同日の記事「Manifestos, Fear, and &#x27;Loser Thinking&#x27;: Inside Proton&#x27;s AI Reckoning」で社内の状況を報じたことで外に出た。Matt Stockton は 10 月 31 日にこれを引用し、エンジニアリング組織を率いる人は全文を読めと勧めた。宣言文の署名は「Bart」で、404 Media が「CTO が書いた AI 宣言文」と記しており、Proton の CTO は Bart Butler（元 CERN の物理学者、Proton 公式ブログの著者ページによる）である。宣言文自体の日付は画像に無い。記事は有料会員向けで、本 wiki が取得できたのは冒頭からポスト量子暗号の段落まで。
+
+## 宣言文の主張（Bart Butler）
+
+Butler は冒頭で、シニアエンジニアの「{事業部名}ではもう誰もコードを書いていない」という発言を引き、手でよいコードを書くことは 20 世紀の電話番号の暗記や 19 世紀の乗馬のように時代の過ぎた中核スキルだと書く。ボイラープレート・ドキュメント・テストという嫌われてきた作業を人間が二度と心配しなくてよくなるのは歓迎すべきことで、モデルはアーキテクチャの提案でも議論と教育に貢献すると評価する。一方で外の AI 投資は競合を含めて事業環境を決めるもので、Proton は「取り残されており、ミッションの成功そのものへの存亡の脅威」だと位置づける。
+
+そのうえで「なぜ Proton では革命が来た感じがしないのか。全員が LLM を使っているのに生産性が劇的に上がらないのはなぜか」を 3 つの理由で説明する。
+
+1. **エンジニアの文化とメンタリティ**。「あなたの仕事は根本的に変わった。コードを書くことではなく、LLM がより良いコードをより速く書くのを助けることだ」。エンジニアは全員がチームリーダーであり、部下はモデルとエージェントである。ただし常に一緒にペアプロする 2 人はチームとは言えず、リーダーが会議中は誰も働かないチームも同様で、AI は人間の子守りを減らしながら自律的・継続的に働けなければならない。エンジニアの仕事は LLM が自力で解けない問題を見つけ、今回解くだけでなく次回は自力で解けるようにすることで、具体策としてリポジトリ単位のコンテキストファイル・共有スキルとプロンプト・繰り返す失敗が調査と修正を引き起こす習慣を挙げる。Butler は「これは専門性の死ではない」と続け、LLM は速いが人間は経験と判断を持ち、幻覚や悪意ある入力に（願わくば）はるかに強く、モデルには決してできない形で説明責任を負うと書く。「良いエンジニアリング実践の死でもない」として設計とテストとドキュメントは重要なままだが、テストの書き心地が安くなれば「E2E テストは多すぎると割に合わない」という旧来の線は動くと述べる。
+2. **フェーズ 1 に留まっていること**。既存ワークフローの中で LLM に作業を速くさせる段階で止まっており、ボトルネックを 1 つ消すと別のボトルネック（CI の速度と容量・設計・承認・仕様・コードレビュー）が取って代わる。Butler は「人間のコードレビューの大半が終わる地点に至る必要があるし至る」と明言する。工程全体を見渡してボトルネックを容赦なく消し、既存ワークフローの最適化でなく作り直しまで踏み込むのがフェーズ 2 で、「今そこへ行く必要がある」と書く。
+3. **集合行為問題**。個人が LLM でコードを書くのは自分で完結するが、チーム・事業部・全社の CI を作り直すのは重い投資で、Proton はそのための組織と資源をまだ投じていない。多くの場合「ボトルネックがどこにあるかすら分かっていない。見つけるための道具に投資していないから」と認める。過去の慎重さには理由があったとしつつ、「組織として変革にコミットする時はとうに来ている」と結ぶ。
+
+エンジニアへの含意として、Butler は「裁量と責任の両方が広がった」と書く。仕事を終わらせるだけでなく、どう終わらせるかを所有し、継続的な最適化と最大限の自動化とその共有に責任を持ち、自分で実行できない改善はエスカレーションする責任がある。Proton 側は「フェーズ 2 を通り抜けるための重要な投資を組織し資源を割く」と約束する。結びは「&quot;プログラミング&quot;は死んだ。エンジニアリングと専門性は死んでいない。古い仕事は消えた。ビルダーとしての新しい仕事は、機会をつかめばこれまでよりはるかに大きなインパクトを出させる」「実験の時代は続くが、行動の時は今だ」。
+
+## 404 Media の報道（Joseph Cox・取得できた範囲）
+
+Cox の記事は、CEO の Andy Yen が 8 月末に社内セキュリティ Slack チャンネルで、新しく書いたコードを本番に出す前に数日ペンテストしようと訴えた社員に向けて「それはでたらめで、負け犬の思考だ。速くて安全であることは当然可能だ」「遅くなる方法ばかり考えるのをやめて、速くなる方法に集中しろ」と書き、続けて「負け犬だけがそう考える」「コードを愛情込めて手作りするのをやめてもっと AI を使え」と命じた場面から始まる。Cox によれば、Yen はここ数か月で、AI 導入を阻むものに出会ったら連絡する社用メールアドレスを設け（経営陣が「AI の速度を阻むものをすべて容赦なく叩き潰す」ため）、社員の PC に AI 生成コードの量を追跡するソフトを入れ、「今年がエンジニアを雇う最後の年で、今後は AI でものを作る人だけを雇う」と述べた。10 月末には AI の使い方について全社員を再面接すると通告し、Cox はこれを面接結果が雇用継続を左右しうるという含みで報じている。
+
+Cox は現職 8 人・元社員 1 人に取材し、Slack の記録・会議の録音・宣言文を確認したうえで、社員が Yen の見解への穏やかな批判やエンジニアリング上の問題の議論すらためらう「恐怖の文化」があると書く。社員は「セキュリティ製品を AI で開発させられること」に懸念を持ちながら、全員の前で叱責されたり雇用を脅かされたりするのを恐れて声を上げられないと証言し、ある情報源は「CEO は完全な AI 精神病状態で、しばらく前からそうだ」と語った。Cox が入手した内部文書は「速度不足により」年間経常収益の目標を年末までに達成する軌道にないと記し、前年比成長は「市場が今日よいと見なす水準から遠い」「重要な指標すべてで、我々は業績不振の企業だ」と書いている。Proton の広報は詳細な質問に対して報道内容を争わず、「我々の方向性に不満を持つか誤解している人がおり、多くの人が不安を感じているのは明らか」「速く動く決意のなかで、説明が率直すぎたり遅すぎたりした。改善する」と答えた。Cox は Yen を元 CERN の素粒子物理学者で、公では落ち着いた姿勢を示す一方、社内では社員の言葉で「駄々っ子」のように振る舞うと描き、5 月のポスト量子暗号の発表で古いメールには効かないという制約を公表したことに Yen が不満だった、と続けたところで本 wiki の取得範囲は終わる。
+
+## Stockton の読み（@mstockton）
+
+Matt Stockton は AI/ML 導入を支援する立場（自己紹介とリンク先 pragmanexus.com）から、宣言文を「短く、非常によく書けていて、方向として大いに正しい」と評し、こうしたツールを最大限に活かすには「仕事と組織を丸ごと変える必要がある」と書く。その道のりは今や「主に人間の整合（alignment）の問題」で、リーダーの仕事は人々を新しい船に乗せて一緒に漕がせることだという。「古い船はもう存在しないが、多くの人はそれがあると願い、あると信じ続けるインセンティブを持っている」。ソフトウェアエンジニアリングは完全に別物になったので、組織がそれを理解し働き方を揃えるのが早いほど長期的な痛みは少なく、やらない組織はやった組織に破壊されて存在しなくなる、と Stockton は述べる。
+
+## 位置づけ（wiki 側の読み）
+
+宣言文の中身は、この wiki に既にある他社の記録と大きく重なる。「ボトルネックを 1 つ消すと次が現れる」「人間のコードレビューの大半は終わる」は、[[concepts/ai-native-engineering-org]] で FurtherAI の Gondala が月ごとに工程を自動化して実測した軌跡（AI が先に見るレビュー→CI の 20 倍化→低リスクは人なしでマージ）と同じ構造で、[[concepts/recursive-self-improvement]] が Amdahl の法則として論じたものでもある。「リポジトリ単位のコンテキストファイル・共有スキル・繰り返す失敗を調査と修正へ」は [[concepts/agent-trust-inverse-pyramid]] や [[concepts/harness-engineering]] が言うハーネスへの投資そのものと考えられる。「エンジニアは全員チームリーダーで部下はエージェント」は [[concepts/team-leader-transition]] の論点をエンジニア全員に課す形になる。
+
+違いは進め方にあると読める。FurtherAI の記録は計測と工程単位の自動化を積み上げた結果として組織論に至るのに対し、404 Media が描く Proton は宣言文・AI 生成量の追跡ソフト・再面接という上からの手段で先に行動を変えさせようとしている。Butler 自身が「ボトルネックがどこにあるかすら分からない。見つける道具に投資していないから」と書いているので、[[concepts/agent-adoption-walls]] の「可視化」と「オーナーシップ不在」の壁を認めたうえで、壁の解消より先にメンタリティの転換を求めた文書と位置づけられる。Stockton が同じ文書を「人間の整合の問題」と呼ぶのは、この「中身は正しいが、動かす方法が問われている」状態の言い換えと考えられる。
+
+ペンテストをめぐる Yen の発言は、[[concepts/cognitive-debt]] がいう「生成速度に理解が追いつかない負債」のセキュリティ版にあたると考えられる。宣言文は人間の価値を「幻覚に強く、説明責任を負う」点に置くが、検証の時間を「負け犬の思考」とする経営判断の下では、その説明責任を果たす工程が置き場を失う。暗号化とプライバシーを売る企業で起きている点が、この事例を他社の AI 推進記録と分ける。
+
+## 観察ログ（未検証）
+
+- 2026-11-02: Yen が「今年がエンジニアを雇う最後の年で、今後は AI でものを作る人だけを雇う」と述べたのは 404 Media の報道による。2027 年の Proton の採用職種で答え合わせできる
+- 2026-11-02: 「ARR 目標未達」「業績不振の企業」は 404 Media が入手した内部文書の文言で、数値は記事に無い
+
+## 問い
+
+- 同じ内容の宣言を、FurtherAI のように工程ごとの計測と自動化で進めた場合と、追跡ソフトと再面接で進めた場合で、半年後の離職・セキュリティ事故・出荷速度はどう違うか。Proton は前者の計測基盤が無いと自認している
+- セキュリティ製品の会社が「数日のペンテスト」を退けるとき、宣言文が言う「人間が説明責任を負う」はどの工程で担保されるのか。自分の組織なら AI 生成コードの検証にどこまでの時間を既定で確保するか
+- 自分の開発工程で「ボトルネックがどこにあるか分かる道具」を持っているか。持っていないなら、Butler の 3 番目の理由がそのまま当てはまる
+
+## 関連
+
+- [[concepts/ai-native-engineering-org]] — FurtherAI の CTO が 9 か月かけて工程を自動化し「次のボトルネックは決めること」に至った記録。宣言文と同じ診断を、上からの宣言でなく計測の積み上げで進めた対照例
+- [[concepts/recursive-self-improvement]] — 人間レビューが新ボトルネックになる Amdahl 構造を AI 開発全体で論じた論考。宣言文の「ボトルネックを消すと次が現れる」の理論側
+- [[concepts/agent-era-code-review]] — Claude Code チームの多層レビューとリスク別承認。宣言文が「至る必要がある」と書く「人間レビューの大半が終わる」状態の実装例
+- [[concepts/agent-trust-inverse-pyramid]] — 努力を決定論的な層に置き人間レビューを最小にする @poteto の指針。宣言文の「コンテキストファイル・共有スキル・失敗を修正へ」の配分論
+- [[concepts/harness-engineering]] — エージェント＝モデル＋ハーネスの全体論。宣言文がエンジニアの新しい仕事とする「LLM が自力で解けない問題を次回解けるようにする」はハーネスへの投資
+- [[concepts/agent-adoption-walls]] — 企業導入で詰まる 7 つの壁。Butler が自認する「ボトルネックを見つける道具が無い」「全社の作り直しに資源を投じていない」は可視化とオーナーシップの壁
+- [[concepts/cognitive-debt]] — 生成速度に理解が追いつかない負債。ペンテスト期間を「負け犬の思考」とした経営判断はそのセキュリティ版
+- [[concepts/team-leader-transition]] — 新任リーダーが評価軸をチームの総量へ移す論。宣言文は「エンジニア全員がチームリーダーで部下はエージェント」とこれを全員に課す
+- [[business/ai-native-management]] — 深津貴之の「消す仕事を先に決める」経営論。宣言文の「古い仕事は消えた」を経営側から言った形
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

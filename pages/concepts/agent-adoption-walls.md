@@ -51,3 +51,4 @@ mindmap
 - [[companies/linear]] — 壁を越えた側の対照例。LLMが開発ほぼ全工程に組み込まれエンジニアが依存するレベルまで定着
 - [[tools/cloudflare-os]] — ④トークン資本の透明性（AI Gatewayでの帰属・予算）と⑤ガバナンス（Gatekeeper・観測ログ）にプラットフォーム側から答える製品
 - [[business/gitlab-ai-fluent-teams]] — ③オーナーシップ不在と⑤ガバナンスへの大企業側の制度的回答。Enterprise AI（中央のガードレール）・AI Transformation Owner（機能別オーナー）・AIチャンピオン（現場CoE）の3層連合型モデル（GitLab公式）
+- [[companies/proton]] — CTO Bart Butler が「ボトルネックがどこか分かる道具に投資していない」「全社の作り直しに資源を投じていない」と自認した宣言文。可視化とオーナーシップの壁を認めたうえでメンタリティ転換を先に求めた事例

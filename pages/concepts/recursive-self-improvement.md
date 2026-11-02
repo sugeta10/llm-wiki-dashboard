@@ -51,3 +51,4 @@
 - [[concepts/ai-review-bottleneck]] — 同じ「人間レビューがボトルネック」構造を個人のClaude Code運用に下ろし、流入を絞る5つのやり方にした実践論（@smark_x）
 - [[concepts/agent-scale-source-control]] — コードを書く工程が速くなった結果、ソース管理・CIが次のボトルネックになったとAnthropicのソース管理チームが報告し、gitから社内VCS Scionへ移行した事例
 - [[concepts/ai-native-engineering-org]] — 同じ Amdahl 構造をスタートアップ規模で月ごとに追った FurtherAI の記録。工程を自動化し切るとボトルネックはエンジニアリングの外の「何を作るか決める工程」へ出る、とする（Sashank Gondala）
+- [[companies/proton]] — Proton CTO の宣言文が「ボトルネックを 1 つ消すと別のものが取って代わる」「人間のコードレビューの大半が終わる地点に至る」と、本ページの Amdahl 構造を社内方針として書いた例

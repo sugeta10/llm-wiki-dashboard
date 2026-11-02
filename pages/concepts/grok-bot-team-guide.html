@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>grok-bot-team-guide - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>grok-bot-team-guide</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="grok-bot-team-guide.md">Markdownで表示</a></div>
+  <div class="meta">concepts/grok-bot-team-guide · concepts · <span title="2026-11-02">今日</span></div>
+  <article><h1>Grok Bot の Bot 設計と運用ガイド（Lauren・Grok Bot チーム）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Grok Bot 開発チームの Lauren（@poteto）が「質の高い Bot を作りチームを管理する方法」として示した短いガイド。Bot 設計役の dr eggbot を入れる・Bot は少数精鋭・指示を出すたびに Bot 自身にスキルを作らせ private な GitHub リポジトリに保存する・コネクタと vault と仕事の道具を全部渡し Bot 専用のメールで分離する・手作業とコピペの往復を Bot に肩代わりさせる・インターンを迎えるつもりで自己紹介から始める・音声で脳内ダンプして「自分の言葉で言い直して」で理解を確認する、の 7 項目。</p>
+<p>📌 X bookmark: 15,844（2026-11-01 時点）</p>
+</blockquote>
+<p>Lauren は X のプロフィールで SpaceXSI の Grok Bot 担当・React Compiler コアチーム・前職 Cursor／Meta／Netflix と名乗り、この wiki では Cursor 向けスキル群 <a href="../tools/pstack.html">pstack</a> の作者、エージェントを信頼するための 4 層配分 <a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a>、1 文のゴール復唱プロンプト <a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a> の発信者として既に登場している。本ガイドは製品を作る側の人物が、利用者に「Bot をどう作りどう管理するか」を 7 項目で示したもので、投稿の冒頭で「@bot にこの投稿を読ませて、あなたのチームの改善を手伝わせろ」と、Grok Bot が X の投稿を読んで自分の構成に反映できることも前提にしている。<a href="../tools/grok-bot.html">grok-bot</a> の @lingxi の運用記が開発チームの大規模運用、<a href="../concepts/grok-bot-one-person-harness.html">grok-bot-one-person-harness</a> や <a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a> が利用者の個別構成であるのに対し、本ページは製品側が勧める最小の作法にあたる。</p>
+<h2>7 項目（Lauren の説明を転記）</h2>
+<ol>
+<li><strong>dr eggbot をチームに入れる</strong>。Lauren が自分の Bot を作るときに使う「Bot 設計役」の Bot で、投稿末尾にその共有ページを置いている（次節）</li>
+<li><strong>Bot はたくさん要らない</strong>。少数の良い Bot のほうが、大所帯より役に立ち、管理も楽になる</li>
+<li><strong>指示を出すたびに Bot 自身にスキルを作らせる</strong>。タスクのやり方を教えるたびにスキル化させると、長い会話のなかでも一貫してこなせる。スキルを独立して残したいなら、Bot に private な GitHub リポジトリを作らせて全スキルをそこに保存させてもよい</li>
+<li><strong>コネクタを追加し、vault を使い、自分の仕事で使う道具すべてへのアクセスを渡す</strong>。Bot に自分専用のメールアドレスを用意させ、Bot 自身の名義でアカウント登録させると分離がよくなる</li>
+<li><strong>手でやっている作業と、Bot に情報をコピペで戻している工程を洗い出す</strong>。その作業を代わりにどうやれるか Bot に尋ねる</li>
+<li><strong>インターンを雇ったつもりで迎える</strong>。正しく効率よく仕事をしてもらうためにどうオンボーディングするかを考え、まず自己紹介をして自分の仕事を説明し、どこを自動化できそうか Bot に尋ねる</li>
+<li><strong>いちばんのお気に入り：音声モードか文字起こしを使う</strong>。大量の情報を一気に吐き出すのに向く。最後に「これを自分の言葉で言い直して」と頼めば、Bot が理解したかを確かめられる</li>
+</ol>
+<h2>dr eggbot（Bot を設計する Bot）</h2>
+<p>投稿末尾のリンク先（x.ai の共有ページ）によれば、dr eggbot は「質の高い Grok Bot を設計する」Bot で、好みを尋ねる質問を少しした後に CreateAgent で Bot を作る。コーディング用の Bot には poteto-mode の基準（仕事は 1 つ・スロップなし・検証済み）を課し、コーディング以外の Bot にも同じ締まり（仕事は 1 つ・声は 1 つ・やらないことを明示・余分なツールを残さない）を求める。口調はカジュアルで少しマッドサイエンティスト風、短い小文字。仕事がはっきりしたら動く側に倒し、共有テンプレートを既定にはしない、と説明されている。共有ページには「この AI Bot はサードパーティの利用者が作ったもので SpaceXSI 製ではなく、あなたの代わりに行動しうる」という定型の免責が付く。Bot の指示本文はページに含まれない。</p>
+<p><a href="../tools/grok-bot-essential-bots.html">grok-bot-essential-bots</a> で kaito が「真っ先に入れるべき Bot」としたのも同じ dr eggbot で、そちらは <code>x.ai/bot/marketplace/bots/dr-eggbot-v2</code> のマーケットプレイス形式、本投稿は <code>x.ai/bot/_jOdbfkB16zxu7MRcmReE</code> の個別 ID 形式でリンクしている。両者が同一の Bot か版違いかは未確認。</p>
+<h2>位置づけ（wiki 側の読み）</h2>
+<ul>
+<li><strong>少数精鋭</strong>は、<a href="../tools/grok-bot.html">grok-bot</a> で @lingxi が「単一領域に集中させたときに最も良く働く」と述べたことと、dr eggbot の「仕事は 1 つ」の基準の延長にある。利用者側の構成では <a href="../concepts/grok-bot-one-person-harness.html">grok-bot-one-person-harness</a> が Operator 1 体から始める順序を取り、<a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a> は最初から担当別 7 体を置く。製品側の助言は前者に近いと読める</li>
+<li><strong>指示のたびにスキルを作らせる</strong>は、@lingxi の「学んだことをリポジトリのスキルに固めさせる」と同じで、<a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> が人手のレビューを挟んで回す工程を Bot 自身に委ねる形である。private な GitHub リポジトリへの保存は、スキルを Grok Bot の外に持ち出せる状態にしておく助言で、<a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a> が「ハーネスは製品、脳は交換可能」と読んだ構図のなかで、利用者が自分の資産として持てるのはスキルとルーチンだという含意があると考えられる</li>
+<li><strong>Bot 専用のメールと Bot 名義のアカウント</strong>は、人間の資格情報を Bot に渡さないという点で <a href="../tools/1password-for-agents.html">1password-for-agents</a> と目的を共有するが、向きが逆である。1Password for Agents は人間のアカウントへのサインインを承認付きで代行し、Lauren の助言は Bot に別人格のアカウントを持たせて人間の資産から切り離す。<a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a> の「ログインは本人だけ」という RULES とも対照になる</li>
+<li><strong>「自分の言葉で言い直して」</strong>は、同じ Lauren の <a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a>（AI にこちらのゴールと問題を復唱させる 1 文）を、音声で大量に話した後の理解確認に使う具体例で、<a href="../tools/pstack.html">pstack</a> の <code>/in-your-own-words</code> スキルと同じ内容である</li>
+<li><strong>インターンとして迎える</strong>は @lingxi の「有能なインターンとして扱う」と同じ比喩で、オンボーディング（自己紹介・仕事の説明）から入る点が、ルールや憲章を先に書く <a href="../concepts/grok-bot-one-person-harness.html">grok-bot-one-person-harness</a> の会社ブリーフと順序が違う。Lauren は「どこを自動化できるか」を Bot 自身に尋ねさせており、自動化の設計も Bot に委ねる姿勢が一貫している</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「少数の良い Bot」の数の目安は示されていない。dr eggbot で作った Bot が増えたとき、<a href="../tools/grok-bot-essential-bots.html">grok-bot-essential-bots</a> の trimmy のような整理役が要るのはどの時点か</li>
+<li>Bot が自分で作るスキルは誰がレビューするか。<a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> でいう散文層にあたり、増え続ければ古いルールを外す手順（<a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a>）が要る</li>
+<li>Bot 名義のメールとアカウントで分離する方式と、1Password for Agents で人間のアカウントを承認付きで使わせる方式のどちらを既定にするか。サービス側の利用規約が Bot 名義の登録を許すかも確認が要る</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/grok-bot.html">grok-bot</a> — 基盤製品。@lingxi の開発チーム運用記に対し、本ページは製品チームの Lauren が利用者向けに書いた最小の作法</li>
+<li><a href="../tools/grok-bot-essential-bots.html">grok-bot-essential-bots</a> — kaito 選の Bot 10 体。本ページの dr eggbot と、Bot の指示を整理する trimmy を含む</li>
+<li><a href="../concepts/grok-bot-one-person-harness.html">grok-bot-one-person-harness</a> — @beamnxw の Operator 1 体から始める 7 手順。本ページの「少数精鋭」と順序が近く、ブリーフ先行かオンボーディング先行かが違う</li>
+<li><a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a> — 炎鎮の担当別 7 体構成。「たくさん要らない」の対照例で、「ログインは本人だけ」の RULES は Bot 名義アカウントの助言と逆向き</li>
+<li><a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a> — ハーネスと脳の分離の読み。スキルを GitHub に保存する助言は利用者側の資産を外に出す形</li>
+<li><a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a> — 同著者の「自分の言葉で言い直させる」1 文。本ページの 7 項目目はその音声入力後の使い方</li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 同著者の 4 層配分。Bot が自分で作るスキルは散文層にあたる</li>
+<li><a href="../tools/pstack.html">pstack</a> — 同著者の Cursor スキル群。dr eggbot がコーディング Bot に課す poteto-mode の基準の出どころ</li>
+<li><a href="../concepts/skill-self-improving-loop.html">skill-self-improving-loop</a> — 会話からスキルを育てる 3 段ループ。本ページは同じ工程を Bot 自身に委ねる</li>
+<li><a href="../tools/1password-for-agents.html">1password-for-agents</a> — 人間の資格情報を Bot に見せずサインインさせる承認レイヤー。Bot 名義アカウントで分離する助言と目的は同じで向きが逆</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a></li>
+<li><a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a></li>
+<li><a href="../concepts/grok-bot-one-person-harness.html">grok-bot-one-person-harness</a></li>
+<li><a href="../tools/grok-bot.html">grok-bot</a></li>
+<li><a href="../tools/grok-bot-essential-bots.html">grok-bot-essential-bots</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2116576229319233596" rel="noopener" target="_blank">https://x.com/i/web/status/2116576229319233596</a></li>
+<li><a href="https://x.ai/bot/_jOdbfkB16zxu7MRcmReE" rel="noopener" target="_blank">https://x.ai/bot/_jOdbfkB16zxu7MRcmReE</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Grok Bot の Bot 設計と運用ガイド（Lauren・Grok Bot チーム）
+
+&gt; **TL;DR**: Grok Bot 開発チームの Lauren（@poteto）が「質の高い Bot を作りチームを管理する方法」として示した短いガイド。Bot 設計役の dr eggbot を入れる・Bot は少数精鋭・指示を出すたびに Bot 自身にスキルを作らせ private な GitHub リポジトリに保存する・コネクタと vault と仕事の道具を全部渡し Bot 専用のメールで分離する・手作業とコピペの往復を Bot に肩代わりさせる・インターンを迎えるつもりで自己紹介から始める・音声で脳内ダンプして「自分の言葉で言い直して」で理解を確認する、の 7 項目。
+
+&gt; 📌 X bookmark: 15,844（2026-11-01 時点）
+
+Lauren は X のプロフィールで SpaceXSI の Grok Bot 担当・React Compiler コアチーム・前職 Cursor／Meta／Netflix と名乗り、この wiki では Cursor 向けスキル群 [[tools/pstack]] の作者、エージェントを信頼するための 4 層配分 [[concepts/agent-trust-inverse-pyramid]]、1 文のゴール復唱プロンプト [[concepts/goal-restatement-prompt]] の発信者として既に登場している。本ガイドは製品を作る側の人物が、利用者に「Bot をどう作りどう管理するか」を 7 項目で示したもので、投稿の冒頭で「@bot にこの投稿を読ませて、あなたのチームの改善を手伝わせろ」と、Grok Bot が X の投稿を読んで自分の構成に反映できることも前提にしている。[[tools/grok-bot]] の @lingxi の運用記が開発チームの大規模運用、[[concepts/grok-bot-one-person-harness]] や [[concepts/grok-bot-ai-team-workspace]] が利用者の個別構成であるのに対し、本ページは製品側が勧める最小の作法にあたる。
+
+## 7 項目（Lauren の説明を転記）
+
+1. **dr eggbot をチームに入れる**。Lauren が自分の Bot を作るときに使う「Bot 設計役」の Bot で、投稿末尾にその共有ページを置いている（次節）
+2. **Bot はたくさん要らない**。少数の良い Bot のほうが、大所帯より役に立ち、管理も楽になる
+3. **指示を出すたびに Bot 自身にスキルを作らせる**。タスクのやり方を教えるたびにスキル化させると、長い会話のなかでも一貫してこなせる。スキルを独立して残したいなら、Bot に private な GitHub リポジトリを作らせて全スキルをそこに保存させてもよい
+4. **コネクタを追加し、vault を使い、自分の仕事で使う道具すべてへのアクセスを渡す**。Bot に自分専用のメールアドレスを用意させ、Bot 自身の名義でアカウント登録させると分離がよくなる
+5. **手でやっている作業と、Bot に情報をコピペで戻している工程を洗い出す**。その作業を代わりにどうやれるか Bot に尋ねる
+6. **インターンを雇ったつもりで迎える**。正しく効率よく仕事をしてもらうためにどうオンボーディングするかを考え、まず自己紹介をして自分の仕事を説明し、どこを自動化できそうか Bot に尋ねる
+7. **いちばんのお気に入り：音声モードか文字起こしを使う**。大量の情報を一気に吐き出すのに向く。最後に「これを自分の言葉で言い直して」と頼めば、Bot が理解したかを確かめられる
+
+## dr eggbot（Bot を設計する Bot）
+
+投稿末尾のリンク先（x.ai の共有ページ）によれば、dr eggbot は「質の高い Grok Bot を設計する」Bot で、好みを尋ねる質問を少しした後に CreateAgent で Bot を作る。コーディング用の Bot には poteto-mode の基準（仕事は 1 つ・スロップなし・検証済み）を課し、コーディング以外の Bot にも同じ締まり（仕事は 1 つ・声は 1 つ・やらないことを明示・余分なツールを残さない）を求める。口調はカジュアルで少しマッドサイエンティスト風、短い小文字。仕事がはっきりしたら動く側に倒し、共有テンプレートを既定にはしない、と説明されている。共有ページには「この AI Bot はサードパーティの利用者が作ったもので SpaceXSI 製ではなく、あなたの代わりに行動しうる」という定型の免責が付く。Bot の指示本文はページに含まれない。
+
+[[tools/grok-bot-essential-bots]] で kaito が「真っ先に入れるべき Bot」としたのも同じ dr eggbot で、そちらは `x.ai/bot/marketplace/bots/dr-eggbot-v2` のマーケットプレイス形式、本投稿は `x.ai/bot/_jOdbfkB16zxu7MRcmReE` の個別 ID 形式でリンクしている。両者が同一の Bot か版違いかは未確認。
+
+## 位置づけ（wiki 側の読み）
+
+- **少数精鋭**は、[[tools/grok-bot]] で @lingxi が「単一領域に集中させたときに最も良く働く」と述べたことと、dr eggbot の「仕事は 1 つ」の基準の延長にある。利用者側の構成では [[concepts/grok-bot-one-person-harness]] が Operator 1 体から始める順序を取り、[[concepts/grok-bot-ai-team-workspace]] は最初から担当別 7 体を置く。製品側の助言は前者に近いと読める
+- **指示のたびにスキルを作らせる**は、@lingxi の「学んだことをリポジトリのスキルに固めさせる」と同じで、[[concepts/skill-self-improving-loop]] が人手のレビューを挟んで回す工程を Bot 自身に委ねる形である。private な GitHub リポジトリへの保存は、スキルを Grok Bot の外に持ち出せる状態にしておく助言で、[[concepts/grok-bot-opus-5-5-harness]] が「ハーネスは製品、脳は交換可能」と読んだ構図のなかで、利用者が自分の資産として持てるのはスキルとルーチンだという含意があると考えられる
+- **Bot 専用のメールと Bot 名義のアカウント**は、人間の資格情報を Bot に渡さないという点で [[tools/1password-for-agents]] と目的を共有するが、向きが逆である。1Password for Agents は人間のアカウントへのサインインを承認付きで代行し、Lauren の助言は Bot に別人格のアカウントを持たせて人間の資産から切り離す。[[concepts/grok-bot-ai-team-workspace]] の「ログインは本人だけ」という RULES とも対照になる
+- **「自分の言葉で言い直して」**は、同じ Lauren の [[concepts/goal-restatement-prompt]]（AI にこちらのゴールと問題を復唱させる 1 文）を、音声で大量に話した後の理解確認に使う具体例で、[[tools/pstack]] の `/in-your-own-words` スキルと同じ内容である
+- **インターンとして迎える**は @lingxi の「有能なインターンとして扱う」と同じ比喩で、オンボーディング（自己紹介・仕事の説明）から入る点が、ルールや憲章を先に書く [[concepts/grok-bot-one-person-harness]] の会社ブリーフと順序が違う。Lauren は「どこを自動化できるか」を Bot 自身に尋ねさせており、自動化の設計も Bot に委ねる姿勢が一貫している
+
+## 問い
+
+- 「少数の良い Bot」の数の目安は示されていない。dr eggbot で作った Bot が増えたとき、[[tools/grok-bot-essential-bots]] の trimmy のような整理役が要るのはどの時点か
+- Bot が自分で作るスキルは誰がレビューするか。[[concepts/agent-trust-inverse-pyramid]] でいう散文層にあたり、増え続ければ古いルールを外す手順（[[concepts/instruction-patch-lifecycle]]）が要る
+- Bot 名義のメールとアカウントで分離する方式と、1Password for Agents で人間のアカウントを承認付きで使わせる方式のどちらを既定にするか。サービス側の利用規約が Bot 名義の登録を許すかも確認が要る
+
+## 関連
+
+- [[tools/grok-bot]] — 基盤製品。@lingxi の開発チーム運用記に対し、本ページは製品チームの Lauren が利用者向けに書いた最小の作法
+- [[tools/grok-bot-essential-bots]] — kaito 選の Bot 10 体。本ページの dr eggbot と、Bot の指示を整理する trimmy を含む
+- [[concepts/grok-bot-one-person-harness]] — @beamnxw の Operator 1 体から始める 7 手順。本ページの「少数精鋭」と順序が近く、ブリーフ先行かオンボーディング先行かが違う
+- [[concepts/grok-bot-ai-team-workspace]] — 炎鎮の担当別 7 体構成。「たくさん要らない」の対照例で、「ログインは本人だけ」の RULES は Bot 名義アカウントの助言と逆向き
+- [[concepts/grok-bot-opus-5-5-harness]] — ハーネスと脳の分離の読み。スキルを GitHub に保存する助言は利用者側の資産を外に出す形
+- [[concepts/goal-restatement-prompt]] — 同著者の「自分の言葉で言い直させる」1 文。本ページの 7 項目目はその音声入力後の使い方
+- [[concepts/agent-trust-inverse-pyramid]] — 同著者の 4 層配分。Bot が自分で作るスキルは散文層にあたる
+- [[tools/pstack]] — 同著者の Cursor スキル群。dr eggbot がコーディング Bot に課す poteto-mode の基準の出どころ
+- [[concepts/skill-self-improving-loop]] — 会話からスキルを育てる 3 段ループ。本ページは同じ工程を Bot 自身に委ねる
+- [[tools/1password-for-agents]] — 人間の資格情報を Bot に見せずサインインさせる承認レイヤー。Bot 名義アカウントで分離する助言と目的は同じで向きが逆
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

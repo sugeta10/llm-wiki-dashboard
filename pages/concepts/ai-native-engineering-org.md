@@ -92,3 +92,4 @@ Gondala は、今年の大半をエンジニアを速くすることに使い、
 - [[concepts/forward-deployed-engineer]] — 顧客の問題理解から出荷までを 1 人が持つエンジニア像。Gondala のスタッフ定義と重なる
 - [[concepts/product-role-archetypes]] — Boris Cherny の 5 アーキタイプ。職能でなく価値創出の局面で人を見る分類
 - [[concepts/team-leader-transition]] — 新任リーダーの評価軸をチームの総量へ移す論。本ページのマネージャー像との緊張は「問い」に記載
+- [[companies/proton]] — Proton CTO Bart Butler の社内宣言文。「ボトルネックを消すと次が現れる」「人間レビューの大半は終わる」と本ページと同じ診断を、計測の積み上げでなく宣言・追跡ソフト・再面接で進め、404 Media が「恐怖の文化」と報じた対照例
