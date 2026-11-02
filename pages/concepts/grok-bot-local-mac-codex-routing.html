@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>grok-bot-local-mac-codex-routing - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>grok-bot-local-mac-codex-routing</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="grok-bot-local-mac-codex-routing.md">Markdownで表示</a></div>
+  <div class="meta">concepts/grok-bot-local-mac-codex-routing · concepts · <span title="2026-11-02">今日</span></div>
+  <article><h1>Grok Bot から常駐 Mac の Orca と Codex を呼ぶ自動ルーティング（@kzkhykw の個人構成）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Notion の AI/FDE kazuki hayakawa（@kzkhykw）が、Grok Bot に「ローカル Mac 専用の Bot」を 1 体置き、メイン Bot が @ メンションで仕事を渡すと、自宅の常駐 MacBook 上の Grok Bot アプリが Orca で git worktree を切って Codex を実行し、結果を逆向きに返す構成。コーディング・画像生成・長めのループ・Codex のトークン余りをローカルへ振る条件にし、タスクに応じて自動で振り分ける。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  U[&quot;ユーザー&lt;br/&gt;スマホ / PC&quot;] --&gt;|依頼| M[&quot;メイン Bot / その他 Bot&lt;br/&gt;Grok Bot クラウド層&quot;]
+  M --&gt;|&quot;SendToAgent（@local メンション）&quot;| L[&quot;ローカル Mac bot&lt;br/&gt;常駐 Mac 専用・クラウド側&quot;]
+  L --&gt;|登録端末接続| A[&quot;常駐 Mac 上の&lt;br/&gt;Grok Bot アプリ&quot;]
+  A --&gt;|Orca 呼び出し| O[&quot;Orca&lt;br/&gt;worktree 管理&quot;]
+  O --&gt;|worktree create| C[&quot;worktree 内の Codex&lt;br/&gt;codex exec&quot;]
+  C -.-&gt;|返答| O -.-&gt; A -.-&gt; L -.-&gt; M -.-&gt; U</pre>
+<p>Grok Bot の各 Bot はクラウド上の計算機で動き、手元のマシンは「別物」で、Bot がそこへ触れるのはデスクトップアプリ経由のローカル実行だけ、と Cursor が公開する Grok Bot のドキュメントは説明する。@kzkhykw の構成は、そのローカル実行の入口を「ローカル Mac bot」1 体に集約し、メイン Bot や用途別の Bot はそこへ依頼を投げるだけにする（入口を 1 体にまとめる意図は図から読んだ wiki 側の解釈で、著者本人の説明は「ローカル MacBook 呼び出す専用のボットを作って、タスクに応じて自動ルーティング」の 1 文）。<a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a> で炎鎮が自宅の Windows PC を主作業場にし 1 回ごとに承認して Claude Code や Codex を直接動かしていたのに対し、こちらは Mac 側に worktree 管理ツールの Orca を挟み、依頼ごとに隔離した作業ディレクトリで Codex を走らせる。著者は X のプロフィールで Notion の AI/<a href="../concepts/forward-deployed-engineer.html">FDE</a>、PMDAO の founder、Salesforce で AI プロダクト担当だったと記す。元ポストは 2026-10-31 の 2 文と構成図 1 枚で、呼び出し方・Orca を選んだ理由・差し替え可能な範囲は著者が翌日以降にスレッドへ足した返信と引用ポストにある（いずれも sources/notes/ に転記）。</p>
+<h2>構成図の転記</h2>
+<p>図の見出しは「Grok Bot → 常駐Mac の Grok Bot アプリ → Orca / Codex」、副題は「クラウドの専用エージェントから、登録端末のアプリを通じて実行」。実線が依頼、破線が返答で、返答は依頼と逆順に同じ経路を戻る。</p>
+<table>
+<thead>
+<tr>
+<th>層</th>
+<th>構成要素</th>
+<th>図の注記</th>
+<th>次へ渡す矢印</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ユーザー</td>
+<td>スマホ / PC</td>
+<td>—</td>
+<td>依頼 → メイン Bot／その他 Bot</td>
+</tr>
+<tr>
+<td>Grok Bot（クラウド / エージェント層）</td>
+<td>メイン Bot</td>
+<td>—</td>
+<td>SendToAgent → ローカル Mac bot</td>
+</tr>
+<tr>
+<td>同上</td>
+<td>その他 Bot</td>
+<td>カメラ自作・日報など</td>
+<td>SendToAgent → ローカル Mac bot</td>
+</tr>
+<tr>
+<td>同上</td>
+<td>ローカル Mac bot</td>
+<td>常駐 Mac 専用エージェント・クラウド側</td>
+<td>登録端末接続 → 常駐 Mac の Grok Bot アプリ</td>
+</tr>
+<tr>
+<td>常駐 Mac（登録済みの物理マシン）</td>
+<td>Grok Bot</td>
+<td>常駐 Mac 上のアプリ</td>
+<td>Orca 呼び出し → Orca</td>
+</tr>
+<tr>
+<td>同上</td>
+<td>Orca</td>
+<td>worktree 管理</td>
+<td>worktree create → worktree</td>
+</tr>
+<tr>
+<td>同上</td>
+<td>Codex</td>
+<td>worktree 内で codex exec</td>
+<td>返答 → Orca へ戻る</td>
+</tr>
+</tbody>
+</table>
+<h2>ルーティングの条件と呼び出し方（著者の説明）</h2>
+<p>ローカルの MacBook へ振るのは、著者の本文によれば<strong>コーディング・画像生成・長めのループ・Codex のトークン余り</strong>の 4 条件で、タスクに応じて自動で振り分ける。判定をメイン Bot の指示文に書いているのかスキルやルーチンなのかは、ポストにもスレッドにも記載がない。</p>
+<p>実際に使うときはメイン Bot から「@ local」で呼び出している、と著者は引用ポストで補足する。Bot 名は「Local Mac Handler」で、メンションしやすいように英語表記の名前がよいと勧める。添付の画面写真では、Grok Bot の Mac アプリの入力欄に「このタスクQAループ回して @local mac」と打ちかけた状態で、候補に「Local Mac Handler Bot」が 1 件出ている。同じ Bot 一覧には「Podcast Helper」が見え、他の Bot 名はぼかされている。</p>
+<p>スレッドで著者が答えた範囲は次のとおり。</p>
+<ul>
+<li><strong>自宅 Mac は登録端末としてつないでいるだけ</strong>で、SSH 経由の VPS 操作はまだ試していない（@ks458008 への返信）</li>
+<li><strong>設定でつまずく</strong>のは分かる、最初は自分もそこで止まった（@sorekaiya への返信）。何の設定かは書かれていない</li>
+<li><strong>Orca は読んでいるだけなので Claude Code でもできる</strong>（@kiuri_cucumber への返信）。Codex でなく Claude Code でもよく、ローカル LLM も使えるので Qwen もたまに触らせている、登場頻度は高くない、と自己返信でも述べる</li>
+<li><strong>iPhone からは直接 Orca のモバイルアプリで行ける</strong>（@misaki_hennyu への返信）</li>
+<li>@0xKyosuke の「スクショや録画を戻すループ」の提案には「寄せてみます」と答えており、構成に取り込む予定と読める</li>
+</ul>
+<h2>Orca を選んだ理由と Orca の概要</h2>
+<p>「Herdr でもいいでしょ勢がいます」と前置きしたうえで、著者は Orca の GUI が好きなこと、Orca のモバイルアプリが使いやすく、何かあったときに常駐 Mac へモバイルからでも触れることを理由に挙げる（「アイコン可愛いし」とも）。<a href="../tools/herdr.html">herdr</a> は複数マシン上のエージェントを 1 つの操作卓に束ねるツールで、スマホからの操作は Tailscale と Termius を組み合わせる運用が wiki に記録されている。著者の選択基準は機能差でなく GUI とモバイル経路の使い勝手にある。</p>
+<p>Orca は公式サイト onorca.dev が「Claude Code・Codex・その他のコーディングエージェントを並列に、それぞれ自分の worktree で走らせる。ターミナル・差分・ブラウザ・CLI を 1 つのアプリに」と説明するデスクトップアプリで、「無料でオープンソース」と記す。GitHub の stablyai/orca は MIT ライセンス、README は macOS・Windows・Linux 対応と、iOS App Store と Android APK で配るモバイルコンパニオン（エージェントの完了通知を受け取り、外出先から追加指示を送る）を掲げる。対応エージェントの一覧には Claude Code・Codex・Grok・Gemini・Cursor・OpenCode・Qwen Code などが並び、「使っているサブスクリプションをそのまま持ち込む」方式をとる。GitHub のリポジトリ説明は「Grok Bot や Claude Code などエージェントの艦隊と働く場所」と Grok Bot を名指ししている。著者の「Orca は読んでいるだけ」という返信は、Grok Bot アプリが Orca に worktree の作成と Codex の実行を頼み、エージェントの種類は Orca 側の設定で差し替えられる、という意味に読める（wiki 側の解釈）。</p>
+<h2>Grok Bot 公式ドキュメントとの対応</h2>
+<p>図のラベルは著者の用語で、公式の機能名と一対一ではない。Cursor が公開する Grok Bot のドキュメント（work と security のページ）から対応しそうな記述を引くと次のようになる。</p>
+<table>
+<thead>
+<tr>
+<th>図のラベル</th>
+<th>公式ドキュメントの記述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>メイン Bot → SendToAgent → ローカル Mac bot</td>
+<td>「Hand work between Bots」: Bot は別の Bot へ非同期メッセージを送れ、受け手は起きて処理し後で返信できる。ハンドオフは会話に表示される。会話では <code>@</code> で Bot・グループ・ルーチン・アプリをメンションできる</td>
+</tr>
+<tr>
+<td>登録端末接続・常駐 Mac 上のアプリ</td>
+<td>「Your local computer is separate」「Local execution」: クラウド計算機と手元のマシンは別物で、Bot はデスクトップアプリを通じて自分のマシンでコマンド実行・ファイル読み取り・クラウド計算機との間のファイル移動ができる</td>
+</tr>
+<tr>
+<td>ローカル実行の承認</td>
+<td>既定はコマンドごとの承認で、承認カードに実行するコマンドがそのまま出る。設定は Settings &gt; Computer &gt; Your computer の「Execution on this computer」で <strong>Ask every time / Always allow / Never allow</strong> から選ぶ。公式は「Bot がローカルのファイルを扱う特定の理由がない限り Never allow を勧める」と書く</td>
+</tr>
+<tr>
+<td>ホスティング</td>
+<td>Grok Bot は Cursor がホストするクラウド計算機でのみ動き、オンプレミスや自前イメージは未対応。1 アカウントの全 Bot は 1 台のクラウド計算機を共有する</td>
+</tr>
+</tbody>
+</table>
+<p>著者の構成で「自動ルーティング」と承認がどう両立しているか、つまり Always allow にしているのか毎回承認しているのかは、ソースに記載がない。</p>
+<h2>位置づけ（wiki 側の推論）</h2>
+<ul>
+<li><strong>入口を 1 体に寄せる効果は権限でなく文脈にあると考えられる</strong>。公式のローカル実行ポリシーは Bot 単位でなく利用者のデスクトップ設定なので、Bot を分けても権限の境界は増えない。専用 Bot を置く価値は、Orca の呼び方・worktree の作法・結果の戻し方といった常駐 Mac 向けの手順と記憶を 1 体に持たせ、他の Bot は「@local に投げる」だけで済む点にあると読める</li>
+<li><strong>Orca を挟む理由は並列と隔離にあると考えられる</strong>。著者が挙げる「長めのループ」や複数 Bot からの同時依頼を 1 台の Mac で受けるとき、依頼ごとに worktree を切れば同じリポジトリ上で作業が衝突しない。これは Orca 公式サイトが掲げる主機能そのもので、<a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a> の炎鎮の構成が自宅 PC 上の Claude Code や Codex を直接動かすのと比べた差分になる</li>
+<li><strong><a href="../tools/grok-bot.html">grok-bot</a> の @lingxi が Mac mini を Cursor Cloud の private worker にする案</strong>は、実行基盤を Cursor のクラウドエージェントに置いたまま自宅機を貸し出す向きで、こちらは Grok Bot のローカル実行で自宅機の Orca と Codex を直接呼ぶ。Codex の契約枠（「トークン余り」）を使い切る動機は、<a href="../tools/herdr.html">herdr</a> で @Voxyz_ai がクォータの消費に合わせてモデルの役割を変える運用と同じ出発点にある</li>
+<li><strong>スマホからの経路が 2 本ある</strong>。スマホ → Grok Bot のメイン Bot → ローカル Mac bot → 常駐 Mac という Bot 経由の経路と、iPhone → Orca モバイル → 常駐 Mac という直結の経路で、後者は <a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a> が公式に提供する「スマホから自分の PC のエージェントを動かす」と同じ目的を Orca で組んだものにあたる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「Codex のトークン余り」をどう検知してルーティングに使っているか。Orca のモバイルアプリは使用量の確認を掲げるが、Bot 側の判定に何を渡しているかはソースに無い。<a href="../tools/codexbar.html">codexbar</a> のような残量の可視化を Bot に読ませているのか、本人に聞ける機会があれば確かめる</li>
+<li>公式の既定（コマンドごとの承認・推奨は Never allow）に対し、著者は Always allow にしているのか。自宅機を触らせる承認粒度は炎鎮の「1 回ごとに承認」と対照になるので、両者の運用を比べる材料として追う</li>
+<li>自分の環境（Mac と Claude Code 中心）で同じ形を組むなら、Orca を挟まず Claude Code を直接呼ぶ案と比べて worktree 分離がどこで効くか。並列依頼が実際に発生するかで答えが変わる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/grok-bot.html">grok-bot</a> — 基盤製品。@lingxi は Cursor のクラウドエージェント（private worker の Mac mini を含む）を実行基盤にするが、本ページは Grok Bot のローカル実行で自宅 Mac の Orca と Codex を直接呼ぶ</li>
+<li><a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a> — 炎鎮の自宅 Windows PC 主体の構成。遠隔コマンドは 1 回ごとに承認し Claude Code や Codex を直接動かす。本ページは Mac 側に Orca を挟み worktree 単位で Codex を走らせ、入口をローカル専用 Bot 1 体に寄せる</li>
+<li><a href="../tools/herdr.html">herdr</a> — 著者が「Herdr でもいい」と並べた代替。複数マシンのエージェントを人間の操作卓に束ねる方向で、著者は GUI とモバイルアプリの使いやすさで Orca を選んだ</li>
+<li>openai-codex — 常駐 Mac 側の実行役（codex exec）。著者は Claude Code やローカル LLM（Qwen）にも差し替え可能と述べる</li>
+<li><a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a> — スマホから自分の PC のエージェントを動かす公式経路。本ページはスマホ → クラウドの Bot → 登録端末、または iPhone → Orca モバイルの 2 経路で同じ目的を組む</li>
+<li><a href="../concepts/private-agent-board.html">private-agent-board</a> — 同じく Grok Bot を自前の仕組みにつなぐ個人構成。あちらは複数社の常駐エージェント間の伝言、こちらは 1 社の Bot から自宅の計算資源への橋渡し</li>
+<li><a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a> — Grok Bot を「ハーネスが製品で脳は交換可能」と読む @0xMorlex の整理。本ページの著者が Codex を Claude Code やローカル LLM に差し替えられると述べるのは、常駐 Mac 側でも同じ分離が成り立つ例</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a></li>
+<li><a href="../tools/grok-bot.html">grok-bot</a></li>
+<li><a href="../tools/herdr.html">herdr</a></li>
+<li><a href="../concepts/forward-deployed-engineer.html">forward-deployed-engineer</a></li>
+<li><a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2116672363563765875" rel="noopener" target="_blank">https://x.com/i/web/status/2116672363563765875</a></li>
+<li><a href="https://cursor.com/docs/grok-bot/security" rel="noopener" target="_blank">https://cursor.com/docs/grok-bot/security</a></li>
+<li><a href="https://cursor.com/docs/grok-bot/work" rel="noopener" target="_blank">https://cursor.com/docs/grok-bot/work</a></li>
+<li><a href="https://onorca.dev/" rel="noopener" target="_blank">https://onorca.dev/</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Grok Bot から常駐 Mac の Orca と Codex を呼ぶ自動ルーティング（@kzkhykw の個人構成）
+
+&gt; **TL;DR**: Notion の AI/FDE kazuki hayakawa（@kzkhykw）が、Grok Bot に「ローカル Mac 専用の Bot」を 1 体置き、メイン Bot が @ メンションで仕事を渡すと、自宅の常駐 MacBook 上の Grok Bot アプリが Orca で git worktree を切って Codex を実行し、結果を逆向きに返す構成。コーディング・画像生成・長めのループ・Codex のトークン余りをローカルへ振る条件にし、タスクに応じて自動で振り分ける。
+
+```mermaid
+flowchart LR
+  U[&quot;ユーザー&lt;br/&gt;スマホ / PC&quot;] --&gt;|依頼| M[&quot;メイン Bot / その他 Bot&lt;br/&gt;Grok Bot クラウド層&quot;]
+  M --&gt;|&quot;SendToAgent（@local メンション）&quot;| L[&quot;ローカル Mac bot&lt;br/&gt;常駐 Mac 専用・クラウド側&quot;]
+  L --&gt;|登録端末接続| A[&quot;常駐 Mac 上の&lt;br/&gt;Grok Bot アプリ&quot;]
+  A --&gt;|Orca 呼び出し| O[&quot;Orca&lt;br/&gt;worktree 管理&quot;]
+  O --&gt;|worktree create| C[&quot;worktree 内の Codex&lt;br/&gt;codex exec&quot;]
+  C -.-&gt;|返答| O -.-&gt; A -.-&gt; L -.-&gt; M -.-&gt; U
+```
+
+Grok Bot の各 Bot はクラウド上の計算機で動き、手元のマシンは「別物」で、Bot がそこへ触れるのはデスクトップアプリ経由のローカル実行だけ、と Cursor が公開する Grok Bot のドキュメントは説明する。@kzkhykw の構成は、そのローカル実行の入口を「ローカル Mac bot」1 体に集約し、メイン Bot や用途別の Bot はそこへ依頼を投げるだけにする（入口を 1 体にまとめる意図は図から読んだ wiki 側の解釈で、著者本人の説明は「ローカル MacBook 呼び出す専用のボットを作って、タスクに応じて自動ルーティング」の 1 文）。[[concepts/grok-bot-ai-team-workspace]] で炎鎮が自宅の Windows PC を主作業場にし 1 回ごとに承認して Claude Code や Codex を直接動かしていたのに対し、こちらは Mac 側に worktree 管理ツールの Orca を挟み、依頼ごとに隔離した作業ディレクトリで Codex を走らせる。著者は X のプロフィールで Notion の AI/[[concepts/forward-deployed-engineer|FDE]]、PMDAO の founder、Salesforce で AI プロダクト担当だったと記す。元ポストは 2026-10-31 の 2 文と構成図 1 枚で、呼び出し方・Orca を選んだ理由・差し替え可能な範囲は著者が翌日以降にスレッドへ足した返信と引用ポストにある（いずれも sources/notes/ に転記）。
+
+## 構成図の転記
+
+図の見出しは「Grok Bot → 常駐Mac の Grok Bot アプリ → Orca / Codex」、副題は「クラウドの専用エージェントから、登録端末のアプリを通じて実行」。実線が依頼、破線が返答で、返答は依頼と逆順に同じ経路を戻る。
+
+| 層 | 構成要素 | 図の注記 | 次へ渡す矢印 |
+|---|---|---|---|
+| ユーザー | スマホ / PC | — | 依頼 → メイン Bot／その他 Bot |
+| Grok Bot（クラウド / エージェント層） | メイン Bot | — | SendToAgent → ローカル Mac bot |
+| 同上 | その他 Bot | カメラ自作・日報など | SendToAgent → ローカル Mac bot |
+| 同上 | ローカル Mac bot | 常駐 Mac 専用エージェント・クラウド側 | 登録端末接続 → 常駐 Mac の Grok Bot アプリ |
+| 常駐 Mac（登録済みの物理マシン） | Grok Bot | 常駐 Mac 上のアプリ | Orca 呼び出し → Orca |
+| 同上 | Orca | worktree 管理 | worktree create → worktree |
+| 同上 | Codex | worktree 内で codex exec | 返答 → Orca へ戻る |
+
+## ルーティングの条件と呼び出し方（著者の説明）
+
+ローカルの MacBook へ振るのは、著者の本文によれば**コーディング・画像生成・長めのループ・Codex のトークン余り**の 4 条件で、タスクに応じて自動で振り分ける。判定をメイン Bot の指示文に書いているのかスキルやルーチンなのかは、ポストにもスレッドにも記載がない。
+
+実際に使うときはメイン Bot から「@ local」で呼び出している、と著者は引用ポストで補足する。Bot 名は「Local Mac Handler」で、メンションしやすいように英語表記の名前がよいと勧める。添付の画面写真では、Grok Bot の Mac アプリの入力欄に「このタスクQAループ回して @local mac」と打ちかけた状態で、候補に「Local Mac Handler Bot」が 1 件出ている。同じ Bot 一覧には「Podcast Helper」が見え、他の Bot 名はぼかされている。
+
+スレッドで著者が答えた範囲は次のとおり。
+
+- **自宅 Mac は登録端末としてつないでいるだけ**で、SSH 経由の VPS 操作はまだ試していない（@ks458008 への返信）
+- **設定でつまずく**のは分かる、最初は自分もそこで止まった（@sorekaiya への返信）。何の設定かは書かれていない
+- **Orca は読んでいるだけなので Claude Code でもできる**（@kiuri_cucumber への返信）。Codex でなく Claude Code でもよく、ローカル LLM も使えるので Qwen もたまに触らせている、登場頻度は高くない、と自己返信でも述べる
+- **iPhone からは直接 Orca のモバイルアプリで行ける**（@misaki_hennyu への返信）
+- @0xKyosuke の「スクショや録画を戻すループ」の提案には「寄せてみます」と答えており、構成に取り込む予定と読める
+
+## Orca を選んだ理由と Orca の概要
+
+「Herdr でもいいでしょ勢がいます」と前置きしたうえで、著者は Orca の GUI が好きなこと、Orca のモバイルアプリが使いやすく、何かあったときに常駐 Mac へモバイルからでも触れることを理由に挙げる（「アイコン可愛いし」とも）。[[tools/herdr]] は複数マシン上のエージェントを 1 つの操作卓に束ねるツールで、スマホからの操作は Tailscale と Termius を組み合わせる運用が wiki に記録されている。著者の選択基準は機能差でなく GUI とモバイル経路の使い勝手にある。
+
+Orca は公式サイト onorca.dev が「Claude Code・Codex・その他のコーディングエージェントを並列に、それぞれ自分の worktree で走らせる。ターミナル・差分・ブラウザ・CLI を 1 つのアプリに」と説明するデスクトップアプリで、「無料でオープンソース」と記す。GitHub の stablyai/orca は MIT ライセンス、README は macOS・Windows・Linux 対応と、iOS App Store と Android APK で配るモバイルコンパニオン（エージェントの完了通知を受け取り、外出先から追加指示を送る）を掲げる。対応エージェントの一覧には Claude Code・Codex・Grok・Gemini・Cursor・OpenCode・Qwen Code などが並び、「使っているサブスクリプションをそのまま持ち込む」方式をとる。GitHub のリポジトリ説明は「Grok Bot や Claude Code などエージェントの艦隊と働く場所」と Grok Bot を名指ししている。著者の「Orca は読んでいるだけ」という返信は、Grok Bot アプリが Orca に worktree の作成と Codex の実行を頼み、エージェントの種類は Orca 側の設定で差し替えられる、という意味に読める（wiki 側の解釈）。
+
+## Grok Bot 公式ドキュメントとの対応
+
+図のラベルは著者の用語で、公式の機能名と一対一ではない。Cursor が公開する Grok Bot のドキュメント（work と security のページ）から対応しそうな記述を引くと次のようになる。
+
+| 図のラベル | 公式ドキュメントの記述 |
+|---|---|
+| メイン Bot → SendToAgent → ローカル Mac bot | 「Hand work between Bots」: Bot は別の Bot へ非同期メッセージを送れ、受け手は起きて処理し後で返信できる。ハンドオフは会話に表示される。会話では `@` で Bot・グループ・ルーチン・アプリをメンションできる |
+| 登録端末接続・常駐 Mac 上のアプリ | 「Your local computer is separate」「Local execution」: クラウド計算機と手元のマシンは別物で、Bot はデスクトップアプリを通じて自分のマシンでコマンド実行・ファイル読み取り・クラウド計算機との間のファイル移動ができる |
+| ローカル実行の承認 | 既定はコマンドごとの承認で、承認カードに実行するコマンドがそのまま出る。設定は Settings &gt; Computer &gt; Your computer の「Execution on this computer」で **Ask every time / Always allow / Never allow** から選ぶ。公式は「Bot がローカルのファイルを扱う特定の理由がない限り Never allow を勧める」と書く |
+| ホスティング | Grok Bot は Cursor がホストするクラウド計算機でのみ動き、オンプレミスや自前イメージは未対応。1 アカウントの全 Bot は 1 台のクラウド計算機を共有する |
+
+著者の構成で「自動ルーティング」と承認がどう両立しているか、つまり Always allow にしているのか毎回承認しているのかは、ソースに記載がない。
+
+## 位置づけ（wiki 側の推論）
+
+- **入口を 1 体に寄せる効果は権限でなく文脈にあると考えられる**。公式のローカル実行ポリシーは Bot 単位でなく利用者のデスクトップ設定なので、Bot を分けても権限の境界は増えない。専用 Bot を置く価値は、Orca の呼び方・worktree の作法・結果の戻し方といった常駐 Mac 向けの手順と記憶を 1 体に持たせ、他の Bot は「@local に投げる」だけで済む点にあると読める
+- **Orca を挟む理由は並列と隔離にあると考えられる**。著者が挙げる「長めのループ」や複数 Bot からの同時依頼を 1 台の Mac で受けるとき、依頼ごとに worktree を切れば同じリポジトリ上で作業が衝突しない。これは Orca 公式サイトが掲げる主機能そのもので、[[concepts/grok-bot-ai-team-workspace]] の炎鎮の構成が自宅 PC 上の Claude Code や Codex を直接動かすのと比べた差分になる
+- **[[tools/grok-bot]] の @lingxi が Mac mini を Cursor Cloud の private worker にする案**は、実行基盤を Cursor のクラウドエージェントに置いたまま自宅機を貸し出す向きで、こちらは Grok Bot のローカル実行で自宅機の Orca と Codex を直接呼ぶ。Codex の契約枠（「トークン余り」）を使い切る動機は、[[tools/herdr]] で @Voxyz_ai がクォータの消費に合わせてモデルの役割を変える運用と同じ出発点にある
+- **スマホからの経路が 2 本ある**。スマホ → Grok Bot のメイン Bot → ローカル Mac bot → 常駐 Mac という Bot 経由の経路と、iPhone → Orca モバイル → 常駐 Mac という直結の経路で、後者は [[tools/claude-code-remote-control]] が公式に提供する「スマホから自分の PC のエージェントを動かす」と同じ目的を Orca で組んだものにあたる
+
+## 問い
+
+- 「Codex のトークン余り」をどう検知してルーティングに使っているか。Orca のモバイルアプリは使用量の確認を掲げるが、Bot 側の判定に何を渡しているかはソースに無い。[[tools/codexbar]] のような残量の可視化を Bot に読ませているのか、本人に聞ける機会があれば確かめる
+- 公式の既定（コマンドごとの承認・推奨は Never allow）に対し、著者は Always allow にしているのか。自宅機を触らせる承認粒度は炎鎮の「1 回ごとに承認」と対照になるので、両者の運用を比べる材料として追う
+- 自分の環境（Mac と Claude Code 中心）で同じ形を組むなら、Orca を挟まず Claude Code を直接呼ぶ案と比べて worktree 分離がどこで効くか。並列依頼が実際に発生するかで答えが変わる
+
+## 関連
+
+- [[tools/grok-bot]] — 基盤製品。@lingxi は Cursor のクラウドエージェント（private worker の Mac mini を含む）を実行基盤にするが、本ページは Grok Bot のローカル実行で自宅 Mac の Orca と Codex を直接呼ぶ
+- [[concepts/grok-bot-ai-team-workspace]] — 炎鎮の自宅 Windows PC 主体の構成。遠隔コマンドは 1 回ごとに承認し Claude Code や Codex を直接動かす。本ページは Mac 側に Orca を挟み worktree 単位で Codex を走らせ、入口をローカル専用 Bot 1 体に寄せる
+- [[tools/herdr]] — 著者が「Herdr でもいい」と並べた代替。複数マシンのエージェントを人間の操作卓に束ねる方向で、著者は GUI とモバイルアプリの使いやすさで Orca を選んだ
+- [[tools/openai-codex]] — 常駐 Mac 側の実行役（codex exec）。著者は Claude Code やローカル LLM（Qwen）にも差し替え可能と述べる
+- [[tools/claude-code-remote-control]] — スマホから自分の PC のエージェントを動かす公式経路。本ページはスマホ → クラウドの Bot → 登録端末、または iPhone → Orca モバイルの 2 経路で同じ目的を組む
+- [[concepts/private-agent-board]] — 同じく Grok Bot を自前の仕組みにつなぐ個人構成。あちらは複数社の常駐エージェント間の伝言、こちらは 1 社の Bot から自宅の計算資源への橋渡し
+- [[concepts/grok-bot-opus-5-5-harness]] — Grok Bot を「ハーネスが製品で脳は交換可能」と読む @0xMorlex の整理。本ページの著者が Codex を Claude Code やローカル LLM に差し替えられると述べるのは、常駐 Mac 側でも同じ分離が成り立つ例
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

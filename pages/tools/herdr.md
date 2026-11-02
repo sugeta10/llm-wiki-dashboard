@@ -29,3 +29,4 @@
 - [[concepts/fable-sprint-strategy]] — 制限下で Fable を Planner/Evaluator に限定する配分。クォータ動機の司令塔化という同じ理由づけ
 - [[concepts/claude-code-orchestration]] — 「自分が指揮官になり専門化した Claude を並べる」フレーム。Herdr ではその指揮官役をメインエージェントに渡す
 - [[tools/reason-network]] — マシン横断でエージェント同士を直接メッセージでつなぐ網。Herdr が各マシンのエージェントを人間の操作卓に束ねるのに対し、こちらはエージェント自身が `list_team` で互いを見て問い合わせる
+- [[concepts/grok-bot-local-mac-codex-routing]] — @kzkhykw が「Herdr でもいい」と並べたうえで、GUI とモバイルアプリの使いやすさから Orca を選び、Grok Bot から常駐 Mac の Orca と Codex を呼ぶ構成。Herdr が複数マシンのエージェントを操作卓に束ねるのに対し、Orca は 1 台の Mac 上で依頼ごとの worktree を管理する

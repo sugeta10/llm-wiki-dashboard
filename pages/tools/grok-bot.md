@@ -94,3 +94,4 @@ flowchart LR
 - [[concepts/grok-bot-one-person-harness]] — @beamnxw が一人会社向けに書いた設定手順。Operator 1 体に会社ブリーフと作業ボードを渡し、Ask first の承認境界・受け入れ基準・引き継ぎ・スキル・ルーチンの 7 手順で囲む。本ページの開発チーム運用に対し、業務運用を 1 体から始める側の手順
 - [[concepts/grok-bot-opus-5-5-harness]] — @0xMorlex が、バックエンドが Claude Opus 5.5 に変わった後の Grok Bot を「ハーネスと脳の分離」と読み、Chief 1 体から憲章・第三者モデルへのデータ線・ログイン引き渡し・Cursor エージェントを生む専門 Bot・可逆性で引く承認線・コスト監視までを 10 手順で組んだ記事
 - [[concepts/grok-bot-team-guide]] — Grok Bot チームの Lauren（@poteto）が利用者向けに書いた Bot 設計と運用の 7 項目（dr eggbot・少数精鋭・指示のたびにスキル化・Bot 名義のアカウント・音声入力と復唱確認）。本ページの @lingxi の運用記に対し、製品側が勧める最小の作法
+- [[concepts/grok-bot-local-mac-codex-routing]] — Notion の AI/FDE kazuki hayakawa（@kzkhykw）が、ローカル Mac 専用の Bot を 1 体置き、メイン Bot から @ メンションで渡した仕事を自宅の常駐 MacBook 上の Grok Bot アプリが受け、Orca で worktree を切って Codex を実行する個人構成。本ページの「Mac mini を Cursor Cloud の private worker に」に対し、Grok Bot のローカル実行で自宅機を直接呼ぶ側の構成
