@@ -17,6 +17,8 @@ mizchi が出発点にしたのは、[[models/jev]] の API が1リクエスト5
 
 laya-mlx はこれを PyTorch なしで MLX に移植したもので、`pip install laya-mlx` で入り、Hugging Face から重みを落として `laya.load(...)` → `agent.predict(テキスト, {質問名: {type, instructions, criteria}})` で使う。mizchi の手元（M5）ではロード0.7秒・初回1.6秒（warmup）・2回目以降は3問まとめて21msだった。
 
+作者の帰属について、unsoluble_sugar の Zenn 記事は laya-mlx を公開したのは mizorewww で、mizchi はそれをフォークして Snake を操作させ、1判断（3問）8〜9ms・毎秒87〜98判断を記録したと書いている。本ページの計測値と設計の説明は、その mizchi の記事に基づく。
+
 ## 「ゲームを理解している」わけではない：planner が説明し、Laya が選ぶ
 
 同梱の Snake デモの仕組みを mizchi は次のように分解している。決定的な planner が各方向を `Blocked. Collision.` / `Unsafe. Traps the snake.` / `Safe. Best route to food.` / `Safe. Slower route.` と分類し、それを `choice` の選択肢の説明文として渡す（加えて `noul` を2問）。Laya の出力の argmax を実行し、unsafe を選んだら shield が安全な方向に差し替える。つまり planner が状況を英語で説明し、Laya は「文を読んで一番良さそうなものを選ぶ」役である。

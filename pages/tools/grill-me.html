@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>grill-me</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="grill-me.md">Markdownで表示</a></div>
-  <div class="meta">tools/grill-me · tools · <span title="2026-10-06">3週間前</span></div>
+  <div class="meta">tools/grill-me · tools · <span title="2026-11-02">今日</span></div>
   <article><p>Matt Pocock作の3行で書かれた<a href="../concepts/claude-skills.html">Agent Skill</a>。<code>/grill-me</code> をコマンドとして使い、実装前にAIが徹底的に要件を掘り下げる対話セッションを行わせる。</p>
 <h2>概要</h2>
 <p>スキル本文は以下の3行のみ：</p>
@@ -76,6 +76,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>Sonnet 4.6でも動作するが、深掘りの浅さを感じる場面あり</li>
 <li>medium effortでhighとほぼ同等の賢さが得られる</li>
 </ul>
+<h2>Jev に一次評価を任せる拡張（grill-jev）</h2>
+<p>unsoluble_sugar の Zenn 記事によると、watany は grill-me を拡張し、一問一答の回答の一次評価を判断モデル <a href="../models/jev.html">jev</a> に任せる「grill-jev」というスキルを作っている。採用条件は Yes/No 判定が確率0.85以上、選択式は最大確率0.6以上かつ2位との差0.2以上で、実測では0.82だった項目が「未決」に残り、要件定義完了を宣言しない判断につながったという。8問の処理コストは約0.00013ドルと記事は伝える。watany が Jev を使う動機として挙げたのは、モデルに合わせて最適化したプロンプトが数か月後の新モデルで負債になるのを避け、決定論的に作りたいという需要である（unsoluble_sugar の紹介）。</p>
 <h2>関連</h2>
 <ul>
 <li><a href="../concepts/claude-skills.html">claude-skills</a> — Agent Skillsの概念・仕様</li>
@@ -88,11 +90,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/thought-eliciting-questions.html">thought-eliciting-questions</a> — 人間側の質問技術10フレーズ（@antoshia2n）。grill-meはAIに質問させる側で、問いが思考を引き出す機構が共通</li>
 <li><a href="../concepts/likable-questioning.html">likable-questioning</a> — 人間が教わる側の質問術（@antoshia2n）。「一度で全部聞かず、答えに応じて次の段へ進む」がgrill-meの一問ずつと重なる</li>
 <li><a href="../tools/html-plan.html">html-plan</a> — 実装前の質問を番号付きで HTML 1枚に並べ、まとめて回答させる @trq212 のスキル。grill-me の一問ずつの対話と対照的</li>
+<li><a href="../models/jev.html">jev</a> — grill-jev が回答の一次評価に使う判断モデル。閾値設計（Yes/No は0.85以上、選択式は0.6以上かつ差0.2以上）と費用の実測は同ページにも記載</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-skills.html">claude-skills</a></li>
 <li><a href="../concepts/finding-unknowns.html">finding-unknowns</a></li>
 <li><a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a></li>
 <li><a href="../concepts/likable-questioning.html">likable-questioning</a></li>
-<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/ryonakae/articles/8783c6b3ead2cb" rel="noopener" target="_blank">https://zenn.dev/ryonakae/articles/8783c6b3ead2cb</a></li></ul></section></article>
+<li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/ryonakae/articles/8783c6b3ead2cb" rel="noopener" target="_blank">https://zenn.dev/ryonakae/articles/8783c6b3ead2cb</a></li>
+<li><a href="https://zenn.dev/unsoluble_sugar/articles/jev-system-one-model-intro" rel="noopener" target="_blank">https://zenn.dev/unsoluble_sugar/articles/jev-system-one-model-intro</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -147,6 +151,10 @@ AIが2〜5択形式で質問を繰り返し、1セッションで最大18〜24�
 - Sonnet 4.6でも動作するが、深掘りの浅さを感じる場面あり
 - medium effortでhighとほぼ同等の賢さが得られる
 
+## Jev に一次評価を任せる拡張（grill-jev）
+
+unsoluble_sugar の Zenn 記事によると、watany は grill-me を拡張し、一問一答の回答の一次評価を判断モデル [[models/jev]] に任せる「grill-jev」というスキルを作っている。採用条件は Yes/No 判定が確率0.85以上、選択式は最大確率0.6以上かつ2位との差0.2以上で、実測では0.82だった項目が「未決」に残り、要件定義完了を宣言しない判断につながったという。8問の処理コストは約0.00013ドルと記事は伝える。watany が Jev を使う動機として挙げたのは、モデルに合わせて最適化したプロンプトが数か月後の新モデルで負債になるのを避け、決定論的に作りたいという需要である（unsoluble_sugar の紹介）。
+
 ## 関連
 
 - [[concepts/claude-skills]] — Agent Skillsの概念・仕様
@@ -159,6 +167,7 @@ AIが2〜5択形式で質問を繰り返し、1セッションで最大18〜24�
 - [[concepts/thought-eliciting-questions]] — 人間側の質問技術10フレーズ（@antoshia2n）。grill-meはAIに質問させる側で、問いが思考を引き出す機構が共通
 - [[concepts/likable-questioning]] — 人間が教わる側の質問術（@antoshia2n）。「一度で全部聞かず、答えに応じて次の段へ進む」がgrill-meの一問ずつと重なる
 - [[tools/html-plan]] — 実装前の質問を番号付きで HTML 1枚に並べ、まとめて回答させる @trq212 のスキル。grill-me の一問ずつの対話と対照的
+- [[models/jev]] — grill-jev が回答の一次評価に使う判断モデル。閾値設計（Yes/No は0.85以上、選択式は0.6以上かつ差0.2以上）と費用の実測は同ページにも記載
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

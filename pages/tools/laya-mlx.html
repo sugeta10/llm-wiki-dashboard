@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>laya-mlx</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="laya-mlx.md">Markdownで表示</a></div>
-  <div class="meta">tools/laya-mlx · tools · <span title="2026-09-25">1ヶ月前</span></div>
+  <div class="meta">tools/laya-mlx · tools · <span title="2026-11-02">今日</span></div>
   <article><h1>laya-mlx｜選択肢にスコアを付けるだけの小型モデルを手元で1判断8msで回す</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Jev と同じ「文章を生成せず、渡した選択肢にスコアを付ける」型のオープンウェイトモデル Laya を Apple Silicon の MLX で動かすライブラリ。mizchi の実測では M5 で1判断（3問）8〜9ms、ブラウザ（onnxruntime-web + WebGPU）では約50msで、「ローカルなら60fps以上、ブラウザでは20fps」と mizchi がまとめている。</p>
@@ -44,6 +44,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   Shield -- &quot;危険&quot; --&gt; Swap[&quot;安全な手に差し替え&quot;] --&gt; Act</pre>
 <p>mizchi が出発点にしたのは、<a href="../models/jev.html">jev</a> の API が1リクエスト500ms（日本からは遅延が乗って実質2fps）かかるのは主に地理の問題で、モデル自体は小さいはずだという予想である。Laya は Convai Innovations が公開した Jev 型のオープンウェイト実装で、質問の型も Jev とほぼ同じ3種（<code>choice</code>: 選択肢の確率分布／<code>score</code>: 順序付きルーブリックの期待値／<code>noul</code>: 命題が真である確率）を持つ。中身は ModernBERT（英語・421M）または mmBERT（多言語・322M）の encoder に2層の decision head を載せたもので、<code>[CLS] choice question: ... [SEP] [MASK] 選択肢1 [MASK] 選択肢2 ... [SEP] 状態 [SEP]</code> という系列の <code>[MASK]</code> 位置の hidden state をスコアにする。双方向 encoder なので1回の forward pass で全選択肢のスコアが出る、と mizchi は説明する。</p>
 <p>laya-mlx はこれを PyTorch なしで MLX に移植したもので、<code>pip install laya-mlx</code> で入り、Hugging Face から重みを落として <code>laya.load(...)</code> → <code>agent.predict(テキスト, {質問名: {type, instructions, criteria}})</code> で使う。mizchi の手元（M5）ではロード0.7秒・初回1.6秒（warmup）・2回目以降は3問まとめて21msだった。</p>
+<p>作者の帰属について、unsoluble_sugar の Zenn 記事は laya-mlx を公開したのは mizorewww で、mizchi はそれをフォークして Snake を操作させ、1判断（3問）8〜9ms・毎秒87〜98判断を記録したと書いている。本ページの計測値と設計の説明は、その mizchi の記事に基づく。</p>
 <h2>「ゲームを理解している」わけではない：planner が説明し、Laya が選ぶ</h2>
 <p>同梱の Snake デモの仕組みを mizchi は次のように分解している。決定的な planner が各方向を <code>Blocked. Collision.</code> / <code>Unsafe. Traps the snake.</code> / <code>Safe. Best route to food.</code> / <code>Safe. Slower route.</code> と分類し、それを <code>choice</code> の選択肢の説明文として渡す（加えて <code>noul</code> を2問）。Laya の出力の argmax を実行し、unsafe を選んだら shield が安全な方向に差し替える。つまり planner が状況を英語で説明し、Laya は「文を読んで一番良さそうなものを選ぶ」役である。</p>
 <p>mizchi が作ったブラウザ版 Chess も同じ構造で、chess.js で合法手を出し、2 ply の駒得探索で候補を6手に絞って説明文（<code>Captures the queen. Gives check. Safe. Best.</code> など）を付ける。棋力は「初心者には勝てる」程度で、序盤は候補の評価が全部同点になるため <code>Best.</code> に意味がなく、Laya はおそらく説明文の語感で選んでいるだけだと mizchi 自身が限界を認めている。結論として mizchi は「判断の質は選択肢の説明文の質で決まる。これは Jev と同じ」と述べ、Jev の記事で書いた「選択肢の設計が大事」「Bloom filter のように使う」「ガードレール用途」がそのまま Laya にも当てはまるとする。賢さは Jev のほうが上だが、安くて速いぶん「雑に大量に投げて confidence でふるいにかける」使い方に向く、というのが mizchi の位置づけである。</p>
@@ -120,7 +121,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/small-llm-fine-tuning.html">small-llm-fine-tuning</a></li>
 <li><a href="../models/diffusiongemma-jev.html">diffusiongemma-jev</a></li>
 <li><a href="../models/jev.html">jev</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://zenn.dev/mizchi/articles/laya-mlx-60fps" rel="noopener" target="_blank">https://zenn.dev/mizchi/articles/laya-mlx-60fps</a></li>
-<li><a href="https://x.com/i/web/status/2101653139317461107" rel="noopener" target="_blank">https://x.com/i/web/status/2101653139317461107</a></li></ul></section></article>
+<li><a href="https://x.com/i/web/status/2101653139317461107" rel="noopener" target="_blank">https://x.com/i/web/status/2101653139317461107</a></li>
+<li><a href="https://zenn.dev/unsoluble_sugar/articles/jev-system-one-model-intro" rel="noopener" target="_blank">https://zenn.dev/unsoluble_sugar/articles/jev-system-one-model-intro</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -159,6 +161,8 @@ flowchart LR
 mizchi が出発点にしたのは、[[models/jev]] の API が1リクエスト500ms（日本からは遅延が乗って実質2fps）かかるのは主に地理の問題で、モデル自体は小さいはずだという予想である。Laya は Convai Innovations が公開した Jev 型のオープンウェイト実装で、質問の型も Jev とほぼ同じ3種（`choice`: 選択肢の確率分布／`score`: 順序付きルーブリックの期待値／`noul`: 命題が真である確率）を持つ。中身は ModernBERT（英語・421M）または mmBERT（多言語・322M）の encoder に2層の decision head を載せたもので、`[CLS] choice question: ... [SEP] [MASK] 選択肢1 [MASK] 選択肢2 ... [SEP] 状態 [SEP]` という系列の `[MASK]` 位置の hidden state をスコアにする。双方向 encoder なので1回の forward pass で全選択肢のスコアが出る、と mizchi は説明する。
 
 laya-mlx はこれを PyTorch なしで MLX に移植したもので、`pip install laya-mlx` で入り、Hugging Face から重みを落として `laya.load(...)` → `agent.predict(テキスト, {質問名: {type, instructions, criteria}})` で使う。mizchi の手元（M5）ではロード0.7秒・初回1.6秒（warmup）・2回目以降は3問まとめて21msだった。
+
+作者の帰属について、unsoluble_sugar の Zenn 記事は laya-mlx を公開したのは mizorewww で、mizchi はそれをフォークして Snake を操作させ、1判断（3問）8〜9ms・毎秒87〜98判断を記録したと書いている。本ページの計測値と設計の説明は、その mizchi の記事に基づく。
 
 ## 「ゲームを理解している」わけではない：planner が説明し、Laya が選ぶ
 
