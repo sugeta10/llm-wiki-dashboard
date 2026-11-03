@@ -72,3 +72,5 @@ mindmap
 - [[tools/claude-code-mods]] — 本ページで「決定論的強制」に置いた hook の層を、TypeScript 関数を直接ロードする Function Hooks で結果の書き換え・画面描画・ツール登録まで広げたもの（nogu解説）
 - [[concepts/agent-era-code-review]] — 自動レビュアーが同じ指摘を繰り返したら、スキル・lint・CLAUDE.md・REVIEW.md という発生源で直す Claude Code チームの運用。全レビューが読むので CLAUDE.md を短く保つ（Anthropic）
 - [[concepts/agent-era-ci-speedup]] — 「エージェントは手順を飛ばすので、push 前の format・lint・型検査は AGENTS.md の 1 行でなく pre-push hook に置け」という Boardy の owen の実例。本ページの「決定論的強制は hook」の CI 前段への適用
+- [[concepts/claude-code-compaction-survival]] — 本ページの「コンパクション挙動」列を公式ドキュメントの機構別一覧表（13 行）に展開したページ。起動済みスキル本文の上限（1 本 5,000・合計 25,000 トークン）と読み直すファイル数（最大 5）の実数はこちら
+- [[concepts/claude-code-seo-second-brain]] — 本ページの振り分けを SEO 運用に適用した実例（CLAUDE.md 128 行・17 スキル・auto memory 171 件・robots.txt を守る PreToolUse hook）。auto memory の索引が 200 行・25KB を超えて 52 行が黙って切られた事故の記録つき（Nicholas Dulait）

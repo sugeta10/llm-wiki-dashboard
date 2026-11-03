@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-seo-second-brain - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-seo-second-brain</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-seo-second-brain.md">Markdownで表示</a></div>
+  <div class="meta">concepts/claude-code-seo-second-brain · concepts · <span title="2026-11-03">今日</span></div>
+  <article><h1>Claude Code で SEO を回す「第二の脳」（4 層のメモリ配置と自動メモリ索引の切り捨て事故）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Claude Code の 4 つのメモリ層（CLAUDE.md＝地図・<code>.claude/rules/</code>＝反射・Skills＝手順書・auto memory＝日記）に、SEO の知識を「必要なときだけ読まれる層」へ振り分けて置く運用。ChatSEO 共同創業者 Nicholas Dulait が自社の 128 行の CLAUDE.md・17 スキル・171 件の auto memory を公開し、索引が 200 行・25KB を超えて 52 行が黙って切られていた事故を報告した。</p>
+</blockquote>
+<p>毎セッションが新しいコンテキストで始まるため、チャットで打っただけの訂正（「ランキングのあるページの URL は変えない」）はセッションが閉じれば消える。Dulait はこれを不具合でなく仕様とみなし、ほとんどの SEO 担当者が毎朝同じインターンに同じ説明をしていながら、Claude が実際に読み込む場所にブリーフを書いていないと述べる。Claude Code には 4 つのメモリ層があるのに大半が 1 層（CLAUDE.md）だけを使って詰め込み、Claude が聞かなくなった時点で「AI は SEO ができない」と結論づける、というのが同氏の見立てで、黄金律は<strong>「それぞれの SEO 知識を、必要なときにだけ読み込まれる層に置く」</strong>。自分の脳は大きく保ち、Claude のコンテキストは小さく保つ。</p>
+<pre class="mermaid">flowchart TD
+  L1[&quot;CLAUDE.md（地図・自分が書く）&lt;br/&gt;毎セッション読込&quot;] --&gt; S[&quot;セッションの&lt;br/&gt;コンテキスト&quot;]
+  L2[&quot;.claude/rules/（反射・自分が書く）&lt;br/&gt;paths 一致のファイルを触ったとき&quot;] -.-&gt; S
+  L3[&quot;Skills（手順書・自分が書く）&lt;br/&gt;呼び出し時・関連時&quot;] -.-&gt; S
+  L4[&quot;auto memory（日記・Claude が書く）&lt;br/&gt;毎セッション・索引の先頭 200 行 / 25KB&quot;] --&gt; S
+  H[&quot;PreToolUse hook（唯一の『絶対』）&quot;] --&gt;|&quot;exit 2 でツール呼び出しを遮断&quot;| S</pre>
+<h2>2 つの神話と「絶対」の置き場</h2>
+<p>Dulait が多くの SEO 設定を壊していると見る前提は 2 つ。第一に「CLAUDE.md はシステムプロンプトだから Claude は従う」。公式ドキュメントは CLAUDE.md の内容がシステムプロンプトの後に<strong>ユーザーメッセージとして</strong>届くと明記しており、Claude は読んで従おうとするが、特に曖昧な規則については厳密な遵守の保証はない。第二に「<code>robots.txt</code> に触るなと書けば守られる」。公式ドキュメントはメモリファイルを「文脈であって強制される設定ではない」と位置づけ、Claude の判断に関わらず操作を止めるには PreToolUse hook を使うよう案内する。Dulait の訳は「価格ページを noindex しないという規則が CLAUDE.md にしかないなら、それは防御でなく願望」。</p>
+<p>同氏のチームで実際に効いている唯一の「絶対」は PreToolUse hook で、複数の Claude セッションが 1 つの Chrome を共有する環境で、同時に操縦できるのを 1 セッションに限る。これは Claude に行儀を頼むのでなく呼び出しを遮断する。SEO サイトでは同じ型で <code>robots.txt</code> を守り、<code>.claude/hooks/protect.sh</code> がファイルパスに <code>robots.txt</code> を含むとき終了コード 2 を返す。Claude が <code>robots.txt</code> を上書きしようとして hook が書き込みを止め、ファイルが無傷だったことをテスト済みだと同氏は書く（<code>settings.json</code> の設定本文はキャッシュに未収録）。</p>
+<h2>4 層それぞれの作り方</h2>
+<p><strong>第 1 層 CLAUDE.md は 200 行未満の地図。</strong> URL を変えられた経験から規則を 1 つ足し、次はタイトル、次は内部リンクと増えて半年後に 600 行の壁になり、50 行だったころより従われなくなる、と Dulait は典型を描く。公式ドキュメントの目標は 1 ファイル 200 行未満で、長いファイルは「より多くのコンテキストを消費し遵守を下げる」。同氏のものは 128 行で、1 社のコンテンツ・メール・アウトバウンドを動かしている（本文の例はキャッシュに未収録）。同氏が挙げる 3 つの小技は公式ドキュメントでも確認できる。ブロックレベルの HTML コメントはコンテキスト注入前に除去されるので保守メモを無料で残せる（コードブロック内のコメントは残る）。<code>@path</code> の import は整理には役立つが import 先も一緒に読まれるためコンテキストは減らない。パスをバッククォートで包むと import されず平文として扱われる。さらに <code>/init</code> で下書きを作れること、個人用の <code>CLAUDE.local.md</code> と全サイト共通の <code>~/.claude/CLAUDE.md</code> があることを添える。</p>
+<p><strong>第 2 層 <code>.claude/rules/</code> は自分で読み込まれる規則。</strong> 全規則を CLAUDE.md に置くと、タイポ修正のときにブリーフの規則が、ブログ記事を書くときにランディングページの規則が読み込まれ、毎回その全部を払う。<code>paths:</code> フィールド付きの Markdown を置けば、一致するファイルを Claude が読む・編集するときだけ読み込まれる。同氏の例は <code>pages.md</code>（価格ページに触れると発火）と <code>briefs.md</code>（ブリーフ作成で発火）で、サイトマップの質問ではどちらも読まれない（規則本文はキャッシュに未収録）。<code>paths:</code> のない規則は CLAUDE.md と同じく起動時に読まれる。</p>
+<p><strong>第 3 層 Skills は手順書。</strong> CLAUDE.md は事実のため、手続きはスキルに置く。スキルは呼び出したとき、または Claude がプロンプトに関連すると判断したときだけ読まれ、同氏のチームは記事パイプラインからニュースレターまで 17 本を運用する。どのサイトにも要るのは「ページのリフレッシュ」で、既にランクしているページが最も安いクリックを生むからだと述べる。<code>refresh /pricing</code> で手順全体が走り、残りの 29 日はその手順がコンテキストを消費しない（SKILL.md 本文はキャッシュに未収録）。多くの人が止まるのは Search Console の手動エクスポートで、同氏は自社の ChatSEO を MCP サーバーで接続し「過去 90 日でクリックを失ったページは」の 1 行に置き換えている（著者は ChatSEO の共同創業者で、この箇所は自社製品の紹介にあたる）。</p>
+<p><strong>第 4 層 auto memory は Claude 自身が書く日記。</strong> 訂正に「わかりました」と返しても、auto memory がなければそれはセッションが閉じるまでしか続かない。auto memory はリポジトリ単位で毎セッション読まれ、読める・直せる・消せる平文 Markdown。「インドは絶対にターゲットにしないと覚えて」と言えば auto memory に、「これを CLAUDE.md に足して」と言えば地図に入り、<code>/memory</code> で全ファイルの一覧と切り替えができる。経験則は「地図は自分が書き、日記は Claude が書く」。同氏の日記は 171 ファイルで、うち 63 件が「数字を捏造しない」「全リンクに自社のトラッキングタグ」のような訂正だと書く。</p>
+<h2>索引の切り捨て事故</h2>
+<p>誰も警告しない部分として Dulait が書くのは、auto memory の索引は先頭 200 行または 25KB のどちらか早い方までしか読まれないという制限で、同氏の索引は 213 行・32.5KB に育ち、<strong>52 行が毎セッション黙って切られていた</strong>。最も古い、出荷済みのプレイブックに関するメモが Claude にとって存在しなくなり、エラーは出ず、唯一の痕跡は読み込まれた索引に付く警告行で、人間は誰も読まない。同氏が引き出した規則は、索引の各項目を 1 行に保ち、詳細はトピックファイルに置き、月に 1 度は索引のサイズを確かめること。</p>
+<p>公式ドキュメント（memory ページ）はこの制限を <code>MEMORY.md</code> の先頭 200 行または 25KB と明記し、閾値を越えた内容はセッション開始時に読まれないと書く。さらに Claude が <code>MEMORY.md</code> に書き込んだ後にファイルを両方の上限と照らし、上限に近ければ短縮を促し、上限を超えていれば書き込みは成功するが索引を書き直すようエラーを返す、とある。Dulait の記述（読み込み時の警告行）と公式の記述（書き込み時のリマインドとエラー）は検知の時点が異なり、どちらも人間の目には届きにくい点は同じと考えられる。この制限は <code>MEMORY.md</code> だけに適用され、起動時に読む CLAUDE.md は 4 MiB 以下なら全文が読まれる（4 MiB 超は丸ごと読み飛ばされる）。同じ型の事故は <a href="../concepts/skills-over-memory.html">skills-over-memory</a> で @mvanhorn が 218 ファイル・46KB の索引で報告しており、独立した 2 件の運用記録が同じ上限に当たっている。</p>
+<h2>読み込み順と健康を保つ 5 コマンド</h2>
+<p>Dulait が「SEO の脳とガラクタ引き出しを分けるもの」とする読み込み順は次のとおりで、公式ドキュメントの記述とも一致する。起動時に、作業フォルダとその上位すべての CLAUDE.md と CLAUDE.local.md が、上書きでなく連結されて読まれる。同じく起動時に <code>paths:</code> のない規則と auto memory の索引。オンデマンドで、下位フォルダの CLAUDE.md とパス指定の規則が、一致するファイルを初めて触ったときに読まれる。<code>/compact</code> の後はプロジェクト直下の CLAUDE.md が disk から読み直されるが、チャットで打っただけの規則は消える（圧縮後に何が戻るかの機構別一覧は <a href="../concepts/claude-code-compaction-survival.html">claude-code-compaction-survival</a>）。「ランキングに関わるなら書き留めよ」が同氏の結論。</p>
+<p>健康を保つコマンドは 5 つ。<code>/init</code>（CLAUDE.md の下書き）・<code>/memory</code>（メモリファイルの一覧と auto memory の切り替え）・<code>/context</code>（実際に何が読み込まれたかを「Memory files」の下に表示）・<code>/doctor prompt-audit</code>（古い指示や矛盾する指示を見つけ、適用を頼むまでファイルを変えない。Claude Code v2.1.283 以降）・「remember …」（auto memory へ直接保存）。設定後は <code>/context</code> を一度走らせ、載っていないファイルは Claude には見えていないと確かめる。公式ドキュメントは加えて、200 行超のファイルは起動時と <code>/status</code> で警告されること、<code>/doctor</code> がディレクトリ構成や依存一覧などコードから導ける内容を削り、落とし穴・理由・既定と異なる規約を残す形で CLAUDE.md の削減を提案することを書いている。</p>
+<h2>よくある落とし穴と 60 秒監査</h2>
+<p>落とし穴 6 つと対策は、巨大な CLAUDE.md→200 行未満で残りは rules と skills・キーワード一覧を <code>@</code> で全部 import→<code>keywords/</code> に置いて必要な 1 つだけ読ませる・1 ページの目標クエリについて食い違う 2 ファイル→1 ページ 1 ファイル 1 クエリ（公式ドキュメントは食い違いがあると Claude が「どちらかを恣意的に選ぶことがある」と書く）・「X を noindex しない」を CLAUDE.md に書く→PreToolUse hook・チャットでだけ打った規則→CLAUDE.md か rule に書く・200 行超の auto memory 索引→1 項目 1 行。脳は判断を保ち、Search Console がスコアを保つ、とデータの代わりにはならないことも添える。</p>
+<p>作る前に答える 5 問は、<code>/context</code> に CLAUDE.md が出るか・200 行未満か・auto memory が有効で 200 行未満か・最重要の「絶対」が文章でなく hook か・各マネーページに 1 ファイル 1 目標クエリがあるか。「no」が 3 つ以上なら、持っているのは SEO の脳でなく Claude がちらりと見るメモフォルダだと同氏は言う。</p>
+<h2>過剰になる場面（著者の留保）</h2>
+<p>Dulait は 1 社のサイト群での設定で標本は 1 つだと断り、共同創業者の Paul が SEO の YouTube チャンネルを運営していて規則が書き下す前から良かったという有利な出発点も明かす。月に 1 度しかサイトに触らないなら 30 行の CLAUDE.md で足り、4 層が報われるのは Claude が毎日サイトに関わる場合。一般化できるのは配置の規則で、一般化できないのは同氏の具体ファイルなので、自分の訂正から自分のファイルを書くよう勧める。記事はワンプロンプトのセットアップ（本文はキャッシュに未収録）と、前作の初期設定記事・続編の自律実行記事への導線、ChatSEO の無料導線で締める。</p>
+<h2>問い</h2>
+<ul>
+<li>このリポの auto memory 索引（MEMORY.md）は今何行・何 KB か。200 行・25KB の上限にどれだけ余裕があり、1 行超えの項目はないか</li>
+<li>CLAUDE.md 内の HTML コメントがトークン 0 で残せるなら、保守メモや「この行の由来」を本文からコメントへ移して行数を減らせるか</li>
+<li>このリポの「絶対」（launchd auto-sync の暴走防止など）は文章のままか、PreToolUse hook に置いてあるか。<a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> の問いと同じ宿題が、別のドメイン（SEO）から再提出された形</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a> — 同じ「CLAUDE.md 単体をやめて層へ分ける」設計を 7 層で示した実装ガイド。本ページは SEO という単一ドメインで 4 層を実運用した記録で、HTML コメント除去と 4 MiB 読み飛ばしは公式 memory ドキュメントで確認できた</li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> — auto memory の索引が上限超過で黙って切られる同型の事故（@mvanhorn・218 ファイル）と、教訓をメモリでなくスキルへ出荷する規律。本ページの「1 項目 1 行・詳細はトピックファイル」はその運用側</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 7 手段を「ロード時点×圧縮生存×権威」で振り分ける公式フレーム。本ページの 4 層＋hook はその SEO 版の適用例</li>
+<li><a href="../concepts/claude-code-compaction-survival.html">claude-code-compaction-survival</a> — 圧縮後に何が disk から戻り何が消えるかの公式一覧。本ページの「チャットで打った規則は /compact で消える」の機構側</li>
+<li><a href="../concepts/claude-code-launch-directory.html">claude-code-launch-directory</a> — <code>/context</code> の Memory files で読まれているかを確かめる診断と、上位から連結される読み込み順。本ページの 60 秒監査の第 1 問と同じ手順</li>
+<li><a href="../concepts/instruction-patch-lifecycle.html">instruction-patch-lifecycle</a> — 失敗のたびに足して育てた規則をモデル世代交代時に外す運用論。本ページの <code>/doctor prompt-audit</code> はその棚卸しを機械化する公式コマンド</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — 本ページの 4 層と hook を持つ製品</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-compaction-survival.html">claude-code-compaction-survival</a></li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
+<li><a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a></li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a></li>
+<li><a href="../concepts/claude-code-launch-directory.html">claude-code-launch-directory</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2117194945668714566" rel="noopener" target="_blank">https://x.com/i/web/status/2117194945668714566</a></li>
+<li><a href="https://code.claude.com/docs/en/memory" rel="noopener" target="_blank">https://code.claude.com/docs/en/memory</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Code で SEO を回す「第二の脳」（4 層のメモリ配置と自動メモリ索引の切り捨て事故）
+
+&gt; **TL;DR**: Claude Code の 4 つのメモリ層（CLAUDE.md＝地図・`.claude/rules/`＝反射・Skills＝手順書・auto memory＝日記）に、SEO の知識を「必要なときだけ読まれる層」へ振り分けて置く運用。ChatSEO 共同創業者 Nicholas Dulait が自社の 128 行の CLAUDE.md・17 スキル・171 件の auto memory を公開し、索引が 200 行・25KB を超えて 52 行が黙って切られていた事故を報告した。
+
+毎セッションが新しいコンテキストで始まるため、チャットで打っただけの訂正（「ランキングのあるページの URL は変えない」）はセッションが閉じれば消える。Dulait はこれを不具合でなく仕様とみなし、ほとんどの SEO 担当者が毎朝同じインターンに同じ説明をしていながら、Claude が実際に読み込む場所にブリーフを書いていないと述べる。Claude Code には 4 つのメモリ層があるのに大半が 1 層（CLAUDE.md）だけを使って詰め込み、Claude が聞かなくなった時点で「AI は SEO ができない」と結論づける、というのが同氏の見立てで、黄金律は**「それぞれの SEO 知識を、必要なときにだけ読み込まれる層に置く」**。自分の脳は大きく保ち、Claude のコンテキストは小さく保つ。
+
+```mermaid
+flowchart TD
+  L1[&quot;CLAUDE.md（地図・自分が書く）&lt;br/&gt;毎セッション読込&quot;] --&gt; S[&quot;セッションの&lt;br/&gt;コンテキスト&quot;]
+  L2[&quot;.claude/rules/（反射・自分が書く）&lt;br/&gt;paths 一致のファイルを触ったとき&quot;] -.-&gt; S
+  L3[&quot;Skills（手順書・自分が書く）&lt;br/&gt;呼び出し時・関連時&quot;] -.-&gt; S
+  L4[&quot;auto memory（日記・Claude が書く）&lt;br/&gt;毎セッション・索引の先頭 200 行 / 25KB&quot;] --&gt; S
+  H[&quot;PreToolUse hook（唯一の『絶対』）&quot;] --&gt;|&quot;exit 2 でツール呼び出しを遮断&quot;| S
+```
+
+## 2 つの神話と「絶対」の置き場
+
+Dulait が多くの SEO 設定を壊していると見る前提は 2 つ。第一に「CLAUDE.md はシステムプロンプトだから Claude は従う」。公式ドキュメントは CLAUDE.md の内容がシステムプロンプトの後に**ユーザーメッセージとして**届くと明記しており、Claude は読んで従おうとするが、特に曖昧な規則については厳密な遵守の保証はない。第二に「`robots.txt` に触るなと書けば守られる」。公式ドキュメントはメモリファイルを「文脈であって強制される設定ではない」と位置づけ、Claude の判断に関わらず操作を止めるには PreToolUse hook を使うよう案内する。Dulait の訳は「価格ページを noindex しないという規則が CLAUDE.md にしかないなら、それは防御でなく願望」。
+
+同氏のチームで実際に効いている唯一の「絶対」は PreToolUse hook で、複数の Claude セッションが 1 つの Chrome を共有する環境で、同時に操縦できるのを 1 セッションに限る。これは Claude に行儀を頼むのでなく呼び出しを遮断する。SEO サイトでは同じ型で `robots.txt` を守り、`.claude/hooks/protect.sh` がファイルパスに `robots.txt` を含むとき終了コード 2 を返す。Claude が `robots.txt` を上書きしようとして hook が書き込みを止め、ファイルが無傷だったことをテスト済みだと同氏は書く（`settings.json` の設定本文はキャッシュに未収録）。
+
+## 4 層それぞれの作り方
+
+**第 1 層 CLAUDE.md は 200 行未満の地図。** URL を変えられた経験から規則を 1 つ足し、次はタイトル、次は内部リンクと増えて半年後に 600 行の壁になり、50 行だったころより従われなくなる、と Dulait は典型を描く。公式ドキュメントの目標は 1 ファイル 200 行未満で、長いファイルは「より多くのコンテキストを消費し遵守を下げる」。同氏のものは 128 行で、1 社のコンテンツ・メール・アウトバウンドを動かしている（本文の例はキャッシュに未収録）。同氏が挙げる 3 つの小技は公式ドキュメントでも確認できる。ブロックレベルの HTML コメントはコンテキスト注入前に除去されるので保守メモを無料で残せる（コードブロック内のコメントは残る）。`@path` の import は整理には役立つが import 先も一緒に読まれるためコンテキストは減らない。パスをバッククォートで包むと import されず平文として扱われる。さらに `/init` で下書きを作れること、個人用の `CLAUDE.local.md` と全サイト共通の `~/.claude/CLAUDE.md` があることを添える。
+
+**第 2 層 `.claude/rules/` は自分で読み込まれる規則。** 全規則を CLAUDE.md に置くと、タイポ修正のときにブリーフの規則が、ブログ記事を書くときにランディングページの規則が読み込まれ、毎回その全部を払う。`paths:` フィールド付きの Markdown を置けば、一致するファイルを Claude が読む・編集するときだけ読み込まれる。同氏の例は `pages.md`（価格ページに触れると発火）と `briefs.md`（ブリーフ作成で発火）で、サイトマップの質問ではどちらも読まれない（規則本文はキャッシュに未収録）。`paths:` のない規則は CLAUDE.md と同じく起動時に読まれる。
+
+**第 3 層 Skills は手順書。** CLAUDE.md は事実のため、手続きはスキルに置く。スキルは呼び出したとき、または Claude がプロンプトに関連すると判断したときだけ読まれ、同氏のチームは記事パイプラインからニュースレターまで 17 本を運用する。どのサイトにも要るのは「ページのリフレッシュ」で、既にランクしているページが最も安いクリックを生むからだと述べる。`refresh /pricing` で手順全体が走り、残りの 29 日はその手順がコンテキストを消費しない（SKILL.md 本文はキャッシュに未収録）。多くの人が止まるのは Search Console の手動エクスポートで、同氏は自社の ChatSEO を MCP サーバーで接続し「過去 90 日でクリックを失ったページは」の 1 行に置き換えている（著者は ChatSEO の共同創業者で、この箇所は自社製品の紹介にあたる）。
+
+**第 4 層 auto memory は Claude 自身が書く日記。** 訂正に「わかりました」と返しても、auto memory がなければそれはセッションが閉じるまでしか続かない。auto memory はリポジトリ単位で毎セッション読まれ、読める・直せる・消せる平文 Markdown。「インドは絶対にターゲットにしないと覚えて」と言えば auto memory に、「これを CLAUDE.md に足して」と言えば地図に入り、`/memory` で全ファイルの一覧と切り替えができる。経験則は「地図は自分が書き、日記は Claude が書く」。同氏の日記は 171 ファイルで、うち 63 件が「数字を捏造しない」「全リンクに自社のトラッキングタグ」のような訂正だと書く。
+
+## 索引の切り捨て事故
+
+誰も警告しない部分として Dulait が書くのは、auto memory の索引は先頭 200 行または 25KB のどちらか早い方までしか読まれないという制限で、同氏の索引は 213 行・32.5KB に育ち、**52 行が毎セッション黙って切られていた**。最も古い、出荷済みのプレイブックに関するメモが Claude にとって存在しなくなり、エラーは出ず、唯一の痕跡は読み込まれた索引に付く警告行で、人間は誰も読まない。同氏が引き出した規則は、索引の各項目を 1 行に保ち、詳細はトピックファイルに置き、月に 1 度は索引のサイズを確かめること。
+
+公式ドキュメント（memory ページ）はこの制限を `MEMORY.md` の先頭 200 行または 25KB と明記し、閾値を越えた内容はセッション開始時に読まれないと書く。さらに Claude が `MEMORY.md` に書き込んだ後にファイルを両方の上限と照らし、上限に近ければ短縮を促し、上限を超えていれば書き込みは成功するが索引を書き直すようエラーを返す、とある。Dulait の記述（読み込み時の警告行）と公式の記述（書き込み時のリマインドとエラー）は検知の時点が異なり、どちらも人間の目には届きにくい点は同じと考えられる。この制限は `MEMORY.md` だけに適用され、起動時に読む CLAUDE.md は 4 MiB 以下なら全文が読まれる（4 MiB 超は丸ごと読み飛ばされる）。同じ型の事故は [[concepts/skills-over-memory]] で @mvanhorn が 218 ファイル・46KB の索引で報告しており、独立した 2 件の運用記録が同じ上限に当たっている。
+
+## 読み込み順と健康を保つ 5 コマンド
+
+Dulait が「SEO の脳とガラクタ引き出しを分けるもの」とする読み込み順は次のとおりで、公式ドキュメントの記述とも一致する。起動時に、作業フォルダとその上位すべての CLAUDE.md と CLAUDE.local.md が、上書きでなく連結されて読まれる。同じく起動時に `paths:` のない規則と auto memory の索引。オンデマンドで、下位フォルダの CLAUDE.md とパス指定の規則が、一致するファイルを初めて触ったときに読まれる。`/compact` の後はプロジェクト直下の CLAUDE.md が disk から読み直されるが、チャットで打っただけの規則は消える（圧縮後に何が戻るかの機構別一覧は [[concepts/claude-code-compaction-survival]]）。「ランキングに関わるなら書き留めよ」が同氏の結論。
+
+健康を保つコマンドは 5 つ。`/init`（CLAUDE.md の下書き）・`/memory`（メモリファイルの一覧と auto memory の切り替え）・`/context`（実際に何が読み込まれたかを「Memory files」の下に表示）・`/doctor prompt-audit`（古い指示や矛盾する指示を見つけ、適用を頼むまでファイルを変えない。Claude Code v2.1.283 以降）・「remember …」（auto memory へ直接保存）。設定後は `/context` を一度走らせ、載っていないファイルは Claude には見えていないと確かめる。公式ドキュメントは加えて、200 行超のファイルは起動時と `/status` で警告されること、`/doctor` がディレクトリ構成や依存一覧などコードから導ける内容を削り、落とし穴・理由・既定と異なる規約を残す形で CLAUDE.md の削減を提案することを書いている。
+
+## よくある落とし穴と 60 秒監査
+
+落とし穴 6 つと対策は、巨大な CLAUDE.md→200 行未満で残りは rules と skills・キーワード一覧を `@` で全部 import→`keywords/` に置いて必要な 1 つだけ読ませる・1 ページの目標クエリについて食い違う 2 ファイル→1 ページ 1 ファイル 1 クエリ（公式ドキュメントは食い違いがあると Claude が「どちらかを恣意的に選ぶことがある」と書く）・「X を noindex しない」を CLAUDE.md に書く→PreToolUse hook・チャットでだけ打った規則→CLAUDE.md か rule に書く・200 行超の auto memory 索引→1 項目 1 行。脳は判断を保ち、Search Console がスコアを保つ、とデータの代わりにはならないことも添える。
+
+作る前に答える 5 問は、`/context` に CLAUDE.md が出るか・200 行未満か・auto memory が有効で 200 行未満か・最重要の「絶対」が文章でなく hook か・各マネーページに 1 ファイル 1 目標クエリがあるか。「no」が 3 つ以上なら、持っているのは SEO の脳でなく Claude がちらりと見るメモフォルダだと同氏は言う。
+
+## 過剰になる場面（著者の留保）
+
+Dulait は 1 社のサイト群での設定で標本は 1 つだと断り、共同創業者の Paul が SEO の YouTube チャンネルを運営していて規則が書き下す前から良かったという有利な出発点も明かす。月に 1 度しかサイトに触らないなら 30 行の CLAUDE.md で足り、4 層が報われるのは Claude が毎日サイトに関わる場合。一般化できるのは配置の規則で、一般化できないのは同氏の具体ファイルなので、自分の訂正から自分のファイルを書くよう勧める。記事はワンプロンプトのセットアップ（本文はキャッシュに未収録）と、前作の初期設定記事・続編の自律実行記事への導線、ChatSEO の無料導線で締める。
+
+## 問い
+
+- このリポの auto memory 索引（MEMORY.md）は今何行・何 KB か。200 行・25KB の上限にどれだけ余裕があり、1 行超えの項目はないか
+- CLAUDE.md 内の HTML コメントがトークン 0 で残せるなら、保守メモや「この行の由来」を本文からコメントへ移して行数を減らせるか
+- このリポの「絶対」（launchd auto-sync の暴走防止など）は文章のままか、PreToolUse hook に置いてあるか。[[concepts/claude-code-instruction-methods]] の問いと同じ宿題が、別のドメイン（SEO）から再提出された形
+
+## 関連
+
+- [[concepts/claude-md-multilayer-design]] — 同じ「CLAUDE.md 単体をやめて層へ分ける」設計を 7 層で示した実装ガイド。本ページは SEO という単一ドメインで 4 層を実運用した記録で、HTML コメント除去と 4 MiB 読み飛ばしは公式 memory ドキュメントで確認できた
+- [[concepts/skills-over-memory]] — auto memory の索引が上限超過で黙って切られる同型の事故（@mvanhorn・218 ファイル）と、教訓をメモリでなくスキルへ出荷する規律。本ページの「1 項目 1 行・詳細はトピックファイル」はその運用側
+- [[concepts/claude-code-instruction-methods]] — 7 手段を「ロード時点×圧縮生存×権威」で振り分ける公式フレーム。本ページの 4 層＋hook はその SEO 版の適用例
+- [[concepts/claude-code-compaction-survival]] — 圧縮後に何が disk から戻り何が消えるかの公式一覧。本ページの「チャットで打った規則は /compact で消える」の機構側
+- [[concepts/claude-code-launch-directory]] — `/context` の Memory files で読まれているかを確かめる診断と、上位から連結される読み込み順。本ページの 60 秒監査の第 1 問と同じ手順
+- [[concepts/instruction-patch-lifecycle]] — 失敗のたびに足して育てた規則をモデル世代交代時に外す運用論。本ページの `/doctor prompt-audit` はその棚卸しを機械化する公式コマンド
+- [[tools/claude-code]] — 本ページの 4 層と hook を持つ製品
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

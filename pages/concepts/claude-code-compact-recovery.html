@@ -71,11 +71,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../papers/2026-dairai-top-ai-papers-w35.html">2026-dairai-top-ai-papers-w35</a> — 圧縮の喪失を定量化した研究「What Compaction Destroys」（Claude Code compactは安全ルールを1回で53%・5回で10%しか保持しない）。本ページのstate file退避の必要性を研究側から裏付ける</li>
 <li><a href="../models/claude-haiku-5-5.html">claude-haiku-5-5</a> — <code>/autocompact 100k</code> で Haiku 5.5 の自動コンパクトを早め、安い価格帯（10万トークン未満）に留める設定（@lydiahallie）。圧縮回数が増えるぶん本ページの対策が効く場面</li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — 長いアイドルセッションをキャッシュ切れ（約1時間）の直前に自動で圧縮する idle compaction（@lydiahallie）。ユーザーが compact を指示しなくても圧縮が起きる経路が増えた</li>
+<li><a href="../concepts/claude-code-compaction-survival.html">claude-code-compaction-survival</a> — 圧縮後に何が disk から戻り何が要約に溶けるかの公式一覧表。「<code>compact</code> ソースに一致する SessionStart hook の出力は圧縮後の文脈に加わる」とあり、本ページの「PostCompact は additionalContext を返せない」という前提と突き合わせる価値がある（Lydia Hallie の返答経由・@studio_yebisu 紹介）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-session-handover.html">ai-session-handover</a></li>
+<li><a href="../concepts/claude-code-compaction-survival.html">claude-code-compaction-survival</a></li>
 <li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
 <li><a href="../concepts/codex-agent-loop.html">codex-agent-loop</a></li>
-<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li>
-<li><a href="../concepts/semantic-generation-skill.html">semantic-generation-skill</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2073289543948923153" rel="noopener" target="_blank">https://x.com/i/web/status/2073289543948923153</a></li></ul></section></article>
+<li><a href="../concepts/prompt-caching.html">prompt-caching</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2073289543948923153" rel="noopener" target="_blank">https://x.com/i/web/status/2073289543948923153</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -148,6 +149,7 @@ Claude Code の PostCompact hook は additionalContext を返せない仕様の�
 - [[papers/2026-dairai-top-ai-papers-w35]] — 圧縮の喪失を定量化した研究「What Compaction Destroys」（Claude Code compactは安全ルールを1回で53%・5回で10%しか保持しない）。本ページのstate file退避の必要性を研究側から裏付ける
 - [[models/claude-haiku-5-5]] — `/autocompact 100k` で Haiku 5.5 の自動コンパクトを早め、安い価格帯（10万トークン未満）に留める設定（@lydiahallie）。圧縮回数が増えるぶん本ページの対策が効く場面
 - [[concepts/prompt-caching]] — 長いアイドルセッションをキャッシュ切れ（約1時間）の直前に自動で圧縮する idle compaction（@lydiahallie）。ユーザーが compact を指示しなくても圧縮が起きる経路が増えた
+- [[concepts/claude-code-compaction-survival]] — 圧縮後に何が disk から戻り何が要約に溶けるかの公式一覧表。「`compact` ソースに一致する SessionStart hook の出力は圧縮後の文脈に加わる」とあり、本ページの「PostCompact は additionalContext を返せない」という前提と突き合わせる価値がある（Lydia Hallie の返答経由・@studio_yebisu 紹介）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

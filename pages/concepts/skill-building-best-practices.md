@@ -67,3 +67,4 @@ Anthropic社内では数百のスキルが実運用されており、その分�
 - [[concepts/improver-skill-pattern]] — 「小さく保つ・progressive disclosure・スクリプト同梱」の原則を自己改善ループの文脈で裏付けるWarpの実践（Anthropic公式ブログ）
 - [[concepts/instruction-patch-lifecycle]] — 本ページの「数行と1つのgotchaから育てる」を、モデル世代交代時に全部外して戻す「捨てる」工程と一つのサイクルにまとめた運用論（Boris Chernyの6か月リセット・説明文15,000文字上限・@kimuai08）
 - [[concepts/gpt-6-astra-skills-prompting]] — OpenAI Codex チーム（Eric Provencher）による同型の指針。最短の説明文・薄いルーター・手順書化しないの3点が本ページの description＝トリガー定義・progressive disclosure・railroading 回避と対応し、GPT-6 Astra 世代で「入れすぎ」を最大の失敗と位置づける
+- [[concepts/claude-code-compaction-survival]] — 「小さく保つ」の圧縮側の根拠。起動済みスキル本文はコンパクション後に再添付されるが 1 本 5,000 トークンで先頭から切られ、合計 25,000 トークンを超えると古い順に脱落するため、最重要の指示は SKILL.md の上部に置く（公式ドキュメント・Lydia Hallie）

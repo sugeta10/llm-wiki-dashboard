@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>skills-over-memory</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="skills-over-memory.md">Markdownで表示</a></div>
-  <div class="meta">concepts/skills-over-memory · concepts · <span title="2026-10-06">3週間前</span></div>
+  <div class="meta">concepts/skills-over-memory · concepts · <span title="2026-10-06">4週間前</span></div>
   <article><h1>Skills over Memory（メモリを太らせず、教訓はスキルへPRする）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントの永続メモリと常時ロードされる指示ファイル（CLAUDE.md / AGENTS.md）は同じ問題——どちらも毎セッション注入され、肥大すると知識でなく遵守を削る。規律は「短く保つ・決定を変える行だけ残す・スキル固有の教訓はメモリに溜めずスキルへPRする」。</p>
@@ -91,11 +91,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/gpt-6-astra-skills-prompting.html">gpt-6-astra-skills-prompting</a> — OpenAI Codex チーム（Eric Provencher）が GPT-6 Astra 向けに「スキルは入れすぎない・AGENTS.md は各行をまだ要るかで再審査」と述べる指針。本ページの「決定を変える行だけ残す」規律を Codex 側から裏付ける</li>
 <li><a href="../tools/agent-memory-repo.html">agent-memory-repo</a> — Cognition のメモリ標準。「MEMORY.md は全セッションに要るものだけ・他はリンク」を仕様として明文化している</li>
 <li><a href="../tools/claude-recall.html">claude-recall</a> — 「recall を残したいなら pull 側へ移す」をツールとして実装した babarot 製の Claude Code セッション書庫。README の claude-mem 比較表で注入を Push／Pull と対置する</li>
+<li><a href="../concepts/claude-code-seo-second-brain.html">claude-code-seo-second-brain</a> — 本ページの「索引が上限超過で後半を黙って捨てられる」事故の独立した 2 件目（Nicholas Dulait・索引 213 行・32.5KB で 52 行が切られた）。公式 memory ドキュメントの上限は MEMORY.md の先頭 200 行または 25KB で、超過時は書き込み後にエラーで書き直しを促すと記載</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-memory-layer.html">agent-memory-layer</a></li>
 <li><a href="../concepts/agentic-engineering-workflow.html">agentic-engineering-workflow</a></li>
 <li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
-<li><a href="../concepts/context-engineering.html">context-engineering</a></li>
-<li><a href="../concepts/correction-routing.html">correction-routing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2070966613994795489" rel="noopener" target="_blank">https://x.com/i/web/status/2070966613994795489</a></li>
+<li><a href="../concepts/claude-code-seo-second-brain.html">claude-code-seo-second-brain</a></li>
+<li><a href="../concepts/context-engineering.html">context-engineering</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2070966613994795489" rel="noopener" target="_blank">https://x.com/i/web/status/2070966613994795489</a></li>
 <li><a href="https://x.com/i/web/status/2071254741976526884" rel="noopener" target="_blank">https://x.com/i/web/status/2071254741976526884</a></li></ul></section></article>
 </main>
 <script>
@@ -183,6 +184,7 @@ flowchart TD
 - [[concepts/gpt-6-astra-skills-prompting]] — OpenAI Codex チーム（Eric Provencher）が GPT-6 Astra 向けに「スキルは入れすぎない・AGENTS.md は各行をまだ要るかで再審査」と述べる指針。本ページの「決定を変える行だけ残す」規律を Codex 側から裏付ける
 - [[tools/agent-memory-repo]] — Cognition のメモリ標準。「MEMORY.md は全セッションに要るものだけ・他はリンク」を仕様として明文化している
 - [[tools/claude-recall]] — 「recall を残したいなら pull 側へ移す」をツールとして実装した babarot 製の Claude Code セッション書庫。README の claude-mem 比較表で注入を Push／Pull と対置する
+- [[concepts/claude-code-seo-second-brain]] — 本ページの「索引が上限超過で後半を黙って捨てられる」事故の独立した 2 件目（Nicholas Dulait・索引 213 行・32.5KB で 52 行が切られた）。公式 memory ドキュメントの上限は MEMORY.md の先頭 200 行または 25KB で、超過時は書き込み後にエラーで書き直しを促すと記載
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

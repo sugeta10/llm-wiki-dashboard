@@ -64,3 +64,4 @@ flowchart TD
 - [[concepts/gpt-6-astra-skills-prompting]] — OpenAI Codex チーム（Eric Provencher）が GPT-6 Astra 向けに「スキルは入れすぎない・AGENTS.md は各行をまだ要るかで再審査」と述べる指針。本ページの「決定を変える行だけ残す」規律を Codex 側から裏付ける
 - [[tools/agent-memory-repo]] — Cognition のメモリ標準。「MEMORY.md は全セッションに要るものだけ・他はリンク」を仕様として明文化している
 - [[tools/claude-recall]] — 「recall を残したいなら pull 側へ移す」をツールとして実装した babarot 製の Claude Code セッション書庫。README の claude-mem 比較表で注入を Push／Pull と対置する
+- [[concepts/claude-code-seo-second-brain]] — 本ページの「索引が上限超過で後半を黙って捨てられる」事故の独立した 2 件目（Nicholas Dulait・索引 213 行・32.5KB で 52 行が切られた）。公式 memory ドキュメントの上限は MEMORY.md の先頭 200 行または 25KB で、超過時は書き込み後にエラーで書き直しを促すと記載

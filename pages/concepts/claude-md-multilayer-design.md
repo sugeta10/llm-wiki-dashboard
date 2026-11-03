@@ -61,3 +61,4 @@ flowchart TD
 - [[concepts/claude-code-context-hierarchy]] — 複数階層のCLAUDE.md結合・遅延ロードを階層構造の側から整理した公式仕様ページ
 - [[concepts/models-as-insider-risks]] — 「モデルに自分の仕事を検証させない」「独立した監査」を組織ガバナンスの水準で求める Satya Nadella の論
 - [[concepts/agent-trust-inverse-pyramid]] — 「同じ修正を二回したら仕組みへ昇格」を Claude Code の設定の外まで広げ、コードベース改善・静的解析・散文・人間レビューの順に努力を配分する @poteto の逆ピラミッド。Permission/Hooks の強制境界は静的解析層にあたると考えられる
+- [[concepts/claude-code-seo-second-brain]] — 同じ層分けを SEO という単一ドメインで実運用した記録（Nicholas Dulait・CLAUDE.md 128 行・17 スキル・auto memory 171 件）。本ページの観察ログで一次未確認だった「HTML コメントは注入前に除去」「4 MiB 超は読み飛ばし」は、そのページが参照した公式 memory ドキュメントに記載がある
