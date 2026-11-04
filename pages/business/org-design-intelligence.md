@@ -127,3 +127,4 @@ AnthropicもOpenAIも「組織の構成員・調整層としてのAI」（[[conc
 - [[people/pieter-levels]] — 本ページが「ピュアソロ」事例として挙げる本人のアーカイブ（levels.io）と、そこから追える発信の実態
 - [[concepts/forward-deployed-engineer]] — 既存フローに張り付くFDEは組織図を作り直さない限り筋の悪い問題を解く、という批判（@quxiaoyin）を含むFDEページ
 - [[models/dessa]] — Block 内で Jack Dorsey 直属の小規模ラボが出した、人間の会話音声だけからゼロ訓練したフルデュプレックス音声モデル（2026-10-23 発表）
+- [[business/goal-kpi-management-layer]] — bot が事業の同じ文脈（商品設計・仮説マップ・数値計画）を参照して判断する @yoshio_nocode の構想。本ページのワールドモデルに当たるものを事業管理のデータ構造として持つ

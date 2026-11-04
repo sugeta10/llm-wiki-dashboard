@@ -110,3 +110,4 @@ Claude Code チームの Addy Osmani（X プロフィールは「Claude Code @an
 - [[concepts/frequency-impact-fix-threshold]] — 「レビューは収束しなければならない」への個人規模の答え。Codex のレビュー指示に発生頻度×影響度の 1〜10 採点を置き、積が閾値未満なら Issue 起票だけで修正しない（@hawkymisc）
 - [[concepts/ai-native-engineering-org]] — FurtherAI の出荷工程の月ごとの自動化（AI が先に見る 60%→99%・暗黙知を Python チェック 21 本に・低リスクは人なしで最大 1/3）。本ページの多層レビューと同じ打ち手をスタートアップ規模で、組織設計まで追った記録（Sashank Gondala）
 - [[concepts/agent-era-ci-speedup]] — 本ページが「ブロックする自動チェック」の 1 層に置く CI を、Boardy が 40 分→2 分にした 9 手順。「次のボトルネックは自分がマージを押すこと」と締める地点が本ページの無人マージにつながる（owen）
+- [[concepts/critical-thinking-with-agents]] — Osmani が本ページの「チェックが見逃すものを言えないなら本物のレビューを」を深く見るべきときの目安として引き、レビューがゴム印に変わる前に「エージェントが決めたこと」を一覧させ自分にクイズを課す、個人の側の習慣を書いた X 記事

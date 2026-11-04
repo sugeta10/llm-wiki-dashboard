@@ -65,3 +65,4 @@ flowchart LR
 - [[concepts/llm-personality-injection]] — ペルソナ・性格をプロンプトに注入する手法。本ページが「文体（服）」として区別し、思想（骨格）と対比する対象
 - [[concepts/obsidian-personal-os]] — 個人の知識・文脈を構造化して外部に置くパーソナルOSの設計（棲み分け対象）
 - [[concepts/self-owned-ai-memory]] — 「フロントのAIは交換可能」を思想でなく会話記憶の側で実装する個人事例。@kuwagata_no_isi は「モデルをなんにしようとサービスが終わろうが一生自分の物」と位置づける
+- [[business/one-person-creative-team]] — Dan Koe のブランド文書（9 群の問い）と最良コンテンツの文書。同じ外部記憶の発想だが、Koe は声の複製を諦め「全自動化でなく発想の出発点」に置く

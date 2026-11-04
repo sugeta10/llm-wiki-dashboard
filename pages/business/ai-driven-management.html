@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-driven-management - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>ai-driven-management</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="ai-driven-management.md">Markdownで表示</a></div>
+  <div class="meta">business/ai-driven-management · business · <span title="2026-11-04">今日</span></div>
+  <article><h1>AI駆動経営の概念設計（人が判断し、AIが実行する基盤）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 経営を「目標・プロジェクト・資源」の3軸で管理し、目標→プロジェクト→WBS→AI実行→成果物の検証→事業成果の評価を一つの循環にする、@yoshio_nocode の「AI駆動経営 概念設計 v0.2」。人は判断と例外対応に集中し、日々開く窓口はチャットとプロジェクト・タスク管理の2つに集約する。タスクの完了と事業上の成果は別の事象として記録する。</p>
+</blockquote>
+<p>@yoshio_nocode は多くの AI 支援をしてきた経験から「個人的に一番良いと思う」スキームとしてこの4枚のスライド（概念設計 v0.2）を整理したと述べる。本文はスライド画像を wiki 側で読み取って転記したもので、ポスト本文は3文のみである。設計の出発点は「人が判断し、AI が実行する」で、オーケストレーターが管理情報・専門 AI・会社のデータをつなぐ。人（複数）は判断・合意・承認など人ならではの意思決定と例外対応に集中する。</p>
+<h2>全体像：6つの層</h2>
+<p>スライドは基盤を次の層で描く（製品名はスライドに並んだ例）。</p>
+<table>
+<thead>
+<tr>
+<th>層</th>
+<th>役割</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>チャット</td>
+<td>協議・依頼・承認</td>
+<td>Slack・Chatwork・Teams</td>
+</tr>
+<tr>
+<td>プロジェクト・タスク管理</td>
+<td>目標・WBS・進捗・依存関係</td>
+<td>Notion・Linear・Asana</td>
+</tr>
+<tr>
+<td>会社のデータ</td>
+<td>知識・判断履歴・成果物（議事録・顧客情報・ドキュメント）</td>
+<td>Google Drive・Dropbox</td>
+</tr>
+<tr>
+<td>オーケストレーター</td>
+<td>可視化・調整・判断支援（状況集約・依頼振り分け・進行監視・権限制御）</td>
+<td>OpenClaw・Hermes Agent・Codex・Claude Code</td>
+</tr>
+<tr>
+<td>専門 AI エージェント</td>
+<td>実行・検証（調査・文書作成・実装・テスト）</td>
+<td>Codex・Claude Code</td>
+</tr>
+<tr>
+<td>業務ツール</td>
+<td>会計・決済・資料作成など</td>
+<td>freee・Stripe・PowerPoint</td>
+</tr>
+</tbody>
+</table>
+<p>人はチャットとプロジェクト・タスク管理の2層にだけ触れ、オーケストレーターがその下で会社のデータと専門 AI エージェントをつなぐ。オーケストレーターと専門 AI の両方に Codex と Claude Code が置かれているのは、同じ製品が指揮役と実行役のどちらにもなる構成を示している（<a href="../tools/openclaw.html">openclaw</a>・<a href="../tools/hermes-agent.html">hermes-agent</a> は指揮役の側にのみ置かれている）。</p>
+<h2>人が日々開く窓口は2つに集約する</h2>
+<p>スライドは「画面を減らしても、判断のための見える化は残す」と書く。</p>
+<ul>
+<li><strong>チャット（協議・合意・依頼）</strong>: 人同士で論点を詰める、AI に調査や実行を頼む、変更・例外・承認を判断する。扱うのは状況共有・依頼・承認・差戻し。</li>
+<li><strong>プロジェクト・タスク管理（共通の状態・根拠）</strong>: 目標と指標の予実を見る、WBS・工程・依存関係を見る、資源の余力と判断待ちを見る。扱うのは KPI・担当・期限・ボトルネック。</li>
+</ul>
+<p>会話→決定→計画・WBS→実行・検証を、同じ対象と履歴でつなぐ。チャットで決めたことが計画に落ち、実行結果が同じ対象に戻ってくる構造である。</p>
+<h2>経営の中核は目標・プロジェクト・資源</h2>
+<p>営業や経理などの業務領域に共通する3つの管理軸を置き、それぞれで人が決めることと AI が担うことを分ける（スライドの表を転記）。</p>
+<table>
+<thead>
+<tr>
+<th>管理軸</th>
+<th>例</th>
+<th>人が決めること</th>
+<th>AI が担うこと</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目標管理</td>
+<td>売上・応答時間・継続率</td>
+<td>何を・なぜ・いつまでに達成するか（目的・優先順位・評価指標を設定する）</td>
+<td>差分・予測・施策案を整理し成果を追う（実績とのギャップ分析・リスク予測・施策の提案・効果測定）</td>
+</tr>
+<tr>
+<td>プロジェクト管理</td>
+<td>FAQ 整備・営業資料更新・開発案件</td>
+<td>何を作り、どの条件で完了とするか（スコープ・成果物・完了条件・関係者を決める）</td>
+<td>計画・WBS 化・実行・検証・改善まで進める（計画立案・タスク分解・進捗管理・リスク対応・成果検証・改善提案）</td>
+</tr>
+<tr>
+<td>資源管理</td>
+<td>人員・予算・AI 利用枠・データ権限</td>
+<td>何を、どこへ、どれだけ投入するか（人・予算・ツール・データの配分方針を決める）</td>
+<td>配分・確保・消費・解放と不足の予測を行う（最適配分・需給予測・利用状況の可視化・不足時の代替案）</td>
+</tr>
+</tbody>
+</table>
+<p>スライドは「プロジェクト管理は、実行と成果検証までを含む」と強調する。AI が WBS を作って終わりではなく、実行と検証まで AI 側の担当に入る。</p>
+<h2>目標から WBS へ落とし、成果から計画を見直す</h2>
+<p>問い合わせ体験の改善を例にした6ステップの循環。</p>
+<ol>
+<li><strong>目標</strong>: 問い合わせ体験を改善（応答時間短縮・自己解決率向上）</li>
+<li><strong>プロジェクト</strong>: FAQ と対応手順を整備（分類方針・更新体制・公開ルール）</li>
+<li><strong>WBS</strong>: 分類・更新・レビュー（担当・期限・依存関係）</li>
+<li><strong>AI が実行</strong>: 対象データと手順を限定（収集・下書き・反映）</li>
+<li><strong>成果物を検証</strong>: 内容・根拠・完了条件（正確性・出典・承認）</li>
+<li><strong>事業成果を評価</strong>: 応答時間・品質・再発（CS・解決率・再問い合わせ）→ 実績・改善のフィードバックとして目標へ戻る</li>
+</ol>
+<p>ここでの原則は「タスクの完了と、事業上の成果は分けて確認する」で、スライドは「『FAQ を作った』と『問い合わせが解決した』は、別の事象として記録する」と書く。この目標管理の軸をさらに掘り下げたのが <a href="../business/goal-kpi-management-layer.html">goal-kpi-management-layer</a> である。</p>
+<h2>実行層の前提：herdr × Linear</h2>
+<p>このポストは同じ @yoshio_nocode の以前のポストを引用しており、そこでは「AI 並列のタスク実行基盤は herdr × Linear が最適解」と述べ、4手順を挙げている。人と AI のタスクを Linear に集約し、<a href="../tools/herdr.html">herdr</a> で 1 Issue＝1 AI セッションに固定し、Claude Code や Codex が起動時に自分で起票し、Creating by AI→In Review も自分で更新して Done にすると作業画面まで自動で閉じる、という流れである（引用元ポストの本文のみで、添付画像は未収録）。概念設計の「プロジェクト・タスク管理」層に <a href="../companies/linear.html">linear</a> を、専門 AI エージェントの実行を herdr で束ねる、という具体化と読める。</p>
+<h2>他ページとのつながり（wiki 側の推論）</h2>
+<ul>
+<li><a href="../business/backoffice-ai-implementation.html">backoffice-ai-implementation</a> のグッドパッチ事例は「AI＝一次担当・人間＝判断」のモデルを管理部で実践した記録で、本ページの「人が判断し、AI が実行する」を1部門に適用した形と考えられる。本ページはそれを目標・プロジェクト・資源の3軸と循環として一般化している。</li>
+<li><a href="../tools/wbs-skills.html">wbs-skills</a> は WBS の立ち上げ〜生成〜運用を AI に委任するスキル群で、本ページの「プロジェクト管理：計画・WBS 化・実行・検証」の WBS 部分を実装する部品に当たる。</li>
+<li><a href="../business/ai-native-management.html">ai-native-management</a> で深津貴之が「効くプロンプト」より組織側の設計（消す仕事を決める・ハーネス設計）へ重心を移したのと同じ方向で、本ページは経営の管理軸と窓口の設計を先に置く。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「タスク完了」と「事業成果」を別の事象として記録する運用を、Linear や Notion のどのフィールドで表すか。成果の観測指標を Issue に紐づける実装例はあるか</li>
+<li>オーケストレーター層に置かれた OpenClaw・Hermes Agent・Codex・Claude Code は、権限制御（人の承認を経ずにどこまで実行するか）を実際にどう分けるのか。スライドは機能名だけで実装は書いていない</li>
+<li>資源管理に「AI 利用枠」を入れている点は、<a href="../concepts/token-management.html">token-management</a> が言うトークン費用の経営イシュー化と同じ発想か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/goal-kpi-management-layer.html">goal-kpi-management-layer</a> — 本ページの目標管理軸を「目標＋仮説＋予測＋行動＋実績＋更新ルール」の6要素に分解し、bot が実データを見に行く構想にした続編（同著者）</li>
+<li><a href="../business/backoffice-ai-implementation.html">backoffice-ai-implementation</a> — AI＝一次担当・人間＝判断のモデルを管理部20名で1か月実践した記録</li>
+<li><a href="../tools/wbs-skills.html">wbs-skills</a> — WBS の立ち上げ〜生成〜運用を AI に委任する3スキル。本ページの WBS 工程の実装部品</li>
+<li><a href="../business/ai-native-management.html">ai-native-management</a> — 深津貴之の AI ネイティブ経営13論点。組織側の設計を先に置く同じ方向</li>
+<li><a href="../tools/herdr.html">herdr</a> — 引用元ポストで「1 Issue＝1 AI セッション」の実行基盤に置かれたツール</li>
+<li><a href="../companies/linear.html">linear</a> — 引用元ポストで人と AI のタスクを集約する先に置かれたイシュートラッカー</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-native-management.html">ai-native-management</a></li>
+<li><a href="../business/backoffice-ai-implementation.html">backoffice-ai-implementation</a></li>
+<li><a href="../business/goal-kpi-management-layer.html">goal-kpi-management-layer</a></li>
+<li><a href="../companies/linear.html">linear</a></li>
+<li><a href="../tools/herdr.html">herdr</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2100509878892757492" rel="noopener" target="_blank">https://x.com/i/web/status/2100509878892757492</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># AI駆動経営の概念設計（人が判断し、AIが実行する基盤）
+
+&gt; **TL;DR**: 経営を「目標・プロジェクト・資源」の3軸で管理し、目標→プロジェクト→WBS→AI実行→成果物の検証→事業成果の評価を一つの循環にする、@yoshio_nocode の「AI駆動経営 概念設計 v0.2」。人は判断と例外対応に集中し、日々開く窓口はチャットとプロジェクト・タスク管理の2つに集約する。タスクの完了と事業上の成果は別の事象として記録する。
+
+@yoshio_nocode は多くの AI 支援をしてきた経験から「個人的に一番良いと思う」スキームとしてこの4枚のスライド（概念設計 v0.2）を整理したと述べる。本文はスライド画像を wiki 側で読み取って転記したもので、ポスト本文は3文のみである。設計の出発点は「人が判断し、AI が実行する」で、オーケストレーターが管理情報・専門 AI・会社のデータをつなぐ。人（複数）は判断・合意・承認など人ならではの意思決定と例外対応に集中する。
+
+## 全体像：6つの層
+
+スライドは基盤を次の層で描く（製品名はスライドに並んだ例）。
+
+| 層 | 役割 | 例 |
+|---|---|---|
+| チャット | 協議・依頼・承認 | Slack・Chatwork・Teams |
+| プロジェクト・タスク管理 | 目標・WBS・進捗・依存関係 | Notion・Linear・Asana |
+| 会社のデータ | 知識・判断履歴・成果物（議事録・顧客情報・ドキュメント） | Google Drive・Dropbox |
+| オーケストレーター | 可視化・調整・判断支援（状況集約・依頼振り分け・進行監視・権限制御） | OpenClaw・Hermes Agent・Codex・Claude Code |
+| 専門 AI エージェント | 実行・検証（調査・文書作成・実装・テスト） | Codex・Claude Code |
+| 業務ツール | 会計・決済・資料作成など | freee・Stripe・PowerPoint |
+
+人はチャットとプロジェクト・タスク管理の2層にだけ触れ、オーケストレーターがその下で会社のデータと専門 AI エージェントをつなぐ。オーケストレーターと専門 AI の両方に Codex と Claude Code が置かれているのは、同じ製品が指揮役と実行役のどちらにもなる構成を示している（[[tools/openclaw]]・[[tools/hermes-agent]] は指揮役の側にのみ置かれている）。
+
+## 人が日々開く窓口は2つに集約する
+
+スライドは「画面を減らしても、判断のための見える化は残す」と書く。
+
+- **チャット（協議・合意・依頼）**: 人同士で論点を詰める、AI に調査や実行を頼む、変更・例外・承認を判断する。扱うのは状況共有・依頼・承認・差戻し。
+- **プロジェクト・タスク管理（共通の状態・根拠）**: 目標と指標の予実を見る、WBS・工程・依存関係を見る、資源の余力と判断待ちを見る。扱うのは KPI・担当・期限・ボトルネック。
+
+会話→決定→計画・WBS→実行・検証を、同じ対象と履歴でつなぐ。チャットで決めたことが計画に落ち、実行結果が同じ対象に戻ってくる構造である。
+
+## 経営の中核は目標・プロジェクト・資源
+
+営業や経理などの業務領域に共通する3つの管理軸を置き、それぞれで人が決めることと AI が担うことを分ける（スライドの表を転記）。
+
+| 管理軸 | 例 | 人が決めること | AI が担うこと |
+|---|---|---|---|
+| 目標管理 | 売上・応答時間・継続率 | 何を・なぜ・いつまでに達成するか（目的・優先順位・評価指標を設定する） | 差分・予測・施策案を整理し成果を追う（実績とのギャップ分析・リスク予測・施策の提案・効果測定） |
+| プロジェクト管理 | FAQ 整備・営業資料更新・開発案件 | 何を作り、どの条件で完了とするか（スコープ・成果物・完了条件・関係者を決める） | 計画・WBS 化・実行・検証・改善まで進める（計画立案・タスク分解・進捗管理・リスク対応・成果検証・改善提案） |
+| 資源管理 | 人員・予算・AI 利用枠・データ権限 | 何を、どこへ、どれだけ投入するか（人・予算・ツール・データの配分方針を決める） | 配分・確保・消費・解放と不足の予測を行う（最適配分・需給予測・利用状況の可視化・不足時の代替案） |
+
+スライドは「プロジェクト管理は、実行と成果検証までを含む」と強調する。AI が WBS を作って終わりではなく、実行と検証まで AI 側の担当に入る。
+
+## 目標から WBS へ落とし、成果から計画を見直す
+
+問い合わせ体験の改善を例にした6ステップの循環。
+
+1. **目標**: 問い合わせ体験を改善（応答時間短縮・自己解決率向上）
+2. **プロジェクト**: FAQ と対応手順を整備（分類方針・更新体制・公開ルール）
+3. **WBS**: 分類・更新・レビュー（担当・期限・依存関係）
+4. **AI が実行**: 対象データと手順を限定（収集・下書き・反映）
+5. **成果物を検証**: 内容・根拠・完了条件（正確性・出典・承認）
+6. **事業成果を評価**: 応答時間・品質・再発（CS・解決率・再問い合わせ）→ 実績・改善のフィードバックとして目標へ戻る
+
+ここでの原則は「タスクの完了と、事業上の成果は分けて確認する」で、スライドは「『FAQ を作った』と『問い合わせが解決した』は、別の事象として記録する」と書く。この目標管理の軸をさらに掘り下げたのが [[business/goal-kpi-management-layer]] である。
+
+## 実行層の前提：herdr × Linear
+
+このポストは同じ @yoshio_nocode の以前のポストを引用しており、そこでは「AI 並列のタスク実行基盤は herdr × Linear が最適解」と述べ、4手順を挙げている。人と AI のタスクを Linear に集約し、[[tools/herdr]] で 1 Issue＝1 AI セッションに固定し、Claude Code や Codex が起動時に自分で起票し、Creating by AI→In Review も自分で更新して Done にすると作業画面まで自動で閉じる、という流れである（引用元ポストの本文のみで、添付画像は未収録）。概念設計の「プロジェクト・タスク管理」層に [[companies/linear]] を、専門 AI エージェントの実行を herdr で束ねる、という具体化と読める。
+
+## 他ページとのつながり（wiki 側の推論）
+
+- [[business/backoffice-ai-implementation]] のグッドパッチ事例は「AI＝一次担当・人間＝判断」のモデルを管理部で実践した記録で、本ページの「人が判断し、AI が実行する」を1部門に適用した形と考えられる。本ページはそれを目標・プロジェクト・資源の3軸と循環として一般化している。
+- [[tools/wbs-skills]] は WBS の立ち上げ〜生成〜運用を AI に委任するスキル群で、本ページの「プロジェクト管理：計画・WBS 化・実行・検証」の WBS 部分を実装する部品に当たる。
+- [[business/ai-native-management]] で深津貴之が「効くプロンプト」より組織側の設計（消す仕事を決める・ハーネス設計）へ重心を移したのと同じ方向で、本ページは経営の管理軸と窓口の設計を先に置く。
+
+## 問い
+
+- 「タスク完了」と「事業成果」を別の事象として記録する運用を、Linear や Notion のどのフィールドで表すか。成果の観測指標を Issue に紐づける実装例はあるか
+- オーケストレーター層に置かれた OpenClaw・Hermes Agent・Codex・Claude Code は、権限制御（人の承認を経ずにどこまで実行するか）を実際にどう分けるのか。スライドは機能名だけで実装は書いていない
+- 資源管理に「AI 利用枠」を入れている点は、[[concepts/token-management]] が言うトークン費用の経営イシュー化と同じ発想か
+
+## 関連
+
+- [[business/goal-kpi-management-layer]] — 本ページの目標管理軸を「目標＋仮説＋予測＋行動＋実績＋更新ルール」の6要素に分解し、bot が実データを見に行く構想にした続編（同著者）
+- [[business/backoffice-ai-implementation]] — AI＝一次担当・人間＝判断のモデルを管理部20名で1か月実践した記録
+- [[tools/wbs-skills]] — WBS の立ち上げ〜生成〜運用を AI に委任する3スキル。本ページの WBS 工程の実装部品
+- [[business/ai-native-management]] — 深津貴之の AI ネイティブ経営13論点。組織側の設計を先に置く同じ方向
+- [[tools/herdr]] — 引用元ポストで「1 Issue＝1 AI セッション」の実行基盤に置かれたツール
+- [[companies/linear]] — 引用元ポストで人と AI のタスクを集約する先に置かれたイシュートラッカー
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

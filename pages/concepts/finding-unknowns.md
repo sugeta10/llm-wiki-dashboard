@@ -68,3 +68,4 @@ flowchart TD
 - [[concepts/ai-strategist-prompt]] — 会話履歴を横断させ「見えていない機会/リスク/前提」を強制出力させる参謀プロンプト。unknownsの掘り出しを個人利用に落とした型
 - [[concepts/goal-restatement-prompt]] — ゴールと問題をAI自身の言葉で言い直させる1文プロンプト（@poteto）。Unknown Knowns を実行前に炙り出す最小の型
 - [[concepts/effort-level-selection]] — 同じ@trq212の effort 論。「インタビュー→low で実装→レビュー→high で検証」のループで本フレームの実装前インタビューを前段に置く
+- [[concepts/critical-thinking-with-agents]] — Osmani が「聞く前に仮説を立てたか」の問いで、仮説が無いときの代替として本フレームの blind spot pass（知っていることを渡し未知の未知を探させる）を引く

@@ -19,3 +19,4 @@ AI開発企業であるAnthropicの「マージするコードの80%超をClaude
 - [[concepts/agentic-coding]] — AIエージェントが自律的にコードを書く開発スタイル（トリアージ→調査→PR生成はその実運用形）
 - [[concepts/recursive-self-improvement]] — Anthropic社内の「コード80%超をClaudeが執筆」という同型の先行事例
 - [[concepts/agent-adoption-walls]] — 企業のエージェント導入で詰まる7つの壁。Linearはそれを越えた対照例
+- [[business/ai-driven-management]] — @yoshio_nocode の AI駆動経営 概念設計。人と AI のタスクを Linear に集約し herdr で 1 Issue＝1 AI セッションに固定する実行基盤を前提に、プロジェクト・タスク管理層（目標・WBS・進捗・依存関係）に Linear を置く

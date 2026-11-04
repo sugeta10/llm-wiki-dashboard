@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>goal-kpi-management-layer - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#d29922"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>goal-kpi-management-layer</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="goal-kpi-management-layer.md">Markdownで表示</a></div>
+  <div class="meta">business/goal-kpi-management-layer · business · <span title="2026-11-04">今日</span></div>
+  <article><h1>目標・KPI 管理レイヤー：bot が実データを見に行く事業運営</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: AI に自律的に事業を回させるには、事業管理を「目標＋仮説＋予測＋行動＋実績＋更新ルール」の6要素に分けて持ち、bot が数値計画と実データを照合して差分から行動案を出し、重要な変更だけ人が判断する層の整理が最重要だ、と @yoshio_nocode が主張する。目標・予測・実績は別々に持ち、予測の修正だけで目標を自動的に下げない。</p>
+</blockquote>
+<p><a href="../business/ai-driven-management.html">ai-driven-management</a> の3つの管理軸のうち「目標管理」を、AI が長い時間軸でコンテキスト収集→実行→改善を観測可能な形で行える構造にまで分解したのがこの3枚である。@yoshio_nocode は、AI に事業を回させる上で最重要なのは目標と KPI の管理レイヤーの整理だと述べ、その要素を「目標＋仮説＋予測＋行動＋実績＋更新ルール」と置く。本文はスライド画像を wiki 側で読み取って転記したもので、ポスト本文は2文のみである。</p>
+<h2>構想の全体像：委任範囲の中で bot が観測・比較・試算する</h2>
+<p>1枚目は「数値計画・外部の観測・AI の処理・人の判断をつなぎ、現実との差から計画と行動を選び直す」構想を描く。</p>
+<ul>
+<li><strong>人が、目的・委任範囲・仮説を定める</strong>: 目標と権限の境界を設定し、重要な変更は人へ戻す。ここから「委任と仮説」が bot に渡る。</li>
+<li><strong>bot が観測・比較・試算する</strong>（委任範囲内で回す AI の処理）: 計画と実データを照合し、差分と不足する根拠を発見する。仮説・数値前提・施策の候補を比べる。予測を変えても目標を自動的に下げない。</li>
+<li><strong>数値計画</strong>（目標／予測／実績）: bot が参照する側。正式計画・見込み・観測結果を分けて持ち、未取得をゼロ扱いせず、前提と出典を残す。</li>
+<li><strong>実データの取得先</strong>（会計・決済・広告・顧客データ）: bot が取得に行く側。売上・費用・成約・継続、顧客の発言・利用状況。取得時点・出典・観測範囲を確認し、取得できない値も区別して扱う。</li>
+<li><strong>施策・タスクの実行</strong>: 誰が・いつ・どの仮説に働きかけるか。観測→試算→提案→行動→更新の順に回し、範囲内なら更新する。実行後の成果は再観測する。</li>
+<li><strong>重要な変更は人が判断</strong>: 影響を確認し、承認・差戻しする。停止・撤退は判断条件に従う。承認された変更は計画と次の行動へ流す。</li>
+<li><strong>計画・仮説・行動の更新</strong>: 承認された変更を適用し、根拠と過去の計画も保存する。</li>
+</ul>
+<h2>6つの管理要素を参照・実行・観測の流れでつなぐ</h2>
+<p>2枚目は「事業管理＝目標＋仮説＋予測＋行動＋実績＋更新ルール。目標・予測・実績は分けて持つ」と定義し、要素を3つの層に分ける。</p>
+<p><strong>目的・前提・権限を管理する層</strong></p>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目標</td>
+<td>実現したい状態。目的・期限・評価指標</td>
+</tr>
+<tr>
+<td>仮説</td>
+<td>顧客・価値・価格・利益の因果。人が仮説を定め、根拠と結ぶ</td>
+</tr>
+<tr>
+<td>更新ルール</td>
+<td>周期／臨時の見直し／停止条件。変更権限／根拠／計画の履歴</td>
+</tr>
+</tbody>
+</table>
+<p><strong>観測値と前提を照合する処理層</strong></p>
+<ul>
+<li>予測→差分比較→試算・行動案: 仮説・計画・証拠から見込みを出し、目標との差を見つける。前提は価格・成約率・継続率・LTV・費用など。目標は「比較基準」として、仮説は「前提と証拠」として、更新ルールは「変更可能範囲」としてここに入る。</li>
+<li>原則: <strong>予測の修正だけで目標を自動的に下げない</strong>。</li>
+</ul>
+<p><strong>行動と実績</strong></p>
+<ul>
+<li>行動: 結果を変える施策・タスク。担当・期限・観測指標を紐づけ、施策を選んで実行する。</li>
+<li>現実の事業: 「広告を出す ≠ 顧客が増える」「商品改善 ≠ 継続率が上がる」。タスク完了と事業の前進は別で、間にある仮説を証拠で検証する。</li>
+<li>実績: 実際に観測した結果。出典・取得時点・未取得を保持し、利用・成約・継続・費用を観測して処理層に結果を返す。</li>
+</ul>
+<h2>各事業の6つの管理対象を共通の文脈で接続する</h2>
+<p>3枚目は「商品・仮説・数値・組織・施策・更新条件を、bot が参照できる事業管理として持たせたい」と述べ、事業ごとの管理対象を上下2段に分ける。</p>
+<p><strong>設計・前提・計画</strong></p>
+<ul>
+<li>商品設計: 誰の課題を、何で、いくらで解くか（対象顧客／提供内容／価格・条件）。決定した内容と、妥当性の検証を分ける。</li>
+<li>仮説マップ: 顧客→商品→集客→成約→継続→LTV→利益のつながり。言語の仮説・数値前提・根拠を結ぶ。</li>
+<li>数値計画: 目標／予測／実績を別々に参照する。</li>
+</ul>
+<p>この3つを前提→数値化の順でつなぎ、<strong>bot が事業の同じ文脈を参照して判断する</strong>（どの仮説に、どの施策が効き、どの指標・根拠で評価するかをたどる）。bot からは役割・余力、実行指示、判断条件がそれぞれ下段へ流れる。</p>
+<p><strong>実行体制・施策・変更条件</strong></p>
+<ul>
+<li>組織・提供体制: 必要な役割・人員・能力・提供量。施策に必要な能力と余力を確認し、いつ・どれだけ必要かを計画へ返す。</li>
+<li>施策・タスク: 指標・仮説→施策→担当・期限。誰が・いつ・何を実行するか。成果の観測項目を持ち、完了後も評価する。施策から組織へ「必要資源」が流れる。</li>
+<li>更新ルール: 何を観測し、どの条件で変えるか。継続・変更・停止と権限を持つ。確認周期／臨時見直し／停止・撤退、根拠と過去の計画を残す。</li>
+</ul>
+<p>観測した結果と根拠で、設計・体制・施策を選び直す。</p>
+<h2>他ページとのつながり（wiki 側の推論）</h2>
+<ul>
+<li><a href="../business/self-improving-company.html">self-improving-company</a> の「センサー→ポリシー→ツール→品質ゲート→学習」の再帰ループと、本ページの「観測→試算→提案→行動→更新」は同型である。本ページはループの前提になるデータ構造（目標・予測・実績の分離、仮説と根拠の紐づけ、更新ルールの権限）を具体化している点で、YC 構想の実装側と読める。</li>
+<li><a href="../business/org-design-intelligence.html">org-design-intelligence</a> が「ワールドモデル」と呼ぶ組織の共通状態は、本ページの「bot が事業の同じ文脈を参照して判断する」ための商品設計・仮説マップ・数値計画に当たると考えられる。</li>
+<li><a href="../concepts/grok-bot-one-person-harness.html">grok-bot-one-person-harness</a> の会社ブリーフ（不明は unknown と書く）と、本ページの「未取得をゼロ扱いせず前提と出典を残す」「取得できない値も区別して扱う」は、bot に欠損を欠損として渡す同じ原則である。</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>「予測の修正だけで目標を自動的に下げない」を bot にどう強制するか。目標の変更権限を更新ルールで人に限定する実装（スプレッドシートの保護・Linear の権限・bot の書き込み先の分離）はどれが現実的か</li>
+<li>仮説マップ（顧客→商品→集客→成約→継続→LTV→利益）の各リンクに証拠を紐づける運用を、小規模事業で実際に続けられるか。どの粒度で止めるか</li>
+<li>会計・決済・広告・顧客データへの読み取りを bot に渡すとき、<a href="../concepts/multiagent-engineering-problems.html">multiagent-engineering-problems</a> が挙げる身元と権限の問題がそのまま出る。どの取得先から始めるのが安全か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../business/ai-driven-management.html">ai-driven-management</a> — 本ページの前提となる概念設計 v0.2（目標・プロジェクト・資源の3軸と6ステップの循環）。本ページはその目標管理軸の分解（同著者）</li>
+<li><a href="../business/self-improving-company.html">self-improving-company</a> — 会社を再帰的 AI ループの集合として再設計する YC 構想。本ページはそのループに必要なデータ構造の側</li>
+<li><a href="../business/org-design-intelligence.html">org-design-intelligence</a> — 階層からインテリジェンスへの組織設計。ワールドモデルに当たるものを本ページは商品設計・仮説マップ・数値計画として持つ</li>
+<li><a href="../concepts/grok-bot-one-person-harness.html">grok-bot-one-person-harness</a> — 会社ブリーフに「不明は unknown」と書く原則。本ページの「未取得をゼロ扱いしない」と同じ発想</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-driven-management.html">ai-driven-management</a></li>
+<li><a href="../business/org-design-intelligence.html">org-design-intelligence</a></li>
+<li><a href="../business/self-improving-company.html">self-improving-company</a></li>
+<li><a href="../concepts/grok-bot-one-person-harness.html">grok-bot-one-person-harness</a></li>
+<li><a href="../concepts/multiagent-engineering-problems.html">multiagent-engineering-problems</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2117568285256593471" rel="noopener" target="_blank">https://x.com/i/web/status/2117568285256593471</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 目標・KPI 管理レイヤー：bot が実データを見に行く事業運営
+
+&gt; **TL;DR**: AI に自律的に事業を回させるには、事業管理を「目標＋仮説＋予測＋行動＋実績＋更新ルール」の6要素に分けて持ち、bot が数値計画と実データを照合して差分から行動案を出し、重要な変更だけ人が判断する層の整理が最重要だ、と @yoshio_nocode が主張する。目標・予測・実績は別々に持ち、予測の修正だけで目標を自動的に下げない。
+
+[[business/ai-driven-management]] の3つの管理軸のうち「目標管理」を、AI が長い時間軸でコンテキスト収集→実行→改善を観測可能な形で行える構造にまで分解したのがこの3枚である。@yoshio_nocode は、AI に事業を回させる上で最重要なのは目標と KPI の管理レイヤーの整理だと述べ、その要素を「目標＋仮説＋予測＋行動＋実績＋更新ルール」と置く。本文はスライド画像を wiki 側で読み取って転記したもので、ポスト本文は2文のみである。
+
+## 構想の全体像：委任範囲の中で bot が観測・比較・試算する
+
+1枚目は「数値計画・外部の観測・AI の処理・人の判断をつなぎ、現実との差から計画と行動を選び直す」構想を描く。
+
+- **人が、目的・委任範囲・仮説を定める**: 目標と権限の境界を設定し、重要な変更は人へ戻す。ここから「委任と仮説」が bot に渡る。
+- **bot が観測・比較・試算する**（委任範囲内で回す AI の処理）: 計画と実データを照合し、差分と不足する根拠を発見する。仮説・数値前提・施策の候補を比べる。予測を変えても目標を自動的に下げない。
+- **数値計画**（目標／予測／実績）: bot が参照する側。正式計画・見込み・観測結果を分けて持ち、未取得をゼロ扱いせず、前提と出典を残す。
+- **実データの取得先**（会計・決済・広告・顧客データ）: bot が取得に行く側。売上・費用・成約・継続、顧客の発言・利用状況。取得時点・出典・観測範囲を確認し、取得できない値も区別して扱う。
+- **施策・タスクの実行**: 誰が・いつ・どの仮説に働きかけるか。観測→試算→提案→行動→更新の順に回し、範囲内なら更新する。実行後の成果は再観測する。
+- **重要な変更は人が判断**: 影響を確認し、承認・差戻しする。停止・撤退は判断条件に従う。承認された変更は計画と次の行動へ流す。
+- **計画・仮説・行動の更新**: 承認された変更を適用し、根拠と過去の計画も保存する。
+
+## 6つの管理要素を参照・実行・観測の流れでつなぐ
+
+2枚目は「事業管理＝目標＋仮説＋予測＋行動＋実績＋更新ルール。目標・予測・実績は分けて持つ」と定義し、要素を3つの層に分ける。
+
+**目的・前提・権限を管理する層**
+
+| 要素 | 内容 |
+|---|---|
+| 目標 | 実現したい状態。目的・期限・評価指標 |
+| 仮説 | 顧客・価値・価格・利益の因果。人が仮説を定め、根拠と結ぶ |
+| 更新ルール | 周期／臨時の見直し／停止条件。変更権限／根拠／計画の履歴 |
+
+**観測値と前提を照合する処理層**
+
+- 予測→差分比較→試算・行動案: 仮説・計画・証拠から見込みを出し、目標との差を見つける。前提は価格・成約率・継続率・LTV・費用など。目標は「比較基準」として、仮説は「前提と証拠」として、更新ルールは「変更可能範囲」としてここに入る。
+- 原則: **予測の修正だけで目標を自動的に下げない**。
+
+**行動と実績**
+
+- 行動: 結果を変える施策・タスク。担当・期限・観測指標を紐づけ、施策を選んで実行する。
+- 現実の事業: 「広告を出す ≠ 顧客が増える」「商品改善 ≠ 継続率が上がる」。タスク完了と事業の前進は別で、間にある仮説を証拠で検証する。
+- 実績: 実際に観測した結果。出典・取得時点・未取得を保持し、利用・成約・継続・費用を観測して処理層に結果を返す。
+
+## 各事業の6つの管理対象を共通の文脈で接続する
+
+3枚目は「商品・仮説・数値・組織・施策・更新条件を、bot が参照できる事業管理として持たせたい」と述べ、事業ごとの管理対象を上下2段に分ける。
+
+**設計・前提・計画**
+
+- 商品設計: 誰の課題を、何で、いくらで解くか（対象顧客／提供内容／価格・条件）。決定した内容と、妥当性の検証を分ける。
+- 仮説マップ: 顧客→商品→集客→成約→継続→LTV→利益のつながり。言語の仮説・数値前提・根拠を結ぶ。
+- 数値計画: 目標／予測／実績を別々に参照する。
+
+この3つを前提→数値化の順でつなぎ、**bot が事業の同じ文脈を参照して判断する**（どの仮説に、どの施策が効き、どの指標・根拠で評価するかをたどる）。bot からは役割・余力、実行指示、判断条件がそれぞれ下段へ流れる。
+
+**実行体制・施策・変更条件**
+
+- 組織・提供体制: 必要な役割・人員・能力・提供量。施策に必要な能力と余力を確認し、いつ・どれだけ必要かを計画へ返す。
+- 施策・タスク: 指標・仮説→施策→担当・期限。誰が・いつ・何を実行するか。成果の観測項目を持ち、完了後も評価する。施策から組織へ「必要資源」が流れる。
+- 更新ルール: 何を観測し、どの条件で変えるか。継続・変更・停止と権限を持つ。確認周期／臨時見直し／停止・撤退、根拠と過去の計画を残す。
+
+観測した結果と根拠で、設計・体制・施策を選び直す。
+
+## 他ページとのつながり（wiki 側の推論）
+
+- [[business/self-improving-company]] の「センサー→ポリシー→ツール→品質ゲート→学習」の再帰ループと、本ページの「観測→試算→提案→行動→更新」は同型である。本ページはループの前提になるデータ構造（目標・予測・実績の分離、仮説と根拠の紐づけ、更新ルールの権限）を具体化している点で、YC 構想の実装側と読める。
+- [[business/org-design-intelligence]] が「ワールドモデル」と呼ぶ組織の共通状態は、本ページの「bot が事業の同じ文脈を参照して判断する」ための商品設計・仮説マップ・数値計画に当たると考えられる。
+- [[concepts/grok-bot-one-person-harness]] の会社ブリーフ（不明は unknown と書く）と、本ページの「未取得をゼロ扱いせず前提と出典を残す」「取得できない値も区別して扱う」は、bot に欠損を欠損として渡す同じ原則である。
+
+## 問い
+
+- 「予測の修正だけで目標を自動的に下げない」を bot にどう強制するか。目標の変更権限を更新ルールで人に限定する実装（スプレッドシートの保護・Linear の権限・bot の書き込み先の分離）はどれが現実的か
+- 仮説マップ（顧客→商品→集客→成約→継続→LTV→利益）の各リンクに証拠を紐づける運用を、小規模事業で実際に続けられるか。どの粒度で止めるか
+- 会計・決済・広告・顧客データへの読み取りを bot に渡すとき、[[concepts/multiagent-engineering-problems]] が挙げる身元と権限の問題がそのまま出る。どの取得先から始めるのが安全か
+
+## 関連
+
+- [[business/ai-driven-management]] — 本ページの前提となる概念設計 v0.2（目標・プロジェクト・資源の3軸と6ステップの循環）。本ページはその目標管理軸の分解（同著者）
+- [[business/self-improving-company]] — 会社を再帰的 AI ループの集合として再設計する YC 構想。本ページはそのループに必要なデータ構造の側
+- [[business/org-design-intelligence]] — 階層からインテリジェンスへの組織設計。ワールドモデルに当たるものを本ページは商品設計・仮説マップ・数値計画として持つ
+- [[concepts/grok-bot-one-person-harness]] — 会社ブリーフに「不明は unknown」と書く原則。本ページの「未取得をゼロ扱いしない」と同じ発想
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

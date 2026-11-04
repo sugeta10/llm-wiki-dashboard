@@ -44,3 +44,4 @@ Koe は persuasion を道具として位置づけ、「倫理的かどうかは�
 - [[business/roi-qualification-sales]] — 投資対効果診断で不安を数字として可視化する営業手法は、レバー1「まず脅威を名指す」の実装例
 - [[concepts/zeigarnik-fatigue-loop]] — 同じツァイガルニク効果が、放置された未完了では注意を奪い続ける消耗源になるという逆側の議論
 - [[concepts/human-3-0]] — 同著者 Dan Koe の自己開発モデル。「進歩の緊張」が安全→帰属→意味へ進む段階論は、そこで 1.0 Conformist → 2.0 Individualist → 3.0 Synthesist と呼ぶ3レベルと同じ発達心理学の土台に立つ
+- [[business/one-person-creative-team]] — 同著者 Dan Koe。注意の獲得を「一人クリエイティブチーム」（ブランド戦略・コンテンツ戦略・執筆）という事業の形に落とし、ブランド文書→コンテンツマップ→無許可の見習いで受注する手順

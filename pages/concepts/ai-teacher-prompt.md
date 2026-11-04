@@ -35,3 +35,4 @@ Suzanne（Anthropic）が共有し、@trq212 がお気に入りとして紹介�
 - [[concepts/developer-ai-collaboration]] — 開発者とAIエージェントの役割分担
 - [[concepts/finding-unknowns]] — 同じ@trq212の unknown 発見フレーム。実装後のクイズ技法が本手法と同目的
 - [[concepts/feynman-technique-ai-era]] — 逆に自分が AI に教える側に回り、詰まった箇所で理解の浅さを見つける勉強法
+- [[concepts/critical-thinking-with-agents]] — Osmani の批判的思考論。報告書の末尾にクイズを付けさせ「満点で通るまでマージしない」ルールと、エージェントに自分をインタビューさせて意図の負債を減らす手法が本手法と同じ目的

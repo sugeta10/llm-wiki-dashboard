@@ -56,3 +56,4 @@ flaky対策を個人のノウハウにせず、E2E作成スキルに「Iron Law�
 - [[concepts/skill-building-best-practices]] — Anthropic社内の9カテゴリで「Product verification」を最高ROIと位置づける主張と、本記事がスキルでテスト品質を機械強制する実践が対応する
 - [[concepts/claude-md-rules]] — ルールを明文化し機械的に強制してミス率を下げる設計思想。CLAUDE.mdのルール強制とE2EスキルのIron Law強制は同じ発想の別実装
 - [[concepts/agent-era-ci-speedup]] — Boardy の CI 高速化 9 手順。Vitest の isolate: false でテスト間の状態共有を受け入れ速度を取り、後片付けフックで補う選択は、本ページの per-test データ独立とは逆向きのトレードオフ（owen）
+- [[concepts/e2e-testing-theory]] — Kuniwak の E2E 理論。並列化は「環境の独立性がアプリごと」として省かれた題で、本ページの per-test データ独立がその具体化。前提データの API/DB 直接投入は Kuniwak が忠実度のトレードオフとして挙げるバイパス

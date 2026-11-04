@@ -91,11 +91,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a> — Spec-anchored実践：AIに実装ノートを並走させるプロンプト</li>
 <li><a href="../concepts/concept-design.html">concept-design</a> — 仕様を書く一段手前で「その世界に何が存在するか」を切り分ける層。振る舞い仕様が実装の正誤を判定するのに対し、概念テストは仕様が既存概念と矛盾せず語れるかを判定する</li>
 <li><a href="../concepts/spec-ssot-view-separation.html">spec-ssot-view-separation</a> — 同著者の続編。巨大化した状態遷移図・シーケンス図を SSoT とビューに分け、AI に本体を書かせ pumlseqbreak・csdfrepl でレビュー前に機械検証する</li>
+<li><a href="../concepts/e2e-testing-theory.html">e2e-testing-theory</a> — 同著者の E2E テスト大全。ここで書いた状態遷移図と τ を、グラフベーステストの入力（トレース集合・失敗集合）として使い、活性/安全性違反を検知する</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/concept-design.html">concept-design</a></li>
+<li><a href="../concepts/e2e-testing-theory.html">e2e-testing-theory</a></li>
 <li><a href="../concepts/spec-driven-development.html">spec-driven-development</a></li>
 <li><a href="../concepts/spec-ssot-view-separation.html">spec-ssot-view-separation</a></li>
-<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li>
-<li><a href="../concepts/implementation-notes-prompt.html">implementation-notes-prompt</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://blog.kuniwak.com/entry/2026/05/23/143148" rel="noopener" target="_blank">https://blog.kuniwak.com/entry/2026/05/23/143148</a></li>
+<li><a href="../concepts/agentic-coding.html">agentic-coding</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://blog.kuniwak.com/entry/2026/05/23/143148" rel="noopener" target="_blank">https://blog.kuniwak.com/entry/2026/05/23/143148</a></li>
 <li><a href="https://note.com/cc_kuniwak/n/nc7c7453b3baa" rel="noopener" target="_blank">https://note.com/cc_kuniwak/n/nc7c7453b3baa</a></li></ul></section></article>
 </main>
 <script>
@@ -201,6 +202,7 @@ kuniwak は後続の note 記事で、この流儀で記述を進めると状態
 - [[concepts/implementation-notes-prompt]] — Spec-anchored実践：AIに実装ノートを並走させるプロンプト
 - [[concepts/concept-design]] — 仕様を書く一段手前で「その世界に何が存在するか」を切り分ける層。振る舞い仕様が実装の正誤を判定するのに対し、概念テストは仕様が既存概念と矛盾せず語れるかを判定する
 - [[concepts/spec-ssot-view-separation]] — 同著者の続編。巨大化した状態遷移図・シーケンス図を SSoT とビューに分け、AI に本体を書かせ pumlseqbreak・csdfrepl でレビュー前に機械検証する
+- [[concepts/e2e-testing-theory]] — 同著者の E2E テスト大全。ここで書いた状態遷移図と τ を、グラフベーステストの入力（トレース集合・失敗集合）として使い、活性/安全性違反を検知する
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

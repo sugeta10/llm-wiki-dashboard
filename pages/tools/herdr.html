@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>herdr</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="herdr.md">Markdownで表示</a></div>
-  <div class="meta">tools/herdr · tools · <span title="2026-09-05">1ヶ月前</span></div>
+  <div class="meta">tools/herdr · tools · <span title="2026-09-05">2ヶ月前</span></div>
   <article><h1>Herdr</h1>
 <p>複数の計算機上で動くAIエージェントを1箇所に集めて管理・協作させるツール。@Michaelzsguoが、MacBook Pro・MacBook Air・Raspberry Pi 5・Dell XPS（Omarchy）・Oracleの無料VPSの5台それぞれで動くエージェントをHerdrで集中管理する運用を紹介している。</p>
 <p>スマホからの遠隔管理はTailscale + Termiusの組み合わせで実現し、TermiusでMacBook Proにログインして <code>herdr</code> コマンドを実行すれば、手元の端末からHerdr配下の全エージェントを操作できると述べる。さらに「Herdrを直接操作する必要すらない」方法があるというが、その詳細は添付動画のみで本文からは読み取れない。Herdr自体の開発元・配布場所・対応ハーネスもこのポストからは確認できない。</p>
@@ -55,11 +55,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — 「自分が指揮官になり専門化した Claude を並べる」フレーム。Herdr ではその指揮官役をメインエージェントに渡す</li>
 <li><a href="../tools/reason-network.html">reason-network</a> — マシン横断でエージェント同士を直接メッセージでつなぐ網。Herdr が各マシンのエージェントを人間の操作卓に束ねるのに対し、こちらはエージェント自身が <code>list_team</code> で互いを見て問い合わせる</li>
 <li><a href="../concepts/grok-bot-local-mac-codex-routing.html">grok-bot-local-mac-codex-routing</a> — @kzkhykw が「Herdr でもいい」と並べたうえで、GUI とモバイルアプリの使いやすさから Orca を選び、Grok Bot から常駐 Mac の Orca と Codex を呼ぶ構成。Herdr が複数マシンのエージェントを操作卓に束ねるのに対し、Orca は 1 台の Mac 上で依頼ごとの worktree を管理する</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
+<li><a href="../business/ai-driven-management.html">ai-driven-management</a> — @yoshio_nocode が「AI 並列のタスク実行基盤は herdr × Linear が最適解」（1 Issue＝1 AI セッション・Claude Code/Codex が自分で起票し In Review まで更新）と述べたポストを引用して組んだ AI駆動経営の概念設計。Herdr を専門 AI エージェントの実行層に置く</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/ai-driven-management.html">ai-driven-management</a></li>
+<li><a href="../concepts/advisor-executor-pattern.html">advisor-executor-pattern</a></li>
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li>
 <li><a href="../concepts/fable-sprint-strategy.html">fable-sprint-strategy</a></li>
-<li><a href="../concepts/grok-bot-local-mac-codex-routing.html">grok-bot-local-mac-codex-routing</a></li>
-<li><a href="../models/claude-fable-5-1.html">claude-fable-5-1</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2093447586804040001" rel="noopener" target="_blank">https://x.com/i/web/status/2093447586804040001</a></li>
+<li><a href="../concepts/grok-bot-local-mac-codex-routing.html">grok-bot-local-mac-codex-routing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2093447586804040001" rel="noopener" target="_blank">https://x.com/i/web/status/2093447586804040001</a></li>
 <li><a href="https://x.com/i/web/status/2095917499430711319" rel="noopener" target="_blank">https://x.com/i/web/status/2095917499430711319</a></li></ul></section></article>
 </main>
 <script>
@@ -113,6 +114,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[concepts/claude-code-orchestration]] — 「自分が指揮官になり専門化した Claude を並べる」フレーム。Herdr ではその指揮官役をメインエージェントに渡す
 - [[tools/reason-network]] — マシン横断でエージェント同士を直接メッセージでつなぐ網。Herdr が各マシンのエージェントを人間の操作卓に束ねるのに対し、こちらはエージェント自身が `list_team` で互いを見て問い合わせる
 - [[concepts/grok-bot-local-mac-codex-routing]] — @kzkhykw が「Herdr でもいい」と並べたうえで、GUI とモバイルアプリの使いやすさから Orca を選び、Grok Bot から常駐 Mac の Orca と Codex を呼ぶ構成。Herdr が複数マシンのエージェントを操作卓に束ねるのに対し、Orca は 1 台の Mac 上で依頼ごとの worktree を管理する
+- [[business/ai-driven-management]] — @yoshio_nocode が「AI 並列のタスク実行基盤は herdr × Linear が最適解」（1 Issue＝1 AI セッション・Claude Code/Codex が自分で起票し In Review まで更新）と述べたポストを引用して組んだ AI駆動経営の概念設計。Herdr を専門 AI エージェントの実行層に置く
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

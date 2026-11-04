@@ -26,3 +26,4 @@
 - [[business/chiho-business-trend]] — 「CPA の数％改善より市場選定」と、追うべき変数そのものを市場側に置き換える主張（@minatoku_genkai）
 - [[business/aircon-urakata]] — エアコンクリーニング 1 職種に特化した現役業者が、独立の歩み（孫請け→くらしのマーケット→直接受注）と集客・事務・保険まで固めて同業者向けに公開したサイト。現場仕事での一人ビジネスの実例
 - [[concepts/grok-bot-one-person-harness]] — 一人会社の繰り返しの準備作業を Grok Bot の Operator 1 体に任せ、承認境界と受け入れ基準で囲む @beamnxw の設定手順。本ページの設計論を実行側で支える常駐エージェントの置き方
+- [[business/one-person-creative-team]] — Dan Koe の一人クリエイティブチーム。1〜3 クライアントで月 1 万〜7.5 万ドルという、クライアント数を極小化した一人ビジネスの設計例

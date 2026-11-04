@@ -74,3 +74,4 @@ Kuniwak の例は、画面の「ping」ボタンを押すと「pong」に変わ�
 - [[concepts/dsl-as-harness]] — 検証器付き DSL の設計論。PlantUML＋pumlseqbreak はその一例と読める
 - [[tools/claude-code-goal]] — 「/goal 0-switch カバレッジを取るまで」で使われていると考えられる自律ループ
 - [[business/ai-lifeplan-simulation]] — 同著者の家計シミュレーション手法。役割分担が同じ形
+- [[concepts/e2e-testing-theory]] — 同著者の E2E テスト大全。puml-parallel の状態遷移モデルを仕様とグラフベース E2E テストの同一資産として使う、と本稿側から明言

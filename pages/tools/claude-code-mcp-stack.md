@@ -77,3 +77,4 @@ MCP を1本ずつ「便利ツール」として入れても効果が薄い、と
 - [[concepts/instruction-patch-lifecycle]] — 同じ@kimuai08が Boris の「6か月リセット」を整理した記事。向こうは指示を減らす側、本ページは検証手段を足す側
 - [[concepts/loop-engineering]] — 「プロンプトを書くな。ループを書け」の本体。MCP は Boris の言うループが回るための「工程ごとの検証手段」にあたる
 - [[tools/claude-code-plugins]] — 公式マーケットプレイスの MCP/Skill/Agent/Hook 一覧。本ページの8本をプラグインとして入れる入口
+- [[concepts/critical-thinking-with-agents]] — Boris の「検証手段を渡す」を人間側から見た Osmani の論。緑のチェックは1つの性質しか伝えないので、何を証明し何を証明しなかったかを問い、「検証済み」を事前に定義する

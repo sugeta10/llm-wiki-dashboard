@@ -34,3 +34,4 @@ wbs-edit には5つの事故防止機構が組み込まれている:
 ## 関連
 
 関連: [[tools/taskmd-shelf]]（タスク管理の別アプローチ）、[[concepts/spec-driven-development]]（AI駆動開発手法全般）
+- [[business/ai-driven-management]] — 目標→プロジェクト→WBS→AI 実行→成果物検証→事業成果評価を一循環にする @yoshio_nocode の AI駆動経営スキーム。本スキル群はその WBS 工程の実装部品に当たる

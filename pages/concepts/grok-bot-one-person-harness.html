@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>grok-bot-one-person-harness</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="grok-bot-one-person-harness.md">Markdownで表示</a></div>
-  <div class="meta">concepts/grok-bot-one-person-harness · concepts · <span title="2026-10-29">5日前</span></div>
+  <div class="meta">concepts/grok-bot-one-person-harness · concepts · <span title="2026-10-29">6日前</span></div>
   <article><h1>Grok Bot で組む一人会社のハーネス（Operator・会社ブリーフ・承認境界・ルーチン）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 一人会社の経営者が納品・営業・意思決定で手を離せない間も仕事が進むよう、Grok Bot に「Operator」1体を置き、会社ブリーフと作業ボードを正の情報源として渡し、承認境界・受け入れ基準・引き継ぎ・スキル・ルーチンの7手順で囲む設定手順（@beamnxw の X 記事「Grok Bot Engineering: Set Up a Harness for Your One-Person Company」）。</p>
@@ -118,11 +118,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../business/hensu-kyokushouka.html">hensu-kyokushouka</a> — 一人ビジネスをマネジメント不要に設計する論。本ページはその実行側に常駐エージェントを置く手順</li>
 <li><a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a> — バックエンドが Claude Opus 5.5 に変わった後の Grok Bot の 10 手順（@0xMorlex）。本ページの憲章と Ask first に当たる手順に、第三者モデルへ流れるデータ線と「可逆なら完了・不可逆なら止める」承認線の基準を足している</li>
 <li><a href="../concepts/grok-bot-team-guide.html">grok-bot-team-guide</a> — Grok Bot チームの Lauren（@poteto）による 7 項目。「Bot は少数精鋭」は本ページの 1 体から始める順序と近く、会社ブリーフ先行でなく自己紹介とオンボーディングから入る点が違う</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/hensu-kyokushouka.html">hensu-kyokushouka</a></li>
+<li><a href="../business/goal-kpi-management-layer.html">goal-kpi-management-layer</a> — @yoshio_nocode の目標・KPI 管理レイヤー。「未取得をゼロ扱いせず前提と出典を残す」「取得できない値も区別して扱う」が、本ページの会社ブリーフの「不明は unknown」と同じ原則</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/goal-kpi-management-layer.html">goal-kpi-management-layer</a></li>
+<li><a href="../business/hensu-kyokushouka.html">hensu-kyokushouka</a></li>
 <li><a href="../concepts/claude-code-long-task-harness.html">claude-code-long-task-harness</a></li>
 <li><a href="../concepts/grok-bot-ai-team-workspace.html">grok-bot-ai-team-workspace</a></li>
-<li><a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a></li>
-<li><a href="../concepts/grok-bot-team-guide.html">grok-bot-team-guide</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107143806546002398" rel="noopener" target="_blank">https://x.com/i/web/status/2107143806546002398</a></li></ul></section></article>
+<li><a href="../concepts/grok-bot-opus-5-5-harness.html">grok-bot-opus-5-5-harness</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2107143806546002398" rel="noopener" target="_blank">https://x.com/i/web/status/2107143806546002398</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -237,6 +238,7 @@ flowchart LR
 - [[business/hensu-kyokushouka]] — 一人ビジネスをマネジメント不要に設計する論。本ページはその実行側に常駐エージェントを置く手順
 - [[concepts/grok-bot-opus-5-5-harness]] — バックエンドが Claude Opus 5.5 に変わった後の Grok Bot の 10 手順（@0xMorlex）。本ページの憲章と Ask first に当たる手順に、第三者モデルへ流れるデータ線と「可逆なら完了・不可逆なら止める」承認線の基準を足している
 - [[concepts/grok-bot-team-guide]] — Grok Bot チームの Lauren（@poteto）による 7 項目。「Bot は少数精鋭」は本ページの 1 体から始める順序と近く、会社ブリーフ先行でなく自己紹介とオンボーディングから入る点が違う
+- [[business/goal-kpi-management-layer]] — @yoshio_nocode の目標・KPI 管理レイヤー。「未取得をゼロ扱いせず前提と出典を残す」「取得できない値も区別して扱う」が、本ページの会社ブリーフの「不明は unknown」と同じ原則
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

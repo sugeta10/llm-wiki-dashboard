@@ -76,3 +76,4 @@ AIO / LLMO については、SEO的な量産・自社推奨記事は短期では
 - [[concepts/harness-engineering]] — ハーネスを設計対象として扱う全体論。「アンチハーネス」はその反対極の仮説
 - [[papers/2026-sonyai-hakken]] — 科学発見AIの既存ページ（仕組み・論文本体は未収集）
 - [[business/ai-agent-era-strategy]] — 梶谷健人の「全社員に経営を学ばせる」リスキリング論（AIを部下としてマネジメントする側へ役割が移るという主張）を含む企業戦略ページ
+- [[business/ai-driven-management]] — @yoshio_nocode の AI駆動経営 概念設計 v0.2。本ページが「組織側の設計」へ重心を移すのと同じ方向で、経営の3管理軸（目標・プロジェクト・資源）と人が触る2窓口（チャット・タスク管理）を先に決める

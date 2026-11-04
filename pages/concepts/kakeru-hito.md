@@ -36,3 +36,4 @@
 - [[concepts/output-first-learning]] — 他者視線前提でエッセイに仕上げる学習法。「主観＋読者への親切心」と同じ出力設計
 - [[tools/no-ai-slop]] — AI文章の定型パターン検出スキル。「レビューできる人がいない」問題の道具側
 - [[concepts/writing-norms-adoption]] — 日本語ライティング規範の採否を自分で判定する手順（@tetumemo）。規範を入れるかどうかを決めるには、本ページの言う「書ける人」の判断が要る
+- [[business/one-person-creative-team]] — Dan Koe が引く代理店の「AI は最良の投稿を書けない。今の仕事は下書きの見直しと書き直し」は、本ページの「レビューできる人がいなければ伸びない」を実務側から言ったもの

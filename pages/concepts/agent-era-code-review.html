@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agent-era-code-review</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-era-code-review.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agent-era-code-review · concepts · <span title="2026-10-28">6日前</span></div>
+  <div class="meta">concepts/agent-era-code-review · concepts · <span title="2026-10-28">1週間前</span></div>
   <article><h1>エージェント時代のコードレビュー（Claude Code チームの多層レビュー）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: コードの約90%を Claude が書く Claude Code チームは、レビューを「人間が読んだか」から「この変更で何が壊れうるか・どの検査で捕まえるか」へ組み替え、読む作業の大半を機械に移して人間の承認はリスク別にした。その結果、2026年6〜9月にマージ PR 数は2倍超になり、revert（取り消し）された割合は40%超減ったと Anthropic が報告する。</p>
@@ -148,6 +148,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/frequency-impact-fix-threshold.html">frequency-impact-fix-threshold</a> — 「レビューは収束しなければならない」への個人規模の答え。Codex のレビュー指示に発生頻度×影響度の 1〜10 採点を置き、積が閾値未満なら Issue 起票だけで修正しない（@hawkymisc）</li>
 <li><a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a> — FurtherAI の出荷工程の月ごとの自動化（AI が先に見る 60%→99%・暗黙知を Python チェック 21 本に・低リスクは人なしで最大 1/3）。本ページの多層レビューと同じ打ち手をスタートアップ規模で、組織設計まで追った記録（Sashank Gondala）</li>
 <li><a href="../concepts/agent-era-ci-speedup.html">agent-era-ci-speedup</a> — 本ページが「ブロックする自動チェック」の 1 層に置く CI を、Boardy が 40 分→2 分にした 9 手順。「次のボトルネックは自分がマージを押すこと」と締める地点が本ページの無人マージにつながる（owen）</li>
+<li><a href="../concepts/critical-thinking-with-agents.html">critical-thinking-with-agents</a> — Osmani が本ページの「チェックが見逃すものを言えないなら本物のレビューを」を深く見るべきときの目安として引き、レビューがゴム印に変わる前に「エージェントが決めたこと」を一覧させ自分にクイズを課す、個人の側の習慣を書いた X 記事</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-era-ci-speedup.html">agent-era-ci-speedup</a></li>
 <li><a href="../concepts/agent-scale-source-control.html">agent-scale-source-control</a></li>
 <li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
@@ -287,6 +288,7 @@ Claude Code チームの Addy Osmani（X プロフィールは「Claude Code @an
 - [[concepts/frequency-impact-fix-threshold]] — 「レビューは収束しなければならない」への個人規模の答え。Codex のレビュー指示に発生頻度×影響度の 1〜10 採点を置き、積が閾値未満なら Issue 起票だけで修正しない（@hawkymisc）
 - [[concepts/ai-native-engineering-org]] — FurtherAI の出荷工程の月ごとの自動化（AI が先に見る 60%→99%・暗黙知を Python チェック 21 本に・低リスクは人なしで最大 1/3）。本ページの多層レビューと同じ打ち手をスタートアップ規模で、組織設計まで追った記録（Sashank Gondala）
 - [[concepts/agent-era-ci-speedup]] — 本ページが「ブロックする自動チェック」の 1 層に置く CI を、Boardy が 40 分→2 分にした 9 手順。「次のボトルネックは自分がマージを押すこと」と締める地点が本ページの無人マージにつながる（owen）
+- [[concepts/critical-thinking-with-agents]] — Osmani が本ページの「チェックが見逃すものを言えないなら本物のレビューを」を深く見るべきときの目安として引き、レビューがゴム印に変わる前に「エージェントが決めたこと」を一覧させ自分にクイズを課す、個人の側の習慣を書いた X 記事
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

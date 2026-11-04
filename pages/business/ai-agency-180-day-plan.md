@@ -60,3 +60,4 @@
 - [[business/ai-vertical-integration]] — AI 企業の垂直統合が受託業界に与える圧力。本計画の価格前提に対する外部リスク
 - [[business/backoffice-ai-implementation]] — 事業会社の管理部門が自分たちで AI を実装した事例。エージェンシーに外注せず内製する側の選択肢
 - [[business/shoukou-kaigisho-ai-koushi]] — 商談を自前の営業量で作る本計画に対し、集客と与信を商工会議所に借り補助金を決済手段にする導線
+- [[business/one-person-creative-team]] — Dan Koe の一人クリエイティブチーム。本計画が「ブランド依存」と退けたパーソナルブランドを事業そのものに置く対照。初回受注の「無許可の見習い」（無料で 10 本書いて DM）は本計画のフックオファーに相当

@@ -92,3 +92,4 @@ flowchart LR
 - [[business/hensu-kyokushouka]] — 一人ビジネスをマネジメント不要に設計する論。本ページはその実行側に常駐エージェントを置く手順
 - [[concepts/grok-bot-opus-5-5-harness]] — バックエンドが Claude Opus 5.5 に変わった後の Grok Bot の 10 手順（@0xMorlex）。本ページの憲章と Ask first に当たる手順に、第三者モデルへ流れるデータ線と「可逆なら完了・不可逆なら止める」承認線の基準を足している
 - [[concepts/grok-bot-team-guide]] — Grok Bot チームの Lauren（@poteto）による 7 項目。「Bot は少数精鋭」は本ページの 1 体から始める順序と近く、会社ブリーフ先行でなく自己紹介とオンボーディングから入る点が違う
+- [[business/goal-kpi-management-layer]] — @yoshio_nocode の目標・KPI 管理レイヤー。「未取得をゼロ扱いせず前提と出典を残す」「取得できない値も区別して扱う」が、本ページの会社ブリーフの「不明は unknown」と同じ原則

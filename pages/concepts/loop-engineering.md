@@ -163,3 +163,4 @@ Geoffrey Huntley が命名。エージェントが完了すべきでないタイ
 - [[concepts/overnight-delegation-prompt]] — 就寝中の8時間をエージェントに委ねる一文プロンプト（ループ設計の軽量な実例）
 - [[concepts/ai-coding-loop-formal]] — 人間の役割（モデル評価・ループ構築・評価指標・CI優先度）から逆算したループ実務と形式手法の棚卸し（mizchi）
 - [[concepts/loop-decision-cost]] — ループが払い続ける「判断」（起動するか・続けるか・止めるか）を、コードの厳密比較→Jev の意味判断→Claude の実装の順に別経路へ載せ、cost per accepted change を判断単位で下げる手順（@beamnxw）
+- [[concepts/critical-thinking-with-agents]] — 本ページの失敗パターンで Osmani が挙げた comprehension debt・cognitive surrender を、ループを回す人間側の習慣（6つの問い・「検証済み」の事前定義・orchestration tax・週1の手作業）として展開した Osmani 自身の X 記事

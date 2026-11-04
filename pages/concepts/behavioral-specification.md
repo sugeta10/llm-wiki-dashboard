@@ -82,3 +82,4 @@ kuniwak は後続の note 記事で、この流儀で記述を進めると状態
 - [[concepts/implementation-notes-prompt]] — Spec-anchored実践：AIに実装ノートを並走させるプロンプト
 - [[concepts/concept-design]] — 仕様を書く一段手前で「その世界に何が存在するか」を切り分ける層。振る舞い仕様が実装の正誤を判定するのに対し、概念テストは仕様が既存概念と矛盾せず語れるかを判定する
 - [[concepts/spec-ssot-view-separation]] — 同著者の続編。巨大化した状態遷移図・シーケンス図を SSoT とビューに分け、AI に本体を書かせ pumlseqbreak・csdfrepl でレビュー前に機械検証する
+- [[concepts/e2e-testing-theory]] — 同著者の E2E テスト大全。ここで書いた状態遷移図と τ を、グラフベーステストの入力（トレース集合・失敗集合）として使い、活性/安全性違反を検知する
