@@ -58,3 +58,4 @@
 - [[concepts/reasoning-vs-japanese-fluency]] — 本ページの規範が拾う翻訳調・文末単調は、推論力の高いモデルほど出やすいと@yugen_matuniが実測から主張。規範を足す前に日本語の自然なモデルを選ぶという生成側の対処
 - [[concepts/ai-japanese-writing-stack]] — 本スキルを推奨ツールの1つに挙げる@kgsiの執筆スタック。大域設計のステップも鹿野桂一郎の指摘（不意打ちを避ける順序・見出し直後の接続文）を出典にしている
 - [[concepts/writing-norms-adoption]] — 本スキルと対になる cognitive-rhythm-writing を含めた導入判定と手順。@tetumemo が自社の執筆ルール130項目と突き合わせ、「読み手が正しさを求める文章にだけ入れる」という採否の線を引いた実践記録
+- [[tools/kuden-writing]] — shokai の writing スキル。本ページの翻訳調の節が「効く」を禁じるのに対し、「効く」「正本」のような言葉尻より解釈のブレが出ない文の構造を直せと主張し、語を1つも禁じない5つの心得を置く

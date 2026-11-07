@@ -73,3 +73,4 @@ flowchart LR
 - [[concepts/writing-norms-adoption]] — 規範を指示側（プロジェクト・Skill）に置いたまま運用する側の記録。本ページが「指示では消えない」として検査へ移したのに対し、あちらは指示側に残したうえで「どの文章に入れるか」で効きを確保する
 - [[concepts/gemini-rewrite-stop-hook]] — 同著者が本ページの機械検査と並行して動かすGeminiリライトのStop Hook。検出に加えて生成側で日本語を置き換える
 - [[concepts/asd-ste100-llm-writing]] — 文体を生成後に検査する本ページに対し、生成時に制御言語の仕様で縛る Karpathy の tip
+- [[tools/kuden-writing]] — 本ページの検出上位である「効く」を shokai は「言葉尻」と呼び、解釈のブレが出ない述語・節の組み立てを先に直せと主張する writing スキル。本ページが語を検出して文を書き直させるのに対し、あちらは語の一覧を持たず構造の規則だけを置く

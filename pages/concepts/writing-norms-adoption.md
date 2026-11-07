@@ -79,3 +79,4 @@ ChatGPT と Claude のプロジェクト機能に2ファイルをアップロー
 - [[tools/first-reader]] — 架空の読者に逐次読ませて離脱位置を観測する校正支援スキル。@laiso が cognitive-rhythm-writing と並べて評価した、規範でなく読まれ方を測る側の道具
 - [[concepts/kakeru-hito]] — 「AIで書いてもレビューできる人がいなければ伸びない」という主張と、規範の採否を自分で判定するという本ページの姿勢が接続する
 - [[design/consulting-pptx-skill]] — AI臭いワード・言い回しのリスト（ai-smell-lexicon.md）を同梱したスライド生成スキル。規範をスキルのファイルとして毎回読ませる運用例
+- [[tools/kuden-writing]] — 本ページの「AIっぽさの6つの型」が語の列挙で判定するのに対し、shokai は「効く」「正本」のような言葉尻より文の構造を直せと主張し、述語・節・括弧・強調記号の規則だけで writing スキルを組む
