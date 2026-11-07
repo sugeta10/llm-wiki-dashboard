@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>littles-law-wip - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>littles-law-wip</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="littles-law-wip.md">Markdownで表示</a></div>
+  <div class="meta">concepts/littles-law-wip · concepts · <span title="2026-11-07">今日</span></div>
+  <article><h1>仕事が終わらないのは速さでなく「同時に持っている本数」｜リトルの法則で見る仕掛かり</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 1本を片づける速さを上げても仕事は終わらず、終わるのは同時に抱える本数が減ったとき。リトルの法則（並んでいる数が半分なら待ち時間も半分）を自分の案件に当てはめ、本数を数え、止まる理由を情報待ち・判断待ち・作業待ちに分け、「受けない側」を先に決める、と @smark_x が主張する。</p>
+</blockquote>
+<pre class="mermaid">flowchart TD
+  Count[&quot;1. 抱えている本数を数える（ツール外の件も1本）&quot;] --&gt; Why[&quot;2. 1本ずつ止まる理由を分ける&quot;]
+  Why --&gt; Info[&quot;①情報待ち&quot;]
+  Why --&gt; Decide[&quot;②判断待ち&quot;]
+  Why --&gt; Work[&quot;③作業待ち&quot;]
+  Info --&gt; AskWho[&quot;「誰に聞けば分かるか」を1行書く&quot;]
+  Decide --&gt; Hand[&quot;「誰が・いつまでに・何を決めるか」を1文にして渡す&quot;]
+  Work --&gt; Speed[&quot;ここで初めて速さの話になる&quot;]
+  Count --&gt; Intake[&quot;4. 受けない側を先に決める（入る量を出る量より小さく）&quot;]</pre>
+<p>ジェフ・ベゾスの「チームはピザ2枚で足りる人数に収める」という原則に対し、AI の時代には2枚でも多すぎる、12人→6〜7人→エージェントと組むなら1人、という人数論の投稿を X で見かけた、と @smark_x は書き出す。そのうえで、人数を減らしても終わらない仕事があると指摘し、論点を「人数」から「同時に持っているテーマの数」へ移す。</p>
+<h2>行列の式は自分の案件にも当てはまる</h2>
+<p>@smark_x によれば、60年以上前にジョン・リトルが「行列」について1つの式を証明した。レジに並んでいる人数が半分になれば待ち時間も半分になる、という当たり前に聞こえる関係が、業種にも人数にも片づける順番にも左右されずに成り立つことを示した式である。並んでいるのが他人ではなく自分が抱えている案件だというだけで、仕事も同じ行列だと @smark_x は言う。たとえば10本を同時に持っている人が3本に絞ると、手の速さを変えていなくても1本が片づくまでの日数は3分の1近くまで縮む、というのが著者の挙げる例である。</p>
+<p>一般にこの式はリトルの法則と呼ばれ、系内の仕掛かり数 = 到着率 × 滞在時間（L = λW）と書かれる。処理能力が同じなら1本あたりの滞在時間は仕掛かり数に比例する、というのが上の例の根拠になる（wiki 側の補足）。</p>
+<h2>人数を絞る会社が減らしているのは「テーマの数」</h2>
+<p>人数を絞ってきた会社は、同じことを別の場所でもやっていると @smark_x は見る。</p>
+<ul>
+<li><strong>Amazon</strong> —— 長いあいだ「シングル・スレッド・オーナー」という役割でスケールしてきた、と元副社長が書いていたと @smark_x は紹介する（副社長の名前は記事に未記載）。1人がエンジニアリングもプロダクトもデザインもその事業の損益もまとめて持ち、名前のとおり1人が同時に走らせる役割である</li>
+<li><strong>OpenAI</strong> —— 創業者のサム・アルトマンが「計画の80%を捨てて、1つのことを大規模にやる」と言い、有望な20の方向を4つの優先事項に絞ったそうだ、と @smark_x は伝聞として書く</li>
+</ul>
+<p>つまり減らしているのは人数ではなく「同時に持っているテーマの数」だ、というのが著者の読みである。@smark_x は自分が長いあいだ逆をやっていたとも書く。終わらないのは自分が遅いからだと思い1本あたりを速く片づけようとしたが、速さを上げても本数は減らない。速くなったぶん、また新たな業務を受けてしまうからである。</p>
+<h2>数え方と動かし方（4手順）</h2>
+<p>@smark_x が本数を減らすために提示する手順は次の4つである。</p>
+<ol>
+<li><strong>抱えている本数を「数字」で出す</strong> —— 着手したのに終わっていないものを全部書き出す。返していないメール、確認待ち、口頭で頼まれた件、頭の中にあるだけの件も1本として数える。タスク管理ツールに入っているものだけを数えると、たいてい実数の半分以下だと著者は言う</li>
+<li><strong>1本ずつ「止まる理由」を3つに分ける</strong> —— ①情報待ち（必要な事実がまだ揃っていない）、②判断待ち（事実は揃っているが誰も決めていない）、③作業待ち（決まっているが手が空いていない）。分けてみると③がいちばん少なく、忙しいと感じているときの本数はほとんど①と②で埋まっている、というのが著者の観察である</li>
+<li><strong>分類ごとに「動かし方」を変える</strong> —— 情報待ちは「誰に聞けば分かるか」を1行書く。書けないならそれは情報待ちではなく、聞く相手を決めていない判断待ちである。判断待ちは「誰が・いつまでに・何を決めるか」を1文にして相手に渡す。決めてもらうのを待つのではなく、決める形のほうを渡す。著者の例文は「A案でよければ明日15時までにご返信ください。ご返信がなければA案で進めます」まで書いて出す、というもの。作業待ちだけが本当に時間の問題で、ここに来てはじめて「速さの話」になる</li>
+<li><strong>「受けない側」を先に決める</strong> —— 入る量が出る量を上回っていれば本数は必ず増える。数式のとおりである。だから「週の前半は新しく受けない」のように、受けないほうを先に決めておく</li>
+</ol>
+<h2>自分が待たせている本数のほうが効く</h2>
+<p>やってみて効いたのは、自分が待っている本数よりも「自分が誰かを待たせている本数」だった、と @smark_x は強調する。返していない1通はこちらでは「あとで返す」だが、相手の側ではもう1本の仕掛かりとして立っている。つまり同じ1本が2人ぶんの本数に乗っている。</p>
+<p>その例として著者は、NVIDIA のジェンスン・ファンについて、1on1 をやらない、ステータス報告も受け取らない、直属の部下は60人ほど、代わりに毎朝社員から届く100通ほどのメールをそのまま読む、という X 投稿が流れていたと紹介する。@smark_x はこれを、人を減らさなくても間に判断待ちの行列を作らなければ止まらない設計だと読み、逆に言えば階層をひとつ挟むたびに誰かの本数が1本増えている、とまとめる。記事の結びは「速く働くほうが目立つけど、終わるのは本数が減ったとき」である。</p>
+<h2>他ページとのつながり</h2>
+<p>同じ @smark_x の <a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> は『ザ・ゴール』の制約理論で「どの工程がボトルネックか」を見て、そこへ流れ込む量と質を絞る話だった。本ページはリトルの法則で「系の中に何本あるか」を見る。どちらも「1つの工程を速くしても全体は終わらない」という同じ結論に至るが、制約理論は絞る場所を、リトルの法則は本数と滞在時間の比例関係を与える、という役割の違いがあると考えられる。</p>
+<p>zeigarnik-fatigue-loop が描く「未完了が注意を奪い続ける」疲労は、本ページの数え方で言えば頭の中にあるだけの件も1本として立っている状態にあたる。同ページが脱出口とする「完了でなく決着」は、本ページの手順3で判断待ちを「誰が・いつまでに・何を決めるか」の1文にして渡す動きと同じ方向だと考えられる。また <a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a> で @dansyu_callenge が AI 窓口に担わせる「返事待ち・判断待ちに分ける」仕事は、手順2の分類を AI に機械化した形と読める。ただし同ページの区分は自分が待つ側だけを扱い、本ページが最も効いたとする「自分が待たせている本数」は含まれていない。</p>
+<p><a href="../concepts/slack-time-at-work.html">slack-time-at-work</a> の稼働率80%設計と、手順4の「受けない側を先に決める」は、どちらも出る量に対して入る量を抑える打ち手である。<a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a> で Sashank Gondala が「出荷工程を自動化し切るとボトルネックは何を作るか決める工程へ移る」と報告した現象は、本ページの判断待ちが組織規模で現れた形と考えられる。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-11-07: ジェンスン・ファンの「1on1 なし・ステータス報告なし・直属約60人・毎朝約100通のメールを読む」は @smark_x が X 投稿の伝聞として紹介した数字。原投稿と一次発言は未確認</li>
+<li>2026-11-07: 「タスク管理ツール内の件数は実数の半分以下」は @smark_x の経験則。自分の棚卸しで本数を比べて確かめる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の仕掛かりを全部数え、情報待ち・判断待ち・作業待ちに分ける。未 ingest のソース、読み返していない weekly、返していない連絡はどこに入るか</li>
+<li>AI エージェントに出した指示で返答を読んでいないものは、エージェント側の行列にも立っている。<a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> の「セッションを増やすと順番待ちが伸びる」は「同じ1本が2人ぶんに乗る」の AI 版か</li>
+<li>リトルの法則は到着と処理が釣り合った定常状態の式で、手順4が言う「入る量が出る量を上回る」状態では本数が増え続ける。「受けない期間」の長さをどう決めれば定常に戻るか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a> — 同著者の制約理論。ボトルネック工程への流入を絞る側の答えで、本ページは工程でなく仕掛かり本数の側から同じ「速くしても終わらない」を扱う</li>
+<li>zeigarnik-fatigue-loop — 未完了が注意を奪い続ける疲労ループ。脱出は完了でなく決着で、本ページの「判断待ちを決める形にして渡す」が決着の具体形</li>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a> — 依頼を予定・返事待ち・判断待ちに分ける AI 窓口（@dansyu_callenge）。手順2の分類を AI に機械化した例</li>
+<li><a href="../concepts/slack-time-at-work.html">slack-time-at-work</a> — 稼働率を80%に抑える設計（Sean Goedecke）。手順4の「受けない側を先に決める」と同じく入る量を制御する</li>
+<li><a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a> — 出荷工程を自動化し切った後のボトルネックは「何を作るか決める工程」（Sashank Gondala）。本ページの判断待ちが組織規模で現れた形</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/ai-review-bottleneck.html">ai-review-bottleneck</a></li>
+<li><a href="../concepts/ai-secretary-gateway.html">ai-secretary-gateway</a></li>
+<li><a href="../concepts/ai-native-engineering-org.html">ai-native-engineering-org</a></li>
+<li><a href="../concepts/slack-time-at-work.html">slack-time-at-work</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2118462515239882994" rel="noopener" target="_blank">https://x.com/i/web/status/2118462515239882994</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 仕事が終わらないのは速さでなく「同時に持っている本数」｜リトルの法則で見る仕掛かり
+
+&gt; **TL;DR**: 1本を片づける速さを上げても仕事は終わらず、終わるのは同時に抱える本数が減ったとき。リトルの法則（並んでいる数が半分なら待ち時間も半分）を自分の案件に当てはめ、本数を数え、止まる理由を情報待ち・判断待ち・作業待ちに分け、「受けない側」を先に決める、と @smark_x が主張する。
+
+```mermaid
+flowchart TD
+  Count[&quot;1. 抱えている本数を数える（ツール外の件も1本）&quot;] --&gt; Why[&quot;2. 1本ずつ止まる理由を分ける&quot;]
+  Why --&gt; Info[&quot;①情報待ち&quot;]
+  Why --&gt; Decide[&quot;②判断待ち&quot;]
+  Why --&gt; Work[&quot;③作業待ち&quot;]
+  Info --&gt; AskWho[&quot;「誰に聞けば分かるか」を1行書く&quot;]
+  Decide --&gt; Hand[&quot;「誰が・いつまでに・何を決めるか」を1文にして渡す&quot;]
+  Work --&gt; Speed[&quot;ここで初めて速さの話になる&quot;]
+  Count --&gt; Intake[&quot;4. 受けない側を先に決める（入る量を出る量より小さく）&quot;]
+```
+
+ジェフ・ベゾスの「チームはピザ2枚で足りる人数に収める」という原則に対し、AI の時代には2枚でも多すぎる、12人→6〜7人→エージェントと組むなら1人、という人数論の投稿を X で見かけた、と @smark_x は書き出す。そのうえで、人数を減らしても終わらない仕事があると指摘し、論点を「人数」から「同時に持っているテーマの数」へ移す。
+
+## 行列の式は自分の案件にも当てはまる
+
+@smark_x によれば、60年以上前にジョン・リトルが「行列」について1つの式を証明した。レジに並んでいる人数が半分になれば待ち時間も半分になる、という当たり前に聞こえる関係が、業種にも人数にも片づける順番にも左右されずに成り立つことを示した式である。並んでいるのが他人ではなく自分が抱えている案件だというだけで、仕事も同じ行列だと @smark_x は言う。たとえば10本を同時に持っている人が3本に絞ると、手の速さを変えていなくても1本が片づくまでの日数は3分の1近くまで縮む、というのが著者の挙げる例である。
+
+一般にこの式はリトルの法則と呼ばれ、系内の仕掛かり数 = 到着率 × 滞在時間（L = λW）と書かれる。処理能力が同じなら1本あたりの滞在時間は仕掛かり数に比例する、というのが上の例の根拠になる（wiki 側の補足）。
+
+## 人数を絞る会社が減らしているのは「テーマの数」
+
+人数を絞ってきた会社は、同じことを別の場所でもやっていると @smark_x は見る。
+
+- **Amazon** —— 長いあいだ「シングル・スレッド・オーナー」という役割でスケールしてきた、と元副社長が書いていたと @smark_x は紹介する（副社長の名前は記事に未記載）。1人がエンジニアリングもプロダクトもデザインもその事業の損益もまとめて持ち、名前のとおり1人が同時に走らせる役割である
+- **OpenAI** —— 創業者のサム・アルトマンが「計画の80%を捨てて、1つのことを大規模にやる」と言い、有望な20の方向を4つの優先事項に絞ったそうだ、と @smark_x は伝聞として書く
+
+つまり減らしているのは人数ではなく「同時に持っているテーマの数」だ、というのが著者の読みである。@smark_x は自分が長いあいだ逆をやっていたとも書く。終わらないのは自分が遅いからだと思い1本あたりを速く片づけようとしたが、速さを上げても本数は減らない。速くなったぶん、また新たな業務を受けてしまうからである。
+
+## 数え方と動かし方（4手順）
+
+@smark_x が本数を減らすために提示する手順は次の4つである。
+
+1. **抱えている本数を「数字」で出す** —— 着手したのに終わっていないものを全部書き出す。返していないメール、確認待ち、口頭で頼まれた件、頭の中にあるだけの件も1本として数える。タスク管理ツールに入っているものだけを数えると、たいてい実数の半分以下だと著者は言う
+2. **1本ずつ「止まる理由」を3つに分ける** —— ①情報待ち（必要な事実がまだ揃っていない）、②判断待ち（事実は揃っているが誰も決めていない）、③作業待ち（決まっているが手が空いていない）。分けてみると③がいちばん少なく、忙しいと感じているときの本数はほとんど①と②で埋まっている、というのが著者の観察である
+3. **分類ごとに「動かし方」を変える** —— 情報待ちは「誰に聞けば分かるか」を1行書く。書けないならそれは情報待ちではなく、聞く相手を決めていない判断待ちである。判断待ちは「誰が・いつまでに・何を決めるか」を1文にして相手に渡す。決めてもらうのを待つのではなく、決める形のほうを渡す。著者の例文は「A案でよければ明日15時までにご返信ください。ご返信がなければA案で進めます」まで書いて出す、というもの。作業待ちだけが本当に時間の問題で、ここに来てはじめて「速さの話」になる
+4. **「受けない側」を先に決める** —— 入る量が出る量を上回っていれば本数は必ず増える。数式のとおりである。だから「週の前半は新しく受けない」のように、受けないほうを先に決めておく
+
+## 自分が待たせている本数のほうが効く
+
+やってみて効いたのは、自分が待っている本数よりも「自分が誰かを待たせている本数」だった、と @smark_x は強調する。返していない1通はこちらでは「あとで返す」だが、相手の側ではもう1本の仕掛かりとして立っている。つまり同じ1本が2人ぶんの本数に乗っている。
+
+その例として著者は、NVIDIA のジェンスン・ファンについて、1on1 をやらない、ステータス報告も受け取らない、直属の部下は60人ほど、代わりに毎朝社員から届く100通ほどのメールをそのまま読む、という X 投稿が流れていたと紹介する。@smark_x はこれを、人を減らさなくても間に判断待ちの行列を作らなければ止まらない設計だと読み、逆に言えば階層をひとつ挟むたびに誰かの本数が1本増えている、とまとめる。記事の結びは「速く働くほうが目立つけど、終わるのは本数が減ったとき」である。
+
+## 他ページとのつながり
+
+同じ @smark_x の [[concepts/ai-review-bottleneck]] は『ザ・ゴール』の制約理論で「どの工程がボトルネックか」を見て、そこへ流れ込む量と質を絞る話だった。本ページはリトルの法則で「系の中に何本あるか」を見る。どちらも「1つの工程を速くしても全体は終わらない」という同じ結論に至るが、制約理論は絞る場所を、リトルの法則は本数と滞在時間の比例関係を与える、という役割の違いがあると考えられる。
+
+[[concepts/zeigarnik-fatigue-loop]] が描く「未完了が注意を奪い続ける」疲労は、本ページの数え方で言えば頭の中にあるだけの件も1本として立っている状態にあたる。同ページが脱出口とする「完了でなく決着」は、本ページの手順3で判断待ちを「誰が・いつまでに・何を決めるか」の1文にして渡す動きと同じ方向だと考えられる。また [[concepts/ai-secretary-gateway]] で @dansyu_callenge が AI 窓口に担わせる「返事待ち・判断待ちに分ける」仕事は、手順2の分類を AI に機械化した形と読める。ただし同ページの区分は自分が待つ側だけを扱い、本ページが最も効いたとする「自分が待たせている本数」は含まれていない。
+
+[[concepts/slack-time-at-work]] の稼働率80%設計と、手順4の「受けない側を先に決める」は、どちらも出る量に対して入る量を抑える打ち手である。[[concepts/ai-native-engineering-org]] で Sashank Gondala が「出荷工程を自動化し切るとボトルネックは何を作るか決める工程へ移る」と報告した現象は、本ページの判断待ちが組織規模で現れた形と考えられる。
+
+## 観察ログ（未検証）
+
+- 2026-11-07: ジェンスン・ファンの「1on1 なし・ステータス報告なし・直属約60人・毎朝約100通のメールを読む」は @smark_x が X 投稿の伝聞として紹介した数字。原投稿と一次発言は未確認
+- 2026-11-07: 「タスク管理ツール内の件数は実数の半分以下」は @smark_x の経験則。自分の棚卸しで本数を比べて確かめる
+
+## 問い
+
+- 自分の仕掛かりを全部数え、情報待ち・判断待ち・作業待ちに分ける。未 ingest のソース、読み返していない weekly、返していない連絡はどこに入るか
+- AI エージェントに出した指示で返答を読んでいないものは、エージェント側の行列にも立っている。[[concepts/ai-review-bottleneck]] の「セッションを増やすと順番待ちが伸びる」は「同じ1本が2人ぶんに乗る」の AI 版か
+- リトルの法則は到着と処理が釣り合った定常状態の式で、手順4が言う「入る量が出る量を上回る」状態では本数が増え続ける。「受けない期間」の長さをどう決めれば定常に戻るか
+
+## 関連
+
+- [[concepts/ai-review-bottleneck]] — 同著者の制約理論。ボトルネック工程への流入を絞る側の答えで、本ページは工程でなく仕掛かり本数の側から同じ「速くしても終わらない」を扱う
+- [[concepts/zeigarnik-fatigue-loop]] — 未完了が注意を奪い続ける疲労ループ。脱出は完了でなく決着で、本ページの「判断待ちを決める形にして渡す」が決着の具体形
+- [[concepts/ai-secretary-gateway]] — 依頼を予定・返事待ち・判断待ちに分ける AI 窓口（@dansyu_callenge）。手順2の分類を AI に機械化した例
+- [[concepts/slack-time-at-work]] — 稼働率を80%に抑える設計（Sean Goedecke）。手順4の「受けない側を先に決める」と同じく入る量を制御する
+- [[concepts/ai-native-engineering-org]] — 出荷工程を自動化し切った後のボトルネックは「何を作るか決める工程」（Sashank Gondala）。本ページの判断待ちが組織規模で現れた形
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

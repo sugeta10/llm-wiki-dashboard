@@ -56,3 +56,4 @@ flowchart LR
 - [[concepts/frequency-impact-fix-threshold]] — ①の「数えられる自己採点条件」をコードレビューに置いた例。発生頻度×影響度の積が閾値未満のバグは Issue に残して修正の往復を止める（@hawkymisc）
 - [[concepts/ai-native-engineering-org]] — 同じ構造を組織規模で追った FurtherAI の 9 か月。出荷工程を月ごとに自動化し切ると、ボトルネックが「読んで直す」から「何を作るか決める」へ移り組織設計の問題になる（Sashank Gondala）
 - [[concepts/critical-thinking-with-agents]] — Osmani が orchestration tax（生成量と自分の名で出せる量の差）と呼ぶ同じ現象。積み上がるならセッションを足さず、チェックを締めるか減速するかの二択に要約する
+- [[concepts/littles-law-wip]] — 同著者が『ザ・ゴール』の次に持ち出したリトルの法則。工程でなく「同時に持っている本数」の側から、速くしても終わらない理由と、情報待ち/判断待ち/作業待ちに分けて本数を減らす手順を書く
