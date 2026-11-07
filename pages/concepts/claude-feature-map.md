@@ -64,3 +64,4 @@
 - [[concepts/ai-red-teaming]] — 第 2 部の敵対役プロンプトの組織向け版
 - [[tools/ffmpeg-skill]] — 第 5 部の動画編集を Skill に固めた実例
 - [[tools/claude-academy]] — 製品別トラックで同じ面を公式に学ぶ入口
+- [[concepts/claude-code-parallel-oversight]] — 同じ「機能の所在と試すプロンプト」形式で、Claude Code デスクトップの直近の変更（ヘルパー・管理セッション・Side Chat／Split Screen・/skill-doctor・Mods）だけを並べた AI Edge 版。こちらもプロンプト本文は未収録

@@ -85,3 +85,4 @@ Claude Code は 80 回中 79 回、最終返答で食い違いを指摘しなが
 - [[concepts/no-backward-compat-agents-md]] — ファイル側がわざと新しい方針を書く運用。本研究の 1 文と向きが逆になりうる例
 - [[tools/claude-code]] — CLAUDE.md を読む側
 - [[tools/openai-codex]] — AGENTS.md を読む側。本研究では既存コードの書き換えがこちらだけで起きた
+- [[papers/2026-tsuchida-agents-md-wording]] — 同じ AIDB 経由の指示ファイル研究。こちらは「古いか」でなく「どう書くか」：条件つきと禁止形は言い切りより守られず、claude-sonnet-5 では書き方だけで 71.6%→17.3% まで落ちる（Tsuchida ら・NAIST）

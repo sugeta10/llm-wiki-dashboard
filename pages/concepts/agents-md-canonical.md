@@ -60,3 +60,4 @@ flowchart TD
 - [[concepts/no-backward-compat-agents-md]] — AGENTS.md に書く中身の一例：開発中・社内向けという前提を宣言して後方互換とデータ移行を止める1文（@sesere115・Codex）
 - [[concepts/ai-coding-loop-formal]] — AGENTS.md のグローバルプロンプトは基本書かず、選択肢が複数あるときの判断基準と一般的でない制約だけ書くという中身側の方針（mizchi）
 - [[papers/2026-xu-stale-instruction-files]] — CLAUDE.md / AGENTS.md が古くなるとコードより優先されることを Claude Code と Codex CLI の両方で実測した研究（Xu & Wu）。対策の 1 文は `~/.claude/CLAUDE.md` と `~/.codex/AGENTS.md` の両ユーザーレベルファイルに同文を置く
+- [[papers/2026-tsuchida-agents-md-wording]] — 1 つの AGENTS.md を複数のハーネス／モデルで共有すると、ある環境で選んだ書き方が別の環境で同じように守られるとは限らない（言い切りが勝つか理由つきが勝つかが組み合わせで入れ替わる）ことを実測した研究（Tsuchida ら・NAIST）。正本を 1 本化する運用の注意点

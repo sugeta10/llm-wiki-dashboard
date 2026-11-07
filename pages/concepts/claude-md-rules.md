@@ -122,3 +122,4 @@ READMEは各ルールに判定テストを添える。Rule 2 は「シニアエ�
 - [[concepts/context-engineering]] — Anthropic Claude Codeチーム（@trq212）が「新モデルはルールより判断力に委ねる方が効く」とシステムプロンプトを80%削減した経験。本ページの明示ルール偏重への反証として読める
 - [[concepts/lean-prompt-rules-adaptation]] — Opus 5移行で本ページの旧世代前提rulesが噛み合わなくなった実測記録。名指し上書き・望ましい動きの明記・行動直前への注入という3つの書き直し対策（@u1）
 - [[papers/2026-xu-stale-instruction-files]] — Rule 11（慣習優先）を明示しないと、CLAUDE.md の古い記述がツール出力として届くコードに勝つことを 320 走行で実測した研究（Xu & Wu）。ユーザーレベルの指示ファイルに 1 文足すとコードに従う選択が 4.2%→91.4%
+- [[papers/2026-tsuchida-agents-md-wording]] — ルールの「書き方」だけで遵守率が変わることを 4 つのハーネス／モデル組み合わせで実測した研究（Tsuchida ら・NAIST）。条件つき「〜する場合は」は一貫して低く、禁止形「〜せずに〜するな」は claude-sonnet-5 で 17.3%。本ページの 12 条を言い切りで書く根拠になる

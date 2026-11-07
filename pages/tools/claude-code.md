@@ -433,3 +433,4 @@ Claude Codeにアプリのフロー構造をHTML + JSONで文書化させ、そ�
 - [[tools/html-plan]]（`/html-plan <指示>` で実装プランを「主張の木」の HTML 1枚にし、選択・コメントをまとめて貼り戻させるコミュニティプラグイン・@trq212 作）
 - [[tools/claude-code-mcp-stack]]（Boris Cherny の3原則＝検証手段を渡す／1日1回の作業は仕組みに／外部ツールを作業面へ、を公式 MCP サーバー8本と工程別スタックで実装する構成論・@kimuai08 整理）
 - [[concepts/claude-code-learning-path]]（Anthropic 公式講座・ドキュメントとコミュニティガイド12本を「基礎→指示と文脈→自動化→コミュニティ」の4フェーズに並べた無料教材地図・@soniacuts 整理）
+- [[concepts/claude-code-parallel-oversight]]（ヘルパー・管理セッション・Side Chat／Split Screen・Docs・`/skill-doctor`・Mods など直近の変更 7 項目を試すプロンプトつきで並べた AI Edge のガイド。`/btw` の Side Chat は左上のタブメニューからも開ける）

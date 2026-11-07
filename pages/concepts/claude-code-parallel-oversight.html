@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-parallel-oversight - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-parallel-oversight</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-parallel-oversight.md">Markdownで表示</a></div>
+  <div class="meta">concepts/claude-code-parallel-oversight · concepts · <span title="2026-11-07">今日</span></div>
+  <article><h1>Claude のヘルパー・セッション管理・Side Chat／Split Screen・Docs・/skill-doctor・Mods：AI Edge の「Claude 2.0」ガイド</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 複数のヘルパー（サブエージェント）に仕事を分けて本線が回収する、1 つの管理セッションから他のセッションを監督する、Side Chat と Split Screen で本線を止めずに確認する、Docs／Sheets をその場で編集する、/skill-doctor で文脈を食うスキルを見つける、Mods で挙動を自作する、という Claude Code（デスクトップ）の直近数週間の変更 7 項目を「試すプロンプト」つきで並べた AI Edge（@aiedge_）の X 記事。プロンプト本文は本 vault のキャッシュに収録されていない。</p>
+</blockquote>
+<p>「Claude 2.0」は記事の見出しで、本文中にその名で呼ばれる公式発表への言及はない。AI Edge は X のプロフィールで「AI Edge by @milesdeutscher」と名乗るメディアアカウント（フォロワー約 8 万・ニュースレター運営）で、記事は「Claude はこの数週間で多くの人が気づいている以上に変わった」と始め、7 節で機能と使い方を並べる。各節に「Prompt:」として貼り付け用のプロンプトを添えているが、キャッシュでは本文が落ちており、以下は機能の説明部分の転記である。記事の軸は「複数のエージェントを見渡し、進捗を確認し、複数のプロジェクトを見失わずに管理する」ことにあり、7 節のうち前半 3 節がそれに当たる。</p>
+<h2>I. ヘルパー（サブエージェント）のチームを付ける</h2>
+<p>AI Edge は、Claude に「ヘルパー」のサブエージェントのチームを付けられるようになったと書く。ヘルパーはサイドチャットとして立ち上がり、調査・執筆・計画を別々のチャットでやる代わりに、本線の Claude に主タスクを渡して各ヘルパーに並列で部分を担当させ、終わったら本線が成果を回収する。例として 49 ドルのデジタル製品を出すとき、競合調査・X の投稿・販売ページの 3 つを順に頼むのでなく一度に渡す使い方を挙げる（そのプロンプト本文は未収録）。各ヘルパーの進捗は、機能が有効なところでは task panel から追える。大きな継続プロジェクトでは、Claude Code に承認済みのソースファイルのリポジトリを持たせると、ヘルパーごとに事実の版が食い違うのを防げる、と AI Edge は述べる。</p>
+<p>wiki 側の対応: ヘルパーは <a href="../tools/claude-code-subagents.html">claude-code-subagents</a> のサブエージェント、本線が回収する構造は <a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> の subagent 運用に当たる。</p>
+<h2>II. 他のセッションを 1 つのチャットから管理する</h2>
+<p>Claude Code は対応するデスクトップのセッション間で働けるようになり、1 つのセッションが他のセッションの状況を調べ、更新を求め、変更を伝えられる、と AI Edge は書く。複数の記事・ビルド・調査を並行しているなら「管理セッション」を 1 つ作るプロンプト（未収録）を勧め、他所に効く修正を管理セッションから渡す例も挙げる。AI Edge はこれを「複数のタスクを同時に監督するより実用的な方法」と位置づける。</p>
+<h2>III. Side Chat と Split Screen</h2>
+<p><strong>Side Chat</strong> は Claude Code の左上のタブメニューから開くか、チャットに <code>/btw</code> と打つと開く。Side Chat は本線の文脈を既に持っているので、本線のタスクを止めずに質問・前提の確認・明確化ができる、と AI Edge は書く（<a href="../tools/claude-code.html">claude-code</a> のコマンド表にある <code>/btw</code> の UI 側の入口）。</p>
+<p><strong>Split Screen</strong> は複数の Claude Code セッションを並べて開く機能で、サイドバーの別チャットを右クリックして「Open in → Split view」を選ぶか、Mac なら Option、Windows なら Alt を押しながらチャットをクリックする。例として、競合調査・コンテンツ執筆・サイト構築の 3 セッションを同時に見る使い方を挙げ、対応するパネルは別ウィンドウに切り離してモニター間で動かせるとする。</p>
+<h2>IV. Docs と Google Sheets を Claude の中で直接編集する</h2>
+<p>AI Edge は「Claude Docs は新しい」とし、下書きをレビューして一緒に直し、仕上がった文書を共有・エクスポートできる、Claude Design と Slides も同じワークフローに近づいた、と書く。スプレッドシートについては、調査の残りを文脈に保ったまま実際のシートを更新できるとし、例のプロンプトは未収録。Google 側のサイドバーから Docs・Sheets・Slides を編集する機能は <a href="../tools/claude-google-workspace.html">claude-google-workspace</a> に別途ある。</p>
+<h2>V. 文脈を食っているスキルを掃除する</h2>
+<p>Skills とプラグインを足すほど Claude がセッションに持ち込む指示が増え、ほとんど使わないものが文脈を占めうる。Claude Code の新コマンド <code>/skill-doctor</code> で、どのスキルが最も文脈を消費しているか・どれを使っていないかを見て、続けて不要な指示を聞く（プロンプト未収録）と、不要に場所を取っている指示が示される、と AI Edge は書く。指示ファイルとスキルの肥大を同じ問題として扱う <a href="../concepts/skills-over-memory.html">skills-over-memory</a> の、Claude Code 側の計測入口に当たる。</p>
+<h2>VI. Mods で Claude をカスタマイズする</h2>
+<p>Claude Code は Mods に対応し、公式の設定を待たずにアプリの動き方の一部を変えられる。例として、長いタスクが終わったら結果の 1 行要約つきでデスクトップ通知を出す Mod を挙げる（作らせるプロンプトは未収録）。Mods は TypeScript で書かれプラグインに同梱でき、Claude Code 自体と同じコンピュータへのアクセスを持つので信頼できるものだけ動かせ、と AI Edge は注意する。仕組みの正本は <a href="../tools/claude-code-mods.html">claude-code-mods</a>。</p>
+<h2>VII. 小さな更新が入った既存機能</h2>
+<ul>
+<li><strong>Dispatch</strong>: 既にアクセスのあるアカウントでは、スマホから仕事を割り当ててデスクトップで結果を受け取れる。ローカルファイルを使うタスクでは、Claude Desktop を起動したままコンピュータを起こしておく必要がある</li>
+<li><strong>Claude Design</strong>: ワンページャー・プロトタイプなどのビジュアル作業を同じ会話で作って磨ける。デザインシステムを渡せば既存ブランドに沿う</li>
+<li><strong>Plugins と Skills</strong>: 全部自作する前にライブラリを見よ。執筆・マーケ・調査・財務のワークフローは既にあるかもしれない</li>
+</ul>
+<p>記事は末尾で AI Edge のニュースレター（newsletter.aiedgehq.co）への登録を促す。</p>
+<h2>問い</h2>
+<ul>
+<li><code>/skill-doctor</code> を本 vault で走らせ、使っていないスキルがどれだけ文脈を食っているか測る。本リポはスキルとプラグインが多い</li>
+<li>管理セッションから他セッションへ「修正を伝える」機構は、<a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> の agent teams と同じものか、デスクトップ固有の別経路か。記事は UI 操作しか書いていない</li>
+<li>元記事（x.com/i/article/2117212475154169856）からプロンプト本文を取り直す価値があるのは I（ヘルパー）と II（管理セッション）の 2 本か</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a> — 本体。<code>/btw</code> と <code>/doctor</code> はコマンド表にあり、本ページは Side Chat・Split Screen・<code>/skill-doctor</code> の UI 側の入口を足す</li>
+<li><a href="../concepts/claude-feature-map.html">claude-feature-map</a> — 同じ「機能の所在と試すプロンプト」形式で Claude 全体の 20 機能を並べた @angeldot_ のガイド。本ページは Claude Code デスクトップの直近の変更に絞った版</li>
+<li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a> — 「自分が指揮官になり専門化した Claude を並べる」運用フレーム。本ページのヘルパー・管理セッション・Split Screen はその UI 側</li>
+<li><a href="../tools/claude-code-subagents.html">claude-code-subagents</a> — ヘルパーの実体であるサブエージェントの定義と挙動</li>
+<li><a href="../tools/claude-code-mods.html">claude-code-mods</a> — VI の Mods の仕組み（Function Hooks・5 層・プラグイン同梱）</li>
+<li><a href="../tools/claude-google-workspace.html">claude-google-workspace</a> — IV と対になる、Google 側サイドバーからの Docs／Sheets 編集</li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> — V が測るスキル・指示ファイルの肥大問題</li>
+<li><a href="../tools/claude-code-remote-control.html">claude-code-remote-control</a> — VII の Dispatch と同じ「スマホから自分の Claude Code を動かす」運用の既存ページ</li>
+<li><a href="../tools/claude-code-plugins.html">claude-code-plugins</a> — VII で「先にライブラリを見よ」と言われる公式プラグイン群</li>
+<li><a href="../concepts/workflow-cloning.html">workflow-cloning</a> — AI Edge の運営者 Miles Deutscher 本人のアカウントから取り込んだ別ページ</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li>
+<li><a href="../concepts/claude-feature-map.html">claude-feature-map</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a></li>
+<li><a href="../concepts/workflow-cloning.html">workflow-cloning</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2118005624479052232" rel="noopener" target="_blank">https://x.com/i/web/status/2118005624479052232</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude のヘルパー・セッション管理・Side Chat／Split Screen・Docs・/skill-doctor・Mods：AI Edge の「Claude 2.0」ガイド
+
+&gt; **TL;DR**: 複数のヘルパー（サブエージェント）に仕事を分けて本線が回収する、1 つの管理セッションから他のセッションを監督する、Side Chat と Split Screen で本線を止めずに確認する、Docs／Sheets をその場で編集する、/skill-doctor で文脈を食うスキルを見つける、Mods で挙動を自作する、という Claude Code（デスクトップ）の直近数週間の変更 7 項目を「試すプロンプト」つきで並べた AI Edge（@aiedge_）の X 記事。プロンプト本文は本 vault のキャッシュに収録されていない。
+
+「Claude 2.0」は記事の見出しで、本文中にその名で呼ばれる公式発表への言及はない。AI Edge は X のプロフィールで「AI Edge by @milesdeutscher」と名乗るメディアアカウント（フォロワー約 8 万・ニュースレター運営）で、記事は「Claude はこの数週間で多くの人が気づいている以上に変わった」と始め、7 節で機能と使い方を並べる。各節に「Prompt:」として貼り付け用のプロンプトを添えているが、キャッシュでは本文が落ちており、以下は機能の説明部分の転記である。記事の軸は「複数のエージェントを見渡し、進捗を確認し、複数のプロジェクトを見失わずに管理する」ことにあり、7 節のうち前半 3 節がそれに当たる。
+
+## I. ヘルパー（サブエージェント）のチームを付ける
+
+AI Edge は、Claude に「ヘルパー」のサブエージェントのチームを付けられるようになったと書く。ヘルパーはサイドチャットとして立ち上がり、調査・執筆・計画を別々のチャットでやる代わりに、本線の Claude に主タスクを渡して各ヘルパーに並列で部分を担当させ、終わったら本線が成果を回収する。例として 49 ドルのデジタル製品を出すとき、競合調査・X の投稿・販売ページの 3 つを順に頼むのでなく一度に渡す使い方を挙げる（そのプロンプト本文は未収録）。各ヘルパーの進捗は、機能が有効なところでは task panel から追える。大きな継続プロジェクトでは、Claude Code に承認済みのソースファイルのリポジトリを持たせると、ヘルパーごとに事実の版が食い違うのを防げる、と AI Edge は述べる。
+
+wiki 側の対応: ヘルパーは [[tools/claude-code-subagents]] のサブエージェント、本線が回収する構造は [[concepts/claude-code-orchestration]] の subagent 運用に当たる。
+
+## II. 他のセッションを 1 つのチャットから管理する
+
+Claude Code は対応するデスクトップのセッション間で働けるようになり、1 つのセッションが他のセッションの状況を調べ、更新を求め、変更を伝えられる、と AI Edge は書く。複数の記事・ビルド・調査を並行しているなら「管理セッション」を 1 つ作るプロンプト（未収録）を勧め、他所に効く修正を管理セッションから渡す例も挙げる。AI Edge はこれを「複数のタスクを同時に監督するより実用的な方法」と位置づける。
+
+## III. Side Chat と Split Screen
+
+**Side Chat** は Claude Code の左上のタブメニューから開くか、チャットに `/btw` と打つと開く。Side Chat は本線の文脈を既に持っているので、本線のタスクを止めずに質問・前提の確認・明確化ができる、と AI Edge は書く（[[tools/claude-code]] のコマンド表にある `/btw` の UI 側の入口）。
+
+**Split Screen** は複数の Claude Code セッションを並べて開く機能で、サイドバーの別チャットを右クリックして「Open in → Split view」を選ぶか、Mac なら Option、Windows なら Alt を押しながらチャットをクリックする。例として、競合調査・コンテンツ執筆・サイト構築の 3 セッションを同時に見る使い方を挙げ、対応するパネルは別ウィンドウに切り離してモニター間で動かせるとする。
+
+## IV. Docs と Google Sheets を Claude の中で直接編集する
+
+AI Edge は「Claude Docs は新しい」とし、下書きをレビューして一緒に直し、仕上がった文書を共有・エクスポートできる、Claude Design と Slides も同じワークフローに近づいた、と書く。スプレッドシートについては、調査の残りを文脈に保ったまま実際のシートを更新できるとし、例のプロンプトは未収録。Google 側のサイドバーから Docs・Sheets・Slides を編集する機能は [[tools/claude-google-workspace]] に別途ある。
+
+## V. 文脈を食っているスキルを掃除する
+
+Skills とプラグインを足すほど Claude がセッションに持ち込む指示が増え、ほとんど使わないものが文脈を占めうる。Claude Code の新コマンド `/skill-doctor` で、どのスキルが最も文脈を消費しているか・どれを使っていないかを見て、続けて不要な指示を聞く（プロンプト未収録）と、不要に場所を取っている指示が示される、と AI Edge は書く。指示ファイルとスキルの肥大を同じ問題として扱う [[concepts/skills-over-memory]] の、Claude Code 側の計測入口に当たる。
+
+## VI. Mods で Claude をカスタマイズする
+
+Claude Code は Mods に対応し、公式の設定を待たずにアプリの動き方の一部を変えられる。例として、長いタスクが終わったら結果の 1 行要約つきでデスクトップ通知を出す Mod を挙げる（作らせるプロンプトは未収録）。Mods は TypeScript で書かれプラグインに同梱でき、Claude Code 自体と同じコンピュータへのアクセスを持つので信頼できるものだけ動かせ、と AI Edge は注意する。仕組みの正本は [[tools/claude-code-mods]]。
+
+## VII. 小さな更新が入った既存機能
+
+- **Dispatch**: 既にアクセスのあるアカウントでは、スマホから仕事を割り当ててデスクトップで結果を受け取れる。ローカルファイルを使うタスクでは、Claude Desktop を起動したままコンピュータを起こしておく必要がある
+- **Claude Design**: ワンページャー・プロトタイプなどのビジュアル作業を同じ会話で作って磨ける。デザインシステムを渡せば既存ブランドに沿う
+- **Plugins と Skills**: 全部自作する前にライブラリを見よ。執筆・マーケ・調査・財務のワークフローは既にあるかもしれない
+
+記事は末尾で AI Edge のニュースレター（newsletter.aiedgehq.co）への登録を促す。
+
+## 問い
+
+- `/skill-doctor` を本 vault で走らせ、使っていないスキルがどれだけ文脈を食っているか測る。本リポはスキルとプラグインが多い
+- 管理セッションから他セッションへ「修正を伝える」機構は、[[concepts/claude-code-orchestration]] の agent teams と同じものか、デスクトップ固有の別経路か。記事は UI 操作しか書いていない
+- 元記事（x.com/i/article/2117212475154169856）からプロンプト本文を取り直す価値があるのは I（ヘルパー）と II（管理セッション）の 2 本か
+
+## 関連
+
+- [[tools/claude-code]] — 本体。`/btw` と `/doctor` はコマンド表にあり、本ページは Side Chat・Split Screen・`/skill-doctor` の UI 側の入口を足す
+- [[concepts/claude-feature-map]] — 同じ「機能の所在と試すプロンプト」形式で Claude 全体の 20 機能を並べた @angeldot_ のガイド。本ページは Claude Code デスクトップの直近の変更に絞った版
+- [[concepts/claude-code-orchestration]] — 「自分が指揮官になり専門化した Claude を並べる」運用フレーム。本ページのヘルパー・管理セッション・Split Screen はその UI 側
+- [[tools/claude-code-subagents]] — ヘルパーの実体であるサブエージェントの定義と挙動
+- [[tools/claude-code-mods]] — VI の Mods の仕組み（Function Hooks・5 層・プラグイン同梱）
+- [[tools/claude-google-workspace]] — IV と対になる、Google 側サイドバーからの Docs／Sheets 編集
+- [[concepts/skills-over-memory]] — V が測るスキル・指示ファイルの肥大問題
+- [[tools/claude-code-remote-control]] — VII の Dispatch と同じ「スマホから自分の Claude Code を動かす」運用の既存ページ
+- [[tools/claude-code-plugins]] — VII で「先にライブラリを見よ」と言われる公式プラグイン群
+- [[concepts/workflow-cloning]] — AI Edge の運営者 Miles Deutscher 本人のアカウントから取り込んだ別ページ
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
