@@ -111,3 +111,4 @@ Claude Code チームの Addy Osmani（X プロフィールは「Claude Code @an
 - [[concepts/ai-native-engineering-org]] — FurtherAI の出荷工程の月ごとの自動化（AI が先に見る 60%→99%・暗黙知を Python チェック 21 本に・低リスクは人なしで最大 1/3）。本ページの多層レビューと同じ打ち手をスタートアップ規模で、組織設計まで追った記録（Sashank Gondala）
 - [[concepts/agent-era-ci-speedup]] — 本ページが「ブロックする自動チェック」の 1 層に置く CI を、Boardy が 40 分→2 分にした 9 手順。「次のボトルネックは自分がマージを押すこと」と締める地点が本ページの無人マージにつながる（owen）
 - [[concepts/critical-thinking-with-agents]] — Osmani が本ページの「チェックが見逃すものを言えないなら本物のレビューを」を深く見るべきときの目安として引き、レビューがゴム印に変わる前に「エージェントが決めたこと」を一覧させ自分にクイズを課す、個人の側の習慣を書いた X 記事
+- [[concepts/coding-agents-as-management]] — Osmani が本ページのチーム規模のレビュー再設計を個人の運用に引き下ろした X 記事。「テストが緑で名前が妥当だから承認」をコードレビューでなく追認（code ratification）と呼び、`/code-review` を「著者は自分の PR を承認しない」の実装として置く

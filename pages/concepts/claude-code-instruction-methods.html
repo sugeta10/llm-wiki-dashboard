@@ -160,6 +160,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/agent-era-ci-speedup.html">agent-era-ci-speedup</a> — 「エージェントは手順を飛ばすので、push 前の format・lint・型検査は AGENTS.md の 1 行でなく pre-push hook に置け」という Boardy の owen の実例。本ページの「決定論的強制は hook」の CI 前段への適用</li>
 <li><a href="../concepts/claude-code-compaction-survival.html">claude-code-compaction-survival</a> — 本ページの「コンパクション挙動」列を公式ドキュメントの機構別一覧表（13 行）に展開したページ。起動済みスキル本文の上限（1 本 5,000・合計 25,000 トークン）と読み直すファイル数（最大 5）の実数はこちら</li>
 <li><a href="../concepts/claude-code-seo-second-brain.html">claude-code-seo-second-brain</a> — 本ページの振り分けを SEO 運用に適用した実例（CLAUDE.md 128 行・17 スキル・auto memory 171 件・robots.txt を守る PreToolUse hook）。auto memory の索引が 200 行・25KB を超えて 52 行が黙って切られた事故の記録つき（Nicholas Dulait）</li>
+<li><a href="../concepts/coding-agents-as-management.html">coding-agents-as-management</a> — 本ページの「要請（プロンプト・CLAUDE.md・スキル）／要件（hooks・deny ルール・managed settings）」の線を、Grove の task-relevant maturity で管理論として根拠づけ、「強調しても拾われない1行は hook に・好みを表す hook は外す」の両方向ルールにした Osmani の X 記事</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-command-wrappers.html">agent-command-wrappers</a></li>
 <li><a href="../concepts/agent-era-ci-speedup.html">agent-era-ci-speedup</a></li>
 <li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a></li>
@@ -262,6 +263,7 @@ mindmap
 - [[concepts/agent-era-ci-speedup]] — 「エージェントは手順を飛ばすので、push 前の format・lint・型検査は AGENTS.md の 1 行でなく pre-push hook に置け」という Boardy の owen の実例。本ページの「決定論的強制は hook」の CI 前段への適用
 - [[concepts/claude-code-compaction-survival]] — 本ページの「コンパクション挙動」列を公式ドキュメントの機構別一覧表（13 行）に展開したページ。起動済みスキル本文の上限（1 本 5,000・合計 25,000 トークン）と読み直すファイル数（最大 5）の実数はこちら
 - [[concepts/claude-code-seo-second-brain]] — 本ページの振り分けを SEO 運用に適用した実例（CLAUDE.md 128 行・17 スキル・auto memory 171 件・robots.txt を守る PreToolUse hook）。auto memory の索引が 200 行・25KB を超えて 52 行が黙って切られた事故の記録つき（Nicholas Dulait）
+- [[concepts/coding-agents-as-management]] — 本ページの「要請（プロンプト・CLAUDE.md・スキル）／要件（hooks・deny ルール・managed settings）」の線を、Grove の task-relevant maturity で管理論として根拠づけ、「強調しても拾われない1行は hook に・好みを表す hook は外す」の両方向ルールにした Osmani の X 記事
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

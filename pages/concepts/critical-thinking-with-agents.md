@@ -101,3 +101,4 @@ Osmani が最近検証について多く書いてきたのは、ボトルネッ�
 - [[concepts/ai-teacher-prompt]] — Anthropic 社内の Stay in the Loop 実践。本ページの「クイズに満点で通るまでマージしない」と同じ目的の手法
 - [[concepts/finding-unknowns]] — Thariq Shihipar の unknown 発見フレーム。本ページが「仮説が無いときは blind spot pass を頼む」と引く出所
 - [[tools/claude-code-mcp-stack]] — Boris Cherny の「検証手段を渡す」原則を MCP サーバー構成で実装する例
+- [[concepts/coding-agents-as-management]] — 同じ Osmani が、本ページの個人の認知の側に対してマネージャーの実践の側から書いた続編。検証手段を渡す・文脈を渡す・要請と要件を分ける・判断は委任しない・無人走行の5つの問い、の10実践と、人の管理との違い7点
