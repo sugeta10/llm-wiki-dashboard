@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>managed-agents-security-principles - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>managed-agents-security-principles</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="managed-agents-security-principles.md">Markdownで表示</a></div>
+  <div class="meta">concepts/managed-agents-security-principles · concepts · <span title="2026-11-14">今日</span></div>
+  <article><h1>Managed Agents のエージェントセキュリティ4原則（脳と手の分離・資格情報の外置き・許可ホスト・全記録）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 無人で社内コードと社内システムに触るエージェントは人が各ステップを見張れないので制限を仕組みに組み込む必要がある、として Anthropic が <a href="../tools/claude-managed-agents.html">claude-managed-agents</a> の設計原則4つ（ハーネスとサンドボックスの分離・資格情報をサンドボックスの外で付与・環境ごとの許可ホスト一覧・全ステップを OpenTelemetry で記録）を公式記事で示し、同じ記事で全部品を自社環境で動かす Self-hosted Managed Agents を private beta として発表した（2026-11-14）。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  Harness[&quot;ハーネス（脳）: エージェントループ&quot;] --&gt; Model[&quot;モデル要求先: Anthropic 直 / Bedrock / Agent Platform / Foundry / 自前ゲートウェイ&quot;]
+  Harness --&gt;|ツールが必要なときだけ起動| Sandbox[&quot;サンドボックス（手）: シェル・ファイルツール&quot;]
+  Harness --&gt; History[&quot;セッション履歴（イベントログ・自社 DB）&quot;]
+  Tools[&quot;MCP ツール / 対応 API 呼び出し&quot;] --&gt; Proxy[&quot;プロキシ（サンドボックスの外）&quot;]
+  Vault[&quot;Vault / 自社シークレットマネージャ&quot;] --&gt;|資格情報を付与| Proxy
+  Sandbox --&gt; Allowed[&quot;許可ホスト一覧 / ファイアウォール&quot;]
+  Proxy --&gt; Allowed
+  History --&gt;|OpenTelemetry| Monitor[&quot;既存の監視ツール&quot;]</pre>
+<p>Anthropic が原則を記事の中心に据えた背景は、Managed Agents の提供形態が3段階に広がったことにある。最初は Anthropic がインフラを運用する hosted サービスとして Claude Platform 上で提供し、コードを自社環境に留めたいチーム向けに self-hosted sandboxes を足した。その後エージェントは壊れたビルドの修復・リリースのテスト・アラートのトリアージ・バグ backlog の消化のような重要な仕事を無人で担うようになり、社内システムへのアクセスが要る。そのレベルの権限を持つエージェントについては、サンドボックスだけでなくサービス全体を自社環境に置きたいチームがあり、これまではプラットフォームを自作するしかなかった、と Anthropic は記事で述べる。4原則は Anthropic が全部をホストする場合・サンドボックスだけ自社でホストする場合・サービス全体を自社でホストする場合のどれにも共通して適用される、というのが記事の位置づけである。</p>
+<h2>3つの提供形態</h2>
+<table>
+<thead>
+<tr>
+<th>形態</th>
+<th>自社環境で動く部分</th>
+<th>記事での位置づけ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hosted（Claude Platform）</td>
+<td>なし（Anthropic がインフラを運用）</td>
+<td>最初に提供した形態</td>
+</tr>
+<tr>
+<td>self-hosted sandboxes</td>
+<td>サンドボックスのみ</td>
+<td>コードを自社環境に留めたいチーム向けに追加</td>
+</tr>
+<tr>
+<td>self-hosted Managed Agents</td>
+<td>ハーネス・サンドボックス・資格情報・セッション履歴の全部（自社クラウドまたはオンプレ）</td>
+<td>private beta（2026-11-14 時点・Anthropic のアカウントチームへ申請）</td>
+</tr>
+</tbody>
+</table>
+<p>self-hosted Managed Agents では、Managed Agents サーバ・そのデータベース・エージェントがシェルとファイルツールを動かすワーカーを自社で運用する。モデルへの要求先は Anthropic 直接・クラウド事業者（Amazon Bedrock・Google の Agent Platform・Microsoft Foundry）・自前のゲートウェイから選べる。開発者が使うコア API は hosted 版と同じだ、と Anthropic は書く。セッション履歴は自社のデータベースに保存され、ゼロデータリテンション（ZDR、Anthropic 側にデータを残さない契約）を結んでいる組織では Claude へ送る要求に他の Messages API 呼び出しと同じようにそれが適用される。運用対象と ZDR の扱いの詳細は製品ページ <a href="../tools/claude-managed-agents.html">claude-managed-agents</a> の節に置く。</p>
+<h2>4原則（Anthropic の記述）</h2>
+<h3>1. 脳と手を分ける</h3>
+<p>ハーネス（脳）が Claude を呼び、サンドボックス（手）でエージェントのコードが動く。両者は設計上分離されていて、エージェントのコードはサンドボックス内で、エージェントループ・セッション履歴・Vault の秘密はその外に置かれる。Anthropic は分離の副次効果も3つ挙げる。エージェントが1つのサンドボックスの生存にその実行全体を依存しない。サンドボックスはツールが必要になったときだけ起動する。セッション履歴はサンドボックスの外にイベントログとして置かれる。</p>
+<h3>2. 資格情報をサンドボックスに入れない</h3>
+<p>Vault（Managed Agents の資格情報保管庫）は資格情報をサンドボックスの外に保つように設計されている。MCP ツールと対応する API 呼び出しについては、サンドボックスの外にあるプロキシが要求に資格情報を付与する。self-hosted では自社のシークレットマネージャに資格情報を置くこともできる。</p>
+<h3>3. ネットワークアクセスを制限できる</h3>
+<p>環境ごとに許可ホストの一覧を設定でき、それ以外のホストへの要求は遮断される。壊れたビルドを直すエージェントなら、一覧は git ホストとパッケージレジストリだけでよい、と Anthropic は例を挙げる。サンドボックスを自社でホストする場合は、同じ制限を自社のファイアウォールで設定する。</p>
+<h3>4. 全セッションが完全な記録を残す</h3>
+<p>Managed Agents はエージェントが取った全ステップを、ツール呼び出しとその結果も含めて記録する。記録は OpenTelemetry（監視データの標準規格）で出力されるので、既存の監視ツールに送り、他のシステムと並べてエージェントの活動を確認できる。</p>
+<h2>Lesse の4問題領域との対応（wiki 側の推論）</h2>
+<p>Anthropic の head of platform である Katelyn Lesse は、多エージェントシステムの未解決領域を基盤・身元と権限・隔離・監視と停止の4つに整理した（<a href="../concepts/multiagent-engineering-problems.html">multiagent-engineering-problems</a>）。本記事の4原則は、それに対する同じ会社の製品側の答えと読める。以下の対応は wiki 側の推論で、記事自体は Lesse の記事に触れていない。</p>
+<table>
+<thead>
+<tr>
+<th>Lesse の問題領域</th>
+<th>本記事の原則</th>
+<th>対応の読み</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基盤（エージェントは有状態で長く遊休する）</td>
+<td>脳と手を分ける</td>
+<td>サンドボックスをツールが要るときだけ起動し、状態（履歴）をイベントログとして外に出す構造は、遊休中にサンドボックスを持ち続けない形になる</td>
+</tr>
+<tr>
+<td>身元と権限</td>
+<td>資格情報をサンドボックスに入れない</td>
+<td>エージェントのコードが資格情報そのものを見ないので、侵害されたコードから秘密が漏れにくい。Lesse が未解決とする「人の代理の同意」には記事は触れていない</td>
+</tr>
+<tr>
+<td>隔離（被害範囲）</td>
+<td>許可ホスト一覧と脳と手の分離</td>
+<td>1体が侵害されても到達できる先が許可ホストに限られ、ループと履歴はサンドボックスの外にある</td>
+</tr>
+<tr>
+<td>監視と停止</td>
+<td>全セッションの記録を OpenTelemetry で出す</td>
+<td>横断トレースの要件に対応する。Lesse が求めた「エージェントが自分のトレースを書き換えられない」「資格情報ごと止めるキルスイッチ」は本記事に明示の記述がない</td>
+</tr>
+</tbody>
+</table>
+<p>エージェントループ・履歴・秘密をサンドボックスの外に置く部品配置は、Microsoft CEO の Satya Nadella が <a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a> で求めた「権限・観測・停止をモデルの外に置く」を製品構造として実装した形にも見える。脳と手という比喩は <a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a> の5ブロック（脳/手/記憶/ループ/検証）と同じ語で、Anthropic も分離の説明に使っている。</p>
+<h2>問い</h2>
+<ul>
+<li>自分の launchd 夜間 ingest（claude -p）に「許可ホスト一覧」と「全ステップの OpenTelemetry 記録」に相当する最小構成を置けるか。Claude Code の permissions と hook で代替できる範囲はどこまでか</li>
+<li>self-hosted で履歴が自社 DB に移ると、Dreaming（<a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a>）のようにセッション横断でメモリを再構成する機能はどこで動くのか。公式ドキュメント（platform.claude.com/docs/en/managed-agents/self-hosted）で確認する</li>
+<li>「エージェントが自分のトレースを改ざんできない」保証は self-hosted では誰が担うのか。自社運用の DB に書く以上、改ざん防止は運用側の責任になると考えられる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — 製品ページ。self-hosted の運用対象・モデル要求先・ZDR の扱いの差分はそちらの節に置く</li>
+<li><a href="../concepts/multiagent-engineering-problems.html">multiagent-engineering-problems</a> — Lesse の4問題領域。本ページはその製品側の答え</li>
+<li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a> — 権限・観測・停止をモデルの外に置く Nadella の設計論。本ページの脳と手の分離・記録の外置きはその部品配置</li>
+<li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a> — 脳/手/記憶/ループ/検証の5ブロック。Anthropic も脳と手の比喩で分離を説明する</li>
+<li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a> — 静的 API キーを使わない Anthropic への認証。資格情報を外に置く原則と同じ方向</li>
+<li><a href="../concepts/claude-code-security.html">claude-code-security</a> — Claude Code 側のセキュリティ設定。組織展開では両方を組み合わせる</li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — 外部ポリシーでエージェントの実行を縛る設計。許可ホスト一覧はネットワーク層での同種の制御</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a></li>
+<li><a href="../concepts/multiagent-engineering-problems.html">multiagent-engineering-problems</a></li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
+<li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a></li>
+<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/resources/articles/self-hosted-claude-managed-agents" rel="noopener" target="_blank">https://claude.com/resources/articles/self-hosted-claude-managed-agents</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Managed Agents のエージェントセキュリティ4原則（脳と手の分離・資格情報の外置き・許可ホスト・全記録）
+
+&gt; **TL;DR**: 無人で社内コードと社内システムに触るエージェントは人が各ステップを見張れないので制限を仕組みに組み込む必要がある、として Anthropic が [[tools/claude-managed-agents]] の設計原則4つ（ハーネスとサンドボックスの分離・資格情報をサンドボックスの外で付与・環境ごとの許可ホスト一覧・全ステップを OpenTelemetry で記録）を公式記事で示し、同じ記事で全部品を自社環境で動かす Self-hosted Managed Agents を private beta として発表した（2026-11-14）。
+
+```mermaid
+flowchart LR
+  Harness[&quot;ハーネス（脳）: エージェントループ&quot;] --&gt; Model[&quot;モデル要求先: Anthropic 直 / Bedrock / Agent Platform / Foundry / 自前ゲートウェイ&quot;]
+  Harness --&gt;|ツールが必要なときだけ起動| Sandbox[&quot;サンドボックス（手）: シェル・ファイルツール&quot;]
+  Harness --&gt; History[&quot;セッション履歴（イベントログ・自社 DB）&quot;]
+  Tools[&quot;MCP ツール / 対応 API 呼び出し&quot;] --&gt; Proxy[&quot;プロキシ（サンドボックスの外）&quot;]
+  Vault[&quot;Vault / 自社シークレットマネージャ&quot;] --&gt;|資格情報を付与| Proxy
+  Sandbox --&gt; Allowed[&quot;許可ホスト一覧 / ファイアウォール&quot;]
+  Proxy --&gt; Allowed
+  History --&gt;|OpenTelemetry| Monitor[&quot;既存の監視ツール&quot;]
+```
+
+Anthropic が原則を記事の中心に据えた背景は、Managed Agents の提供形態が3段階に広がったことにある。最初は Anthropic がインフラを運用する hosted サービスとして Claude Platform 上で提供し、コードを自社環境に留めたいチーム向けに self-hosted sandboxes を足した。その後エージェントは壊れたビルドの修復・リリースのテスト・アラートのトリアージ・バグ backlog の消化のような重要な仕事を無人で担うようになり、社内システムへのアクセスが要る。そのレベルの権限を持つエージェントについては、サンドボックスだけでなくサービス全体を自社環境に置きたいチームがあり、これまではプラットフォームを自作するしかなかった、と Anthropic は記事で述べる。4原則は Anthropic が全部をホストする場合・サンドボックスだけ自社でホストする場合・サービス全体を自社でホストする場合のどれにも共通して適用される、というのが記事の位置づけである。
+
+## 3つの提供形態
+
+| 形態 | 自社環境で動く部分 | 記事での位置づけ |
+|---|---|---|
+| hosted（Claude Platform） | なし（Anthropic がインフラを運用） | 最初に提供した形態 |
+| self-hosted sandboxes | サンドボックスのみ | コードを自社環境に留めたいチーム向けに追加 |
+| self-hosted Managed Agents | ハーネス・サンドボックス・資格情報・セッション履歴の全部（自社クラウドまたはオンプレ） | private beta（2026-11-14 時点・Anthropic のアカウントチームへ申請） |
+
+self-hosted Managed Agents では、Managed Agents サーバ・そのデータベース・エージェントがシェルとファイルツールを動かすワーカーを自社で運用する。モデルへの要求先は Anthropic 直接・クラウド事業者（Amazon Bedrock・Google の Agent Platform・Microsoft Foundry）・自前のゲートウェイから選べる。開発者が使うコア API は hosted 版と同じだ、と Anthropic は書く。セッション履歴は自社のデータベースに保存され、ゼロデータリテンション（ZDR、Anthropic 側にデータを残さない契約）を結んでいる組織では Claude へ送る要求に他の Messages API 呼び出しと同じようにそれが適用される。運用対象と ZDR の扱いの詳細は製品ページ [[tools/claude-managed-agents]] の節に置く。
+
+## 4原則（Anthropic の記述）
+
+### 1. 脳と手を分ける
+
+ハーネス（脳）が Claude を呼び、サンドボックス（手）でエージェントのコードが動く。両者は設計上分離されていて、エージェントのコードはサンドボックス内で、エージェントループ・セッション履歴・Vault の秘密はその外に置かれる。Anthropic は分離の副次効果も3つ挙げる。エージェントが1つのサンドボックスの生存にその実行全体を依存しない。サンドボックスはツールが必要になったときだけ起動する。セッション履歴はサンドボックスの外にイベントログとして置かれる。
+
+### 2. 資格情報をサンドボックスに入れない
+
+Vault（Managed Agents の資格情報保管庫）は資格情報をサンドボックスの外に保つように設計されている。MCP ツールと対応する API 呼び出しについては、サンドボックスの外にあるプロキシが要求に資格情報を付与する。self-hosted では自社のシークレットマネージャに資格情報を置くこともできる。
+
+### 3. ネットワークアクセスを制限できる
+
+環境ごとに許可ホストの一覧を設定でき、それ以外のホストへの要求は遮断される。壊れたビルドを直すエージェントなら、一覧は git ホストとパッケージレジストリだけでよい、と Anthropic は例を挙げる。サンドボックスを自社でホストする場合は、同じ制限を自社のファイアウォールで設定する。
+
+### 4. 全セッションが完全な記録を残す
+
+Managed Agents はエージェントが取った全ステップを、ツール呼び出しとその結果も含めて記録する。記録は OpenTelemetry（監視データの標準規格）で出力されるので、既存の監視ツールに送り、他のシステムと並べてエージェントの活動を確認できる。
+
+## Lesse の4問題領域との対応（wiki 側の推論）
+
+Anthropic の head of platform である Katelyn Lesse は、多エージェントシステムの未解決領域を基盤・身元と権限・隔離・監視と停止の4つに整理した（[[concepts/multiagent-engineering-problems]]）。本記事の4原則は、それに対する同じ会社の製品側の答えと読める。以下の対応は wiki 側の推論で、記事自体は Lesse の記事に触れていない。
+
+| Lesse の問題領域 | 本記事の原則 | 対応の読み |
+|---|---|---|
+| 基盤（エージェントは有状態で長く遊休する） | 脳と手を分ける | サンドボックスをツールが要るときだけ起動し、状態（履歴）をイベントログとして外に出す構造は、遊休中にサンドボックスを持ち続けない形になる |
+| 身元と権限 | 資格情報をサンドボックスに入れない | エージェントのコードが資格情報そのものを見ないので、侵害されたコードから秘密が漏れにくい。Lesse が未解決とする「人の代理の同意」には記事は触れていない |
+| 隔離（被害範囲） | 許可ホスト一覧と脳と手の分離 | 1体が侵害されても到達できる先が許可ホストに限られ、ループと履歴はサンドボックスの外にある |
+| 監視と停止 | 全セッションの記録を OpenTelemetry で出す | 横断トレースの要件に対応する。Lesse が求めた「エージェントが自分のトレースを書き換えられない」「資格情報ごと止めるキルスイッチ」は本記事に明示の記述がない |
+
+エージェントループ・履歴・秘密をサンドボックスの外に置く部品配置は、Microsoft CEO の Satya Nadella が [[concepts/models-as-insider-risks]] で求めた「権限・観測・停止をモデルの外に置く」を製品構造として実装した形にも見える。脳と手という比喩は [[concepts/ai-agent-building-blocks]] の5ブロック（脳/手/記憶/ループ/検証）と同じ語で、Anthropic も分離の説明に使っている。
+
+## 問い
+
+- 自分の launchd 夜間 ingest（claude -p）に「許可ホスト一覧」と「全ステップの OpenTelemetry 記録」に相当する最小構成を置けるか。Claude Code の permissions と hook で代替できる範囲はどこまでか
+- self-hosted で履歴が自社 DB に移ると、Dreaming（[[concepts/managed-agents-dreams]]）のようにセッション横断でメモリを再構成する機能はどこで動くのか。公式ドキュメント（platform.claude.com/docs/en/managed-agents/self-hosted）で確認する
+- 「エージェントが自分のトレースを改ざんできない」保証は self-hosted では誰が担うのか。自社運用の DB に書く以上、改ざん防止は運用側の責任になると考えられる
+
+## 関連
+
+- [[tools/claude-managed-agents]] — 製品ページ。self-hosted の運用対象・モデル要求先・ZDR の扱いの差分はそちらの節に置く
+- [[concepts/multiagent-engineering-problems]] — Lesse の4問題領域。本ページはその製品側の答え
+- [[concepts/models-as-insider-risks]] — 権限・観測・停止をモデルの外に置く Nadella の設計論。本ページの脳と手の分離・記録の外置きはその部品配置
+- [[concepts/ai-agent-building-blocks]] — 脳/手/記憶/ループ/検証の5ブロック。Anthropic も脳と手の比喩で分離を説明する
+- [[concepts/workload-identity-federation]] — 静的 API キーを使わない Anthropic への認証。資格情報を外に置く原則と同じ方向
+- [[concepts/claude-code-security]] — Claude Code 側のセキュリティ設定。組織展開では両方を組み合わせる
+- [[concepts/ai-agent-governance]] — 外部ポリシーでエージェントの実行を縛る設計。許可ホスト一覧はネットワーク層での同種の制御
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

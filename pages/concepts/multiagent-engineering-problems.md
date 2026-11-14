@@ -51,3 +51,4 @@
 - [[concepts/multi-agent-patterns]] — Lesse が「基本的な多エージェント」と呼ぶオーケストレーターとサブエージェントの構成
 - [[concepts/harness-seven-jobs]] — 権限をモデルの外に置きトレースを取るハーネスの仕事
 - [[concepts/ai-era-good-engineer]] — AI 時代のエンジニア像。Lesse のアイデンティティ危機への答えと並べて読む
+- [[concepts/managed-agents-security-principles]] — Anthropic が Managed Agents の設計原則として公式に示した4つ（脳と手の分離・資格情報の外置き・許可ホスト・OpenTelemetry での全記録）。本ページの隔離・身元と権限・監視と停止に対する、同じ会社の製品側の答えと読める

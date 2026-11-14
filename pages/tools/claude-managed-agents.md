@@ -90,6 +90,21 @@
 
 → エンタープライズの「データを外に出したくない」という要件に直接応える機能。[[concepts/claude-code-security]] と組み合わせることで、エンプラ向けClaude展開の完全なセキュリティスタックが構成できる。
 
+## Self-hosted Managed Agents（2026-11-14 private beta）
+
+Anthropic が公式記事で、サービスの全部品を自社環境で動かす **Self-hosted Claude Managed Agents** を private beta として発表した。上の Self-hosted Sandboxes がサンドボックスだけを自社に置くのに対し、こちらはハーネス・サンドボックス・資格情報・セッション履歴のすべてを自社クラウドまたはオンプレで動かす。発表の背景として Anthropic は、エージェントが壊れたビルドの修復・リリースのテスト・アラートのトリアージ・バグ backlog の消化を無人で担うようになり、その権限を持つエージェントはサービス全体を自社環境に置きたいチームがある、と述べる。
+
+- **自社で運用するもの**: Managed Agents サーバ・そのデータベース・エージェントがシェルとファイルツールを動かすワーカー
+- **モデルへの要求先**: Anthropic 直接・クラウド事業者（Amazon Bedrock・Google の Agent Platform・Microsoft Foundry）・自前のゲートウェイから選ぶ
+- **API**: 開発者は hosted 版と同じコア API でエージェントを作る
+- **資格情報**: Vault に加えて自社のシークレットマネージャにも置ける
+- **ネットワーク制限**: 環境ごとの許可ホスト一覧による制限を、サンドボックスを自社でホストする場合は自社のファイアウォールで設定する
+- **申請**: Anthropic のアカウントチームへ連絡する（記事記載）
+
+**ZDR の扱い**: 下の公式仕様（2026-05-23）では Managed Agents はゼロデータリテンション（ZDR）対象外と記されていた。self-hosted については、セッション履歴が自社のデータベースに保存され、組織が Anthropic と ZDR を結んでいれば Claude へ送る要求に他の Messages API 呼び出しと同様に適用される、と記事は述べる。hosted 版の扱いが変わったかは記事に記載がなく未確認。履歴が Anthropic 側に残らない構成になったことで Messages API と同じ扱いにできるようになった、と考えられる（推論）。
+
+記事が示す4つの設計原則（脳と手の分離・資格情報の外置き・許可ホスト・全記録の OpenTelemetry 出力）は3つの提供形態すべてに共通するため、[[concepts/managed-agents-security-principles]] に独立させた。
+
 ## 新機能（2026-06-11 追加）
 
 @ClaudeDevs（公式）が発表した2つの機能追加：
@@ -180,3 +195,4 @@ Dreams のAPI仕様・ライフサイクル・エラー種別の詳細は [[conc
 - [[concepts/scheduled-agent-automation]] — Scheduled Deployments・Vault・2つのメモリストア・budget で Slack/GitHub を定時に読んで投稿する公式参照実装 daily-brief と6つの設計ルール
 - [[concepts/claude-code-dynamic-workflows]] — Claude Code 側の同名機能。2026-10-09 に public beta となった Managed Agents の dynamic workflows（リードエージェントが計画を書き、フェーズ実行して統合する）と同型の構造
 - [[tools/ai-newtab]] — Chrome 拡張のバックグラウンドワーカーがサーバーなしで Managed Agents セッションを直接駆動する個人用の実装例（@trq212）
+- [[concepts/managed-agents-security-principles]] — Anthropic 公式が示したエージェントセキュリティ4原則（脳と手の分離・資格情報の外置き・許可ホスト・全記録）。hosted／self-hosted sandbox／self-hosted 全体の3形態に共通する設計思想

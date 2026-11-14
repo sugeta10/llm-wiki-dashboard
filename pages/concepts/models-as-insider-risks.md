@@ -68,3 +68,4 @@ Nadella が「観測可能性（observability）の原則」として挙げる7�
 - [[business/frontier-ecosystem]] — 同じ Nadella によるモデル非依存の戦略論
 - [[business/intrusion-assumed-economy]] — 田中悠斗（@tanaka_yuto）の「防御可能性でなく侵入可能性を織り込む」経済論。モデルの外に権限・観測・停止を置く本ページの封じ込め設計を、社会・金融の単位に広げた主張と読める
 - [[concepts/multiagent-engineering-problems]] — Anthropic head of platform の Katelyn Lesse が挙げる多エージェントの工学課題4領域。本ページの「権限・観測・停止をモデルの外に」を、改ざんできない横断トレース・資格情報ごと止めるキルスイッチ・人の代理（OBO）の同意として基盤側から列挙した形
+- [[concepts/managed-agents-security-principles]] — Anthropic の Managed Agents が「権限・観測・停止をモデルの外に置く」を製品の部品配置として実装した形：エージェントループ・履歴・秘密をサンドボックスの外に置き、資格情報はサンドボックス外のプロキシが付与し、全ステップを OpenTelemetry で既存監視へ出す
