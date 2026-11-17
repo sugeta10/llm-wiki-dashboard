@@ -175,6 +175,7 @@ Anthropicが公開しているエージェント量産手法は、**英語圏の
 - [[tools/adversarial-panel]] — Generator-Verifierを異種モデル・複数Verifier・敵対プロトコルに拡張したClaude Codeスキル（誤りの非相関＋検証優位）
 - [[concepts/dynamic-agent-org]] — 本ページの5パターンが実行前に固定される静的グラフであるのに対し、実行中にグラフ構造自体が書き換わる動的な組織（@Saboo_Shubham_）
 - [[concepts/graph-reliability-design]] — 鎖・ダイヤモンド・ルーター・制御されたサイクルの4形と、本ページの「フォールバック動作」を耐久状態・冪等な書き込み・ノード単位の失敗方針まで具体化した本番設計（@0xwhrrari）
+- [[concepts/single-agent-loop]] — 本ページの公式パターンに対し、Anthropic Applied AI が企業導入では逆にサブエージェントを主ループへ畳めと述べた記事。残す 3 条件と「問題種別でなく文脈で分ける」の判断基準
 
 ## 観察ログ（未検証）
 

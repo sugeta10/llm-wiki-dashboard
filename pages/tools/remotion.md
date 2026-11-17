@@ -32,3 +32,4 @@ GUI の動画編集ソフトと違い、構成がコード（＝中間記法）�
 - [[tools/video-shotcraft]] — Remotionでシネマティックなプロダクトプロモを組むショットレシピカード集スキル
 - [[concepts/opus-motion-design-studio]] — Opus 5.5 のコード描画動画講座。Remotion は明示しないと選ばれない「ルートB」として登場
 - [[design/ai-motion-vocabulary]] — スタガー・マスクトランジション等、動画の演出を名前で指示するための語彙
+- [[tools/creative-pipeline-repos]] — 磨き→動き→3D→画像→字幕→書き出しの 10 リポ一覧の 8 本目「コードから動画を丸ごと組む」（@flxrnc）

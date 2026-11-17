@@ -102,3 +102,4 @@ HeyGenの本業はAIアバター動画だが「アバターは動画の半分」
 - [[tools/diagram-design]] — HTML+SVGを図版の最終出力に使うリポジトリ。HTMLを成果物フォーマットに据える同系（出力は動画でなく静止図）
 - [[concepts/opus-motion-design-studio]] — Opus 5.5 は Hyperframes が使える環境でも依存ゼロの seek(t)＋Playwright＋ffmpeg を既定で選ぶという観察。フレームワークを使わせるなら明示が要る
 - [[tools/threejs-assets]] — three.js 向けの無料・商用可・帰属不要の低ポリ GLB モデル群。「Three.js 等の Web 資産がそのまま使える」本フレームワークで、モデルを自作せずシーンに置ける素材の供給源
+- [[tools/creative-pipeline-repos]] — 磨き→動き→3D→画像→字幕→書き出しの 10 リポ一覧の 9 本目「HeyGen の無料ツール、Web ページを動画にする」（@flxrnc）

@@ -57,3 +57,4 @@ Claude Code には以下のサブエージェントが同梱されている。
 - [[concepts/x-ops-subagent-company]] — `.claude/agents/` に9チームを定義し統括が束ねる X 運用の実例（@giver_itora26）
 - [[concepts/html-output-format]] — 長時間タスク用の `dashboard-builder` サブエージェント（effort medium）や夜間用のプロジェクトマップ専用サブエージェントを置く運用例（@Voxyz_ai）
 - [[concepts/prompt-caching]] — サブエージェントのキャッシュ TTL は既定5分で、`subagentPromptCacheTtl` で1時間に変えられる（@lydiahallie・@alexgetmancom）
+- [[concepts/single-agent-loop]] — Anthropic Applied AI の「サブエージェントを主ループに畳む」。独立コンテキストで並列に使い捨てる本ページの用途は残す 3 条件に当たり、領域別の常設サブエージェントは畳む対象

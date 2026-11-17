@@ -95,6 +95,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/x-ops-subagent-company.html">x-ops-subagent-company</a> — <code>.claude/agents/</code> に9チームを定義し統括が束ねる X 運用の実例（@giver_itora26）</li>
 <li><a href="../concepts/html-output-format.html">html-output-format</a> — 長時間タスク用の <code>dashboard-builder</code> サブエージェント（effort medium）や夜間用のプロジェクトマップ専用サブエージェントを置く運用例（@Voxyz_ai）</li>
 <li><a href="../concepts/prompt-caching.html">prompt-caching</a> — サブエージェントのキャッシュ TTL は既定5分で、<code>subagentPromptCacheTtl</code> で1時間に変えられる（@lydiahallie・@alexgetmancom）</li>
+<li><a href="../concepts/single-agent-loop.html">single-agent-loop</a> — Anthropic Applied AI の「サブエージェントを主ループに畳む」。独立コンテキストで並列に使い捨てる本ページの用途は残す 3 条件に当たり、領域別の常設サブエージェントは畳む対象</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-google-cloud.html">claude-code-google-cloud</a></li>
 <li><a href="../concepts/claude-code-orchestration.html">claude-code-orchestration</a></li>
 <li><a href="../concepts/cursor-instruction-methods.html">cursor-instruction-methods</a></li>
@@ -179,6 +180,7 @@ Claude Code には以下のサブエージェントが同梱されている。
 - [[concepts/x-ops-subagent-company]] — `.claude/agents/` に9チームを定義し統括が束ねる X 運用の実例（@giver_itora26）
 - [[concepts/html-output-format]] — 長時間タスク用の `dashboard-builder` サブエージェント（effort medium）や夜間用のプロジェクトマップ専用サブエージェントを置く運用例（@Voxyz_ai）
 - [[concepts/prompt-caching]] — サブエージェントのキャッシュ TTL は既定5分で、`subagentPromptCacheTtl` で1時間に変えられる（@lydiahallie・@alexgetmancom）
+- [[concepts/single-agent-loop]] — Anthropic Applied AI の「サブエージェントを主ループに畳む」。独立コンテキストで並列に使い捨てる本ページの用途は残す 3 条件に当たり、領域別の常設サブエージェントは畳む対象
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

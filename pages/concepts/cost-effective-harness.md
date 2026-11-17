@@ -62,3 +62,4 @@ Tarun Amasa（@trq212）の「Claude がタスクに応じて自分でハーネ�
 - [[concepts/decision-layer-model]] — エージェント内の分岐判断を安い専用モデルへ切り出す設計。完了タスクあたりの請求額で追うべきという同じコスト観
 - [[models/claude-haiku-5-5]] — 委譲先の安価モデル候補（Haiku 4.5 比で平均約75%安いと公式が説明）
 - [[business/claude-plan-api-credits]] — Max/Team プランの月次 API クレジット。委譲先の試算で無料枠になる
+- [[concepts/single-agent-loop]] — 同じ委譲コスト（損失のある受け渡し・入れ子ループの遅延）を Anthropic Applied AI が企業導入の比較で観察し、畳む手順まで示した公式記事

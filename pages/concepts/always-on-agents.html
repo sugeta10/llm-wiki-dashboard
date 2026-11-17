@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>always-on-agents</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="always-on-agents.md">Markdownで表示</a></div>
-  <div class="meta">concepts/always-on-agents · concepts · <span title="2026-11-17">今日</span></div>
+  <div class="meta">concepts/always-on-agents · concepts · <span title="2026-11-18">今日</span></div>
   <article><h1>Always-on エージェントの5つの基本部品（Anthropic 公式ガイド）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: 「常時稼働」に見えるエージェントは実際にはほぼ眠っていて、イベントで短く起き、状態を保存してまた眠る。Anthropic の William Hu はその周辺構造を「イベント受信箱・タイマー・メモリ・権限・送信箱」の5部品に分解し、各部品を別々の永続ストア（通常は DB のテーブル）に置けと述べる。</p>
@@ -111,6 +111,9 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p>送る量の調整も重要で、多すぎれば騒がしく、少なすぎれば知るべきことを取りこぼす。記事は eval を組んで釣り合いを探すよう勧め、実務上は「静かに始めて、時間をかけて利用者の注意を勝ち取る」方がよいと述べる。@TekonBurns はこれを「午前3時に利用者へ連投しないための待ち行列」と言い換えている。</p>
 <h2>全体のサイクル</h2>
 <p>毎 run は受信箱のイベント（利用者のメッセージ・webhook・タイマー）で始まる。ワーカーがイベントを拾って run を起こし、新規または既存のセッションでエージェントを起こす。エージェントはメモリを読んで出発点を得て、権限の範囲で行動し、学んだことでメモリを更新する。run が終わると送信箱に行を積み、ディスパッチャが利用者に届ける。run はタイマーを設定して後で自分を起こせ、利用者がメッセージに返信すればそれが受信箱のイベントになる。各 run は短いがこのサイクルが止まらないことが、利用者に「常時稼働」と感じさせる、というのが記事の締めである。</p>
+<h2>実務者の読み：Pedro G の 7 点と冪等性の追加</h2>
+<p>Pedro G（@pggalaviz・昼はソフトウェアエンジニア、夜は自分の製品を作る創業者と自己紹介し、分散システムとバックグラウンドワーカーを約 10 年作ってきたと書く）は、この記事から 7 点を抜き出して投稿した（447 ブクマ・2026-11-17 時点）。7 点はすべて記事の記述に対応する。全トリガーを受信箱かキューに先に入れエージェントを直接呼ばない／1 受信箱に動くワーカーは 1 体（同じ利用者の 2 つの run は作業を重複させるか上書きする）／webhook は速く ack しプロンプトインジェクションのような遅い検査は run の中で／イベントはソースの ID で重複排除／メモリは引き直せないものだけ保存しポインタを置く／資格情報はサンドボックスの外のプロキシに／静かに始める（鳴らしすぎるエージェントはすぐミュートされる）。@TekonBurns の 5 点がタイマーとメモリの dreaming を含めた部品の網羅だったのに対し、Pedro G はタイマーに触れず受信箱の運用規則に重みを置いている（wiki 側の観察）。</p>
+<p>Pedro G が「自分なら足す」と書いたのが<strong>全ツール呼び出しの冪等化</strong>である。ワーカーは run の途中で死んで再試行されるので、「請求書を送る」「商品を購入する」は 2 回走っても安全でなければならない、と述べる。記事は「受信箱を唯一の真実にすれば、ワーカーが途中で死んでも新しいワーカーが同じイベントを拾って再試行できる」と書くが、再試行された run が外部への副作用を二重に起こす問題には触れていない（キャッシュ済みの記事本文を idempotent・twice・retry で検索して確認）。再試行を前提にした設計では、この一点は 5 部品の外側にある抜けと読める。</p>
 <h2>既存ページとの関係（wiki 側の推論）</h2>
 <ul>
 <li><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a> の daily-brief 参照実装は、この5部品のうちスケジュール型タイマー・2種のメモリストア（preferences／state）・読み取り専用と予算上限という権限の絞り込み・Slack 1チャンネルという送信先を Managed Agents の機能で具体化したものと読める。受信箱に相当する部品は持たず、起動はスケジュールだけである</li>
@@ -122,6 +125,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>このvault の launchd ジョブ（ingest・auto-sync・weekly）は「タイマー→受信箱→1ワーカー」の形になっているか。同時起動の競合と、失敗したイベントの再試行はどこで担保しているか</li>
 <li>「引き直せないものだけ保存する」原則で見ると、この wiki の auto memory にはポインタで足りる項目がどれだけ入っているか</li>
 <li>送信量の eval は何を正解ラベルにするのか。記事は「静かに始めよ」と言うだけで、評価の作り方は書いていない</li>
+<li>再試行される run の副作用（送信・購入・書き込み）をどう冪等にするか。イベント ID をツール呼び出しの冪等キーに使うのか、送信箱の行で担保するのか。記事は答えておらず Pedro G の指摘だけがある</li>
 </ul>
 <h2>関連</h2>
 <ul>
@@ -132,12 +136,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a> — 常時起動 Gateway と cron ティックで夜間に自律稼働する個人向け実装</li>
 <li><a href="../tools/claude-duet.html">claude-duet</a> — Proactive 類型を一般利用者向け製品にした Anthropic のアプリ。朝ブリーフと送信前の確認を持つ</li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — 記事が参照する memory tool・セッション・圧縮を提供するプラットフォーム</li>
+<li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a> — 耐久状態・冪等な書き込み・ノード単位の失敗方針を扱う本番設計。Pedro G が足した冪等性の受け皿</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
 <li><a href="../concepts/managed-agents-security-principles.html">managed-agents-security-principles</a></li>
 <li><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a></li>
-<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li>
-<li><a href="../tools/claude-duet.html">claude-duet</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2121328737174388847" rel="noopener" target="_blank">https://x.com/i/web/status/2121328737174388847</a></li>
-<li><a href="https://claude.com/resources/articles/building-always-on-agents" rel="noopener" target="_blank">https://claude.com/resources/articles/building-always-on-agents</a></li></ul></section></article>
+<li><a href="../concepts/graph-reliability-design.html">graph-reliability-design</a></li>
+<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2121328737174388847" rel="noopener" target="_blank">https://x.com/i/web/status/2121328737174388847</a></li>
+<li><a href="https://claude.com/resources/articles/building-always-on-agents" rel="noopener" target="_blank">https://claude.com/resources/articles/building-always-on-agents</a></li>
+<li><a href="https://x.com/i/web/status/2122367705688793360" rel="noopener" target="_blank">https://x.com/i/web/status/2122367705688793360</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -239,6 +245,12 @@ run はばらばらに分かれているので、連続性はメモリが担う�
 
 毎 run は受信箱のイベント（利用者のメッセージ・webhook・タイマー）で始まる。ワーカーがイベントを拾って run を起こし、新規または既存のセッションでエージェントを起こす。エージェントはメモリを読んで出発点を得て、権限の範囲で行動し、学んだことでメモリを更新する。run が終わると送信箱に行を積み、ディスパッチャが利用者に届ける。run はタイマーを設定して後で自分を起こせ、利用者がメッセージに返信すればそれが受信箱のイベントになる。各 run は短いがこのサイクルが止まらないことが、利用者に「常時稼働」と感じさせる、というのが記事の締めである。
 
+## 実務者の読み：Pedro G の 7 点と冪等性の追加
+
+Pedro G（@pggalaviz・昼はソフトウェアエンジニア、夜は自分の製品を作る創業者と自己紹介し、分散システムとバックグラウンドワーカーを約 10 年作ってきたと書く）は、この記事から 7 点を抜き出して投稿した（447 ブクマ・2026-11-17 時点）。7 点はすべて記事の記述に対応する。全トリガーを受信箱かキューに先に入れエージェントを直接呼ばない／1 受信箱に動くワーカーは 1 体（同じ利用者の 2 つの run は作業を重複させるか上書きする）／webhook は速く ack しプロンプトインジェクションのような遅い検査は run の中で／イベントはソースの ID で重複排除／メモリは引き直せないものだけ保存しポインタを置く／資格情報はサンドボックスの外のプロキシに／静かに始める（鳴らしすぎるエージェントはすぐミュートされる）。@TekonBurns の 5 点がタイマーとメモリの dreaming を含めた部品の網羅だったのに対し、Pedro G はタイマーに触れず受信箱の運用規則に重みを置いている（wiki 側の観察）。
+
+Pedro G が「自分なら足す」と書いたのが**全ツール呼び出しの冪等化**である。ワーカーは run の途中で死んで再試行されるので、「請求書を送る」「商品を購入する」は 2 回走っても安全でなければならない、と述べる。記事は「受信箱を唯一の真実にすれば、ワーカーが途中で死んでも新しいワーカーが同じイベントを拾って再試行できる」と書くが、再試行された run が外部への副作用を二重に起こす問題には触れていない（キャッシュ済みの記事本文を idempotent・twice・retry で検索して確認）。再試行を前提にした設計では、この一点は 5 部品の外側にある抜けと読める。
+
 ## 既存ページとの関係（wiki 側の推論）
 
 - [[concepts/scheduled-agent-automation]] の daily-brief 参照実装は、この5部品のうちスケジュール型タイマー・2種のメモリストア（preferences／state）・読み取り専用と予算上限という権限の絞り込み・Slack 1チャンネルという送信先を Managed Agents の機能で具体化したものと読める。受信箱に相当する部品は持たず、起動はスケジュールだけである
@@ -250,6 +262,7 @@ run はばらばらに分かれているので、連続性はメモリが担う�
 - このvault の launchd ジョブ（ingest・auto-sync・weekly）は「タイマー→受信箱→1ワーカー」の形になっているか。同時起動の競合と、失敗したイベントの再試行はどこで担保しているか
 - 「引き直せないものだけ保存する」原則で見ると、この wiki の auto memory にはポインタで足りる項目がどれだけ入っているか
 - 送信量の eval は何を正解ラベルにするのか。記事は「静かに始めよ」と言うだけで、評価の作り方は書いていない
+- 再試行される run の副作用（送信・購入・書き込み）をどう冪等にするか。イベント ID をツール呼び出しの冪等キーに使うのか、送信箱の行で担保するのか。記事は答えておらず Pedro G の指摘だけがある
 
 ## 関連
 
@@ -260,6 +273,7 @@ run はばらばらに分かれているので、連続性はメモリが担う�
 - [[tools/hermes-agent-overnight]] — 常時起動 Gateway と cron ティックで夜間に自律稼働する個人向け実装
 - [[tools/claude-duet]] — Proactive 類型を一般利用者向け製品にした Anthropic のアプリ。朝ブリーフと送信前の確認を持つ
 - [[tools/claude-managed-agents]] — 記事が参照する memory tool・セッション・圧縮を提供するプラットフォーム
+- [[concepts/graph-reliability-design]] — 耐久状態・冪等な書き込み・ノード単位の失敗方針を扱う本番設計。Pedro G が足した冪等性の受け皿
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

@@ -88,3 +88,4 @@ flowchart LR
 - [[tools/ui-skills]] — Impeccable を掲載する UI スキルカタログ
 - [[tools/agent-skills-by-role]] — 役割別 6 選のポストで 7 つ目として名前だけ挙がっていたリポジトリ
 - [[tools/ui-ux-pro-max]] — 構造化データベースからデザインシステムを生成する対照アプローチ
+- [[tools/creative-pipeline-repos]] — 磨き→動き→3D→画像→字幕→書き出しの 10 リポ一覧の 1 本目に置かれた（@flxrnc）

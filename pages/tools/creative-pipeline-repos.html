@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>creative-pipeline-repos - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>creative-pipeline-repos</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="creative-pipeline-repos.md">Markdownで表示</a></div>
+  <div class="meta">tools/creative-pipeline-repos · tools · <span title="2026-11-18">今日</span></div>
+  <article><h1>コーディングエージェントの制作工程 10 リポジトリ（Polish → Motion → 3D → Visuals → Captions → Export）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Florence（@flxrnc）が「Fable 5.2 に必要な GitHub リポはこの 10 本だけ」と並べた一覧。磨き・動き・3D・画像・字幕・書き出しの 6 工程の順に Impeccable・GSAP Skills・Three.js・Blender MCP・anatomy・ComfyUI・faster-whisper・Remotion・HyperFrames・FFmpeg を置く。エージェント向けに作られたものは半分で、残りは汎用の定番ツールである。</p>
+</blockquote>
+<p>投稿者の Florence はプロフィールに「AI・暗号資産・その日に起きたことを投稿する」とある個人アカウントで、映像制作者やツール作者としての肩書は書かれていない。投稿は 602 件ブックマークされた（2026-11-17 時点）。一覧の見どころは個々のリポの新しさではなく、「磨く→動かす→3D→画像を作る→字幕→書き出す」という制作工程の順に 1 本ずつ当てはめた並べ方にある。末尾の「guide below」は同じ投稿者の X 記事「The Fable 5.2 Motion Playbook: One Prompt, One Film」（40 本の完成作から得た 9 教訓）を指し、この一覧はその記事の道具箱という位置づけになっている。</p>
+<h2>10 本の一覧（投稿の順）</h2>
+<p>投稿者の一言は投稿からの訳、description 以降は GitHub API の記載（2026-11-18 取得）。</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>リポジトリ</th>
+<th>投稿者の一言</th>
+<th>GitHub の description</th>
+<th>owner・license</th>
+<th>stars</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://github.com/pbakaus/impeccable">pbakaus/impeccable</a></td>
+<td>「AI っぽい」を「誰がデザインした？」に変える</td>
+<td>コーディングエージェントのデザイン語彙。polish・bolder で操作し critique・audit でレビューし、出荷前に AI スロップを捕まえる</td>
+<td>個人（Paul Bakaus）・Apache-2.0</td>
+<td>112,152</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://github.com/greensock/gsap-skills">greensock/gsap-skills</a></td>
+<td>GSAP チーム直伝で、エージェントに滑らかなアニメーションを教える</td>
+<td>GSAP 公式の AI スキル。AI コーディングエージェントに GSAP の正しい使い方・ベストプラクティス・定番パターン・プラグインを教える</td>
+<td>組織（greensock）・MIT</td>
+<td>18,637</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://github.com/mrdoob/three.js">mrdoob/three.js</a></td>
+<td>ブラウザでそのまま動く 3D シーン</td>
+<td>JavaScript の 3D ライブラリ</td>
+<td>個人（mrdoob）・MIT</td>
+<td>118,764</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="https://github.com/ahujasid/mcp-for-blender">ahujasid/mcp-for-blender</a></td>
+<td>エージェントが Blender の中で手を動かせる</td>
+<td>任意の LLM で Blender 3D を操作するコミュニティプラグイン。Blender Foundation 公式とは無関係</td>
+<td>個人（ahujasid）・MIT</td>
+<td>34,811</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a></td>
+<td>どんな機械でも分解して仕組みを見せる</td>
+<td>実在の機械や複雑なシステムの詳細なインタラクティブ等角投影イラストを作るエージェントスキル。SVG を生成し、WebGL シェーダと 3D 効果は任意</td>
+<td>個人（wheresryan22）・MIT</td>
+<td>27,862</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="https://github.com/Comfy-Org/ComfyUI">Comfy-Org/ComfyUI</a></td>
+<td>自分のマシンで AI 画像と動画を作る</td>
+<td>グラフ／ノード式の拡散モデル GUI・API・バックエンド</td>
+<td>組織（Comfy-Org）・GPL-3.0</td>
+<td>147,351</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="https://github.com/SYSTRAN/faster-whisper">SYSTRAN/faster-whisper</a></td>
+<td>どんな声からも字幕を、Whisper よりずっと速く</td>
+<td>CTranslate2 による高速 Whisper 文字起こし</td>
+<td>組織（SYSTRAN）・MIT</td>
+<td>26,835</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a href="https://github.com/remotion-dev/remotion">remotion-dev/remotion</a></td>
+<td>コードから動画を丸ごと組む</td>
+<td>React でプログラム的に動画を作る</td>
+<td>組織（remotion-dev）・独自ライセンス</td>
+<td>73,892</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a href="https://github.com/heygen-com/hyperframes">heygen-com/hyperframes</a></td>
+<td>HeyGen の無料ツール。Web ページを動画にする</td>
+<td>HTML を書けば動画になる。エージェント向けに作られた</td>
+<td>組織（heygen-com）・Apache-2.0</td>
+<td>85,955</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a href="https://github.com/FFmpeg/FFmpeg">FFmpeg/FFmpeg</a></td>
+<td>最終アニメーションの書き出し</td>
+<td>git.ffmpeg.org のミラー</td>
+<td>組織（FFmpeg）・LGPL/GPL</td>
+<td>67,615</td>
+</tr>
+</tbody>
+</table>
+<p>投稿は 6 工程と 10 本の対応を 1 対 1 では書いていない。並び順から読むと、Impeccable が Polish、GSAP Skills が Motion、Three.js と Blender MCP が 3D、anatomy と ComfyUI が Visuals、faster-whisper が Captions、Remotion・HyperFrames・FFmpeg が Export にあたると考えられる（wiki 側の推論）。</p>
+<h2>投稿者の一言と GitHub 記載の照合</h2>
+<ul>
+<li><strong>エージェント向けに作られたのは 5 本</strong>。Impeccable（スキル集）・GSAP Skills（公式 AI スキル）・Blender MCP（MCP サーバ）・anatomy（エージェントスキル）・HyperFrames（「Built for agents」）は description 自体がエージェントからの利用を前提にしている。Three.js・ComfyUI・faster-whisper・FFmpeg は人が使う汎用のライブラリとアプリで、Remotion も React の動画フレームワークである。「Fable 5.2 に必要なのはこれだけ」という書き方は投稿の宣伝的な枠で、どのリポの description にも Fable 5.2 への言及はない。</li>
+<li><strong>GSAP Skills と HyperFrames の出所は一致する</strong>。前者は greensock 組織の配下で description に「Official」とあり、後者は heygen-com 組織の配下で Apache-2.0。投稿者の「GSAP チーム直伝」「HeyGen の無料ツール」はリポ側の記載と合う。</li>
+<li><strong>Blender MCP は非公式</strong>。投稿者は「エージェントが Blender の中で手を動かす」とだけ書くが、リポの description は「Blender Foundation 公式とは無関係のコミュニティプラグイン」と明記している。</li>
+<li><strong>更新の鮮度に差がある</strong>。GSAP Skills の最終 push は 2026-07-29、anatomy は 2026-10-18 で、他の 8 本（2026-11-12 から 17 の間）より間が空いている。</li>
+</ul>
+<h2>引用先の記事「The Fable 5.2 Motion Playbook」</h2>
+<p>投稿が「guide below」として引用する同じ投稿者の X 記事は、Fable 5.2 で作った 40 本の完成作から 9 教訓をまとめたもので、本文はキャッシュした（コードブロックと画像は未収録）。記事冒頭の要約から 9 教訓の見出しだけ転記する。</p>
+<ol>
+<li>Effort は Max でなく High（Max は考える時間が長く、費用は約 3 倍で、確実に良いわけではない、と投稿者）</li>
+<li>形容詞を数字に置き換えるほど映像は良くなる</li>
+<li>着地の感触はスプリングの減衰比という 1 つの数で決まる</li>
+<li>静止画で検査するモデルは止まった映像を通してしまう。動きを測らせる（ffmpeg 1 行の凍結検出と Python 10 行の動きグラフ）</li>
+<li>先にタイミングを書き、「完成」の定義を渡す</li>
+<li>Fable はルールに従いすぎるので、少なく良いルールを書く</li>
+<li>Blender でマスコットの衣装をスクリプトで作る。モデルだけでなくヘルパー・制限・シートを頼む</li>
+<li>エージェントチームは、作る側とレビューする側を分ける</li>
+<li>制限と費用。Medium で反復し High で本番を作る</li>
+</ol>
+<p>記事本体は独立したページに値する分量で、本ページでは道具箱との関係を示す範囲に留めた。コードから動画を作る同系の講座 <a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a> と重なる論点（スプリング・動きの検査・ffmpeg）が多く、取り込むなら差分で書くのがよいと考えられる。</p>
+<h2>既存ページとの関係（wiki 側の推論）</h2>
+<ul>
+<li>10 本のうち wiki に独立ページがあるのは <a href="../tools/impeccable.html">impeccable</a>・<a href="../tools/remotion.html">remotion</a>・<a href="../tools/hyperframes.html">hyperframes</a> の 3 本。three.js は素材側の <a href="../tools/threejs-assets.html">threejs-assets</a>、FFmpeg はスキル側の <a href="../tools/ffmpeg-skill.html">ffmpeg-skill</a> がある</li>
+<li>Remotion と HyperFrames を両方レンダラとして組み込む <a href="../tools/openmontage.html">openmontage</a> は、この一覧の Export 側を 1 つのシステムにした例にあたる</li>
+<li>同じ「リポ N 選」の投稿形式では <a href="../tools/agent-skills-by-role.html">agent-skills-by-role</a> が職種別、本ページが工程別。UI 専門のカタログ <a href="../tools/ui-skills.html">ui-skills</a> には Impeccable が掲載されている</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-11-18: 投稿者の記事は「Max は High の約 3 倍の費用で、確実に良いわけではない」と書く。40 本の自作からの単一ソースで、設定や計測法はキャッシュした記事本文で確認できる範囲に限る</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>独立ページがない 6 本（GSAP Skills・three.js 本体・Blender MCP・anatomy・ComfyUI・faster-whisper）のうち、エージェント用途で README を読む価値が高いのはどれか。GSAP Skills と anatomy は description がスキルそのものを指す</li>
+<li>投稿者の Playbook の 9 教訓は <a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a> の 12 ステップとどこが違うか。両方が ffmpeg による動きの検査を置いているなら、検査の実装は同じか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/impeccable.html">impeccable</a> — 一覧の 1 本目。Paul Bakaus のデザイン語彙スキル集</li>
+<li><a href="../tools/remotion.html">remotion</a> — 一覧の 8 本目。React で動画を組むフレームワーク</li>
+<li><a href="../tools/hyperframes.html">hyperframes</a> — 一覧の 9 本目。HTML から動画を描く HeyGen 製フレームワーク</li>
+<li><a href="../tools/threejs-assets.html">threejs-assets</a> — 3 本目 three.js 向けの無料 GLB モデル群</li>
+<li><a href="../tools/ffmpeg-skill.html">ffmpeg-skill</a> — 10 本目 FFmpeg をエージェントから自然言語で使わせるスキル</li>
+<li><a href="../tools/openmontage.html">openmontage</a> — Remotion と HyperFrames をレンダラに持つエージェント型動画制作システム</li>
+<li><a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a> — コードから動画を作る講座。引用記事の Playbook と論点が重なる</li>
+<li><a href="../tools/ui-skills.html">ui-skills</a> — Impeccable を掲載する UI スキルのカタログ</li>
+<li><a href="../tools/agent-skills-by-role.html">agent-skills-by-role</a> — 職種別のリポ 6 選。本ページは工程別</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../tools/hyperframes.html">hyperframes</a></li>
+<li><a href="../tools/impeccable.html">impeccable</a></li>
+<li><a href="../tools/remotion.html">remotion</a></li>
+<li><a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a></li>
+<li><a href="../tools/agent-skills-by-role.html">agent-skills-by-role</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2122310263575556436" rel="noopener" target="_blank">https://x.com/i/web/status/2122310263575556436</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># コーディングエージェントの制作工程 10 リポジトリ（Polish → Motion → 3D → Visuals → Captions → Export）
+
+&gt; **TL;DR**: Florence（@flxrnc）が「Fable 5.2 に必要な GitHub リポはこの 10 本だけ」と並べた一覧。磨き・動き・3D・画像・字幕・書き出しの 6 工程の順に Impeccable・GSAP Skills・Three.js・Blender MCP・anatomy・ComfyUI・faster-whisper・Remotion・HyperFrames・FFmpeg を置く。エージェント向けに作られたものは半分で、残りは汎用の定番ツールである。
+
+投稿者の Florence はプロフィールに「AI・暗号資産・その日に起きたことを投稿する」とある個人アカウントで、映像制作者やツール作者としての肩書は書かれていない。投稿は 602 件ブックマークされた（2026-11-17 時点）。一覧の見どころは個々のリポの新しさではなく、「磨く→動かす→3D→画像を作る→字幕→書き出す」という制作工程の順に 1 本ずつ当てはめた並べ方にある。末尾の「guide below」は同じ投稿者の X 記事「The Fable 5.2 Motion Playbook: One Prompt, One Film」（40 本の完成作から得た 9 教訓）を指し、この一覧はその記事の道具箱という位置づけになっている。
+
+## 10 本の一覧（投稿の順）
+
+投稿者の一言は投稿からの訳、description 以降は GitHub API の記載（2026-11-18 取得）。
+
+| # | リポジトリ | 投稿者の一言 | GitHub の description | owner・license | stars |
+|---|---|---|---|---|---|
+| 1 | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | 「AI っぽい」を「誰がデザインした？」に変える | コーディングエージェントのデザイン語彙。polish・bolder で操作し critique・audit でレビューし、出荷前に AI スロップを捕まえる | 個人（Paul Bakaus）・Apache-2.0 | 112,152 |
+| 2 | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | GSAP チーム直伝で、エージェントに滑らかなアニメーションを教える | GSAP 公式の AI スキル。AI コーディングエージェントに GSAP の正しい使い方・ベストプラクティス・定番パターン・プラグインを教える | 組織（greensock）・MIT | 18,637 |
+| 3 | [mrdoob/three.js](https://github.com/mrdoob/three.js) | ブラウザでそのまま動く 3D シーン | JavaScript の 3D ライブラリ | 個人（mrdoob）・MIT | 118,764 |
+| 4 | [ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender) | エージェントが Blender の中で手を動かせる | 任意の LLM で Blender 3D を操作するコミュニティプラグイン。Blender Foundation 公式とは無関係 | 個人（ahujasid）・MIT | 34,811 |
+| 5 | [wheresryan22/anatomy](https://github.com/wheresryan22/anatomy) | どんな機械でも分解して仕組みを見せる | 実在の機械や複雑なシステムの詳細なインタラクティブ等角投影イラストを作るエージェントスキル。SVG を生成し、WebGL シェーダと 3D 効果は任意 | 個人（wheresryan22）・MIT | 27,862 |
+| 6 | [Comfy-Org/ComfyUI](https://github.com/Comfy-Org/ComfyUI) | 自分のマシンで AI 画像と動画を作る | グラフ／ノード式の拡散モデル GUI・API・バックエンド | 組織（Comfy-Org）・GPL-3.0 | 147,351 |
+| 7 | [SYSTRAN/faster-whisper](https://github.com/SYSTRAN/faster-whisper) | どんな声からも字幕を、Whisper よりずっと速く | CTranslate2 による高速 Whisper 文字起こし | 組織（SYSTRAN）・MIT | 26,835 |
+| 8 | [remotion-dev/remotion](https://github.com/remotion-dev/remotion) | コードから動画を丸ごと組む | React でプログラム的に動画を作る | 組織（remotion-dev）・独自ライセンス | 73,892 |
+| 9 | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | HeyGen の無料ツール。Web ページを動画にする | HTML を書けば動画になる。エージェント向けに作られた | 組織（heygen-com）・Apache-2.0 | 85,955 |
+| 10 | [FFmpeg/FFmpeg](https://github.com/FFmpeg/FFmpeg) | 最終アニメーションの書き出し | git.ffmpeg.org のミラー | 組織（FFmpeg）・LGPL/GPL | 67,615 |
+
+投稿は 6 工程と 10 本の対応を 1 対 1 では書いていない。並び順から読むと、Impeccable が Polish、GSAP Skills が Motion、Three.js と Blender MCP が 3D、anatomy と ComfyUI が Visuals、faster-whisper が Captions、Remotion・HyperFrames・FFmpeg が Export にあたると考えられる（wiki 側の推論）。
+
+## 投稿者の一言と GitHub 記載の照合
+
+- **エージェント向けに作られたのは 5 本**。Impeccable（スキル集）・GSAP Skills（公式 AI スキル）・Blender MCP（MCP サーバ）・anatomy（エージェントスキル）・HyperFrames（「Built for agents」）は description 自体がエージェントからの利用を前提にしている。Three.js・ComfyUI・faster-whisper・FFmpeg は人が使う汎用のライブラリとアプリで、Remotion も React の動画フレームワークである。「Fable 5.2 に必要なのはこれだけ」という書き方は投稿の宣伝的な枠で、どのリポの description にも Fable 5.2 への言及はない。
+- **GSAP Skills と HyperFrames の出所は一致する**。前者は greensock 組織の配下で description に「Official」とあり、後者は heygen-com 組織の配下で Apache-2.0。投稿者の「GSAP チーム直伝」「HeyGen の無料ツール」はリポ側の記載と合う。
+- **Blender MCP は非公式**。投稿者は「エージェントが Blender の中で手を動かす」とだけ書くが、リポの description は「Blender Foundation 公式とは無関係のコミュニティプラグイン」と明記している。
+- **更新の鮮度に差がある**。GSAP Skills の最終 push は 2026-07-29、anatomy は 2026-10-18 で、他の 8 本（2026-11-12 から 17 の間）より間が空いている。
+
+## 引用先の記事「The Fable 5.2 Motion Playbook」
+
+投稿が「guide below」として引用する同じ投稿者の X 記事は、Fable 5.2 で作った 40 本の完成作から 9 教訓をまとめたもので、本文はキャッシュした（コードブロックと画像は未収録）。記事冒頭の要約から 9 教訓の見出しだけ転記する。
+
+1. Effort は Max でなく High（Max は考える時間が長く、費用は約 3 倍で、確実に良いわけではない、と投稿者）
+2. 形容詞を数字に置き換えるほど映像は良くなる
+3. 着地の感触はスプリングの減衰比という 1 つの数で決まる
+4. 静止画で検査するモデルは止まった映像を通してしまう。動きを測らせる（ffmpeg 1 行の凍結検出と Python 10 行の動きグラフ）
+5. 先にタイミングを書き、「完成」の定義を渡す
+6. Fable はルールに従いすぎるので、少なく良いルールを書く
+7. Blender でマスコットの衣装をスクリプトで作る。モデルだけでなくヘルパー・制限・シートを頼む
+8. エージェントチームは、作る側とレビューする側を分ける
+9. 制限と費用。Medium で反復し High で本番を作る
+
+記事本体は独立したページに値する分量で、本ページでは道具箱との関係を示す範囲に留めた。コードから動画を作る同系の講座 [[concepts/opus-motion-design-studio]] と重なる論点（スプリング・動きの検査・ffmpeg）が多く、取り込むなら差分で書くのがよいと考えられる。
+
+## 既存ページとの関係（wiki 側の推論）
+
+- 10 本のうち wiki に独立ページがあるのは [[tools/impeccable]]・[[tools/remotion]]・[[tools/hyperframes]] の 3 本。three.js は素材側の [[tools/threejs-assets]]、FFmpeg はスキル側の [[tools/ffmpeg-skill]] がある
+- Remotion と HyperFrames を両方レンダラとして組み込む [[tools/openmontage]] は、この一覧の Export 側を 1 つのシステムにした例にあたる
+- 同じ「リポ N 選」の投稿形式では [[tools/agent-skills-by-role]] が職種別、本ページが工程別。UI 専門のカタログ [[tools/ui-skills]] には Impeccable が掲載されている
+
+## 観察ログ（未検証）
+
+- 2026-11-18: 投稿者の記事は「Max は High の約 3 倍の費用で、確実に良いわけではない」と書く。40 本の自作からの単一ソースで、設定や計測法はキャッシュした記事本文で確認できる範囲に限る
+
+## 問い
+
+- 独立ページがない 6 本（GSAP Skills・three.js 本体・Blender MCP・anatomy・ComfyUI・faster-whisper）のうち、エージェント用途で README を読む価値が高いのはどれか。GSAP Skills と anatomy は description がスキルそのものを指す
+- 投稿者の Playbook の 9 教訓は [[concepts/opus-motion-design-studio]] の 12 ステップとどこが違うか。両方が ffmpeg による動きの検査を置いているなら、検査の実装は同じか
+
+## 関連
+
+- [[tools/impeccable]] — 一覧の 1 本目。Paul Bakaus のデザイン語彙スキル集
+- [[tools/remotion]] — 一覧の 8 本目。React で動画を組むフレームワーク
+- [[tools/hyperframes]] — 一覧の 9 本目。HTML から動画を描く HeyGen 製フレームワーク
+- [[tools/threejs-assets]] — 3 本目 three.js 向けの無料 GLB モデル群
+- [[tools/ffmpeg-skill]] — 10 本目 FFmpeg をエージェントから自然言語で使わせるスキル
+- [[tools/openmontage]] — Remotion と HyperFrames をレンダラに持つエージェント型動画制作システム
+- [[concepts/opus-motion-design-studio]] — コードから動画を作る講座。引用記事の Playbook と論点が重なる
+- [[tools/ui-skills]] — Impeccable を掲載する UI スキルのカタログ
+- [[tools/agent-skills-by-role]] — 職種別のリポ 6 選。本ページは工程別
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>
