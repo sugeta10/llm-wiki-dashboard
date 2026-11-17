@@ -37,3 +37,4 @@ flowchart LR
 - [[business/org-design-intelligence]] — 中間管理職の役割そのものが問われる組織設計の変化という上位の文脈
 - [[concepts/organizational-maneuvering]] — 「ウェットな対人力・根回し」で戦わず人を動かす立ち回りの具体例（佐久間宣行の仕事術）
 - [[concepts/aikyou]] — 対人力を個人のふるまいで具体化した例。相手に「機嫌を伺うコスト」を払わせない・好意を素直に受け取る（@ichigoholi）
+- [[concepts/corporate-system-literacy]] — 「3 部門の資源をまとめた」同僚が昇進し、納品で勝っていた著者が落ちた外資の事例（elise）。ウェットな対人力・根回しが昇進の評価軸になる場面の一次体験談で、動作を 4 つに分解している

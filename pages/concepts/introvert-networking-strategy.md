@@ -47,3 +47,4 @@
 - [[concepts/organizational-maneuvering]] — 佐久間宣行の組織内立ち回り術。「在職中に名前を育てる」は本ページのプル型発信と同じ構えで、対象が社内である点が異なる
 - [[concepts/structuring-ability]] — 著者の一芸である構造化力そのものを扱ったページ
 - [[concepts/aikyou]] — 感情の透明性・相手を採点しない・好意を素直に受け取ることで「求められる側」になる愛嬌論（@ichigoholi）。本ページの準備型とは別の入り口
+- [[concepts/corporate-system-literacy]] — 社内の網を平時から「在庫」として養い、跨部門の調整のたびに信頼をゼロから作らずに済ませる elise の 4 動作目。本ページの社外人脈に対する社内版

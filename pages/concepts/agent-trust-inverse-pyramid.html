@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>agent-trust-inverse-pyramid</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="agent-trust-inverse-pyramid.md">Markdownで表示</a></div>
-  <div class="meta">concepts/agent-trust-inverse-pyramid · concepts · <span title="2026-10-18">1ヶ月前</span></div>
+  <div class="meta">concepts/agent-trust-inverse-pyramid · concepts · <span title="2026-11-17">今日</span></div>
   <article><h1>エージェントを信頼するための逆ピラミッド（poteto）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: エージェントの仕事を信頼できるようにする手段を、コードベース改善・静的解析・散文（ルールやスキル）・人間レビューの4層に分け、努力の大半を上の決定論的な層に置いて人間レビューを最小にする、pstack 作者 @poteto の指針。エージェントを訂正するたびに「どの層で直すか」を選ぶための道具立てとして読める。</p>
@@ -79,6 +79,8 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li>始める前に <code>/sharpen</code> と <code>/in-your-own-words</code> を使い、このプロンプトを私と確認する</li>
 </ol>
 <p>各コマンドは <a href="../tools/pstack.html">pstack</a> のスキルである。pstack の README によれば <code>/correct</code> は訂正の履歴から誤りの類型を掘り、効く最上位の層（アーキテクチャ、次に型・lint・CI、次にテスト、最後に文書）で直し、各規則と強制手段の対応表を保つ。この順序は逆ピラミッドの層の順と一致しており、投稿はその運用を読者自身のコードベースに適用させる手順と読める。同じ README の原則 encode-lessons-in-structure（規則は文章を増やすのでなく lint・メタデータフラグ・実行時チェック・スクリプトとして符号化する）も、散文の層から上の層へ移せという同じ主張である。</p>
+<h2>講演版の 5 層（AI Engineer 講演・2026 年 11 月）</h2>
+<p>投稿から約 1 か月後、@poteto（Lauren Tan）は AI Engineer の講演「All Code Is Slop (Except Mine)」で同じ逆三角形を 5 層で示した（kaito＝@cu30rry_ が図とまとめを投稿）。上から codebase（good api design, architecture, refactoring）・static analysis（lints, types, compilers, tests, ci）・<strong>verification（formal, empirical）</strong>・prose（rules, skills, AGENTS.md）・human review の順で、投稿版では静的解析の例に含めていた検証（TLA+）が独立した層になり、ランタイム検証（empirical）と形式検証（formal）の 2 系統として静的解析と散文の間に置かれた。kaito のまとめでは、Lauren はトークン使用量のほとんどを検証に使い、「AGENTS.md に 1 行足す代わりに決定論的なチェックに置き換えられないか」を考えると述べている。講演の本体（Organic Architecture・月 11,000 PR と revert 率約 0.5%・リリースごとのファジングの外側ループ）は <a href="../concepts/organic-architecture.html">organic-architecture</a> にまとめた。</p>
 <h2>他ページとのつながり（wiki 側の推論）</h2>
 <ul>
 <li><a href="../concepts/correction-routing.html">correction-routing</a>（@VibeMarketer_）は訂正を「事実・決定・ポリシー・スキル・ワーカー・機械的ゲート」の6分類で書き戻し先に振り分ける。@poteto の4層は、知識の種類でなく<strong>強制力の強さ</strong>で振り分ける軸であり、6分類の「危険な操作→機械的ゲート」は上2層、「好み→ポリシー」は散文層に当たると考えられる</li>
@@ -108,12 +110,14 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/small-change-auto-approval.html">small-change-auto-approval</a> — Imprint の small-change。「誤りの防止は CI/CD と pstack のようなハーネス検証の方が効く」「small-change の誤りはシステムの失敗」と、本ページの配分を組織の運用に置いた事例（Will Larson）</li>
 <li><a href="../concepts/spec-ssot-view-separation.html">spec-ssot-view-separation</a> — 仕様図の検証を「矢印が途切れていないか確認して」という散文の指示（偽陰性が多い）から静的解析ツール pumlseqbreak へ移した Kuniwak の例。散文層から静的解析層への移設の具体例</li>
 <li><a href="../concepts/how-i-work-with-agents.html">how-i-work-with-agents</a> — Thorsten Ball の15か条。「影響範囲の大きい5ファイル未満だけレビューし、変数名や重複はもう気にしない」は本ページの人間レビュー最小化を個人運用で言い切った例</li>
+<li><a href="../concepts/organic-architecture.html">organic-architecture</a> — 同著者の AIE 講演版。verification 層を加えた 5 層と、ソフトウェアファクトリーの前提・Organic Architecture・外側ループ（kaito まとめ経由）</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-era-code-review.html">agent-era-code-review</a></li>
 <li><a href="../concepts/ai-coding-loop-formal.html">ai-coding-loop-formal</a></li>
 <li><a href="../concepts/claude-md-multilayer-design.html">claude-md-multilayer-design</a></li>
 <li><a href="../concepts/correction-routing.html">correction-routing</a></li>
 <li><a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111133080526495985" rel="noopener" target="_blank">https://x.com/i/web/status/2111133080526495985</a></li>
-<li><a href="https://github.com/cursor/plugins/tree/main/pstack" rel="noopener" target="_blank">https://github.com/cursor/plugins/tree/main/pstack</a></li></ul></section></article>
+<li><a href="https://github.com/cursor/plugins/tree/main/pstack" rel="noopener" target="_blank">https://github.com/cursor/plugins/tree/main/pstack</a></li>
+<li><a href="https://x.com/i/web/status/2122285049026380043" rel="noopener" target="_blank">https://x.com/i/web/status/2122285049026380043</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -166,6 +170,10 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 
 各コマンドは [[tools/pstack]] のスキルである。pstack の README によれば `/correct` は訂正の履歴から誤りの類型を掘り、効く最上位の層（アーキテクチャ、次に型・lint・CI、次にテスト、最後に文書）で直し、各規則と強制手段の対応表を保つ。この順序は逆ピラミッドの層の順と一致しており、投稿はその運用を読者自身のコードベースに適用させる手順と読める。同じ README の原則 encode-lessons-in-structure（規則は文章を増やすのでなく lint・メタデータフラグ・実行時チェック・スクリプトとして符号化する）も、散文の層から上の層へ移せという同じ主張である。
 
+## 講演版の 5 層（AI Engineer 講演・2026 年 11 月）
+
+投稿から約 1 か月後、@poteto（Lauren Tan）は AI Engineer の講演「All Code Is Slop (Except Mine)」で同じ逆三角形を 5 層で示した（kaito＝@cu30rry_ が図とまとめを投稿）。上から codebase（good api design, architecture, refactoring）・static analysis（lints, types, compilers, tests, ci）・**verification（formal, empirical）**・prose（rules, skills, AGENTS.md）・human review の順で、投稿版では静的解析の例に含めていた検証（TLA+）が独立した層になり、ランタイム検証（empirical）と形式検証（formal）の 2 系統として静的解析と散文の間に置かれた。kaito のまとめでは、Lauren はトークン使用量のほとんどを検証に使い、「AGENTS.md に 1 行足す代わりに決定論的なチェックに置き換えられないか」を考えると述べている。講演の本体（Organic Architecture・月 11,000 PR と revert 率約 0.5%・リリースごとのファジングの外側ループ）は [[concepts/organic-architecture]] にまとめた。
+
 ## 他ページとのつながり（wiki 側の推論）
 
 - [[concepts/correction-routing]]（@VibeMarketer_）は訂正を「事実・決定・ポリシー・スキル・ワーカー・機械的ゲート」の6分類で書き戻し先に振り分ける。@poteto の4層は、知識の種類でなく**強制力の強さ**で振り分ける軸であり、6分類の「危険な操作→機械的ゲート」は上2層、「好み→ポリシー」は散文層に当たると考えられる
@@ -195,6 +203,7 @@ document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
 - [[concepts/small-change-auto-approval]] — Imprint の small-change。「誤りの防止は CI/CD と pstack のようなハーネス検証の方が効く」「small-change の誤りはシステムの失敗」と、本ページの配分を組織の運用に置いた事例（Will Larson）
 - [[concepts/spec-ssot-view-separation]] — 仕様図の検証を「矢印が途切れていないか確認して」という散文の指示（偽陰性が多い）から静的解析ツール pumlseqbreak へ移した Kuniwak の例。散文層から静的解析層への移設の具体例
 - [[concepts/how-i-work-with-agents]] — Thorsten Ball の15か条。「影響範囲の大きい5ファイル未満だけレビューし、変数名や重複はもう気にしない」は本ページの人間レビュー最小化を個人運用で言い切った例
+- [[concepts/organic-architecture]] — 同著者の AIE 講演版。verification 層を加えた 5 層と、ソフトウェアファクトリーの前提・Organic Architecture・外側ループ（kaito まとめ経由）
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

@@ -172,3 +172,4 @@ README は「Cursor にはすでに優れたプランモードがあり pstack �
 - [[tools/no-ai-slop]] — `/unslop` と同じ「AI の癖を除く」目的の別スキル
 - [[tools/grok-bot-essential-bots]] — 同じ @cu30rry_ が選んだ Grok Bot 10 体。@poteto 作の dr eggbot（Bot を設計する Bot）と Engineering Lead が入る
 - [[tools/claude-code-output-styles]] — `/bro` スキルの1文を Claude Code の出力スタイル（`~/.claude/output-styles/bro.md`）に移して常時適用した uehaj の実例。「中身は落とさない」「コードはそのまま」の2項を足し `keep-coding-instructions: true` を付けた
+- [[concepts/organic-architecture]] — 作者の AIE 講演「All Code Is Slop (Except Mine)」。`/create-verification-skill` を検証層の道具として挙げ、トークンの大半を検証に使い月 11,000 PR を revert 率約 0.5% で出すと述べる（kaito まとめ経由）

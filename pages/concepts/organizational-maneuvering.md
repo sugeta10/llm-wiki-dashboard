@@ -29,3 +29,4 @@
 - [[business/human-nature-persuasion]] — 「褒めて味方を作る」「不安を消す」は心理レバー（生存の緊張を鎮め、アイデンティティを満たす）の具体的実装
 - [[concepts/career-advice-ai-age]] — 「独立は在職中の仕込みの結果」というキャリア設計の隣接論
 - [[concepts/introvert-networking-strategy]] — @ysk_motoyamaの人脈戦略。「正面から挑まず裏口を探す」「名前を先に育てておく」という構えが共通し、対象が社外である点が異なる
+- [[concepts/corporate-system-literacy]] — 外資で昇進を逃した elise が同僚から学んだ権術の 4 動作（情報経路に身を置く・会前合意・名前投資・社内の網）。「戦わずに通す」を、評価者が管理職に求める「跨部門の資源をまとめる力」の側から書いた体験談

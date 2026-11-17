@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gemini-api-cli - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>gemini-api-cli</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="gemini-api-cli.md">Markdownで表示</a></div>
+  <div class="meta">tools/gemini-api-cli · tools · <span title="2026-11-17">今日</span></div>
+  <article><h1>Gemini API CLI（gemini-api）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Google の <code>gemini-api</code> は、コーディングエージェントがシェルから Gemini を呼ぶための、状態を持たない依存ゼロの CLI。画像・音声・音楽・動画の生成（image／tts／music／video）、ファイルや公開 YouTube の分析（analyze）、話者ラベルつき文字起こし（transcribe）、Deep Research などのマネージドエージェントへの委任（agent run）を 1 コマンドずつ提供し、生成物はディスクに書いてパスだけを標準出力に返す。個人ゲーム開発者ギガビット（@gigabit_million）が Claude Fable に作らせた 67 秒の動画は、これを「文字の世界に住む Claude Code に目と耳を足し、つくって・見て・直すを 1 人で回せるようにする道具」として描く。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  CC1[&quot;Claude Code（つくる）&quot;] --&gt; F[&quot;成果物ファイル&lt;br/&gt;movie.mp4 / voice.wav / bgm.mp3&quot;]
+  F --&gt; G[&quot;gemini-api analyze / transcribe&lt;br/&gt;（見る・聴く）&quot;]
+  G --&gt; O[&quot;出力はディスクへ&lt;br/&gt;標準出力にはパスだけ&quot;]
+  O --&gt; CC2[&quot;Claude Code（直す）&quot;]
+  CC2 --&gt; F</pre>
+<p>公式ドキュメント（Google AI Studio の docs）によれば、生の REST 呼び出しや対話型 CLI はコーディングエージェントにとって問題を起こす。base64 のメディアがコンテキストウィンドウを埋め、対話プロンプトがサブプロセスを止め、古い学習データが存在しないフラグを幻覚させるからだ。<code>gemini-api</code> はこれを、オフラインのスキーマ参照・ディスク出力・ドライラン・無状態という 4 つの設計で避け、Antigravity・Claude Code・Cursor のどのエージェントのサブプロセスからでも、ターミナルや CI からでも同じコマンドで動くと説明する。すべての機能は Interactions API の上で動く。公式は <code>gemini-api</code> を「対話型コーディングエージェント <code>@google/gemini-cli</code>（Gemini CLI）ではなく、状態を持たない API クライアントで、どのコーディングエージェントの中でも実行できる」と区別し、オープンソースのベータ版でマイナーバージョン間に破壊的変更がありうるため、自動化環境や CI ではリリース版を固定するよう求めている。</p>
+<h2>位置づけ（公式の使い分け表を転記）</h2>
+<table>
+<thead>
+<tr>
+<th>道具</th>
+<th>何をするか</th>
+<th>いつ使うか</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Gemini API CLI</strong>（<code>gemini-api</code>）</td>
+<td>どのシェルからでも Gemini のモデルとマネージドエージェントを呼ぶ</td>
+<td>コーディングエージェント・シェルスクリプト・CI ジョブが、プロジェクトに依存を足さずにメディア生成・ファイル分析・バックグラウンドのリサーチエージェント実行をしたいとき</td>
+</tr>
+<tr>
+<td><strong>Google GenAI SDK</strong></td>
+<td>Python・TypeScript・JavaScript・Go・Java・C# のコードに Gemini クライアントライブラリを取り込む</td>
+<td>アプリケーション・バックエンド・Live API セッションに Gemini を組み込むとき</td>
+</tr>
+<tr>
+<td><strong>Gemini Docs MCP とスキル</strong></td>
+<td>コーディングエージェントに最新ドキュメントの検索と SDK の規則を渡す</td>
+<td>エージェントが GenAI SDK を import するアプリコードを書くとき</td>
+</tr>
+</tbody>
+</table>
+<p>公式の整理では、エージェントやスクリプトが Gemini を<strong>呼ぶ</strong>なら CLI、アプリに Gemini を<strong>組み込む</strong>なら SDK とコーディングエージェント設定、という線引きになる。</p>
+<h2>4 つの設計（公式の説明を転記）</h2>
+<ol>
+<li><strong>オフラインのスキーマ参照</strong>: <code>--usage</code> でコマンドツリーを KDL 形式で、<code>--schema</code> で <code>--body</code> 用の JSON Schema を出力する</li>
+<li><strong>ファイルはディスクへ、標準出力にはパスだけ</strong>: メディア生成と文字起こしのコマンドはファイルを書き出し、出力パスだけを印字する。バイナリをコンテキストに入れない</li>
+<li><strong>ドライランと構造化出力</strong>: <code>--dry-run</code> は入力を検証し資格情報を伏せて HTTP リクエストをオフラインで表示する。<code>-o json</code>・<code>-o toon</code>・<code>--jq</code> で機械可読に、<code>--agent-mode</code> で構造化した JSON エラーを標準エラーに返す。コマンドは <code>--interactive</code> を付けない限り対話プロンプトを出さない</li>
+<li><strong>既定で無状態</strong>: 隠れたローカル状態を持たない。複数ステップは <code>--previous-interaction-id</code>、アップロード済みの <code>files/&lt;id&gt;</code> URI、バックグラウンドのインタラクション ID で明示的につなぐ</li>
+</ol>
+<p><code>-o json</code> を付けたメディアコマンドは、ファイルをディスクに書いたうえで <code>kind</code>・<code>mime_type</code>・<code>path</code>・<code>response_id</code>・<code>size_bytes</code>・<code>status</code> のメタデータを標準出力に返す。</p>
+<h2>導入と認証（公式の手順を転記）</h2>
+<pre><code class="language-bash"># 1. インストール（macOS / Linux）。GEMINI_VERSION=&lt;release-tag&gt; でリリースを固定できる
+curl -fsSL https://raw.githubusercontent.com/google-gemini/gemini-api-cli/main/scripts/install.sh | bash
+
+# 2. API キー（Google AI Studio で発行）
+export GEMINI_API_KEY=&quot;YOUR_API_KEY&quot;
+
+# 3. 動作確認
+gemini-api whoami
+gemini-api generate &quot;Confirm CLI setup in one sentence.&quot; --dry-run
+</code></pre>
+<p>Windows は PowerShell のスクリプト、Go 環境は <code>go install github.com/google-gemini/gemini-api-cli/cmd/gemini-api@latest</code>、固定版は GitHub Releases のビルド済みバイナリでも入る。ローカルでは <code>gemini-api configure --api-key</code> で OS のキーチェーン（macOS Keychain・Linux Secret Service・Windows Credential Manager）に保存でき、<code>--no-keyring</code> なら <code>~/.config/gemini-api/config.yaml</code> に置く。公式は CI では鍵をシークレットストアから注入しリポジトリに書かないよう警告する。</p>
+<p>公式は、プロジェクトの <code>AGENTS.md</code>・<code>CLAUDE.md</code>・<code>.cursorrules</code>・システムプロンプトに貼る指示文も用意している。要旨は 4 点で、コマンド選びは <code>--help</code> か <code>--usage</code>、<code>--body</code> を組む前に <code>&lt;command&gt; --schema</code>、不慣れな呼び出しは <code>--dry-run -o json</code> で確認、<code>generate</code> と <code>agent run</code> で単一の JSON が要るときは <code>--stream=false -o json</code>、複数ステップはメディアコマンドが印字するパスと <code>generate</code>／<code>agent run</code> が返す <code>id</code> でつなぐ、というもの。その上で「ランディングページを作り、Gemini でヒーロー画像と 15 秒のナレーションを生成し、バックグラウンドで Deep Research に競合の CLI オンボーディングを比較させ、成果物をページに組み込め」のような普段どおりのプロンプトを渡す例を示している。</p>
+<h2>コマンド（公式の一覧を転記）</h2>
+<table>
+<thead>
+<tr>
+<th>群</th>
+<th>コマンド</th>
+<th>働き</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生成</td>
+<td><code>image</code></td>
+<td>画像の生成・編集（<code>-i</code> で入力画像）。JPEG を書き出しパスを印字</td>
+</tr>
+<tr>
+<td>生成</td>
+<td><code>tts</code></td>
+<td>24 kHz モノラル WAV の音声合成（1 人または 2 人の話者）</td>
+</tr>
+<tr>
+<td>生成</td>
+<td><code>music</code></td>
+<td>楽曲・ループの生成</td>
+</tr>
+<tr>
+<td>生成</td>
+<td><code>video</code></td>
+<td>MP4 の生成・編集。完了まで待つ（<code>--async</code> で ID を即時返却）</td>
+</tr>
+<tr>
+<td>生成</td>
+<td><code>generate</code></td>
+<td>テキスト生成を標準出力にストリーム（<code>--stream=false</code> で一括）</td>
+</tr>
+<tr>
+<td>理解</td>
+<td><code>analyze</code></td>
+<td>PDF・画像・音声・動画・CSV・テキスト・公開 YouTube URL への質問応答</td>
+</tr>
+<tr>
+<td>理解</td>
+<td><code>transcribe</code></td>
+<td>話者ラベルとタイムスタンプつきの文字起こし（<code>md</code>・<code>text</code>・<code>json</code>・<code>srt</code>）</td>
+</tr>
+<tr>
+<td>エージェント</td>
+<td><code>agent</code></td>
+<td>マネージドエージェントの実行（<code>run</code>・<code>status</code>・<code>cancel</code>・<code>delete-interaction</code>）とカスタムエージェント定義の管理（<code>create</code>・<code>list</code>・<code>get</code>・<code>delete</code>）</td>
+</tr>
+<tr>
+<td>エージェント</td>
+<td><code>environments</code>・<code>credentials</code>・<code>webhooks</code>・<code>triggers</code></td>
+<td>サンドボックス環境・保存資格情報・Webhook 配送・定期実行の設定</td>
+</tr>
+<tr>
+<td>設定とファイル</td>
+<td><code>configure</code>・<code>auth</code>・<code>whoami</code></td>
+<td>資格情報と既定値の設定、認証状態の表示</td>
+</tr>
+<tr>
+<td>設定とファイル</td>
+<td><code>files</code></td>
+<td>Files API へのアップロード・一覧・確認・削除</td>
+</tr>
+<tr>
+<td>設定とファイル</td>
+<td><code>models</code></td>
+<td>利用可能なモデルの一覧</td>
+</tr>
+</tbody>
+</table>
+<h2>ワークフローの要点（公式の説明を転記）</h2>
+<ul>
+<li><strong>画像</strong>: Nano Banana で生成し、<code>--aspect-ratio 16:9</code>・<code>--image-size</code>（512・1K・2K・4K）を指定できる。生成したパスを <code>-i</code> で渡せば編集になり、<code>-i</code> を複数回渡すと参照画像（キャラクターとスタイルガイドなど）を組み合わせられる</li>
+<li><strong>音声合成</strong>: 既定の声は <code>Kore</code>、<code>--voice</code> で変更。2 人の対話は本文に「Alice: …」「Bob: …」と書き <code>--multi-speaker "Alice=Kore,Bob=Puck"</code> で声を割り当てる</li>
+<li><strong>音楽と動画</strong>: 音楽は Lyria、動画は Gemini Omni で生成し、<code>--resolution 1080p</code> を指定できる。<code>video</code> は既定で完了まで待ち、<code>--async</code> なら ID を返して後から <code>--resume &lt;id&gt; --out &lt;path&gt;</code> で受け取る。<code>-i</code> に画像を渡すとその画像を動かす</li>
+<li><strong>テキスト</strong>: <code>generate</code> は <code>--stdin</code> でパイプ入力、<code>--previous-interaction-id</code> で前の対話を継続</li>
+<li><strong>分析と文字起こし</strong>: <code>analyze</code> に <code>-i</code> を複数渡すと前後のスクリーンショット比較などができる。ローカルファイルは 14 MB（base64 後 20 MB）までインライン送信し、それ以上は <code>files upload --wait</code> で一度アップロードして <code>files/&lt;id&gt;</code> URI を使い回す。Files API のファイルは 48 時間後に削除される</li>
+<li><strong>エージェント</strong>: <code>agent run "…" --agent deep-research-preview-04-2026 --background --stream=false --jq '.id'</code> で Deep Research をバックグラウンド起動して ID を取り、<code>agent status &lt;id&gt; -o json</code> で確認、<code>agent cancel &lt;id&gt;</code> で停止する。Antigravity エージェントをリモートサンドボックスで起動することや、カスタムエージェントの管理もできる</li>
+<li><strong>生のリクエスト本文</strong>: 専用フラグのない項目（<code>response_format</code> のスキーマ・関数呼び出しツール・<code>generation_config</code>・<code>"store": false</code>）は <code>--body</code> に Interactions API の JSON を渡す。フラグと <code>--body</code> が同じキーを設定すると終了コード 2 で失敗する</li>
+<li><strong>終了コード</strong>: 0 成功・1 実行時または API エラー（ネットワーク・レート制限・バックグラウンドジョブ失敗）・2 用法または検証エラー・3 認証エラー</li>
+<li><strong>制限</strong>: <code>generate</code> と <code>agent run</code> を <code>-o json</code> や <code>--jq</code> と組むには <code>--stream=false</code> が要る。双方向 WebSocket は非対応で、リアルタイム音声・映像は Live API と SDK を使う</li>
+</ul>
+<h2>ギガビットの動画「Claude Code に目と耳」（動画の転記から）</h2>
+<p>ギガビットは X のプロフィールで、Unity のスマホゲーム 12 本と無料ブラウザゲーム 145 本を公開する個人開発者で、ゲーム開発への AI 活用歴 4 年と名乗る。投稿文は「Fable による『Claude Code が Gemini API CLI を使うとどれだけパワーアップするかわかる動画』」の 1 文で、動画を作った主体を Claude Fable としているが、Claude Code からどの手段で映像化したかは投稿に書かれていない。動画の筋は次のとおり。</p>
+<ol>
+<li>Claude Code に「demo.mp4 を見て感想を教えて」と頼むと 16 進のバイト列しか見えず、「Claude Code は、文字の世界に住んでいる」「動画は見えない。音は聞こえない」と置く</li>
+<li>「そこへ、コマンドをひとつ」で <code>gemini-api</code> が入り、キャラクターに目と耳が付く</li>
+<li><code>gemini-api analyze -i movie.mp4 "何が映ってる？"</code> に Gemini が「暗闇の中に浮かぶ砂時計の中で、光り輝く砂が神秘的に流れ落ちていく様子を描いた映像です」と答える。<code>analyze -i https://youtu.be/…</code> で YouTube 最初の動画「Me at the zoo」も読む</li>
+<li><code>gemini-api transcribe -i voice.wav --format srt</code> で「こんにちは、クロード。」「私の声、聞こえますか？」のタイムコードつき字幕を得る。<code>analyze -i bgm.mp3 "テンポと雰囲気は？"</code> に「約 120 BPM」と答える</li>
+<li>「つくる力も、借りられる」として image・tts・music・video の 4 コマンドを示し、「絵・声・BGM は、このムービーで実際に使ったもの」と動画自身の素材が <code>gemini-api</code> 製だと明かす</li>
+<li>「いちばん大きな変化」は「つくって、見て、直す。自分の作品を、自分で確かめられる」で、つくる＝Claude Code・見る聴く＝gemini-api・直す＝Claude Code の円環図を出す。末尾には「このムービーを見た Gemini の指摘」として「[00:33] 背後のビートと声がぶつかって聞き取りづらさを感じさせます。声が鳴る瞬間は BGM をしっかり絞るべきです」が出る</li>
+</ol>
+<p>ナレーションや BGM の音声は転記していない。</p>
+<h2>他ページとのつながり（wiki 側の推論）</h2>
+<ul>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a>（@yugen_matuni）は「内容は Fable／Astra・日本語は Gemini」という分業を Codex の Stop Hook で自動化した例で、本ページの「つくる＝Claude Code・見る＝gemini-api」も同型の分業である。向こうは言語の自然さで、こちらは映像・音声というモダリティで分けている</li>
+<li><a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a>（@0xMovez）の「自己フレーム批評ループ」は、レンダリングした静止画を Claude 自身が見て直す方式だった。<code>gemini-api analyze</code> は動画と音声をファイルのまま別モデルに見せる方式で、BGM と声の衝突のような音の評価まで届く点が違う</li>
+<li><a href="../tools/claude-code-mcp-stack.html">claude-code-mcp-stack</a> の Boris Cherny の原則「検証手段を渡す」「外部ツールを作業面へ」を、MCP サーバーでなくシェルコマンドで満たす道具と読める。公式が CLAUDE.md に貼る指示文を配っているのは、<a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> でいう散文層に外部ツールの使い方を載せる手順にあたる</li>
+<li><a href="../tools/claude-code.html">claude-code</a> 側から見ると、Claude Code 自身の WebFetch や画像読み取りが扱えない動画・音声・音楽を、ディスク経由で別モデルに委ねる拡張になる</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-11-16（ギガビットの動画）: Gemini が動画自身の 00:33 の BGM と声の衝突を指摘し、その下に「声のあいだ、BGM を -18〜-20 dB に下げた」と読める 1 行がある（小さな文字で一部不確か）。音声に対する指摘の精度は、この 1 例しか手元にない</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>この vault の ingest で動画・音声ソース（X の動画・YouTube）を読むのに <code>gemini-api analyze</code>／<code>transcribe</code> を使えるか。今回の取り込みでは一時環境の ffmpeg でフレームを切り出し、音声は未収録だった。<code>GEMINI_API_KEY</code> の置き場と、出力を sources/notes/ にどう残すかが決めどころになる</li>
+<li>「見る」を別モデルに委ねる構成は、評価者と生成者を分ける。Gemini の指摘を自動ゲートにするか、人間が読む指摘に留めるかで、<a href="../concepts/eval-loop.html">eval-loop</a> の閾値設計が変わる</li>
+<li>Files API の 48 時間削除と 14 MB のインライン上限で、長時間の講演動画はどう扱うか。<code>files upload</code> の URI をセッションをまたいで使い回せるのは 2 日までになる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/claude-code.html">claude-code</a> — 動画の主役。文字の世界にいる Claude Code に、動画・音声・音楽の入出力を足す</li>
+<li><a href="../companies/google.html">google</a> — 提供元。Gemini のモデル群（Nano Banana・Lyria・Gemini Omni）を 1 つの CLI から呼ぶ</li>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a> — Claude と Gemini の分業を Hook で自動化した先行例。本ページはモダリティで分ける側</li>
+<li><a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a> — コードから動画を作り自己批評で直す講座。本ページの「見る」を別モデルに外出しした構成と対になる</li>
+<li><a href="../tools/claude-code-mcp-stack.html">claude-code-mcp-stack</a> — 「検証手段を渡す」「外部ツールを作業面へ」の原則。本ページはそれをシェルコマンドで満たす例</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 公式が配る CLAUDE.md 向け指示文が載る散文層の位置づけ</li>
+<li><a href="../concepts/eval-loop.html">eval-loop</a> — 別モデルの指摘をゲートにするかどうかの判断枠</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/google.html">google</a></li>
+<li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a></li>
+<li><a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2122206028544831502" rel="noopener" target="_blank">https://x.com/i/web/status/2122206028544831502</a></li>
+<li><a href="https://aistudio.google.com/docs/cli" rel="noopener" target="_blank">https://aistudio.google.com/docs/cli</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Gemini API CLI（gemini-api）
+
+&gt; **TL;DR**: Google の `gemini-api` は、コーディングエージェントがシェルから Gemini を呼ぶための、状態を持たない依存ゼロの CLI。画像・音声・音楽・動画の生成（image／tts／music／video）、ファイルや公開 YouTube の分析（analyze）、話者ラベルつき文字起こし（transcribe）、Deep Research などのマネージドエージェントへの委任（agent run）を 1 コマンドずつ提供し、生成物はディスクに書いてパスだけを標準出力に返す。個人ゲーム開発者ギガビット（@gigabit_million）が Claude Fable に作らせた 67 秒の動画は、これを「文字の世界に住む Claude Code に目と耳を足し、つくって・見て・直すを 1 人で回せるようにする道具」として描く。
+
+```mermaid
+flowchart LR
+  CC1[&quot;Claude Code（つくる）&quot;] --&gt; F[&quot;成果物ファイル&lt;br/&gt;movie.mp4 / voice.wav / bgm.mp3&quot;]
+  F --&gt; G[&quot;gemini-api analyze / transcribe&lt;br/&gt;（見る・聴く）&quot;]
+  G --&gt; O[&quot;出力はディスクへ&lt;br/&gt;標準出力にはパスだけ&quot;]
+  O --&gt; CC2[&quot;Claude Code（直す）&quot;]
+  CC2 --&gt; F
+```
+
+公式ドキュメント（Google AI Studio の docs）によれば、生の REST 呼び出しや対話型 CLI はコーディングエージェントにとって問題を起こす。base64 のメディアがコンテキストウィンドウを埋め、対話プロンプトがサブプロセスを止め、古い学習データが存在しないフラグを幻覚させるからだ。`gemini-api` はこれを、オフラインのスキーマ参照・ディスク出力・ドライラン・無状態という 4 つの設計で避け、Antigravity・Claude Code・Cursor のどのエージェントのサブプロセスからでも、ターミナルや CI からでも同じコマンドで動くと説明する。すべての機能は Interactions API の上で動く。公式は `gemini-api` を「対話型コーディングエージェント `@google/gemini-cli`（Gemini CLI）ではなく、状態を持たない API クライアントで、どのコーディングエージェントの中でも実行できる」と区別し、オープンソースのベータ版でマイナーバージョン間に破壊的変更がありうるため、自動化環境や CI ではリリース版を固定するよう求めている。
+
+## 位置づけ（公式の使い分け表を転記）
+
+| 道具 | 何をするか | いつ使うか |
+|---|---|---|
+| **Gemini API CLI**（`gemini-api`） | どのシェルからでも Gemini のモデルとマネージドエージェントを呼ぶ | コーディングエージェント・シェルスクリプト・CI ジョブが、プロジェクトに依存を足さずにメディア生成・ファイル分析・バックグラウンドのリサーチエージェント実行をしたいとき |
+| **Google GenAI SDK** | Python・TypeScript・JavaScript・Go・Java・C# のコードに Gemini クライアントライブラリを取り込む | アプリケーション・バックエンド・Live API セッションに Gemini を組み込むとき |
+| **Gemini Docs MCP とスキル** | コーディングエージェントに最新ドキュメントの検索と SDK の規則を渡す | エージェントが GenAI SDK を import するアプリコードを書くとき |
+
+公式の整理では、エージェントやスクリプトが Gemini を**呼ぶ**なら CLI、アプリに Gemini を**組み込む**なら SDK とコーディングエージェント設定、という線引きになる。
+
+## 4 つの設計（公式の説明を転記）
+
+1. **オフラインのスキーマ参照**: `--usage` でコマンドツリーを KDL 形式で、`--schema` で `--body` 用の JSON Schema を出力する
+2. **ファイルはディスクへ、標準出力にはパスだけ**: メディア生成と文字起こしのコマンドはファイルを書き出し、出力パスだけを印字する。バイナリをコンテキストに入れない
+3. **ドライランと構造化出力**: `--dry-run` は入力を検証し資格情報を伏せて HTTP リクエストをオフラインで表示する。`-o json`・`-o toon`・`--jq` で機械可読に、`--agent-mode` で構造化した JSON エラーを標準エラーに返す。コマンドは `--interactive` を付けない限り対話プロンプトを出さない
+4. **既定で無状態**: 隠れたローカル状態を持たない。複数ステップは `--previous-interaction-id`、アップロード済みの `files/&lt;id&gt;` URI、バックグラウンドのインタラクション ID で明示的につなぐ
+
+`-o json` を付けたメディアコマンドは、ファイルをディスクに書いたうえで `kind`・`mime_type`・`path`・`response_id`・`size_bytes`・`status` のメタデータを標準出力に返す。
+
+## 導入と認証（公式の手順を転記）
+
+```bash
+# 1. インストール（macOS / Linux）。GEMINI_VERSION=&lt;release-tag&gt; でリリースを固定できる
+curl -fsSL https://raw.githubusercontent.com/google-gemini/gemini-api-cli/main/scripts/install.sh | bash
+
+# 2. API キー（Google AI Studio で発行）
+export GEMINI_API_KEY=&quot;YOUR_API_KEY&quot;
+
+# 3. 動作確認
+gemini-api whoami
+gemini-api generate &quot;Confirm CLI setup in one sentence.&quot; --dry-run
+```
+
+Windows は PowerShell のスクリプト、Go 環境は `go install github.com/google-gemini/gemini-api-cli/cmd/gemini-api@latest`、固定版は GitHub Releases のビルド済みバイナリでも入る。ローカルでは `gemini-api configure --api-key` で OS のキーチェーン（macOS Keychain・Linux Secret Service・Windows Credential Manager）に保存でき、`--no-keyring` なら `~/.config/gemini-api/config.yaml` に置く。公式は CI では鍵をシークレットストアから注入しリポジトリに書かないよう警告する。
+
+公式は、プロジェクトの `AGENTS.md`・`CLAUDE.md`・`.cursorrules`・システムプロンプトに貼る指示文も用意している。要旨は 4 点で、コマンド選びは `--help` か `--usage`、`--body` を組む前に `&lt;command&gt; --schema`、不慣れな呼び出しは `--dry-run -o json` で確認、`generate` と `agent run` で単一の JSON が要るときは `--stream=false -o json`、複数ステップはメディアコマンドが印字するパスと `generate`／`agent run` が返す `id` でつなぐ、というもの。その上で「ランディングページを作り、Gemini でヒーロー画像と 15 秒のナレーションを生成し、バックグラウンドで Deep Research に競合の CLI オンボーディングを比較させ、成果物をページに組み込め」のような普段どおりのプロンプトを渡す例を示している。
+
+## コマンド（公式の一覧を転記）
+
+| 群 | コマンド | 働き |
+|---|---|---|
+| 生成 | `image` | 画像の生成・編集（`-i` で入力画像）。JPEG を書き出しパスを印字 |
+| 生成 | `tts` | 24 kHz モノラル WAV の音声合成（1 人または 2 人の話者） |
+| 生成 | `music` | 楽曲・ループの生成 |
+| 生成 | `video` | MP4 の生成・編集。完了まで待つ（`--async` で ID を即時返却） |
+| 生成 | `generate` | テキスト生成を標準出力にストリーム（`--stream=false` で一括） |
+| 理解 | `analyze` | PDF・画像・音声・動画・CSV・テキスト・公開 YouTube URL への質問応答 |
+| 理解 | `transcribe` | 話者ラベルとタイムスタンプつきの文字起こし（`md`・`text`・`json`・`srt`） |
+| エージェント | `agent` | マネージドエージェントの実行（`run`・`status`・`cancel`・`delete-interaction`）とカスタムエージェント定義の管理（`create`・`list`・`get`・`delete`） |
+| エージェント | `environments`・`credentials`・`webhooks`・`triggers` | サンドボックス環境・保存資格情報・Webhook 配送・定期実行の設定 |
+| 設定とファイル | `configure`・`auth`・`whoami` | 資格情報と既定値の設定、認証状態の表示 |
+| 設定とファイル | `files` | Files API へのアップロード・一覧・確認・削除 |
+| 設定とファイル | `models` | 利用可能なモデルの一覧 |
+
+## ワークフローの要点（公式の説明を転記）
+
+- **画像**: Nano Banana で生成し、`--aspect-ratio 16:9`・`--image-size`（512・1K・2K・4K）を指定できる。生成したパスを `-i` で渡せば編集になり、`-i` を複数回渡すと参照画像（キャラクターとスタイルガイドなど）を組み合わせられる
+- **音声合成**: 既定の声は `Kore`、`--voice` で変更。2 人の対話は本文に「Alice: …」「Bob: …」と書き `--multi-speaker &quot;Alice=Kore,Bob=Puck&quot;` で声を割り当てる
+- **音楽と動画**: 音楽は Lyria、動画は Gemini Omni で生成し、`--resolution 1080p` を指定できる。`video` は既定で完了まで待ち、`--async` なら ID を返して後から `--resume &lt;id&gt; --out &lt;path&gt;` で受け取る。`-i` に画像を渡すとその画像を動かす
+- **テキスト**: `generate` は `--stdin` でパイプ入力、`--previous-interaction-id` で前の対話を継続
+- **分析と文字起こし**: `analyze` に `-i` を複数渡すと前後のスクリーンショット比較などができる。ローカルファイルは 14 MB（base64 後 20 MB）までインライン送信し、それ以上は `files upload --wait` で一度アップロードして `files/&lt;id&gt;` URI を使い回す。Files API のファイルは 48 時間後に削除される
+- **エージェント**: `agent run &quot;…&quot; --agent deep-research-preview-04-2026 --background --stream=false --jq &#x27;.id&#x27;` で Deep Research をバックグラウンド起動して ID を取り、`agent status &lt;id&gt; -o json` で確認、`agent cancel &lt;id&gt;` で停止する。Antigravity エージェントをリモートサンドボックスで起動することや、カスタムエージェントの管理もできる
+- **生のリクエスト本文**: 専用フラグのない項目（`response_format` のスキーマ・関数呼び出しツール・`generation_config`・`&quot;store&quot;: false`）は `--body` に Interactions API の JSON を渡す。フラグと `--body` が同じキーを設定すると終了コード 2 で失敗する
+- **終了コード**: 0 成功・1 実行時または API エラー（ネットワーク・レート制限・バックグラウンドジョブ失敗）・2 用法または検証エラー・3 認証エラー
+- **制限**: `generate` と `agent run` を `-o json` や `--jq` と組むには `--stream=false` が要る。双方向 WebSocket は非対応で、リアルタイム音声・映像は Live API と SDK を使う
+
+## ギガビットの動画「Claude Code に目と耳」（動画の転記から）
+
+ギガビットは X のプロフィールで、Unity のスマホゲーム 12 本と無料ブラウザゲーム 145 本を公開する個人開発者で、ゲーム開発への AI 活用歴 4 年と名乗る。投稿文は「Fable による『Claude Code が Gemini API CLI を使うとどれだけパワーアップするかわかる動画』」の 1 文で、動画を作った主体を Claude Fable としているが、Claude Code からどの手段で映像化したかは投稿に書かれていない。動画の筋は次のとおり。
+
+1. Claude Code に「demo.mp4 を見て感想を教えて」と頼むと 16 進のバイト列しか見えず、「Claude Code は、文字の世界に住んでいる」「動画は見えない。音は聞こえない」と置く
+2. 「そこへ、コマンドをひとつ」で `gemini-api` が入り、キャラクターに目と耳が付く
+3. `gemini-api analyze -i movie.mp4 &quot;何が映ってる？&quot;` に Gemini が「暗闇の中に浮かぶ砂時計の中で、光り輝く砂が神秘的に流れ落ちていく様子を描いた映像です」と答える。`analyze -i https://youtu.be/…` で YouTube 最初の動画「Me at the zoo」も読む
+4. `gemini-api transcribe -i voice.wav --format srt` で「こんにちは、クロード。」「私の声、聞こえますか？」のタイムコードつき字幕を得る。`analyze -i bgm.mp3 &quot;テンポと雰囲気は？&quot;` に「約 120 BPM」と答える
+5. 「つくる力も、借りられる」として image・tts・music・video の 4 コマンドを示し、「絵・声・BGM は、このムービーで実際に使ったもの」と動画自身の素材が `gemini-api` 製だと明かす
+6. 「いちばん大きな変化」は「つくって、見て、直す。自分の作品を、自分で確かめられる」で、つくる＝Claude Code・見る聴く＝gemini-api・直す＝Claude Code の円環図を出す。末尾には「このムービーを見た Gemini の指摘」として「[00:33] 背後のビートと声がぶつかって聞き取りづらさを感じさせます。声が鳴る瞬間は BGM をしっかり絞るべきです」が出る
+
+ナレーションや BGM の音声は転記していない。
+
+## 他ページとのつながり（wiki 側の推論）
+
+- [[concepts/gemini-rewrite-stop-hook]]（@yugen_matuni）は「内容は Fable／Astra・日本語は Gemini」という分業を Codex の Stop Hook で自動化した例で、本ページの「つくる＝Claude Code・見る＝gemini-api」も同型の分業である。向こうは言語の自然さで、こちらは映像・音声というモダリティで分けている
+- [[concepts/opus-motion-design-studio]]（@0xMovez）の「自己フレーム批評ループ」は、レンダリングした静止画を Claude 自身が見て直す方式だった。`gemini-api analyze` は動画と音声をファイルのまま別モデルに見せる方式で、BGM と声の衝突のような音の評価まで届く点が違う
+- [[tools/claude-code-mcp-stack]] の Boris Cherny の原則「検証手段を渡す」「外部ツールを作業面へ」を、MCP サーバーでなくシェルコマンドで満たす道具と読める。公式が CLAUDE.md に貼る指示文を配っているのは、[[concepts/claude-code-instruction-methods]] でいう散文層に外部ツールの使い方を載せる手順にあたる
+- [[tools/claude-code]] 側から見ると、Claude Code 自身の WebFetch や画像読み取りが扱えない動画・音声・音楽を、ディスク経由で別モデルに委ねる拡張になる
+
+## 観察ログ（未検証）
+
+- 2026-11-16（ギガビットの動画）: Gemini が動画自身の 00:33 の BGM と声の衝突を指摘し、その下に「声のあいだ、BGM を -18〜-20 dB に下げた」と読める 1 行がある（小さな文字で一部不確か）。音声に対する指摘の精度は、この 1 例しか手元にない
+
+## 問い
+
+- この vault の ingest で動画・音声ソース（X の動画・YouTube）を読むのに `gemini-api analyze`／`transcribe` を使えるか。今回の取り込みでは一時環境の ffmpeg でフレームを切り出し、音声は未収録だった。`GEMINI_API_KEY` の置き場と、出力を sources/notes/ にどう残すかが決めどころになる
+- 「見る」を別モデルに委ねる構成は、評価者と生成者を分ける。Gemini の指摘を自動ゲートにするか、人間が読む指摘に留めるかで、[[concepts/eval-loop]] の閾値設計が変わる
+- Files API の 48 時間削除と 14 MB のインライン上限で、長時間の講演動画はどう扱うか。`files upload` の URI をセッションをまたいで使い回せるのは 2 日までになる
+
+## 関連
+
+- [[tools/claude-code]] — 動画の主役。文字の世界にいる Claude Code に、動画・音声・音楽の入出力を足す
+- [[companies/google]] — 提供元。Gemini のモデル群（Nano Banana・Lyria・Gemini Omni）を 1 つの CLI から呼ぶ
+- [[concepts/gemini-rewrite-stop-hook]] — Claude と Gemini の分業を Hook で自動化した先行例。本ページはモダリティで分ける側
+- [[concepts/opus-motion-design-studio]] — コードから動画を作り自己批評で直す講座。本ページの「見る」を別モデルに外出しした構成と対になる
+- [[tools/claude-code-mcp-stack]] — 「検証手段を渡す」「外部ツールを作業面へ」の原則。本ページはそれをシェルコマンドで満たす例
+- [[concepts/claude-code-instruction-methods]] — 公式が配る CLAUDE.md 向け指示文が載る散文層の位置づけ
+- [[concepts/eval-loop]] — 別モデルの指摘をゲートにするかどうかの判断枠
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

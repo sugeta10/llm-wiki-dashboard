@@ -65,3 +65,4 @@ flowchart LR
 - [[concepts/effort-level-selection]] — medium / xhigh / max の使い分けの実測版（@trq212）
 - [[concepts/eval-loop]] — 批評ループの一般形
 - [[design/ai-motion-vocabulary]] — 「名指すほうが効く」ための演出名の語彙（スタガー・オーバーシュート等、@showheyohtaki）
+- [[tools/gemini-api-cli]] — 本講座の自己フレーム批評（静止画を Claude 自身が見る）に対し、動画と音声をファイルのまま Gemini に見せて BGM と声の衝突まで指摘させる構成。ギガビットが Fable に作らせた解説動画

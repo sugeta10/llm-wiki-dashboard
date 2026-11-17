@@ -63,3 +63,4 @@ Hookが指示を出したあともCodexが作業を続ける構成にしたこ�
 - [[tools/claude-code-goal]] — Stop hookのラッパーで完了条件まで自律ターンを回すClaude Codeの機能。Stop Hookで終了前に次の作業を差し込む同じ使い方
 - [[companies/google]] — Geminiの提供元
 - [[concepts/exclusion-first-prompting]] — 「意味が変わる直しは出さなくていい。その上で、言い回しだけ」という除外先行の指示文型。本ページの「約束の強度を保つ」制約を1文で書いた形
+- [[tools/gemini-api-cli]] — Google 公式の `gemini-api` CLI で Claude Code に動画・音声の「目と耳」を足す構成。本ページが言語の自然さで分けた Claude／Gemini の分業を、モダリティで分けた側
