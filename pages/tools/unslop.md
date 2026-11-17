@@ -86,3 +86,4 @@ Sokolovsky 本人は公開ポスト（2026-10-30）で「自分のアンスロ�
 - [[design/layout-as-explanation]] — UI の説明過多を 1 行で抑える簡易版
 - [[design/design-md]] — 参照仕様を常駐させて凡庸さを避ける別解
 - [[tools/ui-ux-pro-max]] — 構造化データベースから設計システムを生成する対照アプローチ
+- [[tools/impeccable]] — 同じ anti-slop 系の対照。工程を 24 の動詞に分けて対象と組で呼ばせ、兆候検出は LLM を使わない 62 ルールの検出器を hook・CI・ブラウザで回す（Paul Bakaus・Apache 2.0）

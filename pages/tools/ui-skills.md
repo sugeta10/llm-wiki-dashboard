@@ -18,7 +18,7 @@ UIエンジニア・デザインエンジニア向けのClaude Codeスキル専�
 | `design-lab` | 0xdesign | インタビュー→バリアント生成→UI改善のインタラクティブ探索ワークフロー |
 | `ui-ux-pro-max` | nextlevelbuilder | 50+スタイル・97パレット・9技術スタック対応の総合UI/UX設計スキル |
 | `12-principles-of-animation` | raphaelsalaja | Disneyの12アニメーション原則をWebインターフェースに適用 |
-| `impeccable` | pbakaus | プロダクショングレード・反AI-generic UIのフラッグシップスキル |
+| `impeccable` | pbakaus | プロダクショングレード・反AI-generic UIのフラッグシップスキル（→ [[tools/impeccable]]） |
 | `frontend-slides` | zarazhangrui | HTMLプレゼンテーション作成・PPT/PPTX変換スキル |
 | `swiftui-ui-patterns` | dimillian | SwiftUIビュー・コンポーネントのベストプラクティス |
 
@@ -34,3 +34,4 @@ UIエンジニア・デザインエンジニア向けのClaude Codeスキル専�
 - [[concepts/claude-skills]]
 - [[tools/emil-kowalski-skills]] — 掲載スキル `emil-design-eng` の作者Emil Kowalski本人のスキルリポジトリ（/apple-design等4スキル）
 - [[tools/taste-skill]] — anti-slop特化のフロントエンドスキル集（本カタログ掲載の ui-ux-pro-max / impeccable と同ジャンル・Leonxlnx製）
+- [[tools/impeccable]] — 本カタログ掲載の `impeccable` の独立ページ。24 コマンド・62 ルールの決定論検出器・design hook・live mode の README 詳細（Paul Bakaus）
