@@ -130,11 +130,12 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../concepts/workload-identity-federation.html">workload-identity-federation</a> — 静的 API キーを使わない Anthropic への認証。資格情報を外に置く原則と同じ方向</li>
 <li><a href="../concepts/claude-code-security.html">claude-code-security</a> — Claude Code 側のセキュリティ設定。組織展開では両方を組み合わせる</li>
 <li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a> — 外部ポリシーでエージェントの実行を縛る設計。許可ホスト一覧はネットワーク層での同種の制御</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a></li>
+<li><a href="../concepts/always-on-agents.html">always-on-agents</a> — 同じ Anthropic の always-on エージェント設計ガイド。権限の部品として「資格情報はエージェント環境の外のプロキシが付ける」を推奨パターンに挙げ、本ページの原則2と同じ配置を無人実行の文脈で説明する。保留ツール呼び出しで承認待ちをセッション保存に変える手順はそちら</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/always-on-agents.html">always-on-agents</a></li>
+<li><a href="../concepts/models-as-insider-risks.html">models-as-insider-risks</a></li>
 <li><a href="../concepts/multiagent-engineering-problems.html">multiagent-engineering-problems</a></li>
 <li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a></li>
-<li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a></li>
-<li><a href="../concepts/ai-agent-governance.html">ai-agent-governance</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/resources/articles/self-hosted-claude-managed-agents" rel="noopener" target="_blank">https://claude.com/resources/articles/self-hosted-claude-managed-agents</a></li></ul></section></article>
+<li><a href="../concepts/ai-agent-building-blocks.html">ai-agent-building-blocks</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://claude.com/resources/articles/self-hosted-claude-managed-agents" rel="noopener" target="_blank">https://claude.com/resources/articles/self-hosted-claude-managed-agents</a></li></ul></section></article>
 </main>
 <script>
 // コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
@@ -229,6 +230,7 @@ Anthropic の head of platform である Katelyn Lesse は、多エージェン�
 - [[concepts/workload-identity-federation]] — 静的 API キーを使わない Anthropic への認証。資格情報を外に置く原則と同じ方向
 - [[concepts/claude-code-security]] — Claude Code 側のセキュリティ設定。組織展開では両方を組み合わせる
 - [[concepts/ai-agent-governance]] — 外部ポリシーでエージェントの実行を縛る設計。許可ホスト一覧はネットワーク層での同種の制御
+- [[concepts/always-on-agents]] — 同じ Anthropic の always-on エージェント設計ガイド。権限の部品として「資格情報はエージェント環境の外のプロキシが付ける」を推奨パターンに挙げ、本ページの原則2と同じ配置を無人実行の文脈で説明する。保留ツール呼び出しで承認待ちをセッション保存に変える手順はそちら
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

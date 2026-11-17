@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-output-styles - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#58a6ff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>claude-code-output-styles</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-output-styles.md">Markdownで表示</a></div>
+  <div class="meta">tools/claude-code-output-styles · tools · <span title="2026-11-17">今日</span></div>
+  <article><h1>Claude Code の出力スタイル：pstack の /bro を常時適用する（uehaj）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: pstack の <code>/bro</code> スキル（直前の返答を専門用語なしで言い直させる）を毎回打つ代わりに、<code>~/.claude/output-styles/bro.md</code> という Markdown 1枚で出力スタイルにすると最初から平たい返答になる。uehaj は「短く」だけだと判断に要る数字や依頼が削られ、コードやパスまで言い換えられるので、「中身は落とさない」「コードはそのまま」の2項を足し、<code>keep-coding-instructions: true</code> で普段のコーディング指示を残した。</p>
+</blockquote>
+<p>出力スタイルは Claude Code の返事の書き方を決める指示をファイルに書いて選べるようにする仕組みで、組み込みには Concise（簡潔）や Explanatory（説明多め）などがある。<a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> の整理では、7つの指示手段のうち開始時にシステムプロンプトへ注入され圧縮されず権威が高い手段にあたり、既定ではソフトウェアエンジニア支援の役割ごと置き換えてしまうので <code>keep-coding-instructions: true</code> で回避する、と公式が注意している。uehaj（@uehaj・「意味で探す grep、sys1grep」の作者と名乗る AI エンジニア）の X 記事は、この仕組みを「言い直しを何度も頼んでいる」状態への答えとして使った実例である。</p>
+<h2>/bro というスキル</h2>
+<p><a href="../tools/pstack.html">pstack</a> に含まれる <code>/bro</code> スキルの中身は、uehaj の転記によれば次の1文だけである。</p>
+<blockquote>
+<p>直前のメッセージを言い直して。専門用語をやめて、筋の通った話し方で。もっと簡単に短く、人が人に話すように。</p>
+</blockquote>
+<p>uehaj は pstack の中でこれを一番多用していると書き、Claude Code の出力が見違えて分かりやすくなるので通常の出力スタイルにしたくなった、と動機を述べる。組み込みの Concise は縮めるだけで <code>/bro</code> ほど平明にはならない、というのが uehaj の比較である。</p>
+<h2>出力スタイルにする手順</h2>
+<p><code>~/.claude/output-styles/</code> にスタイル名の Markdown を1つ置くだけで自作スタイルになる。記事のファイルはこの内容である（転記）。</p>
+<pre><code class="language-markdown">---
+name: bro
+description: 返答をはじめから平たく書く。/bro で言い直させる手間を省く
+keep-coding-instructions: true
+---
+
+すべての返答を、はじめから次のように書く。
+
+- 人が人に話すように書く。専門用語や略語は、普通の言葉に置き換える。
+  置き換えられないものは、初めて出たところで一言で説明する。
+- 短く書く。1 文に 1 つのことだけを言う。結論を先に言う。
+- 筋を通す。前の文とのつながりが分かるように書く。
+- 中身は落とさない。判断に必要な事実や数字、相手に頼むことを省かない。
+- コード、コマンド、ファイルのパス、識別子は、そのままの形で書く。
+</code></pre>
+<p>作成後は <code>/output-style</code> の一覧に bro が出て、<code>/output-style bro</code> で切り替わる。</p>
+<h2>/bro の文面に足した2項と、残した設定</h2>
+<p><code>/bro</code> の文をそのまま写すと困ることが2つあった、と uehaj は書く。</p>
+<ol>
+<li><strong>中身が落ちる</strong>。「短く」と言うと、判断に必要な数字やこちらへの依頼まで削られることがある。そこで「中身は落とさない」を足した。短くするのは言い方であって情報ではない、というのが uehaj の線引きである</li>
+<li><strong>コードまで平たくされる</strong>。ファイルのパスやコマンドを言い換えられるとそのまま使えない。そこで「コードやパスはそのまま」を足した。平たくするのは説明の文だけである</li>
+</ol>
+<p>加えて <code>keep-coding-instructions: true</code> を付けている。これがないとコードを書くときの普段の決まりが外れるので、書き方だけを変えて仕事の仕方は変えないためだと uehaj は説明する。これは <a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> が転記した公式の注意（出力スタイルは既定のシステムプロンプトを置き換える）を、実運用で踏んだ側からの確認にあたる。</p>
+<p>記事のまとめは3点で、「言い直して」と何度も頼んでいるなら出力スタイルにする合図であること、出力スタイルは Markdown 1枚で作れること、「短く」だけだと中身が削られるので「中身は落とさない」「コードはそのまま」を一緒に書くこと、である。</p>
+<h2>既存ページとの関係（wiki 側の推論）</h2>
+<ul>
+<li>毎回のスラッシュコマンドを常時適用の設定に昇格させる判断は、<a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> の「どの手段に置くか」の表で言えば、Skills（起動時にだけ効く）から Output styles（開始時に注入され圧縮されない）への移し替えにあたる。uehaj の2項の追加は、権威の高い層に置くほど副作用（情報の欠落・コードの言い換え）が全返答に及ぶことの裏返しと読める</li>
+<li><a href="../concepts/lean-prompt-rules-adaptation.html">lean-prompt-rules-adaptation</a> は output style では止まらなかった「進め方」の癖があったと報告する。本記事が変えているのは進め方でなく文体なので、出力スタイルが効く範囲の内側にあると考えられる</li>
+<li>このvault の CLAUDE.md「文章スタイル」（括弧は文末・用語には一言添える）や <a href="../tools/kuden-writing.html">kuden-writing</a> の心得は文の構造を定める規範で、<code>/bro</code> の「専門用語をやめて人が人に話すように」は語彙の層を定める規範である。両者は対象が違うので併用できると考えられる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li><code>keep-coding-instructions: true</code> で残る「普段の決まり」の範囲は公式ドキュメントで確認していない。自作スタイルの文面と衝突したときどちらが勝つか</li>
+<li>この output style を入れたまま長いセッションを回すと、<code>/bro</code> を都度打つ運用と比べて「中身は落とさない」がどこまで守られるか。uehaj の記事は導入直後の印象で、長期の実測はない</li>
+<li>このvault で返答の平明さを上げたいなら、output style でなく append-system-prompt に同じ5項を足す方が <a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> の「スタイル変更を避ける」線引きに合うか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/pstack.html">pstack</a> — <code>/bro</code> スキルを含む @poteto のスキル群。本ページはそのうち1スキルを常時適用に変えた実例</li>
+<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 7つの指示手段の公式フレーム。出力スタイルがシステムプロンプトを置き換える性質と <code>keep-coding-instructions</code> の注意はそちらが正本</li>
+<li><a href="../concepts/lean-prompt-rules-adaptation.html">lean-prompt-rules-adaptation</a> — output style では止まらなかった癖を hook で止めた実測。出力スタイルの効く範囲の外側を示す対照</li>
+<li><a href="../tools/claude-code.html">claude-code</a> — 出力スタイル機能を持つ本体</li>
+<li><a href="../tools/kuden-writing.html">kuden-writing</a> — 文の構造で解釈のブレを防ぐ日本語規範。<code>/bro</code> の語彙層の規範と併用できる対照</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li>
+<li><a href="../tools/claude-code.html">claude-code</a></li>
+<li><a href="../tools/pstack.html">pstack</a></li>
+<li><a href="../concepts/lean-prompt-rules-adaptation.html">lean-prompt-rules-adaptation</a></li>
+<li><a href="../tools/kuden-writing.html">kuden-writing</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2120154816932712577" rel="noopener" target="_blank">https://x.com/i/web/status/2120154816932712577</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Claude Code の出力スタイル：pstack の /bro を常時適用する（uehaj）
+
+&gt; **TL;DR**: pstack の `/bro` スキル（直前の返答を専門用語なしで言い直させる）を毎回打つ代わりに、`~/.claude/output-styles/bro.md` という Markdown 1枚で出力スタイルにすると最初から平たい返答になる。uehaj は「短く」だけだと判断に要る数字や依頼が削られ、コードやパスまで言い換えられるので、「中身は落とさない」「コードはそのまま」の2項を足し、`keep-coding-instructions: true` で普段のコーディング指示を残した。
+
+出力スタイルは Claude Code の返事の書き方を決める指示をファイルに書いて選べるようにする仕組みで、組み込みには Concise（簡潔）や Explanatory（説明多め）などがある。[[concepts/claude-code-instruction-methods]] の整理では、7つの指示手段のうち開始時にシステムプロンプトへ注入され圧縮されず権威が高い手段にあたり、既定ではソフトウェアエンジニア支援の役割ごと置き換えてしまうので `keep-coding-instructions: true` で回避する、と公式が注意している。uehaj（@uehaj・「意味で探す grep、sys1grep」の作者と名乗る AI エンジニア）の X 記事は、この仕組みを「言い直しを何度も頼んでいる」状態への答えとして使った実例である。
+
+## /bro というスキル
+
+[[tools/pstack]] に含まれる `/bro` スキルの中身は、uehaj の転記によれば次の1文だけである。
+
+&gt; 直前のメッセージを言い直して。専門用語をやめて、筋の通った話し方で。もっと簡単に短く、人が人に話すように。
+
+uehaj は pstack の中でこれを一番多用していると書き、Claude Code の出力が見違えて分かりやすくなるので通常の出力スタイルにしたくなった、と動機を述べる。組み込みの Concise は縮めるだけで `/bro` ほど平明にはならない、というのが uehaj の比較である。
+
+## 出力スタイルにする手順
+
+`~/.claude/output-styles/` にスタイル名の Markdown を1つ置くだけで自作スタイルになる。記事のファイルはこの内容である（転記）。
+
+```markdown
+---
+name: bro
+description: 返答をはじめから平たく書く。/bro で言い直させる手間を省く
+keep-coding-instructions: true
+---
+
+すべての返答を、はじめから次のように書く。
+
+- 人が人に話すように書く。専門用語や略語は、普通の言葉に置き換える。
+  置き換えられないものは、初めて出たところで一言で説明する。
+- 短く書く。1 文に 1 つのことだけを言う。結論を先に言う。
+- 筋を通す。前の文とのつながりが分かるように書く。
+- 中身は落とさない。判断に必要な事実や数字、相手に頼むことを省かない。
+- コード、コマンド、ファイルのパス、識別子は、そのままの形で書く。
+```
+
+作成後は `/output-style` の一覧に bro が出て、`/output-style bro` で切り替わる。
+
+## /bro の文面に足した2項と、残した設定
+
+`/bro` の文をそのまま写すと困ることが2つあった、と uehaj は書く。
+
+1. **中身が落ちる**。「短く」と言うと、判断に必要な数字やこちらへの依頼まで削られることがある。そこで「中身は落とさない」を足した。短くするのは言い方であって情報ではない、というのが uehaj の線引きである
+2. **コードまで平たくされる**。ファイルのパスやコマンドを言い換えられるとそのまま使えない。そこで「コードやパスはそのまま」を足した。平たくするのは説明の文だけである
+
+加えて `keep-coding-instructions: true` を付けている。これがないとコードを書くときの普段の決まりが外れるので、書き方だけを変えて仕事の仕方は変えないためだと uehaj は説明する。これは [[concepts/claude-code-instruction-methods]] が転記した公式の注意（出力スタイルは既定のシステムプロンプトを置き換える）を、実運用で踏んだ側からの確認にあたる。
+
+記事のまとめは3点で、「言い直して」と何度も頼んでいるなら出力スタイルにする合図であること、出力スタイルは Markdown 1枚で作れること、「短く」だけだと中身が削られるので「中身は落とさない」「コードはそのまま」を一緒に書くこと、である。
+
+## 既存ページとの関係（wiki 側の推論）
+
+- 毎回のスラッシュコマンドを常時適用の設定に昇格させる判断は、[[concepts/claude-code-instruction-methods]] の「どの手段に置くか」の表で言えば、Skills（起動時にだけ効く）から Output styles（開始時に注入され圧縮されない）への移し替えにあたる。uehaj の2項の追加は、権威の高い層に置くほど副作用（情報の欠落・コードの言い換え）が全返答に及ぶことの裏返しと読める
+- [[concepts/lean-prompt-rules-adaptation]] は output style では止まらなかった「進め方」の癖があったと報告する。本記事が変えているのは進め方でなく文体なので、出力スタイルが効く範囲の内側にあると考えられる
+- このvault の CLAUDE.md「文章スタイル」（括弧は文末・用語には一言添える）や [[tools/kuden-writing]] の心得は文の構造を定める規範で、`/bro` の「専門用語をやめて人が人に話すように」は語彙の層を定める規範である。両者は対象が違うので併用できると考えられる
+
+## 問い
+
+- `keep-coding-instructions: true` で残る「普段の決まり」の範囲は公式ドキュメントで確認していない。自作スタイルの文面と衝突したときどちらが勝つか
+- この output style を入れたまま長いセッションを回すと、`/bro` を都度打つ運用と比べて「中身は落とさない」がどこまで守られるか。uehaj の記事は導入直後の印象で、長期の実測はない
+- このvault で返答の平明さを上げたいなら、output style でなく append-system-prompt に同じ5項を足す方が [[concepts/claude-code-instruction-methods]] の「スタイル変更を避ける」線引きに合うか
+
+## 関連
+
+- [[tools/pstack]] — `/bro` スキルを含む @poteto のスキル群。本ページはそのうち1スキルを常時適用に変えた実例
+- [[concepts/claude-code-instruction-methods]] — 7つの指示手段の公式フレーム。出力スタイルがシステムプロンプトを置き換える性質と `keep-coding-instructions` の注意はそちらが正本
+- [[concepts/lean-prompt-rules-adaptation]] — output style では止まらなかった癖を hook で止めた実測。出力スタイルの効く範囲の外側を示す対照
+- [[tools/claude-code]] — 出力スタイル機能を持つ本体
+- [[tools/kuden-writing]] — 文の構造で解釈のブレを防ぐ日本語規範。`/bro` の語彙層の規範と併用できる対照
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

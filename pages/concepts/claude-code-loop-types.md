@@ -63,3 +63,4 @@ Proactive は単独機能でなく合成で、`/schedule` で新着レポート�
 - [[tools/makeloop]] — `/loop` プロンプト生成器。time-based ループの設計を自動化する側
 - [[concepts/ai-pre-judgment-automation]] — Proactive ループの個人実装例：検知は通常プログラム、起動後は軽量→高推論→強モデルへ段階的に回し、実行前に人間承認を挟む（Codex運用）
 - [[tools/claude-duet]] — Proactive 類型を一般利用者向け製品にしたと考えられる Anthropic のアプリ（朝ブリーフ・席を離れても継続・送信や支払いの前に確認）
+- [[concepts/always-on-agents]] — Proactive 類型を自前で組むときのデータ構造。Anthropic 公式が示す5部品（イベント受信箱・タイマー・メモリ・権限・送信箱）と run／session のサイクル。本ページが Claude Code の機能の合成で示す構成の、部品側の設計

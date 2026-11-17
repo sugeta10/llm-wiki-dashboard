@@ -51,3 +51,4 @@
 - [[business/youtube-shorts-jidouka-marketing]] — 同じ YouTube の自動化運用をショート動画で回す版。こちらはフックの試行回数、本ページは長尺の視聴時間で稼ぐ
 - [[business/stock-gata-fukugyo]] — 「投稿を止めても収益が残る」ストック型副業を記事で作る設計。LINE 誘導つき自己申告という記事の形も共通
 - [[business/ai-income-retirement-strategy]] — AI で自分が動かなくても積み上がる収益を作る戦略。本ページはその1手段
+- [[business/kaigai-note-fukugyo]] — 日本の常識を英語で売る有料記事の副業手順。本人申告の売上・プロンプト未収録・LINE 誘導という記事の形が本ページと同じ（かめふく @xpurojekuto）

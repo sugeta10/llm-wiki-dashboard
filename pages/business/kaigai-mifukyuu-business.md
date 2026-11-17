@@ -32,3 +32,4 @@
 - [[concepts/ai-news-source-automation]] — 海外メディア等から発信ネタを自動収集する7つの情報源。本記事の「海外一次情報を日本語で最初に説明する」作業の上流にあたる
 - [[business/ai-strategy-officer]] — AI に市場選定・商品決定まで任せる副業論。空白市場を探す作業を AI に委ねる側の議論
 - [[business/chiho-business-trend]] — 空白を海外との差でなく「地方で需要が残り供給が消えた場所」に求める同型の市場選定論（@minatoku_genkai・LINE 誘導つき）
+- [[business/kaigai-note-fukugyo]] — 本ページの鏡像。「日本語でしか書かれていない日本の常識」を英語で Gumroad 等に出す副業手順で、空白を「説明する人の不在」に見る点が同じ（かめふく @xpurojekuto・LINE 誘導つき）

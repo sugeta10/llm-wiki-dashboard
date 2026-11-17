@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>always-on-agents - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>always-on-agents</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="always-on-agents.md">Markdownで表示</a></div>
+  <div class="meta">concepts/always-on-agents · concepts · <span title="2026-11-17">今日</span></div>
+  <article><h1>Always-on エージェントの5つの基本部品（Anthropic 公式ガイド）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 「常時稼働」に見えるエージェントは実際にはほぼ眠っていて、イベントで短く起き、状態を保存してまた眠る。Anthropic の William Hu はその周辺構造を「イベント受信箱・タイマー・メモリ・権限・送信箱」の5部品に分解し、各部品を別々の永続ストア（通常は DB のテーブル）に置けと述べる。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  W[&quot;Webhook / ユーザー返信 / バックグラウンドジョブ&quot;] --&gt; H[&quot;ハンドラ（HTTP）&quot;]
+  H --&gt; I[&quot;イベント受信箱（DB テーブル）&quot;]
+  T[&quot;タイマー（別テーブル）&quot;] --&gt;|&quot;スケジューラが期限到来分を投入&quot;| I
+  I --&gt; K[&quot;ワーカー（受信箱ごとに1体）&quot;]
+  K --&gt; R[&quot;run（新規 or 既存セッション）&quot;]
+  M[&quot;メモリ（instructions / index / progress）&quot;] &lt;--&gt; R
+  P[&quot;権限（資格情報プロキシ・auto mode・保留ツール呼び出し）&quot;] --- R
+  R --&gt; O[&quot;送信箱（DB テーブル）&quot;]
+  O --&gt; D[&quot;ディスパッチャ → ユーザー&quot;]
+  D --&gt;|&quot;返信はイベントとして戻る&quot;| I
+  R --&gt;|&quot;フォローアップを設定&quot;| T</pre>
+<p>Hu（Anthropic・記事末尾に著者として記名）は、always-on エージェントが動く中核ループは普通のエージェントと同じで、違いは「いつ起きるか・run の間に何を持ち越すか・成果がどう利用者に届くか」を制御する周辺構造にあると書く。ここ数か月で再び注目されている理由として、最新モデルが利用者の意図の理解と「いつ確認を取るべきか」の判断で信頼できるようになったこと、長時間タスクほど知能が安く済むようになったこと（Hu が挙げる例では、ある長期コーディングベンチマークで Opus 5.5 は Opus 5 より解決タスクあたり 78% 安く、通常ワークロードの 40% 減より大きい）の2点を挙げる。顧客から「既存エージェントをもっと能動的にしたい」「ゼロから作りたい」の両方の相談が来ているので部品を公開した、というのが記事の動機である。</p>
+<p>@TekonBurns（プロフィールに肩書なし・フロンティアモデルや Claude Code／Codex の動向を追う個人アカウント）はこの記事を5点に要約して投稿し、5,850 件ブックマークされた（2026-11-16 時点）。「最大の誤解は always-on エージェントが 24 時間動いていると思うこと」という投稿の第一文は、記事の「always-on は利用者から見た体験の説明であって実態ではない」という節をそのまま言い換えたものである。本ページは公式記事を正本とし、投稿は入口として扱う。</p>
+<h2>run と session のサイクル</h2>
+<p>記事はエージェントの1回分の仕事を <strong>run</strong> と呼ぶ。イベントを受け取り、タスクを完了し、何が起きたかを保存する、という一続きの作業である。run は <strong>session</strong>（メッセージとツール呼び出しの記録）の中で動き、終わるとエージェントは眠りに戻る。利用者の返信のように前の作業の続きにあたるイベントは既存セッションを再開し、それ以外は新しいセッションを始める。眠っている間はトークンを消費しない、と記事の図は説明する。</p>
+<h2>5つの基本部品</h2>
+<h3>イベント受信箱（Event inbox）</h3>
+<p>イベント源（webhook・スケジュール・バックグラウンドジョブ）がエージェントを直接呼ぶと、同時に届いた2つのイベントが競合する run を起こしたり、クラッシュでイベントを失ったりする。記事はその代わりに全イベントを受信箱へ送らせ、ワーカーが拾う形を勧める。最小構成は3つで、イベントの永続リスト（通常は DB テーブル）・それに書き込むハンドラ（通常は HTTP エンドポイント）・それを読むワーカー（通常はバックグラウンドサービス）である。受信箱はイベントごとの状態を追跡し、イベント源の一意 ID で重複排除する。最初は利用者ごとに1受信箱とし、並列度が要るならさらに分割する。</p>
+<p>記事が挙げる実装上の指針は4つ。</p>
+<ul>
+<li><strong>ハンドラは即座に応答する</strong>。webhook 提供者の中には遅い応答を失敗とみなすものがあるため、プロンプトインジェクションの検査のような深い検証は run の中で行う</li>
+<li><strong>受信箱を唯一の真実とする</strong>。ワーカーは起こされたらまず受信箱から最新イベントを引く。run の途中でワーカーが死んでも、新しいワーカーが同じイベントを拾って再試行できる</li>
+<li><strong>1つの受信箱に同時に動くワーカーは1体</strong>。run の途中で新しいイベントが来たら、次の run に回す・現在の run に取り込む・中断して再開のいずれかを選ぶ</li>
+<li><strong>ワーカーは溜まったイベントをまとめる</strong>。利用者が連続で数通送ったら1つの run に併合し、返信は1回で済ませる</li>
+</ul>
+<h3>タイマー（Timers）</h3>
+<p>受信箱と組み合わせて能動性を作るのがタイマーで、記事は <strong>フォローアップ</strong>（エージェントが自分で設定する期限。返信の確認など）と <strong>スケジュール</strong>（既知の周期で繰り返すタスク。日次ニュースレターなど）の2種に分ける。タイマーは受信箱とは別の永続ストア（通常は別テーブル）に置く。受信箱には「今すぐ着手できるイベント」だけを入れるためである。スキーマは共有できるが、スケジュールは繰り返しの情報も持つ。</p>
+<p>タイマー自体は run を起こさない。スケジューラ（バックグラウンドサービス）が一定間隔でストアを走査し、期限到来分を処理する。フォローアップは完了にし、スケジュールは次回の期限に更新し、受信箱にイベントを追加してワーカーを起こす。スケジューラは自作でも durable execution エンジンでもよい、と記事は書く。</p>
+<h3>メモリ（Memory）</h3>
+<p>run はばらばらに分かれているので、連続性はメモリが担う。記事は Claude Code の auto memory と Messages API の memory tool がファイルのディレクトリとして実装されていることに触れ、always-on エージェントではそのディレクトリを DB やオブジェクトストアに対応づけてワーカーより長生きさせよ、と述べる。原則は「<strong>別の場所で引き直せないものだけを保存する</strong>」で、issue トラッカーにあるものはポインタだけ保存する。保存する種類は4つ。</p>
+<table>
+<thead>
+<tr>
+<th>種類</th>
+<th>内容</th>
+<th>読み込み方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>利用者の指示</td>
+<td>エージェントの振る舞いについての指示</td>
+<td>専用ファイルに保存し、毎 run の開始時に読む</td>
+</tr>
+<tr>
+<td>利用者についてのメモ</td>
+<td>役割・好み・受けた訂正</td>
+<td>1ファイルから始め、増えたら小さなファイルに分けて索引だけを開始時に読む</td>
+</tr>
+<tr>
+<td>過去のメッセージ</td>
+<td>すでに利用者に伝えたこと（繰り返しを防ぐ）</td>
+<td>別ファイルに保存するか、ワーカーが直近数通を読み込む</td>
+</tr>
+<tr>
+<td>タスクの進捗</td>
+<td>進行中タスクごとの「済んだこと・残り」</td>
+<td>索引だけ開始時に読み、必要時に個別ファイルを引く</td>
+</tr>
+</tbody>
+</table>
+<p>記事の例では <code>instructions.md</code>・<code>index.md</code>・<code>reported.md</code> を毎 run 読み、<code>notes/</code> と <code>progress/</code> は必要なときに読む。run 中に保存するこのメモリに加え、過去セッションを見直してメモリを整える <strong>dreaming</strong> を足せば、古い項目の置き換えや多くの run をまたいで初めて見えるパターンの抽出ができる、と記事は述べ、Anthropic の agent memory の研究記事を参照している。製品側の実装は <a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> にあたる。</p>
+<p>コンテキストウィンドウについては、システムプロンプト・ツール定義・メモリファイルという固定の「オーバーヘッド」が毎 run 載るので、軽く保ちプロンプトキャッシュで費用を下げるよう勧める。新規セッションはこのオーバーヘッドと起動イベントだけで始まり、既存セッションは過去 run のメッセージとツール呼び出しを持ち戻す。長くなりすぎたら古いメッセージを圧縮するか新セッションを始めるが、どちらも詳細を失うので、残すべきものは途中でメモリに書いておく。</p>
+<h3>権限（Permissions）</h3>
+<p>記事は権限を「always-on エージェントが最も危険を抱える場所」と位置づける。run は利用者のアクセス権を持ったまま、設計上は無人で動くからである。ツール呼び出しごとに、自分で進める・止める・承認を待つのいずれかを決める必要がある。部品は他のエージェントと同じで3つ。</p>
+<ul>
+<li><strong>資格情報ストア</strong>: 推奨パターンはエージェントの環境の外に置いたプロキシが外向きリクエストに資格情報を付ける形。エージェントは資格情報なしでリクエストを送り、プロキシが本物を注入して転送する。<a href="../concepts/managed-agents-security-principles.html">managed-agents-security-principles</a> の「資格情報はサンドボックス外のプロキシが付与」と同じ原則である</li>
+<li><strong>auto mode</strong>: 利用者の入力なしで動けるようにするため、Claude Code の auto mode は分類器で高リスクの操作を審査し、危険と判定したものを止めて Claude に安全な別経路を探させる。最も重要な判断には利用者のレビューが引き続き要る、と記事は書く</li>
+<li><strong>保留ツール呼び出し（Deferred tool calls）</strong>: Claude Code ではフックがツール呼び出しを保留して利用者の追加入力を待てる。always-on エージェントでも同じ形で、呼び出しが保留されると run は終わりセッションは呼び出しの途中で保存される。依頼は利用者に（例えば MCP Apps で作った対話カードで）示され、答えはイベントとして受信箱に戻り、新しい run が保存済みセッションを再開する。待っている間もワーカーは他のイベントを処理できるので、エージェントは止まらない</li>
+</ul>
+<h3>送信箱（Outbox）</h3>
+<p>普通のエージェントは応答をストリーミングで見せるが、always-on エージェントは裏で働き、利用者には結果と少しの詳細だけが届く。run の終わり方は3通りで、送信箱にメッセージを送る・何も送らないと決める・保留ツール呼び出しで許可や追加情報を求める、のいずれかである。</p>
+<p>多くの場合は利用者へ直接届ける「send」ツールで足り、正式な送信箱が要るのはメッセージの間隔を整えたい、またはエラーから回復させたいときだと記事は書く。送信箱は受信箱と対になる別テーブルで、ワーカーと対になるディスパッチャ（バックグラウンドサービス）が保留中のメッセージを読み、何を届けるか決めて送る。保留ツール呼び出しの依頼は送信箱経由でも自前の画面に直接でもよい。</p>
+<p>送る量の調整も重要で、多すぎれば騒がしく、少なすぎれば知るべきことを取りこぼす。記事は eval を組んで釣り合いを探すよう勧め、実務上は「静かに始めて、時間をかけて利用者の注意を勝ち取る」方がよいと述べる。@TekonBurns はこれを「午前3時に利用者へ連投しないための待ち行列」と言い換えている。</p>
+<h2>全体のサイクル</h2>
+<p>毎 run は受信箱のイベント（利用者のメッセージ・webhook・タイマー）で始まる。ワーカーがイベントを拾って run を起こし、新規または既存のセッションでエージェントを起こす。エージェントはメモリを読んで出発点を得て、権限の範囲で行動し、学んだことでメモリを更新する。run が終わると送信箱に行を積み、ディスパッチャが利用者に届ける。run はタイマーを設定して後で自分を起こせ、利用者がメッセージに返信すればそれが受信箱のイベントになる。各 run は短いがこのサイクルが止まらないことが、利用者に「常時稼働」と感じさせる、というのが記事の締めである。</p>
+<h2>既存ページとの関係（wiki 側の推論）</h2>
+<ul>
+<li><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a> の daily-brief 参照実装は、この5部品のうちスケジュール型タイマー・2種のメモリストア（preferences／state）・読み取り専用と予算上限という権限の絞り込み・Slack 1チャンネルという送信先を Managed Agents の機能で具体化したものと読める。受信箱に相当する部品は持たず、起動はスケジュールだけである</li>
+<li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> の Proactive 類型（イベントまたはスケジュールで起動・人間不在）が、本ページの5部品で組まれる対象にあたる。向こうは Claude Code の機能の合成（<code>/schedule</code>・<code>/goal</code>・dynamic workflows・auto mode）で、こちらは自前で組むときのデータ構造の話である</li>
+<li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a> の「常時起動の Gateway プロセス＋60秒ティックの cron デーモン」は、受信箱とスケジューラを1つのプロセスに同居させた個人実装と見ることができる</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>このvault の launchd ジョブ（ingest・auto-sync・weekly）は「タイマー→受信箱→1ワーカー」の形になっているか。同時起動の競合と、失敗したイベントの再試行はどこで担保しているか</li>
+<li>「引き直せないものだけ保存する」原則で見ると、この wiki の auto memory にはポインタで足りる項目がどれだけ入っているか</li>
+<li>送信量の eval は何を正解ラベルにするのか。記事は「静かに始めよ」と言うだけで、評価の作り方は書いていない</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a> — Anthropic 公式の daily-brief 参照実装。本ページの部品のうちスケジュール・メモリ分割・権限の絞り込みを Managed Agents で具体化した例</li>
+<li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a> — Claude Code チームのループ4類型。Proactive 類型を自前で組むときの構造が本ページ</li>
+<li><a href="../concepts/managed-agents-security-principles.html">managed-agents-security-principles</a> — 資格情報をサンドボックス外のプロキシが付与する原則。本ページの権限部品と同じ設計</li>
+<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a> — 記事が「dreaming」と呼ぶメモリ整理の製品実装</li>
+<li><a href="../tools/hermes-agent-overnight.html">hermes-agent-overnight</a> — 常時起動 Gateway と cron ティックで夜間に自律稼働する個人向け実装</li>
+<li><a href="../tools/claude-duet.html">claude-duet</a> — Proactive 類型を一般利用者向け製品にした Anthropic のアプリ。朝ブリーフと送信前の確認を持つ</li>
+<li><a href="../tools/claude-managed-agents.html">claude-managed-agents</a> — 記事が参照する memory tool・セッション・圧縮を提供するプラットフォーム</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/claude-code-loop-types.html">claude-code-loop-types</a></li>
+<li><a href="../concepts/managed-agents-security-principles.html">managed-agents-security-principles</a></li>
+<li><a href="../concepts/scheduled-agent-automation.html">scheduled-agent-automation</a></li>
+<li><a href="../concepts/managed-agents-dreams.html">managed-agents-dreams</a></li>
+<li><a href="../tools/claude-duet.html">claude-duet</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2121328737174388847" rel="noopener" target="_blank">https://x.com/i/web/status/2121328737174388847</a></li>
+<li><a href="https://claude.com/resources/articles/building-always-on-agents" rel="noopener" target="_blank">https://claude.com/resources/articles/building-always-on-agents</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># Always-on エージェントの5つの基本部品（Anthropic 公式ガイド）
+
+&gt; **TL;DR**: 「常時稼働」に見えるエージェントは実際にはほぼ眠っていて、イベントで短く起き、状態を保存してまた眠る。Anthropic の William Hu はその周辺構造を「イベント受信箱・タイマー・メモリ・権限・送信箱」の5部品に分解し、各部品を別々の永続ストア（通常は DB のテーブル）に置けと述べる。
+
+```mermaid
+flowchart LR
+  W[&quot;Webhook / ユーザー返信 / バックグラウンドジョブ&quot;] --&gt; H[&quot;ハンドラ（HTTP）&quot;]
+  H --&gt; I[&quot;イベント受信箱（DB テーブル）&quot;]
+  T[&quot;タイマー（別テーブル）&quot;] --&gt;|&quot;スケジューラが期限到来分を投入&quot;| I
+  I --&gt; K[&quot;ワーカー（受信箱ごとに1体）&quot;]
+  K --&gt; R[&quot;run（新規 or 既存セッション）&quot;]
+  M[&quot;メモリ（instructions / index / progress）&quot;] &lt;--&gt; R
+  P[&quot;権限（資格情報プロキシ・auto mode・保留ツール呼び出し）&quot;] --- R
+  R --&gt; O[&quot;送信箱（DB テーブル）&quot;]
+  O --&gt; D[&quot;ディスパッチャ → ユーザー&quot;]
+  D --&gt;|&quot;返信はイベントとして戻る&quot;| I
+  R --&gt;|&quot;フォローアップを設定&quot;| T
+```
+
+Hu（Anthropic・記事末尾に著者として記名）は、always-on エージェントが動く中核ループは普通のエージェントと同じで、違いは「いつ起きるか・run の間に何を持ち越すか・成果がどう利用者に届くか」を制御する周辺構造にあると書く。ここ数か月で再び注目されている理由として、最新モデルが利用者の意図の理解と「いつ確認を取るべきか」の判断で信頼できるようになったこと、長時間タスクほど知能が安く済むようになったこと（Hu が挙げる例では、ある長期コーディングベンチマークで Opus 5.5 は Opus 5 より解決タスクあたり 78% 安く、通常ワークロードの 40% 減より大きい）の2点を挙げる。顧客から「既存エージェントをもっと能動的にしたい」「ゼロから作りたい」の両方の相談が来ているので部品を公開した、というのが記事の動機である。
+
+@TekonBurns（プロフィールに肩書なし・フロンティアモデルや Claude Code／Codex の動向を追う個人アカウント）はこの記事を5点に要約して投稿し、5,850 件ブックマークされた（2026-11-16 時点）。「最大の誤解は always-on エージェントが 24 時間動いていると思うこと」という投稿の第一文は、記事の「always-on は利用者から見た体験の説明であって実態ではない」という節をそのまま言い換えたものである。本ページは公式記事を正本とし、投稿は入口として扱う。
+
+## run と session のサイクル
+
+記事はエージェントの1回分の仕事を **run** と呼ぶ。イベントを受け取り、タスクを完了し、何が起きたかを保存する、という一続きの作業である。run は **session**（メッセージとツール呼び出しの記録）の中で動き、終わるとエージェントは眠りに戻る。利用者の返信のように前の作業の続きにあたるイベントは既存セッションを再開し、それ以外は新しいセッションを始める。眠っている間はトークンを消費しない、と記事の図は説明する。
+
+## 5つの基本部品
+
+### イベント受信箱（Event inbox）
+
+イベント源（webhook・スケジュール・バックグラウンドジョブ）がエージェントを直接呼ぶと、同時に届いた2つのイベントが競合する run を起こしたり、クラッシュでイベントを失ったりする。記事はその代わりに全イベントを受信箱へ送らせ、ワーカーが拾う形を勧める。最小構成は3つで、イベントの永続リスト（通常は DB テーブル）・それに書き込むハンドラ（通常は HTTP エンドポイント）・それを読むワーカー（通常はバックグラウンドサービス）である。受信箱はイベントごとの状態を追跡し、イベント源の一意 ID で重複排除する。最初は利用者ごとに1受信箱とし、並列度が要るならさらに分割する。
+
+記事が挙げる実装上の指針は4つ。
+
+- **ハンドラは即座に応答する**。webhook 提供者の中には遅い応答を失敗とみなすものがあるため、プロンプトインジェクションの検査のような深い検証は run の中で行う
+- **受信箱を唯一の真実とする**。ワーカーは起こされたらまず受信箱から最新イベントを引く。run の途中でワーカーが死んでも、新しいワーカーが同じイベントを拾って再試行できる
+- **1つの受信箱に同時に動くワーカーは1体**。run の途中で新しいイベントが来たら、次の run に回す・現在の run に取り込む・中断して再開のいずれかを選ぶ
+- **ワーカーは溜まったイベントをまとめる**。利用者が連続で数通送ったら1つの run に併合し、返信は1回で済ませる
+
+### タイマー（Timers）
+
+受信箱と組み合わせて能動性を作るのがタイマーで、記事は **フォローアップ**（エージェントが自分で設定する期限。返信の確認など）と **スケジュール**（既知の周期で繰り返すタスク。日次ニュースレターなど）の2種に分ける。タイマーは受信箱とは別の永続ストア（通常は別テーブル）に置く。受信箱には「今すぐ着手できるイベント」だけを入れるためである。スキーマは共有できるが、スケジュールは繰り返しの情報も持つ。
+
+タイマー自体は run を起こさない。スケジューラ（バックグラウンドサービス）が一定間隔でストアを走査し、期限到来分を処理する。フォローアップは完了にし、スケジュールは次回の期限に更新し、受信箱にイベントを追加してワーカーを起こす。スケジューラは自作でも durable execution エンジンでもよい、と記事は書く。
+
+### メモリ（Memory）
+
+run はばらばらに分かれているので、連続性はメモリが担う。記事は Claude Code の auto memory と Messages API の memory tool がファイルのディレクトリとして実装されていることに触れ、always-on エージェントではそのディレクトリを DB やオブジェクトストアに対応づけてワーカーより長生きさせよ、と述べる。原則は「**別の場所で引き直せないものだけを保存する**」で、issue トラッカーにあるものはポインタだけ保存する。保存する種類は4つ。
+
+| 種類 | 内容 | 読み込み方 |
+|---|---|---|
+| 利用者の指示 | エージェントの振る舞いについての指示 | 専用ファイルに保存し、毎 run の開始時に読む |
+| 利用者についてのメモ | 役割・好み・受けた訂正 | 1ファイルから始め、増えたら小さなファイルに分けて索引だけを開始時に読む |
+| 過去のメッセージ | すでに利用者に伝えたこと（繰り返しを防ぐ） | 別ファイルに保存するか、ワーカーが直近数通を読み込む |
+| タスクの進捗 | 進行中タスクごとの「済んだこと・残り」 | 索引だけ開始時に読み、必要時に個別ファイルを引く |
+
+記事の例では `instructions.md`・`index.md`・`reported.md` を毎 run 読み、`notes/` と `progress/` は必要なときに読む。run 中に保存するこのメモリに加え、過去セッションを見直してメモリを整える **dreaming** を足せば、古い項目の置き換えや多くの run をまたいで初めて見えるパターンの抽出ができる、と記事は述べ、Anthropic の agent memory の研究記事を参照している。製品側の実装は [[concepts/managed-agents-dreams]] にあたる。
+
+コンテキストウィンドウについては、システムプロンプト・ツール定義・メモリファイルという固定の「オーバーヘッド」が毎 run 載るので、軽く保ちプロンプトキャッシュで費用を下げるよう勧める。新規セッションはこのオーバーヘッドと起動イベントだけで始まり、既存セッションは過去 run のメッセージとツール呼び出しを持ち戻す。長くなりすぎたら古いメッセージを圧縮するか新セッションを始めるが、どちらも詳細を失うので、残すべきものは途中でメモリに書いておく。
+
+### 権限（Permissions）
+
+記事は権限を「always-on エージェントが最も危険を抱える場所」と位置づける。run は利用者のアクセス権を持ったまま、設計上は無人で動くからである。ツール呼び出しごとに、自分で進める・止める・承認を待つのいずれかを決める必要がある。部品は他のエージェントと同じで3つ。
+
+- **資格情報ストア**: 推奨パターンはエージェントの環境の外に置いたプロキシが外向きリクエストに資格情報を付ける形。エージェントは資格情報なしでリクエストを送り、プロキシが本物を注入して転送する。[[concepts/managed-agents-security-principles]] の「資格情報はサンドボックス外のプロキシが付与」と同じ原則である
+- **auto mode**: 利用者の入力なしで動けるようにするため、Claude Code の auto mode は分類器で高リスクの操作を審査し、危険と判定したものを止めて Claude に安全な別経路を探させる。最も重要な判断には利用者のレビューが引き続き要る、と記事は書く
+- **保留ツール呼び出し（Deferred tool calls）**: Claude Code ではフックがツール呼び出しを保留して利用者の追加入力を待てる。always-on エージェントでも同じ形で、呼び出しが保留されると run は終わりセッションは呼び出しの途中で保存される。依頼は利用者に（例えば MCP Apps で作った対話カードで）示され、答えはイベントとして受信箱に戻り、新しい run が保存済みセッションを再開する。待っている間もワーカーは他のイベントを処理できるので、エージェントは止まらない
+
+### 送信箱（Outbox）
+
+普通のエージェントは応答をストリーミングで見せるが、always-on エージェントは裏で働き、利用者には結果と少しの詳細だけが届く。run の終わり方は3通りで、送信箱にメッセージを送る・何も送らないと決める・保留ツール呼び出しで許可や追加情報を求める、のいずれかである。
+
+多くの場合は利用者へ直接届ける「send」ツールで足り、正式な送信箱が要るのはメッセージの間隔を整えたい、またはエラーから回復させたいときだと記事は書く。送信箱は受信箱と対になる別テーブルで、ワーカーと対になるディスパッチャ（バックグラウンドサービス）が保留中のメッセージを読み、何を届けるか決めて送る。保留ツール呼び出しの依頼は送信箱経由でも自前の画面に直接でもよい。
+
+送る量の調整も重要で、多すぎれば騒がしく、少なすぎれば知るべきことを取りこぼす。記事は eval を組んで釣り合いを探すよう勧め、実務上は「静かに始めて、時間をかけて利用者の注意を勝ち取る」方がよいと述べる。@TekonBurns はこれを「午前3時に利用者へ連投しないための待ち行列」と言い換えている。
+
+## 全体のサイクル
+
+毎 run は受信箱のイベント（利用者のメッセージ・webhook・タイマー）で始まる。ワーカーがイベントを拾って run を起こし、新規または既存のセッションでエージェントを起こす。エージェントはメモリを読んで出発点を得て、権限の範囲で行動し、学んだことでメモリを更新する。run が終わると送信箱に行を積み、ディスパッチャが利用者に届ける。run はタイマーを設定して後で自分を起こせ、利用者がメッセージに返信すればそれが受信箱のイベントになる。各 run は短いがこのサイクルが止まらないことが、利用者に「常時稼働」と感じさせる、というのが記事の締めである。
+
+## 既存ページとの関係（wiki 側の推論）
+
+- [[concepts/scheduled-agent-automation]] の daily-brief 参照実装は、この5部品のうちスケジュール型タイマー・2種のメモリストア（preferences／state）・読み取り専用と予算上限という権限の絞り込み・Slack 1チャンネルという送信先を Managed Agents の機能で具体化したものと読める。受信箱に相当する部品は持たず、起動はスケジュールだけである
+- [[concepts/claude-code-loop-types]] の Proactive 類型（イベントまたはスケジュールで起動・人間不在）が、本ページの5部品で組まれる対象にあたる。向こうは Claude Code の機能の合成（`/schedule`・`/goal`・dynamic workflows・auto mode）で、こちらは自前で組むときのデータ構造の話である
+- [[tools/hermes-agent-overnight]] の「常時起動の Gateway プロセス＋60秒ティックの cron デーモン」は、受信箱とスケジューラを1つのプロセスに同居させた個人実装と見ることができる
+
+## 問い
+
+- このvault の launchd ジョブ（ingest・auto-sync・weekly）は「タイマー→受信箱→1ワーカー」の形になっているか。同時起動の競合と、失敗したイベントの再試行はどこで担保しているか
+- 「引き直せないものだけ保存する」原則で見ると、この wiki の auto memory にはポインタで足りる項目がどれだけ入っているか
+- 送信量の eval は何を正解ラベルにするのか。記事は「静かに始めよ」と言うだけで、評価の作り方は書いていない
+
+## 関連
+
+- [[concepts/scheduled-agent-automation]] — Anthropic 公式の daily-brief 参照実装。本ページの部品のうちスケジュール・メモリ分割・権限の絞り込みを Managed Agents で具体化した例
+- [[concepts/claude-code-loop-types]] — Claude Code チームのループ4類型。Proactive 類型を自前で組むときの構造が本ページ
+- [[concepts/managed-agents-security-principles]] — 資格情報をサンドボックス外のプロキシが付与する原則。本ページの権限部品と同じ設計
+- [[concepts/managed-agents-dreams]] — 記事が「dreaming」と呼ぶメモリ整理の製品実装
+- [[tools/hermes-agent-overnight]] — 常時起動 Gateway と cron ティックで夜間に自律稼働する個人向け実装
+- [[tools/claude-duet]] — Proactive 類型を一般利用者向け製品にした Anthropic のアプリ。朝ブリーフと送信前の確認を持つ
+- [[tools/claude-managed-agents]] — 記事が参照する memory tool・セッション・圧縮を提供するプラットフォーム
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

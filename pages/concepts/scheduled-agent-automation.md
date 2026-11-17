@@ -97,3 +97,4 @@ agent.md の判断規則（記事からの抜粋）は、項目を載せる条�
 - [[concepts/ai-pre-judgment-automation]] — 同じく Slack/GitHub を定時検知する自動化だが、実行前に人間の承認を挟む対照例
 - [[tools/ant-cli]] — `ant apply` でファイル群から API リソースを作る CLI
 - [[business/claude-plan-api-credits]] — Max/Team の月次 API クレジットで本自動化を動かせる
+- [[concepts/always-on-agents]] — Anthropic 公式の always-on エージェント5部品（受信箱・タイマー・メモリ・権限・送信箱）。本ページの daily-brief はそのうちスケジュール型タイマー・メモリ分割・権限の絞り込みを Managed Agents で具体化した例で、受信箱に相当する部品は持たない

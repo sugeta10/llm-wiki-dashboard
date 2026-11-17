@@ -72,3 +72,4 @@ Anthropic の head of platform である Katelyn Lesse は、多エージェン�
 - [[concepts/workload-identity-federation]] — 静的 API キーを使わない Anthropic への認証。資格情報を外に置く原則と同じ方向
 - [[concepts/claude-code-security]] — Claude Code 側のセキュリティ設定。組織展開では両方を組み合わせる
 - [[concepts/ai-agent-governance]] — 外部ポリシーでエージェントの実行を縛る設計。許可ホスト一覧はネットワーク層での同種の制御
+- [[concepts/always-on-agents]] — 同じ Anthropic の always-on エージェント設計ガイド。権限の部品として「資格情報はエージェント環境の外のプロキシが付ける」を推奨パターンに挙げ、本ページの原則2と同じ配置を無人実行の文脈で説明する。保留ツール呼び出しで承認待ちをセッション保存に変える手順はそちら

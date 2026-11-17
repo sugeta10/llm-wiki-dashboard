@@ -75,3 +75,4 @@ mindmap
 - [[concepts/claude-code-compaction-survival]] — 本ページの「コンパクション挙動」列を公式ドキュメントの機構別一覧表（13 行）に展開したページ。起動済みスキル本文の上限（1 本 5,000・合計 25,000 トークン）と読み直すファイル数（最大 5）の実数はこちら
 - [[concepts/claude-code-seo-second-brain]] — 本ページの振り分けを SEO 運用に適用した実例（CLAUDE.md 128 行・17 スキル・auto memory 171 件・robots.txt を守る PreToolUse hook）。auto memory の索引が 200 行・25KB を超えて 52 行が黙って切られた事故の記録つき（Nicholas Dulait）
 - [[concepts/coding-agents-as-management]] — 本ページの「要請（プロンプト・CLAUDE.md・スキル）／要件（hooks・deny ルール・managed settings）」の線を、Grove の task-relevant maturity で管理論として根拠づけ、「強調しても拾われない1行は hook に・好みを表す hook は外す」の両方向ルールにした Osmani の X 記事
+- [[tools/claude-code-output-styles]] — 本ページの Output styles 行の実例。毎回打っていた pstack の `/bro` スキルを出力スタイルに昇格させ、`keep-coding-instructions: true` で既定のコーディング指示を残しつつ「中身は落とさない」「コードはそのまま」を足した uehaj の設定ファイル
