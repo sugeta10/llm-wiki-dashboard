@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>job-scope-boundary-symptom - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>job-scope-boundary-symptom</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="job-scope-boundary-symptom.md">Markdownで表示</a></div>
+  <div class="meta">concepts/job-scope-boundary-symptom · concepts · <span title="2026-11-17">今日</span></div>
+  <article><h1>「自分の仕事はここまで」は原因ではなく症状（吉羽龍太郎）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: メンバーが担当範囲に線を引いて越えないのは本人の主体性の欠如ではなく、目標設定と評価制度・学習性無力感・意思決定者の曖昧さという構造への正しい適応であり、呼びかけや研修でなく構造の側（決める人を1人にする・提案に結果を返す・担当外の貢献を見える場に出す）を変えよ、と吉羽龍太郎（株式会社アトラクタ Founder 兼 CTO・アジャイルコーチ）が講演資料の公開記事で述べる。</p>
+</blockquote>
+<pre class="mermaid">flowchart LR
+  F1[&quot;目標を担当範囲まで分解&lt;br/&gt;担当外の貢献は評価されない&quot;] --&gt; A[&quot;線の内側にいるのが&lt;br/&gt;合理的な適応&quot;]
+  F2[&quot;行動しても何も変わらない経験&lt;br/&gt;（学習性無力感）&quot;] --&gt; A
+  F3[&quot;誰が決めるか曖昧&lt;br/&gt;承認者が複数・決定が覆る&quot;] --&gt; A
+  A --&gt; S[&quot;症状: 指示待ち・進捗率報告&lt;br/&gt;誰も決めない合議・チケットの投げ合い&lt;br/&gt;組織の沈黙・縦割り&quot;]
+  S --&gt; M[&quot;本人向けの対策&lt;br/&gt;（呼びかけ・研修・目標シート）&quot;]
+  M -.別の形の症状が出る.-&gt; S</pre>
+<p>吉羽は 2026-10-22 に顧客の社内イベントで「『自分の仕事はここまで』はどこから来るのか」と題して講演し、その資料を自身のブログで公開した（スライド本体は本 wiki では未収集で、本ページはブログ本文の要約部分にもとづく）。「担当外のことには手を出さない」「チケットに書いてあるとおりにやりました」「言われていないので」という声はどの組織でも聞かれ、決まって「主体性がない」「当事者意識が足りない」と本人の問題として片づけられる、と吉羽は書く。対策も「越境しよう」という呼びかけや研修、目標管理シートへの「主体性」の記入と、本人に向けたものばかりになる。吉羽の診断は「呼びかけで変わるくらいなら、とっくに変わっている」というもので、他人の行動の原因を状況より性格や意欲に求めすぎる傾向を、社会心理学の「根本的な帰属の誤り」として名指しする。行動は人と環境の両方で決まる（レヴィンの式）という前提に立ち、線を引いている人はその環境に正しく適応しているだけだ、とする。</p>
+<h2>自律は放任ではない</h2>
+<p>アジャイルソフトウェア開発宣言の背後にある原則もスクラムガイドも、自分の仕事に線を引かない自律的なチームを前提にしている、と吉羽は述べる。ここで言う自律は、目指す方向や守るべき制約を共有したうえで、その枠の中で自分たちで判断して行動することで、枠がわからないと人は安全な範囲にこもりやすくなる。吉羽は人が線の内側にこもらないための条件を5つ挙げる。目的が見えている、決めてよい範囲がはっきりしている、必要な情報が届く、自分の行動が結果を変えると感じられる、越境して失敗しても責められない、の5つで、どれか一つでも欠けると人は線の内側にこもる、という。</p>
+<h2>線の内側にこもると何が起きるか</h2>
+<p>症状として吉羽が列挙するのは、指示待ち、進捗率での報告、誰も決めない合議制、チケットの投げ合い、組織の沈黙、そして縦割りがそのままシステムの形になること（コンウェイの法則）である。「指示待ちをやめよう」とルールを作っても別の形の症状が出るだけで、原因のほうを見るべきだ、と吉羽は書く。</p>
+<h2>線を引かせている3つの要因</h2>
+<p>吉羽は構造側の要因を3つに整理する。</p>
+<ul>
+<li><strong>目標設定と評価制度</strong>: 目標を担当範囲まで分解すると、目標に書いていないことはする理由がなくなる。担当外の貢献は評価されにくく、全体がうまくいかなかったときは責められる。この条件なら線の内側にいるのが合理的な選択になる、と吉羽は書く。</li>
+<li><strong>学習性無力感</strong>: 吉羽は「2016年の見直し」に触れ、学習しているのは「無力さ」ではなく「自分の行動で状況をコントロールできる」ということのほうだとわかった、と書く。だから「主体的になれ」と言うより、自分の行動で何かが変わった経験を作る。ブログに出典名はなく、この見直しは Maier と Seligman が学習性無力感の提唱から50年を機に発表した再検討論文を指すと考えられる（wiki 側の推測）。</li>
+<li><strong>意思決定者の曖昧さ</strong>: 誰が決めるのかわからないと、意見を出すことが「他人の領分を侵す」行為になる。承認者が複数いると責任が薄まり（責任の拡散）、決定が後から覆されると決めることそのものに意味を感じなくなる。</li>
+</ul>
+<h2>影響力を実感できる関わり方</h2>
+<p>自分の意見や行動が結果に影響しないと感じると関心を持ち続けるのは難しいので、関心を求める前に影響力を実感できるようにする、と吉羽は書く。採用されなくてもよいので、検討されて採否の理由が返ってくることが大切だとする。具体策として吉羽は DACI（Driver・Approver・Contributor・Informed の4役割で意思決定の責任を分ける枠組み）を挙げ、決める人（Approver）を1人に決め、意見を出す人（Contributor）を明確にすれば、意見を出すのは越境ではなく役割になる、と述べる。DACI の詳細は吉羽自身が翻訳した書籍『Aligned ―プロダクト開発におけるステークホルダーとの関係性の築き方』を参照するよう案内している。</p>
+<h2>線は引いてはいけないのか</h2>
+<p>引いてよい、と吉羽は答える。チームの認知負荷には限界があるので境界は必要で（『チームトポロジー』を引く）、問題は境界があることではなく、またぎ方が決まっていないことだとする。線を引くだけで「内と外」が生まれるので、線をまたいで共有する上位の目標をセットで持ち、プロダクトゴールがこの上位目標になる。吉羽の原則は「線を引くのは説明責任と権限まで。関心まで線を引かない」である。</p>
+<h2>明日から試すこと（吉羽の列挙の転記）</h2>
+<p>メンバーとして:</p>
+<ul>
+<li>自分のチームのゴールを1文で説明できるか確かめる</li>
+<li>自分の仕事に関わるステークホルダーを3人書き出す</li>
+<li>他チームのスプリントレビューに1回出てみる</li>
+<li>担当外で気になったことを1つ口に出す</li>
+<li>小さく越境して、結果が返ってきた経験を記録しておく</li>
+</ul>
+<p>リーダー・マネージャーとして:</p>
+<ul>
+<li>越境して失敗した人を責めない。悪い知らせを持ってきた人に感謝する</li>
+<li>提案には必ず結果を返す。通らなかったなら理由も返す</li>
+<li>決める人を明確にし、承認者は1人にする</li>
+<li>個人の目標とチームの成果をつなげ、担当外の貢献を見える場に出す</li>
+<li>チームに任せる範囲を言語化する</li>
+</ul>
+<h2>位置づけ（wiki 側の読み）</h2>
+<p><a href="../concepts/team-leader-transition.html">team-leader-transition</a> で @KensukeTaki が新任リーダーに「目的を語る」「委譲する」「心理的安全性を行動規範に落とす」と説くのは、本ページのリーダー側の処方（任せる範囲の言語化・越境の失敗を責めない・提案に結果を返す）と同じ向きで、吉羽はそれをメンバー側の症状から逆算して構造の名前（評価制度・無力感・決定者の曖昧さ）を付けたものと読める。<a href="../concepts/mendokusasa-barrier.html">mendokusasa-barrier</a> の @Books_Apps は動かない本人の内側（面倒くさい）に理由を置いて仕組みで着手させるが、吉羽は観察者が本人の内側に理由を置くこと自体を帰属の誤りと呼び、環境の側に置く。説明の置き場が対照をなす。<a href="../business/org-design-intelligence.html">org-design-intelligence</a> の DRI（特定の問題を一定期間所有する直接責任者）は、吉羽の「承認者は1人にする」を組織設計の側から実装したものと考えられる。</p>
+<h2>問い</h2>
+<ul>
+<li>自分のチームで「決める人」が1人に決まっている決定と、承認者が複数いる決定を書き出すと、線の内側にこもる症状はどちらに集中しているか</li>
+<li>吉羽の5条件（目的・決めてよい範囲・情報・影響の実感・失敗が責められない）は、AI エージェントに任せる範囲を決めるときの条件としても読めるか</li>
+<li>講演スライド本体と、学習性無力感の「2016年の見直し」の出典を確認する</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/team-leader-transition.html">team-leader-transition</a> — 新任リーダーの転換論（@KensukeTaki）。本ページのリーダー側の処方と同じ向きで、吉羽はメンバー側の症状から構造を逆算する</li>
+<li><a href="../concepts/mendokusasa-barrier.html">mendokusasa-barrier</a> — 人が動かない本音を「面倒くさい」に置く @Books_Apps の行動論。本人の内側に理由を置く側と、環境に置く本ページとの対照</li>
+<li><a href="../business/org-design-intelligence.html">org-design-intelligence</a> — Sequoia と Block の組織設計。DRI（直接責任者）は「承認者は1人にする」の組織設計側の実装と読める</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/org-design-intelligence.html">org-design-intelligence</a></li>
+<li><a href="../concepts/mendokusasa-barrier.html">mendokusasa-barrier</a></li>
+<li><a href="../concepts/team-leader-transition.html">team-leader-transition</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2120068401045668344" rel="noopener" target="_blank">https://x.com/i/web/status/2120068401045668344</a></li>
+<li><a href="https://www.ryuzee.com/contents/blog/14628" rel="noopener" target="_blank">https://www.ryuzee.com/contents/blog/14628</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 「自分の仕事はここまで」は原因ではなく症状（吉羽龍太郎）
+
+&gt; **TL;DR**: メンバーが担当範囲に線を引いて越えないのは本人の主体性の欠如ではなく、目標設定と評価制度・学習性無力感・意思決定者の曖昧さという構造への正しい適応であり、呼びかけや研修でなく構造の側（決める人を1人にする・提案に結果を返す・担当外の貢献を見える場に出す）を変えよ、と吉羽龍太郎（株式会社アトラクタ Founder 兼 CTO・アジャイルコーチ）が講演資料の公開記事で述べる。
+
+```mermaid
+flowchart LR
+  F1[&quot;目標を担当範囲まで分解&lt;br/&gt;担当外の貢献は評価されない&quot;] --&gt; A[&quot;線の内側にいるのが&lt;br/&gt;合理的な適応&quot;]
+  F2[&quot;行動しても何も変わらない経験&lt;br/&gt;（学習性無力感）&quot;] --&gt; A
+  F3[&quot;誰が決めるか曖昧&lt;br/&gt;承認者が複数・決定が覆る&quot;] --&gt; A
+  A --&gt; S[&quot;症状: 指示待ち・進捗率報告&lt;br/&gt;誰も決めない合議・チケットの投げ合い&lt;br/&gt;組織の沈黙・縦割り&quot;]
+  S --&gt; M[&quot;本人向けの対策&lt;br/&gt;（呼びかけ・研修・目標シート）&quot;]
+  M -.別の形の症状が出る.-&gt; S
+```
+
+吉羽は 2026-10-22 に顧客の社内イベントで「『自分の仕事はここまで』はどこから来るのか」と題して講演し、その資料を自身のブログで公開した（スライド本体は本 wiki では未収集で、本ページはブログ本文の要約部分にもとづく）。「担当外のことには手を出さない」「チケットに書いてあるとおりにやりました」「言われていないので」という声はどの組織でも聞かれ、決まって「主体性がない」「当事者意識が足りない」と本人の問題として片づけられる、と吉羽は書く。対策も「越境しよう」という呼びかけや研修、目標管理シートへの「主体性」の記入と、本人に向けたものばかりになる。吉羽の診断は「呼びかけで変わるくらいなら、とっくに変わっている」というもので、他人の行動の原因を状況より性格や意欲に求めすぎる傾向を、社会心理学の「根本的な帰属の誤り」として名指しする。行動は人と環境の両方で決まる（レヴィンの式）という前提に立ち、線を引いている人はその環境に正しく適応しているだけだ、とする。
+
+## 自律は放任ではない
+
+アジャイルソフトウェア開発宣言の背後にある原則もスクラムガイドも、自分の仕事に線を引かない自律的なチームを前提にしている、と吉羽は述べる。ここで言う自律は、目指す方向や守るべき制約を共有したうえで、その枠の中で自分たちで判断して行動することで、枠がわからないと人は安全な範囲にこもりやすくなる。吉羽は人が線の内側にこもらないための条件を5つ挙げる。目的が見えている、決めてよい範囲がはっきりしている、必要な情報が届く、自分の行動が結果を変えると感じられる、越境して失敗しても責められない、の5つで、どれか一つでも欠けると人は線の内側にこもる、という。
+
+## 線の内側にこもると何が起きるか
+
+症状として吉羽が列挙するのは、指示待ち、進捗率での報告、誰も決めない合議制、チケットの投げ合い、組織の沈黙、そして縦割りがそのままシステムの形になること（コンウェイの法則）である。「指示待ちをやめよう」とルールを作っても別の形の症状が出るだけで、原因のほうを見るべきだ、と吉羽は書く。
+
+## 線を引かせている3つの要因
+
+吉羽は構造側の要因を3つに整理する。
+
+- **目標設定と評価制度**: 目標を担当範囲まで分解すると、目標に書いていないことはする理由がなくなる。担当外の貢献は評価されにくく、全体がうまくいかなかったときは責められる。この条件なら線の内側にいるのが合理的な選択になる、と吉羽は書く。
+- **学習性無力感**: 吉羽は「2016年の見直し」に触れ、学習しているのは「無力さ」ではなく「自分の行動で状況をコントロールできる」ということのほうだとわかった、と書く。だから「主体的になれ」と言うより、自分の行動で何かが変わった経験を作る。ブログに出典名はなく、この見直しは Maier と Seligman が学習性無力感の提唱から50年を機に発表した再検討論文を指すと考えられる（wiki 側の推測）。
+- **意思決定者の曖昧さ**: 誰が決めるのかわからないと、意見を出すことが「他人の領分を侵す」行為になる。承認者が複数いると責任が薄まり（責任の拡散）、決定が後から覆されると決めることそのものに意味を感じなくなる。
+
+## 影響力を実感できる関わり方
+
+自分の意見や行動が結果に影響しないと感じると関心を持ち続けるのは難しいので、関心を求める前に影響力を実感できるようにする、と吉羽は書く。採用されなくてもよいので、検討されて採否の理由が返ってくることが大切だとする。具体策として吉羽は DACI（Driver・Approver・Contributor・Informed の4役割で意思決定の責任を分ける枠組み）を挙げ、決める人（Approver）を1人に決め、意見を出す人（Contributor）を明確にすれば、意見を出すのは越境ではなく役割になる、と述べる。DACI の詳細は吉羽自身が翻訳した書籍『Aligned ―プロダクト開発におけるステークホルダーとの関係性の築き方』を参照するよう案内している。
+
+## 線は引いてはいけないのか
+
+引いてよい、と吉羽は答える。チームの認知負荷には限界があるので境界は必要で（『チームトポロジー』を引く）、問題は境界があることではなく、またぎ方が決まっていないことだとする。線を引くだけで「内と外」が生まれるので、線をまたいで共有する上位の目標をセットで持ち、プロダクトゴールがこの上位目標になる。吉羽の原則は「線を引くのは説明責任と権限まで。関心まで線を引かない」である。
+
+## 明日から試すこと（吉羽の列挙の転記）
+
+メンバーとして:
+
+- 自分のチームのゴールを1文で説明できるか確かめる
+- 自分の仕事に関わるステークホルダーを3人書き出す
+- 他チームのスプリントレビューに1回出てみる
+- 担当外で気になったことを1つ口に出す
+- 小さく越境して、結果が返ってきた経験を記録しておく
+
+リーダー・マネージャーとして:
+
+- 越境して失敗した人を責めない。悪い知らせを持ってきた人に感謝する
+- 提案には必ず結果を返す。通らなかったなら理由も返す
+- 決める人を明確にし、承認者は1人にする
+- 個人の目標とチームの成果をつなげ、担当外の貢献を見える場に出す
+- チームに任せる範囲を言語化する
+
+## 位置づけ（wiki 側の読み）
+
+[[concepts/team-leader-transition]] で @KensukeTaki が新任リーダーに「目的を語る」「委譲する」「心理的安全性を行動規範に落とす」と説くのは、本ページのリーダー側の処方（任せる範囲の言語化・越境の失敗を責めない・提案に結果を返す）と同じ向きで、吉羽はそれをメンバー側の症状から逆算して構造の名前（評価制度・無力感・決定者の曖昧さ）を付けたものと読める。[[concepts/mendokusasa-barrier]] の @Books_Apps は動かない本人の内側（面倒くさい）に理由を置いて仕組みで着手させるが、吉羽は観察者が本人の内側に理由を置くこと自体を帰属の誤りと呼び、環境の側に置く。説明の置き場が対照をなす。[[business/org-design-intelligence]] の DRI（特定の問題を一定期間所有する直接責任者）は、吉羽の「承認者は1人にする」を組織設計の側から実装したものと考えられる。
+
+## 問い
+
+- 自分のチームで「決める人」が1人に決まっている決定と、承認者が複数いる決定を書き出すと、線の内側にこもる症状はどちらに集中しているか
+- 吉羽の5条件（目的・決めてよい範囲・情報・影響の実感・失敗が責められない）は、AI エージェントに任せる範囲を決めるときの条件としても読めるか
+- 講演スライド本体と、学習性無力感の「2016年の見直し」の出典を確認する
+
+## 関連
+
+- [[concepts/team-leader-transition]] — 新任リーダーの転換論（@KensukeTaki）。本ページのリーダー側の処方と同じ向きで、吉羽はメンバー側の症状から構造を逆算する
+- [[concepts/mendokusasa-barrier]] — 人が動かない本音を「面倒くさい」に置く @Books_Apps の行動論。本人の内側に理由を置く側と、環境に置く本ページとの対照
+- [[business/org-design-intelligence]] — Sequoia と Block の組織設計。DRI（直接責任者）は「承認者は1人にする」の組織設計側の実装と読める
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

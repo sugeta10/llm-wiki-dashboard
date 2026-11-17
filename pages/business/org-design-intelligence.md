@@ -128,3 +128,4 @@ AnthropicもOpenAIも「組織の構成員・調整層としてのAI」（[[conc
 - [[concepts/forward-deployed-engineer]] — 既存フローに張り付くFDEは組織図を作り直さない限り筋の悪い問題を解く、という批判（@quxiaoyin）を含むFDEページ
 - [[models/dessa]] — Block 内で Jack Dorsey 直属の小規模ラボが出した、人間の会話音声だけからゼロ訓練したフルデュプレックス音声モデル（2026-10-23 発表）
 - [[business/goal-kpi-management-layer]] — bot が事業の同じ文脈（商品設計・仮説マップ・数値計画）を参照して判断する @yoshio_nocode の構想。本ページのワールドモデルに当たるものを事業管理のデータ構造として持つ
+- [[concepts/job-scope-boundary-symptom]] — 吉羽龍太郎（アトラクタ）の「決める人を明確にし、承認者は1人にする」（DACI の Approver）。本ページの DRI（直接責任者）を、メンバーが担当範囲に線を引く症状の処方として個人・チーム規模から言ったもの

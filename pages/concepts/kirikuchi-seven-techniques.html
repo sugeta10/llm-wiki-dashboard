@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kirikuchi-seven-techniques - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>kirikuchi-seven-techniques</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="kirikuchi-seven-techniques.md">Markdownで表示</a></div>
+  <div class="meta">concepts/kirikuchi-seven-techniques · concepts · <span title="2026-11-17">今日</span></div>
+  <article><h1>同じ一文を7通りで書く「切り口の在庫」（川岸宏司の7技法）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: 文章力の正体は語彙や名言の量ではなく「同じ一文を何通りで書けるか」という切り口の在庫数であり、直球・特徴3リズム・再現VTR・他者引用・天秤対比・電卓・通訳の7技法を文章の目的で選ぶ、と経営者の代筆を1万本以上手がけたと述べる川岸宏司（DIL 共同代表 COO）が X の記事で説く。</p>
+</blockquote>
+<p>川岸は記事の冒頭で、ゴーストライターという仕事の「あまり大きな声で言えない真実」として、経営者が言いたいことは突き詰めると「挑戦しろ」「言葉にしろ」「行動が先だ」「人を大事にしろ」「学び続けろ」の5個くらいしかない、と書く。この5個を1万本以上代筆しても「また同じ話か」と言われなかったのは文章の才能ではなく切り口を替え続けたからだ、と川岸は述べ、その手の内を「言語化力が低い人は、仕事ができない」という一文を7つの技法で7回書き換える形で示す。</p>
+<h2>7つの技法（例文はすべて川岸の記事からの転記）</h2>
+<ol>
+<li><strong>直球型（まっすぐ言う）</strong>: 例「言語化力が低いと、指示・報告・相談の精度が下がり、業務効率に悪影響を及ぼします」。正しいが記憶に残らない、と川岸は言う。ただし謝罪文と障害報告だけはこの技法しか許されないとして、「心を動かしてはいけない文章」専用の技法と位置づける。</li>
+<li><strong>特徴3リズム型（特徴を3連で畳みかける）</strong>: 例「主語を抜き、理由を省き、具体例を考えない。それが"言語化をサボる人"」。この文は実測4.9万いいねを取った実物だと川岸は書く。3連の順番は「主語→理由→具体例」という文章が壊れていく順番そのままで、当てはまる人が段階的に増える設計なので読者のどこかで必ず胸がチクッとする。語呂の技術に見えて「網」の技術だ、とする。</li>
+<li><strong>再現VTR型（あの日の現場を流す）</strong>: 例「このまえ上司から『いい感じにしといて』と資料を渡されたのだけど、金曜18時に『なんか違う』だけが返ってきて、休日がなくなった」。取材でいちばん欲しいのは意見ではなくセリフで、「その時、なんて言われたんですか？」だけで30分聞くこともある、と川岸は書く。セリフと時刻があれば文章は勝手に動き出す。ただし長く、結論の前に読者が帰るし、最後に「発見」を置き忘れるとただのグチになる。</li>
+<li><strong>他者引用型（教わった言葉で語る）</strong>: 例「10代のころに教わった『言語化をサボる人は信用しない方がいい』という言葉、そっくりそのまま私の信念にしてる」。川岸は自分の X 投稿のいいね上位はほぼ全部この型だと明かす。言ったのは他人なので押し付け感が消え、自分を大きく見せずに説教ができる。7つの中でいちばんずるい、とする。ただし作り話は一発でバレ、盛った瞬間に言葉の重みごと消えるので、実話だけで戦えと念を押す。</li>
+<li><strong>天秤対比型（二つ並べて選ばせる）</strong>: 例「言語化力は依頼でわかる。高い人は『明瞭な言葉』で仕事を任せてくれるけど、低い人からは『察して』が漂う。前者が仕事なら、後者は占い」。経営者が好む型で、プレゼン資料の8割はこれで出来ていると川岸は体感を書く。二つ並べると構造が一瞬で伝わり、読み手に「自分はどっち側か」を突きつける踏み絵になる。使いすぎると「また二択か」と飽きられ、世界は白黒より灰色のほうが多い、と付け加える。</li>
+<li><strong>電卓型（感情を数字に翻訳する）</strong>: 例「曖昧な指示1回で『確認2往復と手戻り1回』が最低発生する。約30分の損…毎日なら年間120時間＝丸5営業日。つまり『察する』には、人件費がかかる」。人は正論では動かないのに損得なら動く日がある、と川岸は言う。ただし数字がひとつ雑なだけで電卓ごと疑われる。</li>
+<li><strong>通訳型（知らない話を、知ってる世界に訳す）</strong>: 例「ジェスチャーゲームで『当てられなかった側にキレる人』は存在しないと思う。伝わらない原因が、どう考えても動きのほうにあるから。一方で、言語化力が低い人がビジネスでやってるのも…ほぼこれ。察しなかった側が怒られる」。コツは例えを「自分の世界」ではなく「相手の世界」から拾うことで、ゴルフ好きにはゴルフで、料理をする人には台所で例える。営業がうまい人が無意識にやっている、と川岸は書く。例えが遠いとただの誤訳になる。</li>
+</ol>
+<h2>目的で選ぶ（川岸の対応表の転記）</h2>
+<table>
+<thead>
+<tr>
+<th>文章の目的</th>
+<th>技法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>早く理解してほしい</td>
+<td>直球型</td>
+</tr>
+<tr>
+<td>あるあるで頷かせたい</td>
+<td>特徴3リズム型</td>
+</tr>
+<tr>
+<td>情景で感情を動かしたい</td>
+<td>再現VTR型</td>
+</tr>
+<tr>
+<td>説教臭さを消したい</td>
+<td>他者引用型</td>
+</tr>
+<tr>
+<td>違いを一瞬で見せたい</td>
+<td>天秤対比型</td>
+</tr>
+<tr>
+<td>損得で行動を変えさせたい</td>
+<td>電卓型</td>
+</tr>
+<tr>
+<td>記憶に残したい</td>
+<td>通訳型</td>
+</tr>
+</tbody>
+</table>
+<p>7つに優劣はなく目的との相性があるだけなので、書く前に1回だけ「この文章の目的は？」と自分に聞く、と川岸は勧める。</p>
+<h2>文章力の正体は切り口の在庫数</h2>
+<p>同じ一文しか書いていないのに、選ぶ技法で読後の温度が変わる。語彙を増やすより、名言をブックマークするより「同じ一文を何通りで書けるか」の在庫がそのまま文章力になる、というのが川岸の結論である。練習法は、自分がよく書く一文をひとつ選んで7通りに書き直すこと。切り口の在庫は語彙と違って今日から増やせる、と川岸は書く。川岸自身は直球型が今もいちばん苦手で、飾りたくなる・盛りたくなる・たとえたくなる職業病だと明かし、タイトルに「7つ」と数字を入れたのも電卓型の親戚だと種明かしする。</p>
+<h2>著者と利害</h2>
+<p>記事末尾のプロフィールによれば、川岸は DIL 共同代表 COO・Reframe CEO・ASTRA CEO で、経営者向け X 顧問とデザイン事業を手がけ、著書に『1%読書術』『耳を鍛えて4倍速読』『なぜ、あの人の言葉は心に響くのか』がある。記事は「価値ある声をより多く、より遠く、より深く」をミッションとする経営者向け X 顧問コミュニティ（記事時点で220社・2年以内に1000社目標と記載）の案内で締められており、7技法はそのコミュニティで教える内容の一部を公開したものと読める。同じ DIL の宮﨑達也（代表取締役）の記事は <a href="../concepts/action-before-analysis-40s.html">action-before-analysis-40s</a> にある。</p>
+<h2>位置づけ（wiki 側の読み）</h2>
+<p><a href="../concepts/kakeru-hito.html">kakeru-hito</a> で @Books_Apps が「書ける人はテーマ設定、つまり現実の切り取り方からして違う」と述べる「切り取り方」を、川岸は7つの型に分解して在庫として数えられるものにしたと読める。<a href="../business/human-nature-persuasion.html">human-nature-persuasion</a> で Dan Koe が挙げる心理レバーのうち、「アイデンティティを映す」「人を除外する」は天秤対比型の踏み絵に、「脅威を名指す」は電卓型の損の可視化に対応すると考えられる。<a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a> で @tetumemo が「読み手が正しさを求める文章（報告書・手順書）にだけ規範を入れる」と線を引くのは、川岸が直球型を「心を動かしてはいけない文章専用」と呼ぶのと同じ区分である。</p>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-11-10 川岸: 特徴3リズム型の例文が「実測4.9万いいね」、代筆本数「1万本以上」、自身のいいね上位は「ほぼ全部」他者引用型。いずれも本人申告で、該当投稿の特定はしていない</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分がよく書く一文（たとえば wiki ページの TL;DR）を7通りに書き直すと、どの型が自分の既定になっているか</li>
+<li>電卓型の「数字がひとつ雑なだけで電卓ごと疑われる」は、この wiki の「データの顔をした出力は転記のみ」という規則と同じ失敗を指しているか</li>
+<li>技法の在庫をスキル化して AI に7通り出させたとき、<a href="../concepts/kakeru-hito.html">kakeru-hito</a> の言う「レビューできる人」の役割はどこに残るか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../concepts/kakeru-hito.html">kakeru-hito</a> — 「書ける人」は現実の切り取り方から違うという @Books_Apps の論。本ページはその切り取り方を7つの型として数える側</li>
+<li><a href="../business/human-nature-persuasion.html">human-nature-persuasion</a> — Dan Koe の5つの心理レバー。天秤対比型の踏み絵と電卓型の損の可視化は、アイデンティティと生存のレバーの文章版と読める</li>
+<li><a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a> — 規範は「正しさを求める文章」にだけ入れるという @tetumemo の判定。川岸の直球型の適用範囲（謝罪文・障害報告）と同じ区分</li>
+<li><a href="../concepts/action-before-analysis-40s.html">action-before-analysis-40s</a> — 同じ DIL の宮﨑達也による40代の挑戦の順番論。同じコミュニティ案内で締められる記事</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../business/human-nature-persuasion.html">human-nature-persuasion</a></li>
+<li><a href="../concepts/action-before-analysis-40s.html">action-before-analysis-40s</a></li>
+<li><a href="../concepts/kakeru-hito.html">kakeru-hito</a></li>
+<li><a href="../concepts/writing-norms-adoption.html">writing-norms-adoption</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2120262200149627320" rel="noopener" target="_blank">https://x.com/i/web/status/2120262200149627320</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 同じ一文を7通りで書く「切り口の在庫」（川岸宏司の7技法）
+
+&gt; **TL;DR**: 文章力の正体は語彙や名言の量ではなく「同じ一文を何通りで書けるか」という切り口の在庫数であり、直球・特徴3リズム・再現VTR・他者引用・天秤対比・電卓・通訳の7技法を文章の目的で選ぶ、と経営者の代筆を1万本以上手がけたと述べる川岸宏司（DIL 共同代表 COO）が X の記事で説く。
+
+川岸は記事の冒頭で、ゴーストライターという仕事の「あまり大きな声で言えない真実」として、経営者が言いたいことは突き詰めると「挑戦しろ」「言葉にしろ」「行動が先だ」「人を大事にしろ」「学び続けろ」の5個くらいしかない、と書く。この5個を1万本以上代筆しても「また同じ話か」と言われなかったのは文章の才能ではなく切り口を替え続けたからだ、と川岸は述べ、その手の内を「言語化力が低い人は、仕事ができない」という一文を7つの技法で7回書き換える形で示す。
+
+## 7つの技法（例文はすべて川岸の記事からの転記）
+
+1. **直球型（まっすぐ言う）**: 例「言語化力が低いと、指示・報告・相談の精度が下がり、業務効率に悪影響を及ぼします」。正しいが記憶に残らない、と川岸は言う。ただし謝罪文と障害報告だけはこの技法しか許されないとして、「心を動かしてはいけない文章」専用の技法と位置づける。
+2. **特徴3リズム型（特徴を3連で畳みかける）**: 例「主語を抜き、理由を省き、具体例を考えない。それが&quot;言語化をサボる人&quot;」。この文は実測4.9万いいねを取った実物だと川岸は書く。3連の順番は「主語→理由→具体例」という文章が壊れていく順番そのままで、当てはまる人が段階的に増える設計なので読者のどこかで必ず胸がチクッとする。語呂の技術に見えて「網」の技術だ、とする。
+3. **再現VTR型（あの日の現場を流す）**: 例「このまえ上司から『いい感じにしといて』と資料を渡されたのだけど、金曜18時に『なんか違う』だけが返ってきて、休日がなくなった」。取材でいちばん欲しいのは意見ではなくセリフで、「その時、なんて言われたんですか？」だけで30分聞くこともある、と川岸は書く。セリフと時刻があれば文章は勝手に動き出す。ただし長く、結論の前に読者が帰るし、最後に「発見」を置き忘れるとただのグチになる。
+4. **他者引用型（教わった言葉で語る）**: 例「10代のころに教わった『言語化をサボる人は信用しない方がいい』という言葉、そっくりそのまま私の信念にしてる」。川岸は自分の X 投稿のいいね上位はほぼ全部この型だと明かす。言ったのは他人なので押し付け感が消え、自分を大きく見せずに説教ができる。7つの中でいちばんずるい、とする。ただし作り話は一発でバレ、盛った瞬間に言葉の重みごと消えるので、実話だけで戦えと念を押す。
+5. **天秤対比型（二つ並べて選ばせる）**: 例「言語化力は依頼でわかる。高い人は『明瞭な言葉』で仕事を任せてくれるけど、低い人からは『察して』が漂う。前者が仕事なら、後者は占い」。経営者が好む型で、プレゼン資料の8割はこれで出来ていると川岸は体感を書く。二つ並べると構造が一瞬で伝わり、読み手に「自分はどっち側か」を突きつける踏み絵になる。使いすぎると「また二択か」と飽きられ、世界は白黒より灰色のほうが多い、と付け加える。
+6. **電卓型（感情を数字に翻訳する）**: 例「曖昧な指示1回で『確認2往復と手戻り1回』が最低発生する。約30分の損…毎日なら年間120時間＝丸5営業日。つまり『察する』には、人件費がかかる」。人は正論では動かないのに損得なら動く日がある、と川岸は言う。ただし数字がひとつ雑なだけで電卓ごと疑われる。
+7. **通訳型（知らない話を、知ってる世界に訳す）**: 例「ジェスチャーゲームで『当てられなかった側にキレる人』は存在しないと思う。伝わらない原因が、どう考えても動きのほうにあるから。一方で、言語化力が低い人がビジネスでやってるのも…ほぼこれ。察しなかった側が怒られる」。コツは例えを「自分の世界」ではなく「相手の世界」から拾うことで、ゴルフ好きにはゴルフで、料理をする人には台所で例える。営業がうまい人が無意識にやっている、と川岸は書く。例えが遠いとただの誤訳になる。
+
+## 目的で選ぶ（川岸の対応表の転記）
+
+| 文章の目的 | 技法 |
+|---|---|
+| 早く理解してほしい | 直球型 |
+| あるあるで頷かせたい | 特徴3リズム型 |
+| 情景で感情を動かしたい | 再現VTR型 |
+| 説教臭さを消したい | 他者引用型 |
+| 違いを一瞬で見せたい | 天秤対比型 |
+| 損得で行動を変えさせたい | 電卓型 |
+| 記憶に残したい | 通訳型 |
+
+7つに優劣はなく目的との相性があるだけなので、書く前に1回だけ「この文章の目的は？」と自分に聞く、と川岸は勧める。
+
+## 文章力の正体は切り口の在庫数
+
+同じ一文しか書いていないのに、選ぶ技法で読後の温度が変わる。語彙を増やすより、名言をブックマークするより「同じ一文を何通りで書けるか」の在庫がそのまま文章力になる、というのが川岸の結論である。練習法は、自分がよく書く一文をひとつ選んで7通りに書き直すこと。切り口の在庫は語彙と違って今日から増やせる、と川岸は書く。川岸自身は直球型が今もいちばん苦手で、飾りたくなる・盛りたくなる・たとえたくなる職業病だと明かし、タイトルに「7つ」と数字を入れたのも電卓型の親戚だと種明かしする。
+
+## 著者と利害
+
+記事末尾のプロフィールによれば、川岸は DIL 共同代表 COO・Reframe CEO・ASTRA CEO で、経営者向け X 顧問とデザイン事業を手がけ、著書に『1%読書術』『耳を鍛えて4倍速読』『なぜ、あの人の言葉は心に響くのか』がある。記事は「価値ある声をより多く、より遠く、より深く」をミッションとする経営者向け X 顧問コミュニティ（記事時点で220社・2年以内に1000社目標と記載）の案内で締められており、7技法はそのコミュニティで教える内容の一部を公開したものと読める。同じ DIL の宮﨑達也（代表取締役）の記事は [[concepts/action-before-analysis-40s]] にある。
+
+## 位置づけ（wiki 側の読み）
+
+[[concepts/kakeru-hito]] で @Books_Apps が「書ける人はテーマ設定、つまり現実の切り取り方からして違う」と述べる「切り取り方」を、川岸は7つの型に分解して在庫として数えられるものにしたと読める。[[business/human-nature-persuasion]] で Dan Koe が挙げる心理レバーのうち、「アイデンティティを映す」「人を除外する」は天秤対比型の踏み絵に、「脅威を名指す」は電卓型の損の可視化に対応すると考えられる。[[concepts/writing-norms-adoption]] で @tetumemo が「読み手が正しさを求める文章（報告書・手順書）にだけ規範を入れる」と線を引くのは、川岸が直球型を「心を動かしてはいけない文章専用」と呼ぶのと同じ区分である。
+
+## 観察ログ（未検証）
+
+- 2026-11-10 川岸: 特徴3リズム型の例文が「実測4.9万いいね」、代筆本数「1万本以上」、自身のいいね上位は「ほぼ全部」他者引用型。いずれも本人申告で、該当投稿の特定はしていない
+
+## 問い
+
+- 自分がよく書く一文（たとえば wiki ページの TL;DR）を7通りに書き直すと、どの型が自分の既定になっているか
+- 電卓型の「数字がひとつ雑なだけで電卓ごと疑われる」は、この wiki の「データの顔をした出力は転記のみ」という規則と同じ失敗を指しているか
+- 技法の在庫をスキル化して AI に7通り出させたとき、[[concepts/kakeru-hito]] の言う「レビューできる人」の役割はどこに残るか
+
+## 関連
+
+- [[concepts/kakeru-hito]] — 「書ける人」は現実の切り取り方から違うという @Books_Apps の論。本ページはその切り取り方を7つの型として数える側
+- [[business/human-nature-persuasion]] — Dan Koe の5つの心理レバー。天秤対比型の踏み絵と電卓型の損の可視化は、アイデンティティと生存のレバーの文章版と読める
+- [[concepts/writing-norms-adoption]] — 規範は「正しさを求める文章」にだけ入れるという @tetumemo の判定。川岸の直球型の適用範囲（謝罪文・障害報告）と同じ区分
+- [[concepts/action-before-analysis-40s]] — 同じ DIL の宮﨑達也による40代の挑戦の順番論。同じコミュニティ案内で締められる記事
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

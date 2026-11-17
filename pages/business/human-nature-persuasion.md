@@ -45,3 +45,4 @@ Koe は persuasion を道具として位置づけ、「倫理的かどうかは�
 - [[concepts/zeigarnik-fatigue-loop]] — 同じツァイガルニク効果が、放置された未完了では注意を奪い続ける消耗源になるという逆側の議論
 - [[concepts/human-3-0]] — 同著者 Dan Koe の自己開発モデル。「進歩の緊張」が安全→帰属→意味へ進む段階論は、そこで 1.0 Conformist → 2.0 Individualist → 3.0 Synthesist と呼ぶ3レベルと同じ発達心理学の土台に立つ
 - [[business/one-person-creative-team]] — 同著者 Dan Koe。注意の獲得を「一人クリエイティブチーム」（ブランド戦略・コンテンツ戦略・執筆）という事業の形に落とし、ブランド文書→コンテンツマップ→無許可の見習いで受注する手順
+- [[concepts/kirikuchi-seven-techniques]] — 川岸宏司（DIL）の文章7技法。天秤対比型の「自分はどっち側か」の踏み絵はアイデンティティのレバー、電卓型の損の数値化は生存のレバーを、同じ一文の書き分けとして実装したものと読める
