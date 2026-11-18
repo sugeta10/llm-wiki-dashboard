@@ -96,3 +96,4 @@ flowchart LR
 - [[concepts/grok-bot-team-guide]] — Grok Bot チームの Lauren（@poteto）が利用者向けに書いた Bot 設計と運用の 7 項目（dr eggbot・少数精鋭・指示のたびにスキル化・Bot 名義のアカウント・音声入力と復唱確認）。本ページの @lingxi の運用記に対し、製品側が勧める最小の作法
 - [[concepts/grok-bot-local-mac-codex-routing]] — Notion の AI/FDE kazuki hayakawa（@kzkhykw）が、ローカル Mac 専用の Bot を 1 体置き、メイン Bot から @ メンションで渡した仕事を自宅の常駐 MacBook 上の Grok Bot アプリが受け、Orca で worktree を切って Codex を実行する個人構成。本ページの「Mac mini を Cursor Cloud の private worker に」に対し、Grok Bot のローカル実行で自宅機を直接呼ぶ側の構成
 - [[concepts/organic-architecture]] — Grok Bot チームの Lauren Tan が AIE 講演で示した月 11,000 PR・revert 率約 0.5% の土台（5 層の逆ピラミッド・Organic Architecture・リリースごとに Grok Bot が Cursor Projects を起こしてファジングし修正 PR を自動マージする外側ループ）。本ページの @lingxi の運用記に対する、品質側の説明
+- [[concepts/automate-me-mode-skill]] — Carnage（@0xCarnagee）が pstack `/automate-me` を Grok Bot 用の 1 本プロンプトに移植したもの。会話記録を掘って利用者の流儀を `/workspace/modes/<名前>-mode.md` に書き、各 Bot の指示に「従え」の 1 行を足す

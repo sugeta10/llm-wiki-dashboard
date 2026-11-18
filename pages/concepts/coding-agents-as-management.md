@@ -170,3 +170,5 @@ Andy Grove の『High Output Management』はこれを task-relevant maturity �
 - [[concepts/skills-over-memory]] — メモリと CLAUDE.md の肥大問題と「教訓はスキルへ」。本ページの「エージェントに経験は無くノートがあるだけ」の実務側
 - [[concepts/cognitive-debt]] — 本ページが引く Wharton の認知的降伏研究が積み上げる負債の側
 - [[tools/claude-code]] — 本ページが挙げる機能（`/goal`・`/code-review`・`/batch`・`/rewind`・auto mode・Stop hook）の製品
+- [[concepts/agent-era-verification]] — 本ページの実践 1「検証手段を渡し証拠を見せさせる」をチーム規模で展開した Osmani の続編。投資すべき 3 種のテストと Claude Code チームの検証工程
+- [[concepts/automate-me-mode-skill]] — 本ページの「2 回直したら CLAUDE.md かスキルへ」と同じ閾値 2 で、会話記録から利用者自身の流儀を `-mode` スキルにする pstack `/automate-me`

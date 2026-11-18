@@ -48,3 +48,4 @@ Lauren は X のプロフィールで SpaceXSI の Grok Bot 担当・React Compi
 - [[tools/pstack]] — 同著者の Cursor スキル群。dr eggbot がコーディング Bot に課す poteto-mode の基準の出どころ
 - [[concepts/skill-self-improving-loop]] — 会話からスキルを育てる 3 段ループ。本ページは同じ工程を Bot 自身に委ねる
 - [[tools/1password-for-agents]] — 人間の資格情報を Bot に見せずサインインさせる承認レイヤー。Bot 名義アカウントで分離する助言と目的は同じで向きが逆
+- [[concepts/automate-me-mode-skill]] — 本ページの「指示のたびにスキルを作らせる」の上に置く利用者自身の流儀のスキル化。pstack `/automate-me` の SKILL.md と、Carnage の Grok Bot 向け移植

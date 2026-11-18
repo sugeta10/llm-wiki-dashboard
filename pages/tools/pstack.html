@@ -425,7 +425,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <p><code>/poteto-mode</code> はそれを受け取ったチャットの中で動き、そのチャットがプレイブック・todo リスト・すべてのサブエージェント起動を所有する。委任先には <code>subagent_type: "poteto-agent"</code> を使う。poteto-agent は作業前に <code>poteto-mode</code> を原則の索引まで含めて全文読むので、汎用の generalPurpose で代用するとその読み込みが抜けて逸れる、と README は書く。ただしプレイブック自体を poteto-agent に走らせてはいけない。もう1つの Comment Sicko は読み取り専用のコメントレビュアーで、通常は <code>/no-comments</code> 経由で呼ぶ。</p>
 <h2>計画スキルがない理由と、自分用に作り替える方法</h2>
 <p>README は「Cursor にはすでに優れたプランモードがあり pstack と相性がよい。しかし個人的には計画を信じていない。<strong>最良の仕様はコードだ</strong>」と書き、計画が欲しければ <code>/poteto-mode</code> が扱うが既定ではないとする。</p>
-<p><code>poteto-mode</code> は @poteto 自身のスタイルなので、<code>/automate-me</code> を打つと最近のトランスクリプトを掘って自分の働き方から <code>&lt;自分の名前&gt;-mode</code> スキルを下書きし、その下で pstack に振り分ける。モデルも <code>/setup-pstack</code> が、使えるモデルを検出して各役割（コード・判断・レビューパネル）をモデルに対応づける常時適用のルールを書く。全スキルがそれを読み、ルールが無ければ既定値に落ちる。既定が変わった後も古いルールは古い既定を固定し続けるので、該当行かファイルを消して <code>/setup-pstack</code> をやり直す。</p>
+<p><code>poteto-mode</code> は @poteto 自身のスタイルなので、<code>/automate-me</code> を打つと最近のトランスクリプトを掘って自分の働き方から <code>&lt;自分の名前&gt;-mode</code> スキルを下書きし、その下で pstack に振り分ける（SKILL.md の流れと Grok Bot 向けの移植は <a href="../concepts/automate-me-mode-skill.html">automate-me-mode-skill</a>）。モデルも <code>/setup-pstack</code> が、使えるモデルを検出して各役割（コード・判断・レビューパネル）をモデルに対応づける常時適用のルールを書く。全スキルがそれを読み、ルールが無ければ既定値に落ちる。既定が変わった後も古いルールは古い既定を固定し続けるので、該当行かファイルを消して <code>/setup-pstack</code> をやり直す。</p>
 <h2>同梱されないもの</h2>
 <p><code>/deslop</code> と <code>deslop</code> スキル、CLI・TUI 向けの <code>control-cli</code>、ブラウザ・Electron・Web 向けの <code>control-ui</code> は別プラグイン cursor-team-kit に入っている。<code>/create-skill</code> は Cursor 組み込みで、Cursor 組み込みの <code>/babysit</code> は <code>poteto-mode</code> の中では babysit プレイブックが優先する。ほかに、Slack のイシュー報告をトリアージし確認済みのバグを実 UI の証拠つきで再現・修正する benny automation pack が休止状態で同梱されるが、Cursor automations 上で動くため Cursor 専用である。</p>
 <h2>他ページとのつながり（wiki 側の推論）</h2>
@@ -456,11 +456,13 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
 <li><a href="../tools/grok-bot-essential-bots.html">grok-bot-essential-bots</a> — 同じ @cu30rry_ が選んだ Grok Bot 10 体。@poteto 作の dr eggbot（Bot を設計する Bot）と Engineering Lead が入る</li>
 <li><a href="../tools/claude-code-output-styles.html">claude-code-output-styles</a> — <code>/bro</code> スキルの1文を Claude Code の出力スタイル（<code>~/.claude/output-styles/bro.md</code>）に移して常時適用した uehaj の実例。「中身は落とさない」「コードはそのまま」の2項を足し <code>keep-coding-instructions: true</code> を付けた</li>
 <li><a href="../concepts/organic-architecture.html">organic-architecture</a> — 作者の AIE 講演「All Code Is Slop (Except Mine)」。<code>/create-verification-skill</code> を検証層の道具として挙げ、トークンの大半を検証に使い月 11,000 PR を revert 率約 0.5% で出すと述べる（kaito まとめ経由）</li>
-</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
+<li><a href="../concepts/automate-me-mode-skill.html">automate-me-mode-skill</a> — <code>/automate-me</code> の SKILL.md 本体（既存確認→採掘→質問→分類→下書き→削る→PR の流れとガードレール 6 条）と、Carnage（@0xCarnagee）による Grok Bot 向け 1 本プロンプトへの移植</li>
+<li><a href="../concepts/agent-era-verification.html">agent-era-verification</a> — Anthropic の Claude Code チーム（Addy Osmani）の検証工程。<code>/create-verification-skill</code> と同じく verify スキルを <code>.claude/skills/</code> に置き、機能マップを採点基準に使うと書く</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/agent-era-verification.html">agent-era-verification</a></li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a></li>
+<li><a href="../concepts/automate-me-mode-skill.html">automate-me-mode-skill</a></li>
 <li><a href="../concepts/goal-restatement-prompt.html">goal-restatement-prompt</a></li>
-<li><a href="../concepts/organic-architecture.html">organic-architecture</a></li>
-<li><a href="../tools/claude-code-output-styles.html">claude-code-output-styles</a></li>
-<li><a href="../tools/cursor.html">cursor</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111227122308300976" rel="noopener" target="_blank">https://x.com/i/web/status/2111227122308300976</a></li>
+<li><a href="../concepts/organic-architecture.html">organic-architecture</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2111227122308300976" rel="noopener" target="_blank">https://x.com/i/web/status/2111227122308300976</a></li>
 <li><a href="https://github.com/cursor/plugins/tree/main/pstack" rel="noopener" target="_blank">https://github.com/cursor/plugins/tree/main/pstack</a></li></ul></section></article>
 </main>
 <script>
@@ -623,7 +625,7 @@ README が示す手順は2つで、`/setup-pstack` で推論予算（reasoning b
 
 README は「Cursor にはすでに優れたプランモードがあり pstack と相性がよい。しかし個人的には計画を信じていない。**最良の仕様はコードだ**」と書き、計画が欲しければ `/poteto-mode` が扱うが既定ではないとする。
 
-`poteto-mode` は @poteto 自身のスタイルなので、`/automate-me` を打つと最近のトランスクリプトを掘って自分の働き方から `&lt;自分の名前&gt;-mode` スキルを下書きし、その下で pstack に振り分ける。モデルも `/setup-pstack` が、使えるモデルを検出して各役割（コード・判断・レビューパネル）をモデルに対応づける常時適用のルールを書く。全スキルがそれを読み、ルールが無ければ既定値に落ちる。既定が変わった後も古いルールは古い既定を固定し続けるので、該当行かファイルを消して `/setup-pstack` をやり直す。
+`poteto-mode` は @poteto 自身のスタイルなので、`/automate-me` を打つと最近のトランスクリプトを掘って自分の働き方から `&lt;自分の名前&gt;-mode` スキルを下書きし、その下で pstack に振り分ける（SKILL.md の流れと Grok Bot 向けの移植は [[concepts/automate-me-mode-skill]]）。モデルも `/setup-pstack` が、使えるモデルを検出して各役割（コード・判断・レビューパネル）をモデルに対応づける常時適用のルールを書く。全スキルがそれを読み、ルールが無ければ既定値に落ちる。既定が変わった後も古いルールは古い既定を固定し続けるので、該当行かファイルを消して `/setup-pstack` をやり直す。
 
 ## 同梱されないもの
 
@@ -657,6 +659,8 @@ README は「Cursor にはすでに優れたプランモードがあり pstack �
 - [[tools/grok-bot-essential-bots]] — 同じ @cu30rry_ が選んだ Grok Bot 10 体。@poteto 作の dr eggbot（Bot を設計する Bot）と Engineering Lead が入る
 - [[tools/claude-code-output-styles]] — `/bro` スキルの1文を Claude Code の出力スタイル（`~/.claude/output-styles/bro.md`）に移して常時適用した uehaj の実例。「中身は落とさない」「コードはそのまま」の2項を足し `keep-coding-instructions: true` を付けた
 - [[concepts/organic-architecture]] — 作者の AIE 講演「All Code Is Slop (Except Mine)」。`/create-verification-skill` を検証層の道具として挙げ、トークンの大半を検証に使い月 11,000 PR を revert 率約 0.5% で出すと述べる（kaito まとめ経由）
+- [[concepts/automate-me-mode-skill]] — `/automate-me` の SKILL.md 本体（既存確認→採掘→質問→分類→下書き→削る→PR の流れとガードレール 6 条）と、Carnage（@0xCarnagee）による Grok Bot 向け 1 本プロンプトへの移植
+- [[concepts/agent-era-verification]] — Anthropic の Claude Code チーム（Addy Osmani）の検証工程。`/create-verification-skill` と同じく verify スキルを `.claude/skills/` に置き、機能マップを採点基準に使うと書く
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

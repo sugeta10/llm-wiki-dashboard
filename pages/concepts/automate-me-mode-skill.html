@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>automate-me-mode-skill - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#bc8cff"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>automate-me-mode-skill</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="automate-me-mode-skill.md">Markdownで表示</a></div>
+  <div class="meta">concepts/automate-me-mode-skill · concepts · <span title="2026-11-18">今日</span></div>
+  <article><h1>自分の働き方を -mode スキルに蒸留する（pstack <code>/automate-me</code> と Grok Bot 向け移植）</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: Lauren Tan（@poteto）の pstack にある <code>/automate-me</code> は、直近 2〜4 週間のエージェントとの会話記録を 3 分割して掘り、2 つ以上の分割に現れた習慣だけを <code>&lt;名前&gt;-mode</code> スキルに書いて、エージェントが利用者の流儀で働くようにする手順。AI コンテンツ制作者の Carnage（@0xCarnagee）はこれを Grok Bot 用の 1 本のプロンプトに移植し、採掘→質問→分類→下書き→削る→各 Bot に「このモードに従え」の 1 行を入れる、の 6 段で公開した。</p>
+</blockquote>
+<p>解く問題は、Bot が既定のチャットボットの流儀で返すために、利用者が「短く」「言い直して」「もっと任せて」を会話のたびに繰り返すことである。pstack の入口スキル <code>poteto-mode</code> は Lauren 自身の流儀（返答の長さ・委任の仕方・検証の姿勢・散文の規律）を書いたもので、<code>/automate-me</code> は同じ形のスキルを利用者ごとに作る（<a href="../tools/pstack.html">pstack</a>）。Carnage は投稿で Lauren を「SpaceXAI のエンジニア」と紹介し「自分自身をプロンプトに複製した」と書くが、この言い方は Carnage のもので、Lauren 自身の X プロフィールは「grok @bot at @SpaceXSI」と記す（2026-10-31 時点のキャッシュ）。原典の SKILL.md は cursor/plugins リポジトリで公開されており、本ページはその本文と Carnage の移植版を並べて置く。</p>
+<h2>原典 <code>/automate-me</code> の流れ（SKILL.md の転記）</h2>
+<p>SKILL.md は自らを「利用者の作業上の慣習を、エージェントが従うスキルに変える案内つきの流れ」と説明し、出力は利用者向けの <code>-mode</code> スキル 1 つ（例: <code>jay-mode</code>・<code>priya-mode</code>）とする。採掘の工程・Cursor 組み込みの <code>create-skill</code>（執筆）・<code>unslop</code> スキル（散文の規律）の 3 つを順に呼ぶ編成役で、それらの代わりにはならない、と書く。<code>disable-model-invocation: true</code> なので利用者が明示的に呼んだときだけ動く。</p>
+<ol start="0">
+<li><strong>既存スキルの確認</strong> — <code>.cursor/skills/**/*-mode/SKILL.md</code> と <code>~/.cursor/skills/*-mode/SKILL.md</code> を利用者のハンドル名で再帰的に探す。あれば <code>AskQuestion</code> で「既存を更新（繰り返し実行の既定）／最初から（まれ・理由を聞く）」を確認する。更新モードでは、最後に編集した日時（<code>git log -1 --format=%cI</code>）以降の履歴だけを掘り、「ゼロから何を捉えるか」でなく「何が変わったか・欠けているか」を聞き、利用者が否定していない節は保ち、新しい証拠のある節だけ直す</li>
+<li><strong>履歴を掘る</strong> — システムプロンプトが示すワークスペースの <code>agent-transcripts/</code> だけを読む。<code>~/.cursor/projects/*/</code> を横断して glob すると無関係なプロジェクトの私的な会話を読んでしまうので禁じる。直近 2〜4 週間を 3 つに分割し、分割ごとにサブエージェントを並列に走らせ、証拠の場所つきの短い構造化リストを返させる。探す信号は、返答の好み（長さ・口調・形式・「もっと簡単に」の訂正）・委任の癖（サブエージェント・モデル・専用ワークフロー・並列度）・検証の姿勢（「完了」の意味・単体テストか実機再現か・レビュアー）・コードと散文の規律（原則・lint と整形ツール）・工程の慣習（worktree・コミット・PR・レビューとマージの道具）・メタの好み（タスク中にスキルを直す・新しいスキルを提案する）。<strong>2 つ以上の分割で見えたパターンは高確信、単独の信号は弱く通常は落とす</strong></li>
+<li><strong>利用者に直接聞く</strong> — 採掘ではまだ話題に出ていない意図は拾えない。利用者に自由入力させず <code>AskQuestion</code>（選択式）を使い、4〜6 択の質問を 1〜2 問（カテゴリの質問は複数選択可）、「どの領域が大事か」から入って選ばれた領域を具体的に掘り、最後に自由記述を 1 問。「20 問を投げない」</li>
+<li><strong>分類する</strong> — 返答の流儀・自律性（どこまで聞かずにやるか・MCP の使用）・まず理解する（調査時にどのスキルを使うか）・サブエージェント・散文とコードの規律・レビューと検証・工程・スキルの 8 節のうち当てはまるものだけ使う。粒度の手本として <code>poteto-mode</code> を読むが内容は写さない。「利用者のルールは poteto-mode のルールと同じではない」</li>
+<li><strong>下書きする</strong> — <code>create-skill</code> で執筆する。置き場は <code>.cursor/skills/&lt;handle&gt;-mode/SKILL.md</code>（個人用なら <code>~/.cursor/skills/</code>）。frontmatter の <code>description</code> は利用者の名前と <code>/&lt;handle&gt;-mode</code> と「この人の流儀で働く」で発火させ、「コードを書く」のような一般語では発火させない。<code>disable-model-invocation: true</code> を既定にする</li>
+<li><strong>散文を磨く</strong> — <code>unslop</code> と <code>create-skill</code> の執筆指針を全行に当て、下書きを見せて意見をもらい、何度でも削る。「モードスキルはマニュアルではない」</li>
+<li><strong>着地させる</strong> — main から切った worktree で作業し、コミットして PR を開く。main へ直接 push しない</li>
+</ol>
+<p>ガードレールは 6 条である。1 つの会話に過適合しない（一度言われて別の時に覆った好みはノイズ）・賢ぶらない（他スキルの言い換え・比喩・詩的な散文はコストだけ）・貼らずに参照する（利用者が頼るスキルや原則文書はパスで指す）・節は最小に（「明確に伝える」は節にならず、「短い段落。比較は表。箇条書きは本当に並列のときだけ」なら節になる）・名前は一般形に（命令文は著者の名前でなく「the user」）・対称性を強いない（工程のルールが無ければ工程の節を省く）。評価については「モードスキルは主観的な出力なので create-skill 型のテストと反復のベンチマークは役に立たない」とし、利用者との感触確認（自分らしく読めるか・見落としは無いか）で出荷する。使わない場面は、タスク固有のスキルが欲しいとき（<code>create-skill</code> だけでよい）と、「コミットメッセージの書き方」のような 1 つの作業手順を捉えたいとき（通常のスキルであってモードスキルではない）。</p>
+<h2>Carnage の Grok Bot 向けプロンプト（最初のリプライの転記）</h2>
+<p>Carnage は投稿本文で 5 段（Mine→Filter→Ask→Write→Install）に要約し、「プロンプトは最初のリプライに」として次を載せた。原典にある <code>AskQuestion</code>・<code>create-skill</code>・<code>unslop</code>・worktree は Grok Bot に無いので、ファイルパスと Bot の指示文に置き換えている。</p>
+<pre><code>&lt;role&gt;
+You are my clone engine. Turn how I work into ONE skill every Bot follows. The method is /automate-me from pstack by Lauren Tan (cursor/plugins on GitHub), adapted for Grok Bot.
+&lt;/role&gt;
+
+&lt;setup&gt;
+My name for the file: [YOUR_NAME]. The file: /workspace/modes/[YOUR_NAME]-mode.md
+If it already exists, update it in place and keep every rule I haven't contradicted.
+&lt;/setup&gt;
+
+&lt;steps&gt;
+01 MINE
+Read what you can see of my last 2 to 4 weeks: our chats, your memory, and anything I put in /workspace/me/ (exported chats, reviews, docs I wrote). Split it into 3 slices and hunt for:
+style: length, tone, format, every time I said &quot;dumb it down&quot;
+delegation: when I fan out, to which Bots, what runs in parallel
+verify: what &quot;done&quot; means to me
+discipline: the rules I cite, the words I always cut
+process: how I ship, review and hand off
+meta: when I fix the instructions instead of the task
+Keep a pattern only if it shows up in 2 or more slices. Drop one-offs.
+
+02 ASK
+Ask me ONE multiple choice question (4 to 6 options) about which areas matter most, then one follow up on what I picked, then one open question for anything the options missed. Never more.
+
+03 CLUSTER
+Group what you kept into sections: style, autonomy, understand first, delegation, discipline, review and verify, process, skills. A section exists only if I have a non-default rule there.
+
+04 DRAFT
+Write the file. Operational, not poetic. Say &quot;the user&quot; in imperatives, not my name. Point to the skills and files I rely on, never paste them.
+
+05 CUT
+Cut every line that doesn't change what an agent does. A mode skill is not a manual. Show me the draft, take my edits, cut again.
+
+06 INSTALL
+Ask me first, then add one line to each Bot's instructions: &quot;follow /workspace/modes/[YOUR_NAME]-mode.md&quot;. If you can't edit a Bot, give me the line to paste. When I say &quot;update my mode&quot;, mine only what changed since the file was last edited.
+&lt;/steps&gt;
+
+&lt;output&gt;
+mode: the file path
+sections: only the real ones
+evidence: where each rule was seen
+dropped: the one-offs you ignored
+Then ask me: does it read like me? did it miss anything?
+&lt;/output&gt;
+</code></pre>
+<p>原典と移植版の対応（両ソースからの転記）:</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>原典 <code>/automate-me</code>（Cursor）</th>
+<th>Carnage 版（Grok Bot）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>入力</td>
+<td>ワークスペースの <code>agent-transcripts/</code> を 3 分割し並列サブエージェントで読む</td>
+<td>会話・Bot のメモリ・<code>/workspace/me/</code>（書き出した会話・レビュー・自分が書いた文書）を 3 分割</td>
+</tr>
+<tr>
+<td>採用基準</td>
+<td>2 つ以上の分割に出たパターン。単独は落とす</td>
+<td>同じ（2 つ以上の分割。単発は落とす）</td>
+</tr>
+<tr>
+<td>質問</td>
+<td><code>AskQuestion</code> で 4〜6 択を 1〜2 問＋自由記述 1 問</td>
+<td>4〜6 択を 1 問＋選んだ項目の追問 1 問＋自由記述 1 問</td>
+</tr>
+<tr>
+<td>節</td>
+<td>8 節のうち非既定のルールがあるものだけ</td>
+<td>同じ 8 節</td>
+</tr>
+<tr>
+<td>出力先</td>
+<td><code>.cursor/skills/&lt;handle&gt;-mode/SKILL.md</code>・<code>disable-model-invocation: true</code></td>
+<td><code>/workspace/modes/&lt;名前&gt;-mode.md</code></td>
+</tr>
+<tr>
+<td>散文</td>
+<td><code>unslop</code> と <code>create-skill</code> の指針で削る</td>
+<td>「操作的に、詩的でなく」「エージェントの動作を変えない行を全部削る」</td>
+</tr>
+<tr>
+<td>着地</td>
+<td>worktree で PR</td>
+<td>各 Bot の指示に「follow /workspace/modes/&lt;名前&gt;-mode.md」の 1 行（編集できなければ貼る行を渡す）</td>
+</tr>
+<tr>
+<td>更新</td>
+<td>最終編集以降の履歴だけ掘る</td>
+<td>「update my mode」で最終編集以降の変化だけ掘る</td>
+</tr>
+<tr>
+<td>評価</td>
+<td>自分らしく読めるか・見落としは無いか</td>
+<td>同じ 2 問に加え、各ルールの根拠の場所と落とした単発の習慣を出力させる</td>
+</tr>
+</tbody>
+</table>
+<h2>位置づけ（wiki 側の読み）</h2>
+<ul>
+<li><a href="../tools/pstack.html">pstack</a> の README は <code>/automate-me</code> を「実際の働き方から下書きした自分用の <code>-mode</code> スキルが欲しいとき」の 1 行で載せる。本ページはそのスキル本体で、pstack 全体が「作者の流儀を他人が借りる」道具であるのに対し、このスキルだけが「借りた流儀を自分のものに差し替える」向きを持つ</li>
+<li>Lauren が利用者向けに書いた <a href="../concepts/grok-bot-team-guide.html">grok-bot-team-guide</a> の「指示のたびに Bot にスキルを作らせる」は作業手順のスキル化で、<code>/automate-me</code> はその上に置く利用者自身の流儀のスキル化にあたる。SKILL.md が「1 つの作業手順はモードスキルでなく通常のスキル」と線を引くのはこの区別である</li>
+<li>「2 つ以上の分割に出た習慣だけ」という閾値は、<a href="../concepts/coding-agents-as-management.html">coding-agents-as-management</a> で Osmani が書く「同じことを 2 回以上直したら CLAUDE.md かスキルへ」と同じ型の規則で、どちらも単発の訂正を規則化しない閾値を 2 に置く。モードスキルは、CLAUDE.md がリポジトリについて書くことを人について書いたものと読める</li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> の「教訓はメモリでなくスキルへ」と同じ側に立つ。Carnage 版は会話記録と Bot のメモリを原料にしてモードファイルを作るので、メモリ（蓄積）からスキル（規則）への蒸留をこのプロンプトが担う</li>
+<li>モードスキルは <a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> の散文層にあたる。ガードレールの「節は最小に」「動作を変えない行は削る」は、同じ Lauren が散文層に時間を割かないとする配分と整合する</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>この vault の自己モデル（mind-os と self-recall スキル）は、人手のインタビューで作ったモードスキルにあたる。<code>/automate-me</code> の「会話記録で 2 分割以上に出た習慣だけ」を併用すると、インタビューでは言語化されない習慣（毎回の「短く」の訂正）を拾えるか</li>
+<li>Carnage 版は Bot ごとに 1 行を足す。Bot が増えたあとモードを更新したとき、ファイル参照なら自動で伝わり、貼り付けた Bot には伝わらない。どちらを既定にするか</li>
+<li>原典は「モードスキルは主観的な出力なのでベンチマーク型の評価は役に立たない」と書く。<a href="../concepts/eval-loop.html">eval-loop</a> のような品質ゲートを個人の流儀に当てる方法はあるか、それとも感触確認で足りるか</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../tools/pstack.html">pstack</a> — 原典のスキル群。<code>poteto-mode</code> が作者の流儀、<code>/automate-me</code> が利用者の流儀を作る</li>
+<li><a href="../concepts/grok-bot-team-guide.html">grok-bot-team-guide</a> — 同じ Lauren の利用者向け 7 項目。「指示のたびにスキルを作らせる」の上に置く利用者自身のモード</li>
+<li><a href="../tools/grok-bot.html">grok-bot</a> — Carnage 版が対象にする製品。<code>/workspace/</code> 配下のファイルと Bot の指示文で動く</li>
+<li><a href="../concepts/coding-agents-as-management.html">coding-agents-as-management</a> — Osmani の「2 回直したら CLAUDE.md へ」。規則化の閾値を 2 に置く同型の規則</li>
+<li><a href="../concepts/skills-over-memory.html">skills-over-memory</a> — メモリでなくスキルへ教訓を置く方針。モードスキルはその個人版</li>
+<li><a href="../concepts/agent-trust-inverse-pyramid.html">agent-trust-inverse-pyramid</a> — 同じ Lauren の 4 層配分。モードスキルは散文層</li>
+<li><a href="../concepts/organic-architecture.html">organic-architecture</a> — 同じ Lauren の講演。散文層を薄く保つ配分の出所</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../concepts/coding-agents-as-management.html">coding-agents-as-management</a></li>
+<li><a href="../concepts/grok-bot-team-guide.html">grok-bot-team-guide</a></li>
+<li><a href="../concepts/organic-architecture.html">organic-architecture</a></li>
+<li><a href="../tools/grok-bot.html">grok-bot</a></li>
+<li><a href="../tools/pstack.html">pstack</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2122487961841217938" rel="noopener" target="_blank">https://x.com/i/web/status/2122487961841217938</a></li>
+<li><a href="https://github.com/cursor/plugins/blob/main/pstack/skills/automate-me/SKILL.md" rel="noopener" target="_blank">https://github.com/cursor/plugins/blob/main/pstack/skills/automate-me/SKILL.md</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># 自分の働き方を -mode スキルに蒸留する（pstack `/automate-me` と Grok Bot 向け移植）
+
+&gt; **TL;DR**: Lauren Tan（@poteto）の pstack にある `/automate-me` は、直近 2〜4 週間のエージェントとの会話記録を 3 分割して掘り、2 つ以上の分割に現れた習慣だけを `&lt;名前&gt;-mode` スキルに書いて、エージェントが利用者の流儀で働くようにする手順。AI コンテンツ制作者の Carnage（@0xCarnagee）はこれを Grok Bot 用の 1 本のプロンプトに移植し、採掘→質問→分類→下書き→削る→各 Bot に「このモードに従え」の 1 行を入れる、の 6 段で公開した。
+
+解く問題は、Bot が既定のチャットボットの流儀で返すために、利用者が「短く」「言い直して」「もっと任せて」を会話のたびに繰り返すことである。pstack の入口スキル `poteto-mode` は Lauren 自身の流儀（返答の長さ・委任の仕方・検証の姿勢・散文の規律）を書いたもので、`/automate-me` は同じ形のスキルを利用者ごとに作る（[[tools/pstack]]）。Carnage は投稿で Lauren を「SpaceXAI のエンジニア」と紹介し「自分自身をプロンプトに複製した」と書くが、この言い方は Carnage のもので、Lauren 自身の X プロフィールは「grok @bot at @SpaceXSI」と記す（2026-10-31 時点のキャッシュ）。原典の SKILL.md は cursor/plugins リポジトリで公開されており、本ページはその本文と Carnage の移植版を並べて置く。
+
+## 原典 `/automate-me` の流れ（SKILL.md の転記）
+
+SKILL.md は自らを「利用者の作業上の慣習を、エージェントが従うスキルに変える案内つきの流れ」と説明し、出力は利用者向けの `-mode` スキル 1 つ（例: `jay-mode`・`priya-mode`）とする。採掘の工程・Cursor 組み込みの `create-skill`（執筆）・`unslop` スキル（散文の規律）の 3 つを順に呼ぶ編成役で、それらの代わりにはならない、と書く。`disable-model-invocation: true` なので利用者が明示的に呼んだときだけ動く。
+
+0. **既存スキルの確認** — `.cursor/skills/**/*-mode/SKILL.md` と `~/.cursor/skills/*-mode/SKILL.md` を利用者のハンドル名で再帰的に探す。あれば `AskQuestion` で「既存を更新（繰り返し実行の既定）／最初から（まれ・理由を聞く）」を確認する。更新モードでは、最後に編集した日時（`git log -1 --format=%cI`）以降の履歴だけを掘り、「ゼロから何を捉えるか」でなく「何が変わったか・欠けているか」を聞き、利用者が否定していない節は保ち、新しい証拠のある節だけ直す
+1. **履歴を掘る** — システムプロンプトが示すワークスペースの `agent-transcripts/` だけを読む。`~/.cursor/projects/*/` を横断して glob すると無関係なプロジェクトの私的な会話を読んでしまうので禁じる。直近 2〜4 週間を 3 つに分割し、分割ごとにサブエージェントを並列に走らせ、証拠の場所つきの短い構造化リストを返させる。探す信号は、返答の好み（長さ・口調・形式・「もっと簡単に」の訂正）・委任の癖（サブエージェント・モデル・専用ワークフロー・並列度）・検証の姿勢（「完了」の意味・単体テストか実機再現か・レビュアー）・コードと散文の規律（原則・lint と整形ツール）・工程の慣習（worktree・コミット・PR・レビューとマージの道具）・メタの好み（タスク中にスキルを直す・新しいスキルを提案する）。**2 つ以上の分割で見えたパターンは高確信、単独の信号は弱く通常は落とす**
+2. **利用者に直接聞く** — 採掘ではまだ話題に出ていない意図は拾えない。利用者に自由入力させず `AskQuestion`（選択式）を使い、4〜6 択の質問を 1〜2 問（カテゴリの質問は複数選択可）、「どの領域が大事か」から入って選ばれた領域を具体的に掘り、最後に自由記述を 1 問。「20 問を投げない」
+3. **分類する** — 返答の流儀・自律性（どこまで聞かずにやるか・MCP の使用）・まず理解する（調査時にどのスキルを使うか）・サブエージェント・散文とコードの規律・レビューと検証・工程・スキルの 8 節のうち当てはまるものだけ使う。粒度の手本として `poteto-mode` を読むが内容は写さない。「利用者のルールは poteto-mode のルールと同じではない」
+4. **下書きする** — `create-skill` で執筆する。置き場は `.cursor/skills/&lt;handle&gt;-mode/SKILL.md`（個人用なら `~/.cursor/skills/`）。frontmatter の `description` は利用者の名前と `/&lt;handle&gt;-mode` と「この人の流儀で働く」で発火させ、「コードを書く」のような一般語では発火させない。`disable-model-invocation: true` を既定にする
+5. **散文を磨く** — `unslop` と `create-skill` の執筆指針を全行に当て、下書きを見せて意見をもらい、何度でも削る。「モードスキルはマニュアルではない」
+6. **着地させる** — main から切った worktree で作業し、コミットして PR を開く。main へ直接 push しない
+
+ガードレールは 6 条である。1 つの会話に過適合しない（一度言われて別の時に覆った好みはノイズ）・賢ぶらない（他スキルの言い換え・比喩・詩的な散文はコストだけ）・貼らずに参照する（利用者が頼るスキルや原則文書はパスで指す）・節は最小に（「明確に伝える」は節にならず、「短い段落。比較は表。箇条書きは本当に並列のときだけ」なら節になる）・名前は一般形に（命令文は著者の名前でなく「the user」）・対称性を強いない（工程のルールが無ければ工程の節を省く）。評価については「モードスキルは主観的な出力なので create-skill 型のテストと反復のベンチマークは役に立たない」とし、利用者との感触確認（自分らしく読めるか・見落としは無いか）で出荷する。使わない場面は、タスク固有のスキルが欲しいとき（`create-skill` だけでよい）と、「コミットメッセージの書き方」のような 1 つの作業手順を捉えたいとき（通常のスキルであってモードスキルではない）。
+
+## Carnage の Grok Bot 向けプロンプト（最初のリプライの転記）
+
+Carnage は投稿本文で 5 段（Mine→Filter→Ask→Write→Install）に要約し、「プロンプトは最初のリプライに」として次を載せた。原典にある `AskQuestion`・`create-skill`・`unslop`・worktree は Grok Bot に無いので、ファイルパスと Bot の指示文に置き換えている。
+
+```
+&lt;role&gt;
+You are my clone engine. Turn how I work into ONE skill every Bot follows. The method is /automate-me from pstack by Lauren Tan (cursor/plugins on GitHub), adapted for Grok Bot.
+&lt;/role&gt;
+
+&lt;setup&gt;
+My name for the file: [YOUR_NAME]. The file: /workspace/modes/[YOUR_NAME]-mode.md
+If it already exists, update it in place and keep every rule I haven&#x27;t contradicted.
+&lt;/setup&gt;
+
+&lt;steps&gt;
+01 MINE
+Read what you can see of my last 2 to 4 weeks: our chats, your memory, and anything I put in /workspace/me/ (exported chats, reviews, docs I wrote). Split it into 3 slices and hunt for:
+style: length, tone, format, every time I said &quot;dumb it down&quot;
+delegation: when I fan out, to which Bots, what runs in parallel
+verify: what &quot;done&quot; means to me
+discipline: the rules I cite, the words I always cut
+process: how I ship, review and hand off
+meta: when I fix the instructions instead of the task
+Keep a pattern only if it shows up in 2 or more slices. Drop one-offs.
+
+02 ASK
+Ask me ONE multiple choice question (4 to 6 options) about which areas matter most, then one follow up on what I picked, then one open question for anything the options missed. Never more.
+
+03 CLUSTER
+Group what you kept into sections: style, autonomy, understand first, delegation, discipline, review and verify, process, skills. A section exists only if I have a non-default rule there.
+
+04 DRAFT
+Write the file. Operational, not poetic. Say &quot;the user&quot; in imperatives, not my name. Point to the skills and files I rely on, never paste them.
+
+05 CUT
+Cut every line that doesn&#x27;t change what an agent does. A mode skill is not a manual. Show me the draft, take my edits, cut again.
+
+06 INSTALL
+Ask me first, then add one line to each Bot&#x27;s instructions: &quot;follow /workspace/modes/[YOUR_NAME]-mode.md&quot;. If you can&#x27;t edit a Bot, give me the line to paste. When I say &quot;update my mode&quot;, mine only what changed since the file was last edited.
+&lt;/steps&gt;
+
+&lt;output&gt;
+mode: the file path
+sections: only the real ones
+evidence: where each rule was seen
+dropped: the one-offs you ignored
+Then ask me: does it read like me? did it miss anything?
+&lt;/output&gt;
+```
+
+原典と移植版の対応（両ソースからの転記）:
+
+| 項目 | 原典 `/automate-me`（Cursor） | Carnage 版（Grok Bot） |
+|---|---|---|
+| 入力 | ワークスペースの `agent-transcripts/` を 3 分割し並列サブエージェントで読む | 会話・Bot のメモリ・`/workspace/me/`（書き出した会話・レビュー・自分が書いた文書）を 3 分割 |
+| 採用基準 | 2 つ以上の分割に出たパターン。単独は落とす | 同じ（2 つ以上の分割。単発は落とす） |
+| 質問 | `AskQuestion` で 4〜6 択を 1〜2 問＋自由記述 1 問 | 4〜6 択を 1 問＋選んだ項目の追問 1 問＋自由記述 1 問 |
+| 節 | 8 節のうち非既定のルールがあるものだけ | 同じ 8 節 |
+| 出力先 | `.cursor/skills/&lt;handle&gt;-mode/SKILL.md`・`disable-model-invocation: true` | `/workspace/modes/&lt;名前&gt;-mode.md` |
+| 散文 | `unslop` と `create-skill` の指針で削る | 「操作的に、詩的でなく」「エージェントの動作を変えない行を全部削る」 |
+| 着地 | worktree で PR | 各 Bot の指示に「follow /workspace/modes/&lt;名前&gt;-mode.md」の 1 行（編集できなければ貼る行を渡す） |
+| 更新 | 最終編集以降の履歴だけ掘る | 「update my mode」で最終編集以降の変化だけ掘る |
+| 評価 | 自分らしく読めるか・見落としは無いか | 同じ 2 問に加え、各ルールの根拠の場所と落とした単発の習慣を出力させる |
+
+## 位置づけ（wiki 側の読み）
+
+- [[tools/pstack]] の README は `/automate-me` を「実際の働き方から下書きした自分用の `-mode` スキルが欲しいとき」の 1 行で載せる。本ページはそのスキル本体で、pstack 全体が「作者の流儀を他人が借りる」道具であるのに対し、このスキルだけが「借りた流儀を自分のものに差し替える」向きを持つ
+- Lauren が利用者向けに書いた [[concepts/grok-bot-team-guide]] の「指示のたびに Bot にスキルを作らせる」は作業手順のスキル化で、`/automate-me` はその上に置く利用者自身の流儀のスキル化にあたる。SKILL.md が「1 つの作業手順はモードスキルでなく通常のスキル」と線を引くのはこの区別である
+- 「2 つ以上の分割に出た習慣だけ」という閾値は、[[concepts/coding-agents-as-management]] で Osmani が書く「同じことを 2 回以上直したら CLAUDE.md かスキルへ」と同じ型の規則で、どちらも単発の訂正を規則化しない閾値を 2 に置く。モードスキルは、CLAUDE.md がリポジトリについて書くことを人について書いたものと読める
+- [[concepts/skills-over-memory]] の「教訓はメモリでなくスキルへ」と同じ側に立つ。Carnage 版は会話記録と Bot のメモリを原料にしてモードファイルを作るので、メモリ（蓄積）からスキル（規則）への蒸留をこのプロンプトが担う
+- モードスキルは [[concepts/agent-trust-inverse-pyramid]] の散文層にあたる。ガードレールの「節は最小に」「動作を変えない行は削る」は、同じ Lauren が散文層に時間を割かないとする配分と整合する
+
+## 問い
+
+- この vault の自己モデル（mind-os と self-recall スキル）は、人手のインタビューで作ったモードスキルにあたる。`/automate-me` の「会話記録で 2 分割以上に出た習慣だけ」を併用すると、インタビューでは言語化されない習慣（毎回の「短く」の訂正）を拾えるか
+- Carnage 版は Bot ごとに 1 行を足す。Bot が増えたあとモードを更新したとき、ファイル参照なら自動で伝わり、貼り付けた Bot には伝わらない。どちらを既定にするか
+- 原典は「モードスキルは主観的な出力なのでベンチマーク型の評価は役に立たない」と書く。[[concepts/eval-loop]] のような品質ゲートを個人の流儀に当てる方法はあるか、それとも感触確認で足りるか
+
+## 関連
+
+- [[tools/pstack]] — 原典のスキル群。`poteto-mode` が作者の流儀、`/automate-me` が利用者の流儀を作る
+- [[concepts/grok-bot-team-guide]] — 同じ Lauren の利用者向け 7 項目。「指示のたびにスキルを作らせる」の上に置く利用者自身のモード
+- [[tools/grok-bot]] — Carnage 版が対象にする製品。`/workspace/` 配下のファイルと Bot の指示文で動く
+- [[concepts/coding-agents-as-management]] — Osmani の「2 回直したら CLAUDE.md へ」。規則化の閾値を 2 に置く同型の規則
+- [[concepts/skills-over-memory]] — メモリでなくスキルへ教訓を置く方針。モードスキルはその個人版
+- [[concepts/agent-trust-inverse-pyramid]] — 同じ Lauren の 4 層配分。モードスキルは散文層
+- [[concepts/organic-architecture]] — 同じ Lauren の講演。散文層を薄く保つ配分の出所
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+
+</body>
+</html>

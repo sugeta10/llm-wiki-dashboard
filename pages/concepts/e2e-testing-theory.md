@@ -122,3 +122,4 @@ Kuniwak が意図的に扱わなかった題と理由も記事にある。テス
 - [[concepts/spec-ssot-view-separation]] — 同著者。puml-parallel で仕様本体を SSoT に保つ技法。本稿の「仕様とテストを同一資産から」の実装側
 - [[concepts/parallel-e2e-testing]] — Berry の並列 E2E 実践。Kuniwak が省いた「環境の独立性」の具体化と、忠実度を速度に替えるバイパスの採用例
 - [[concepts/ai-coding-loop-formal]] — mizchi の形式手法の棚卸し。結合バグを設計段階で潰す置き場が共通
+- [[concepts/agent-era-verification]] — Claude Code チーム（Addy Osmani）が「1 種だけ選ぶなら E2E」とし、エージェントに作らせれば作成コストは下がると書く記事。本稿の数理的制約（実行・保守コスト）との両立が問い

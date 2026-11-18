@@ -74,3 +74,5 @@ Grok Bot チームは先月 11,000 の PR をリリースし、開発速度が�
 - [[concepts/ai-coding-loop-formal]] — mizchi の TLA+／Z3 による仕様検査。講演は TLA+ と Lean
 - [[tools/grok-bot-essential-bots]] — まとめを書いた kaito の Grok Bot 10 選
 - [[concepts/cognitive-debt]] — 「説明できないものは出さない」という人間側の理解基準
+- [[concepts/agent-era-verification]] — Anthropic の Claude Code チーム（Addy Osmani）の検証工程。本ページの検証層と同じく「検証とは変更を動かすこと」とし、機能マップを検証の案内と採点基準に使う点、見逃しをルールに変える点で講演と重なる
+- [[concepts/automate-me-mode-skill]] — 同じ Lauren の pstack `/automate-me`。利用者の流儀を散文層の `-mode` スキルにするが、「動作を変えない行は削る」で散文層を薄く保つ

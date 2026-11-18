@@ -139,7 +139,7 @@ README が示す手順は2つで、`/setup-pstack` で推論予算（reasoning b
 
 README は「Cursor にはすでに優れたプランモードがあり pstack と相性がよい。しかし個人的には計画を信じていない。**最良の仕様はコードだ**」と書き、計画が欲しければ `/poteto-mode` が扱うが既定ではないとする。
 
-`poteto-mode` は @poteto 自身のスタイルなので、`/automate-me` を打つと最近のトランスクリプトを掘って自分の働き方から `<自分の名前>-mode` スキルを下書きし、その下で pstack に振り分ける。モデルも `/setup-pstack` が、使えるモデルを検出して各役割（コード・判断・レビューパネル）をモデルに対応づける常時適用のルールを書く。全スキルがそれを読み、ルールが無ければ既定値に落ちる。既定が変わった後も古いルールは古い既定を固定し続けるので、該当行かファイルを消して `/setup-pstack` をやり直す。
+`poteto-mode` は @poteto 自身のスタイルなので、`/automate-me` を打つと最近のトランスクリプトを掘って自分の働き方から `<自分の名前>-mode` スキルを下書きし、その下で pstack に振り分ける（SKILL.md の流れと Grok Bot 向けの移植は [[concepts/automate-me-mode-skill]]）。モデルも `/setup-pstack` が、使えるモデルを検出して各役割（コード・判断・レビューパネル）をモデルに対応づける常時適用のルールを書く。全スキルがそれを読み、ルールが無ければ既定値に落ちる。既定が変わった後も古いルールは古い既定を固定し続けるので、該当行かファイルを消して `/setup-pstack` をやり直す。
 
 ## 同梱されないもの
 
@@ -173,3 +173,5 @@ README は「Cursor にはすでに優れたプランモードがあり pstack �
 - [[tools/grok-bot-essential-bots]] — 同じ @cu30rry_ が選んだ Grok Bot 10 体。@poteto 作の dr eggbot（Bot を設計する Bot）と Engineering Lead が入る
 - [[tools/claude-code-output-styles]] — `/bro` スキルの1文を Claude Code の出力スタイル（`~/.claude/output-styles/bro.md`）に移して常時適用した uehaj の実例。「中身は落とさない」「コードはそのまま」の2項を足し `keep-coding-instructions: true` を付けた
 - [[concepts/organic-architecture]] — 作者の AIE 講演「All Code Is Slop (Except Mine)」。`/create-verification-skill` を検証層の道具として挙げ、トークンの大半を検証に使い月 11,000 PR を revert 率約 0.5% で出すと述べる（kaito まとめ経由）
+- [[concepts/automate-me-mode-skill]] — `/automate-me` の SKILL.md 本体（既存確認→採掘→質問→分類→下書き→削る→PR の流れとガードレール 6 条）と、Carnage（@0xCarnagee）による Grok Bot 向け 1 本プロンプトへの移植
+- [[concepts/agent-era-verification]] — Anthropic の Claude Code チーム（Addy Osmani）の検証工程。`/create-verification-skill` と同じく verify スキルを `.claude/skills/` に置き、機能マップを採点基準に使うと書く
