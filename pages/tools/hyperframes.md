@@ -62,6 +62,53 @@ DESIGN.mdは自分のサイトのライブHTML/CSSからエージェントに抽
 
 HeyGenの公開事例では、`/faceless-explainer`がGitHub APIを自分で叩いて実在の人気プロジェクト（★25万超）を題材に選び台本を書いたケースや、`/motion-graphics`がGitHubのスター数をその場でAPI取得しカウントアップ演出に反映したケースが紹介されており、画面に出る数字が実データである点を@MakeAI_CEOは信頼性面の利点として強調している。
 
+## スキル刷新と無料素材（2026-11・公式告知）
+
+HeyGenのHyperFrames公式アカウント（@HyperFrames_）は2026-11-05（日本時間）に「OSS skillsを大幅に刷新した」と告知した。告知の内容は3点で、更新コマンドが `npx hyperframes skills update` であること、更新すると `/reverse-any-video` と「Proで最上位の生成モデル」が解放されること、サインインすれば10,000曲超の音楽・効果音・75,000点超のストック画像・TTS（音声合成）が無料で使えること。@tetumemoはこれを引用して「これが無料って凄い」と述べ、TTSの無料枠は月3分までと補足し、この更新をMuse（AIアシスタント）に投げて解説動画を作らせたと書く。月3分の数字は公式ポストには無いが、`/media-use` スキル本文に「Free plan: 3 min a month」と明記されている（後述）。
+
+GitHubのリポジトリ説明は「AI video you can actually edit. HyperFrames is a free, open-source AI video editor.」となっており、「動画レンダリングフレームワーク」から「編集できるAI動画エディタ」へ自己定義を広げている。README（2026-11-19取得）によれば、HyperFrames Studioアプリも無料で、Proプランが「HeyGenの最上位のvideo・image・voice・musicモデル」を追加する。Studioにはデスクトップ版（macOS・Windows・Linux）がある。料金ページはJavaScript描画のため本wikiでは未取得。
+
+### 公開スキル9本と既定で入るcore set 6本（README）
+
+| 区分 | スキル | 用途（READMEの記述） |
+|---|---|---|
+| core | `/hyperframes` | 最初に読む。レンダリングの契約と作業ループを持ち、format・motion・look・captions・全編・ストーリーボードの参照先を指す |
+| core | `/hyperframes-cli` | CLIを仕事別に整理（scaffold・check・フレーム確認・timeline編集・preview・ローカル／クラウドrender・share・履歴）。JSONの読み方とビルド／レンダ失敗からの復旧 |
+| core | `/hyperframes-registry` | 約450のブロック・コンポーネント（transition・overlay・title・kinetic type・captions・chart・map・3D・camera move）を編集可能なソースとして導入 |
+| core | `/media-use` | 音楽・効果音・画像・アイコン・ロゴ・ナレーション・アバター・生成動画・文字起こし・切り抜き・グレーディングをHeyGenか無料ローカルツールで取得・生成し、配置した音声をミックス |
+| core | `/reverse-any-video` | 任意の動画ファイルを編集可能なHyperFramesプロジェクトに再構築し、原本とフレーム単位で照合。**HyperFrames Pro** |
+| core | `/style-sampling` | 5つの実証済みスタイル（Collage Explainer・Finance Explainer・Animated Science Explainer・3D Brand Explainer・3D True Crime）で新しいエピソードを作る。**HyperFrames Pro** |
+| on demand | `/figma` | figma.comのリンクを貼ったとき。レンダ済み素材・ブランドトークン・コンポーネント・ストーリーボードを動画へ |
+| on demand | `/slideshow` | プレゼン・ピッチデッキ・インタラクティブデッキ。出力はMP4でなくナビゲーションできるデッキ |
+| on demand | `/remotion-to-hyperframes` | 既存の動画コードや映像（Remotion優先・Motion Canvas・Lottie・Three.js・canvas等）をHyperFramesへ移し、フレーム単位で検証 |
+
+インストール経路の規則（README）:
+
+- `npx hyperframes skills update` は、CLIのバージョンに一致するリリースタグからcore setを入れる。`npx skills add` が参照するskills.shレジストリはmainから数時間遅れることがある、とREADMEが使い分けの理由を書く。既存スキルは更新するだけで削除しない。on demandの3本は `npx hyperframes skills update <name>` で個別に足す。
+- `npx skills add heygen-com/hyperframes` のピッカーは対話専用で、何も選ばれていない状態で開く。スクリプトやエージェントからの非対話実行で `--skill` を付けないと9本すべてが入る。`--all` は意図的に全部入れる指定。
+- `npx hyperframes init` はcore setが無いときだけ入れ、既存スキルには触らない。
+- Claude Codeには `claude plugin marketplace add heygen-com/hyperframes` → `claude plugin install hyperframes@hyperframes` のversioned plugin経路もあり、呼び出しは `/hyperframes:hyperframes`。
+
+**本ページの旧記述との差分**: 上の「主なCLI操作」表にある `/gsap` と、「5つの実践レシピ」の `/faceless-explainer` など5コマンドは、2026-11-19時点のREADMEが挙げる公開9本に載っていない。READMEは「`.claude/skills` / `.agents/skills` 配下のリポジトリ内部スキル6本は既定で除外」とも書くので、改名・統合・内部化のいずれかと考えられるが、対応関係は未確認。
+
+### `/media-use` の供給元（SKILL.mdの表を転記）
+
+| 必要なもの | 無料 | HyperFramesクレジット | ローカル／本人のキー（求められたときだけ） |
+|---|---|---|---|
+| 音楽（bgm） | HeyGenカタログ10k+曲（サインイン） | 生成トラック | ローカルMusicGen |
+| 効果音（sfx） | HeyGen（サインイン）・Openverse（CC BY表記）・同梱 | | |
+| 画像・アイコン | HeyGen素材検索75k+（サインイン） | 生成画像 | ローカルFLUX（mflux、導入済みなら） |
+| ロゴ（logo） | theSVG・GitHubアバター・favicon（描き直さない） | | |
+| ナレーション（voice） | Voice Turbo・Freeプランは月3分 | 有料プランのVoice Turbo・他のHeyGen音声・クローン | `npx hyperframes tts`（端末上のKokoro） |
+| 話す登壇者 | | アバター動画（`--type video`） | ローカルLTX（汎用クリップ、導入済みなら） |
+| 文字起こし | `npx hyperframes transcribe`（Parakeetかwhisper） | | |
+| 切り抜き | | 動画: `--type cutout` | `npx hyperframes remove-background` |
+| グレード・LUT・ルック | `npx hyperframes media-treatment` | | |
+
+スキル本文はエージェントの振る舞いも規定する。HeyGenのモデルやカタログが要る依頼では毎回 `npx hyperframes auth status` を先に実行し、未サインインなら「サインインは無料で、音楽カタログ・素材検索・FreeプランのVoice Turbo月3分が使える」と一行で伝えて `npx hyperframes auth login` を促す。ローカルツールは本人が求めたときだけ使い、フォールバックにはしない。クレジットの既定は「頼まれない限り安い代替や項目の削除をしない」で、本人が `.hyperframes/credit-limit.json` に上限を書くと超える呼び出しは拒否される。素材はすべてプロジェクトの `assets/` に台帳付きで置かれ、レンダリング時に外部取得は走らない。
+
+OSSとして無料で配る部分（決定論レンダリング・ブロック・スキル本体）と、サインインやProに寄せる部分（素材カタログ・生成モデル・`/reverse-any-video`・`/style-sampling`）の線引きは、「HeyGenの戦略的意図」の節で書いたOSSで標準を取り有料側で回収する構図の具体化と考えられる（wiki側の読み）。
+
 ## ターミナル不要の入り口：Video Agent
 
 CLIに抵抗がある層向けに、HeyGen本体（app.heygen.com）にはVideo Agentというブラウザ完結の機能が組み込まれている。作りたい動画を言葉で説明すると、エージェントがシーンごとの制作プランを先に提示し、対話で調整してから初めてレンダリングが走る。プロンプトには「スタイル段落」と呼ばれる5〜6文の型（スタイル名・hexコード込みのパレット・動き方・場面転換・雰囲気）を添えるのが公式推奨とされる。レンダリング後もチャットが継続し、気になるシーンだけを指定して直せるほか、AI Studioへコピーを送ると台本・シーン・声・タイミング・素材を人手で微調整する完全手動モードに切り替えられる。@MakeAI_CEOはこの運用を「9割をプロンプトで、1割を編集で」と整理し、無料量産やブランドのファイル管理を厳密にしたいならターミナル版、アバターに喋らせたい・黒い画面を避けたいならVideo Agentという使い分けを提案している（Video AgentはHeyGen本体機能のためアカウント登録が必要）。
@@ -70,24 +117,30 @@ CLIに抵抗がある層向けに、HeyGen本体（app.heygen.com）にはVideo 
 
 HeyGenの本業はAIアバター動画だが「アバターは動画の半分」であり、周囲のモーショングラフィックス制作がユーザーの詰まりポイントだった。その制作層をOSSで配布してコミュニティに磨かせ、自社有料プロダクト（Video Agent）では磨かれたHyperframes＋アバターの両輪を提供する青写真。「HTMLで動画を書く」標準を自社が握る狙いで、Linux/Kubernetes/Reactの「OSSで覇権を取る」パターンの動画版と位置づけられる。
 
+@MakeAI_CEOによれば、ローンチPR動画そのものがClaude Code × Hyperframesだけで制作され、そのソースコードを「リツイートしてコメントしたら送る」形で配布する自己言及的なプロモーションが行われた。
+
+## 費用対効果の主張と活用例（@MakeAI_CEO）
+
+@MakeAI_CEOは、モーショングラフィックスの外注相場を「1本5〜10万円・納期2週間」と置き、クラウドワークス・ランサーズの個人なら3〜5万円、Lancersの上位層は10万円超と補足した上で、Hyperframes＋Claude Code環境では「外注コスト0円・納期10分」になると主張する。発信者向けの活用例として8つ（X記事冒頭のモーション量産・noteヘッダー動画・VSL冒頭15秒・PDF→45秒ピッチ・CSV→アニメチャート・LINEティザー・多言語展開・ショート動画量産）を挙げるが、いずれも同氏の提案であり効果測定の数字は示していない。「今が一番早い」「Rails／Next.js黎明期に触った人が今優位」という同氏の煽り文脈は、販促を兼ねた発信者の主張として割り引いて読むべきだと考えられる（wiki側の読み）。
+
 ## 観察ログ（未検証）
 
 - 2026-04-16: HeyGenのVP of Product & Agent Engineering Bin Liu（旧Alisa共同創業者、2025年9月HeyGenに買収）がGitHubで公開。著者（@MakeAI_CEO）は「リリース24時間でX上が祭り状態」と記述（単一ソースの主張）。
-- ローンチPR動画自体がClaude Code × Hyperframesのみで制作され、ソースコードを「RT＋コメントで配布」する自己言及的プロモを行ったとされる。
-- 著者主張: モーショングラフィックス外注は従来「1本5〜10万円・納期2週間」が相場 → Claude Code環境で「コスト0円・納期10分」に近づく。発信者の活用例8選（X記事冒頭モーション量産・noteヘッダー動画・VSL冒頭15秒・PDF→45秒ピッチ・CSV→アニメチャート・LINEティザー・多言語展開・ショート動画量産）を提示。いずれも効果測定は未検証。
-- 著者の煽り文脈（「今が一番早い」「Rails/Next.js黎明期」類比）はポジショントークの可能性に留意。
-- 2026-07-26: @MakeAI_CEOによれば、GitHubスター数は3万超まで伸びた（前回観察ログの「リリース直後の祭り状態」から数ヶ月での成長を示す単一著者の観察・検証済み事実欄のライセンス情報とは別に伸び幅は未確認）。同氏は採用チームのリストも公式リポジトリで公開されていると述べる。
+- 2026-07-26: @MakeAI_CEOによれば、GitHubスター数は3万超まで伸びた（単一著者の観察）。同氏は採用チームのリストも公式リポジトリで公開されていると述べる。→ 2026-11-19にGitHub APIで86,511を確認（検証済み事実欄）。
 
 ## 検証済み事実
 
 - ライセンスはApache 2.0（商用無制限）。
 - レンダリングは決定論的（フレーム番号基準・ヘッドレスChrome `beginFrame`＋FFmpeg）で、同一入力から同一MP4を再現する設計。
+- 2026-11-19: GitHub APIでheygen-com/hyperframesのスターは86,511・ライセンスApache-2.0・最終pushは2026-11-18。
 
 ## 問い
 
 - 決定論レンダリングを使い、note/wiki記事公開をトリガーにヘッダー動画を自動生成するCI/CDを自分のvaultで組めるか（[[concepts/llm-wiki]]連携）。
 - `data-*`属性ベースの中間記法は [[concepts/intermediate-notation-pattern]] のserialize/parse対と比べてどこまで双方向編集できるのか。
 - Claude Opus 4.7/4.8世代で実際にどの程度安定して「動画として成立する」HTMLを出せるか、blank/play-modeで1本試す。
+- FreeプランのVoice Turbo月3分で解説動画1本のナレーションは収まるか。超えた分を `npx hyperframes tts`（Kokoro）で賄ったとき声質の差はどれだけ出るか。
+- 旧記述の `/faceless-explainer` など5レシピは現在の9スキルのどこへ行ったか（`/style-sampling` の5スタイルが後継か）。
 
 ## 関連
 
@@ -103,3 +156,4 @@ HeyGenの本業はAIアバター動画だが「アバターは動画の半分」
 - [[concepts/opus-motion-design-studio]] — Opus 5.5 は Hyperframes が使える環境でも依存ゼロの seek(t)＋Playwright＋ffmpeg を既定で選ぶという観察。フレームワークを使わせるなら明示が要る
 - [[tools/threejs-assets]] — three.js 向けの無料・商用可・帰属不要の低ポリ GLB モデル群。「Three.js 等の Web 資産がそのまま使える」本フレームワークで、モデルを自作せずシーンに置ける素材の供給源
 - [[tools/creative-pipeline-repos]] — 磨き→動き→3D→画像→字幕→書き出しの 10 リポ一覧の 9 本目「HeyGen の無料ツール、Web ページを動画にする」（@flxrnc）
+- [[tools/gemini-api-cli]] — Google 公式の CLI でコーディングエージェントにシェルから image／tts／music／video の生成を渡す。`/media-use` が HeyGen のカタログと生成モデルで担う「エージェントに素材と耳を足す」役割の Google 側の対応物

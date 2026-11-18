@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>gemini-api-cli</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="gemini-api-cli.md">Markdownで表示</a></div>
-  <div class="meta">tools/gemini-api-cli · tools · <span title="2026-11-17">1日前</span></div>
+  <div class="meta">tools/gemini-api-cli · tools · <span title="2026-11-17">2日前</span></div>
   <article><h1>Gemini API CLI（gemini-api）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: Google の <code>gemini-api</code> は、コーディングエージェントがシェルから Gemini を呼ぶための、状態を持たない依存ゼロの CLI。画像・音声・音楽・動画の生成（image／tts／music／video）、ファイルや公開 YouTube の分析（analyze）、話者ラベルつき文字起こし（transcribe）、Deep Research などのマネージドエージェントへの委任（agent run）を 1 コマンドずつ提供し、生成物はディスクに書いてパスだけを標準出力に返す。個人ゲーム開発者ギガビット（@gigabit_million）が Claude Fable に作らせた 67 秒の動画は、これを「文字の世界に住む Claude Code に目と耳を足し、つくって・見て・直すを 1 人で回せるようにする道具」として描く。</p>
@@ -211,11 +211,12 @@ gemini-api generate &quot;Confirm CLI setup in one sentence.&quot; --dry-run
 <li><a href="../tools/claude-code-mcp-stack.html">claude-code-mcp-stack</a> — 「検証手段を渡す」「外部ツールを作業面へ」の原則。本ページはそれをシェルコマンドで満たす例</li>
 <li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a> — 公式が配る CLAUDE.md 向け指示文が載る散文層の位置づけ</li>
 <li><a href="../concepts/eval-loop.html">eval-loop</a> — 別モデルの指摘をゲートにするかどうかの判断枠</li>
+<li><a href="../tools/hyperframes.html">hyperframes</a> — HeyGen 製の動画フレームワーク。その <code>/media-use</code> スキルがサインイン 1 つで音楽カタログ・素材検索・TTS をエージェントに渡す。本ページが Gemini のモデル群で満たす「耳と素材を足す」役割を HeyGen 側で担う対応物</li>
 </ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/google.html">google</a></li>
 <li><a href="../concepts/gemini-rewrite-stop-hook.html">gemini-rewrite-stop-hook</a></li>
 <li><a href="../concepts/opus-motion-design-studio.html">opus-motion-design-studio</a></li>
 <li><a href="../tools/claude-code.html">claude-code</a></li>
-<li><a href="../concepts/claude-code-instruction-methods.html">claude-code-instruction-methods</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2122206028544831502" rel="noopener" target="_blank">https://x.com/i/web/status/2122206028544831502</a></li>
+<li><a href="../tools/hyperframes.html">hyperframes</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2122206028544831502" rel="noopener" target="_blank">https://x.com/i/web/status/2122206028544831502</a></li>
 <li><a href="https://aistudio.google.com/docs/cli" rel="noopener" target="_blank">https://aistudio.google.com/docs/cli</a></li></ul></section></article>
 </main>
 <script>
@@ -357,6 +358,7 @@ Windows は PowerShell のスクリプト、Go 環境は `go install github.com/
 - [[tools/claude-code-mcp-stack]] — 「検証手段を渡す」「外部ツールを作業面へ」の原則。本ページはそれをシェルコマンドで満たす例
 - [[concepts/claude-code-instruction-methods]] — 公式が配る CLAUDE.md 向け指示文が載る散文層の位置づけ
 - [[concepts/eval-loop]] — 別モデルの指摘をゲートにするかどうかの判断枠
+- [[tools/hyperframes]] — HeyGen 製の動画フレームワーク。その `/media-use` スキルがサインイン 1 つで音楽カタログ・素材検索・TTS をエージェントに渡す。本ページが Gemini のモデル群で満たす「耳と素材を足す」役割を HeyGen 側で担う対応物
 </script>
 <script>
 document.querySelector('.copy-md-btn').addEventListener('click', function(){

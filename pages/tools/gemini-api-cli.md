@@ -118,3 +118,4 @@ Windows は PowerShell のスクリプト、Go 環境は `go install github.com/
 - [[tools/claude-code-mcp-stack]] — 「検証手段を渡す」「外部ツールを作業面へ」の原則。本ページはそれをシェルコマンドで満たす例
 - [[concepts/claude-code-instruction-methods]] — 公式が配る CLAUDE.md 向け指示文が載る散文層の位置づけ
 - [[concepts/eval-loop]] — 別モデルの指摘をゲートにするかどうかの判断枠
+- [[tools/hyperframes]] — HeyGen 製の動画フレームワーク。その `/media-use` スキルがサインイン 1 つで音楽カタログ・素材検索・TTS をエージェントに渡す。本ページが Gemini のモデル群で満たす「耳と素材を足す」役割を HeyGen 側で担う対応物
