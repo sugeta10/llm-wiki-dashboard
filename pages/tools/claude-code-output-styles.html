@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{bo
   <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
   <h1>claude-code-output-styles</h1>
   <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="claude-code-output-styles.md">Markdownで表示</a></div>
-  <div class="meta">tools/claude-code-output-styles · tools · <span title="2026-11-17">2日前</span></div>
+  <div class="meta">tools/claude-code-output-styles · tools · <span title="2026-11-17">3日前</span></div>
   <article><h1>Claude Code の出力スタイル：pstack の /bro を常時適用する（uehaj）</h1>
 <blockquote>
 <p><strong>TL;DR</strong>: pstack の <code>/bro</code> スキル（直前の返答を専門用語なしで言い直させる）を毎回打つ代わりに、<code>~/.claude/output-styles/bro.md</code> という Markdown 1枚で出力スタイルにすると最初から平たい返答になる。uehaj は「短く」だけだと判断に要る数字や依頼が削られ、コードやパスまで言い換えられるので、「中身は落とさない」「コードはそのまま」の2項を足し、<code>keep-coding-instructions: true</code> で普段のコーディング指示を残した。</p>

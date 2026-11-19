@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gpt-live-1-1 - LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#16181d;color:#e6e9ec;font-family:'IBM Plex Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.65}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 64px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px;color:#8b929c;font-size:13px}
+.meta{color:#8b929c;font-size:12px;margin-bottom:22px;font-family:'IBM Plex Mono',monospace}
+h1,h2,h3{line-height:1.25;margin:1.4em 0 .55em}h1{font-size:30px;margin-top:0}h2{font-size:22px;border-top:1px solid #262b33;padding-top:18px}h3{font-size:17px}
+p,ul,pre,table{margin:0 0 16px}li{margin:4px 0}code{background:#1c2026;border:1px solid #262b33;border-radius:4px;padding:1px 4px}pre{position:relative;background:#1c2026;border:1px solid #262b33;border-radius:8px;padding:14px;overflow:auto}pre code{background:transparent;border:0;padding:0}img{max-width:100%;height:auto;border-radius:8px;display:block;margin:16px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;min-height:28px}.copy-btn:hover{background:#2d333b}.copy-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{border:1px solid #262b33;padding:7px 10px;text-align:left;vertical-align:top}th{background:#1c2026;font-weight:600}tr:nth-child(even) td{background:rgba(22,27,34,.45)}
+.sources{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.sources ul{padding-left:18px}.sources a{overflow-wrap:anywhere}
+.related{border-top:1px solid #262b33;margin-top:32px;padding-top:8px}.related ul{padding-left:18px}
+.stale-badge{margin-left:8px;background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);border-radius:4px;padding:1px 6px;font-size:11px}
+.cat-band{height:4px;width:100%}
+.md-tools{display:flex;gap:10px;align-items:center;margin:-8px 0 18px}.md-tools .copy-md-btn{background:#22262d;color:#e6e9ec;border:1px solid #262b33;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;min-height:28px}.md-tools .copy-md-btn:hover{background:#2d333b}.md-tools .copy-md-btn.copied{color:#3fb950;border-color:rgba(63,185,80,.4)}.md-tools .md-view{font-size:12px}
+</style>
+</head>
+<body>
+<div class="cat-band" style="background:#3fb950"></div>
+<main class="wrap">
+  <nav class="top"><a href="../../index.html">Dashboard</a><a href="../index.html">All pages</a></nav>
+  <h1>gpt-live-1-1</h1>
+  <div class="md-tools"><button class="copy-md-btn">Markdownでコピー</button><a class="md-view" href="gpt-live-1-1.md">Markdownで表示</a></div>
+  <div class="meta">models/gpt-live-1-1 · models · <span title="2026-11-20">今日</span></div>
+  <article><h1>GPT-Live-1.1</h1>
+<blockquote>
+<p><strong>TL;DR</strong>: OpenAI のフルデュプレックス音声モデル GPT-Live の改訂版。言語をまたいでも訛りと声が揺れにくくなり、文字起こし精度が上がり、WebRTC セッションの待機（standby）が稼働時 $0.05/分 の半額以下の $0.02/分 で課金される（2026-11-19 API 提供開始）。</p>
+</blockquote>
+<pre class="mermaid">stateDiagram-v2
+  [*] --&gt; Standby: WebRTC セッション作成（wake_policy = speech）
+  Standby --&gt; Active: 発話を検知（session.resumed）
+  Active --&gt; Standby: idle_timeout_s 秒トランスクリプトなし（session.paused）
+  Active --&gt; [*]: session.close
+  Standby --&gt; [*]: session.close</pre>
+<p>GPT-Live は「聞きながら話す」1 つのモデルで音声層を担い、深い推論やツール呼び出しはバックエンドのテキストモデルへ委任する構成をとる。OpenAI は GPT-Live-1 の API 版発表で、音声認識→推論モデル→音声合成を連結する従来構成は受け渡しごとに遅延が増え、割り込み・間・話題転換の扱いを開発者が調停する羽目になると述べ、単一モデルで聞く・話すを扱えば割り込みにその場で反応しつつ裏で作業を続けられると説明した。委任先は GPT-6 Astra のような自社モデルでも第三者モデルでもよく、発表記事は Codex SDK に会話文脈を渡して回答を音声へ返す例を載せている。GPT-Live-1.1 はこの構成を変えずに音声層の品質と待機時の費用を改めたリリースで、@OpenAIDevs は「言語をまたいで自然で一貫した訛り」「新しい standby オプションによる待機コストの低減」「タスク完了の信頼性向上」の 3 点を挙げる。</p>
+<h2>1.1 での変更点（OpenAI の記述）</h2>
+<ul>
+<li><strong>訛りと声の一貫性</strong>: モデルページは GPT-Live-1 と比べ、発話の文字起こしがより正確になり、言語をまたいでも訛りと声がより一貫すると書く</li>
+<li><strong>委任の指示は自然言語で</strong>: 推論やツール使用をバックエンドへ渡す条件を、プロンプトに平文で書く（委任ガイドが正本）</li>
+<li><strong>standby</strong>: WebRTC セッションで推論を止めている間は待機料金が適用される（仕組みは後述）</li>
+<li><strong>レート制限は別枠</strong>: GPT-Live-1.1 と GPT-Live-1 は同時セッション数の上限が別で、各モデルの上限は推論リージョンをまたいで適用される</li>
+</ul>
+<h2>仕様（モデルページの転記）</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>スナップショット名</td>
+<td><code>gpt-live-1.1</code></td>
+</tr>
+<tr>
+<td>入力 / 出力</td>
+<td>音声・テキスト（画像・動画は非対応）</td>
+</tr>
+<tr>
+<td>利用する API</td>
+<td>Live セッション（<code>v1/live/sessions</code>）。既存の Live セッション設定のモデル名を差し替えて使う</td>
+</tr>
+<tr>
+<td>ストリーミング / 関数呼び出し</td>
+<td>対応</td>
+</tr>
+<tr>
+<td>構造化出力 / ファインチューニング / 予測出力</td>
+<td>非対応</td>
+</tr>
+<tr>
+<td>料金（セッション時間課金）</td>
+<td>稼働 $0.05/分・待機 $0.02/分。バックエンドモデルとツールの利用は別課金</td>
+</tr>
+</tbody>
+</table>
+<h2>standby の仕組み（Live ガイドの記述）</h2>
+<ul>
+<li>WebRTC セッション作成時に <code>session.wake_policy.type</code> を <code>speech</code> にすると、発話を待ってから推論を始める。<code>session.idle_timeout_s</code> を 5〜60 の整数で設定すると、その秒数だけ入出力のトランスクリプトが途切れたときに待機へ戻る。省略すると最初の起床後はセッション終了まで稼働し続ける</li>
+<li><code>session.wake_policy.vad_threshold</code>（0〜1・既定 0.5）は、サーバー側の音声区間検出が推論を始めるのに要する発話の確からしさ。初回の起床と各停止後の再開に効く</li>
+<li>待機中もマイクのトラックは流し続ける。接続とセッション ID は変わらず、ユーザーが話し始めると会話履歴を復元して再開する。待機直後の短い発話への最初の応答は遅れることがある</li>
+<li>サイドバンドかデータチャネルで <code>session.resumed</code>（推論準備完了）と <code>session.paused</code>（アイドルタイムアウトで待機入り）を受け取る</li>
+<li>会話の間隔が長いアプリでは、待機でなくセッションを閉じて再開時に新しいセッションを作る。保存済みセッションのフォークか、テキスト履歴の投入で文脈を戻す。ガイドは、待機で浮く音声時間とセッション再作成の費用・音声が使えるようになるまでの遅延を比べてアイドルタイムアウトを選べと書く</li>
+</ul>
+<h2>位置づけ（wiki 側の読み）</h2>
+<ul>
+<li><a href="../models/dessa.html">dessa</a> も同じフルデュプレックス音声モデルだが、Block は人間の会話音声だけでゼロから訓練しローカルで動かす方向をとる。GPT-Live は音声層を薄く保ち推論をバックエンドのテキストモデルへ委任する構成で、「どこで考えるか」の設計が対照的だと考えられる</li>
+<li><a href="../concepts/feynman-technique-ai-era.html">feynman-technique-ai-era</a> の iwashi は、消費者向けの GPT-Live を学習内容の説明相手に使う。本ページは同じ名前を持つ API 側のモデルで、開発者が自分のアプリに同種の対話を組み込む入口にあたる</li>
+</ul>
+<h2>観察ログ（未検証）</h2>
+<ul>
+<li>2026-11-20: OpenAI 自己申告（GPT-Live-1 発表時）: Full Duplex Bench で GPT-Realtime-2.1 比 +30 ポイント、GPT-6 Astra（medium）と組んで Tau3 で 1 位、Speak の早期評価で割り込み約 80% 減。1.1 の定量値は未公表</li>
+</ul>
+<h2>問い</h2>
+<ul>
+<li>自分の用途（学習の説明相手・作業中の音声操作）で <code>idle_timeout_s</code> をいくつにすると、待機料金とセッション再作成の手間の釣り合いがとれるか</li>
+<li>日本語での訛り・声の一貫性は実際に改善したか。公式の主張は多言語一般にとどまる</li>
+</ul>
+<h2>関連</h2>
+<ul>
+<li><a href="../companies/openai.html">openai</a> — 開発元</li>
+<li><a href="../models/dessa.html">dessa</a> — Block のフルデュプレックス音声モデル。音声だけで訓練しローカルで動く対照</li>
+<li><a href="../concepts/feynman-technique-ai-era.html">feynman-technique-ai-era</a> — iwashi が GPT-Live を説明相手に使う学習法（消費者向け側の実践）</li>
+<li><a href="../business/chatgpt-plan-api-credits.html">chatgpt-plan-api-credits</a> — ChatGPT Pro / Business の月次 API クレジットの対象に GPT-Live・Realtime API が含まれる</li>
+<li>openai-codex — GPT-Live-1 発表で OpenAI が示した委任先の例（Codex SDK に会話文脈を渡し、回答を音声へ返す）</li>
+</ul><section class="related"><h2>Related Pages</h2><ul><li><a href="../companies/openai.html">openai</a></li>
+<li><a href="../concepts/feynman-technique-ai-era.html">feynman-technique-ai-era</a></li>
+<li><a href="../models/dessa.html">dessa</a></li>
+<li><a href="../business/chatgpt-plan-api-credits.html">chatgpt-plan-api-credits</a></li></ul></section><section class="sources" id="sources"><h2>Sources</h2><ul><li><a href="https://x.com/i/web/status/2123506733524136446" rel="noopener" target="_blank">https://x.com/i/web/status/2123506733524136446</a></li>
+<li><a href="https://developers.openai.com/api/docs/models/gpt-live-1.1" rel="noopener" target="_blank">https://developers.openai.com/api/docs/models/gpt-live-1.1</a></li>
+<li><a href="https://developers.openai.com/api/docs/guides/live-conversations" rel="noopener" target="_blank">https://developers.openai.com/api/docs/guides/live-conversations</a></li>
+<li><a href="https://openai.com/index/introducing-gpt-live-1-in-the-api/" rel="noopener" target="_blank">https://openai.com/index/introducing-gpt-live-1-in-the-api/</a></li></ul></section></article>
+</main>
+<script>
+// コードブロック（スニペット）にコピーボタンを付与（mermaid 図は除外。
+// 付けると appendChild('コピー') が mermaid の textContent を汚染し描画が壊れる）
+document.querySelectorAll('pre:not(.mermaid)').forEach(function(pre){
+  var code = pre.querySelector('code') || pre;
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function(){
+    var text = code.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+<script id="page-markdown" type="text/plain"># GPT-Live-1.1
+
+&gt; **TL;DR**: OpenAI のフルデュプレックス音声モデル GPT-Live の改訂版。言語をまたいでも訛りと声が揺れにくくなり、文字起こし精度が上がり、WebRTC セッションの待機（standby）が稼働時 $0.05/分 の半額以下の $0.02/分 で課金される（2026-11-19 API 提供開始）。
+
+```mermaid
+stateDiagram-v2
+  [*] --&gt; Standby: WebRTC セッション作成（wake_policy = speech）
+  Standby --&gt; Active: 発話を検知（session.resumed）
+  Active --&gt; Standby: idle_timeout_s 秒トランスクリプトなし（session.paused）
+  Active --&gt; [*]: session.close
+  Standby --&gt; [*]: session.close
+```
+
+GPT-Live は「聞きながら話す」1 つのモデルで音声層を担い、深い推論やツール呼び出しはバックエンドのテキストモデルへ委任する構成をとる。OpenAI は GPT-Live-1 の API 版発表で、音声認識→推論モデル→音声合成を連結する従来構成は受け渡しごとに遅延が増え、割り込み・間・話題転換の扱いを開発者が調停する羽目になると述べ、単一モデルで聞く・話すを扱えば割り込みにその場で反応しつつ裏で作業を続けられると説明した。委任先は GPT-6 Astra のような自社モデルでも第三者モデルでもよく、発表記事は Codex SDK に会話文脈を渡して回答を音声へ返す例を載せている。GPT-Live-1.1 はこの構成を変えずに音声層の品質と待機時の費用を改めたリリースで、@OpenAIDevs は「言語をまたいで自然で一貫した訛り」「新しい standby オプションによる待機コストの低減」「タスク完了の信頼性向上」の 3 点を挙げる。
+
+## 1.1 での変更点（OpenAI の記述）
+
+- **訛りと声の一貫性**: モデルページは GPT-Live-1 と比べ、発話の文字起こしがより正確になり、言語をまたいでも訛りと声がより一貫すると書く
+- **委任の指示は自然言語で**: 推論やツール使用をバックエンドへ渡す条件を、プロンプトに平文で書く（委任ガイドが正本）
+- **standby**: WebRTC セッションで推論を止めている間は待機料金が適用される（仕組みは後述）
+- **レート制限は別枠**: GPT-Live-1.1 と GPT-Live-1 は同時セッション数の上限が別で、各モデルの上限は推論リージョンをまたいで適用される
+
+## 仕様（モデルページの転記）
+
+| 項目 | 値 |
+|---|---|
+| スナップショット名 | `gpt-live-1.1` |
+| 入力 / 出力 | 音声・テキスト（画像・動画は非対応） |
+| 利用する API | Live セッション（`v1/live/sessions`）。既存の Live セッション設定のモデル名を差し替えて使う |
+| ストリーミング / 関数呼び出し | 対応 |
+| 構造化出力 / ファインチューニング / 予測出力 | 非対応 |
+| 料金（セッション時間課金） | 稼働 $0.05/分・待機 $0.02/分。バックエンドモデルとツールの利用は別課金 |
+
+## standby の仕組み（Live ガイドの記述）
+
+- WebRTC セッション作成時に `session.wake_policy.type` を `speech` にすると、発話を待ってから推論を始める。`session.idle_timeout_s` を 5〜60 の整数で設定すると、その秒数だけ入出力のトランスクリプトが途切れたときに待機へ戻る。省略すると最初の起床後はセッション終了まで稼働し続ける
+- `session.wake_policy.vad_threshold`（0〜1・既定 0.5）は、サーバー側の音声区間検出が推論を始めるのに要する発話の確からしさ。初回の起床と各停止後の再開に効く
+- 待機中もマイクのトラックは流し続ける。接続とセッション ID は変わらず、ユーザーが話し始めると会話履歴を復元して再開する。待機直後の短い発話への最初の応答は遅れることがある
+- サイドバンドかデータチャネルで `session.resumed`（推論準備完了）と `session.paused`（アイドルタイムアウトで待機入り）を受け取る
+- 会話の間隔が長いアプリでは、待機でなくセッションを閉じて再開時に新しいセッションを作る。保存済みセッションのフォークか、テキスト履歴の投入で文脈を戻す。ガイドは、待機で浮く音声時間とセッション再作成の費用・音声が使えるようになるまでの遅延を比べてアイドルタイムアウトを選べと書く
+
+## 位置づけ（wiki 側の読み）
+
+- [[models/dessa]] も同じフルデュプレックス音声モデルだが、Block は人間の会話音声だけでゼロから訓練しローカルで動かす方向をとる。GPT-Live は音声層を薄く保ち推論をバックエンドのテキストモデルへ委任する構成で、「どこで考えるか」の設計が対照的だと考えられる
+- [[concepts/feynman-technique-ai-era]] の iwashi は、消費者向けの GPT-Live を学習内容の説明相手に使う。本ページは同じ名前を持つ API 側のモデルで、開発者が自分のアプリに同種の対話を組み込む入口にあたる
+
+## 観察ログ（未検証）
+
+- 2026-11-20: OpenAI 自己申告（GPT-Live-1 発表時）: Full Duplex Bench で GPT-Realtime-2.1 比 +30 ポイント、GPT-6 Astra（medium）と組んで Tau3 で 1 位、Speak の早期評価で割り込み約 80% 減。1.1 の定量値は未公表
+
+## 問い
+
+- 自分の用途（学習の説明相手・作業中の音声操作）で `idle_timeout_s` をいくつにすると、待機料金とセッション再作成の手間の釣り合いがとれるか
+- 日本語での訛り・声の一貫性は実際に改善したか。公式の主張は多言語一般にとどまる
+
+## 関連
+
+- [[companies/openai]] — 開発元
+- [[models/dessa]] — Block のフルデュプレックス音声モデル。音声だけで訓練しローカルで動く対照
+- [[concepts/feynman-technique-ai-era]] — iwashi が GPT-Live を説明相手に使う学習法（消費者向け側の実践）
+- [[business/chatgpt-plan-api-credits]] — ChatGPT Pro / Business の月次 API クレジットの対象に GPT-Live・Realtime API が含まれる
+- [[tools/openai-codex]] — GPT-Live-1 発表で OpenAI が示した委任先の例（Codex SDK に会話文脈を渡し、回答を音声へ返す）
+</script>
+<script>
+document.querySelector('.copy-md-btn').addEventListener('click', function(){
+  var md = document.getElementById('page-markdown').textContent;
+  var btn = this;
+  navigator.clipboard.writeText(md).then(function(){
+    btn.textContent = 'コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Markdownでコピー'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+</script>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

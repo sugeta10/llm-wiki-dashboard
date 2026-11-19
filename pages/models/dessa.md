@@ -66,3 +66,4 @@ Block が組織そのものを「階層でなくインテリジェンス」と�
 
 - [[business/org-design-intelligence]] — Block（Jack Dorsey）の組織設計論。Dessa はその Block 内で Dorsey 直属の小規模ラボが出した研究成果
 - [[business/self-improving-company]] — Jack Dorsey のツイートを下敷きにした YC トーク
+- [[models/gpt-live-1-1]] — OpenAI のフルデュプレックス音声モデル。音声層を薄く保ち推論をバックエンドのテキストモデルへ委任する構成で、音声だけで訓練しローカルで動かす Dessa とは「どこで考えるか」の設計が対照的
