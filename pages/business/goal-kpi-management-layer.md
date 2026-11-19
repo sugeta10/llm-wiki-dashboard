@@ -77,3 +77,4 @@
 - [[business/self-improving-company]] — 会社を再帰的 AI ループの集合として再設計する YC 構想。本ページはそのループに必要なデータ構造の側
 - [[business/org-design-intelligence]] — 階層からインテリジェンスへの組織設計。ワールドモデルに当たるものを本ページは商品設計・仮説マップ・数値計画として持つ
 - [[concepts/grok-bot-one-person-harness]] — 会社ブリーフに「不明は unknown」と書く原則。本ページの「未取得をゼロ扱いしない」と同じ発想
+- [[concepts/goal-process-automation]] — Grok Bot チームの Lauren が「プロセスをゴールと混同するな（フォームを埋める・メールを送るは手段）」と書く自動化の作法。本ページの「タスク完了と事業の前進は別」を、個人や小規模事業が Bot を設定する入口で言ったもの

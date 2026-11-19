@@ -43,3 +43,4 @@ LINE公式アカウントを本気で運用すると配信ツールの月額1〜
 - [[tools/claude-mcp]] — 同梱MCPサーバーが依拠する外部ツール連携仕様
 - [[concepts/ai-pre-judgment-automation]] — 検知→調査→提案→人間確認→実行で社外送信の手前に承認を置く同型の運用（Slack/Gmail/GitHub監視・Codex）
 - [[business/line-group-ai-crm]] — 社内のLINEグループに記録係の公式LINEを入れ、Claude APIで発言を仕分けて顧客台帳・月報を自動化した地方リフォーム会社の導入事例（@meguron12）
+- [[concepts/ai-dedicated-smartphone]] — LINE 公式アカウント＋API でなく、AI 専用の Pixel を USB 接続して LINE アプリそのものを操作させる別経路（いち @ichiaimarketer）。「送っていい」が無ければ送信が動かない点で本ページの送信のみ承認と同じ境界で、オープンチャットや個人の友だちに届く代わりに個人アカウントの自動操作という規約上の問題を持つ

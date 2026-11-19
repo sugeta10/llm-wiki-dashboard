@@ -97,3 +97,4 @@ flowchart LR
 - [[concepts/grok-bot-local-mac-codex-routing]] — Notion の AI/FDE kazuki hayakawa（@kzkhykw）が、ローカル Mac 専用の Bot を 1 体置き、メイン Bot から @ メンションで渡した仕事を自宅の常駐 MacBook 上の Grok Bot アプリが受け、Orca で worktree を切って Codex を実行する個人構成。本ページの「Mac mini を Cursor Cloud の private worker に」に対し、Grok Bot のローカル実行で自宅機を直接呼ぶ側の構成
 - [[concepts/organic-architecture]] — Grok Bot チームの Lauren Tan が AIE 講演で示した月 11,000 PR・revert 率約 0.5% の土台（5 層の逆ピラミッド・Organic Architecture・リリースごとに Grok Bot が Cursor Projects を起こしてファジングし修正 PR を自動マージする外側ループ）。本ページの @lingxi の運用記に対する、品質側の説明
 - [[concepts/automate-me-mode-skill]] — Carnage（@0xCarnagee）が pstack `/automate-me` を Grok Bot 用の 1 本プロンプトに移植したもの。会話記録を掘って利用者の流儀を `/workspace/modes/<名前>-mode.md` に書き、各 Bot の指示に「従え」の 1 行を足す
+- [[concepts/goal-process-automation]] — Grok Bot チームの Lauren（@poteto）の X 記事「Automate Anything with Grok Bot」。ゴールとプロセスを分け、暗黙の判断を実例で教え、レビューや業務ログを Bot 自身に読ませ、ルーチンで起動する自動化の作法。本ページの開発チーム運用に対し、非エンジニアの業務を自動化する側の考え方

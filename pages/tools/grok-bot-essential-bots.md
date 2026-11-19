@@ -51,3 +51,4 @@ kaito は分類を示していないが、役割で分けると 5 つに読め�
 - [[tools/html-plan]] — 作る前に案を 1 ページで見せ指摘を貼り戻す Claude Code プラグイン。akapen bot と同型
 - [[concepts/grok-bot-ai-team-workspace]] — 炎鎮（@super_bonochin）の 7 体構成。AI Radar・Sentinel に当たる役割をツムギ（朝夕の AI ニュース）・マモリ（毎朝のセキュリティ点検）として自作し、自宅 PC と共有ナレッジで回す全体図
 - [[concepts/grok-bot-team-guide]] — dr eggbot の作者 Lauren（@poteto）本人の Bot 設計ガイド。「Bot はたくさん要らない」「指示のたびにスキルを作らせる」など 7 項目と、x.ai の共有ページにある dr eggbot の設計基準（仕事は 1 つ・スロップなし・検証済み）
+- [[concepts/goal-process-automation]] — 同じ Lauren が「自動化について知っていることを全部 Dr Eggbot に教えた」と書く自動化の考え方の記事。ゴール→プロセスの復唱→暗黙の判断→フィードバック経路→ルーチンの順

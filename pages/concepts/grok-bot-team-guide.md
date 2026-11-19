@@ -49,3 +49,4 @@ Lauren は X のプロフィールで SpaceXSI の Grok Bot 担当・React Compi
 - [[concepts/skill-self-improving-loop]] — 会話からスキルを育てる 3 段ループ。本ページは同じ工程を Bot 自身に委ねる
 - [[tools/1password-for-agents]] — 人間の資格情報を Bot に見せずサインインさせる承認レイヤー。Bot 名義アカウントで分離する助言と目的は同じで向きが逆
 - [[concepts/automate-me-mode-skill]] — 本ページの「指示のたびにスキルを作らせる」の上に置く利用者自身の流儀のスキル化。pstack `/automate-me` の SKILL.md と、Carnage の Grok Bot 向け移植
+- [[concepts/goal-process-automation]] — 同著者の X 記事「Automate Anything with Grok Bot」。本ページの 7 項目が Bot の作り方なのに対し、仕事をゴールとプロセスに分けて渡す考え方の側。7 項目目の音声ダンプと復唱を「ゴールとプロセスを平易な英語で言い直し、まだ実行しないで」に展開し、1 項目目の dr eggbot に自動化の知見を教えたと書く

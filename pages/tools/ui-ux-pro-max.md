@@ -37,3 +37,4 @@ READMEが列挙する内蔵データ（転記）: 79 UIスタイル（Glassmorph
 - [[design/claude-premium-website-build]] — frontend-designと本スキルを併用する制作ワークフロー
 - [[tools/taste-skill]] — 同じ6選に並ぶanti-slopスキル集（ダイヤル調整型の対照アプローチ）
 - [[tools/ui-skills]] — 本スキルを掲載するUI品質スキルカタログ
+- [[tools/ui-design-repos]] — seeco（@seeconvm）の「AI っぽくない UI」15 リンク一覧。本スキルを 6 本目に「80 の UI スタイル・配色・フォントペア」として挙げる（本ページの転記は 79 スタイル）

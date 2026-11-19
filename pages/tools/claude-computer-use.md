@@ -15,3 +15,4 @@ ClaudeにリアルUIを操作させるエージェント機能。マウスクリ
 - [[concepts/multi-agent-patterns]] — マルチエージェント設計パターン（Computer Useをサブエージェントとして組み込む構成を含む）
 - [[tools/claude-real-video]] — 動画を変化フレーム抽出＋文字起こしで機械可読化しClaudeに見せるOSS（デモ録画リプレイと同じ「動画を扱う」系譜）
 - [[tools/jev-ultrafast]] — 既定ループからスクリーンショットを外し、番号付き要素テーブルだけでブラウザを操作する逆方向の設計（browser-use製）
+- [[concepts/ai-dedicated-smartphone]] — USB デバッグを有効にした Pixel を Mac に繋ぎ、Claude Code などに画面の文字を読ませて LINE アプリを操作させる運用（いち）。デスクトップでなく AI 専用のスマホを対象にした画面操作の実例で、送信前に本人の「送っていい」を要求する

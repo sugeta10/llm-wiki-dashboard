@@ -72,3 +72,4 @@
 - [[concepts/opus-motion-design-studio]] — コードから動画を作る講座。引用記事の Playbook と論点が重なる
 - [[tools/ui-skills]] — Impeccable を掲載する UI スキルのカタログ
 - [[tools/agent-skills-by-role]] — 職種別のリポ 6 選。本ページは工程別
+- [[tools/ui-design-repos]] — 同じ「リポ N 選」形式の UI 版（seeco・15 リンク）。本ページが映像制作の工程別なのに対し、UI 部品と配色・エージェント向け設計資産・作図と画像処理の層別

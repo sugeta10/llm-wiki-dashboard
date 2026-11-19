@@ -36,3 +36,4 @@ AIに作業させる前に、こちらのゴールと解こうとしている問
 - [[concepts/agent-trust-inverse-pyramid]] — 同著者が示した、エージェントを信頼するための4層の努力配分。エージェントに渡す手順の最後で `/sharpen` と `/in-your-own-words` を使い、プロンプト自体を確認させる
 - [[papers/2026-kewenig-metacognitive-scaffolds]] — AI が生成した欄に人間が目標（読者・望む結果・範囲）を書いてから下書きさせる足場のランダム化実験。AI に復唱させる本プロンプトと向きが逆で、目標の言語化を下書き前に置く点は同じ
 - [[concepts/grok-bot-team-guide]] — 同著者の Grok Bot ガイド。音声で大量に話した後に「自分の言葉で言い直して」と頼む使い方として、本プロンプトを Bot 運用の理解確認に置いている
+- [[concepts/goal-process-automation]] — 同著者の Grok Bot 向け自動化記事。本プロンプトを「ゴールとプロセスを平易な英語で言い直し、まだ実行しないで」の形に広げ、自動化の計画段階に置く

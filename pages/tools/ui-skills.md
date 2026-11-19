@@ -35,3 +35,4 @@ UIエンジニア・デザインエンジニア向けのClaude Codeスキル専�
 - [[tools/emil-kowalski-skills]] — 掲載スキル `emil-design-eng` の作者Emil Kowalski本人のスキルリポジトリ（/apple-design等4スキル）
 - [[tools/taste-skill]] — anti-slop特化のフロントエンドスキル集（本カタログ掲載の ui-ux-pro-max / impeccable と同ジャンル・Leonxlnx製）
 - [[tools/impeccable]] — 本カタログ掲載の `impeccable` の独立ページ。24 コマンド・62 ルールの決定論検出器・design hook・live mode の README 詳細（Paul Bakaus）
+- [[tools/ui-design-repos]] — X の「AI っぽくない UI」15 リンク一覧（seeco）。本カタログ掲載の frontend-design・ui-ux-pro-max と、`shadcn` スキルの対象である shadcn/ui 本体を含む

@@ -60,3 +60,4 @@ flowchart TD
 - [[concepts/dynamic-agent-org]] — 本ページが動詞（単体エージェントの止まり方）を扱うのに対し、こちらは複数エージェントの接続構造（グラフ）が実行中に書き換わる次の抽象化レイヤー
 - [[tools/claude-projects-threads]] — Claude Projects の Routines タブ。コーディネーターに頼むとプロジェクト内でスレッドとして走るルーティンが作られる
 - [[concepts/ai-coding-loop-formal]] — mizchi の実務棚卸し：/goal に渡す数値の評価指標（RSS・lint warning数・Mutation Kill率・VRT一致率）と Umbrella Issue でまとめてから渡す流れ
+- [[concepts/goal-process-automation]] — Grok Bot のルーチンを「メールが来たら・メッセージが来たら・定時に」のトリガー選びとして置く Lauren（@poteto）の記事。本ページの routine（自分がいない間に走る）を非エンジニア向けに「いつ動くかを決める」の一言で説明した側
