@@ -75,3 +75,4 @@ Kuniwak の例は、画面の「ping」ボタンを押すと「pong」に変わ�
 - [[tools/claude-code-goal]] — 「/goal 0-switch カバレッジを取るまで」で使われていると考えられる自律ループ
 - [[business/ai-lifeplan-simulation]] — 同著者の家計シミュレーション手法。役割分担が同じ形
 - [[concepts/e2e-testing-theory]] — 同著者の E2E テスト大全。puml-parallel の状態遷移モデルを仕様とグラフベース E2E テストの同一資産として使う、と本稿側から明言
+- [[concepts/ipa-requirements-management-handbook]] — IPA の公式ハンドブック。正本を定めて二重管理を避ける・Human Readable から Machine Understandable へ・軽量な形式手法から始める、という同じ配分を組織横断の標準（ReqIF・OSLC）まで広げる

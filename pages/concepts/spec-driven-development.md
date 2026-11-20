@@ -117,3 +117,4 @@ SDDによって開発者の役割は：
 - [[tools/grill-me]] — 対話型要件掘り下げの実践的実装（プランモード代替）
 - [[concepts/ai-dev-two-commands]] — ZOZO実践：AI×人間の判断境界を2コマンドで組織標準化した具体例
 - [[tools/elephant-goldfish-model]] — Google 製 EGM：設計文書を「問題・技術計画・却下した代替案・全ファイル列挙」の順で書かせ、文脈ゼロの新規セッションに理解・批評・実装準備を審査させてからコードに進む仕様先行の具体手順
+- [[concepts/ipa-requirements-management-handbook]] — IPA「AI 時代の要求管理ハンドブック」：SDD の上流にある要望→要求→要件の区別と、運用後のフィードバックで要求へ戻る循環・プロンプトを要求仕様として管理する公的な体系

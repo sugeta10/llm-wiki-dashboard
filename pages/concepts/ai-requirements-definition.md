@@ -31,3 +31,4 @@ AI駆動開発が浸透すると、コーディングが速くなるほど上流
 - [[concepts/structuring-ability]] — 整理・文書化をAIに渡したあと人間に残る「構造化力」：全体と部分の入れ子を組み立て他者と擦り合わせる思考力
 - [[concepts/output-outcome-impact]] — 「何を作らないか」を選ぶ根拠になる価値の三段。少ないアウトプットで多くのアウトカムを狙うJeff Pattonの枠組み
 - [[concepts/exclusion-first-prompting]] — 「捨てる基準」をAIに出させる前へ前倒しする指示の書き方（@smark_x）
+- [[concepts/ipa-requirements-management-handbook]] — IPA の公式ハンドブック。本ページの「決断は人間」を組織能力（要求管理台帳・ベースライン・承認・トレーサビリティ）として体系化した公的な対ページ
